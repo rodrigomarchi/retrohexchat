@@ -30,9 +30,15 @@ import { seedRandom } from "./seeded_random.js";
  *   `Math.random`; one for both sides, or one per side
  * @param {string} [options.difficulty] - solo
  * @param {(data: ArrayBuffer, dir: string) => boolean} [options.drop]
- * @param {Array<{at: number, side: "host"|"guest", key: string, down: boolean}>} [options.script]
+ * @param {Array<{at: number, side: "host"|"guest", key: string, down: boolean}
+ *   | {at: number, side: "host"|"guest", pointer: "down"|"move"|"up"|"cancel", x: number, y: number}>} [options.script] -
+ *   key presses, and pointer events at a point of the page
  * @param {number} [options.width]
  * @param {number} [options.height]
+ * @param {{left: number, top: number, width: number, height: number}} [options.rect] -
+ *   where the canvas sits on the page; by default at the corner, at its own size
+ * @param {boolean} [options.begin] - solo: begin the match at once (the default),
+ *   or leave the engine waiting
  * @param {Function} [options.EngineClass] - build engines from this class
  *   instead of the loader (for the core's own tests, with a test game)
  */
@@ -47,6 +53,8 @@ export async function playMatch({
   script = [],
   width = 640,
   height = 480,
+  rect = null,
+  begin = true,
 }) {
   vi.useFakeTimers({
     now: 0,
@@ -75,6 +83,20 @@ export async function playMatch({
   const results = { host: [], guest: [] };
   const keyboards = { host: new EventTarget(), guest: new EventTarget() };
   const canvases = { host: recordingCanvas(width, height) };
+  // jsdom lays nothing out, so every element measures 0×0: a canvas is given
+  // the box a page would give it, which is where a pointer event lands.
+  const box = rect ?? { left: 0, top: 0, width, height };
+  const placed = (canvas) => {
+    canvas.getBoundingClientRect = () => ({
+      ...box,
+      x: box.left,
+      y: box.top,
+      right: box.left + box.width,
+      bottom: box.top + box.height,
+    });
+    return canvas;
+  };
+  placed(canvases.host);
   const engines = {};
   let pair = null;
 
@@ -103,7 +125,7 @@ export async function playMatch({
     });
   } else {
     pair = channelPair({ drop });
-    canvases.guest = recordingCanvas(width, height);
+    canvases.guest = placed(recordingCanvas(width, height));
     for (const side of ["host", "guest"]) {
       engines[side] = await build({
         canvas: canvases[side],
@@ -159,15 +181,31 @@ export async function playMatch({
   };
 
   for (const side of sides) engines[side].start();
-  if (mode === "solo") engines.host.beginMatch({ difficulty });
+  if (mode === "solo" && begin) engines.host.beginMatch({ difficulty });
   observerFrame = requestAnimationFrame(observeFrame);
 
-  const scriptTimers = script.map(({ at, side, key, down }) =>
+  const pointerAt = (side, type, x, y, { pointerId = 0 } = {}) => {
+    const event = new PointerEvent(`pointer${type}`, {
+      clientX: x,
+      clientY: y,
+      pointerId,
+      bubbles: true,
+      cancelable: true,
+    });
+    canvases[side].dispatchEvent(event);
+    return event;
+  };
+
+  const scriptTimers = script.map((entry) =>
     setTimeout(() => {
-      keyboards[side].dispatchEvent(
-        new KeyboardEvent(down ? "keydown" : "keyup", { key, cancelable: true }),
+      if (entry.pointer) {
+        pointerAt(entry.side, entry.pointer, entry.x, entry.y);
+        return;
+      }
+      keyboards[entry.side].dispatchEvent(
+        new KeyboardEvent(entry.down ? "keydown" : "keyup", { key: entry.key, cancelable: true }),
       );
-    }, at),
+    }, entry.at),
   );
 
   let stopped = false;
@@ -206,6 +244,14 @@ export async function playMatch({
       const event = new KeyboardEvent(type, { key, cancelable: true });
       keyboards[side].dispatchEvent(event);
       return event;
+    },
+
+    /**
+     * One pointer event on the host's canvas, at a point of the page (the
+     * canvas's own pixels unless `rect` placed it elsewhere), handed back.
+     */
+    pointer(type, x, y, options) {
+      return pointerAt("host", type, x, y, options);
     },
 
     /** One datagram from a side, as a broken or out-of-date peer might send it. */

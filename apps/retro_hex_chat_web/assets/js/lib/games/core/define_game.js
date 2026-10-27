@@ -41,6 +41,16 @@
  * no `schema`, `ai`, `disconnectResult`, `cues` or snapshot hooks; its
  * `broadcast()` does nothing and its `finish({ result })` only tells the page.
  *
+ * A game played with a mouse or a finger says `pointer: true` and
+ * `onPointer: (game, event) => …`. The engine reads the canvas's pointer
+ * events and hands them over at the start of the next tick, in the order they
+ * happened — while the match runs and while it waits — so a seed and a script
+ * of presses replay the same match. `event` is `{ type, x, y }`: `type` is
+ * `"down"`, `"move"`, `"up"` or `"cancel"` (the browser took the press away,
+ * or the window lost focus, which carries no point), and `x`, `y` are the
+ * canvas's pixels (`core/pointer.js`). One press is followed at a time — a
+ * second finger is ignored — and a press off the picture starts nothing.
+ *
  * `quit()` ends a solo match early, as it stands: the page is told the score
  * (`standing`, or for a two-player game the score `disconnectResult` reads)
  * with `ended_early: true` and nobody named the winner.
@@ -62,11 +72,21 @@ import { encodeGameReady } from "../net_protocol.js";
 import { cueSounds } from "./events.js";
 import { createFlow } from "./flow.js";
 import { aiRandom, createRng, freshSeed } from "./rng.js";
+import { toCanvasPoint } from "./pointer.js";
 import { createGameAudio } from "./synth.js";
 import { MSG, dispatcher } from "./messages.js";
+import { log } from "../../logger.js";
 
 const REQUIRED = ["inputs", "schema", "init", "flow", "render", "disconnectResult"];
 const ONE_PLAYER_REQUIRED = ["inputs", "init", "flow", "render", "standing"];
+
+/** The canvas's pointer events, by the name a game is handed. */
+const POINTER_EVENTS = Object.freeze({
+  pointerdown: "down",
+  pointermove: "move",
+  pointerup: "up",
+  pointercancel: "cancel",
+});
 
 /**
  * The arrows, WASD in either case and the space bar: the keys most games take
@@ -97,6 +117,7 @@ export function defineGame(def) {
   validate(def);
 
   const onePlayer = def.players === 1;
+  const pointer = def.pointer === true;
   const inputNames = Object.keys(def.inputs);
   const inputBits = Object.fromEntries(inputNames.map((name, bit) => [name, bit]));
   const released = () => Object.fromEntries(inputNames.map((name) => [name, false]));
@@ -140,6 +161,9 @@ export function defineGame(def) {
       this.audio = audioOf(def.audio);
       this.colors = null;
       this.peerReady = false;
+      this._pointerQueue = [];
+      this._activePointer = null;
+      this._boundPointer = pointer ? this._onPointerEvent.bind(this) : null;
       def.setup?.(this, options);
 
       this.flow = createFlow(def.flow, {
@@ -173,6 +197,11 @@ export function defineGame(def) {
     start() {
       if (this.running) return;
       super.start();
+      if (pointer) {
+        for (const type of Object.keys(POINTER_EVENTS)) {
+          this.canvas.addEventListener(type, this._boundPointer);
+        }
+      }
       if (def.theme) this.colors = def.theme(this.canvas);
       def.onStart?.(this);
 
@@ -188,6 +217,13 @@ export function defineGame(def) {
 
     stop() {
       def.onStop?.(this);
+      if (pointer) {
+        for (const type of Object.keys(POINTER_EVENTS)) {
+          this.canvas.removeEventListener(type, this._boundPointer);
+        }
+        this._pointerQueue = [];
+        this._activePointer = null;
+      }
       super.stop();
     }
 
@@ -315,11 +351,65 @@ export function defineGame(def) {
     }
 
     _gameLoop() {
+      this._deliverPointer();
       this.flow.step();
     }
 
     _idleStep() {
+      this._deliverPointer();
       def.idle?.(this);
+    }
+
+    // The pointer events since the last tick, handed over in order.
+    _deliverPointer() {
+      if (!pointer || this._pointerQueue.length === 0) return;
+      const events = this._pointerQueue;
+      this._pointerQueue = [];
+      for (const event of events) def.onPointer(this, event);
+    }
+
+    _onPointerEvent(event) {
+      const type = POINTER_EVENTS[event.type];
+      const id = event.pointerId ?? 0;
+      if (type === "down") {
+        if (this._activePointer !== null) return;
+        const point = this._pointAt(event, true);
+        if (!point) return;
+        this._activePointer = id;
+        this._capturePointer(id);
+        this._pointerQueue.push({ type, ...point });
+        return;
+      }
+      if (id !== this._activePointer) return;
+      if (type === "cancel") {
+        this._activePointer = null;
+        this._pointerQueue.push({ type });
+        return;
+      }
+      const point = this._pointAt(event, false);
+      if (type === "up") this._activePointer = null;
+      if (point) this._pointerQueue.push({ type, ...point });
+    }
+
+    _pointAt(event, clamp) {
+      return toCanvasPoint(
+        this.canvas.getBoundingClientRect(),
+        this.canvas.width,
+        this.canvas.height,
+        event.clientX,
+        event.clientY,
+        { clamp },
+      );
+    }
+
+    // A drag that leaves the canvas keeps reporting to it.
+    _capturePointer(id) {
+      if (typeof this.canvas.setPointerCapture !== "function") return;
+      try {
+        this.canvas.setPointerCapture(id);
+      } catch (error) {
+        log.debug("[defineGame] pointer capture refused", error);
+      }
     }
 
     _cancelPendingPhase() {
@@ -352,6 +442,10 @@ export function defineGame(def) {
 
     _handleBlur() {
       def.onBlur?.(this);
+      if (pointer && this._activePointer !== null) {
+        this._activePointer = null;
+        this._pointerQueue.push({ type: "cancel" });
+      }
       super._handleBlur();
     }
 
@@ -405,6 +499,9 @@ function audioOf(spec) {
 function validate(def) {
   if (def.players !== undefined && def.players !== 1 && def.players !== 2) {
     throw new Error(`defineGame: players is 1 or 2, not ${def.players}`);
+  }
+  if (def.pointer === true && typeof def.onPointer !== "function") {
+    throw new Error("defineGame: a pointer game needs onPointer");
   }
   if (def.players === 1 && def.ai) {
     throw new Error("defineGame: a one-player game has no opponent");

@@ -1,4 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
+import { FakePointerGame } from "./fake_game.js";
 import { playMatch } from "./harness.js";
 
 const READY = "84";
@@ -116,5 +117,23 @@ describe("playMatch", () => {
     match.advance(100);
 
     expect(match.results.host.at(-1)).toMatchObject({ disconnected: true });
+  });
+
+  it("plays a pointer script on the canvas, the way a finger would", async () => {
+    match = await playMatch({
+      EngineClass: FakePointerGame,
+      gameId: "fake_pointer",
+      mode: "solo",
+      script: [
+        { at: 100, side: "host", pointer: "down", x: 50, y: 60 },
+        { at: 200, side: "host", pointer: "up", x: 52, y: 61 },
+      ],
+    });
+    match.advance(300);
+
+    expect(match.engines.host.gameState.log.map((entry) => entry.slice(1))).toEqual([
+      ["down", 50, 60],
+      ["up", 52, 61],
+    ]);
   });
 });

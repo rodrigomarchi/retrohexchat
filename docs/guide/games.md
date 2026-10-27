@@ -30,6 +30,7 @@ another copy of the core (§G.5).
 | A ball off a paddle | `core/paddle.js` — `paddleBounce`: the angle from where it hit, the speed up to a ceiling; `moveBall` |
 | The neon bat-and-ball look | `core/neon.js` — `neonColors`, `drawNeonPaddle`, `drawNeonBall` (Pong and Block Breakers); a module of its own, so the other games do not load it |
 | A person on platforms | `core/platform.js` — `jumpStep` (a jump read from a table of lines a tick), `fall`, `ladderGrab`, `climbStep`, `overlaps`, `edgeExit`, `cadence`; a module of its own, so the other games do not load it |
+| A mouse or a finger | `pointer: true` + `onPointer(game, { type, x, y })` in the definition: the canvas's presses, moves, releases and cancels, in canvas pixels, handed over at the next tick in order. `core/pointer.js` — `toCanvasPoint` (undoes the `object-contain` scale and bands) and `createGesture({ slop })` (tap, drag, drop); a module of its own |
 | Pixel-art sprites | `core/render.js` — `drawPixelSprite(ctx, rows, palette, x, y, sx, sy, { flip })`: a sprite as rows of characters, coloured by a palette |
 | AI pieces | `core/ai.js` — `aiRequest`, `normalizeDifficulty`, `interceptAt`/`reflect`, `toward`, `dutyFrame`, `createReaction`, `aiRng`, `rotationDelta`, `finiteMotion`, `edgeAware` |
 

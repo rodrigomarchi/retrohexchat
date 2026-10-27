@@ -128,3 +128,43 @@ export const soloDefinition = {
 };
 
 export const FakeSoloGame = defineGame(soloDefinition);
+
+/**
+ * The smallest game played with a pointer: it counts its ticks and writes down
+ * every pointer event it is handed, with the tick that handed it over. A press
+ * in the top-left corner ends it.
+ */
+export const pointerDefinition = {
+  players: 1,
+  pointer: true,
+  inputs: {},
+  theme: () => ({ bg: "black" }),
+  init: () => ({ phase: PHASE.WAITING, ticks: 0, log: [] }),
+  onPointer: (game, event) => {
+    const s = game.gameState;
+    s.log.push([s.ticks, event.type, event.x ?? null, event.y ?? null]);
+    if (event.type === "down" && event.x < 4 && event.y < 4) s.phase = PHASE.FINISHED;
+  },
+  flow: {
+    phases: PHASE,
+    initial: "WAITING",
+    begin: "PLAYING",
+    states: {
+      PLAYING: {
+        tick: (game) => {
+          game.gameState.ticks += 1;
+        },
+      },
+      FINISHED: {
+        final: true,
+        enter: (game) => game.finish({ result: soloResult(game.gameState.log.length) }),
+      },
+    },
+  },
+  standing: (game) => soloResult(game.gameState.log.length),
+  render: (game) => {
+    game.ctx.fillRect(0, 0, 1, 1);
+  },
+};
+
+export const FakePointerGame = defineGame(pointerDefinition);

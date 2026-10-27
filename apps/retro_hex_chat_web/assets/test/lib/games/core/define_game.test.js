@@ -4,6 +4,7 @@ import { defineGame } from "../../../../js/lib/games/core/define_game.js";
 import { aiRandom } from "../../../../js/lib/games/core/rng.js";
 import {
   FakeGame,
+  FakePointerGame,
   FakeSoloGame,
   PHASE,
   SNAPSHOT,
@@ -120,6 +121,120 @@ describe("defineGame", () => {
       game.stop();
 
       expect(results).toEqual([]);
+    });
+  });
+
+  describe("a pointer game", () => {
+    const pointerMatch = (options) =>
+      playMatch({ EngineClass: FakePointerGame, gameId: "fake_pointer", mode: "solo", ...options });
+    const logOf = (m) => m.engines.host.gameState.log;
+
+    it("hands a press over on the next tick, in canvas pixels, and not before", async () => {
+      match = await pointerMatch({});
+      match.advance(100);
+      match.pointer("down", 100, 50);
+
+      expect(logOf(match)).toEqual([]);
+      match.advance(17);
+      expect(logOf(match)).toHaveLength(1);
+      expect(logOf(match)[0].slice(1)).toEqual(["down", 100, 50]);
+    });
+
+    it("reads the press where the picture is drawn, not where the element is", async () => {
+      // A 640×480 picture in a 1280×960 element: every pixel is two.
+      match = await pointerMatch({ rect: { left: 0, top: 0, width: 1280, height: 960 } });
+      match.advance(100);
+      match.pointer("down", 640, 480);
+      match.advance(17);
+
+      expect(logOf(match)[0].slice(1)).toEqual(["down", 320, 240]);
+    });
+
+    it("hands over the events of one frame in the order they happened", async () => {
+      match = await pointerMatch({});
+      match.advance(100);
+      match.pointer("down", 10, 10);
+      match.pointer("move", 20, 10);
+      match.pointer("up", 30, 10);
+      match.advance(17);
+
+      expect(logOf(match).map((entry) => entry.slice(1))).toEqual([
+        ["down", 10, 10],
+        ["move", 20, 10],
+        ["up", 30, 10],
+      ]);
+      // All three in the same tick.
+      expect(new Set(logOf(match).map(([tick]) => tick)).size).toBe(1);
+    });
+
+    it("follows only the first finger, and ignores a press off the picture", async () => {
+      match = await pointerMatch({ rect: { left: 0, top: 0, width: 1000, height: 480 } });
+      match.advance(100);
+      match.pointer("down", 100, 100);
+      match.pointer("down", 500, 100, { pointerId: 1 });
+      match.pointer("down", 500, 100, { pointerId: 2 });
+      match.pointer("move", 600, 100, { pointerId: 2 });
+      match.advance(17);
+
+      expect(logOf(match).map((entry) => entry.slice(1))).toEqual([["down", 320, 100]]);
+    });
+
+    it("cancels a press when the window loses focus", async () => {
+      match = await pointerMatch({});
+      match.advance(100);
+      match.pointer("down", 10, 10);
+      window.dispatchEvent(new Event("blur"));
+      match.advance(17);
+
+      expect(logOf(match).map((entry) => entry[1])).toEqual(["down", "cancel"]);
+    });
+
+    it("hands over presses while it waits to begin", async () => {
+      match = await pointerMatch({ begin: false });
+      match.advance(100);
+      match.pointer("down", 10, 10);
+      match.advance(17);
+
+      expect(logOf(match).map((entry) => entry[1])).toEqual(["down"]);
+    });
+
+    it("ends where a press ends it", async () => {
+      match = await pointerMatch({});
+      match.advance(100);
+      match.pointer("down", 1, 1);
+      match.advance(100);
+
+      expect(match.results.host).toEqual([{ score: { p1: 1, p2: 0 }, winner: 0 }]);
+    });
+
+    it("leaves the canvas alone in a game played without a pointer", () => {
+      const canvas = recordingCanvas(64, 48);
+      const listen = vi.spyOn(canvas, "addEventListener");
+      const game = new FakeSoloGame(canvas, createLocalTransport(), "fake_solo", true, null, {
+        mode: "solo",
+      });
+      game.start();
+      game.stop();
+
+      expect(
+        listen.mock.calls.map(([type]) => type).filter((t) => t.startsWith("pointer")),
+      ).toEqual([]);
+    });
+
+    it("stops listening when it stops", () => {
+      const canvas = recordingCanvas(64, 48);
+      const listen = vi.spyOn(canvas, "addEventListener");
+      const unlisten = vi.spyOn(canvas, "removeEventListener");
+      const game = new FakePointerGame(canvas, createLocalTransport(), "fake_pointer", true, null, {
+        mode: "solo",
+      });
+      game.start();
+      game.stop();
+      const pointerTypes = (spy) =>
+        spy.mock.calls.map(([type]) => type).filter((t) => t.startsWith("pointer"));
+
+      expect(pointerTypes(listen).length).toBeGreaterThan(0);
+      expect(pointerTypes(unlisten).sort()).toEqual(pointerTypes(listen).sort());
     });
   });
 
