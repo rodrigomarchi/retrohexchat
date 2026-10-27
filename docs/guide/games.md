@@ -31,6 +31,7 @@ another copy of the core (§G.5).
 | The neon bat-and-ball look | `core/neon.js` — `neonColors`, `drawNeonPaddle`, `drawNeonBall` (Pong and Block Breakers); a module of its own, so the other games do not load it |
 | A person on platforms | `core/platform.js` — `jumpStep` (a jump read from a table of lines a tick), `fall`, `ladderGrab`, `climbStep`, `overlaps`, `edgeExit`, `cadence`; a module of its own, so the other games do not load it |
 | A mouse or a finger | `pointer: true` + `onPointer(game, { type, x, y })` in the definition: the canvas's presses, moves, releases and cancels, in canvas pixels, handed over at the next tick in order. `core/pointer.js` — `toCanvasPoint` (undoes the `object-contain` scale and bands) and `createGesture({ slop })` (tap, drag, drop); a module of its own |
+| Playing cards | `core/cards.js` — `DECK` (ids 0–51, suit by suit, ace to king), `suitOf`, `rankOf`, `isRed`, `shuffle(cards, random)` with the match's generator; `createCardAtlasLoader({ fetchJson, loadImage })` reads an art atlas once and refuses an incomplete one; `drawCard(ctx, atlas, card, x, y, { faceUp, back })` cuts a face or a back from it; a module of its own |
 | Pixel-art sprites | `core/render.js` — `drawPixelSprite(ctx, rows, palette, x, y, sx, sy, { flip })`: a sprite as rows of characters, coloured by a palette |
 | AI pieces | `core/ai.js` — `aiRequest`, `normalizeDifficulty`, `interceptAt`/`reflect`, `toward`, `dutyFrame`, `createReaction`, `aiRng`, `rotationDelta`, `finiteMotion`, `edgeAware` |
 
