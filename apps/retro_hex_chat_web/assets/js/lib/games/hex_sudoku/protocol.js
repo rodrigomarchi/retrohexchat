@@ -7,6 +7,8 @@
  * @module games/hex_sudoku/protocol
  */
 
+import { WIN_EVENT } from "../core/solo/phases.js";
+
 /**
  * Each catalogue id's grid: the level of the hardest technique it needs
  * (`solver.js`), and how many squares it gives, at least and at most. The
@@ -34,6 +36,22 @@ export const PENALTY = Object.freeze({ MISTAKE: 1_800, HINT: 3_600 });
 
 /** Three hours on the clock: a game still open then ends, with nothing scored. */
 export const SAFETY_TICKS = 3 * 60 * 60 * 60;
+
+/** How many moves back an undo reaches. */
+export const UNDO_DEPTH = 200;
+
+/** What happened in a tick, one bit each: the sounds (by name) and the effects read them. */
+export const EVENT = Object.freeze({
+  PLACE: 1,
+  NOTE: 2,
+  ERASE: 4,
+  MISTAKE: 8,
+  COMPLETE: 16,
+  HINT: 32,
+  UNDO: 64,
+  PENCIL: 128,
+  WIN: WIN_EVENT,
+});
 
 /**
  * Where the game's pictures are served, with the version of their description

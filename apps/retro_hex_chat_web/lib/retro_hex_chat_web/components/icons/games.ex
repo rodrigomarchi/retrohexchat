@@ -675,6 +675,37 @@ defmodule RetroHexChatWeb.Icons.Games do
     """
   end
 
+  # -- Hex Sudoku: a grid of three boxes a side, a square chosen, digits in their inks --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_sudoku(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_sudoku(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#023e3e" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#fafaf6" />
+      <rect x="12" y="12" width="8" height="8" fill="#ffe26e" />
+      <path d="M2 12h10v8H2z M20 12h10v8H20z M12 2h8v10h-8z M12 20h8v10h-8z" fill="#dee8f8" />
+      <path d="M11 2h1v28h-1z M20 2h1v28h-1z M2 11h28v1H2z M2 20h28v1H2z" fill="#24262e" />
+      <path
+        d="M4 4h3v1h-3z M4 5h1v1h-1z M4 6h2v1h-2z M6 7h1v1h-1z M4 8h2v1h-2z M24 4h2v1h-2z M26 5h1v1h-1z M25 6h1v1h-1z M26 7h1v1h-1z M24 8h2v1h-2z M5 23h3v1h-3z M5 24h1v1h-1z M7 24h1v1h-1z M5 25h3v1h-3z M7 26h1v1h-1z M5 27h2v1h-2z M25 23h1v1h-1z M24 24h2v1h-2z M25 25h1v1h-1z M25 26h1v1h-1z M24 27h3v1h-3z"
+        fill="#101014"
+      />
+      <path
+        d="M14 14h3v1h-3z M16 15h1v1h-1z M15 16h1v1h-1z M15 17h1v1h-1z M15 18h1v1h-1z"
+        fill="#1c48d6"
+      />
+      <path
+        d="M24 14h1v1h-1z M26 14h1v1h-1z M24 15h1v1h-1z M26 15h1v1h-1z M24 16h3v1h-3z M26 17h1v1h-1z M26 18h1v1h-1z"
+        fill="#cd1c1e"
+      />
+    </svg>
+    """
+  end
+
   # -- DOOM Shareware: shotgun with muzzle flash (red/orange) --
 
   attr :class, :string, default: nil

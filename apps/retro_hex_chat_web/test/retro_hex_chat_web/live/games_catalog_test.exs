@@ -108,6 +108,7 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       assert title.("/games/hex-freecell") =~ "FreeCell solitaire"
       assert title.("/games/hex-spider") =~ "Spider solitaire"
       assert title.("/games/hex-mines") =~ "Minesweeper"
+      assert title.("/games/hex-sudoku") =~ "Sudoku"
     end
 
     test "is titled for the search it answers and canonical to itself", %{conn: conn} do
@@ -169,6 +170,9 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       mines = conn |> document("/games/hex-mines") |> json_ld("VideoGame")
       assert mines["genre"] == "Puzzle"
       assert mines["playMode"] == "SinglePlayer"
+
+      sudoku = conn |> document("/games/hex-sudoku") |> json_ld("VideoGame")
+      assert sudoku["genre"] == "Puzzle"
       refute Map.has_key?(doom, "genre")
     end
 

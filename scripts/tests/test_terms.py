@@ -94,6 +94,28 @@ class MissingTermsTest(unittest.TestCase):
         ):
             self.assertEqual(missing_terms(source, "Assistir sem conta", "pt_BR"), [], source)
 
+    def test_a_sudoku_digit_is_a_figure_and_its_hint_a_help(self):
+        source = "A wrong digit turns red at once and adds 30 seconds to your clock. A hint adds a minute."
+        self.assertTrue(missing_terms(source, "Um dedo errado fica vermelho. Uma dica soma um minuto.", "pt_BR"))
+        self.assertTrue(missing_terms(source, "Um dígito errado fica vermelho. Uma insinuação soma um minuto.", "pt_BR"))
+        self.assertEqual(
+            missing_terms(source, "Um dígito errado fica vermelho na hora. Uma dica soma um minuto.", "pt_BR"), []
+        )
+        self.assertTrue(missing_terms("Put a digit", "Mettre un doigt", "fr"))
+        self.assertTrue(missing_terms("the pencil writes notes", "der Bleistift schreibt Noten", "de"))
+        self.assertTrue(missing_terms("every grid needs an X-Wing", "每个电网都需要", "zh_hans"))
+        self.assertTrue(missing_terms("Write that digit in the square you chose", "在你选择的广场上写那个数字", "zh_hans"))
+        self.assertEqual(missing_terms("the pencil writes notes", "der Bleistift schreibt Notizen", "de"), [])
+        self.assertTrue(missing_terms("Tap a key of the keypad", "Toque numa chave do teclado", "pt_BR"))
+        self.assertEqual(missing_terms("Tap a key of the keypad", "Toque numa tecla do teclado", "pt_BR"), [])
+
+    def test_sudoku_is_written_as_each_language_writes_it(self):
+        from i18n import names
+
+        self.assertEqual(names.localize("Play Sudoku", "ja"), "Play 数独")
+        self.assertEqual(names.localize("Hex Sudoku: Hard", "ja"), "ヘックス数独：上級")
+        self.assertEqual(names.localize("Hex Sudoku: Hard", "pt_BR"), "Hex Sudoku: Hard")
+
     def test_minesweeper_is_called_as_each_language_calls_it(self):
         from i18n import names
 
@@ -573,6 +595,16 @@ class BrazilianFormsTest(unittest.TestCase):
         self.assertEqual(brazilian_forms("Erro ao ler o ficheiro."), "Erro ao ler o arquivo.")
         self.assertEqual(brazilian_forms("A reacção da conferência"), "A reação da conferência")
         self.assertEqual(brazilian_forms("A tua câmara"), "A sua câmera")
+
+    def test_rewrites_the_sudoku_words_portugal_spells_its_own_way(self):
+        self.assertEqual(
+            brazilian_forms("Um dígito fica cinzento abaixo da grelha quando está correcto."),
+            "Um dígito fica cinza abaixo da grade quando está correto.",
+        )
+        self.assertEqual(
+            brazilian_forms("Quanto mais rápido terminares. Activar ou desactivar as notas."),
+            "Quanto mais rápido terminar. Ativar ou desativar as notas.",
+        )
 
     def test_rewrites_spellings_and_phrases_of_the_same_gender(self):
         self.assertEqual(

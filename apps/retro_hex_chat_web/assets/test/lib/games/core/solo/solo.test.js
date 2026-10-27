@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  SAFETY_TICKS,
   scoreWithBonus,
   tickMatch,
   untilTimeUp,
@@ -43,6 +44,14 @@ describe("a solo match's clock", () => {
   it("ends a match the hour runs out on, and adds a win's bonus", () => {
     expect(untilTimeUp({ phase: PHASE.PLAYING }, true).phase).toBe(PHASE.FINISHED);
     expect(untilTimeUp({ phase: PHASE.PLAYING }, false).phase).toBe(PHASE.PLAYING);
+    const late = {
+      phase: PHASE.PLAYING,
+      clock: { started: true, ticks: SAFETY_TICKS - 1 },
+      score: 0,
+    };
+    expect(tickMatch(late, 0).timeUp).toBe(true);
+    // A game whose matches run longer calls time later.
+    expect(tickMatch(late, 0, 3 * SAFETY_TICKS).timeUp).toBe(false);
     const won = { won: true, score: 100, clock: { ticks: 100 * 60 } };
     expect(scoreWithBonus(won)).toBe(7100);
     expect(scoreWithBonus({ ...won, won: false })).toBe(100);

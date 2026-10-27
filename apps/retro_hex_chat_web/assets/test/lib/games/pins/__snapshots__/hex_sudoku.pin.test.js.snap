@@ -1,0 +1,115 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_sudoku pins > solo following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "05f34ff1c92e3f76",
+      "ops": 320,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "1b76a2e5cea93fd7",
+      "voices": {
+        "createGain": 205,
+        "createOscillator": 204,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "events": 0,
+      "hints": 3,
+      "mistakes": 80,
+      "pencil": false,
+      "phase": 1,
+      "score": 0,
+      "selected": 80,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_sudoku pins > solo to the end: hex_sudoku 1`] = `
+{
+  "draws": [
+    {
+      "digest": "05f34ff1c92e3f76",
+      "ops": 320,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 10801488,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "4f53cda18c2baa0c",
+      "voices": {},
+    },
+  },
+  "state": {
+    "host": {
+      "events": 0,
+      "hints": 0,
+      "mistakes": 0,
+      "pencil": false,
+      "phase": 3,
+      "score": 0,
+      "selected": 40,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;

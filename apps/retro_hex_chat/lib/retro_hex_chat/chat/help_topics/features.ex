@@ -2317,6 +2317,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-freecell",
           "feature-hex-spider",
           "feature-hex-mines",
+          "feature-hex-sudoku",
           "feature-arcade"
         ]
       },
@@ -3370,6 +3371,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Minesweeper for one player, in three levels. Open every square without a mine; plant flags on the mines you find."
           ),
         see_also: ["feature-retro-games"]
+      },
+      %{
+        id: "feature-hex-sudoku",
+        title: dgettext("help", "Hex Sudoku"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          "hex sudoku",
+          "sudoku",
+          dgettext("help", "Sudoku"),
+          dgettext("help", "puzzle"),
+          "game"
+        ],
+        icon: :icon_game_sudoku,
+        description:
+          dgettext(
+            "help",
+            "Sudoku for one player, in three levels. Fill the grid so every row, column and box holds the digits 1 to 9 once."
+          ),
+        see_also: ["feature-hex-mines", "feature-retro-games"]
       },
       # ── Solo Arcade ──────────────────────────────────
       %{

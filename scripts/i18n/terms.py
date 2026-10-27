@@ -706,9 +706,46 @@ _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
         "pt": ("imprensa",),
         "es": ("prensa",),
     },
+    # A Sudoku's digit is a figure, never a finger.
+    r"\b(?:a\s+digit|the\s+digits?|its\s+digit|that\s+digit|right\s+digit|wrong\s+digit|put\s+a\s+digit)\b": {
+        "pt": ("dedo",),
+        "es": ("dedo",),
+        "fr": ("doigt",),
+        "it": ("dito", "dita"),
+        "de": ("finger",),
+    },
+    # A key of a keypad or a keyboard, never a door's key.
+    r"\b(?:a\s+key\s+(?:of|goes|on)|its\s+key|the\s+keys?\s+of\s+the\s+keypad)\b": {
+        "pt": ("chave",),
+        "es": ("llave",),
+        "fr": ("clé", "clef"),
+        "de": ("schlüssel",),
+        "it": ("chiave",),
+    },
+    # A Sudoku's notes are written down, never sung: German gave "Noten".
+    r"\b(?:writes\s+notes|digits\s+and\s+notes|take\s+notes|as\s+a\s+note|the\s+notes\s+(?:in|start|on))\b": {
+        "de": ("noten",),
+        "zh_hans": ("音符",),
+        "zh_hant": ("音符",),
+    },
+    # A Sudoku's grid, never a power grid: Chinese gave "电网".
+    r"\b(?:the|every|each|new)\s+(?:9×9\s+)?grids?\b": {
+        "zh_hans": ("电网",),
+        "zh_hant": ("電網",),
+    },
+    # A hint a game gives, never an innuendo.
+    r"\b(?:a\s+hint|hints?\s+(?:adds?|reveals?|stays)|the\s+hints|hint\s+\(adds)\b": {
+        "pt": ("insinua",),
+        "es": ("insinua",),
+        "fr": ("allusion",),
+        "de": ("andeutung", "anspielung"),
+        "it": ("allusion",),
+    },
     # A field's square, never a town square.
-    r"\b(?:(?:a|the|every|each|first|other)\s+squares?|squares?\s+(?:you|of|around|without|with))\b": {
+    r"\b(?:(?:a|the|every|each|first|other|chosen)\s+squares?|squares?\s+(?:you|of|around|without|with))\b": {
         "es": ("plaza",),
+        "zh_hans": ("广场",),
+        "zh_hant": ("廣場",),
     },
     r"(?<!HEV )\bsuits?\b": {
         "pt": ("fato", "terno"),
@@ -885,6 +922,17 @@ _BRAZILIAN_WORDS = {
     "seleccionado": "selecionado",
     "seleccionada": "selecionada",
     "desactivado": "desativado",
+    "desactivar": "desativar",
+    "activar": "ativar",
+    "grelha": "grade",
+    "grelhas": "grades",
+    "correcto": "correto",
+    "correcta": "correta",
+    "correctos": "corretos",
+    "correctas": "corretas",
+    "cinzento": "cinza",
+    "cinzenta": "cinza",
+    "terminares": "terminar",
     "desactivada": "desativada",
     "activado": "ativado",
     "activada": "ativada",

@@ -239,6 +239,30 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
              control_rows(mines)
   end
 
+  test "Hex Sudoku stands up to its keypad, and is played by taps or the keyboard" do
+    sudoku = %{@jungle | id: "hex_sudoku", name: "Hex Sudoku", icon: "game_sudoku"}
+
+    box =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        status: "ready",
+        selected_game: sudoku,
+        difficulty: "normal",
+        canvas_ready: true
+      )
+      |> Floki.parse_document!()
+      |> Floki.find(~s([data-testid="retro-game-canvas-hex_sudoku"]))
+      |> Floki.attribute("class")
+      |> List.first()
+
+    assert box =~ "aspect-[448/632]"
+    assert box =~ "sm:aspect-[4/3]"
+    assert goal_label(sudoku) == "Every row, column and box holds 1 to 9"
+
+    assert [%{keys: ["Tap" | _]}, %{keys: ["1–9"]}, %{}, %{}, %{keys: ["H"]}, %{keys: ["Z"]}] =
+             control_rows(sudoku)
+  end
+
   test "Hex Spider is played by taps and drags and a tap on the deck, toward eight suits" do
     spider = %{@jungle | id: "hex_spider", name: "Hex Spider", icon: "game_spider"}
 

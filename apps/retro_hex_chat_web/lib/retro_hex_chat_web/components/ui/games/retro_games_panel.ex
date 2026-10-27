@@ -406,6 +406,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: id}) when id in ~w(hex_mines hex_mines_intermediate hex_mines_expert),
     do: dgettext("games", "Clear every square without a mine")
 
+  def goal_label(%{id: id}) when id in ~w(hex_sudoku hex_sudoku_medium hex_sudoku_hard),
+    do: dgettext("games", "Every row, column and box holds 1 to 9")
+
   # A card table stands up on a phone held upright: the game lays itself out
   # on the box it is given (`view` in its definition), so on a narrow screen
   # the box is tall and the cards are as big as the phone allows.
@@ -413,6 +416,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     do: "aspect-[464/720] sm:aspect-[4/3]"
 
   defp canvas_box_aspect(%{id: "hex_mines_expert"}), do: "aspect-[464/780] sm:aspect-[5/3]"
+
+  defp canvas_box_aspect(%{id: id}) when id in ~w(hex_sudoku hex_sudoku_medium hex_sudoku_hard),
+    do: "aspect-[448/632] sm:aspect-[4/3]"
 
   defp canvas_box_aspect(%{id: id})
        when id in ~w(hex_freecell hex_spider hex_spider_2suits hex_spider_4suits hex_mines
@@ -457,6 +463,21 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
         label: dgettext("games", "Flag with a tap, on a phone"),
         keys: [dgettext("games", "Tap the switch")]
       }
+    ]
+  end
+
+  # A tap on the grid and the keypad, or the keyboard: digits, arrows and three letters.
+  def control_rows(%{id: id}) when id in ~w(hex_sudoku hex_sudoku_medium hex_sudoku_hard) do
+    [
+      %{
+        label: dgettext("games", "Choose a square"),
+        keys: [dgettext("games", "Tap"), "←", "↑", "→", "↓"]
+      },
+      %{label: dgettext("games", "Put a digit"), keys: ["1–9"]},
+      %{label: dgettext("games", "Notes on or off"), keys: ["N"]},
+      %{label: dgettext("games", "Erase a square"), keys: ["Delete", "Backspace"]},
+      %{label: dgettext("games", "Hint (adds a minute)"), keys: ["H"]},
+      %{label: dgettext("games", "Undo"), keys: ["Z"]}
     ]
   end
 

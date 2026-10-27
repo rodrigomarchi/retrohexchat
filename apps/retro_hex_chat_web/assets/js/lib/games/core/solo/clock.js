@@ -27,18 +27,19 @@ export const startClock = (clock) => (clock.started ? clock : { ...clock, starte
 
 /**
  * One tick of the clock: it counts only once started, every ten seconds of
- * play cost `penalty` points, and an hour calls time.
+ * play cost `penalty` points, and an hour (or `safety` ticks) calls time.
  * @param {{ started: boolean, ticks: number }} clock
  * @param {number} [penalty] - 0 where time costs nothing
+ * @param {number} [safety] - the ticks that call time, where a match may run longer
  * @returns {{ clock: { started: boolean, ticks: number }, points: number, timeUp: boolean }}
  */
-export function tickClock(clock, penalty = TIME_PENALTY) {
+export function tickClock(clock, penalty = TIME_PENALTY, safety = SAFETY_TICKS) {
   if (!clock.started) return { clock, points: 0, timeUp: false };
   const ticks = clock.ticks + 1;
   return {
     clock: { ...clock, ticks },
     points: ticks % PENALTY_TICKS === 0 ? penalty : 0,
-    timeUp: ticks >= SAFETY_TICKS,
+    timeUp: ticks >= safety,
   };
 }
 
@@ -54,12 +55,13 @@ export function timeBonus(ticks) {
  * hour is up.
  * @param {{ phase: number, clock: object, score: number }} state
  * @param {number} [penalty] - 0 where time costs nothing
+ * @param {number} [safety] - the ticks that call time (`tickClock`)
  * @returns {{ next: object, timeUp: boolean }}
  */
-export function tickMatch(state, penalty = TIME_PENALTY) {
+export function tickMatch(state, penalty = TIME_PENALTY, safety = SAFETY_TICKS) {
   const ticked =
     state.phase === PHASE.PLAYING
-      ? tickClock(state.clock, penalty)
+      ? tickClock(state.clock, penalty, safety)
       : { clock: state.clock, points: 0, timeUp: false };
   return {
     next: {

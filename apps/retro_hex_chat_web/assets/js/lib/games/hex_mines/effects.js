@@ -12,18 +12,23 @@
  * @module games/hex_mines/effects
  */
 
+export {
+  active,
+  createEffects,
+  glowAt,
+  hopAt,
+  shakeAt,
+  stepEffects,
+} from "../core/solo/effects.js";
+
 import { gameColor } from "../../game_colors.js";
-import { burst, stepParticles } from "../core/render.js";
-import { progress } from "../core/tween.js";
+import { burst } from "../core/render.js";
 import { boardPlace } from "./layout.js";
 import { EVENT } from "./protocol.js";
 import { CELL } from "./rules.js";
 
 /** How long each effect lasts, in ticks. */
 export const FX = Object.freeze({ ring: 2, hop: 10, shake: 16, fire: 40, winLight: 100, glow: 24 });
-
-/** The effects of one match. */
-export const createEffects = ({ reduced = false } = {}) => ({ reduced, list: [] });
 
 /** Squares opened, in rings out from the first: each shows shut until its ring's turn. */
 function wave(fx, opened, now) {
@@ -77,46 +82,9 @@ export function boardEffects(fx, { before, after, laid, now, random }) {
   }
 }
 
-/** One tick of the effects: the fire flies and fades; the others end on time. */
-export function stepEffects(fx, now) {
-  fx.list = fx.list.filter((effect) => {
-    if (effect.kind === "fire") {
-      effect.particles = stepParticles(effect.particles, { drag: 0.92, fade: 1 / FX.fire });
-      return effect.particles.length > 0;
-    }
-    return now < effect.start + effect.ticks;
-  });
-}
-
-/** Whether anything still moves, so a frame is worth drawing. */
-export const active = (fx) => fx.list.length > 0;
-
 /** Whether square `i` still shows shut while the wave reaches it. */
 export function waiting(fx, i, now) {
   return fx.list.some(
     (e) => e.kind === "wave" && e.rings.has(i) && now < e.start + e.rings.get(i) * FX.ring,
   );
-}
-
-/** How far a flag dropping in sits above its square at `now`, on whole pixels. */
-export function hopAt(fx, i, now) {
-  const hop = fx.list.find((e) => e.kind === "hop" && e.i === i);
-  if (!hop) return 0;
-  const t = progress(hop.start, hop.ticks, now);
-  return -Math.round(Math.sin(t * Math.PI) * 6);
-}
-
-/** How far the board is pushed sideways while it shakes. */
-export function shakeAt(fx, now) {
-  const shake = fx.list.find((e) => e.kind === "shake");
-  if (!shake) return 0;
-  const t = progress(shake.start, shake.ticks, now);
-  return Math.round(Math.sin(t * Math.PI * 8) * 4 * (1 - t));
-}
-
-/** How bright a win's flag glows at `now` (0 to 1). */
-export function glowAt(fx, i, now) {
-  const glow = fx.list.find((e) => e.kind === "glow" && e.i === i);
-  if (!glow || now < glow.start) return 0;
-  return Math.sin(progress(glow.start, glow.ticks, now) * Math.PI);
 }

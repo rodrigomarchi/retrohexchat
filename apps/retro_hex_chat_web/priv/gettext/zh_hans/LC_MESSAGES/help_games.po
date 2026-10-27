@@ -583,6 +583,7 @@ msgstr "控制距离"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:8
@@ -1197,6 +1198,7 @@ msgstr "无限血统——航线永无止境."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:48
@@ -1598,6 +1600,7 @@ msgstr "第3轮"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:23
@@ -1709,13 +1712,14 @@ msgstr "赛制:爱~15~30~40~比赛(成绩40~40,优势,2胜)."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:101
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:177
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3580,7 +3584,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:176
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:182
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -3627,13 +3631,14 @@ msgstr "在复古游戏单人模式中，你控制左侧城堡护盾，AI 控制
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "复古游戏"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr "在 Hex Boxing 中，向 8 个方向移动、控制距离，并点按 Space 或 Shift 出拳；AI 从右侧作战。"
@@ -3643,7 +3648,7 @@ msgstr "在 Hex Boxing 中，向 8 个方向移动、控制距离，并点按 Sp
 msgid "In Retro Games solo mode, you control the left boxer while the AI controls the right boxer. Difficulty changes how tightly the AI tracks range, dodges, and times punches."
 msgstr "在复古游戏单人模式中，你控制左侧拳手，AI 控制右侧拳手。难度会改变 AI 控制距离、闪避和把握出拳时机的精度。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4170,7 +4175,7 @@ msgstr "——游戏排名."
 msgid "— this week's challenge and who leads it"
 msgstr "——本周的挑战与谁领导."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:173
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:179
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "街机"
@@ -4302,6 +4307,7 @@ msgstr "Klondike是19世纪的一款纸牌游戏,由随Windows而来的人在PC�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Score"
 msgstr "得分数"
@@ -4588,3 +4594,103 @@ msgstr "— Open it. A square with no mine around it opens the ones around it to
 #, elixir-autogen, elixir-format
 msgid "— Plant a flag on a square, or lift it"
 msgstr "- 在广场上树立一面旗帜,或者升起它"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Hex Mines"
+msgstr "Hex Mines"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku is the easy level. Hex Sudoku: Medium needs pairs and digits pointing out of a box, and Hex Sudoku: Hard an X-Wing, a Swordfish or an XY-Wing."
+msgstr "Hex 数独是简单的关卡. Hex 数独: Medium需要一对和数位指出一个盒子,Hex 数独: Hard则需要X-Wing,Swordfish或XY-Wing."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Tap a square, or move with the arrows"
+msgstr "Tap a square, or move with the arrows"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "The arrow, or Z"
+msgstr "箭头,或者Z"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "The pencil, or N"
+msgstr "铅笔,或N"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "— Clear the chosen square's digit or notes"
+msgstr "——清除选定的方块数字或注释"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "A correct digit removes that digit from the notes in its row, column and box."
+msgstr "一个正确的数字从它的行,列和框中的注释中去除该数字."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "A wrong digit turns red immediately and adds 30 seconds to your clock. A hint adds a minute."
+msgstr "一个错误的数位立即变成红色,并在你的时钟上增加30秒. 提示增加一分钟。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku is Sudoku for one player. Fill the 9×9 grid so every row, every column and every 3×3 box holds the digits 1 to 9 once. Every grid is made new for your game and has one solution, which you can always reach without guessing. The fastest wins go into the ranking."
+msgstr "Hex 数独是一个玩家的数独. 填充9×9网格,所以每行,每列和每3×3盒都持有1到9位数一次. 每个网格都是为游戏而制作的,并且有一个解决方案,你总是可以不受猜测地到达. 最快的获胜者进入排名."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku is Sudoku for one player: tap a square, then a digit below the grid, or play with the keyboard. Every grid is new and has one solution."
+msgstr "Hex Sudoku is Sudoku for one player: tap a square, then a digit below the grid, or play with the keyboard. Every grid is new and has one solution."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Sudoku first appeared in American puzzle magazines in the 1970s. It got its name in Japan in the 1980s and then spread to newspapers all over the world."
+msgstr "Sudoku first appeared in American puzzle magazines in the 1970s. It got its name in Japan in the 1980s and then spread to newspapers all over the world."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Tap a digit below the grid, or press 1 to 9"
+msgstr "Tap a digit below the grid, or press 1 to 9"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "The light bulb, or H"
+msgstr "灯泡,或者H"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "— A hint: reveal the chosen square, or one at random when the chosen square is already correct"
+msgstr "——提示:显示所选的方块,或者当所选的方块已经正确时随机显示"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Choose it. Its row, column and box are highlighted, and so is every square with the same digit"
+msgstr "- 选择它。 它的行、列和框都突出显示,每个方块都有相同的数字"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Switch between digits and notes. With the pencil on, a digit is written small, as a note. The same digit again removes it."
+msgstr "— Switch between digits and notes. With the pencil on, a digit is written small, as a note. The same digit again removes it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The eraser, %{delete} or %{backspace}"
+msgstr "清除器、 %{delete} 或 %{backspace}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Points come only from a win: 10,000 divided by the minutes on your clock, mistakes and hints included. The faster you finish, the more points. If you end a game with End, it scores nothing."
+msgstr "积分只来自胜负:一万分除以您的时钟上的分钟,包括错误和提示. 越快完成,得分越多. 如果你和End结束一场比赛,它就一无所获."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "— Cancel your last move. A hint is not cancelled"
+msgstr "- 取消你最后的行动。 未取消提示"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Write that digit in the square you chose. A digit turns grey below the grid once all nine are in place"
+msgstr "— Write that digit in the square you chose. A digit turns grey below the grid once all nine are in place"

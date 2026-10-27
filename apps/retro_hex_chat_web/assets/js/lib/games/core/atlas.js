@@ -44,3 +44,17 @@ export const browserAtlasIO = Object.freeze({
       image.src = src;
     }),
 });
+
+/**
+ * A region of an atlas drawn into a place `r` (`{ x, y, w, h }`), or a plain
+ * square of `fallback` while the atlas loads.
+ */
+export function drawPiece(ctx, atlas, name, r, fallback) {
+  if (!atlas) {
+    ctx.fillStyle = fallback;
+    ctx.fillRect(r.x, r.y, r.w, r.h);
+    return;
+  }
+  const a = atlas.regions[name];
+  ctx.drawImage(atlas.image, a.x, a.y, a.w, a.h, r.x, r.y, r.w, r.h);
+}

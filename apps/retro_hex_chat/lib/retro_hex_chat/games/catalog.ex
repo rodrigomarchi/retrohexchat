@@ -52,14 +52,17 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_spider_4suits",
     "hex_mines",
     "hex_mines_intermediate",
-    "hex_mines_expert"
+    "hex_mines_expert",
+    "hex_sudoku",
+    "hex_sudoku_medium",
+    "hex_sudoku_hard"
   ]
 
   # Played by one person alone: no opponent, no partner, nothing to watch. A
   # one-player game is also played solo and ranked by score (checked below).
   @solo_only_game_ids ~w(hex_jungle hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider
                          hex_spider_2suits hex_spider_4suits hex_mines hex_mines_intermediate
-                         hex_mines_expert)
+                         hex_mines_expert hex_sudoku hex_sudoku_medium hex_sudoku_hard)
 
   # How a finished match is ranked. Versus games have two sides and one winner;
   # score games rank the points a player took home; co-op games rank the score
@@ -74,7 +77,8 @@ defmodule RetroHexChat.Games.Catalog do
   @score_game_ids ~w(hex_raid hex_raid_pacifist hex_raid_blitz hex_invaders hex_invaders_blitz
                      hex_enduro hex_enduro_night hex_enduro_sprint hex_jungle hex_solitaire
                      hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits
-                     hex_spider_4suits hex_mines hex_mines_intermediate hex_mines_expert)
+                     hex_spider_4suits hex_mines hex_mines_intermediate hex_mines_expert
+                     hex_sudoku hex_sudoku_medium hex_sudoku_hard)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
 
   @type ranking :: :versus | :score | :coop
@@ -712,6 +716,56 @@ defmodule RetroHexChat.Games.Catalog do
         dgettext_noop(
           "games",
           "Click or tap to open a square; right click or long press to plant a flag"
+        )
+    },
+    %{
+      id: "hex_sudoku",
+      name: "Hex Sudoku",
+      tagline: dgettext_noop("games", "Sudoku: a new 9×9 grid every game"),
+      description:
+        dgettext_noop(
+          "games",
+          "Sudoku for a quick game: fill the 9×9 grid so every row, column and box holds the digits 1 to 9 once. Each grid is new, with one solution you can reach without guessing. The faster you finish, the more points; a mistake or a hint adds time."
+        ),
+      icon: "game_sudoku",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap a square, then a digit; the pencil writes notes and the light bulb gives a hint"
+        )
+    },
+    %{
+      id: "hex_sudoku_medium",
+      mode_of: "hex_sudoku",
+      name: "Hex Sudoku: Medium",
+      tagline: dgettext_noop("games", "Sudoku with fewer digits, for players who take notes"),
+      description:
+        dgettext_noop(
+          "games",
+          "Sudoku with fewer digits given: each grid needs a pair, a triple or a digit pointing out of a box before it opens up. This is where the notes start to help."
+        ),
+      icon: "game_sudoku",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap a square, then a digit; the pencil writes notes and the light bulb gives a hint"
+        )
+    },
+    %{
+      id: "hex_sudoku_hard",
+      mode_of: "hex_sudoku",
+      name: "Hex Sudoku: Hard",
+      tagline: dgettext_noop("games", "Sudoku grids that need an X-Wing"),
+      description:
+        dgettext_noop(
+          "games",
+          "The hardest Sudoku here: every grid needs an X-Wing, a Swordfish or an XY-Wing somewhere, and none needs a guess."
+        ),
+      icon: "game_sudoku",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap a square, then a digit; the pencil writes notes and the light bulb gives a hint"
         )
     }
   ]

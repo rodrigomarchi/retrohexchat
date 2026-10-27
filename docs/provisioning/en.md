@@ -401,6 +401,14 @@ included, is joined explicitly.
 /topic Results and rankings of Hex Mines, Minesweeper for one player in three levels. Everything said here is published in a public archive.
 /mode +tn
 
+/join #hex-sudoku
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Sudoku, Sudoku for one player in three levels. Everything said here is published in a public archive.
+/mode +tn
+
 /join #retro-games
 /cs register
 /cs archive on
@@ -626,6 +634,7 @@ included, is joined explicitly.
 /bot join Brutus #hex-freecell
 /bot join Brutus #hex-spider
 /bot join Brutus #hex-mines
+/bot join Brutus #hex-sudoku
 /bot join Brutus #retro-games
 /bot join Brutus #doom-shareware
 /bot join Brutus #freedoom1
@@ -1196,6 +1205,7 @@ included, is joined explicitly.
 /bot join Scoreboard #hex-freecell
 /bot join Scoreboard #hex-spider
 /bot join Scoreboard #hex-mines
+/bot join Scoreboard #hex-sudoku
 /bot join Scoreboard #retro-games
 ```
 
@@ -1260,6 +1270,7 @@ the capability is created by that first `/bot set`:
 | `#hex-freecell` | `games` | Brutus, **Scoreboard** | FreeCell for one player: its best games are announced |
 | `#hex-spider` | `games` | Brutus, **Scoreboard** | Spider for one player, in one, two or four suits: its best games are announced |
 | `#hex-mines` | `games` | Brutus, **Scoreboard** | Minesweeper for one player, in three levels: its best games are announced |
+| `#hex-sudoku` | `games` | Brutus, **Scoreboard** | Sudoku for one player, in three levels: its best games are announced |
 | `#retro-games` | `games` | Brutus, **Scoreboard** | every game's results at once |
 | `#doom-shareware` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
 | `#freedoom1` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |

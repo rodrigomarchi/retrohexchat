@@ -8,6 +8,7 @@
  */
 
 import { readGameColors } from "../../game_colors.js";
+import { drawPiece as piece } from "../core/atlas.js";
 import { drawParticleDots } from "../core/render.js";
 import { glowAt, hopAt, shakeAt, waiting } from "./effects.js";
 import { boardPlace } from "./layout.js";
@@ -23,17 +24,6 @@ export function readColors(canvas) {
     closed: ["--game-mines-closed-color", "ccced4"],
     open: ["--game-mines-open-color", "bdbfc5"],
   });
-}
-
-/** A region of the atlas drawn into a place, or a plain square while it loads. */
-function piece(ctx, atlas, name, r, fallback) {
-  if (!atlas) {
-    ctx.fillStyle = fallback;
-    ctx.fillRect(r.x, r.y, r.w, r.h);
-    return;
-  }
-  const a = atlas.regions[name];
-  ctx.drawImage(atlas.image, a.x, a.y, a.w, a.h, r.x, r.y, r.w, r.h);
 }
 
 /** Three lit digits, a minus first below zero, as the counter and the clock show them. */

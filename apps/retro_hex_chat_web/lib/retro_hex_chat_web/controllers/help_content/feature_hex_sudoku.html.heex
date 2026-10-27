@@ -1,0 +1,93 @@
+<p>
+  {dgettext(
+    "help_games",
+    "Hex Sudoku is Sudoku for one player. Fill the 9×9 grid so every row, every column and every 3×3 box holds the digits 1 to 9 once. Every grid is made new for your game and has one solution, which you can always reach without guessing. The fastest wins go into the ranking."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_games", "Tap a square, or move with the arrows")}</strong> {dgettext(
+      "help_games",
+      "— Choose it. Its row, column and box are highlighted, and so is every square with the same digit"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Tap a digit below the grid, or press 1 to 9")}</strong> {dgettext(
+      "help_games",
+      "— Write that digit in the square you chose. A digit turns grey below the grid once all nine are in place"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "The pencil, or N")}</strong> {dgettext(
+      "help_games",
+      "— Switch between digits and notes. With the pencil on, a digit is written small, as a note. The same digit again removes it."
+    )}
+  </li>
+  <li>
+    <strong>
+      {dgettext("help_games", "The eraser, %{delete} or %{backspace}",
+        delete: "Delete",
+        backspace: "Backspace"
+      )}
+    </strong>
+     {dgettext(
+      "help_games",
+      "— Clear the chosen square's digit or notes"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "The light bulb, or H")}</strong> {dgettext(
+      "help_games",
+      "— A hint: reveal the chosen square, or one at random when the chosen square is already correct"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "The arrow, or Z")}</strong> {dgettext(
+      "help_games",
+      "— Cancel your last move. A hint is not cancelled"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
+      "A wrong digit turns red immediately and adds 30 seconds to your clock. A hint adds a minute."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "A correct digit removes that digit from the notes in its row, column and box."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Hex Sudoku is the easy level. Hex Sudoku: Medium needs pairs and digits pointing out of a box, and Hex Sudoku: Hard an X-Wing, a Swordfish or an XY-Wing."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Score")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
+      "Points come only from a win: 10,000 divided by the minutes on your clock, mistakes and hints included. The faster you finish, the more points. If you end a game with End, it scores nothing."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "Sudoku first appeared in American puzzle magazines in the 1970s. It got its name in Japan in the 1980s and then spread to newspapers all over the world."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-hex-mines">{dgettext("help_games", "Hex Mines")}</.help_link>
+  · <.help_link topic="feature-retro-games">{dgettext("help_games", "Retro Games")}</.help_link>
+</p>

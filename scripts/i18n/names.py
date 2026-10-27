@@ -141,6 +141,21 @@ NAMES: dict[str, dict[str, str]] = {
     "FreeCell": {
         "ja": "フリーセル",
     },
+    # Hex Sudoku's levels before its name; the puzzle in the languages that write it otherwise.
+    "Hex Sudoku: Medium": {
+        "ja": "ヘックス数独：中級",
+    },
+    "Hex Sudoku: Hard": {
+        "ja": "ヘックス数独：上級",
+    },
+    "Hex Sudoku": {
+        "ja": "ヘックス数独",
+    },
+    "Sudoku": {
+        "ja": "数独",
+        "zh_hans": "数独",
+        "zh_hant": "數獨",
+    },
     "Construct": {
         "pt": "Constructo",
         "es": "Constructo",

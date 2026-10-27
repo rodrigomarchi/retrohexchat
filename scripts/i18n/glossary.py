@@ -744,6 +744,15 @@ _ROWS = {
     # Hex Mines' gesture: a press held, never a printing press ("Imprensa",
     # "prensa").
     "Long press":     ("Toque longo", "Toque longo", "Pulsación larga", "Appui long", "Lange drücken", "Pressione prolungata", "Lang indrukken", "Długie naciśnięcie", "Долгое нажатие", "Tekan lama", "長押し", "长按", "長按"),
+    # Hex Sudoku's controls: a square of the grid, never a town square ("plaza");
+    # a figure, never a finger; a hint, never an innuendo.
+    "Choose a square": ("Escolher um quadrado", "Escolher um quadrado", "Elegir una casilla", "Choisir une case", "Feld wählen", "Scegli una casella", "Vakje kiezen", "Wybierz pole", "Выбрать клетку", "Pilih kotak", "マスを選ぶ", "选择格子", "選擇格子"),
+    "Put a digit":    ("Colocar um número", "Colocar um número", "Poner un número", "Placer un chiffre", "Ziffer eintragen", "Inserisci una cifra", "Cijfer invullen", "Wpisz cyfrę", "Поставить цифру", "Isi angka", "数字を入れる", "填入数字", "填入數字"),
+    "Notes on or off": ("Ligar ou desligar notas", "Ligar ou desligar notas", "Activar o desactivar notas", "Activer ou désactiver les notes", "Notizen an oder aus", "Attiva o disattiva le note", "Notities aan of uit", "Włącz lub wyłącz notatki", "Включить или выключить заметки", "Catatan aktif atau mati", "メモのオン・オフ", "开关笔记", "開關筆記"),
+    "Erase a square": ("Apagar um quadrado", "Apagar um quadrado", "Borrar una casilla", "Effacer une case", "Feld leeren", "Cancella una casella", "Vakje wissen", "Wyczyść pole", "Стереть клетку", "Hapus kotak", "マスを消す", "清除格子", "清除格子"),
+    "Hint (adds a minute)": ("Dica (mais um minuto)", "Dica (mais um minuto)", "Pista (suma un minuto)", "Indice (une minute de plus)", "Tipp (eine Minute mehr)", "Suggerimento (un minuto in più)", "Hint (een minuut erbij)", "Podpowiedź (minuta więcej)", "Подсказка (плюс минута)", "Petunjuk (tambah satu menit)", "ヒント（1分加算）", "提示（加一分钟）", "提示（加一分鐘）"),
+    "Every row, column and box holds 1 to 9": ("Cada linha, coluna e caixa com 1 a 9", "Cada linha, coluna e caixa com 1 a 9", "Cada fila, columna y caja con 1 a 9", "1 à 9 dans chaque ligne, colonne et boîte", "1 bis 9 in jeder Zeile, Spalte und Box", "Da 1 a 9 in ogni riga, colonna e riquadro", "1 tot 9 in elke rij, kolom en blok", "Od 1 do 9 w każdym wierszu, kolumnie i bloku", "От 1 до 9 в каждой строке, столбце и блоке", "1 sampai 9 di setiap baris, kolom, dan kotak", "各行・列・ブロックに1〜9", "每行、每列、每宫填入1至9", "每行、每列、每宮填入1至9"),
+    "Undo":           ("Desfazer", "Anular", "Deshacer", "Annuler", "Rückgängig", "Annulla", "Ongedaan maken", "Cofnij", "Отменить", "Urungkan", "元に戻す", "撤销", "復原"),
     "Tap":            ("Toque", "Toque", "Toca", "Toucher", "Tippen", "Tocca", "Tikken", "Dotknij", "Нажатие", "Ketuk", "タップ", "点按", "點按"),
     "Drag":           ("Arrastar", "Arrastar", "Arrastrar", "Glisser", "Ziehen", "Trascina", "Slepen", "Przeciągnij", "Перетаскивание", "Seret", "ドラッグ", "拖动", "拖曳"),
     "Tap the deck":   ("Toque no baralho", "Toque no baralho", "Toca el mazo", "Touchez le paquet", "Auf den Stapel tippen", "Tocca il mazzo", "Tik op de stapel", "Dotknij talii", "Нажмите на колоду", "Ketuk tumpukan kartu", "山札をタップ", "点按牌堆", "點按牌堆"),

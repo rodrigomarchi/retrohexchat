@@ -587,6 +587,7 @@ msgstr "距離を制御する"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:8
@@ -1204,6 +1205,7 @@ msgstr "無限の降下 — コースは終わらない"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:48
@@ -1613,6 +1615,7 @@ msgstr "ラウンド3"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:23
@@ -1724,13 +1727,14 @@ msgstr "スコアリング: ラブ → 15 → 30 → 40 → ゲーム (40-40で�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:101
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:177
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3606,7 +3610,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:176
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:182
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -3654,13 +3658,14 @@ msgstr "レトロゲームのソロモードでは、左の城のシールドを
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "レトロゲーム"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr "Hex Boxing では 8 方向に動き、間合いを管理し、Space または Shift でパンチします。AI は右側から戦います。"
@@ -3672,7 +3677,7 @@ msgstr ""
 "レトロゲームのソロモードでは、左のボクサーを操作し、AI が右のボクサーを操作します。難易度により、AI "
 "の間合い管理、回避、パンチのタイミングが変わります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4202,7 +4207,7 @@ msgstr "— ゲームランキング"
 msgid "— this week's challenge and who leads it"
 msgstr "—今週の課題と、それを導く人"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:173
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:179
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "アーケード"
@@ -4334,6 +4339,7 @@ msgstr "Klondikeは、9世紀のカードゲームで、Windowsで来たソリ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Score"
 msgstr "スコア"
@@ -4620,3 +4626,103 @@ msgstr "— Open it. A square with no mine around it opens the ones around it to
 #, elixir-autogen, elixir-format
 msgid "— Plant a flag on a square, or lift it"
 msgstr "— 四角に旗を植えるか、またはそれを持ち上げる"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Hex Mines"
+msgstr "ヘックスマインズ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku is the easy level. Hex Sudoku: Medium needs pairs and digits pointing out of a box, and Hex Sudoku: Hard an X-Wing, a Swordfish or an XY-Wing."
+msgstr "Hex Sudoku is the easy level. Hex Sudoku: Medium needs pairs and digits pointing out of a box, and Hex Sudoku: Hard an X-Wing, a Swordfish or an XY-Wing."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Tap a square, or move with the arrows"
+msgstr "正方形をタップするか、矢印で移動します"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "The arrow, or Z"
+msgstr "矢印、またはZ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "The pencil, or N"
+msgstr "鉛筆、またはN"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "— Clear the chosen square's digit or notes"
+msgstr "— 選択した正方形の数字またはノートをクリアする"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "A correct digit removes that digit from the notes in its row, column and box."
+msgstr "正しい数字は、行、列、ボックスのメモからその数字を削除します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "A wrong digit turns red immediately and adds 30 seconds to your clock. A hint adds a minute."
+msgstr "間違った数字はすぐに赤色になり、30秒をクロックに追加します。 ヒントは分を追加します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku is Sudoku for one player. Fill the 9×9 grid so every row, every column and every 3×3 box holds the digits 1 to 9 once. Every grid is made new for your game and has one solution, which you can always reach without guessing. The fastest wins go into the ranking."
+msgstr "ヘックス数独は1つのプレーヤーのための数独です。 9×9のグリッドを埋めるので、すべての列と3×3のボックスは1〜9の数字を保持します。 すべてのグリッドは、あなたのゲームのために新しい作られ、あなたが推測することなく常に到達することができる一つのソリューションを持っています。 最速の勝利がランキングに入ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku is Sudoku for one player: tap a square, then a digit below the grid, or play with the keyboard. Every grid is new and has one solution."
+msgstr "Hex Sudoku is Sudoku for one player: tap a square, then a digit below the grid, or play with the keyboard. Every grid is new and has one solution."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Sudoku first appeared in American puzzle magazines in the 1970s. It got its name in Japan in the 1980s and then spread to newspapers all over the world."
+msgstr "1970年代にアメリカのパズル雑誌に数独が登場。 1980年代に日本に名前をつけ、世界の新聞に広める。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Tap a digit below the grid, or press 1 to 9"
+msgstr "グリッドの下の数字をタップするか、 1から9を押します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "The light bulb, or H"
+msgstr "電球またはH"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "— A hint: reveal the chosen square, or one at random when the chosen square is already correct"
+msgstr "—ヒント:選択した正方形を明らかにするか、選択した正方形が既に正しいときにランダムに1つ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Choose it. Its row, column and box are highlighted, and so is every square with the same digit"
+msgstr "— 選択します。 その列、列、ボックスがハイライトされているので、同じ数字ですべての正方形です"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Switch between digits and notes. With the pencil on, a digit is written small, as a note. The same digit again removes it."
+msgstr "— 数字とメモの切り替え 鉛筆で、数字が小さく書かれています。 同じ数字が再び削除されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The eraser, %{delete} or %{backspace}"
+msgstr "消しゴム、%{delete}または%{backspace}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Points come only from a win: 10,000 divided by the minutes on your clock, mistakes and hints included. The faster you finish, the more points. If you end a game with End, it scores nothing."
+msgstr "ポイントは、時計、間違い、ヒントに含まれた分によって分かれて賞金からのみ来ます。 より速く、より多くのポイント。 エンドでゲームを終了すると、何も得ません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "— Cancel your last move. A hint is not cancelled"
+msgstr "— 最後の移動をキャンセルします。 ヒントはキャンセルされません"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Write that digit in the square you chose. A digit turns grey below the grid once all nine are in place"
+msgstr "— Write that digit in the square you chose. A digit turns grey below the grid once all nine are in place"
