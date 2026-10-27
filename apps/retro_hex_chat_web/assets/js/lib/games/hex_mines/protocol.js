@@ -28,6 +28,9 @@ export const CEILING = POINTS.NUMERATOR / POINTS.MIN_TICKS;
 /** An hour: a game still open then ends, with nothing scored. */
 export { SAFETY_TICKS } from "../core/solo/clock.js";
 
+/** A square's art, in pixels. */
+export const TILE = 16;
+
 /** How long a finger stays still on a square for a flag: 0.4 s. */
 export const HOLD_TICKS = 24;
 
