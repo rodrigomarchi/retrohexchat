@@ -16,7 +16,11 @@ and rank `id % 13 + 1`.
 
 The atlas is `priv/static/images/games/cards/cards.png` and `cards.json` beside
 it: `card` (the size), `faces` (52 regions by card id), `jokers` (2: red, black),
-`backs` (4), `shadows` (resting and lifted). A card turning over is drawn by the
+`backs` (4), `shadows` (resting and lifted), and `mini` (`card`, `faces`, `backs`:
+the 44x62 cards for tables of many columns on a phone, drawn here, never shrunk).
+Every address carries the version of what it serves (`?vsn=`): the picture's in
+`cards.json`, the description's in `CARD_ATLAS_URL` (`core/cards.js`), which
+this script rewrites. A card turning over is drawn by the
 game narrowing the card it shows, unsmoothed, so it needs no pictures of its own.
 
 Sources, beside this script:
@@ -29,16 +33,25 @@ Sources, beside this script:
 from __future__ import annotations
 
 import argparse
+import hashlib
+import io
 import json
 import os
+import re
 import sys
 
 from PIL import Image
 
 SOURCES = os.path.dirname(os.path.abspath(__file__))
 OUTPUT = os.path.abspath(os.path.join(SOURCES, "..", "..", "..", "priv", "static", "images", "games", "cards"))
+# The module that names the atlas's address, with its version.
+CARDS_JS = os.path.abspath(os.path.join(SOURCES, "..", "..", "js", "lib", "games", "core", "cards.js"))
+ATLAS_URL_RE = re.compile(r'(CARD_ATLAS_URL = "/images/games/cards/cards\.json\?vsn=)[0-9a-f]{12}(")')
 
 WIDTH, HEIGHT = 64, 88
+# The mini card, for tables of many columns on a phone: what a fanned column
+# shows of it — the rank, big, and the suit — fits in its top strip.
+MINI_WIDTH, MINI_HEIGHT = 44, 62
 SPADES, HEARTS, DIAMONDS, CLUBS = range(4)
 
 # The colours of the deck, taken from the look the deck was chosen in.
@@ -178,19 +191,19 @@ def stamp_centred(image: Image.Image, rows: list[str], cx: int, cy: int, colour:
     stamp(image, rows, cx - len(rows[0]) // 2, cy - len(rows) // 2, colour, turned)
 
 
-def blank() -> Image.Image:
+def blank(width: int = WIDTH, height: int = HEIGHT) -> Image.Image:
     """An empty card face: white with the chosen look's diagonal gloss, a grey edge, rounded corners."""
-    card = Image.new("RGBA", (WIDTH, HEIGHT), FACE)
-    for y in range(HEIGHT):
-        for x in range(WIDTH):
-            if x / WIDTH + y / HEIGHT > 1.05:
+    card = Image.new("RGBA", (width, height), FACE)
+    for y in range(height):
+        for x in range(width):
+            if x / width + y / height > 1.05:
                 card.putpixel((x, y), GLOSS)
-    for x in range(WIDTH):
+    for x in range(width):
         card.putpixel((x, 0), EDGE)
-        card.putpixel((x, HEIGHT - 1), EDGE)
-    for y in range(HEIGHT):
+        card.putpixel((x, height - 1), EDGE)
+    for y in range(height):
         card.putpixel((0, y), EDGE)
-        card.putpixel((WIDTH - 1, y), EDGE)
+        card.putpixel((width - 1, y), EDGE)
     round_corners(card)
     return card
 
@@ -302,6 +315,59 @@ def back(index: int) -> Image.Image:
     return card
 
 
+# The mini card's body, below its top strip: a frame for the court figures.
+MINI_FRAME = (3, 20, 41, 59)  # left, top, right (exclusive), bottom (exclusive)
+
+
+def mini_index(card: Image.Image, rank: int, suit: int) -> None:
+    """The rank at twice its size at the top left, the suit's pip at the top right."""
+    colour = colour_of(suit)
+    stamp(card, doubled(GLYPHS[rank]), 3, 3, colour)
+    pip = PIPS[suit]
+    stamp(card, pip, MINI_WIDTH - 3 - len(pip[0]), 3, colour)
+
+
+def mini_card(rank: int, suit: int) -> Image.Image:
+    """A mini face: its index, then a court figure in its frame, or the suit's pip at twice its size."""
+    card = blank(MINI_WIDTH, MINI_HEIGHT)
+    mini_index(card, rank, suit)
+    left, top, right, bottom = MINI_FRAME
+    if rank in COURT_FILES:
+        figure = court_figure(rank, suit)
+        drawn = figure.getbbox() or (0, 0, figure.width, figure.height)
+        inner_w, inner_h = right - left - 2, bottom - top - 2
+        cx = (drawn[0] + drawn[2]) // 2
+        crop = figure.crop((cx - inner_w // 2, drawn[1], cx - inner_w // 2 + inner_w, drawn[1] + inner_h))
+        card.alpha_composite(crop, (left + 1, top + 1))
+        for fx in range(left, right):
+            card.putpixel((fx, top), NAVY)
+            card.putpixel((fx, bottom - 1), NAVY)
+        for fy in range(top, bottom):
+            card.putpixel((left, fy), NAVY)
+            card.putpixel((right - 1, fy), NAVY)
+    else:
+        stamp_centred(card, doubled(PIPS[suit]), MINI_WIDTH // 2, (top + bottom) // 2, colour_of(suit), turned=False)
+    return card
+
+
+def mini_back(index: int) -> Image.Image:
+    """A mini back: the middle of the back's picture, cut to the mini card's rounded corners."""
+    picture = Image.open(os.path.join(SOURCES, f"back_{index}.png")).convert("RGBA")
+    x, y = (picture.width - MINI_WIDTH) // 2, (picture.height - MINI_HEIGHT) // 2
+    card = Image.new("RGBA", (MINI_WIDTH, MINI_HEIGHT), CLEAR)
+    card.alpha_composite(picture.crop((x, y, x + MINI_WIDTH, y + MINI_HEIGHT)))
+    # The back's own border, drawn again round the cut.
+    border = picture.getpixel((1, 1))
+    for fx in range(MINI_WIDTH):
+        card.putpixel((fx, 0), border)
+        card.putpixel((fx, MINI_HEIGHT - 1), border)
+    for fy in range(MINI_HEIGHT):
+        card.putpixel((0, fy), border)
+        card.putpixel((MINI_WIDTH - 1, fy), border)
+    round_corners(card)
+    return card
+
+
 def joker(colour: tuple) -> Image.Image:
     """A joker: its figure on the face, a red one and a black one."""
     card = blank()
@@ -339,8 +405,10 @@ def build_atlas() -> tuple[Image.Image, dict]:
     faces = build_faces()
     extras = [joker(RED), joker(BLACK)] + [back(i) for i in range(1, 5)]
     shadows = [shadow(0), shadow(1)]
-    # One row per suit, then the jokers, backs and shadows; the lifted shadow is a pixel taller.
-    sheet = Image.new("RGBA", (13 * CELL, 5 * (HEIGHT + 2) + 2), CLEAR)
+    # One row per suit, then the jokers, backs and shadows (the lifted shadow
+    # is a pixel taller); below them the minis, a row per suit and one of backs.
+    mini_top = 5 * (HEIGHT + 2) + 2
+    sheet = Image.new("RGBA", (13 * CELL, mini_top + 5 * (MINI_HEIGHT + 2)), CLEAR)
 
     def put(picture: Image.Image, col: int, row: int) -> dict:
         x, y = col * CELL + 1, row * (HEIGHT + 2) + 1
@@ -354,6 +422,17 @@ def build_atlas() -> tuple[Image.Image, dict]:
         "jokers": [put(extras[0], 0, 4), put(extras[1], 1, 4)],
         "backs": [put(extras[2 + i], 2 + i, 4) for i in range(4)],
         "shadows": [put(shadows[0], 6, 4), put(shadows[1], 7, 4)],
+    }
+
+    def put_mini(picture: Image.Image, col: int, row: int) -> dict:
+        x, y = col * (MINI_WIDTH + 2) + 1, mini_top + row * (MINI_HEIGHT + 2) + 1
+        sheet.alpha_composite(picture, (x, y))
+        return {"x": x, "y": y, "w": picture.width, "h": picture.height}
+
+    description["mini"] = {
+        "card": {"width": MINI_WIDTH, "height": MINI_HEIGHT},
+        "faces": [put_mini(mini_card(i % 13 + 1, i // 13), i % 13, i // 13) for i in range(52)],
+        "backs": [put_mini(mini_back(i), i - 1, 4) for i in range(1, 5)],
     }
     return sheet, description
 
@@ -369,16 +448,40 @@ def preview(sheet: Image.Image, path: str, scale: int = 4) -> None:
     felt.resize((sheet.width * scale, sheet.height * scale), Image.NEAREST).save(path)
 
 
+def version(data: bytes) -> str:
+    """A file's version, for its address: the first 12 hex digits of its SHA-256."""
+    return hashlib.sha256(data).hexdigest()[:12]
+
+
+def png_bytes(sheet: Image.Image) -> bytes:
+    out = io.BytesIO()
+    sheet.save(out, format="PNG", optimize=True)
+    return out.getvalue()
+
+
+def json_bytes(description: dict) -> bytes:
+    return (json.dumps(description, indent=1) + "\n").encode("utf-8")
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--preview", metavar="PNG", help="also write a 4x sheet of every card here")
     args = parser.parse_args(argv)
     sheet, description = build_atlas()
     os.makedirs(OUTPUT, exist_ok=True)
-    sheet.save(os.path.join(OUTPUT, description["image"]), optimize=True)
-    with open(os.path.join(OUTPUT, "cards.json"), "w", encoding="utf-8") as out:
-        json.dump(description, out, indent=1)
-        out.write("\n")
+    picture = png_bytes(sheet)
+    with open(os.path.join(OUTPUT, description["image"]), "wb") as out:
+        out.write(picture)
+    # Each address carries the version of what it points at: the picture's in
+    # the description, the description's in the module that loads it.
+    description["image"] += f"?vsn={version(picture)}"
+    text = json_bytes(description)
+    with open(os.path.join(OUTPUT, "cards.json"), "wb") as out:
+        out.write(text)
+    with open(CARDS_JS, encoding="utf-8") as source:
+        module = source.read()
+    with open(CARDS_JS, "w", encoding="utf-8") as source:
+        source.write(ATLAS_URL_RE.sub(rf"\g<1>{version(text)}\g<2>", module))
     if args.preview:
         preview(sheet, args.preview)
     return 0

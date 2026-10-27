@@ -44,7 +44,7 @@ describe("a card table's effects", () => {
   });
 
   it("bounces a smaller card off the felt at its own height", () => {
-    const fx = createEffects({ card: { width: 44, height: 62 } });
+    const fx = createEffects({ size: "mini" });
     const piles = [{ place: { x: 300, y: 400 }, cards: [7] }];
     cascadeEffects(fx, piles, { width: 640, height: 480 }, 0, createRng(4).next);
     const item = fx.list[0].items[0];

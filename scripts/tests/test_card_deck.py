@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 import unittest
@@ -92,7 +93,7 @@ class AtlasTest(unittest.TestCase):
 
     def regions(self):
         d = self.description
-        return d["faces"] + d["jokers"] + d["backs"] + d["shadows"]
+        return d["faces"] + d["jokers"] + d["backs"] + d["shadows"] + d["mini"]["faces"] + d["mini"]["backs"]
 
     def test_it_describes_every_picture_a_card_game_needs(self):
         d = self.description
@@ -113,6 +114,48 @@ class AtlasTest(unittest.TestCase):
             r = self.description["faces"][card_id]
             cut = self.sheet.crop((r["x"], r["y"], r["x"] + r["w"], r["y"] + r["h"]))
             self.assertEqual(cut.tobytes(), faces[card_id].tobytes(), card_id)
+
+
+    def test_it_holds_the_mini_cards_at_their_size(self):
+        mini = self.description["mini"]
+        self.assertEqual(mini["card"], {"width": deck.MINI_WIDTH, "height": deck.MINI_HEIGHT})
+        self.assertEqual((len(mini["faces"]), len(mini["backs"])), (52, 4))
+        for r in mini["faces"] + mini["backs"]:
+            self.assertEqual((r["w"], r["h"]), (deck.MINI_WIDTH, deck.MINI_HEIGHT))
+
+
+class MiniCardTest(unittest.TestCase):
+    def test_a_mini_shows_its_rank_and_suit_in_the_strip_a_fanned_column_leaves_visible(self):
+        # A column shows at least the top 16 rows of a mini under the next card.
+        for card_id in (0, 9, 23, 51):
+            card = deck.mini_card(card_id % 13 + 1, card_id // 13)
+            ink = deck.colour_of(card_id // 13)
+            strip = card.crop((0, 0, deck.MINI_WIDTH, 17))
+            left = strip.crop((0, 0, deck.MINI_WIDTH // 2, 17))
+            right = strip.crop((deck.MINI_WIDTH // 2, 0, deck.MINI_WIDTH, 17))
+            self.assertIn(ink, pixels(left), card_id)
+            self.assertIn(ink, pixels(right), card_id)
+
+    def test_the_minis_are_drawn_whole_with_round_corners(self):
+        card = deck.mini_card(13, deck.HEARTS)
+        self.assertEqual(card.size, (deck.MINI_WIDTH, deck.MINI_HEIGHT))
+        self.assertEqual(card.getpixel((0, 0))[3], 0)
+        self.assertEqual(deck.mini_back(1).getpixel((0, 0))[3], 0)
+
+
+class VersionTest(unittest.TestCase):
+    def test_each_address_names_the_version_of_what_it_serves(self):
+        out = deck.OUTPUT
+        with open(os.path.join(out, "cards.json"), "rb") as f:
+            text = f.read()
+        image = json.loads(text)["image"]
+        name, vsn = image.split("?vsn=")
+        with open(os.path.join(out, name), "rb") as f:
+            self.assertEqual(vsn, deck.version(f.read()))
+        with open(deck.CARDS_JS, encoding="utf-8") as f:
+            match = deck.ATLAS_URL_RE.search(f.read())
+        self.assertIsNotNone(match)
+        self.assertIn(f"vsn={deck.version(text)}", match.group(0))
 
 
 if __name__ == "__main__":

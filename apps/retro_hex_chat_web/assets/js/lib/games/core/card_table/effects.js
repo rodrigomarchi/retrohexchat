@@ -16,7 +16,7 @@
  */
 
 import { gameColor } from "../../../game_colors.js";
-import { FULL_CARD } from "../cards.js";
+import { FULL_CARD, MINI_CARD } from "../cards.js";
 import { burst, stepParticles } from "../render.js";
 import { easeOutBack, easeOutCubic, progress, tweenPoint } from "../tween.js";
 
@@ -38,12 +38,15 @@ const GRAVITY = 0.6;
 const BOUNCE = 0.72;
 
 /**
- * The effects of one match, for cards of the size `card` (`{ width, height }`).
- * @returns {{ reduced: boolean, card: { width: number, height: number }, list: object[] }}
+ * The effects of one match, for cards of the `size` the table is dealt in
+ * (`"full"` or `"mini"`, `core/cards.js`); `card` is that size in pixels.
+ * @returns {{ reduced: boolean, size: string, card: { width: number, height: number },
+ *   list: object[] }}
  */
-export const createEffects = ({ reduced = false, card = FULL_CARD } = {}) => ({
+export const createEffects = ({ reduced = false, size = "full" } = {}) => ({
   reduced,
-  card,
+  size,
+  card: size === "mini" ? MINI_CARD : FULL_CARD,
   list: [],
 });
 

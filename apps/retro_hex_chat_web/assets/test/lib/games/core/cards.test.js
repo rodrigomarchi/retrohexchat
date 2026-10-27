@@ -1,7 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
 import {
+  CARD_ATLAS_URL,
   DECK,
+  MINI_CARD,
   createCardAtlasLoader,
+  faceOf,
+  spiderDeck,
   drawCard,
   isRed,
   rankOf,
@@ -31,6 +35,18 @@ function fakeLoader(json = atlasJson()) {
   const loadImage = vi.fn(async (src) => ({ src }));
   return { fetchJson, loadImage, load: createCardAtlasLoader({ fetchJson, loadImage }) };
 }
+
+describe("the atlas's address", () => {
+  it("carries the version of what it serves, so a new deck is never read from an old cache", () => {
+    expect(CARD_ATLAS_URL).toMatch(/^\/images\/games\/cards\/cards\.json\?vsn=[0-9a-f]{12}$/);
+  });
+
+  it("keeps the picture's own version when it reads the description", async () => {
+    const { loadImage, load } = fakeLoader({ ...atlasJson(), image: "cards.png?vsn=abc" });
+    await load("/images/games/cards/cards.json?vsn=123");
+    expect(loadImage).toHaveBeenCalledWith("/images/games/cards/cards.png?vsn=abc");
+  });
+});
 
 describe("the deck", () => {
   it("holds 52 distinct cards, suit by suit from the ace to the king", () => {
@@ -92,6 +108,31 @@ describe("createCardAtlasLoader", () => {
   });
 });
 
+describe("two decks for Spider", () => {
+  const ranks = (cards) => cards.map((card) => rankOf(faceOf(card)));
+  const suits = (cards) => new Set(cards.map((card) => suitOf(faceOf(card))));
+
+  it("deals 104 distinct cards, eight of each rank, in the suits of the variant", () => {
+    for (const count of [1, 2, 4]) {
+      const cards = spiderDeck(count);
+      expect(cards).toHaveLength(104);
+      expect(new Set(cards).size).toBe(104);
+      for (let rank = 1; rank <= 13; rank++) {
+        expect(ranks(cards).filter((r) => r === rank)).toHaveLength(8);
+      }
+      expect(suits(cards).size).toBe(count);
+    }
+    expect([...suits(spiderDeck(1))]).toEqual([0]);
+    expect([...suits(spiderDeck(2))].sort()).toEqual([0, 1]);
+  });
+
+  it("draws each card as its face: two alike look alike", () => {
+    const fours = spiderDeck(4).filter((card) => faceOf(card) === 14);
+    expect(fours).toHaveLength(2);
+    expect(faceOf(14)).toBe(14);
+  });
+});
+
 describe("drawCard", () => {
   const atlas = { ...atlasJson(), image: { src: "cards.webp" } };
   const drawn = (draw) => {
@@ -124,6 +165,29 @@ describe("drawCard", () => {
     const [call] = drawn((ctx) => drawCard(ctx, atlas, 14, 0, 0, { faceUp: false, back: 2 }));
     const back = atlas.backs[2];
     expect(call.slice(1, 6)).toEqual([atlas.image, back.x, back.y, back.w, back.h]);
+  });
+
+  it("draws a mini card from the atlas's minis, at their size", () => {
+    const mini = {
+      ...atlas,
+      mini: {
+        card: { width: 44, height: 62 },
+        faces: atlas.faces.map((r) => ({ ...r, y: r.y + 1000 })),
+        backs: atlas.backs.map((r) => ({ ...r, y: r.y + 1000 })),
+      },
+    };
+    const [face] = drawn((ctx) => drawCard(ctx, mini, 14, 5, 6, { size: "mini" }));
+    expect(face.slice(2, 4)).toEqual([mini.mini.faces[14].x, mini.mini.faces[14].y]);
+    expect(face.slice(6)).toEqual([5, 6, 44, 62]);
+    const [back] = drawn((ctx) =>
+      drawCard(ctx, mini, 14, 0, 0, { size: "mini", faceUp: false, back: 1 }),
+    );
+    expect(back.slice(3, 4)).toEqual([mini.mini.backs[1].y]);
+  });
+
+  it("stands in a plain mini card while the atlas has no minis", () => {
+    const [plain] = drawn((ctx) => drawCard(ctx, atlas, 14, 5, 6, { size: "mini" }));
+    expect(plain).toEqual(["fillRect", 5, 6, MINI_CARD.width, MINI_CARD.height]);
   });
 
   it("draws a card that can still be played when the atlas is missing", () => {

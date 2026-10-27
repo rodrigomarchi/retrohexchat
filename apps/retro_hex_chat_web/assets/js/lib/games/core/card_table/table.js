@@ -10,7 +10,7 @@
  * export default defineCardTable({
  *   name: "HexSolitaire",                          // in the logs
  *   events: EVENT,                                 // the bits a tick raises; their sounds by name
- *   geometry: GEOMETRY,                            // { LANDSCAPE, PORTRAIT }, each with its `view`
+ *   geometry: GEOMETRY,                            // { LANDSCAPE, PORTRAIT }: `view`, `size` ("mini")
  *   init: (game, geometry) => createInitialState(…),
  *   act, step, finalScore,                         // the match, as pure functions of its state
  *   interpret,                                     // `card_table/gestures.js`'s, for the table
@@ -206,7 +206,7 @@ export function defineCardTable(table) {
     theme: readTableColors,
     setup: (game) => {
       game.frameCount = 0;
-      game.fx = createEffects({ reduced: reducedMotion(), card: table.card });
+      game.fx = createEffects({ reduced: reducedMotion() });
       game.gesture = createGesture({ slop: TAP_SLOP });
       game.drag = null;
       game.heldDrag = null;

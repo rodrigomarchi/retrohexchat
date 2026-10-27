@@ -11,7 +11,7 @@ const DIR = join(
 );
 const description = JSON.parse(readFileSync(join(DIR, "cards.json"), "utf8"));
 // The PNG's own size, from its header: width and height are the IHDR's first two words.
-const png = readFileSync(join(DIR, description.image));
+const png = readFileSync(join(DIR, description.image.split("?")[0]));
 const sheet = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
 
 describe("the platform's card atlas", () => {
@@ -45,6 +45,17 @@ describe("the platform's card atlas", () => {
       loadImage: vi.fn(async (src) => ({ src })),
     });
     const atlas = await load("/images/games/cards/cards.json");
-    expect(atlas.image).toEqual({ src: "/images/games/cards/cards.png" });
+    expect(atlas.image).toEqual({ src: `/images/games/cards/${description.image}` });
+  });
+
+  it("holds the mini cards, every face and back, inside its picture", () => {
+    const { mini } = description;
+    expect(mini.card).toEqual({ width: 44, height: 62 });
+    expect(mini.faces).toHaveLength(52);
+    expect(mini.backs).toHaveLength(4);
+    for (const r of [...mini.faces, ...mini.backs]) {
+      expect([r.w, r.h]).toEqual([44, 62]);
+      expect(r.x + r.w <= sheet.width && r.y + r.h <= sheet.height).toBe(true);
+    }
   });
 });

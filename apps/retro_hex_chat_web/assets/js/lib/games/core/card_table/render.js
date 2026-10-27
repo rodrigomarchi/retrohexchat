@@ -189,16 +189,16 @@ function drawShadow(ctx, x, y, colors, card, lift = 0) {
 }
 
 /** One card at its place, face up or down, narrowed while it turns over. */
-function drawOne(ctx, atlas, id, x, y, { faceUp = true, back = 0, width, card }) {
+function drawOne(ctx, atlas, id, x, y, { faceUp = true, back = 0, width, card, size }) {
   if (width <= 0) return;
   if (width === card.width) {
-    drawCard(ctx, atlas, id, x, y, { faceUp, back });
+    drawCard(ctx, atlas, id, x, y, { faceUp, back, size });
     return;
   }
   ctx.save();
   ctx.translate(x + (card.width - width) / 2, y);
   ctx.scale(width / card.width, 1);
-  drawCard(ctx, atlas, id, 0, 0, { faceUp, back });
+  drawCard(ctx, atlas, id, 0, 0, { faceUp, back, size });
   ctx.restore();
 }
 
@@ -233,6 +233,7 @@ export function tablePainter(ctx, { fx, drag, atlas, now, back, face = (card) =>
       back,
       width: flip ? flipWidth(flip, now, card.width) : card.width,
       card,
+      size: fx.size,
     });
   };
   return { away, one };
@@ -265,6 +266,7 @@ export function drawMoving(
           back,
           width: card.width,
           card,
+          size: fx.size,
         });
       });
     }
@@ -273,7 +275,9 @@ export function drawMoving(
       const target = trail ? trail.ctx : ctx;
       for (const item of effect.items) {
         if (now >= item.launch && !item.gone) {
-          drawCard(target, atlas, face(item.card), Math.round(item.x), Math.round(item.y));
+          drawCard(target, atlas, face(item.card), Math.round(item.x), Math.round(item.y), {
+            size: fx.size,
+          });
         }
       }
       trail?.drawTo(ctx);

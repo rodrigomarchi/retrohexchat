@@ -22,6 +22,9 @@ export const SUIT = Object.freeze({ SPADES: 0, HEARTS: 1, DIAMONDS: 2, CLUBS: 3 
 /** A card's size on the canvas when no atlas says otherwise. */
 export const FULL_CARD = Object.freeze({ width: 64, height: 88 });
 
+/** The mini card's size, for tables of many columns on a phone. */
+export const MINI_CARD = Object.freeze({ width: 44, height: 62 });
+
 const ATLAS_FACES = 52;
 const ATLAS_BACKS = 4;
 
@@ -51,6 +54,29 @@ export function shuffle(cards, random) {
 }
 
 /**
+ * The picture a card shows. Games of two decks number their cards past 51 —
+ * `copy * 52 + face` — so two cards that look alike are still two cards.
+ * @param {number} card
+ * @returns {number} 0 to 51
+ */
+export const faceOf = (card) => card % 52;
+
+/**
+ * Spider's 104 cards: eight of each rank, in one suit (spades), two (spades
+ * and hearts) or all four, each a distinct number whose `faceOf` is its picture.
+ * @param {1 | 2 | 4} suits
+ * @returns {number[]}
+ */
+export function spiderDeck(suits) {
+  const cards = [];
+  for (let copy = 0; copy < 8; copy++) {
+    const suit = copy % suits;
+    for (let rank = 0; rank < 13; rank++) cards.push(copy * 52 + suit * 13 + rank);
+  }
+  return cards;
+}
+
+/**
  * A loader of card atlases: an atlas is a JSON description (`card`, the size a
  * card is drawn at; `faces`, one region per card; `backs`, one per back;
  * `image`, the picture's file beside it) and the picture it cuts from. Each
@@ -76,7 +102,8 @@ async function readAtlas(url, fetchJson, loadImage) {
   if (!((description.backs?.length ?? 0) >= ATLAS_BACKS)) {
     throw new Error(`card atlas ${url} needs ${ATLAS_BACKS} backs`);
   }
-  const src = new URL(description.image, new URL(url, "http://atlas.invalid")).pathname;
+  const image = new URL(description.image, new URL(url, "http://atlas.invalid"));
+  const src = image.pathname + image.search;
   return { ...description, image: await loadImage(src) };
 }
 
@@ -84,8 +111,9 @@ const RANK_NAMES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q",
 const SUIT_SIGNS = ["♠", "♥", "♦", "♣"];
 
 /**
- * Draw one card at `x`, `y` (its top-left corner), at the atlas's card size:
- * its face, or a back when it lies face down. Until the atlas has loaded — or
+ * Draw one card at `x`, `y` (its top-left corner), at the atlas's card size —
+ * or the mini card's, with `size: "mini"`: its face, or a back when it lies
+ * face down. Until the atlas has loaded — or
  * if it never does — a plain card stands in that still says what it is, its
  * rank and suit in a corner, and a dark back face down, so the game can be
  * played without its pictures.
@@ -95,12 +123,13 @@ const SUIT_SIGNS = ["♠", "♥", "♦", "♣"];
  * @param {number} card
  * @param {number} x
  * @param {number} y
- * @param {{ faceUp?: boolean, back?: number }} [options]
+ * @param {{ faceUp?: boolean, back?: number, size?: "full" | "mini" }} [options]
  * @returns {void}
  */
-export function drawCard(ctx, atlas, card, x, y, { faceUp = true, back = 0 } = {}) {
-  const { width, height } = atlas?.card ?? FULL_CARD;
-  if (!atlas) {
+export function drawCard(ctx, atlas, card, x, y, { faceUp = true, back = 0, size = "full" } = {}) {
+  const pictures = size === "mini" ? atlas?.mini : atlas;
+  const { width, height } = pictures?.card ?? (size === "mini" ? MINI_CARD : FULL_CARD);
+  if (!pictures) {
     ctx.fillStyle = gameColor("f4f1e8");
     ctx.fillRect(x, y, width, height);
     ctx.strokeStyle = gameColor("1a1a1a");
@@ -115,12 +144,16 @@ export function drawCard(ctx, atlas, card, x, y, { faceUp = true, back = 0 } = {
     }
     return;
   }
-  const region = faceUp ? atlas.faces[card] : atlas.backs[back];
+  const region = faceUp ? pictures.faces[card] : pictures.backs[back];
   ctx.drawImage(atlas.image, region.x, region.y, region.w, region.h, x, y, width, height);
 }
 
-/** Where the platform's deck is served. */
-export const CARD_ATLAS_URL = "/images/games/cards/cards.json";
+/**
+ * Where the platform's deck is served, with the version of its description
+ * (`assets/art/cards/build_deck.py` writes it): a deck rebuilt is a new address,
+ * so no browser reads it from an old cache.
+ */
+export const CARD_ATLAS_URL = "/images/games/cards/cards.json?vsn=7725fd890adb";
 
 /**
  * A loader that reads atlases the way a browser does: the description by

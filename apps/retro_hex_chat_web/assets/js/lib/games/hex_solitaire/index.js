@@ -13,12 +13,11 @@ import { actionEffects, autoMove, cascadeEffects, dealEffects } from "./effects.
 import { interpret } from "./gestures.js";
 import { hitTest } from "./layout.js";
 import { act, createInitialState, finalScore, step } from "./physics.js";
-import { CARD, EVENT, GEOMETRY, MODE, MODE_BY_GAME } from "./protocol.js";
+import { EVENT, GEOMETRY, MODE, MODE_BY_GAME } from "./protocol.js";
 import { render } from "./renderer.js";
 
 export default defineCardTable({
   name: "HexSolitaire",
-  card: CARD,
   events: EVENT,
   geometry: GEOMETRY,
   init: (game, geometry) =>
