@@ -10,6 +10,7 @@
 
 import { log } from "../../logger.js";
 import { CARD_ATLAS_URL, browserCardAtlasLoader } from "../core/cards.js";
+import { createLayer } from "../core/layers.js";
 import { defineGame } from "../core/define_game.js";
 import { playFlags } from "../core/events.js";
 import { createGesture } from "../core/pointer.js";
@@ -26,7 +27,7 @@ import {
 import { interpret } from "./gestures.js";
 import { hitTest } from "./layout.js";
 import { act, createInitialState, finalScore, step } from "./physics.js";
-import { EVENT, MODE, MODE_BY_GAME, PHASE, TAP_SLOP } from "./protocol.js";
+import { CELEBRATION_TICKS, EVENT, MODE, MODE_BY_GAME, PHASE, TAP_SLOP, VIEW } from "./protocol.js";
 import { readColors, render } from "./renderer.js";
 import { MASTER_VOLUME, SOUNDS } from "./sounds.js";
 
@@ -65,6 +66,22 @@ function storeBack(back) {
   }
 }
 
+/**
+ * The layer the cascade of a win leaves its trail on, or null where the page
+ * cannot draw off the screen (the cascade is then drawn without a trail).
+ */
+function trailLayer(game) {
+  const layer = createLayer(VIEW.width, VIEW.height, game.canvas.width / VIEW.width, {
+    createCanvas: (width, height) => {
+      const canvas = game.canvas.ownerDocument.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      return canvas;
+    },
+  });
+  return layer.ctx ? layer : null;
+}
+
 const reducedMotion = () =>
   globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
 
@@ -96,6 +113,10 @@ function onPointer(game, event) {
         storeBack(game.back);
         game.invalidate();
       }
+      continue;
+    }
+    if (game.gameState.phase === PHASE.CELEBRATING) {
+      if (gesture.type === "tap") game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
       continue;
     }
     if (game.gameState.phase !== PHASE.PLAYING) continue;
@@ -168,6 +189,7 @@ export default defineGame({
     game.heldDrag = null;
     game.back = storedBack();
     game.atlas = null;
+    game.trail = null;
     browserCardAtlasLoader()(CARD_ATLAS_URL)
       .then((atlas) => {
         game.atlas = atlas;
@@ -190,13 +212,31 @@ export default defineGame({
         tick,
       },
       AUTO_FINISH: { tick },
+      // The cascade of a win, before the result is told.
+      CELEBRATING: {
+        enter: (game) => {
+          game.drag = null;
+          game.celebration = 0;
+          game.trail = reducedMotion() ? null : trailLayer(game);
+          cascadeEffects(game.fx, game.gameState.table, game.frameCount, game.fxRandom);
+          playFlags(game, EVENT_SOUNDS, game.gameState.events);
+          game.gameState = { ...game.gameState, events: 0 };
+          game.invalidate();
+        },
+        tick: (game) => {
+          game.frameCount++;
+          game.celebration++;
+          stepEffects(game.fx, game.frameCount);
+          game.invalidate();
+          if (!active(game.fx) || game.celebration >= CELEBRATION_TICKS) {
+            game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
+          }
+        },
+      },
       FINISHED: {
         final: true,
         enter: (game) => {
           game.drag = null;
-          if (game.gameState.won) {
-            cascadeEffects(game.fx, game.gameState.table, game.frameCount, game.fxRandom);
-          }
           playFlags(game, EVENT_SOUNDS, game.gameState.events);
           game.invalidate();
           game.finish({ result: soloResult(finalScore(game.gameState)) });
@@ -204,15 +244,8 @@ export default defineGame({
       },
     },
   },
-  // Once the match ends the engine takes no more steps, only idle ones: the
-  // cascade of a win goes on bouncing there.
-  idle: (game) => {
-    if (game.gameState?.phase !== PHASE.FINISHED || !active(game.fx)) return;
-    game.frameCount++;
-    stepEffects(game.fx, game.frameCount);
-    game.invalidate();
-  },
-  standing: (game) => soloResult(game.gameState.score),
+  // A match ended mid-celebration keeps the bonus its win earned.
+  standing: (game) => soloResult(finalScore(game.gameState)),
   render: (game) =>
     render(game.ctx, {
       state: game.gameState,
@@ -222,5 +255,6 @@ export default defineGame({
       colors: game.colors,
       now: game.frameCount,
       back: game.back,
+      trail: game.trail,
     }),
 });

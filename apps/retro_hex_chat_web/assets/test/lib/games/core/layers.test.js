@@ -33,4 +33,11 @@ describe("createLayer", () => {
     expect(screen.log[0][0]).toBe("drawImage");
     expect(screen.log[0].slice(2)).toEqual([0, 0, 640, 480]);
   });
+
+  it("has no context where the page cannot draw off the screen, and does not fail", () => {
+    const blind = () => ({ width: 0, height: 0, getContext: () => null });
+    const layer = createLayer(640, 480, 2, { createCanvas: blind });
+    expect(layer.ctx).toBeNull();
+    expect(() => layer.clear()).not.toThrow();
+  });
 });

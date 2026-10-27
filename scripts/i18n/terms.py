@@ -26,11 +26,13 @@ from .protection import FEED_RE, protect, restore
 _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
     # A playing card, never a bank card or a business card: Spanish gave
     # "tarjeta" in every line of a card game's help, and Portuguese "cartão".
-    # Only a card game's phrasings are held to it, so a "result card" or a
-    # "share card" of the interface stays the interface's.
-    r"\b(?:(?:a|the|its|next|every|each|one|three|face-down)\s+cards?"
-    r"|cards?\s+(?:at\s+a\s+time|on\s+(?:a|its|the)\s+pile|from\s+the\s+deck)"
-    r"|game\s+of\s+cards|card\s+game)\b": {
+    # Only a card game's own phrasings are held to it: the interface has cards
+    # of its own ("the card below", "a card with one open seat"), which stay
+    # the interface's word.
+    r"\b(?:face-down\s+cards?|playing\s+cards?|card\s+game|game\s+of\s+cards"
+    r"|cards?\s+at\s+a\s+time|cards?\s+on\s+(?:a|its|the)\s+pile|cards?\s+on\s+top\s+of"
+    r"|cards?\s+(?:back\s+)?from\s+(?:the\s+deck|a\s+pile)|(?:its|the)\s+next\s+card"
+    r"|every\s+card\s+on)\b": {
         "pt": ("carta",),
         "es": ("carta", "naipe"),
         "fr": ("carte",),
@@ -54,7 +56,7 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "it": ("tocc",),
         "nl": ("tik",),
         "pl": ("dotkn", "stukn"),
-        "ru": ("нажм", "косн", "тап"),
+        "ru": ("нажм", "нажат", "косн", "тап"),
         "id": ("ketuk", "sentuh"),
         "ja": ("タップ",),
         "zh_hans": ("点按", "轻触", "点击", "轻点"),

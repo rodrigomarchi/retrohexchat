@@ -66,8 +66,21 @@ export const TABLE = Object.freeze({
 /** Which column each pile at the top stands over. */
 export const TOP_ROW = Object.freeze({ stock: 0, waste: 1, foundations: [3, 4, 5, 6] });
 
-/** The match's phases. */
-export const PHASE = Object.freeze({ WAITING: 0, PLAYING: 1, AUTO_FINISH: 2, FINISHED: 3 });
+/**
+ * The match's phases. A win is celebrated — the cascade bounces across the
+ * table — before the match is over and its result told, so the page still
+ * shows it.
+ */
+export const PHASE = Object.freeze({
+  WAITING: 0,
+  PLAYING: 1,
+  AUTO_FINISH: 2,
+  FINISHED: 3,
+  CELEBRATING: 4,
+});
+
+/** The longest a celebration lasts; a tap ends it sooner. */
+export const CELEBRATION_TICKS = 600;
 
 /** What happened in a tick, one bit each: the sounds and the effects read them. */
 export const EVENT = Object.freeze({

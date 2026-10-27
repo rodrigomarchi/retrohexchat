@@ -48,7 +48,7 @@ function played(state, move) {
     events: state.events | events,
   };
   if (won(next.table)) {
-    return { ...next, phase: PHASE.FINISHED, won: true, events: next.events | EVENT.WIN };
+    return { ...next, phase: PHASE.CELEBRATING, won: true, events: next.events | EVENT.WIN };
   }
   if (state.phase === PHASE.PLAYING && autoFinishReady(next.table)) {
     return { ...next, phase: PHASE.AUTO_FINISH, autoTicks: 0 };
@@ -91,9 +91,15 @@ export function act(state, action) {
   }
 }
 
-/** One tick: the clock and what it costs, and while finishing, the next card up. */
+/**
+ * One tick: the clock and what it costs, and while finishing, the next card
+ * up. The clock counts only play: the cards going up by themselves cost no time.
+ */
 export function step(state) {
-  const ticked = tickClock(state.clock);
+  const ticked =
+    state.phase === PHASE.PLAYING
+      ? tickClock(state.clock)
+      : { clock: state.clock, points: 0, timeUp: false };
   let next = {
     ...state,
     clock: ticked.clock,

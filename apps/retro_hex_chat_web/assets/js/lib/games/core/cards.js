@@ -80,10 +80,15 @@ async function readAtlas(url, fetchJson, loadImage) {
   return { ...description, image: await loadImage(src) };
 }
 
+const RANK_NAMES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+const SUIT_SIGNS = ["♠", "♥", "♦", "♣"];
+
 /**
  * Draw one card at `x`, `y` (its top-left corner), at the atlas's card size:
- * its face, or a back when it lies face down. Until the atlas has loaded, a
- * plain card stands in, so a frame drawn early is never a failure.
+ * its face, or a back when it lies face down. Until the atlas has loaded — or
+ * if it never does — a plain card stands in that still says what it is, its
+ * rank and suit in a corner, and a dark back face down, so the game can be
+ * played without its pictures.
  *
  * @param {CanvasRenderingContext2D} ctx
  * @param {object | null} atlas - what `createCardAtlasLoader` resolved, or null
@@ -100,6 +105,14 @@ export function drawCard(ctx, atlas, card, x, y, { faceUp = true, back = 0 } = {
     ctx.fillRect(x, y, width, height);
     ctx.strokeStyle = gameColor("1a1a1a");
     ctx.strokeRect(x, y, width, height);
+    if (faceUp) {
+      ctx.fillStyle = isRed(card) ? gameColor("c51316") : gameColor("090101");
+      ctx.font = "bold 12px monospace";
+      ctx.fillText(`${RANK_NAMES[rankOf(card) - 1]}${SUIT_SIGNS[suitOf(card)]}`, x + 4, y + 14);
+    } else {
+      ctx.fillStyle = gameColor("0e2369");
+      ctx.fillRect(x + 3, y + 3, width - 6, height - 6);
+    }
     return;
   }
   const region = faceUp ? atlas.faces[card] : atlas.backs[back];

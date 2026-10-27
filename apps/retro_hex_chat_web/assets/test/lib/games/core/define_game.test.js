@@ -180,6 +180,17 @@ describe("defineGame", () => {
       expect(logOf(match).map((entry) => entry.slice(1))).toEqual([["down", 320, 100]]);
     });
 
+    it("takes a press of the main button only: a right or middle click plays nothing", async () => {
+      match = await pointerMatch({});
+      match.advance(100);
+      match.pointer("down", 10, 10, { button: 2 });
+      match.pointer("up", 10, 10, { button: 2 });
+      match.pointer("down", 10, 10, { button: 1 });
+      match.advance(17);
+
+      expect(logOf(match)).toEqual([]);
+    });
+
     it("cancels a press when the window loses focus", async () => {
       match = await pointerMatch({});
       match.advance(100);
@@ -288,6 +299,15 @@ describe("defineGame", () => {
         mode: "solo",
       });
       expect(canvas.classList.contains("game-canvas--pointer")).toBe(true);
+    });
+
+    it("keeps the size the page gave a canvas a second engine is built on", () => {
+      const canvas = recordingCanvas(640, 480);
+      crisp(canvas);
+      const second = crisp(canvas);
+
+      expect([canvas.width, canvas.height]).toEqual([1280, 960]);
+      expect(second.view).toEqual({ width: 640, height: 480 });
     });
 
     it("changes nothing for a game that asks for neither", async () => {

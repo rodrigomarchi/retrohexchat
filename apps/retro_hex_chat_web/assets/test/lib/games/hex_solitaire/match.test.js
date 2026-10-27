@@ -43,6 +43,21 @@ describe("a match of Hex Solitaire", () => {
     expect(host.gameState.clock.started).toBe(true);
   });
 
+  it("turns the back of the cards with a tap on the stock before the match begins", async () => {
+    match = await solo({ begin: false });
+    match.advance(100);
+    const { host } = match.engines;
+    const back = host.back;
+    const [x, y] = centre(layout(host.gameState.table).stock);
+    match.pointer("down", x, y);
+    match.pointer("up", x, y);
+    match.advance(100);
+
+    expect(host.back).toBe((back + 1) % 4);
+    expect(host.gameState.phase).toBe(PHASE.WAITING);
+    expect(host.gameState.table.waste).toEqual([]);
+  });
+
   it("plays draw three for its mode", async () => {
     match = await solo({ gameId: "hex_solitaire_draw3" });
     expect(match.engines.host.gameState.table.mode).toBe(MODE.DRAW3);
@@ -72,11 +87,46 @@ describe("a match of Hex Solitaire", () => {
     const [x, y] = centre(layout(host.gameState.table).columns[0].cards[0]);
     match.pointer("down", x, y);
     match.pointer("up", x, y);
-    match.advance(2000);
+    match.advance(200);
 
+    // The cascade plays before the result is told, so the page still shows it.
+    expect(host.gameState.phase).toBe(PHASE.CELEBRATING);
+    expect(match.results.host).toEqual([]);
+    expect(match.runUntil(() => match.over(), 15_000)).toBe(true);
     expect(host.gameState.phase).toBe(PHASE.FINISHED);
     expect(match.results.host).toHaveLength(1);
     expect(match.results.host[0].score.p1).toBe(110);
+  });
+
+  it("ends the celebration at a tap", async () => {
+    match = await solo();
+    match.advance(100);
+    const { host } = match.engines;
+    const tableau = Array.from({ length: 7 }, (_, i) => ({
+      down: [],
+      up: i === 0 ? [card(13, 3)] : [],
+    }));
+    host.gameState = {
+      ...host.gameState,
+      table: {
+        ...host.gameState.table,
+        stock: [],
+        waste: [],
+        fan: 0,
+        tableau,
+        foundations: [full(0), full(1), full(2), full(3, 12)],
+      },
+    };
+    const [x, y] = centre(layout(host.gameState.table).columns[0].cards[0]);
+    match.pointer("down", x, y);
+    match.pointer("up", x, y);
+    match.advance(300);
+    match.pointer("down", 300, 300);
+    match.pointer("up", 300, 300);
+    match.advance(100);
+
+    expect(host.gameState.phase).toBe(PHASE.FINISHED);
+    expect(match.results.host).toHaveLength(1);
   });
 
   it("drags a card onto a column that takes it", async () => {

@@ -16,15 +16,16 @@
  * @param {number} height
  * @param {number} [resolution] - canvas pixels to a game pixel, as on the screen
  * @param {{ createCanvas?: (width: number, height: number) => HTMLCanvasElement }} [io]
- * @returns {{ canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, clear: () => void,
- *   drawTo: (screen: CanvasRenderingContext2D) => void }}
+ * @returns {{ canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D | null, clear: () => void,
+ *   drawTo: (screen: CanvasRenderingContext2D) => void }} - `ctx` is null where the page
+ *   cannot draw off the screen; the game then draws without the layer
  */
 export function createLayer(width, height, resolution = 1, { createCanvas = newCanvas } = {}) {
   const canvas = createCanvas(width * resolution, height * resolution);
   const ctx = canvas.getContext("2d");
   const reset = () => {
-    ctx.setTransform(resolution, 0, 0, resolution, 0, 0);
-    ctx.imageSmoothingEnabled = false;
+    ctx?.setTransform(resolution, 0, 0, resolution, 0, 0);
+    if (ctx) ctx.imageSmoothingEnabled = false;
   };
   reset();
 
@@ -33,7 +34,7 @@ export function createLayer(width, height, resolution = 1, { createCanvas = newC
     ctx,
     clear() {
       reset();
-      ctx.clearRect(0, 0, width, height);
+      ctx?.clearRect(0, 0, width, height);
     },
     drawTo(screen) {
       screen.drawImage(canvas, 0, 0, width, height);

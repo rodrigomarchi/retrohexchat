@@ -175,6 +175,24 @@ describe("a drag", () => {
   });
 });
 
+describe("a tap that would undo the player's own work", () => {
+  it("does nothing on a foundation: taking a card back costs points, so only a drag does it", () => {
+    const state = table({
+      foundations: [[card(1, S), card(2, S)], [], [], []],
+      columns: [{ up: [card(3, H)] }],
+    });
+    expect(tapOn(state, layout(state).foundations[S]).action).toBeNull();
+  });
+
+  it("leaves a king that already has a column of its own where it is", () => {
+    const state = table({ columns: [{ up: [card(13, S)] }] });
+    expect(tapOn(state, layout(state).columns[0].cards[0]).action).toEqual({
+      type: "refuse",
+      from: { pile: "tableau", col: 0, index: 0 },
+    });
+  });
+});
+
 describe("bestDestination", () => {
   it("answers nothing for a foundation card with no column to take it", () => {
     const state = table({ foundations: [[card(1, S)], [], [], []] });

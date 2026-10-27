@@ -305,9 +305,16 @@ defmodule RetroHexChatWeb.SEO do
       "offers" => %{"@type" => "Offer", "price" => "0", "priceCurrency" => "USD"}
     }
     |> put_image(game)
+    |> put_genre(game)
     |> put_plays(plays)
     |> Jason.encode!(escape: :html_safe)
   end
+
+  # A game of cards says so, for a search that asks for one.
+  defp put_genre(data, %{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
+    do: Map.put(data, "genre", "Card game")
+
+  defp put_genre(data, _game), do: data
 
   # An arcade game and a one-player Retro Game are played alone.
   defp play_mode(%{kind: :arcade}), do: "SinglePlayer"

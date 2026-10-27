@@ -149,6 +149,15 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       assert game["image"] =~ "doom-shareware.webp"
     end
 
+    test "names a card game's genre in its structured data", %{conn: conn} do
+      solitaire = conn |> document("/games/hex-solitaire") |> json_ld("VideoGame")
+      doom = conn |> document("/games/doom-shareware") |> json_ld("VideoGame")
+
+      assert solitaire["genre"] == "Card game"
+      assert solitaire["playMode"] == "SinglePlayer"
+      refute Map.has_key?(doom, "genre")
+    end
+
     # The page is the same sheet the in-app Arcade opens on: what the game is,
     # every key and the tips, read before signing in.
     test "shows the game's whole sheet", %{conn: conn} do

@@ -97,13 +97,13 @@ describe("act", () => {
     expect(act(state, move(waste, foundation(S))).table).toEqual(state.table);
   });
 
-  it("ends the match on the last card up", () => {
+  it("celebrates the last card up: the match is won", () => {
     const state = playing({
       foundations: [full(0), full(1), full(2), full(3, 12)],
       columns: [{ up: [card(13, 3)] }],
     });
     const after = act(state, move(column(0), foundation(3)));
-    expect(after.phase).toBe(PHASE.FINISHED);
+    expect(after.phase).toBe(PHASE.CELEBRATING);
     expect(after.won).toBe(true);
     expect(after.events & EVENT.WIN).toBeTruthy();
   });
@@ -149,9 +149,16 @@ describe("step", () => {
     for (let i = 0; i < AUTO_TICKS; i++) state = step(state);
     expect(state.table.foundations.map((pile) => pile.length)).toEqual([13, 12, 12, 12]);
     for (let i = 0; i < 3 * AUTO_TICKS; i++) state = step(state);
-    expect(state.phase).toBe(PHASE.FINISHED);
+    expect(state.phase).toBe(PHASE.CELEBRATING);
     expect(state.won).toBe(true);
     expect(state.score).toBe(40);
+  });
+
+  it("stops the clock while the cards go up by themselves", () => {
+    let state = playing({ columns: [{ down: [], up: [card(2, S)] }, { up: [card(1, S)] }] });
+    state = { ...state, phase: PHASE.AUTO_FINISH, clock: { started: true, ticks: 590 }, score: 10 };
+    for (let i = 0; i < 3; i++) state = step(state);
+    expect(state.clock.ticks).toBe(590);
   });
 });
 

@@ -31,9 +31,13 @@ class MissingTermsTest(unittest.TestCase):
             missing_terms(source, "Una carta boca abajo se da la vuelta sola.", "es"), []
         )
         # The interface's cards stay the interface's.
-        self.assertEqual(
-            missing_terms("Share the result card.", "Comparte la tarjeta del resultado.", "es"), []
-        )
+        for source in (
+            "Open it from the card below",
+            "Its card is the line below",
+            "a card with one open seat",
+            "The card shows the start in your own time zone",
+        ):
+            self.assertEqual(missing_terms(source, "Una tarjeta.", "es"), [], source)
 
     def test_a_tap_is_a_finger_on_the_screen_not_a_kick(self):
         source = "Tap to play, or drag with the mouse or a finger"

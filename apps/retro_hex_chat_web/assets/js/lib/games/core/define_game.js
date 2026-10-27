@@ -171,7 +171,15 @@ export function defineGame(def) {
       this.audio = audioOf(def.audio);
       this.colors = null;
       this.peerReady = false;
-      this.view = { width: canvas.width, height: canvas.height };
+      // The size the page gave the canvas, kept on it: the page builds every
+      // engine of a match on the same canvas, which an earlier one has already
+      // given more pixels.
+      canvas.dataset.gameWidth ??= String(canvas.width);
+      canvas.dataset.gameHeight ??= String(canvas.height);
+      this.view = {
+        width: Number(canvas.dataset.gameWidth),
+        height: Number(canvas.dataset.gameHeight),
+      };
       if (resolution !== 1) {
         canvas.width = this.view.width * resolution;
         canvas.height = this.view.height * resolution;
@@ -389,7 +397,8 @@ export function defineGame(def) {
       const type = POINTER_EVENTS[event.type];
       const id = event.pointerId ?? 0;
       if (type === "down") {
-        if (this._activePointer !== null) return;
+        // The main button, a finger or a pen: a right or middle click is not a press.
+        if (this._activePointer !== null || (event.button ?? 0) !== 0) return;
         const point = this._pointAt(event, true);
         if (!point) return;
         this._activePointer = id;

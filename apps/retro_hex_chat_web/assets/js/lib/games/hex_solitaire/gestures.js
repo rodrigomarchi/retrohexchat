@@ -28,6 +28,9 @@ function pickable(state, hit) {
  * column from the left that takes them; null when nowhere does.
  */
 export function bestDestination(state, from) {
+  // A run already at the bottom of its column gains nothing in another empty one.
+  const alone =
+    from.pile === "tableau" && from.index === 0 && state.tableau[from.col].down.length === 0;
   const toFoundation = {
     from,
     to: { pile: "foundation", suit: Math.floor(cardsFrom(state, from)[0] / 13) },
@@ -35,7 +38,8 @@ export function bestDestination(state, from) {
   if (canMove(state, toFoundation)) return toFoundation;
   for (let col = 0; col < COLUMNS; col++) {
     const move = { from, to: { pile: "tableau", col } };
-    if (canMove(state, move)) return move;
+    const empty = state.tableau[col].up.length === 0 && state.tableau[col].down.length === 0;
+    if (canMove(state, move) && !(alone && empty)) return move;
   }
   return null;
 }
@@ -79,7 +83,8 @@ export function interpret(state, drag, gesture) {
         return { drag: null, action: state.waste.length ? { type: "recycle" } : null };
       }
       const from = pickable(state, hit);
-      if (!from) return { drag: null, action: null };
+      // A tap never takes a card back from a foundation; a drag still can.
+      if (!from || from.pile === "foundation") return { drag: null, action: null };
       const move = bestDestination(state, from);
       return { drag: null, action: move ? { type: "move", move } : { type: "refuse", from } };
     }

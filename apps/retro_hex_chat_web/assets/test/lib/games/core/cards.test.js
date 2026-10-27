@@ -126,9 +126,17 @@ describe("drawCard", () => {
     expect(call.slice(1, 6)).toEqual([atlas.image, back.x, back.y, back.w, back.h]);
   });
 
-  it("draws a plain card while the atlas is still loading, instead of failing", () => {
-    const calls = drawn((ctx) => drawCard(ctx, null, 14, 10, 20));
-    expect(calls.map(([op]) => op)).toEqual(["fillRect", "strokeRect"]);
-    expect(calls[0].slice(1)).toEqual([10, 20, 64, 88]);
+  it("draws a card that can still be played when the atlas is missing", () => {
+    const canvas = recordingCanvas(640, 480);
+    canvas.clearLog();
+    drawCard(canvas.getContext("2d"), null, 14, 10, 20);
+    const face = canvas.log;
+    expect(face.find(([op]) => op === "fillRect").slice(1)).toEqual([10, 20, 64, 88]);
+    expect(face.filter(([op]) => op === "fillText").map(([, text]) => text)).toEqual(["2♥"]);
+
+    canvas.clearLog();
+    drawCard(canvas.getContext("2d"), null, 14, 10, 20, { faceUp: false });
+    expect(canvas.log.filter(([op]) => op === "fillText")).toEqual([]);
+    expect(canvas.log.filter(([op]) => op === "fillRect")).toHaveLength(2);
   });
 });
