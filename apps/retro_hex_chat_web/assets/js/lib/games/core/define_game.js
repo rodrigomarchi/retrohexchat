@@ -50,6 +50,14 @@
  * or the window lost focus, which carries no point), and `x`, `y` are the
  * canvas's pixels (`core/pointer.js`). One press is followed at a time — a
  * second finger is ignored — and a press off the picture starts nothing.
+ * The canvas of a pointer game takes the touch for itself
+ * (`game-canvas--pointer`), so a drag on a phone moves a card, not the page.
+ *
+ * `resolution: 2` gives the canvas twice the pixels each way while the game
+ * goes on drawing and reading presses at the size the page gave it
+ * (`game.view`); every frame begins scaled. `pixelArt: true` draws unsmoothed
+ * and keeps the browser from smoothing the canvas when it stretches it
+ * (`game-canvas--pixel-art`), so pixel art stays crisp.
  *
  * `quit()` ends a solo match early, as it stands: the page is told the score
  * (`standing`, or for a two-player game the score `disconnectResult` reads)
@@ -118,6 +126,8 @@ export function defineGame(def) {
 
   const onePlayer = def.players === 1;
   const pointer = def.pointer === true;
+  const resolution = def.resolution ?? 1;
+  const scaled = resolution !== 1 || def.pixelArt === true;
   const inputNames = Object.keys(def.inputs);
   const inputBits = Object.fromEntries(inputNames.map((name, bit) => [name, bit]));
   const released = () => Object.fromEntries(inputNames.map((name) => [name, false]));
@@ -161,6 +171,13 @@ export function defineGame(def) {
       this.audio = audioOf(def.audio);
       this.colors = null;
       this.peerReady = false;
+      this.view = { width: canvas.width, height: canvas.height };
+      if (resolution !== 1) {
+        canvas.width = this.view.width * resolution;
+        canvas.height = this.view.height * resolution;
+      }
+      if (def.pixelArt) canvas.classList.add("game-canvas--pixel-art");
+      if (pointer) canvas.classList.add("game-canvas--pointer");
       this._pointerQueue = [];
       this._activePointer = null;
       this._boundPointer = pointer ? this._onPointerEvent.bind(this) : null;
@@ -394,8 +411,8 @@ export function defineGame(def) {
     _pointAt(event, clamp) {
       return toCanvasPoint(
         this.canvas.getBoundingClientRect(),
-        this.canvas.width,
-        this.canvas.height,
+        this.view.width,
+        this.view.height,
         event.clientX,
         event.clientY,
         { clamp },
@@ -473,6 +490,10 @@ export function defineGame(def) {
     // frame while it starts, and no game draws without its colours.
     _renderState() {
       if (def.theme && !this.colors) return;
+      if (scaled) {
+        this.ctx.setTransform(resolution, 0, 0, resolution, 0, 0);
+        if (def.pixelArt) this.ctx.imageSmoothingEnabled = false;
+      }
       def.render(this);
     }
 
@@ -502,6 +523,9 @@ function validate(def) {
   }
   if (def.pointer === true && typeof def.onPointer !== "function") {
     throw new Error("defineGame: a pointer game needs onPointer");
+  }
+  if (def.resolution !== undefined && !(Number.isInteger(def.resolution) && def.resolution >= 1)) {
+    throw new Error(`defineGame: resolution is a whole number from 1, not ${def.resolution}`);
   }
   if (def.players === 1 && def.ai) {
     throw new Error("defineGame: a one-player game has no opponent");

@@ -1,0 +1,11 @@
+/* The canvas of a Retro Game, by what the game asked of the engine. */
+
+/* Pixel art stays crisp when the canvas is stretched to its window. */
+.game-canvas--pixel-art {
+  image-rendering: pixelated;
+}
+
+/* A game played with a finger takes the touch: a drag moves a card, not the page. */
+.game-canvas--pointer {
+  touch-action: none;
+}

@@ -6,6 +6,7 @@ import {
   FakeGame,
   FakePointerGame,
   FakeSoloGame,
+  pointerDefinition,
   PHASE,
   SNAPSHOT,
   definition,
@@ -235,6 +236,97 @@ describe("defineGame", () => {
 
       expect(pointerTypes(listen).length).toBeGreaterThan(0);
       expect(pointerTypes(unlisten).sort()).toEqual(pointerTypes(listen).sort());
+    });
+  });
+
+  describe("pixel art and resolution", () => {
+    const CrispGame = defineGame({ ...pointerDefinition, pixelArt: true, resolution: 2 });
+    const crisp = (canvas = recordingCanvas(640, 480)) =>
+      new CrispGame(canvas, createLocalTransport(), "fake_crisp", true, null, { mode: "solo" });
+
+    it("draws a 640×480 game on a canvas of twice the pixels", () => {
+      const canvas = recordingCanvas(640, 480);
+      const game = crisp(canvas);
+
+      expect([canvas.width, canvas.height]).toEqual([1280, 960]);
+      expect(game.view).toEqual({ width: 640, height: 480 });
+    });
+
+    it("scales every frame to the game's pixels and draws pixel art unsmoothed", async () => {
+      match = await playMatch({ EngineClass: CrispGame, gameId: "fake_crisp", mode: "solo" });
+      match.advance(200);
+      const { canvas } = match.engines.host;
+      canvas.recording = true;
+      canvas.clearLog();
+      match.engines.host.invalidate();
+      match.advance(17);
+      const log = canvas.log;
+      const draw = log.findIndex(([op]) => op === "fillRect");
+
+      expect(log.slice(0, draw)).toContainEqual(["setTransform", 2, 0, 0, 2, 0, 0]);
+      expect(log.slice(0, draw)).toContainEqual(["imageSmoothingEnabled", "=", false]);
+      expect(canvas.classList.contains("game-canvas--pixel-art")).toBe(true);
+    });
+
+    it("reads a press in the game's pixels on the bigger canvas", async () => {
+      match = await playMatch({
+        EngineClass: CrispGame,
+        gameId: "fake_crisp",
+        mode: "solo",
+        rect: { left: 0, top: 0, width: 1280, height: 960 },
+      });
+      match.advance(100);
+      match.pointer("down", 640, 480);
+      match.advance(17);
+
+      expect(match.engines.host.gameState.log[0].slice(1)).toEqual(["down", 320, 240]);
+    });
+
+    it("keeps the touch on the canvas for a pointer game, so a drag does not scroll the page", () => {
+      const canvas = recordingCanvas(640, 480);
+      new FakePointerGame(canvas, createLocalTransport(), "fake_pointer", true, null, {
+        mode: "solo",
+      });
+      expect(canvas.classList.contains("game-canvas--pointer")).toBe(true);
+    });
+
+    it("changes nothing for a game that asks for neither", async () => {
+      const canvas = recordingCanvas(640, 480);
+      const game = new FakeSoloGame(canvas, createLocalTransport(), "fake_solo", true, null, {
+        mode: "solo",
+      });
+      expect([canvas.width, canvas.height]).toEqual([640, 480]);
+      expect(game.view).toEqual({ width: 640, height: 480 });
+      expect([...canvas.classList]).toEqual([]);
+
+      match = await playMatch({ EngineClass: FakeSoloGame, gameId: "fake_solo", mode: "solo" });
+      match.advance(200);
+      const host = match.engines.host.canvas;
+      host.recording = true;
+      host.clearLog();
+      match.engines.host.invalidate();
+      match.advance(17);
+      const ops = host.log.map(([op]) => op);
+      expect(ops).not.toContain("setTransform");
+      expect(ops).not.toContain("imageSmoothingEnabled");
+    });
+
+    it("paints no frame while nothing asks for one", async () => {
+      match = await playMatch({
+        EngineClass: FakePointerGame,
+        gameId: "fake_pointer",
+        mode: "solo",
+      });
+      match.advance(200);
+      const { canvas } = match.engines.host;
+      canvas.recording = true;
+      canvas.clearLog();
+      match.advance(1000);
+
+      expect(canvas.log.filter(([op]) => op === "fillRect")).toHaveLength(0);
+      match.engines.host.invalidate();
+      match.advance(17);
+      expect(canvas.log.filter(([op]) => op === "fillRect")).toHaveLength(1);
     });
   });
 
