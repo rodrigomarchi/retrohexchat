@@ -73,6 +73,14 @@ git lfs pull
 
 FULL_SHA=$(git rev-parse HEAD)
 SHORT_SHA=$(git rev-parse --short HEAD)
+# A short SHA made only of digits is a number to SemVer, and a number may not
+# start with a zero ("0.1.0-048907603" fails the build): take more of the SHA
+# until a letter makes it an identifier again.
+SHA_LENGTH=${#SHORT_SHA}
+while [[ "${SHORT_SHA}" =~ ^0[0-9]*$ && ${SHA_LENGTH} -lt 40 ]]; do
+  SHA_LENGTH=$((SHA_LENGTH + 1))
+  SHORT_SHA=$(git rev-parse --short=${SHA_LENGTH} HEAD)
+done
 MIX_VERSION=$(grep 'version:' mix.exs | head -1 | sed 's/.*"\(.*\)".*/\1/')
 RELEASE_VERSION="${MIX_VERSION}-${SHORT_SHA}"
 
