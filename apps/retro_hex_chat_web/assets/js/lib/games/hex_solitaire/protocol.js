@@ -7,6 +7,8 @@
  * @module games/hex_solitaire/protocol
  */
 
+import { TIME_PENALTY } from "../core/card_table/clock.js";
+
 /** How many cards the stock turns at a time, by the variant played. */
 export const MODE = Object.freeze({ DRAW1: 1, DRAW3: 3 });
 
@@ -26,18 +28,16 @@ export const POINTS = Object.freeze({
   FLIP: 5,
   FOUNDATION_TO_TABLEAU: -15,
   RECYCLE: Object.freeze({ [MODE.DRAW1]: -100, [MODE.DRAW3]: -20 }),
-  TIME_PENALTY: -2,
+  TIME_PENALTY,
 });
 
-/** Ten seconds of play, each costing `POINTS.TIME_PENALTY`. */
-export const PENALTY_TICKS = 600;
-
-/** A win in `BONUS_MIN_SECONDS` or more pays `BONUS_NUMERATOR` / seconds. */
-export const BONUS_NUMERATOR = 700_000;
-export const BONUS_MIN_SECONDS = 30;
-
-/** An hour: a game still open then ends with the points it has. */
-export const SAFETY_TICKS = 60 * 60 * 60;
+/** The clock every card table keeps: what ten seconds cost, the hour's limit, the bonus. */
+export {
+  BONUS_MIN_SECONDS,
+  BONUS_NUMERATOR,
+  PENALTY_TICKS,
+  SAFETY_TICKS,
+} from "../core/card_table/clock.js";
 
 /**
  * The most a game can score: all 52 cards up (10 each), the 21 cards dealt
