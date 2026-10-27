@@ -62,6 +62,20 @@ export function layout(state) {
   return { stock, wasteSlot, waste, foundations, columns };
 }
 
+/** Where the bottom card a move or a drag takes from `from` is drawn. */
+export function sourcePlace(places, from) {
+  if (from.pile === "waste") return places.waste.at(-1);
+  if (from.pile === "foundation") return places.foundations[from.suit];
+  return places.columns[from.col].cards.find((c) => c.faceUp && c.index === from.index);
+}
+
+/** The cards taken from `from` (`rules.js`), bottom first. */
+export function cardsFrom(table, from) {
+  if (from.pile === "waste") return [table.waste.at(-1)];
+  if (from.pile === "foundation") return [table.foundations[from.suit].at(-1)];
+  return table.tableau[from.col].up.slice(from.index);
+}
+
 /**
  * What a point of the canvas lands on: `{ pile: "stock" }`, `{ pile: "waste" }`
  * (its top card only), `{ pile: "foundation", suit }`, a face-up card

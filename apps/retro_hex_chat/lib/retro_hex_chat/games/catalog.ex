@@ -43,12 +43,14 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_hockey",
     "hex_hockey_blitz",
     "hex_hockey_showdown",
-    "hex_jungle"
+    "hex_jungle",
+    "hex_solitaire",
+    "hex_solitaire_draw3"
   ]
 
   # Played by one person alone: no opponent, no partner, nothing to watch. A
   # one-player game is also played solo and ranked by score (checked below).
-  @solo_only_game_ids ~w(hex_jungle)
+  @solo_only_game_ids ~w(hex_jungle hex_solitaire hex_solitaire_draw3)
 
   # How a finished match is ranked. Versus games have two sides and one winner;
   # score games rank the points a player took home; co-op games rank the score
@@ -61,7 +63,8 @@ defmodule RetroHexChat.Games.Catalog do
                       hex_skiing_escape hex_skiing_clean hex_frost hex_frost_blizzard
                       hex_frost_peaceful hex_hockey hex_hockey_blitz hex_hockey_showdown)
   @score_game_ids ~w(hex_raid hex_raid_pacifist hex_raid_blitz hex_invaders hex_invaders_blitz
-                     hex_enduro hex_enduro_night hex_enduro_sprint hex_jungle)
+                     hex_enduro hex_enduro_night hex_enduro_sprint hex_jungle hex_solitaire
+                     hex_solitaire_draw3)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
 
   @type ranking :: :versus | :score | :coop
@@ -550,6 +553,39 @@ defmodule RetroHexChat.Games.Catalog do
         dgettext_noop(
           "games",
           "Arrow keys or WASD to move and climb, the space bar to jump"
+        )
+    },
+    %{
+      id: "hex_solitaire",
+      name: "Hex Solitaire",
+      tagline: dgettext_noop("games", "Klondike solitaire, one card at a time"),
+      description:
+        dgettext_noop(
+          "games",
+          "Classic Klondike solitaire. Put every card on its pile, from the ace to the king, drawing one card at a time from the deck. Win fast for a time bonus."
+        ),
+      icon: "game_solitaire",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap to play, or drag with the mouse or a finger"
+        )
+    },
+    %{
+      id: "hex_solitaire_draw3",
+      mode_of: "hex_solitaire",
+      name: "Hex Solitaire: Draw Three",
+      tagline: dgettext_noop("games", "Three cards at a time"),
+      description:
+        dgettext_noop(
+          "games",
+          "Klondike drawing three cards at a time from the deck, where only the top one can be played. Harder, and closer to the classic game."
+        ),
+      icon: "game_solitaire",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap to play, or drag with the mouse or a finger"
         )
     }
   ]

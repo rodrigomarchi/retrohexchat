@@ -1,0 +1,116 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_solitaire pins > solo following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "a1ee1b6c0cb31bb3",
+      "ops": 690,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "1036c08f4869b2cf",
+      "voices": {
+        "createBuffer": 58,
+        "createBufferSource": 58,
+        "createGain": 337,
+        "createOscillator": 278,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "autoTicks": 0,
+      "events": 0,
+      "phase": 1,
+      "score": 50,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_solitaire pins > solo to the end: hex_solitaire 1`] = `
+{
+  "draws": [
+    {
+      "digest": "a1ee1b6c0cb31bb3",
+      "ops": 690,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3601024,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "69a8ee975fbfeb3a",
+      "voices": {
+        "createBuffer": 9,
+        "createBufferSource": 9,
+        "createGain": 11,
+        "createOscillator": 1,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "autoTicks": 0,
+      "events": 0,
+      "phase": 3,
+      "score": 0,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;

@@ -537,6 +537,38 @@ defmodule RetroHexChatWeb.Icons.Games do
     """
   end
 
+  # -- Hex Solitaire: a navy card back under an ace of hearts, on the felt --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_solitaire(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_solitaire(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#08786c" />
+
+      <rect x="5" y="5" width="13" height="18" fill="#828284" />
+      <rect x="6" y="6" width="11" height="16" fill="#0e2369" />
+      <rect x="7" y="7" width="9" height="14" fill="#fefefe" />
+      <rect x="8" y="8" width="7" height="12" fill="#0e2369" />
+      <rect x="10" y="12" width="3" height="3" fill="#fefefe" />
+
+      <rect x="13" y="10" width="15" height="19" fill="#023e3e" />
+      <rect x="12" y="9" width="15" height="19" fill="#828284" />
+      <rect x="13" y="10" width="13" height="17" fill="#fefefe" />
+      <path d="M19 18h7v9h-7z M23 13h3v5h-3z" fill="#e4e5e4" />
+      <path d="M14 11h1v1h-1z M15 12h1v2h-1z M13 12h1v2h-1z M14 13h1v1h-1z" fill="#c51316" />
+      <path
+        d="M16 16h2v1h-2z M20 16h2v1h-2z M15 17h8v2h-8z M16 19h6v1h-6z M17 20h4v1h-4z M18 21h2v1h-2z"
+        fill="#c51316"
+      />
+    </svg>
+    """
+  end
+
   # -- DOOM Shareware: shotgun with muzzle flash (red/orange) --
 
   attr :class, :string, default: nil

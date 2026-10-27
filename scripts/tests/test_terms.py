@@ -21,6 +21,34 @@ class MissingTermsTest(unittest.TestCase):
 
         self.assertEqual(missing_terms(MODES, translated, "de"), [])
 
+    def test_a_card_of_a_card_game_is_a_playing_card(self):
+        # What the Spanish model shipped for Hex Solitaire's help.
+        source = "A face-down card turns over by itself once nothing lies on it."
+        self.assertTrue(
+            missing_terms(source, "Una tarjeta boca abajo se vuelve por sí sola.", "es")
+        )
+        self.assertEqual(
+            missing_terms(source, "Una carta boca abajo se da la vuelta sola.", "es"), []
+        )
+        # The interface's cards stay the interface's.
+        self.assertEqual(
+            missing_terms("Share the result card.", "Comparte la tarjeta del resultado.", "es"), []
+        )
+
+    def test_a_tap_is_a_finger_on_the_screen_not_a_kick(self):
+        source = "Tap to play, or drag with the mouse or a finger"
+        self.assertTrue(missing_terms(source, "踢打游戏,或用鼠标或手指拖动", "zh_hans"))
+        self.assertEqual(missing_terms(source, "轻点即可出牌，或用鼠标或手指拖动", "zh_hans"), [])
+
+    def test_the_deck_is_the_cards_pile_not_a_ships(self):
+        source = "Hex Solitaire draws one card at a time from the deck."
+        self.assertTrue(
+            missing_terms(source, "Hex Solitaire dibuja una carta a la vez desde la cubierta.", "es")
+        )
+        self.assertEqual(
+            missing_terms(source, "Hex Solitaire roba una carta cada vez del mazo.", "es"), []
+        )
+
     def test_a_rooms_host_is_a_person_not_a_machine(self):
         # What the engine shipped for the match room's help.
         source = "The connection only begins when the host presses Start."

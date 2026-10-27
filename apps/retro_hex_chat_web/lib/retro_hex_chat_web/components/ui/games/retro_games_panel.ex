@@ -392,6 +392,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: "hex_hockey_showdown"}), do: dgettext("games", "First to 5 goals")
   def goal_label(%{id: "hex_jungle"}), do: dgettext("games", "32 treasures in 20 minutes")
 
+  def goal_label(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
+    do: dgettext("games", "Every card on its pile, ace to king")
+
   @doc """
   The keys of `game`, one row per action, as the library panel lists them.
   Every game in the catalogue has its own clause: a game without one raises
@@ -406,6 +409,15 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       %{label: dgettext("games", "Jump"), keys: ["Space"]},
       %{label: dgettext("games", "Climb"), keys: ["↑", "↓", "W", "S"]},
       %{label: dgettext("games", "Let go of the vine"), keys: ["↓", "S"]}
+    ]
+  end
+
+  # Played with the mouse or a finger: the "keys" are the gestures.
+  def control_rows(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3) do
+    [
+      %{label: dgettext("games", "Move a card to its place"), keys: [dgettext("games", "Tap")]},
+      %{label: dgettext("games", "Move cards between piles"), keys: [dgettext("games", "Drag")]},
+      %{label: dgettext("games", "Draw from the deck"), keys: [dgettext("games", "Tap the deck")]}
     ]
   end
 

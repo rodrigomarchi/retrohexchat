@@ -194,6 +194,16 @@ defmodule RetroHexChat.Games.ResultTest do
       assert {:error, :implausible} =
                Result.normalize("hex_jungle", %{"score" => %{"p1" => 114_001, "p2" => 0}})
     end
+
+    test "refuses more points than a table of solitaire can score, in either variant" do
+      for id <- ~w(hex_solitaire hex_solitaire_draw3) do
+        assert {:ok, %Result{p1_score: 24_078}} =
+                 Result.normalize(id, %{"score" => %{"p1" => 24_078, "p2" => 0}})
+
+        assert {:error, :implausible} =
+                 Result.normalize(id, %{"score" => %{"p1" => 24_079, "p2" => 0}})
+      end
+    end
   end
 
   describe "normalize/2 refuses" do

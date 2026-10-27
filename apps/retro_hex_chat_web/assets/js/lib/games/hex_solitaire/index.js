@@ -1,0 +1,226 @@
+/**
+ * Hex Solitaire: Klondike, drawing one card or three, played with a mouse or
+ * a finger. A one-player game: no opponent, nothing on the wire.
+ *
+ * The match lifecycle comes from `defineGame`; this file says only what is
+ * the table's — its gestures, its phases, its effects and what each one draws.
+ *
+ * @module games/hex_solitaire
+ */
+
+import { log } from "../../logger.js";
+import { CARD_ATLAS_URL, browserCardAtlasLoader } from "../core/cards.js";
+import { defineGame } from "../core/define_game.js";
+import { playFlags } from "../core/events.js";
+import { createGesture } from "../core/pointer.js";
+import { soloResult } from "../core/result.js";
+import {
+  actionEffects,
+  active,
+  cascadeEffects,
+  createEffects,
+  dealEffects,
+  settle,
+  stepEffects,
+} from "./effects.js";
+import { interpret } from "./gestures.js";
+import { hitTest } from "./layout.js";
+import { act, createInitialState, finalScore, step } from "./physics.js";
+import { EVENT, MODE, MODE_BY_GAME, PHASE, TAP_SLOP } from "./protocol.js";
+import { readColors, render } from "./renderer.js";
+import { MASTER_VOLUME, SOUNDS } from "./sounds.js";
+
+/** The sound of each event bit. */
+const EVENT_SOUNDS = [
+  [EVENT.DEAL, "deal"],
+  [EVENT.DRAW, "draw"],
+  [EVENT.FLIP, "flip"],
+  [EVENT.PLACE, "place"],
+  [EVENT.FOUNDATION, "foundation"],
+  [EVENT.REFUSE, "refuse"],
+  [EVENT.RECYCLE, "recycle"],
+  [EVENT.RETURN, "return"],
+  [EVENT.WIN, "win"],
+];
+
+/** The back a player last chose, kept by the browser for every card game. */
+const BACK_KEY = "retrohex.cards.back";
+const BACKS = 4;
+
+function storedBack() {
+  try {
+    const back = Number(globalThis.localStorage?.getItem(BACK_KEY));
+    return Number.isInteger(back) && back >= 0 && back < BACKS ? back : 0;
+  } catch (error) {
+    log.debug("[HexSolitaire] the chosen back could not be read", error);
+    return 0;
+  }
+}
+
+function storeBack(back) {
+  try {
+    globalThis.localStorage?.setItem(BACK_KEY, String(back));
+  } catch (error) {
+    log.debug("[HexSolitaire] the chosen back could not be kept", error);
+  }
+}
+
+const reducedMotion = () =>
+  globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
+
+/** An action from the table, played, with the effects it draws. */
+function play(game, action) {
+  if (!action) return;
+  const before = game.gameState;
+  const after = act(before, action);
+  game.gameState = after;
+  actionEffects(game.fx, {
+    before: before.table,
+    after: after.table,
+    action,
+    events: after.events & ~before.events,
+    now: game.frameCount,
+    drag: game.heldDrag,
+    random: game.fxRandom,
+  });
+  game.invalidate();
+}
+
+/** What a press does: in play, a tap or a drag on the table; while waiting, a tap on the stock turns its back. */
+function onPointer(game, event) {
+  const s = game.gameState;
+  for (const gesture of game.gesture(event)) {
+    if (s.phase === PHASE.WAITING) {
+      if (gesture.type === "tap" && hitTest(s.table, gesture.x, gesture.y)?.pile === "stock") {
+        game.back = (game.back + 1) % BACKS;
+        storeBack(game.back);
+        game.invalidate();
+      }
+      continue;
+    }
+    if (game.gameState.phase !== PHASE.PLAYING) continue;
+    if (gesture.type === "tap" || gesture.type === "dragStart") settle(game.fx);
+    const { drag, action } = interpret(game.gameState.table, game.drag, gesture);
+    game.heldDrag = game.drag;
+    game.drag = drag;
+    play(game, action);
+    game.heldDrag = null;
+    game.invalidate();
+  }
+}
+
+/** One tick of a match in play or finishing by itself. */
+function tick(game) {
+  game.frameCount++;
+  const second = Math.floor(game.gameState.clock.ticks / 60);
+  const events = game.gameState.events;
+  const before = game.gameState.table;
+  game.gameState = step(game.gameState);
+  const finished = game.gameState.events;
+  if (game.gameState.table !== before) {
+    actionEffects(game.fx, {
+      before,
+      after: game.gameState.table,
+      action: { type: "move", move: lastAutoMove(before, game.gameState.table) },
+      events: finished,
+      now: game.frameCount,
+      random: game.fxRandom,
+    });
+  }
+  playFlags(game, EVENT_SOUNDS, events | finished);
+  game.gameState = { ...game.gameState, events: 0 };
+  stepEffects(game.fx, game.frameCount);
+  if (
+    events ||
+    finished ||
+    game.drag ||
+    active(game.fx) ||
+    Math.floor(game.gameState.clock.ticks / 60) !== second
+  ) {
+    game.invalidate();
+  }
+}
+
+/** The card the finish sent up between two tables, as a move. */
+function lastAutoMove(before, after) {
+  const suit = after.foundations.findIndex((pile, i) => pile.length > before.foundations[i].length);
+  const card = after.foundations[suit].at(-1);
+  const col = before.tableau.findIndex((column) => column.up.at(-1) === card);
+  return {
+    from: { pile: "tableau", col, index: before.tableau[col].up.length - 1 },
+    to: { pile: "foundation", suit },
+  };
+}
+
+export default defineGame({
+  players: 1,
+  pointer: true,
+  pixelArt: true,
+  resolution: 2,
+  inputs: {},
+  audio: { sounds: SOUNDS, masterVolume: MASTER_VOLUME },
+  theme: readColors,
+  setup: (game) => {
+    game.frameCount = 0;
+    game.fx = createEffects({ reduced: reducedMotion() });
+    game.gesture = createGesture({ slop: TAP_SLOP });
+    game.drag = null;
+    game.heldDrag = null;
+    game.back = storedBack();
+    game.atlas = null;
+    browserCardAtlasLoader()(CARD_ATLAS_URL)
+      .then((atlas) => {
+        game.atlas = atlas;
+        game.invalidate();
+      })
+      .catch((error) => log.warn("[HexSolitaire] the card atlas did not load", error));
+  },
+  init: (game) => createInitialState(game.random, MODE_BY_GAME[game.gameId] ?? MODE.DRAW1),
+  onPointer,
+  flow: {
+    phases: PHASE,
+    initial: "WAITING",
+    begin: "PLAYING",
+    states: {
+      PLAYING: {
+        enter: (game) => {
+          dealEffects(game.fx, game.gameState.table, game.frameCount);
+          game.invalidate();
+        },
+        tick,
+      },
+      AUTO_FINISH: { tick },
+      FINISHED: {
+        final: true,
+        enter: (game) => {
+          game.drag = null;
+          if (game.gameState.won) {
+            cascadeEffects(game.fx, game.gameState.table, game.frameCount, game.fxRandom);
+          }
+          playFlags(game, EVENT_SOUNDS, game.gameState.events);
+          game.invalidate();
+          game.finish({ result: soloResult(finalScore(game.gameState)) });
+        },
+      },
+    },
+  },
+  // Once the match ends the engine takes no more steps, only idle ones: the
+  // cascade of a win goes on bouncing there.
+  idle: (game) => {
+    if (game.gameState?.phase !== PHASE.FINISHED || !active(game.fx)) return;
+    game.frameCount++;
+    stepEffects(game.fx, game.frameCount);
+    game.invalidate();
+  },
+  standing: (game) => soloResult(game.gameState.score),
+  render: (game) =>
+    render(game.ctx, {
+      state: game.gameState,
+      drag: game.drag,
+      fx: game.fx,
+      atlas: game.atlas,
+      colors: game.colors,
+      now: game.frameCount,
+      back: game.back,
+    }),
+});

@@ -1,0 +1,21 @@
+/** Every Hex Solitaire sound, once, each given time to ring out. */
+export const SOUND_SCRIPT = [
+  ["playDeal"],
+  { wait: 500 },
+  ["playDraw"],
+  { wait: 100 },
+  ["playFlip"],
+  { wait: 100 },
+  ["playPlace"],
+  { wait: 100 },
+  ["playFoundation"],
+  { wait: 300 },
+  ["playRefuse"],
+  { wait: 200 },
+  ["playRecycle"],
+  { wait: 300 },
+  ["playReturn"],
+  { wait: 100 },
+  ["playWin"],
+  { wait: 1000 },
+];

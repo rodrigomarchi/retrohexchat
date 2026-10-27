@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **262 spec files** under `e2e/tests/`.
-- **663 Playwright `test()` cases**.
-- **606 documented flows**, 605 done, 1 not done.
+- **263 spec files** under `e2e/tests/`.
+- **665 Playwright `test()` cases**.
+- **608 documented flows**, 607 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -487,6 +487,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N76 | In the channel of a game played alone, the strip offers Play without Find a partner, and /lfg says the game is played alone | `tests/game-solo-only.spec.ts` | done |
 | N77 | Players who take their time in a match room — reading it, pressing Ready a while after arriving — still get the game when the host presses Start | `tests/game-open-lobby.spec.ts` | done |
 | N78 | When a match room ends, the window says why and that the match did not start, and offers Play again — a new room for the same game — or the game's page | `tests/game-open-lobby.spec.ts` | done |
+| N79 | Hex Solitaire on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock turns a card), ended with End and written down | `tests/game-hex-solitaire.spec.ts` | done |
+| N80 | Hex Solitaire on a phone: the whole table fits the screen and a tap on the stock turns a card | `tests/game-hex-solitaire.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

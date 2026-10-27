@@ -369,6 +369,14 @@ included, is joined explicitly.
 /topic Results and rankings of Hex Jungle, a game for one player. Everything said here is published in a public archive.
 /mode +tn
 
+/join #hex-solitaire
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Solitaire, Klondike for one player. Everything said here is published in a public archive.
+/mode +tn
+
 /join #retro-games
 /cs register
 /cs archive on
@@ -590,6 +598,7 @@ included, is joined explicitly.
 /bot join Brutus #hex-frost
 /bot join Brutus #hex-hockey
 /bot join Brutus #hex-jungle
+/bot join Brutus #hex-solitaire
 /bot join Brutus #retro-games
 /bot join Brutus #doom-shareware
 /bot join Brutus #freedoom1
@@ -1156,6 +1165,7 @@ included, is joined explicitly.
 /bot join Scoreboard #hex-frost
 /bot join Scoreboard #hex-hockey
 /bot join Scoreboard #hex-jungle
+/bot join Scoreboard #hex-solitaire
 /bot join Scoreboard #retro-games
 ```
 
@@ -1216,6 +1226,7 @@ the capability is created by that first `/bot set`:
 | `#hex-frost` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
 | `#hex-hockey` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
 | `#hex-jungle` | `games` | Brutus, **Scoreboard** | a game for one player: its best runs are announced |
+| `#hex-solitaire` | `games` | Brutus, **Scoreboard** | Klondike for one player, drawing one or three: its best games are announced |
 | `#retro-games` | `games` | Brutus, **Scoreboard** | every game's results at once |
 | `#doom-shareware` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
 | `#freedoom1` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |

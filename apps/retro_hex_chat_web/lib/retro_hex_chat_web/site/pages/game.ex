@@ -292,14 +292,29 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
 
   defp kind_label(%{kind: :arcade}), do: dgettext("landing", "Arcade")
 
+  # A game with a classic of its own leads its title with the classic's name
+  # in the reader's language: someone looks for "paciência", not for the game.
   defp title(game) do
+    name =
+      case kind_of_game(game) do
+        nil -> game.name
+        kind -> "#{kind}: #{game.name}"
+      end
+
     candidates = [
-      dgettext("landing", "Play %{name} in your browser — Retro Hex Chat", name: game.name),
-      dgettext("landing", "Play %{name} in your browser", name: game.name)
+      dgettext("landing", "Play %{name} in your browser — Retro Hex Chat", name: name),
+      dgettext("landing", "Play %{name} in your browser", name: name)
     ]
 
     Enum.find(candidates, List.last(candidates), &(String.length(&1) <= @title_limit))
   end
+
+  # The words a search uses for a game with a classic of its own: someone looks
+  # for "paciência" or "solitario", not for the game's name.
+  defp kind_of_game(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
+    do: dgettext("landing", "Klondike solitaire")
+
+  defp kind_of_game(_game), do: nil
 
   defp og_image(%{screenshot: nil}), do: SEO.social_image()
 

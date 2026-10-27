@@ -69,7 +69,9 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_hockey", name: "Hex Hockey"},
                %{id: "hex_hockey_blitz", name: "Hex Hockey: Blitz"},
                %{id: "hex_hockey_showdown", name: "Hex Hockey: Showdown"},
-               %{id: "hex_jungle", name: "Hex Jungle"}
+               %{id: "hex_jungle", name: "Hex Jungle"},
+               %{id: "hex_solitaire", name: "Hex Solitaire"},
+               %{id: "hex_solitaire_draw3", name: "Hex Solitaire: Draw Three"}
              ] = Catalog.list_games()
     end
 
@@ -242,6 +244,14 @@ defmodule RetroHexChat.Games.CatalogTest do
                  %{
                    id: "hex_jungle",
                    controls: "Setas ou WASD para mover e subir, a barra de espaço para saltar"
+                 },
+                 %{
+                   id: "hex_solitaire",
+                   controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
+                 },
+                 %{
+                   id: "hex_solitaire_draw3",
+                   controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
                  }
                ] = Catalog.list_games()
       after
@@ -287,6 +297,8 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_hockey_blitz")
       assert Catalog.solo_game_id?("hex_hockey_showdown")
       assert Catalog.solo_game_id?("hex_jungle")
+      assert Catalog.solo_game_id?("hex_solitaire")
+      assert Catalog.solo_game_id?("hex_solitaire_draw3")
       refute Catalog.solo_game_id?("nonexistent")
     end
   end
@@ -295,6 +307,12 @@ defmodule RetroHexChat.Games.CatalogTest do
     test "names the games played by one person alone, ranked by score" do
       assert Catalog.solo_only?("hex_jungle")
       assert Catalog.ranking("hex_jungle") == :score
+
+      for id <- ~w(hex_solitaire hex_solitaire_draw3) do
+        assert Catalog.solo_only?(id)
+        assert Catalog.ranking(id) == :score
+      end
+
       refute Catalog.solo_only?("hex_raid")
       refute Catalog.solo_only?("hex_pong")
       refute Catalog.solo_only?("nonexistent")
@@ -349,7 +367,7 @@ defmodule RetroHexChat.Games.CatalogTest do
   describe "game_ids/0" do
     test "returns list of all game id strings" do
       ids = Catalog.game_ids()
-      assert length(ids) == 35
+      assert length(ids) == 37
       assert Enum.all?(ids, &is_binary/1)
     end
   end
@@ -434,5 +452,14 @@ defmodule RetroHexChat.Games.CatalogTest do
 
     assert Catalog.mode_word("hex_pong") == nil
     assert Catalog.mode_word("hex_raid_blitz") == "blitz"
+  end
+
+  describe "Hex Solitaire" do
+    test "draws three as a mode of the game, in the game's own room" do
+      assert Catalog.base_id("hex_solitaire_draw3") == "hex_solitaire"
+      assert Catalog.mode_word("hex_solitaire_draw3") == "draw3"
+      assert Catalog.channel_name("hex_solitaire_draw3") == "#hex-solitaire"
+      assert [%{id: "hex_solitaire_draw3"}] = Catalog.modes_of("hex_solitaire")
+    end
   end
 end

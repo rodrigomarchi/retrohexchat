@@ -639,6 +639,7 @@ msgstr "Contrôler la distance"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:8
@@ -1308,6 +1309,7 @@ msgstr "Descente infinie — le cours ne se termine jamais"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:48
@@ -1749,6 +1751,7 @@ msgstr "Troisième tour"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:23
@@ -1865,13 +1868,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:101
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:147
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -4025,7 +4029,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:152
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:158
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -4085,13 +4089,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "Jeux rétro"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:135
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:141
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr ""
@@ -4107,7 +4112,7 @@ msgstr ""
 "contrôle le boxeur droit. La difficulté change la précision avec laquelle "
 "l'IA gère la distance, esquive et cadence ses coups."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:141
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:147
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4639,7 +4644,7 @@ msgstr "— le classement du jeu"
 msgid "— this week's challenge and who leads it"
 msgstr "— le défi de cette semaine et qui le dirige"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:149
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:155
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
@@ -4743,3 +4748,108 @@ msgstr "Il n'y a pas de hâte avant de commencer."
 #, elixir-autogen, elixir-format
 msgid "The connection only begins after Start."
 msgstr "La connexion commence seulement après le démarrage."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "A face-down card turns over by itself once nothing lies on it."
+msgstr "Une carte face-à-face se retourne toute seule une fois que rien ne s'y trouve."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Drag"
+msgstr "Glisser"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Every ten seconds of play cost 2 points. A win earns a time bonus: the faster, the bigger."
+msgstr "Toutes les dix secondes de jeu coûtent 2 points. Une victoire gagne un bonus de temps : plus vite, plus grand."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "Klondike is a card game from the nineteenth century, made famous on the PC by the solitaire that came with Windows."
+msgstr "Klondike est un jeu de cartes du XIXe siècle, rendu célèbre sur le PC par le solitaire qui est venu avec Windows."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "On the table, a card goes on one a rank higher of the other colour: a red six on a black seven."
+msgstr "Sur la table, une carte passe sur l'un un rang supérieur de l'autre couleur : un rouge six sur un noir sept."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Score"
+msgstr "Score"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Tap a card"
+msgstr "Appuyez sur une carte"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:88
+#, elixir-autogen, elixir-format
+msgid "The End button keeps the points you have. A game still open after an hour ends by itself."
+msgstr "Le bouton Fin conserve les points que vous avez. Un jeu toujours ouvert après une heure se termine tout seul."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "— Choose another back for the cards"
+msgstr "— Choisissez un autre retour pour les cartes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "A card on a pile at the top is worth 10 points; a card from the deck onto the table, or a card turned over, 5."
+msgstr "A card on a pile at the top is worth 10 points; a card from the deck onto the table, or a card turned over, 5."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Hex Solitaire draws one card at a time from the deck. Hex Solitaire: Draw Three draws three, and only the top one can be played."
+msgstr "Hex Solitaire draws one card at a time from the deck. Hex Solitaire: Draw Three draws three, and only the top one can be played."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Solitaire is Klondike, the classic game of patience, for one player. Put every card on the four piles at the top, each from the ace up to the king, using the seven columns of the table and the deck. Nobody plays against you: your score is your own, and your best games go into the ranking."
+msgstr "Hex Solitaire is Klondike, the classic game of patience, for one player. Put every card on the four piles at the top, each from the ace up to the king, using the seven columns of the table and the deck. Nobody plays against you: your score is your own, and your best games go into the ranking."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:135
+#, elixir-autogen, elixir-format
+msgid "Hex Solitaire is a game of cards for one player, played with the mouse or a finger: tap a card to move it to its place, or drag it onto another pile."
+msgstr "Hex Solitaire est un jeu de cartes pour un joueur, joué avec la souris ou un doigt : appuyez sur une carte pour la déplacer à sa place, ou faites-la glisser sur une autre pile."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Only a king, with the cards on top of it, goes into an empty column."
+msgstr "Seul un roi, avec les cartes dessus, entre dans une colonne vide."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Taking a card back from a pile at the top costs 15 points. Starting the deck again costs 100 points drawing one card, 20 drawing three."
+msgstr "Taking a card back from a pile at the top costs 15 points. Starting the deck again costs 100 points drawing one card, 20 drawing three."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Tap the deck"
+msgstr "Touchez le paquet"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Tap the deck before you play"
+msgstr "Tap the deck before you play"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "When nothing is left hidden, the cards go up to the piles at the top by themselves."
+msgstr "Quand rien n'est caché, les cartes vont jusqu'aux piles en haut par elles-mêmes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Draw its next card, or start the deck again when it is empty"
+msgstr "— Draw its next card, or start the deck again when it is empty"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Move a card, or the cards on top of it, onto another pile"
+msgstr "— Déplacez une carte, ou les cartes au-dessus, sur une autre pile"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Move it to its place: a pile at the top first, otherwise the first column that takes it"
+msgstr "— Déplacez-le à sa place: une pile en haut d'abord, sinon la première colonne qui la prend"

@@ -2313,6 +2313,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-frost",
           "feature-hex-hockey",
           "feature-hex-jungle",
+          "feature-hex-solitaire",
           "feature-arcade"
         ]
       },
@@ -3279,6 +3280,27 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "A game for one player: cross 255 screens of jungle and the tunnels below, and find 32 treasures in twenty minutes. Arrow keys or WASD to move and climb, the space bar to jump."
+          ),
+        see_also: ["feature-retro-games"]
+      },
+      %{
+        id: "feature-hex-solitaire",
+        title: dgettext("help", "Hex Solitaire"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          "hex solitaire",
+          "klondike",
+          "solitaire",
+          dgettext("help", "solitaire"),
+          dgettext("help", "card game"),
+          dgettext("help", "cards"),
+          "game"
+        ],
+        icon: :icon_game_solitaire,
+        description:
+          dgettext(
+            "help",
+            "Klondike solitaire for one player: put every card on its pile, from the ace to the king. Tap a card to move it to its place, or drag it with the mouse or a finger."
           ),
         see_also: ["feature-retro-games"]
       },

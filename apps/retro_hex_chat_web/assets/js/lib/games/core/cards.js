@@ -105,3 +105,28 @@ export function drawCard(ctx, atlas, card, x, y, { faceUp = true, back = 0 } = {
   const region = faceUp ? atlas.faces[card] : atlas.backs[back];
   ctx.drawImage(atlas.image, region.x, region.y, region.w, region.h, x, y, width, height);
 }
+
+/** Where the platform's deck is served. */
+export const CARD_ATLAS_URL = "/images/games/cards/cards.json";
+
+/**
+ * A loader that reads atlases the way a browser does: the description by
+ * `fetch`, the picture by an `Image`.
+ * @returns {(url: string) => Promise<object>}
+ */
+export function browserCardAtlasLoader() {
+  return createCardAtlasLoader({
+    fetchJson: async (url) => {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`card atlas ${url}: HTTP ${response.status}`);
+      return response.json();
+    },
+    loadImage: (src) =>
+      new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error(`card atlas picture ${src} did not load`));
+        image.src = src;
+      }),
+  });
+}

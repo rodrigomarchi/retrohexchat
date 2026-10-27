@@ -22,6 +22,14 @@ NAMES: dict[str, dict[str, str]] = {
     "Hex Jungle": {
         "ja": "ヘックスジャングル",
     },
+    # The longer title first, so its mode is never read as a sentence: the
+    # engine made "Draw Three" into "Draw Tres".
+    "Hex Solitaire: Draw Three": {
+        "ja": "ヘックスソリティア：3枚めくり",
+    },
+    "Hex Solitaire": {
+        "ja": "ヘックスソリティア",
+    },
     "Construct": {
         "pt": "Constructo",
         "es": "Constructo",

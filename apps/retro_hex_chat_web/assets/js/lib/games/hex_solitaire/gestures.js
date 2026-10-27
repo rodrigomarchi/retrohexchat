@@ -11,23 +11,8 @@
  */
 
 import { CARD, COLUMNS } from "./protocol.js";
-import { hitTest, layout } from "./layout.js";
+import { cardsFrom, hitTest, layout, sourcePlace } from "./layout.js";
 import { canMove } from "./rules.js";
-
-/** The cards `from` picks up, bottom first. */
-function cardsAt(state, from) {
-  if (from.pile === "waste") return [state.waste.at(-1)];
-  if (from.pile === "foundation") return [state.foundations[from.suit].at(-1)];
-  return state.tableau[from.col].up.slice(from.index);
-}
-
-/** The place a pile's picked-up card is drawn at. */
-function placeOf(state, from) {
-  const places = layout(state);
-  if (from.pile === "waste") return places.waste.at(-1);
-  if (from.pile === "foundation") return places.foundations[from.suit];
-  return places.columns[from.col].cards.find((c) => c.faceUp && c.index === from.index);
-}
 
 /** What a hit picks up, or null: a face-up card, the waste's top, a foundation's top. */
 function pickable(state, hit) {
@@ -45,7 +30,7 @@ function pickable(state, hit) {
 export function bestDestination(state, from) {
   const toFoundation = {
     from,
-    to: { pile: "foundation", suit: Math.floor(cardsAt(state, from)[0] / 13) },
+    to: { pile: "foundation", suit: Math.floor(cardsFrom(state, from)[0] / 13) },
   };
   if (canMove(state, toFoundation)) return toFoundation;
   for (let col = 0; col < COLUMNS; col++) {
@@ -101,11 +86,11 @@ export function interpret(state, drag, gesture) {
     case "dragStart": {
       const from = pickable(state, hitTest(state, gesture.x, gesture.y));
       if (!from) return { drag: null, action: null };
-      const place = placeOf(state, from);
+      const place = sourcePlace(layout(state), from);
       return {
         drag: {
           from,
-          cards: cardsAt(state, from),
+          cards: cardsFrom(state, from),
           x: place.x,
           y: place.y,
           grabX: gesture.x - place.x,

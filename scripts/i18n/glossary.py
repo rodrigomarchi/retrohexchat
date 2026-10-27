@@ -731,6 +731,18 @@ _ROWS = {
     # executes ("Run" in the admin console).
     # The in-page games, as every catalogue already names them: some are for
     # two people, Hex Jungle for one.
+    # Hex Solitaire's gestures and the name its game has in every language:
+    # what a search for it uses ("Paciência", "Solitär", "Пасьянс"), never the
+    # engine's "Solitário de Klondike". "Tap" and "Drag" are gestures, not a
+    # tap of water ("Band") or a drag race; "deck" is the cards' pile.
+    "Klondike solitaire": ("Paciência", "Paciência", "Solitario", "Solitaire Klondike", "Solitär", "Solitario", "Patience", "Pasjans", "Пасьянс «Косынка»", "Solitaire", "ソリティア", "纸牌接龙", "紙牌接龍"),
+    "Tap":            ("Toque", "Toque", "Toca", "Toucher", "Tippen", "Tocca", "Tikken", "Dotknij", "Нажатие", "Ketuk", "タップ", "点按", "點按"),
+    "Drag":           ("Arrastar", "Arrastar", "Arrastrar", "Glisser", "Ziehen", "Trascina", "Slepen", "Przeciągnij", "Перетаскивание", "Seret", "ドラッグ", "拖动", "拖曳"),
+    "Tap the deck":   ("Toque no baralho", "Toque no baralho", "Toca el mazo", "Touchez le paquet", "Auf den Stapel tippen", "Tocca il mazzo", "Tik op de stapel", "Dotknij talii", "Нажмите на колоду", "Ketuk tumpukan kartu", "山札をタップ", "点按牌堆", "點按牌堆"),
+    "Draw from the deck": ("Comprar do baralho", "Tirar do baralho", "Robar del mazo", "Piocher", "Vom Stapel ziehen", "Pesca dal mazzo", "Van de stapel pakken", "Dobierz z talii", "Взять из колоды", "Ambil dari tumpukan", "山札から引く", "从牌堆抽牌", "從牌堆抽牌"),
+    "Move cards between piles": ("Mover cartas entre as pilhas", "Mover cartas entre as pilhas", "Mover cartas entre montones", "Déplacer des cartes entre les piles", "Karten zwischen Stapeln bewegen", "Sposta carte tra le pile", "Kaarten tussen stapels verplaatsen", "Przenieś karty między stosami", "Перекладывать карты между стопками", "Pindahkan kartu antar tumpukan", "カードを山の間で動かす", "在牌堆间移动纸牌", "在牌堆間移動紙牌"),
+    "Move a card to its place": ("Levar uma carta ao seu lugar", "Levar uma carta ao seu lugar", "Llevar una carta a su sitio", "Mettre une carte à sa place", "Eine Karte an ihren Platz legen", "Porta una carta al suo posto", "Een kaart op zijn plek leggen", "Połóż kartę na swoje miejsce", "Положить карту на место", "Pindahkan kartu ke tempatnya", "カードを置き場へ送る", "把牌送到它的位置", "把牌送到它的位置"),
+    "Every card on its pile, ace to king": ("Todas as cartas nas pilhas, do ás ao rei", "Todas as cartas nas pilhas, do ás ao rei", "Todas las cartas en su montón, del as al rey", "Toutes les cartes sur leur pile, de l'as au roi", "Alle Karten auf ihrem Stapel, vom Ass bis zum König", "Tutte le carte sulla loro pila, dall'asso al re", "Alle kaarten op hun stapel, van aas tot heer", "Wszystkie karty na stosach, od asa do króla", "Все карты в стопках, от туза до короля", "Semua kartu di tumpukannya, dari as ke raja", "全てのカードを山に、エースからキングまで", "所有牌按序放好，从A到K", "所有牌按序放好，從A到K"),
     "Retro Games":    ("Jogos Retro", "Jogos Retro", "Juegos retro", "Jeux rétro", "Retro-Spiele", "Giochi retro", "Retrogames", "Gry retro", "Ретро-игры", "Game Retro", "レトロゲーム", "复古游戏", "復古遊戲"),
     "Jump":           ("Pular", "Saltar", "Saltar", "Sauter", "Springen", "Salta", "Springen", "Skok", "Прыжок", "Lompat", "ジャンプ", "跳跃", "跳躍"),
     "Climb":          ("Subir", "Subir", "Trepar", "Grimper", "Klettern", "Arrampica", "Klimmen", "Wspinaj się", "Лезть", "Panjat", "登る", "攀爬", "攀爬"),

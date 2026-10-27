@@ -90,6 +90,23 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
   end
 
   describe "a game's page" do
+    test "names the kind of game a search for it would use, in the reader's language", %{
+      conn: conn
+    } do
+      title = fn path -> conn |> document(path) |> Floki.find("title") |> Floki.text() end
+
+      assert title.("/games/hex-solitaire") =~ "Hex Solitaire"
+      assert title.("/games/hex-solitaire") =~ "Klondike solitaire"
+
+      translated =
+        Gettext.with_locale(RetroHexChatWeb.Gettext, "pt_BR", fn ->
+          Gettext.dgettext(RetroHexChatWeb.Gettext, "landing", "Klondike solitaire")
+        end)
+
+      refute translated == "Klondike solitaire"
+      assert title.("/pt-BR/games/hex-solitaire") =~ translated
+    end
+
     test "is titled for the search it answers and canonical to itself", %{conn: conn} do
       document = document(conn, "/games/doom-shareware")
 

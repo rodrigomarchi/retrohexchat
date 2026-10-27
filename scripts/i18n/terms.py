@@ -24,6 +24,58 @@ from .protection import FEED_RE, protect, restore
 # English term pattern -> accepted forms per locale. `pt` covers both
 # Portuguese locales; a locale with no entry is not checked for that term.
 _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
+    # A playing card, never a bank card or a business card: Spanish gave
+    # "tarjeta" in every line of a card game's help, and Portuguese "cartão".
+    # Only a card game's phrasings are held to it, so a "result card" or a
+    # "share card" of the interface stays the interface's.
+    r"\b(?:(?:a|the|its|next|every|each|one|three|face-down)\s+cards?"
+    r"|cards?\s+(?:at\s+a\s+time|on\s+(?:a|its|the)\s+pile|from\s+the\s+deck)"
+    r"|game\s+of\s+cards|card\s+game)\b": {
+        "pt": ("carta",),
+        "es": ("carta", "naipe"),
+        "fr": ("carte",),
+        "de": ("karte",),
+        "it": ("cart",),
+        "nl": ("kaart",),
+        "pl": ("kart",),
+        "ru": ("карт",),
+        "id": ("kartu",),
+        "ja": ("カード", "札"),
+        "zh_hans": ("牌",),
+        "zh_hant": ("牌",),
+    },
+    # A tap of a finger on a screen: Chinese made it a kick ("踢打") and German
+    # dropped what is tapped ("Tippen Sie auf zu spielen").
+    r"\btap(?:s|ped)?\b": {
+        "pt": ("toqu", "toca"),
+        "es": ("toca", "toque", "pulsa"),
+        "fr": ("touch", "appuy"),
+        "de": ("tipp",),
+        "it": ("tocc",),
+        "nl": ("tik",),
+        "pl": ("dotkn", "stukn"),
+        "ru": ("нажм", "косн", "тап"),
+        "id": ("ketuk", "sentuh"),
+        "ja": ("タップ",),
+        "zh_hans": ("点按", "轻触", "点击", "轻点"),
+        "zh_hant": ("點按", "輕觸", "點擊", "輕點"),
+    },
+    # The cards' pile one draws from, never a ship's deck: Spanish gave
+    # "cubierta" and drew from it with a pencil ("dibuja").
+    r"\b(?:the|a)\s+deck\b": {
+        "pt": ("baralho", "monte"),
+        "es": ("mazo", "baraja"),
+        "fr": ("paquet", "pioche", "talon"),
+        "de": ("stapel", "deck", "talon"),
+        "it": ("mazzo",),
+        "nl": ("stapel", "pak"),
+        "pl": ("tali", "stos"),
+        "ru": ("колод",),
+        "id": ("tumpukan", "dek"),
+        "ja": ("山札", "デッキ"),
+        "zh_hans": ("牌堆", "牌组"),
+        "zh_hant": ("牌堆", "牌組"),
+    },
     r"\bvoic(?:e|ed)\b": {
         "pt": ("voz",),
         "es": ("voz",),
