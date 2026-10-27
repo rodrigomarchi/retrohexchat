@@ -6,7 +6,7 @@
  * @module games/hex_solitaire/layout
  */
 
-import { cardPlace, columnCards, contains, fanOffsets } from "../core/card_table/piles.js";
+import { cardPlace, contains, hitColumns, layColumns } from "../core/card_table/piles.js";
 import { CARD, COLUMNS, GEOMETRY, TABLE, TOP_ROW } from "./protocol.js";
 
 /** The table a game is laid out on: its own, or lying down when it names none. */
@@ -14,17 +14,6 @@ export const geometryOf = (state) => state.geometry ?? GEOMETRY.LANDSCAPE;
 
 const columnX = (geo, col) => geo.left + col * (CARD.width + geo.gap);
 const place = (x, y) => cardPlace(x, y, CARD);
-
-/** How far apart a column's cards stand, squeezed to keep the last one on the canvas. */
-const offsets = (geo, down, up) =>
-  fanOffsets({
-    room: geo.view.height - TABLE.bottom - geo.columnsTop - CARD.height,
-    down,
-    up,
-    downOffset: geo.downOffset ?? TABLE.downOffset,
-    upOffset: geo.upOffset ?? TABLE.upOffset,
-    min: TABLE.minOffset,
-  });
 
 /**
  * Every pile's place and every card's, in the canvas's pixels. A column's
@@ -42,12 +31,17 @@ export function layout(state) {
   }));
   const foundations = TOP_ROW.foundations.map((col) => place(columnX(geo, col), geo.top));
 
-  const columns = state.tableau.slice(0, COLUMNS).map((column, col) => {
-    const slot = place(columnX(geo, col), geo.columnsTop);
-    const spacing = offsets(geo, column.down.length, column.up.length);
-    const cards = columnCards(slot, column.down, column.up, spacing, CARD);
-    return { slot, cards };
-  });
+  const columns = layColumns(
+    state.tableau.slice(0, COLUMNS),
+    {
+      ...geo,
+      downOffset: geo.downOffset ?? TABLE.downOffset,
+      upOffset: geo.upOffset ?? TABLE.upOffset,
+      minOffset: TABLE.minOffset,
+      card: CARD,
+    },
+    geo.view.height - TABLE.bottom - geo.columnsTop - CARD.height,
+  );
 
   return { stock, wasteSlot, waste, foundations, columns };
 }
@@ -81,13 +75,5 @@ export function hitTest(state, x, y) {
   const suit = places.foundations.findIndex((r) => contains(r, x, y));
   if (suit >= 0) return { pile: "foundation", suit };
 
-  for (const [col, column] of places.columns.entries()) {
-    for (let i = column.cards.length - 1; i >= 0; i--) {
-      const card = column.cards[i];
-      if (!contains(card, x, y)) continue;
-      return card.faceUp ? { pile: "tableau", col, index: card.index } : { pile: "hidden", col };
-    }
-    if (column.cards.length === 0 && contains(column.slot, x, y)) return { pile: "slot", col };
-  }
-  return null;
+  return hitColumns(places.columns, x, y, "tableau");
 }

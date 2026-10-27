@@ -94,24 +94,11 @@ export const GEOMETRY = Object.freeze({
   }),
 });
 
-/** The match's phases and the celebration's length: every card table's. */
-export { CELEBRATION_TICKS, PHASE, TAP_SLOP } from "../core/card_table/table.js";
+/** The match's phases, its events and the celebration's length: every card table's. */
+export { CELEBRATION_TICKS, EVENT, PHASE, TAP_SLOP } from "../core/card_table/phases.js";
 
 /** How long each effect lasts: every card table's. */
 export { FX } from "../core/card_table/effects.js";
-
-/** What happened in a tick, one bit each: the sounds and the effects read them. */
-export const EVENT = Object.freeze({
-  DEAL: 1,
-  DRAW: 2,
-  FLIP: 4,
-  PLACE: 8,
-  FOUNDATION: 16,
-  REFUSE: 32,
-  RECYCLE: 64,
-  RETURN: 128,
-  WIN: 256,
-});
 
 /** The finish with nothing left hidden: a card goes up every this many ticks. */
 export const AUTO_TICKS = 6;

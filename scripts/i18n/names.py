@@ -81,10 +81,10 @@ NAMES: dict[str, dict[str, str]] = {
         "zh_hans": "蜘蛛纸牌",
         "zh_hant": "蜘蛛紙牌",
     },
+    # The bare name only where its game's title has a form of its own: a
+    # language that keeps "Hex Spider" in English would get "Hex 蜘蛛纸牌".
     "Spider": {
         "ja": "スパイダー",
-        "zh_hans": "蜘蛛纸牌",
-        "zh_hant": "蜘蛛紙牌",
     },
     # A card's suit (`protection.SUIT_RE`), where the language's word takes
     # the same articles as the one the engine would have chosen. Elsewhere
@@ -118,8 +118,6 @@ NAMES: dict[str, dict[str, str]] = {
     },
     "FreeCell": {
         "ja": "フリーセル",
-        "zh_hans": "空当接龙",
-        "zh_hant": "空當接龍",
     },
     "Construct": {
         "pt": "Constructo",

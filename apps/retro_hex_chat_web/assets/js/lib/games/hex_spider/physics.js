@@ -10,8 +10,8 @@
  * @module games/hex_spider/physics
  */
 
-import { addPoints, startClock, tickClock } from "../core/card_table/clock.js";
-import { PHASE } from "../core/card_table/table.js";
+import { addPoints, startClock, tickMatch, untilTimeUp } from "../core/card_table/clock.js";
+import { PHASE, ending } from "../core/card_table/phases.js";
 import { EVENT, GEOMETRY, POINTS } from "./protocol.js";
 import { applyMove, deal, dealRow, hasMove, won } from "./rules.js";
 
@@ -35,18 +35,14 @@ function played(state, result, event) {
     ...state,
     table: result.state,
     clock: startClock(state.clock),
-    score: addPoints(state.score, POINTS.MOVE + (result.completed ? POINTS.COMPLETE : 0)),
+    score: addPoints(state.score, POINTS.MOVE + result.completed * POINTS.COMPLETE),
     events:
       state.events |
       event |
       (result.flipped ? EVENT.FLIP : 0) |
       (result.completed ? EVENT.FOUNDATION : 0),
   };
-  if (won(next.table)) {
-    return { ...next, phase: PHASE.CELEBRATING, won: true, events: next.events | EVENT.WIN };
-  }
-  if (!hasMove(next.table)) return { ...next, phase: PHASE.FINISHED, stuck: true };
-  return next;
+  return ending(next, { won: won(next.table), stuck: !hasMove(next.table) });
 }
 
 /** What an action from the table (`gestures.js`) does. */
@@ -67,13 +63,8 @@ export function act(state, action) {
 
 /** One tick: the clock, which costs nothing, and the hour that calls time. */
 export function step(state) {
-  const ticked =
-    state.phase === PHASE.PLAYING
-      ? tickClock(state.clock, 0)
-      : { clock: state.clock, timeUp: false };
-  const next = { ...state, clock: ticked.clock, events: 0 };
-  if (next.phase !== PHASE.FINISHED && ticked.timeUp) return { ...next, phase: PHASE.FINISHED };
-  return next;
+  const { next, timeUp } = tickMatch(state, 0);
+  return untilTimeUp(next, timeUp);
 }
 
 /** The score the match ends on. */

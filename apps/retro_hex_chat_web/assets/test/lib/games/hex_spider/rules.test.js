@@ -90,7 +90,7 @@ describe("moves", () => {
       columns: [{ down: [card(4, H)], up: run(13, 2, S) }, { up: [card(1, S, 3)] }],
     });
     const { state, completed, flipped } = applyMove(t, { from: at(1, 0), to: to(0) });
-    expect(completed).toBe(true);
+    expect(completed).toBe(1);
     expect(flipped).toBe(true);
     expect(state.foundations).toEqual([[...run(13, 2, S), card(1, S, 3)]]);
     expect(state.columns[0]).toEqual({ down: [], up: [card(4, H)] });
@@ -100,7 +100,7 @@ describe("moves", () => {
     const mixed = [...run(13, 3, S), card(2, H)];
     const t = table({ columns: [{ up: mixed }, { up: [card(1, H)] }] });
     const { completed, state } = applyMove(t, { from: at(1, 0), to: to(0) });
-    expect(completed).toBe(false);
+    expect(completed).toBe(0);
     expect(state.columns[0].up.map((c) => rankOf(faceOf(c))).at(-1)).toBe(1);
   });
 });
@@ -120,11 +120,19 @@ describe("the stock", () => {
     expect(dealRow(table({ columns: full, stock: [] }))).toBeNull();
   });
 
+  it("completes every suit a row finishes, and says how many", () => {
+    const columns = full.map((c, i) => (i < 2 ? { up: run(13, 2, S, i) } : c));
+    const stock = [...run(13, 6, H), card(1, S, 5), card(1, S, 4)];
+    const { state, completed } = dealRow(table({ columns, stock }));
+    expect(completed).toBe(2);
+    expect(state.foundations).toHaveLength(2);
+  });
+
   it("completes a suit a dealt card finishes", () => {
     const columns = full.map((c, i) => (i === 0 ? { up: run(13, 2, S) } : c));
     const stock = [...run(13, 5, H), card(1, S, 4)];
     const { state, completed } = dealRow(table({ columns, stock }));
-    expect(completed).toBe(true);
+    expect(completed).toBe(1);
     expect(state.foundations).toHaveLength(1);
   });
 });

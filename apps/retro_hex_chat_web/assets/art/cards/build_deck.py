@@ -480,8 +480,13 @@ def main(argv: list[str]) -> int:
         out.write(text)
     with open(CARDS_JS, encoding="utf-8") as source:
         module = source.read()
+    module, found = ATLAS_URL_RE.subn(rf"\g<1>{version(text)}\g<2>", module)
+    if found != 1:
+        # A reformatted line would keep the old version: a stale deck from cache.
+        print(f"CARD_ATLAS_URL not found once in {CARDS_JS}", file=sys.stderr)
+        return 1
     with open(CARDS_JS, "w", encoding="utf-8") as source:
-        source.write(ATLAS_URL_RE.sub(rf"\g<1>{version(text)}\g<2>", module))
+        source.write(module)
     if args.preview:
         preview(sheet, args.preview)
     return 0

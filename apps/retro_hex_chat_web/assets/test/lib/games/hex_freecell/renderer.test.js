@@ -53,6 +53,25 @@ describe("Hex FreeCell's picture", () => {
     }
   });
 
+  it("draws a held card at the table's size, a mini on the table standing up", () => {
+    const state = createInitialState(createRng(3).next, GEOMETRY.PORTRAIT);
+    const card = state.table.columns[0].at(-1);
+    const canvas = recordingCanvas(464, 760);
+    canvas.clearLog();
+    render(canvas.getContext("2d"), {
+      state,
+      fx: createEffects({ size: "mini" }),
+      drag: { from: { pile: "column", col: 0, index: 6 }, cards: [card], x: 100, y: 300 },
+      atlas,
+      colors,
+      now: 0,
+      back: 0,
+    });
+    const held = images(canvas.log).at(-1);
+    expect(held.slice(6)).toEqual([100, 298, 44, 62]);
+    expect(held[3]).toBe(1000);
+  });
+
   it("puts every card on a whole pixel", () => {
     for (const call of images(drawn(GEOMETRY.LANDSCAPE, "full"))) {
       expect(Number.isInteger(call[6]) && Number.isInteger(call[7])).toBe(true);

@@ -6,13 +6,11 @@
  * @module games/hex_freecell/layout
  */
 
-import { cardPlace, columnCards, contains, fanOffsets } from "../core/card_table/piles.js";
+import { cardPlace, columnX, contains, hitColumns, layColumns } from "../core/card_table/piles.js";
 import { CELLS, GEOMETRY } from "./protocol.js";
 
 /** The table a game is laid out on: its own, or lying down when it names none. */
 export const geometryOf = (table) => table.geometry ?? GEOMETRY.LANDSCAPE;
-
-const columnX = (geo, col) => geo.left + col * (geo.card.width + geo.gap);
 
 /** Every pile's place and every card's, in the canvas's pixels. */
 export function layout(table) {
@@ -22,18 +20,12 @@ export function layout(table) {
   const foundations = table.foundations.map((pile, suit) =>
     place(columnX(geo, CELLS + suit), geo.top),
   );
-  const columns = table.columns.map((column, col) => {
-    const slot = place(columnX(geo, col), geo.columnsTop);
-    const spacing = fanOffsets({
-      room: geo.view.height - geo.bottom - geo.columnsTop - geo.card.height,
-      down: 0,
-      up: column.length,
-      downOffset: 0,
-      upOffset: geo.upOffset,
-      min: geo.minOffset,
-    });
-    return { slot, cards: columnCards(slot, [], column, spacing, geo.card) };
-  });
+  // Every card lies face up: a column is all run.
+  const columns = layColumns(
+    table.columns.map((up) => ({ down: [], up })),
+    { ...geo, downOffset: 0 },
+    geo.view.height - geo.bottom - geo.columnsTop - geo.card.height,
+  );
   return { cells, foundations, columns };
 }
 
@@ -55,11 +47,5 @@ export function hitTest(table, x, y) {
   if (cell >= 0) return { pile: "cell", cell };
   const suit = places.foundations.findIndex((r) => contains(r, x, y));
   if (suit >= 0) return { pile: "foundation", suit };
-  for (const [col, column] of places.columns.entries()) {
-    for (let i = column.cards.length - 1; i >= 0; i--) {
-      if (contains(column.cards[i], x, y)) return { pile: "column", col, index: i };
-    }
-    if (column.cards.length === 0 && contains(column.slot, x, y)) return { pile: "slot", col };
-  }
-  return null;
+  return hitColumns(places.columns, x, y, "column");
 }

@@ -78,6 +78,25 @@ describe("a match of Hex FreeCell", () => {
     expect(host.gameState.score).toBe(20);
   });
 
+  it("sends nothing up from under the player's hand while they hold it", async () => {
+    match = await solo();
+    match.advance(100);
+    const { host } = match.engines;
+    setTable(host, {
+      columns: [[card(13, S), card(1, H)], [card(13, H)], [card(12, D), card(9, C)]],
+    });
+    const ace = layout(host.gameState.table).columns[0].cards[1];
+    match.pointer("down", ace.x + 10, ace.y + 10);
+    match.pointer("move", ace.x + 40, ace.y + 60);
+    match.advance(1000);
+    expect(host.gameState.table.foundations[H]).toEqual([]);
+    expect(host.drag.cards).toEqual([card(1, H)]);
+
+    match.pointer("up", ace.x + 40, ace.y + 60);
+    match.advance(1000);
+    expect(host.gameState.table.foundations[H]).toEqual([card(1, H)]);
+  });
+
   it("finishes by itself, celebrates and reports the score with its time bonus once", async () => {
     match = await solo();
     match.advance(100);

@@ -11,8 +11,14 @@
  * @module games/hex_freecell/physics
  */
 
-import { addPoints, startClock, tickClock, timeBonus } from "../core/card_table/clock.js";
-import { PHASE } from "../core/card_table/table.js";
+import {
+  addPoints,
+  scoreWithBonus,
+  startClock,
+  tickMatch,
+  untilTimeUp,
+} from "../core/card_table/clock.js";
+import { PHASE, ending } from "../core/card_table/phases.js";
 import { AUTO_TICKS, EVENT, GEOMETRY } from "./protocol.js";
 import {
   applyMove,
@@ -49,15 +55,12 @@ function played(state, move) {
     score: addPoints(state.score, scoreMove(move)),
     events: state.events | (move.to.pile === "foundation" ? EVENT.FOUNDATION : EVENT.PLACE),
   };
-  if (won(table)) {
-    return { ...next, phase: PHASE.CELEBRATING, won: true, events: next.events | EVENT.WIN };
-  }
-  // Every column running down, and a card to start the climb with.
-  if (state.phase === PHASE.PLAYING && autoFinishReady(table) && nextAutoMove(table)) {
-    return { ...next, phase: PHASE.AUTO_FINISH, autoTicks: 0 };
-  }
-  if (!hasMove(table)) return { ...next, phase: PHASE.FINISHED, stuck: true };
-  return next;
+  return ending(next, {
+    won: won(table),
+    // Every column running down, and a card to start the climb with.
+    finish: state.phase === PHASE.PLAYING && autoFinishReady(table) && Boolean(nextAutoMove(table)),
+    stuck: !hasMove(table),
+  });
 }
 
 /** What an action from the table (`gestures.js`) does. A move starts the clock. */
@@ -79,32 +82,23 @@ export function act(state, action) {
 /**
  * One tick: the clock and what it costs, and every `AUTO_TICKS` a card going
  * up by itself — a safe one in play, the lowest one while finishing. The
- * clock counts only play: the cards going up at the end cost no time.
+ * clock counts only play: the cards going up at the end cost no time. While
+ * the player holds cards (`holding`), nothing goes up from under their hand.
  */
-export function step(state) {
-  const ticked =
-    state.phase === PHASE.PLAYING
-      ? tickClock(state.clock)
-      : { clock: state.clock, points: 0, timeUp: false };
+export function step(state, { holding = false } = {}) {
+  const ticked = tickMatch(state);
+  const { timeUp } = ticked;
   const autoTicks = state.autoTicks + 1;
-  let next = {
-    ...state,
-    clock: ticked.clock,
-    score: addPoints(state.score, ticked.points),
-    events: 0,
-    autoTicks,
-  };
-  if (autoTicks % AUTO_TICKS === 0 && state.clock.started) {
+  let next = { ...ticked.next, autoTicks };
+  if (autoTicks % AUTO_TICKS === 0 && state.clock.started && !holding) {
     const move =
       next.phase === PHASE.AUTO_FINISH
         ? nextAutoMove(next.table)
         : next.phase === PHASE.PLAYING && nextSafeMove(next.table);
     if (move) next = played(next, move);
   }
-  if (next.phase !== PHASE.FINISHED && ticked.timeUp) return { ...next, phase: PHASE.FINISHED };
-  return next;
+  return untilTimeUp(next, timeUp);
 }
 
 /** The score the match ends on: a win adds the bonus of its time. */
-export const finalScore = (state) =>
-  state.won ? state.score + timeBonus(state.clock.ticks) : state.score;
+export const finalScore = scoreWithBonus;

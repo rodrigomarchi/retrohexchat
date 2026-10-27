@@ -12,14 +12,9 @@
 
 import { AUTO_TICKS, EVENT, GEOMETRY, PHASE } from "./protocol.js";
 import { applyMove, autoFinishReady, deal, draw, nextAutoMove, recycle, won } from "./rules.js";
-import {
-  addPoints,
-  recyclePoints,
-  scoreMove,
-  startClock,
-  tickClock,
-  timeBonus,
-} from "./scoring.js";
+import { scoreWithBonus, tickMatch, untilTimeUp } from "../core/card_table/clock.js";
+import { ending } from "../core/card_table/phases.js";
+import { addPoints, recyclePoints, scoreMove, startClock } from "./scoring.js";
 
 /** A new match: the table dealt, on the table it is laid on, nothing scored, the clock stopped. */
 export function createInitialState(random, mode, geometry = GEOMETRY.LANDSCAPE) {
@@ -47,13 +42,10 @@ function played(state, move) {
     score: addPoints(state.score, scoreMove(move, result.flipped)),
     events: state.events | events,
   };
-  if (won(next.table)) {
-    return { ...next, phase: PHASE.CELEBRATING, won: true, events: next.events | EVENT.WIN };
-  }
-  if (state.phase === PHASE.PLAYING && autoFinishReady(next.table)) {
-    return { ...next, phase: PHASE.AUTO_FINISH, autoTicks: 0 };
-  }
-  return next;
+  return ending(next, {
+    won: won(next.table),
+    finish: state.phase === PHASE.PLAYING && autoFinishReady(next.table),
+  });
 }
 
 /**
@@ -96,16 +88,8 @@ export function act(state, action) {
  * up. The clock counts only play: the cards going up by themselves cost no time.
  */
 export function step(state) {
-  const ticked =
-    state.phase === PHASE.PLAYING
-      ? tickClock(state.clock)
-      : { clock: state.clock, points: 0, timeUp: false };
-  let next = {
-    ...state,
-    clock: ticked.clock,
-    score: addPoints(state.score, ticked.points),
-    events: 0,
-  };
+  const ticked = tickMatch(state);
+  let { next } = ticked;
   if (next.phase === PHASE.AUTO_FINISH) {
     const autoTicks = next.autoTicks + 1;
     next = { ...next, autoTicks };
@@ -114,10 +98,8 @@ export function step(state) {
       if (move) next = played(next, move);
     }
   }
-  if (next.phase !== PHASE.FINISHED && ticked.timeUp) return { ...next, phase: PHASE.FINISHED };
-  return next;
+  return untilTimeUp(next, ticked.timeUp);
 }
 
 /** The score the match ends on: a win adds the bonus of its time. */
-export const finalScore = (state) =>
-  state.won ? state.score + timeBonus(state.clock.ticks) : state.score;
+export const finalScore = scoreWithBonus;

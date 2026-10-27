@@ -19,6 +19,7 @@ import { gameColor } from "../../../game_colors.js";
 import { FULL_CARD, MINI_CARD } from "../cards.js";
 import { burst, stepParticles } from "../render.js";
 import { easeOutBack, easeOutCubic, progress, tweenPoint } from "../tween.js";
+import { EVENT } from "./phases.js";
 
 /** How long each effect lasts, in ticks (drawing only; the match never waits). */
 export const FX = Object.freeze({
@@ -120,6 +121,8 @@ export function moveEffects(
 
 /** A dragged run going back to the place it was picked up from. */
 export function returnEffects(fx, drag, home, now) {
+  // A run whose place is gone (the table changed under it) lands where it lies.
+  if (!home) return;
   addFlight(fx, drag.cards, { x: drag.x, y: drag.y }, home, now, FX.return, easeOutBack);
 }
 
@@ -252,3 +255,66 @@ export function flipWidth(effect, now, width = FULL_CARD.width) {
   const step = FLIP_STEPS[Math.min(FLIP_STEPS.length - 1, Math.floor(t * FLIP_STEPS.length))];
   return Math.round((step * width) / FLIP_STEPS[0]);
 }
+
+/**
+ * @typedef {object} TablePlaces
+ * @property {(table: object) => object} layout - every pile's and card's place
+ * @property {(table: object, from: object) => number[]} cardsFrom - what a move takes, bottom first
+ * @property {(places: object, from: object) => { x: number, y: number }} sourcePlace
+ * @property {(places: object, to: object, count: number) => { x: number, y: number }} landing -
+ *   where the bottom of `count` cards lands on `to`
+ * @property {(places: object, from: object) => object | null} [turned] - the card a move
+ *   from `from` uncovered, when it turned over
+ */
+
+/**
+ * The effects every table's actions share, from the table before to the
+ * table after: a move's flight (and the card it turned, and a foundation's
+ * sparks), a dragged run going back, a refused card shaking. Returns both
+ * layouts, for what a game draws besides.
+ * @param {object} fx
+ * @param {{ before: object, after: object, action: object, events: number, now: number,
+ *   drag?: object | null, random: () => number }} played
+ * @param {TablePlaces} table
+ * @returns {{ was: object, is: object }}
+ */
+export function playedEffects(fx, played, table) {
+  const { before, after, action, events, now, drag = null, random } = played;
+  const was = table.layout(before);
+  const is = table.layout(after);
+  if (action.type === "move") {
+    const { from, to } = action.move;
+    const cards = table.cardsFrom(before, from);
+    moveEffects(fx, {
+      cards,
+      from: drag ? { x: drag.x, y: drag.y } : table.sourcePlace(was, from),
+      to: table.landing(is, to, cards.length),
+      dropped: Boolean(drag),
+      now,
+      turned: events & EVENT.FLIP ? (table.turned?.(is, from) ?? null) : null,
+      sparksAt: events & EVENT.FOUNDATION ? table.landing(is, to, 1) : null,
+      random,
+    });
+  }
+  if (action.type === "return" && drag) {
+    returnEffects(fx, drag, table.sourcePlace(was, action.from), now);
+  }
+  if (action.type === "refuse") {
+    const card = table.cardsFrom(before, action.from)[0];
+    shakeEffects(fx, card, table.sourcePlace(was, action.from), now);
+  }
+  return { was, is };
+}
+
+/**
+ * A win from the foundations: each pile's cards (bottom first) leave from its
+ * place, the tops first.
+ */
+export const cascadeFrom = (fx, places, piles, view, now, random) =>
+  cascadeEffects(
+    fx,
+    piles.map((cards, i) => ({ place: places[i], cards })),
+    view,
+    now,
+    random,
+  );

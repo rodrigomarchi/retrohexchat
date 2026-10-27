@@ -89,6 +89,30 @@ describe("a match of Hex Spider", () => {
     expect(match.results.host[0].score.p1).toBe(799);
   });
 
+  it("pays a hundred for each suit a row puts away, two at once", async () => {
+    match = await solo();
+    match.advance(100);
+    const { host } = match.engines;
+    const columns = Array.from({ length: 10 }, (_, i) => ({
+      down: [],
+      up: i < 2 ? suitRun(i).slice(0, 12) : [card(13, S, i % 8)],
+    }));
+    const stock = [
+      ...Array.from({ length: 8 }, (_, i) => card(13, S, i)),
+      card(1, S, 1),
+      card(1, S, 0),
+    ];
+    host.gameState = {
+      ...host.gameState,
+      table: { ...host.gameState.table, columns, stock, foundations: [] },
+      score: 500,
+    };
+    tapOn(match, layout(host.gameState.table).stock.at(-1));
+    match.advance(200);
+    expect(host.gameState.table.foundations).toHaveLength(2);
+    expect(host.gameState.score).toBe(699);
+  });
+
   it("stands the table up with the minis in a box taller than wide", async () => {
     match = await solo({ rect: { left: 0, top: 0, width: 360, height: 600 } });
     match.advance(100);

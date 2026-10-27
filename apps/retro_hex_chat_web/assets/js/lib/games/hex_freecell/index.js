@@ -9,23 +9,20 @@
  */
 
 import { defineCardTable } from "../core/card_table/table.js";
-import { actionEffects, autoMove, cascadeEffects, dealEffects } from "./effects.js";
+import * as effects from "./effects.js";
 import { interpret } from "./gestures.js";
 import { hitTest } from "./layout.js";
-import { act, createInitialState, finalScore, step } from "./physics.js";
-import { EVENT, GEOMETRY } from "./protocol.js";
+import * as match from "./physics.js";
+import { GEOMETRY } from "./protocol.js";
 import { render } from "./renderer.js";
 
 export default defineCardTable({
   name: "HexFreeCell",
-  events: EVENT,
   geometry: GEOMETRY,
-  init: (game, geometry) => createInitialState(game.random, geometry),
-  act,
-  step,
-  finalScore,
+  init: (game, geometry) => match.createInitialState(game.random, geometry),
+  match,
+  effects,
   interpret,
   hitTest,
-  effects: { deal: dealEffects, action: actionEffects, cascade: cascadeEffects, auto: autoMove },
   render,
 });

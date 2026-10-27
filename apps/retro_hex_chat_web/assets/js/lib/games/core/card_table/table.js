@@ -7,22 +7,25 @@
  * something moves.
  *
  * ```js
+ * import * as effects from "./effects.js";   // dealEffects, actionEffects, cascadeEffects, autoMove
+ * import * as match from "./physics.js";     // act, step, finalScore: the match as pure functions
+ *
  * export default defineCardTable({
  *   name: "HexSolitaire",                          // in the logs
- *   events: EVENT,                                 // the bits a tick raises; their sounds by name
  *   geometry: GEOMETRY,                            // { LANDSCAPE, PORTRAIT }: `view`, `size` ("mini")
  *   init: (game, geometry) => createInitialState(…),
- *   act, step, finalScore,                         // the match, as pure functions of its state
+ *   match,
+ *   effects,                                       // what each change draws (`card_table/effects.js`)
  *   interpret,                                     // `card_table/gestures.js`'s, for the table
  *   hitTest, backTap: (table, hit) => …,           // a tap while waiting that turns the back
- *   effects: { deal, action, cascade, auto },      // what each change draws (`card_table/effects.js`)
  *   render: (ctx, scene) => …,
  * });
  * ```
  *
- * The state is `{ phase, table, score, clock, events, won }`; `step` may move
- * the table by itself (finishing), and `effects.auto(before, after)` says
- * which move it made, so it flies like any other.
+ * The state is `{ phase, table, score, clock, events, won }`, its events the
+ * card table's (`phases.js`); `step` may move the table by itself
+ * (finishing), and `effects.autoMove(before, after)` says which move it made,
+ * so it flies like any other.
  *
  * @module games/core/card_table/table
  */
@@ -36,26 +39,10 @@ import { createGesture } from "../pointer.js";
 import { soloResult } from "../result.js";
 import { active, createEffects, settle, stepEffects } from "./effects.js";
 import { feltWeave, readTableColors } from "./render.js";
+import { CELEBRATION_TICKS, EVENT, PHASE, TAP_SLOP } from "./phases.js";
 import { MASTER_VOLUME, SOUNDS } from "./sounds.js";
 
-/**
- * A card match's phases. A win is celebrated — the cascade bounces across the
- * table — before the match is over and its result told, so the page still
- * shows it.
- */
-export const PHASE = Object.freeze({
-  WAITING: 0,
-  PLAYING: 1,
-  AUTO_FINISH: 2,
-  FINISHED: 3,
-  CELEBRATING: 4,
-});
-
-/** The longest a celebration lasts; a tap ends it sooner. */
-export const CELEBRATION_TICKS = 600;
-
-/** How far a press may move and still be a tap. */
-export const TAP_SLOP = 6;
+export { CELEBRATION_TICKS, EVENT, PHASE, TAP_SLOP } from "./phases.js";
 
 /** The back a player last chose, kept by the browser for every card game. */
 const BACK_KEY = "retrohex.cards.back";
@@ -91,8 +78,8 @@ function trailLayer(game) {
  * @returns {object}
  */
 export function defineCardTable(table) {
-  const { name, geometry, effects } = table;
-  const sounds = eventSounds(table.events);
+  const { name, geometry, match, effects } = table;
+  const sounds = eventSounds(EVENT);
 
   function storedBack() {
     try {
@@ -116,9 +103,9 @@ export function defineCardTable(table) {
   function play(game, action) {
     if (!action) return;
     const before = game.gameState;
-    const after = table.act(before, action);
+    const after = match.act(before, action);
     game.gameState = after;
-    effects.action(game.fx, {
+    effects.actionEffects(game.fx, {
       before: before.table,
       after: after.table,
       action,
@@ -166,13 +153,13 @@ export function defineCardTable(table) {
     const second = Math.floor(game.gameState.clock.ticks / 60);
     const events = game.gameState.events;
     const before = game.gameState.table;
-    game.gameState = table.step(game.gameState);
+    game.gameState = match.step(game.gameState, { holding: Boolean(game.drag) });
     const finished = game.gameState.events;
     if (game.gameState.table !== before) {
-      effects.action(game.fx, {
+      effects.actionEffects(game.fx, {
         before,
         after: game.gameState.table,
-        action: effects.auto(before, game.gameState.table),
+        action: effects.autoMove(before, game.gameState.table),
         events: finished,
         now: game.frameCount,
         random: game.fxRandom,
@@ -240,7 +227,7 @@ export function defineCardTable(table) {
       states: {
         PLAYING: {
           enter: (game) => {
-            effects.deal(game.fx, game.gameState.table, game.frameCount);
+            effects.dealEffects(game.fx, game.gameState.table, game.frameCount);
             game.invalidate();
           },
           tick,
@@ -252,7 +239,7 @@ export function defineCardTable(table) {
             game.drag = null;
             game.celebration = 0;
             game.trail = reducedMotion() ? null : trailLayer(game);
-            effects.cascade(game.fx, game.gameState.table, game.frameCount, game.fxRandom);
+            effects.cascadeEffects(game.fx, game.gameState.table, game.frameCount, game.fxRandom);
             playFlags(game, sounds, game.gameState.events);
             game.gameState = { ...game.gameState, events: 0 };
             game.invalidate();
@@ -273,13 +260,13 @@ export function defineCardTable(table) {
             game.drag = null;
             playFlags(game, sounds, game.gameState.events);
             game.invalidate();
-            game.finish({ result: soloResult(table.finalScore(game.gameState)) });
+            game.finish({ result: soloResult(match.finalScore(game.gameState)) });
           },
         },
       },
     },
     // A match ended mid-celebration keeps the bonus its win earned.
-    standing: (game) => soloResult(table.finalScore(game.gameState)),
+    standing: (game) => soloResult(match.finalScore(game.gameState)),
     render: (game) => {
       // Made once the colours are read; false where the page cannot make one.
       game.felt ??= feltWeave(game.ctx, game.colors, game.canvas.ownerDocument) ?? false;

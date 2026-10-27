@@ -270,6 +270,15 @@ class MissingTermsTest(unittest.TestCase):
         german = Pipeline(Echo(), locale_code="de")
         self.assertEqual(german.translate_one("Build each suit."), "Build each suit.")
 
+    def test_a_games_title_is_never_half_swapped(self):
+        from i18n import names
+
+        for locale in ("zh_hans", "zh_hant", "pt_BR", "ja"):
+            text = names.localize("Play Hex Spider: Two Suits, or Hex FreeCell.", locale)
+            self.assertNotIn("Hex 蜘", text, locale)
+            self.assertNotIn("Hex 空", text, locale)
+            self.assertNotIn("Hex スパ", text, locale)
+
     def test_a_feed_with_no_space_around_it_is_still_swapped(self):
         from i18n import names
 

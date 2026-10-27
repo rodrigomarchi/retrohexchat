@@ -7,6 +7,7 @@
  * @module games/hex_spider/protocol
  */
 
+import { FULL_CARD, MINI_CARD } from "../core/cards.js";
 /** How many suits each catalogue id deals. */
 export const SUITS_BY_GAME = Object.freeze({
   hex_spider: 1,
@@ -28,16 +29,8 @@ export const POINTS = Object.freeze({ START: 500, MOVE: -1, COMPLETE: 100 });
 /** The most a game can score: the start and every suit up. The server refuses more. */
 export const CEILING = POINTS.START + FOUNDATIONS * POINTS.COMPLETE;
 
-/** What happened in a tick, one bit each: the sounds (by name) and the effects read them. */
-export const EVENT = Object.freeze({
-  DEAL: 1,
-  FLIP: 2,
-  PLACE: 4,
-  FOUNDATION: 8,
-  REFUSE: 16,
-  RETURN: 32,
-  WIN: 64,
-});
+/** What happened in a tick: every card table's events (`core/card_table/phases.js`). */
+export { EVENT } from "../core/card_table/phases.js";
 
 /**
  * The two tables the game is laid out on: lying down on a desktop's window,
@@ -49,7 +42,7 @@ export const GEOMETRY = Object.freeze({
   LANDSCAPE: Object.freeze({
     view: Object.freeze({ width: 720, height: 540 }),
     size: "full",
-    card: Object.freeze({ width: 64, height: 88 }),
+    card: FULL_CARD,
     left: 13,
     gap: 6,
     columnsTop: 30,
@@ -62,7 +55,7 @@ export const GEOMETRY = Object.freeze({
   PORTRAIT: Object.freeze({
     view: Object.freeze({ width: 464, height: 760 }),
     size: "mini",
-    card: Object.freeze({ width: 44, height: 62 }),
+    card: MINI_CARD,
     left: 3,
     gap: 2,
     columnsTop: 30,

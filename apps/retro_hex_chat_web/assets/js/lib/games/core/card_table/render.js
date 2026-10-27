@@ -290,7 +290,53 @@ export function drawMoving(
         back,
         width: card.width,
         card,
+        size: fx.size,
       }),
     );
   }
 }
+
+/**
+ * A whole table's picture: the felt, the piles the game draws with the
+ * painter (`tablePainter`), what moves over them, and the score and time.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{ state: object, drag: object | null, fx: object, atlas: object | null,
+ *   colors: object, now: number, back: number, trail?: object | null,
+ *   felt?: CanvasPattern | null }} scene
+ * @param {{ view: { width: number, height: number }, run: number,
+ *   face?: (card: number) => number }} table - `run`, how far apart a held run's cards stand
+ * @param {(painter: { away: Set<number>, one: Function }) => void} drawPiles
+ */
+export function drawTable(ctx, scene, { view, run, face }, drawPiles) {
+  const { state, drag, fx, atlas, colors, now, back, trail = null, felt = null } = scene;
+  const painter = tablePainter(ctx, { fx, drag, atlas, now, back, face });
+  drawFelt(ctx, view, colors, felt);
+  drawPiles(painter);
+  drawMoving(ctx, { fx, drag, atlas, now, back, colors, run, trail, face });
+  drawHud(ctx, view, { score: state.score, ticks: state.clock.ticks }, colors);
+}
+
+/** Laid columns (`piles.layColumns`): an empty one's place, or its cards where they rest. */
+export function drawColumns(ctx, columns, colors, card, { away, one }) {
+  for (const column of columns) {
+    if (!column.cards.length) drawSlot(ctx, column.slot, colors, { card });
+    for (const c of column.cards) if (!away.has(c.card)) one(c.card, c.x, c.y, c.faceUp);
+  }
+}
+
+/**
+ * A game's `render`: its table laid out (`layout`, `geometryOf`) and drawn
+ * by `drawTable`, the piles by `drawPiles(ctx, { table, places, geo, colors,
+ * painter })`. `face` is the picture a card shows, for decks of two alike.
+ * @returns {(ctx: CanvasRenderingContext2D, scene: object) => void}
+ */
+export const tableRenderer =
+  ({ layout, geometryOf, face }, drawPiles) =>
+  (ctx, scene) => {
+    const { table } = scene.state;
+    const places = layout(table);
+    const geo = geometryOf(table);
+    drawTable(ctx, scene, { view: geo.view, run: geo.upOffset, face }, (painter) =>
+      drawPiles(ctx, { table, places, geo, colors: scene.colors, painter }),
+    );
+  };

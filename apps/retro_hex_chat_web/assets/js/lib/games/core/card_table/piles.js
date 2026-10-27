@@ -56,3 +56,49 @@ export function columnCards(slot, down, up, { downOffset, upOffset }, card) {
   });
   return cards;
 }
+
+/** The left edge of column `col` on a table laid out by `geo` (`left`, `gap`, `card`). */
+export const columnX = (geo, col) => geo.left + col * (geo.card.width + geo.gap);
+
+/**
+ * A table's columns laid out by its geometry: each at `columnX` below
+ * `columnsTop`, its cards fanned (`downOffset`, `upOffset`) and squeezed into
+ * `room` (`fanOffsets`, never closer than `minOffset`).
+ * @param {Array<{ down: number[], up: number[] }>} columns
+ * @param {{ left: number, gap: number, columnsTop: number, downOffset: number, upOffset: number,
+ *   minOffset: number, card: { width: number, height: number } }} geo
+ * @param {number} room
+ * @returns {Array<{ slot: object, cards: object[] }>}
+ */
+export function layColumns(columns, geo, room) {
+  return columns.map(({ down, up }, col) => {
+    const slot = cardPlace(columnX(geo, col), geo.columnsTop, geo.card);
+    const spacing = fanOffsets({
+      room,
+      down: down.length,
+      up: up.length,
+      downOffset: geo.downOffset,
+      upOffset: geo.upOffset,
+      min: geo.minOffset,
+    });
+    return { slot, cards: columnCards(slot, down, up, spacing, geo.card) };
+  });
+}
+
+/**
+ * What a point lands on among laid columns: a face-up card
+ * `{ pile, col, index }` (`pile` as the game names its columns), a face-down
+ * one `{ pile: "hidden", col }`, an empty column's place `{ pile: "slot", col }`,
+ * or null.
+ */
+export function hitColumns(columns, x, y, pile) {
+  for (const [col, column] of columns.entries()) {
+    for (let i = column.cards.length - 1; i >= 0; i--) {
+      const card = column.cards[i];
+      if (!contains(card, x, y)) continue;
+      return card.faceUp ? { pile, col, index: card.index } : { pile: "hidden", col };
+    }
+    if (column.cards.length === 0 && contains(column.slot, x, y)) return { pile: "slot", col };
+  }
+  return null;
+}

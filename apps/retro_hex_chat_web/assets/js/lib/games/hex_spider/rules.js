@@ -72,7 +72,7 @@ function turned(column) {
  * gone up, and the card each uncovered turned over.
  */
 function complete(table) {
-  let completed = false;
+  let completed = 0;
   let flipped = false;
   const foundations = [...table.foundations];
   const columns = table.columns.map((column) => {
@@ -80,7 +80,7 @@ function complete(table) {
     if (tail.length < SUIT_LENGTH || rank(tail[0]) !== SUIT_LENGTH || !sameSuitRun(tail)) {
       return column;
     }
-    completed = true;
+    completed += 1;
     foundations.push(tail);
     const after = turned({ down: column.down, up: column.up.slice(0, -SUIT_LENGTH) });
     flipped ||= after.flipped;
@@ -92,7 +92,7 @@ function complete(table) {
 /**
  * The table after `move`, the uncovered card turned and any whole suit gone
  * up; null when the rules do not allow it.
- * @returns {{ state: object, flipped: boolean, completed: boolean } | null}
+ * @returns {{ state: object, flipped: boolean, completed: number } | null} - `completed`, the suits put away
  */
 export function applyMove(table, move) {
   if (!canMove(table, move)) return null;
@@ -115,7 +115,7 @@ export function applyMove(table, move) {
 /**
  * The table after the stock deals a card face up to every column, any whole
  * suit it finished gone up; null while a column is empty or the stock is.
- * @returns {{ state: object, flipped: boolean, completed: boolean } | null}
+ * @returns {{ state: object, flipped: boolean, completed: number } | null} - `completed`, the suits put away
  */
 export function dealRow(table) {
   const empty = table.columns.some((column) => column.up.length === 0 && column.down.length === 0);
