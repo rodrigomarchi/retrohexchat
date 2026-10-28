@@ -38,7 +38,7 @@ export const KICKS = Object.freeze([
 ]);
 
 /** The atlas's description, versioned (`assets/art/blocks/build_tiles.py` rewrites it). */
-export const TILES_URL = "/images/games/blocks/tiles.json?vsn=47e0ee8c8e46";
+export const TILES_URL = "/images/games/blocks/tiles.json?vsn=d5f5b683cdc1";
 
 /** The pieces shown coming next. */
 export const PREVIEW = 3;

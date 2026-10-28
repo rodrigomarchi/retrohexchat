@@ -11,14 +11,13 @@ The hexagon is the cell of the well's honeycomb — flat-topped, 24x20, the
 columns 18 apart and every odd one 10 lower — found as the pixels nearer its
 centre than any neighbour's, so the gems tile without a gap or an overlap.
 Beside them: the well's empty cell, the shadow of where a piece lands, the
-flash of a row clearing, the buttons of the phone's pad (each also held
-down), the score's lit digits (Hex Mines') and the marks of the level and
+flash of a row clearing, the mark of the empty box of the piece held, the
+score's lit digits (Hex Mines') and the marks of the level and
 the rows cleared.
 
 The atlas is `priv/static/images/games/blocks/tiles.png` and `tiles.json`
 beside it: regions by name (`gem_<colour>`, `empty`, `ghost`, `flash`,
-`left`, `right`, `turn_cw`, `turn_ccw`, `down`, `drop`, `hold`, each with a
-`_held` twin, `digit_0`..`digit_9`, `colon`, `dot`, `level`, `lines`).
+`keep`, `digit_0`..`digit_9`, `colon`, `dot`, `level`, `lines`).
 Each address carries the version of what it serves (`?vsn=`): the picture's
 in `tiles.json`, the description's in `TILES_URL`
 (`js/lib/games/hex_blocks/protocol.js`), which this script rewrites.
@@ -129,44 +128,6 @@ def cell(edge_colour, face_colour):
     return tile
 
 
-def arrow(direction):
-    """An arrow's 12x12 picture pointing left, turned to `direction` (left, right, down)."""
-    left = [
-        "............",
-        "....#.......",
-        "...##.......",
-        "..###.......",
-        ".##########.",
-        "###########.",
-        ".##########.",
-        "..###.......",
-        "...##.......",
-        "....#.......",
-        "............",
-        "............",
-    ]
-    if direction == "right":
-        return [row[::-1] for row in left]
-    if direction == "down":
-        # Turned a quarter the other way round: the point on the left comes to the bottom.
-        return ["".join(left[col][11 - row] for col in range(12)) for row in range(12)]
-    return left
-
-
-DROP = [
-    "............",
-    ".##......##.",
-    "..##....##..",
-    "...##..##...",
-    "....####....",
-    ".##..##..##.",
-    "..##....##..",
-    "...##..##...",
-    "....####....",
-    ".....##.....",
-    "............",
-    "############",
-]
 HOLD = [
     "............",
     "...######...",
@@ -181,27 +142,6 @@ HOLD = [
     "............",
     "............",
 ]
-
-
-TURN = [
-    "............",
-    "...#####.#..",
-    "..##...####.",
-    ".##.....###.",
-    ".#.....####.",
-    "##..........",
-    "##........##",
-    "##........##",
-    ".##......##.",
-    "..###..###..",
-    "...######...",
-    "............",
-]
-
-
-def turning(clockwise):
-    """A round arrow, its head on the upper right turning clockwise; the other way, mirrored."""
-    return TURN if clockwise else [row[::-1] for row in TURN]
 
 
 def mark(rows, colour):
@@ -240,15 +180,11 @@ def dot():
     return led
 
 
-BUTTONS = {
-    "left": arrow("left"),
-    "right": arrow("right"),
-    "down": arrow("down"),
-    "drop": DROP,
-    "turn_cw": turning(True),
-    "turn_ccw": turning(False),
-    "hold": HOLD,
-}
+def keep():
+    """The keep mark — a gem put aside — 12x12 drawn twice its size, for the empty box of the piece held."""
+    tile = Image.new("RGBA", (12, 12), CLEAR)
+    sudoku.paint(tile, HOLD, 0, 0)
+    return tile.resize((24, 24), Image.NEAREST)
 
 
 def build_atlas():
@@ -258,8 +194,7 @@ def build_atlas():
         "empty": cell(WELL_EDGE, WELL_FACE),
         "ghost": cell((220, 228, 255, 230), (220, 228, 255, 46)),
         "flash": cell((255, 255, 255, 255), (255, 250, 236, 255)),
-        **{name: sudoku.tool(icon) for name, icon in BUTTONS.items()},
-        **{f"{name}_held": sudoku.tool(icon, held=True) for name, icon in BUTTONS.items()},
+        "keep": keep(),
         **{f"digit_{d}": mines.digit(d) for d in "0123456789"},
         "colon": sudoku.colon(),
         "dot": dot(),

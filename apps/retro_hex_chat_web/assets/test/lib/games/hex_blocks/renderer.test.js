@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createRng } from "../../../../js/lib/games/core/rng.js";
 import { PHASE } from "../../../../js/lib/games/core/solo/phases.js";
 import { createEffects, playedEffects } from "../../../../js/lib/games/hex_blocks/effects.js";
-import { BUTTONS, GEOMETRY, layout } from "../../../../js/lib/games/hex_blocks/layout.js";
+import { GEOMETRY, layout } from "../../../../js/lib/games/hex_blocks/layout.js";
 import { createInitialState, step } from "../../../../js/lib/games/hex_blocks/physics.js";
 import { PIECES } from "../../../../js/lib/games/hex_blocks/pieces.js";
 import {
@@ -21,8 +21,7 @@ const NAMES = [
   "empty",
   "ghost",
   "flash",
-  ...BUTTONS,
-  ...BUTTONS.map((b) => `${b}_held`),
+  "keep",
   ...[..."0123456789"].map((d) => `digit_${d}`),
   "colon",
   "dot",
@@ -67,22 +66,20 @@ function playing(mode = MODE.hex_blocks) {
   for (let i = 0; i < COUNTDOWN_TICKS; i++) state = step(state, r);
   return state;
 }
-function drawn(state, { side = "LANDSCAPE", fx = createEffects(), pad, now = 0 } = {}) {
+function drawn(state, { side = "LANDSCAPE", fx = createEffects(), now = 0 } = {}) {
   const laid = layout(GEOMETRY[side]);
   const canvas = recordingCanvas(laid.view.width, laid.view.height);
   canvas.clearLog();
-  render(canvas.getContext("2d"), { state, laid, fx, atlas, colors, now, pad });
+  render(canvas.getContext("2d"), { state, laid, fx, atlas, colors, now });
   return canvas.log;
 }
 const gems = (log) => PIECES.reduce((n, p) => n + cut(log, `gem_${p.colour}`), 0);
 
 describe("Hex Blocks' picture", () => {
-  it("draws every square of the well in sight, the buttons, and the count's second", () => {
+  it("draws every square of the well in sight and the count's second", () => {
     const state = { ...createInitialState(MODE.hex_blocks, random()), phase: PHASE.PLAYING };
     const log = drawn(state);
     expect(cut(log, "empty")).toBe(COLS * (ROWS - HIDDEN));
-    // The keep button's picture also marks the empty box of the piece held.
-    for (const name of BUTTONS) expect(cut(log, name)).toBe(name === "hold" ? 2 : 1);
     expect(cut(log, "digit_3")).toBeGreaterThanOrEqual(1);
     expect(cut(log, "ghost")).toBe(0);
   });
@@ -101,18 +98,11 @@ describe("Hex Blocks' picture", () => {
     expect(alphas(drawn({ ...state, canHold: true }), "gem_red")).not.toContain(0.4);
   });
 
-  it("marks the empty box of the piece held with the keep button's picture, faint", () => {
+  it("marks the empty box of the piece held with the keep mark, faint", () => {
     const empty = drawn(playing());
-    expect(cut(empty, "hold")).toBe(2);
-    expect(alphas(empty, "hold")).toContain(0.3);
-    expect(cut(drawn({ ...playing(), held: 0 }), "hold")).toBe(1);
-  });
-
-  it("sinks a button a finger holds down", () => {
-    const log = drawn(playing(), { side: "PORTRAIT", pad: new Map([[0, "left"]]) });
-    expect(cut(log, "left_held")).toBe(1);
-    expect(cut(log, "left")).toBe(0);
-    expect(cut(log, "right")).toBe(1);
+    expect(cut(empty, "keep")).toBe(1);
+    expect(alphas(empty, "keep")).toContain(0.3);
+    expect(cut(drawn({ ...playing(), held: 0 }), "keep")).toBe(0);
   });
 
   it("shows the Marathon's level and rows, the Sprint's time and the rows still to clear", () => {

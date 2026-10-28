@@ -6,7 +6,7 @@ import { cellsOf, filled, landing } from "../../../../js/lib/games/hex_blocks/ru
 import { playMatch } from "../../../support/games/harness.js";
 
 const DESKTOP = { left: 0, top: 0, width: 640, height: 480 };
-const PHONE = { left: 0, top: 0, width: 400, height: 640 };
+const PHONE = { left: 0, top: 0, width: 400, height: 484 };
 const solo = (options = {}) =>
   playMatch({
     EngineClass: HexBlocks,
@@ -16,7 +16,6 @@ const solo = (options = {}) =>
     rect: DESKTOP,
     ...options,
   });
-const centre = (r) => [r.x + r.w / 2, r.y + r.h / 2];
 /** A match with its count over: the first piece falling. */
 async function ready(options) {
   const match = await solo(options);
@@ -77,25 +76,15 @@ describe("a match of Hex Blocks", () => {
     expect(host.gameState.piece.c).toBe(right - 1);
   });
 
-  it("plays two fingers at once on a phone: one holding left, the other turning", async () => {
+  it("takes no press on its canvas: the keys are the pad's, under the game", async () => {
     match = await ready({ rect: PHONE });
     const { host } = match.engines;
-    const { buttons } = host.laid;
-    const c0 = host.gameState.piece.c;
-    match.pointer("down", ...centre(buttons.left), { pointerId: 1 });
+    const before = host.gameState.piece;
+    match.pointer("down", 200, 300);
+    match.pointer("up", 200, 300);
     match.advance(20);
-    expect(host.pad.get(0)).toBe("left");
-    match.pointer("down", ...centre(buttons.turn_cw), { pointerId: 2 });
-    match.pointer("up", ...centre(buttons.turn_cw), { pointerId: 2 });
-    match.advance(20);
-    expect(host.gameState.piece.turn).toBe(1);
-    expect(host.gameState.piece.c).toBeLessThan(c0);
-    match.pointer("up", ...centre(buttons.left), { pointerId: 1 });
-    match.advance(20);
-    const c1 = host.gameState.piece.c;
-    match.advance(500);
-    expect(host.gameState.piece.c).toBe(c1);
-    expect(host.pad.size).toBe(0);
+    expect(host.gameState.piece.c).toBe(before.c);
+    expect(host.gameState.piece.turn).toBe(before.turn);
   });
 
   it("lets go of a held move when the window loses the keyboard", async () => {
@@ -141,9 +130,10 @@ describe("a match of Hex Blocks", () => {
     expect((await queue({ gameId: "hex_blocks_sprint" })).mode).toEqual({ sprint: true, goal: 40 });
   });
 
-  it("stands the pad under the well on a phone held upright", async () => {
+  it("stands the table up on a phone held upright", async () => {
     match = await ready({ rect: PHONE });
     const { laid } = match.engines.host;
-    expect(laid.buttons.left.y).toBeGreaterThan(laid.well.y + laid.well.h);
+    expect(laid.view).toEqual({ width: 400, height: 484 });
+    expect(laid.well.y).toBeGreaterThan(laid.hold.y + laid.hold.h);
   });
 });

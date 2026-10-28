@@ -1,28 +1,20 @@
 import { describe, expect, it } from "vitest";
-import {
-  BUTTONS,
-  GEOMETRY,
-  buttonAt,
-  cellPlace,
-  layout,
-} from "../../../../js/lib/games/hex_blocks/layout.js";
+import { GEOMETRY, cellPlace, layout } from "../../../../js/lib/games/hex_blocks/layout.js";
 import { COLS, HIDDEN, PREVIEW, ROWS } from "../../../../js/lib/games/hex_blocks/protocol.js";
 
 const within = (r, view) =>
   r.x >= 0 && r.y >= 0 && r.x + r.w <= view.width && r.y + r.h <= view.height;
 const apart = (a, b) =>
   a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
-const centre = (r) => [r.x + r.w / 2, r.y + r.h / 2];
 
 describe.each(["LANDSCAPE", "PORTRAIT"])("the table lying %s", (side) => {
   const laid = layout(GEOMETRY[side]);
   const { view, well } = laid;
-  const buttons = BUTTONS.map((name) => laid.buttons[name]);
   const boxes = [well, laid.hold, laid.next, laid.stats];
 
-  it("fits the well, the boxes and the buttons in the view, none over another", () => {
-    for (const r of [...boxes, ...buttons]) expect(within(r, view)).toBe(true);
-    const all = [...boxes, ...buttons];
+  it("fits the well and the boxes in the view, none over another", () => {
+    for (const r of boxes) expect(within(r, view)).toBe(true);
+    const all = boxes;
     all.forEach((a, n) => {
       for (const b of all.slice(n + 1)) expect(apart(a, b)).toBe(true);
     });
@@ -44,7 +36,6 @@ describe.each(["LANDSCAPE", "PORTRAIT"])("the table lying %s", (side) => {
   it("draws the art on whole half pixels", () => {
     expect((laid.scale * 2) % 1).toBe(0);
     expect((laid.mini * 2) % 1).toBe(0);
-    for (const r of buttons) expect(((r.w / 24) * 2) % 1).toBe(0);
   });
 
   it("leaves a slot for each piece coming, inside its box", () => {
@@ -54,27 +45,12 @@ describe.each(["LANDSCAPE", "PORTRAIT"])("the table lying %s", (side) => {
       expect(slot.y >= laid.next.y && slot.y + slot.h <= laid.next.y + laid.next.h).toBe(true);
     }
   });
-
-  it("finds the button under a point, and nothing on the well or between buttons", () => {
-    for (const name of BUTTONS) expect(buttonAt(laid, ...centre(laid.buttons[name]))).toBe(name);
-    expect(buttonAt(laid, ...centre(well))).toBeNull();
-    const { left, right } = laid.buttons;
-    const between = left.y === right.y ? [(left.x + left.w + right.x) / 2, left.y + 1] : [0, 0];
-    expect(buttonAt(laid, ...between)).toBeNull();
-  });
 });
 
 describe("the table standing on a phone", () => {
-  it("gives every button at least 44 CSS pixels on a phone 390 wide", () => {
+  it("is the well and the boxes over it, the pad being the page's", () => {
     const laid = layout(GEOMETRY.PORTRAIT);
-    const css = 390 / laid.view.width;
-    for (const name of BUTTONS) expect(laid.buttons[name].w * css).toBeGreaterThanOrEqual(44);
-  });
-
-  it("puts the buttons under the well", () => {
-    const laid = layout(GEOMETRY.PORTRAIT);
-    for (const name of BUTTONS) {
-      expect(laid.buttons[name].y).toBeGreaterThan(laid.well.y + laid.well.h);
-    }
+    expect(laid.well.y).toBeGreaterThan(laid.hold.y + laid.hold.h);
+    expect(laid.view.height - (laid.well.y + laid.well.h)).toBeLessThanOrEqual(12);
   });
 });

@@ -4,7 +4,6 @@ import { defineGame } from "../../../../js/lib/games/core/define_game.js";
 import { aiRandom } from "../../../../js/lib/games/core/rng.js";
 import {
   FakeGame,
-  FakeMultiTouchGame,
   FakePointerGame,
   FakeTwoButtonGame,
   FakeSoloGame,
@@ -233,76 +232,6 @@ describe("defineGame", () => {
       match.advance(17);
 
       expect(logOf(match).map((entry) => entry[1])).toEqual(["down", "cancel"]);
-    });
-
-    describe("following every finger", () => {
-      const touchMatch = () =>
-        playMatch({ EngineClass: FakeMultiTouchGame, gameId: "fake_pointer", mode: "solo" });
-      const events = (m) => logOf(m).map((entry) => entry.slice(1));
-
-      it("hands over each finger's press, named by the finger, in order", async () => {
-        match = await touchMatch();
-        match.advance(100);
-        match.pointer("down", 10, 10, { pointerId: 7 });
-        match.pointer("down", 50, 20, { pointerId: 9 });
-        match.pointer("move", 60, 20, { pointerId: 9 });
-        match.pointer("up", 10, 10, { pointerId: 7 });
-        match.pointer("move", 70, 20, { pointerId: 9 });
-        match.advance(17);
-
-        expect(events(match)).toEqual([
-          ["down", 10, 10, 0],
-          ["down", 50, 20, 1],
-          ["move", 60, 20, 1],
-          ["up", 10, 10, 0],
-          ["move", 70, 20, 1],
-        ]);
-      });
-
-      it("gives a new press the first finger free", async () => {
-        match = await touchMatch();
-        match.advance(100);
-        match.pointer("down", 10, 10, { pointerId: 7 });
-        match.pointer("down", 50, 20, { pointerId: 9 });
-        match.pointer("up", 10, 10, { pointerId: 7 });
-        match.pointer("down", 30, 30, { pointerId: 11 });
-        match.advance(17);
-
-        expect(events(match).at(-1)).toEqual(["down", 30, 30, 0]);
-      });
-
-      it("cancels one finger the browser takes away, and every finger when the window loses focus", async () => {
-        match = await touchMatch();
-        match.advance(100);
-        match.pointer("down", 10, 10, { pointerId: 7 });
-        match.pointer("down", 50, 20, { pointerId: 9 });
-        match.pointer("down", 90, 20, { pointerId: 3 });
-        match.pointer("cancel", 10, 10, { pointerId: 7 });
-        window.dispatchEvent(new Event("blur"));
-        match.pointer("move", 60, 20, { pointerId: 9 });
-        match.advance(17);
-
-        expect(events(match).slice(3)).toEqual([
-          ["cancel", null, null, 0],
-          ["cancel", null, null, 1],
-          ["cancel", null, null, 2],
-        ]);
-      });
-
-      it("ignores a press off the picture without taking a finger", async () => {
-        match = await playMatch({
-          EngineClass: FakeMultiTouchGame,
-          gameId: "fake_pointer",
-          mode: "solo",
-          rect: { left: 0, top: 0, width: 1000, height: 480 },
-        });
-        match.advance(100);
-        match.pointer("down", 900, 10, { pointerId: 4 });
-        match.pointer("down", 500, 10, { pointerId: 5 });
-        match.advance(17);
-
-        expect(events(match)).toEqual([["down", 320, 10, 0]]);
-      });
     });
 
     it("hands over presses while it waits to begin", async () => {

@@ -54,9 +54,6 @@
  * "secondary"]`: every event of a press then carries `button` ("main" or
  * "secondary") and `device` ("mouse", "touch" or "pen", when the browser
  * says), and the browser's menu stays shut over the canvas.
- * A game that follows every finger at once says `multiTouch: true`: every
- * event then carries `finger`, the first number free when that finger came
- * down (0, 1, …), each followed on its own, and losing focus cancels them all.
  * The canvas of a pointer game takes the touch for itself
  * (`game-canvas--pointer`), so a drag on a phone moves a card, not the page.
  *
@@ -142,8 +139,6 @@ export function defineGame(def) {
   const pointer = def.pointer === true;
   // A game may take the secondary button too (a right click); the menu then stays shut.
   const secondary = pointer && (def.pointerButtons ?? ["main"]).includes("secondary");
-  // A game may follow every finger at once (buttons held together on a phone).
-  const multiTouch = pointer && def.multiTouch === true;
   const resolution = def.resolution ?? 1;
   const scaled = resolution !== 1 || def.pixelArt === true;
   const inputNames = Object.keys(def.inputs);
@@ -207,7 +202,6 @@ export function defineGame(def) {
       this.peerReady = false;
       this._pointerQueue = [];
       this._activePointer = null;
-      this._fingers = new Map();
       this._boundPointer = pointer ? this._onPointerEvent.bind(this) : null;
       def.setup?.(this, options);
 
@@ -270,7 +264,6 @@ export function defineGame(def) {
         this.canvas.removeEventListener("contextmenu", this._preventMenu);
         this._pointerQueue = [];
         this._activePointer = null;
-        this._fingers.clear();
       }
       super.stop();
     }
@@ -417,10 +410,6 @@ export function defineGame(def) {
     }
 
     _onPointerEvent(event) {
-      if (multiTouch) {
-        this._onFingerEvent(event);
-        return;
-      }
       const type = POINTER_EVENTS[event.type];
       const id = event.pointerId ?? 0;
       if (type === "down") {
@@ -448,37 +437,6 @@ export function defineGame(def) {
       const point = this._pointAt(event, false);
       if (point) this._pointerQueue.push(this._withButton({ type, ...point }));
       if (type === "up") this._activePointer = null;
-    }
-
-    // Every finger followed at once: each event says which finger it is, the
-    // first one free when it came down, so a script of presses replays the same.
-    _onFingerEvent(event) {
-      const type = POINTER_EVENTS[event.type];
-      const id = event.pointerId ?? 0;
-      if (type === "down") {
-        if ((event.button ?? 0) !== 0 || this._fingers.has(id)) return;
-        const point = this._pointAt(event, true);
-        if (!point) return;
-        const taken = new Set(this._fingers.values());
-        let finger = 0;
-        while (taken.has(finger)) finger++;
-        this._fingers.set(id, finger);
-        this._capturePointer(id);
-        this._pointerQueue.push({ type, ...point, finger });
-        return;
-      }
-      const finger = this._fingers.get(id);
-      if (finger === undefined) return;
-      if (type === "cancel") {
-        this._fingers.delete(id);
-        this._pointerQueue.push({ type, finger });
-        return;
-      }
-      const point = this._pointAt(event, false);
-      if (point) this._pointerQueue.push({ type, ...point, finger });
-      // A finger lifted where no point can be read is still gone: the game hears it cancelled.
-      else if (type === "up") this._pointerQueue.push({ type: "cancel", finger });
-      if (type === "up") this._fingers.delete(id);
     }
 
     // A two-button game is told which button each event of a press belongs to,
@@ -548,10 +506,6 @@ export function defineGame(def) {
         this._activePointer = null;
         this._pointerQueue.push({ type: "cancel" });
       }
-      for (const finger of [...this._fingers.values()].sort((a, b) => a - b)) {
-        this._pointerQueue.push({ type: "cancel", finger });
-      }
-      this._fingers.clear();
       super._handleBlur();
     }
 

@@ -280,7 +280,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
       |> Floki.attribute("class")
       |> List.first()
 
-    assert box =~ "aspect-[400/640]"
+    assert box =~ "aspect-[400/484]"
     assert box =~ "sm:aspect-[4/3]"
     assert goal_label(blocks) == "Clear rows as the pieces speed up"
     assert goal_label(sprint) == "40 rows, as fast as you can"

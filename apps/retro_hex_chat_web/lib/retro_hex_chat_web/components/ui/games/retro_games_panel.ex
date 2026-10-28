@@ -427,7 +427,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     do: "aspect-[448/632] sm:aspect-[4/3]"
 
   defp canvas_box_aspect(%{id: id}) when id in ~w(hex_blocks hex_blocks_sprint),
-    do: "aspect-[400/640] sm:aspect-[4/3]"
+    do: "aspect-[400/484] sm:aspect-[4/3]"
 
   defp canvas_box_aspect(%{id: id})
        when id in ~w(hex_freecell hex_spider hex_spider_2suits hex_spider_4suits hex_mines

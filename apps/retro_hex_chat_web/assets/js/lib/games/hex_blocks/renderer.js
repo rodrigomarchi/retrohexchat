@@ -3,8 +3,8 @@
  * shadow; the piece held (dim when it may not be swapped again) and the
  * pieces coming; the counts in lit digits (the level pulsing as it goes up,
  * the well's frame tinted by it) — the Marathon's score, level and
- * rows, the Sprint's time and the rows still to clear; the pad's buttons,
- * those held down sunk; the count before the first piece; and what moves
+ * rows, the Sprint's time and the rows still to clear; the count before the
+ * first piece; and what moves
  * over them. No words: the atlas's digits and pictures, so nothing here is
  * translated.
  *
@@ -17,7 +17,7 @@ import { drawParticleDots } from "../core/render.js";
 import { PHASE } from "../core/solo/phases.js";
 import { blinkAt, fadeAt, flashAt, levelAt, settleAt, shakeAt, trailAt } from "./effects.js";
 import { toOffset } from "./hex.js";
-import { BUTTONS, cellPlace } from "./layout.js";
+import { cellPlace } from "./layout.js";
 import { PIECES, shape } from "./pieces.js";
 import { COLS, HIDDEN, ROWS } from "./protocol.js";
 import { cellsOf, landing } from "./rules.js";
@@ -162,13 +162,13 @@ function drawSide(ctx, { state, laid, fx, atlas, colors, now }) {
   if (state.held !== null) {
     drawMini(ctx, atlas, state.held, laid.hold, laid.mini, colors, state.canHold ? 1 : 0.4);
   } else {
-    // Nothing kept yet: the keep button's picture, faint, says what the box is for.
+    // Nothing kept yet: the keep mark, faint, says what the box is for.
     const { x, y, w, h } = laid.hold;
     ctx.globalAlpha = 0.3;
     piece(
       ctx,
       atlas,
-      "hold",
+      "keep",
       { x: x + (w - 24) / 2, y: y + (h - 24) / 2, w: 24, h: 24 },
       colors.panel,
     );
@@ -205,13 +205,6 @@ function drawSide(ctx, { state, laid, fx, atlas, colors, now }) {
   }
 }
 
-function drawButtons(ctx, { laid, atlas, colors, pad }) {
-  const held = new Set(pad?.values() ?? []);
-  for (const name of BUTTONS) {
-    piece(ctx, atlas, held.has(name) ? `${name}_held` : name, laid.buttons[name], colors.panel);
-  }
-}
-
 /** The count before the first piece: its second, big, over the well. */
 function drawCount(ctx, { state, laid, atlas, colors }) {
   if (state.piece || state.phase !== PHASE.PLAYING || state.countdown <= 0) return;
@@ -232,7 +225,7 @@ function drawCount(ctx, { state, laid, atlas, colors }) {
  * The whole picture.
  * @param {CanvasRenderingContext2D} ctx
  * @param {{ state: object, laid: object, fx: object, atlas: object | null, colors: object,
- *   now: number, pad?: Map<number, string> }} scene
+ *   now: number }} scene
  */
 export function render(ctx, sceneOf) {
   const { laid, fx, colors } = sceneOf;
@@ -241,7 +234,6 @@ export function render(ctx, sceneOf) {
   drawWell(ctx, sceneOf);
   drawDark(ctx, sceneOf);
   drawSide(ctx, sceneOf);
-  drawButtons(ctx, sceneOf);
   drawCount(ctx, sceneOf);
   for (const effect of fx.list) {
     if (effect.particles) drawParticleDots(ctx, effect.particles);

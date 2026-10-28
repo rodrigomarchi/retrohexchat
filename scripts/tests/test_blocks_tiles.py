@@ -16,12 +16,10 @@ tiles = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(tiles)
 
 COLOURS = ["red", "orange", "yellow", "lime", "green", "teal", "cyan", "blue", "violet", "pink"]
-BUTTONS = ["left", "right", "down", "drop", "turn_cw", "turn_ccw", "hold"]
 NAMES = (
     [f"gem_{c}" for c in COLOURS]
     + ["empty", "ghost", "flash"]
-    + BUTTONS
-    + [f"{b}_held" for b in BUTTONS]
+    + ["keep"]
     + [f"digit_{d}" for d in "0123456789"]
     + ["colon", "dot", "level", "lines"]
 )
@@ -59,8 +57,7 @@ class AtlasTest(unittest.TestCase):
         self.assertEqual(sorted(regions), sorted(NAMES))
         for name in [f"gem_{c}" for c in COLOURS] + ["empty", "ghost", "flash"]:
             self.assertEqual((regions[name]["w"], regions[name]["h"]), (24, 20), name)
-        for name in BUTTONS:
-            self.assertEqual((regions[name]["w"], regions[name]["h"]), (24, 24), name)
+        self.assertEqual((regions["keep"]["w"], regions["keep"]["h"]), (24, 24))
         self.assertEqual(self.description["cell"], [24, 20])
         self.assertEqual(self.description["step"], 18)
 
@@ -86,12 +83,6 @@ class AtlasTest(unittest.TestCase):
             self.assertTrue(a["x"] + a["w"] <= self.sheet.width and a["y"] + a["h"] <= self.sheet.height)
             for b in regions[i + 1 :]:
                 self.assertFalse(overlap(a, b), (a, b))
-
-    def test_a_held_button_differs_from_its_raised_one(self):
-        for name in BUTTONS:
-            raised = tiles.sudoku.tool(tiles.BUTTONS[name])
-            held = tiles.sudoku.tool(tiles.BUTTONS[name], held=True)
-            self.assertNotEqual(list(raised.getdata()), list(held.getdata()), name)
 
 
 class VersionTest(unittest.TestCase):
