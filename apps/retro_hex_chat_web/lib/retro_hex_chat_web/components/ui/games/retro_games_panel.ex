@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Keycap
   import RetroHexChatWeb.Components.UI.ToolButton
+  import RetroHexChatWeb.Components.UI.VirtualPad
 
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Result
@@ -62,6 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       assigns
       |> assign(:difficulties, @difficulties)
       |> assign(:control_rows, control_rows(assigns.game))
+      |> assign(:pad, game_pad(assigns.game))
       # A one-player game has no opponent: no difficulty, nobody to beat.
       |> assign(:alone, Catalog.solo_only?(assigns.game.id))
 
@@ -85,7 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             data-difficulty={@difficulty}
             tabindex="-1"
             class={[
-              "relative min-h-[220px] w-full overflow-hidden bg-black p-[2px] shadow-retro-field lg:aspect-auto lg:h-full lg:min-h-0",
+              "relative min-h-[220px] w-full overflow-hidden bg-black p-[2px] shadow-retro-field lg:aspect-auto lg:min-h-0 lg:flex-1",
               canvas_box_aspect(@game)
             ]}
             data-testid={"retro-game-canvas-#{@game.id}"}
@@ -95,6 +97,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               {dgettext("games", "Loading game...")}
             </div>
           </div>
+          <.game_pad_strip :if={@pad && @status in ["ready", "playing"]} id={"#{@id}-pad"} pad={@pad} />
 
           <.inset
             :if={@status == "finished"}
@@ -433,6 +436,87 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
   defp canvas_box_aspect(_game), do: "aspect-[4/3]"
 
+  # The games played by touch on the canvas itself: no pad under them.
+  @touch_game_ids ~w(hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits
+                     hex_spider_4suits hex_mines hex_mines_intermediate hex_mines_expert hex_sudoku
+                     hex_sudoku_medium hex_sudoku_hard)
+
+  @arrows [{"↑", "up"}, {"↓", "down"}, {"←", "left"}, {"→", "right"}]
+
+  @doc """
+  The on-screen pad of `game`, read off its keys (`control_rows/1`): the
+  arrows it uses on the cross, and a button for each row with a key that is
+  not an arrow (nor W, A, S or D, the arrows' twins), named by the row and
+  pressing that key as `KeyboardEvent.key` has it (" ", "Shift", "x"). Nil
+  for a game played by touch on its own canvas.
+  """
+  @spec game_pad(%{required(:id) => String.t(), optional(atom()) => term()}) ::
+          %{dirs: [String.t()], actions: [%{key: String.t(), label: String.t()}]} | nil
+  def game_pad(%{id: id}) when id in @touch_game_ids, do: nil
+
+  def game_pad(game) do
+    rows = control_rows(game)
+    keys = Enum.flat_map(rows, & &1.keys)
+
+    actions =
+      rows
+      |> Enum.flat_map(fn row ->
+        case Enum.find_value(row.keys, &action_key/1) do
+          nil -> []
+          key -> [%{key: key, label: row.label}]
+        end
+      end)
+      |> Enum.uniq_by(& &1.key)
+
+    %{dirs: for({arrow, dir} <- @arrows, arrow in keys, do: dir), actions: actions}
+  end
+
+  defp action_key("Space"), do: " "
+  defp action_key("Shift"), do: "Shift"
+  defp action_key(<<c>>) when c in ?A..?Z and c not in ~c"WASD", do: String.downcase(<<c>>)
+  defp action_key(_key), do: nil
+
+  attr :id, :string, required: true
+  attr :pad, :map, required: true
+
+  # Under the game, always in sight: the actions under the left thumb, the
+  # cross under the right, as a handheld is held. The space's pad art.
+  defp game_pad_strip(assigns) do
+    ~H"""
+    <div
+      id={@id}
+      phx-hook="RetroGamePadHook"
+      data-pad
+      data-testid="retro-game-pad"
+      role="group"
+      aria-label={dgettext("games", "On-screen controls")}
+      class="space-ui flex shrink-0 select-none items-center justify-between gap-retro-8 bg-black px-retro-8 py-retro-4 touch-none"
+    >
+      <div class="flex flex-wrap items-center gap-retro-6">
+        <.pad_button
+          :for={action <- @pad.actions}
+          action={action.key}
+          label={action.label}
+          class="pad-button--label h-12 min-w-12 px-retro-6"
+        >
+          {action.label}
+        </.pad_button>
+      </div>
+      <.pad_cross
+        dirs={@pad.dirs}
+        labels={
+          %{
+            "up" => dgettext("games", "Up"),
+            "down" => dgettext("games", "Down"),
+            "left" => dgettext("games", "Left"),
+            "right" => dgettext("games", "Right")
+          }
+        }
+      />
+    </div>
+    """
+  end
+
   @doc """
   The keys of `game`, one row per action, as the library panel lists them.
   Every game in the catalogue has its own clause: a game without one raises
@@ -495,8 +579,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       %{label: dgettext("games", "Turn the other way"), keys: ["Z"]},
       %{label: dgettext("games", "Fall faster"), keys: ["↓"]},
       %{label: dgettext("games", "Drop to the bottom"), keys: ["Space"]},
-      %{label: dgettext("games", "Keep a piece for later"), keys: ["C", "Shift"]},
-      %{label: dgettext("games", "Play on a phone"), keys: [dgettext("games", "Tap the buttons")]}
+      %{label: dgettext("games", "Keep a piece for later"), keys: ["C", "Shift"]}
     ]
   end
 

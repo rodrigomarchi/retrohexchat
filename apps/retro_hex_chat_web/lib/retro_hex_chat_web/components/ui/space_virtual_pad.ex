@@ -8,7 +8,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
   mouse users can play without a keyboard. The floor between the two halves is
   the map's: the strip lets presses through and only its keys take them.
 
-  Pure static markup inside the `phx-update="ignore"` space shell — all
+  Pure static markup inside the `phx-update="ignore"` space shell, made of
+  the pad pieces every pad shares (`VirtualPad`) — all
   behavior (pointer capture, sliding between directions, press visuals) is
   wired client-side by `assets/js/lib/virtual_pad.js` through the same
   `InputController` the physical keyboard feeds, so a held button walks at the
@@ -21,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
   use RetroHexChatWeb, :html
 
   import RetroHexChatWeb.Components.UI.Space.PixelIcon
+  import RetroHexChatWeb.Components.UI.VirtualPad
 
   @spec space_virtual_pad(map()) :: Phoenix.LiveView.Rendered.t()
   def space_virtual_pad(assigns) do
@@ -36,86 +38,51 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
             other instead of reaching across. --%>
       <div class="pointer-events-auto flex items-end gap-2" data-pad-actions>
         <div class="flex flex-col gap-2">
-          <button
-            type="button"
-            tabindex="-1"
-            data-pad-action="wave"
+          <.pad_button
+            action="wave"
             data-testid="space-pad-wave"
-            aria-label={dgettext("chat", "Wave")}
-            class="space-pad-button h-11 w-11"
+            label={dgettext("chat", "Wave")}
+            class="h-11 w-11"
           >
             <.pixel_icon name={:wave} />
-          </button>
-          <button
-            type="button"
-            tabindex="-1"
-            data-pad-action="dance"
+          </.pad_button>
+          <.pad_button
+            action="dance"
             data-testid="space-pad-dance"
-            aria-label={dgettext("chat", "Dance")}
-            class="space-pad-button h-11 w-11"
+            label={dgettext("chat", "Dance")}
+            class="h-11 w-11"
           >
             <.pixel_icon name={:dance} />
-          </button>
+          </.pad_button>
         </div>
-        <button
-          type="button"
-          tabindex="-1"
-          data-pad-action="use"
+        <.pad_button
+          action="use"
           data-testid="space-pad-use"
-          aria-label={dgettext("chat", "Use")}
-          class="space-pad-button h-14 w-14"
+          label={dgettext("chat", "Use")}
+          class="h-14 w-14"
         >
           <.pixel_icon name={:use} />
-        </button>
-        <button
-          type="button"
-          tabindex="-1"
-          data-pad-action="attack"
-          aria-label={dgettext("chat", "Attack")}
-          class="space-pad-button space-pad-button--attack mb-8 h-14 w-14"
+        </.pad_button>
+        <.pad_button
+          action="attack"
+          label={dgettext("chat", "Attack")}
+          class="pad-button--attack mb-8 h-14 w-14"
         >
           <.pixel_icon name={:attack} />
-        </button>
+        </.pad_button>
       </div>
-      <div class="space-pad-dpad pointer-events-auto grid grid-cols-3 grid-rows-3">
-        <div></div>
-        <.pad_dir_button dir="up" label={dgettext("chat", "Walk up")}>
-          <.pixel_icon name={:pad_up} />
-        </.pad_dir_button>
-        <div></div>
-        <.pad_dir_button dir="left" label={dgettext("chat", "Walk left")}>
-          <.pixel_icon name={:pad_left} />
-        </.pad_dir_button>
-        <div></div>
-        <.pad_dir_button dir="right" label={dgettext("chat", "Walk right")}>
-          <.pixel_icon name={:pad_right} />
-        </.pad_dir_button>
-        <div></div>
-        <.pad_dir_button dir="down" label={dgettext("chat", "Walk down")}>
-          <.pixel_icon name={:pad_down} />
-        </.pad_dir_button>
-        <div></div>
-      </div>
+      <.pad_cross
+        class="pointer-events-auto"
+        labels={
+          %{
+            "up" => dgettext("chat", "Walk up"),
+            "down" => dgettext("chat", "Walk down"),
+            "left" => dgettext("chat", "Walk left"),
+            "right" => dgettext("chat", "Walk right")
+          }
+        }
+      />
     </div>
-    """
-  end
-
-  attr :dir, :string, required: true, values: ~w(up down left right)
-  attr :label, :string, required: true
-  attr :class, :string, default: nil
-  slot :inner_block, required: true
-
-  defp pad_dir_button(assigns) do
-    ~H"""
-    <button
-      type="button"
-      tabindex="-1"
-      data-pad-dir={@dir}
-      aria-label={@label}
-      class={["space-pad-button h-11 w-11", @class]}
-    >
-      {render_slot(@inner_block)}
-    </button>
     """
   end
 end

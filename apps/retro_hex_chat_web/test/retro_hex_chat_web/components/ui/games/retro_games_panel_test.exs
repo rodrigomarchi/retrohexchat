@@ -291,8 +291,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
              %{keys: ["Z"]},
              %{keys: ["↓"]},
              %{keys: ["Space"]},
-             %{keys: ["C", "Shift"]},
-             %{keys: ["Tap the buttons"]}
+             %{keys: ["C", "Shift"]}
            ] = control_rows(blocks)
 
     assert control_rows(sprint) == control_rows(blocks)

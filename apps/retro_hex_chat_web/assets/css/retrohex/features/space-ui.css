@@ -442,7 +442,7 @@
 /* ── The virtual pad ── */
 
 /* The D-pad sits on a gilded compass rose. */
-.space-pad-dpad {
+.pad-cross {
   background-image: var(--space-ui-dpad);
   background-size: var(--space-ui-dpad-size);
   background-position: center;
@@ -450,7 +450,7 @@
   image-rendering: pixelated;
 }
 
-.space-pad-button {
+.pad-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -462,21 +462,31 @@
   image-rendering: pixelated;
 }
 
-.space-pad-button[data-pressed] {
+/* A key with its action's name instead of a picture: the Retro Games' pad. */
+.pad-button--label {
+  color: var(--space-ui-ink);
+  white-space: nowrap;
+}
+
+.pad-button--label[data-pressed] {
+  padding-top: 1px;
+}
+
+.pad-button[data-pressed] {
   border-image-source: var(--space-ui-pad-key--pressed);
 }
 
-.space-pad-button[data-pressed] .space-icon {
+.pad-button[data-pressed] .space-icon {
   transform: translateY(1px);
 }
 
 /* The use key is lit while something is in reach (`data-ready`, set as the
    avatar comes up to a gate, a piece or a seat) and dimmed while nothing is. */
-.space-pad-button[data-pad-action="use"]:not([data-ready]) .space-icon {
+.pad-button[data-pad-action="use"]:not([data-ready]) .space-icon {
   opacity: 0.5;
 }
 
-.space-pad-button[data-pad-action="use"][data-ready] {
+.pad-button[data-pad-action="use"][data-ready] {
   filter: drop-shadow(0 0 3px var(--space-ui-focus));
   animation: space-pad-ready 0.9s steps(2, jump-none) infinite alternate;
 }
@@ -492,16 +502,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .space-pad-button[data-pad-action="use"][data-ready] {
+  .pad-button[data-pad-action="use"][data-ready] {
     animation: none;
   }
 }
 
-.space-pad-button--attack {
+.pad-button--attack {
   border-image-source: var(--space-ui-pad-key--danger);
 }
 
-.space-pad-button--attack[data-pressed] {
+.pad-button--attack[data-pressed] {
   border-image-source: var(--space-ui-pad-key--danger-pressed);
 }
 
