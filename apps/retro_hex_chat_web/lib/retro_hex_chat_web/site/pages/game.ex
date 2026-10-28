@@ -325,6 +325,9 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   defp kind_of_game(%{id: id}) when id in ~w(hex_sudoku hex_sudoku_medium hex_sudoku_hard),
     do: dgettext("landing", "Sudoku")
 
+  defp kind_of_game(%{id: id}) when id in ~w(hex_blocks hex_blocks_sprint),
+    do: dgettext("landing", "Falling blocks puzzle")
+
   defp kind_of_game(_game), do: nil
 
   defp og_image(%{screenshot: nil}), do: SEO.social_image()

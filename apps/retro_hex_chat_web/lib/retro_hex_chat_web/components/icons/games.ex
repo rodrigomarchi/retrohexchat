@@ -706,6 +706,47 @@ defmodule RetroHexChatWeb.Icons.Games do
     """
   end
 
+  # -- Hex Blocks: a honeycomb well, a stack of gems and a piece falling into it --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_blocks(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_blocks(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#3c4260" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0e101c" />
+      <path
+        d="M5 21h4v1h-4z M4 22h6v1h-6z M3 23h8v1h-8z M3 24h8v1h-8z M4 25h6v1h-6z M5 26h4v1h-4z M17 21h4v1h-4z M16 22h6v1h-6z M15 23h8v1h-8z M15 24h8v1h-8z M16 25h6v1h-6z M17 26h4v1h-4z"
+        fill="#e03050"
+      />
+      <path
+        d="M11 24h4v1h-4z M10 25h6v1h-6z M9 26h8v1h-8z M9 27h8v1h-8z M10 28h6v1h-6z M11 29h4v1h-4z M23 24h4v1h-4z M22 25h6v1h-6z M21 26h8v1h-8z M21 27h8v1h-8z M22 28h6v1h-6z M23 29h4v1h-4z"
+        fill="#f5c81c"
+      />
+      <path
+        d="M11 18h4v1h-4z M10 19h6v1h-6z M9 20h8v1h-8z M9 21h8v1h-8z M10 22h6v1h-6z M11 23h4v1h-4z M23 18h4v1h-4z M22 19h6v1h-6z M21 20h8v1h-8z M21 21h8v1h-8z M22 22h6v1h-6z M23 23h4v1h-4z"
+        fill="#28b4f0"
+      />
+      <path
+        d="M5 15h4v1h-4z M4 16h6v1h-6z M3 17h8v1h-8z M3 18h8v1h-8z M4 19h6v1h-6z M5 20h4v1h-4z"
+        fill="#22d070"
+      />
+      <path
+        d="M17 9h4v1h-4z M16 10h6v1h-6z M15 11h8v1h-8z M15 12h8v1h-8z M16 13h6v1h-6z M17 14h4v1h-4z M17 3h4v1h-4z M16 4h6v1h-6z M15 5h8v1h-8z M15 6h8v1h-8z M16 7h6v1h-6z M17 8h4v1h-4z M23 6h4v1h-4z M22 7h6v1h-6z M21 8h8v1h-8z M21 9h8v1h-8z M22 10h6v1h-6z M23 11h4v1h-4z"
+        fill="#a04cf0"
+      />
+      <path
+        d="M5 22h2v1h-2z M17 22h2v1h-2z M11 25h2v1h-2z M23 25h2v1h-2z M11 19h2v1h-2z M23 19h2v1h-2z M5 16h2v1h-2z M17 10h2v1h-2z M17 4h2v1h-2z M23 7h2v1h-2z"
+        fill="#ffffff"
+        fill-opacity="0.7"
+      />
+    </svg>
+    """
+  end
+
   # -- DOOM Shareware: shotgun with muzzle flash (red/orange) --
 
   attr :class, :string, default: nil

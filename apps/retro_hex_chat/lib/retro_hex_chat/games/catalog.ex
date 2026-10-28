@@ -55,14 +55,17 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_mines_expert",
     "hex_sudoku",
     "hex_sudoku_medium",
-    "hex_sudoku_hard"
+    "hex_sudoku_hard",
+    "hex_blocks",
+    "hex_blocks_sprint"
   ]
 
   # Played by one person alone: no opponent, no partner, nothing to watch. A
   # one-player game is also played solo and ranked by score (checked below).
   @solo_only_game_ids ~w(hex_jungle hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider
                          hex_spider_2suits hex_spider_4suits hex_mines hex_mines_intermediate
-                         hex_mines_expert hex_sudoku hex_sudoku_medium hex_sudoku_hard)
+                         hex_mines_expert hex_sudoku hex_sudoku_medium hex_sudoku_hard hex_blocks
+                         hex_blocks_sprint)
 
   # How a finished match is ranked. Versus games have two sides and one winner;
   # score games rank the points a player took home; co-op games rank the score
@@ -78,7 +81,7 @@ defmodule RetroHexChat.Games.Catalog do
                      hex_enduro hex_enduro_night hex_enduro_sprint hex_jungle hex_solitaire
                      hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits
                      hex_spider_4suits hex_mines hex_mines_intermediate hex_mines_expert
-                     hex_sudoku hex_sudoku_medium hex_sudoku_hard)
+                     hex_sudoku hex_sudoku_medium hex_sudoku_hard hex_blocks hex_blocks_sprint)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
 
   @type ranking :: :versus | :score | :coop
@@ -766,6 +769,39 @@ defmodule RetroHexChat.Games.Catalog do
         dgettext_noop(
           "games",
           "Tap a square, then a digit; the pencil writes notes and the light bulb gives a hint"
+        )
+    },
+    %{
+      id: "hex_blocks",
+      name: "Hex Blocks",
+      tagline: dgettext_noop("games", "Hexagon pieces falling into a honeycomb"),
+      description:
+        dgettext_noop(
+          "games",
+          "Each piece is made of hexagons and falls into a well. Turn the piece and slide it left or right as it falls. When a zigzag row is full, it disappears. Every ten rows, the pieces fall faster. You can save a piece for later and see the next three pieces."
+        ),
+      icon: "game_blocks",
+      controls:
+        dgettext_noop(
+          "games",
+          "Move and turn a piece with the arrow keys, and press the space bar to drop it. On a phone, tap the buttons under the well."
+        )
+    },
+    %{
+      id: "hex_blocks_sprint",
+      mode_of: "hex_blocks",
+      name: "Hex Blocks: Sprint",
+      tagline: dgettext_noop("games", "Clear 40 rows against the clock"),
+      description:
+        dgettext_noop(
+          "games",
+          "Hex Blocks against the clock: clear 40 rows as fast as you can. The pieces never speed up. The faster your time, the higher your score."
+        ),
+      icon: "game_blocks",
+      controls:
+        dgettext_noop(
+          "games",
+          "Move and turn a piece with the arrow keys, and press the space bar to drop it. On a phone, tap the buttons under the well."
         )
     }
   ]

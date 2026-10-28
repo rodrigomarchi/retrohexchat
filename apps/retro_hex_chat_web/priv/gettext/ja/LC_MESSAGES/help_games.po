@@ -49,8 +49,7 @@ msgstr "すべてのセクションがクリアされたり、両方の人生が
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "3 lives per player — lose a life when hit by an alien bomb"
-msgstr ""
-"3人1人1人1人1人1人1人1人1人1人1人1人3人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人3人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人3人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人1人"
+msgstr "3 lives per player — lose a life when hit by an alien bomb"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:93
 #, elixir-autogen, elixir-format
@@ -558,6 +557,7 @@ msgstr "距離を制御する"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:8
@@ -1185,6 +1185,7 @@ msgid "Infinite descent — the course never ends"
 msgstr "無限の降下 — コースは終わらない"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:70
@@ -1595,6 +1596,7 @@ msgid "Round 3"
 msgstr "ラウンド3"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:38
@@ -1698,6 +1700,7 @@ msgstr "スコアリング: ラブ → 15 → 30 → 40 → ゲーム (40-40で�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:82
@@ -1734,7 +1737,7 @@ msgstr "スコアリング: ラブ → 15 → 30 → 40 → ゲーム (40-40で�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:177
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:183
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3610,7 +3613,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:182
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:188
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -3652,6 +3655,7 @@ msgstr "レトロゲームのソロモードでは、左の城のシールドを
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
@@ -3665,7 +3669,7 @@ msgstr "レトロゲームのソロモードでは、左の城のシールドを
 msgid "Retro Games"
 msgstr "レトロゲーム"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr "Hex Boxing では 8 方向に動き、間合いを管理し、Space または Shift でパンチします。AI は右側から戦います。"
@@ -3677,7 +3681,7 @@ msgstr ""
 "レトロゲームのソロモードでは、左のボクサーを操作し、AI が右のボクサーを操作します。難易度により、AI "
 "の間合い管理、回避、パンチのタイミングが変わります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:177
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4207,7 +4211,7 @@ msgstr "— ゲームランキング"
 msgid "— this week's challenge and who leads it"
 msgstr "—今週の課題と、それを導く人"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:179
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:185
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "アーケード"
@@ -4335,6 +4339,7 @@ msgstr "10秒ごとにプレイコスト2ポイント。 勝ちは時間のボ�
 msgid "Klondike is a card game from the nineteenth century, made famous on the PC by the solitaire that came with Windows."
 msgstr "Klondikeは、9世紀のカードゲームで、Windowsで来たソリティアによってPCで有名になりました。"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
@@ -4726,3 +4731,108 @@ msgstr "グリッドの横にある数字をタップするか、または1か�
 #, elixir-autogen, elixir-format
 msgid "— Write that digit in the square you chose. A digit turns grey next to the grid once all nine are in place"
 msgstr "— Write that digit in the square you chose. A digit turns grey next to the grid once all nine are in place"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "C or %{shift}"
+msgstr "C または %{shift}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Hex Blocks is the Marathon: every ten rows the level goes up and the pieces fall faster. Hex Blocks: Sprint is 40 rows against the clock, and the speed never changes."
+msgstr "Hex Blocks is the Marathon: every ten rows the level goes up and the pieces fall faster. Hex Blocks: Sprint is 40 rows against the clock, and the speed never changes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku"
+msgstr "ヘックス数独"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "In the Sprint, only your time counts: 40 rows in 30 seconds score 10,000, and a slower time scores less. If the pile reaches the top first, it scores nothing."
+msgstr "スプリントでは、あなたの時間数だけ: 30秒のスコア10,000の40列、より遅い時間スコアより少ない。 パイルが最初にトップに到達すると、それは何も得ません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "On a phone"
+msgstr "スマホでは"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "The down arrow"
+msgstr "ダウン矢印"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The left and right arrows"
+msgstr "左右の矢印"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "The next three pieces are shown beside the well. Every ten pieces, each of the ten shapes comes once."
+msgstr "The next three pieces are shown beside the well. Every ten pieces, each of the ten shapes comes once."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "The space bar"
+msgstr "スペースバー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The up arrow or X, and Z"
+msgstr "矢印またはX、Z"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Hold it to make the piece fall faster"
+msgstr "— ピースがより速く落ちるようにするためにそれを握って下さい"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "When a piece lands on the pile, you have half a second to slide it into a gap before it stays there."
+msgstr "パイルの上には、そこにとどまる前に、その隙間にそれをスライドさせるのに半分の秒があります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "— Drop the piece to the bottom at once. Its shadow in the well shows where it will land"
+msgstr "— Drop the piece to the bottom at once. Its shadow in the well shows where it will land"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Games of falling blocks have been loved since the 1980s. Hex Blocks is played on a honeycomb, so its pieces are made of hexagons and each row is a zigzag."
+msgstr "1980年代から落下ブロックが大好きなゲーム。 Hex Blocksはハニカムで再生されるので、その部分は六角形で作られており、各列はジグザグです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Turn the piece one way or the other. Next to a wall, the piece moves aside to turn"
+msgstr "— Turn the piece one way or the other. Next to a wall, the piece moves aside to turn"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "In the Marathon, rows cleared together are worth more: 100, 300, 600 or 1,000 points, multiplied by the level. Clearing rows with several pieces in a row adds a bonus. Making a piece fall faster, or dropping it, also adds points."
+msgstr "In the Marathon, rows cleared together are worth more: 100, 300, 600 or 1,000 points, multiplied by the level. Clearing rows with several pieces in a row adds a bonus. Making a piece fall faster, or dropping it, also adds points."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Move the piece left or right. Keep the arrow pressed to keep moving"
+msgstr "— 左または右に移動します。 動き続けるために押された矢印キーを押し続ける"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "— Save the piece for later and take the next one. You can do this once for each piece"
+msgstr "— Save the piece for later and take the next one. You can do this once for each piece"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Blocks is a game for one player. Pieces made of four hexagons fall into a well shaped like a honeycomb. Turn each piece and slide it left or right as it falls. When a zigzag row is full from side to side, it disappears. The game ends when the pieces reach the top."
+msgstr "Hex Blocks is a game for one player. Pieces made of four hexagons fall into a well shaped like a honeycomb. Turn each piece and slide it left or right as it falls. When a zigzag row is full from side to side, it disappears. The game ends when the pieces reach the top."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#, elixir-autogen, elixir-format
+msgid "In Hex Blocks, pieces made of hexagons fall into a well. Use the keyboard to turn each piece and slide it to the side, or the buttons under the well on a phone."
+msgstr "In Hex Blocks, pieces made of hexagons fall into a well. Use the keyboard to turn each piece and slide it to the side, or the buttons under the well on a phone."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "— Tap the buttons under the well. You can hold a move with one thumb and turn with the other"
+msgstr "— ボタンをタップします。 1つの親指で動きを握り、他の指で回すことができます"

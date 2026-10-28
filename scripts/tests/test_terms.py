@@ -109,6 +109,27 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms("Tap a key of the keypad", "Toque numa chave do teclado", "pt_BR"))
         self.assertEqual(missing_terms("Tap a key of the keypad", "Toque numa tecla do teclado", "pt_BR"), [])
 
+    def test_hex_blocks_fall_into_a_well_and_never_in_autumn(self):
+        self.assertTrue(missing_terms("Falling blocks in a honeycomb", "Blocos de outono num favo", "pt_BR"))
+        self.assertTrue(missing_terms("Hexagon pieces fall into the well", "Sechskant-Teile fallen in den Brunnen", "de"))
+        self.assertTrue(missing_terms("Hexagon pieces fall into the well", "Sechseckige Teile fallen in den Brunnen", "de"))
+        self.assertEqual(missing_terms("Hexagon pieces fall into the well", "Sechseckige Teile fallen in den Schacht", "de"), [])
+        self.assertTrue(missing_terms("the space bar drops it", "die Raumleiste lässt es fallen", "de"))
+        self.assertTrue(missing_terms("the level goes up", "die Ebene steigt", "de"))
+        self.assertTrue(missing_terms("the Sprint of 40 rows", "el Sprint de 40 hectáreas", "es"))
+        self.assertTrue(missing_terms("fill a row to clear it", "preencha uma linha para clareá-la", "pt_BR"))
+        self.assertEqual(missing_terms("fill a row to clear it", "preencha uma linha para limpá-la", "pt_BR"), [])
+        self.assertTrue(missing_terms("Hold the key to keep moving", "Halten Sie den Schlüssel", "de"))
+        self.assertTrue(missing_terms("Keep the piece for later", "Guarde o pedaço para mais tarde", "pt_BR"))
+        self.assertTrue(missing_terms("Pieces fall into a well", "六角形の部分がよく落ちます", "ja"))
+        self.assertTrue(missing_terms("Pieces fall into a well", "piezas caen en un bien formado", "es"))
+        self.assertTrue(missing_terms("Pieces made of hexagons fall", "用六边形制成的碎片掉入井中", "zh_hans"))
+        self.assertTrue(missing_terms("The space bar", "Космический бар", "ru"))
+        self.assertTrue(missing_terms("The space bar drops it", "A barra espacial deixa cair", "pt_BR"))
+        self.assertTrue(missing_terms("The space bar", "空间栏", "zh_hans"))
+        self.assertEqual(missing_terms("The space bar", "空格键", "zh_hans"), [])
+        self.assertTrue(missing_terms("fall into a well shaped like", "fallen in eine gut geformte", "de"))
+
     def test_sudoku_is_written_as_each_language_writes_it(self):
         from i18n import names
 

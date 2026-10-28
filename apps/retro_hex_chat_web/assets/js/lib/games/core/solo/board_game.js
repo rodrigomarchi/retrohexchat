@@ -108,6 +108,26 @@ export const boardFlow = ({ tick, sounds, showTicks, finalScore, onShow = () => 
   },
 });
 
+/** Whether the player asked for less motion: a board's effects then hop, shake and run less. */
+export const reducedMotion = () =>
+  globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
+
+/**
+ * The match moved from `before` to the state the game holds now: the effects
+ * `effects` (a game's `(fx, { before, after, laid, now, random })`) draws of
+ * it, and a frame.
+ */
+export function drawMoved(game, before, effects) {
+  effects(game.fx, {
+    before,
+    after: game.gameState,
+    laid: game.laid,
+    now: game.frameCount,
+    random: game.fxRandom,
+  });
+  game.invalidate();
+}
+
 /** What a board game's picture is drawn from: the match, the layout, the effects, the atlas, the colours, the frame. */
 export const boardScene = (game) => ({
   state: game.gameState,

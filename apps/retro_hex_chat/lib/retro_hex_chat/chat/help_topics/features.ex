@@ -2318,6 +2318,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-spider",
           "feature-hex-mines",
           "feature-hex-sudoku",
+          "feature-hex-blocks",
           "feature-arcade"
         ]
       },
@@ -3390,6 +3391,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Sudoku for one player, in three levels. Fill the grid so every row, column and box holds the digits 1 to 9 once."
           ),
         see_also: ["feature-hex-mines", "feature-retro-games"]
+      },
+      %{
+        id: "feature-hex-blocks",
+        title: dgettext("help", "Hex Blocks"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          "hex blocks",
+          "blocks",
+          dgettext("help", "falling blocks"),
+          dgettext("help", "puzzle"),
+          "game"
+        ],
+        icon: :icon_game_blocks,
+        description:
+          dgettext(
+            "help",
+            "Blocks made of hexagons fall into a well, for one player. Fill a zigzag row to clear it. Play the Marathon, or the Sprint of 40 rows."
+          ),
+        see_also: ["feature-hex-sudoku", "feature-retro-games"]
       },
       # ── Solo Arcade ──────────────────────────────────
       %{

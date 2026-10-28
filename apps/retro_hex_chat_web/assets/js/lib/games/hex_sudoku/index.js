@@ -16,9 +16,11 @@ import {
   boardDefinition,
   boardFlow,
   boardScene,
+  drawMoved,
   endTick,
   eventSounds,
   loadAtlas,
+  reducedMotion,
 } from "../core/solo/board_game.js";
 import { PHASE, TAP_SLOP } from "../core/solo/phases.js";
 import { laidFor, tableView } from "../core/solo/view.js";
@@ -36,23 +38,12 @@ const EVENT_SOUNDS = eventSounds(EVENT);
 /** How long the grid shows a win before its result is told: the light runs from the centre out. */
 const SHOW_TICKS = 150;
 
-const reducedMotion = () =>
-  globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
-
 /** An action played, with what it draws. */
 function play(game, action) {
   if (!action) return;
   const before = game.gameState;
   game.gameState = act(before, action, game.random);
-  if (game.gameState === before) return;
-  playedEffects(game.fx, {
-    before,
-    after: game.gameState,
-    laid: game.laid,
-    now: game.frameCount,
-    random: game.fxRandom,
-  });
-  game.invalidate();
+  if (game.gameState !== before) drawMoved(game, before, playedEffects);
 }
 
 function onPointer(game, event) {

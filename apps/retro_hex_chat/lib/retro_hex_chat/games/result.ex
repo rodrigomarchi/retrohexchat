@@ -57,7 +57,9 @@ defmodule RetroHexChat.Games.Result do
   # A game whose best is known: the jungle holds 2000 points and 32 treasures;
   # a table of solitaire or FreeCell every move's points and the bonus of a
   # 30-second win; Spider its 500 to start and the eight suits; a minefield a
-  # win in one second; a Sudoku a win in one minute.
+  # win in one second; a Sudoku a win in one minute; a Hex Blocks Sprint forty
+  # rows in thirty seconds. The Hex Blocks Marathon has no best — the pieces
+  # come as fast as a player drops them — so it keeps a score game's ceiling.
   @game_ceilings %{
     "hex_jungle" => 114_000,
     "hex_solitaire" => 24_078,
@@ -71,7 +73,8 @@ defmodule RetroHexChat.Games.Result do
     "hex_mines_expert" => 10_000,
     "hex_sudoku" => 10_000,
     "hex_sudoku_medium" => 10_000,
-    "hex_sudoku_hard" => 10_000
+    "hex_sudoku_hard" => 10_000,
+    "hex_blocks_sprint" => 10_000
   }
 
   @doc "Every outcome, in the order a column of them is validated against."

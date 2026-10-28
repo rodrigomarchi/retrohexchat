@@ -21,6 +21,7 @@ BRAND_RE = re.compile(
     r"Hex Spider: Two Suits|Hex Spider: Four Suits|Hex Spider|Spider solitaire|Spider|"
     r"Hex Mines: Intermediate|Hex Mines: Expert|Hex Mines|Minesweeper|"
     r"Hex Sudoku: Medium|Hex Sudoku: Hard|Hex Sudoku|Sudoku|XY-Wing|X-Wing|Swordfish|"
+    r"Hex Blocks: Sprint|Hex Blocks|"
     r"mIRC|IRC|CTCP|DCC|"
     r"LibreQuake|QuakeSpasm|WebRTC|LiveView|PostgreSQL|Elixir|Phoenix)\b"
 )

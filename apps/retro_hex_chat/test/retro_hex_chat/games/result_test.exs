@@ -235,6 +235,20 @@ defmodule RetroHexChat.Games.ResultTest do
       end
     end
 
+    test "refuses a Sprint of Hex Blocks faster than thirty seconds, and keeps the Marathon to a score game's ceiling" do
+      assert {:ok, %Result{p1_score: 10_000}} =
+               Result.normalize("hex_blocks_sprint", %{"score" => %{"p1" => 10_000, "p2" => 0}})
+
+      assert {:error, :implausible} =
+               Result.normalize("hex_blocks_sprint", %{"score" => %{"p1" => 10_001, "p2" => 0}})
+
+      assert {:ok, %Result{p1_score: 9_999_999}} =
+               Result.normalize("hex_blocks", %{"score" => %{"p1" => 9_999_999, "p2" => 0}})
+
+      assert {:error, :implausible} =
+               Result.normalize("hex_blocks", %{"score" => %{"p1" => 10_000_000, "p2" => 0}})
+    end
+
     test "refuses more points than a table of FreeCell can score" do
       assert {:ok, %Result{p1_score: 23_853}} =
                Result.normalize("hex_freecell", %{"score" => %{"p1" => 23_853, "p2" => 0}})

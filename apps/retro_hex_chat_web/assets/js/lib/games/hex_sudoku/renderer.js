@@ -10,7 +10,7 @@
  */
 
 import { readGameColors } from "../../game_colors.js";
-import { drawPiece as piece } from "../core/atlas.js";
+import { drawLed, drawPiece as piece } from "../core/atlas.js";
 import { drawParticleDots } from "../core/render.js";
 import { glowAt, hopAt, shakeAt } from "./effects.js";
 import { digitsOf, sees } from "./grid.js";
@@ -35,16 +35,9 @@ export function readColors(canvas) {
   });
 }
 
-/** Lit digits and colons, one cell each, as the bar shows its counts. */
-function led(ctx, atlas, text, place, colors) {
-  const cell = 22;
-  let x = place.x;
-  for (const char of text) {
-    const w = char === ":" ? 10 : cell - 1;
-    piece(ctx, atlas, char === ":" ? "colon" : `digit_${char}`, { ...place, x, w }, colors.frame);
-    x += w + 1;
-  }
-}
+/** Lit digits and colons, as the bar shows its counts. */
+const led = (ctx, atlas, text, place, colors) =>
+  drawLed(ctx, atlas, text, place, colors.frame, { digit: 21, colon: 10 });
 
 /** The clock as minutes and seconds; past 99 minutes, three digits of minutes. */
 function clockText(ticks) {

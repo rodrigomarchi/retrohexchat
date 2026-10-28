@@ -409,6 +409,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: id}) when id in ~w(hex_sudoku hex_sudoku_medium hex_sudoku_hard),
     do: dgettext("games", "Every row, column and box holds 1 to 9")
 
+  def goal_label(%{id: "hex_blocks"}), do: dgettext("games", "Clear rows as the pieces speed up")
+  def goal_label(%{id: "hex_blocks_sprint"}), do: dgettext("games", "40 rows, as fast as you can")
+
   # A card table stands up on a phone held upright: the game lays itself out
   # on the box it is given (`view` in its definition), so on a narrow screen
   # the box is tall and the cards are as big as the phone allows.
@@ -419,6 +422,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
   defp canvas_box_aspect(%{id: id}) when id in ~w(hex_sudoku hex_sudoku_medium hex_sudoku_hard),
     do: "aspect-[448/632] sm:aspect-[4/3]"
+
+  defp canvas_box_aspect(%{id: id}) when id in ~w(hex_blocks hex_blocks_sprint),
+    do: "aspect-[400/640] sm:aspect-[4/3]"
 
   defp canvas_box_aspect(%{id: id})
        when id in ~w(hex_freecell hex_spider hex_spider_2suits hex_spider_4suits hex_mines
@@ -478,6 +484,19 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       %{label: dgettext("games", "Erase a square"), keys: ["Delete", "Backspace"]},
       %{label: dgettext("games", "Hint (adds a minute)"), keys: ["H"]},
       %{label: dgettext("games", "Undo"), keys: ["Z"]}
+    ]
+  end
+
+  # The keyboard on a desktop; on a phone, the buttons under the well.
+  def control_rows(%{id: id}) when id in ~w(hex_blocks hex_blocks_sprint) do
+    [
+      %{label: dgettext("games", "Move"), keys: ["←", "→"]},
+      %{label: dgettext("games", "Turn"), keys: ["↑", "X"]},
+      %{label: dgettext("games", "Turn the other way"), keys: ["Z"]},
+      %{label: dgettext("games", "Fall faster"), keys: ["↓"]},
+      %{label: dgettext("games", "Drop to the bottom"), keys: ["Space"]},
+      %{label: dgettext("games", "Keep a piece for later"), keys: ["C", "Shift"]},
+      %{label: dgettext("games", "Play on a phone"), keys: [dgettext("games", "Tap the buttons")]}
     ]
   end
 

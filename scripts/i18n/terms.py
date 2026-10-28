@@ -747,6 +747,59 @@ _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("广场",),
         "zh_hant": ("廣場",),
     },
+    # Hex Blocks: blocks that fall, never autumn; a hexagon, never a hex bolt;
+    # the well they fall into, never a fountain; the space bar, never a room.
+    r"\bfall(?:s|ing)?\b": {
+        "pt": ("outono",),
+        "es": ("otoño",),
+        "fr": ("automne",),
+        "de": ("herbst",),
+        "it": ("autunno",),
+    },
+    r"\bhexagons?\b": {
+        "de": ("sechskant",),
+    },
+    r"\b(?:the|a|honeycomb)\s+well\b": {
+        "de": ("brunnen", " gut "),
+        "es": (" bien ",),
+        "ja": ("よく",),
+    },
+    r"\bspace\s+bar\b": {
+        "pt": ("espacial",),
+        "de": ("raum",),
+        "ru": ("космическ", "пространств"),
+        "zh_hans": ("空间",),
+        "zh_hant": ("空間",),
+    },
+    # A game's piece, never a scrap of something.
+    r"\b(?:the|a|each|several)\s+pieces?\b|\bpieces\s+(?:made|fall)\b": {
+        "pt": ("pedaço",),
+        "ru": ("кус",),
+        "ja": ("部分",),
+        "zh_hans": ("碎片", "片段"),
+        "zh_hant": ("碎片", "片段"),
+    },
+    # A game's level, never a plane.
+    r"\b(?:the|times\s+the)\s+level\b": {
+        "de": ("ebene",),
+    },
+    # A row of a game, never a measure of land.
+    r"\b\d+\s+rows\b|\b\d+-row\b": {
+        "es": ("hectárea",),
+    },
+    # A row cleared away, never made light.
+    r"\bclear(?:s|ed|ing)?\s+(?:it|them|a\s+row|rows|\d+\s+rows)\b|\bto\s+clear\s+it\b": {
+        "pt": ("clare", "esclarec"),
+        "es": ("aclar",),
+    },
+    # A key held down on the keyboard, never a door's key.
+    r"\b(?:hold|press)\s+the\s+key\b": {
+        "pt": ("chave",),
+        "es": ("llave",),
+        "fr": ("clé", "clef"),
+        "de": ("schlüssel",),
+        "it": ("chiave",),
+    },
     r"(?<!HEV )\bsuits?\b": {
         "pt": ("fato", "terno"),
         "es": ("traje",),

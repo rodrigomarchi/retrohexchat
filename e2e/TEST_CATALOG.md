@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **267 spec files** under `e2e/tests/`.
-- **673 Playwright `test()` cases**.
-- **616 documented flows**, 615 done, 1 not done.
+- **268 spec files** under `e2e/tests/`.
+- **675 Playwright `test()` cases**.
+- **618 documented flows**, 617 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -497,6 +497,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N86 | Hex Mines on a phone: the board stands up and fits the screen, a tap opens it, and the switch turns a tap into a flag | `tests/game-hex-mines.spec.ts` | done |
 | N87 | Hex Sudoku on the desktop: opened from the Retro Games folder, the grid is made, a click chooses a square, the arrows move it, H gives a hint, N turns the pencil on, ended with End and written down | `tests/game-hex-sudoku.spec.ts` | done |
 | N88 | Hex Sudoku on a phone: the keypad stands under the grid and fits the screen, a tap chooses a square, the pencil switches on, the lamp gives a hint, and the page does not scroll | `tests/game-hex-sudoku.spec.ts` | done |
+| N89 | Hex Blocks on the desktop: opened from the Retro Games folder, the count runs out, the arrows move the piece and the space bar drops it, ended with End and written down | `tests/game-hex-blocks.spec.ts` | done |
+| N90 | Hex Blocks on a phone: the buttons stand under the well and fit the screen, a tap drops a piece, two fingers hold two buttons at once, and the page does not scroll | `tests/game-hex-blocks.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

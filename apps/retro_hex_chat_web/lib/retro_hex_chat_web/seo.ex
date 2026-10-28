@@ -324,6 +324,9 @@ defmodule RetroHexChatWeb.SEO do
   defp put_genre(data, %{id: id}) when id in ~w(hex_sudoku hex_sudoku_medium hex_sudoku_hard),
     do: Map.put(data, "genre", "Puzzle")
 
+  defp put_genre(data, %{id: id}) when id in ~w(hex_blocks hex_blocks_sprint),
+    do: Map.put(data, "genre", "Puzzle")
+
   defp put_genre(data, _game), do: data
 
   # An arcade game and a one-player Retro Game are played alone.

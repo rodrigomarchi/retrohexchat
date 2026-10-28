@@ -476,6 +476,8 @@ export function defineGame(def) {
       }
       const point = this._pointAt(event, false);
       if (point) this._pointerQueue.push({ type, ...point, finger });
+      // A finger lifted where no point can be read is still gone: the game hears it cancelled.
+      else if (type === "up") this._pointerQueue.push({ type: "cancel", finger });
       if (type === "up") this._fingers.delete(id);
     }
 

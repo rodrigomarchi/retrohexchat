@@ -9,6 +9,9 @@
  * kinds coming; `held` the kind put aside, `canHold` whether this piece may
  * be; `clock` the solo match's (`core/solo/clock.js`), from the first piece;
  * `combo` the clears in a row (-1 after a piece that cleared none);
+ * `landed` the last piece set in the well — its count `n`, its `cells`, the
+ * `well` before its rows went and, dropped, the `trail` it fell along — and
+ * `over` whether the stack went over the top, for the effects;
  * `cleared` the rows the last lock cleared, for the effects; `countdown` the
  * ticks left before the first piece; `fall` the ticks since the piece last
  * fell, `lock` the ticks it has rested, `resets` the moves that put its lock
@@ -23,6 +26,7 @@ import { startClock, tickMatch, untilTimeUp } from "../core/solo/clock.js";
 import { PHASE, ending } from "../core/solo/phases.js";
 import { fillQueue } from "./pieces.js";
 import {
+  CEILING,
   COUNTDOWN_TICKS,
   DROP_POINTS,
   EVENT,
@@ -35,6 +39,7 @@ import {
   fallTicks,
 } from "./protocol.js";
 import {
+  cellsOf,
   clearLines,
   createWell,
   fall,
@@ -68,6 +73,8 @@ export const createInitialState = (mode, random) => ({
   lines: 0,
   combo: -1,
   cleared: [],
+  landed: null,
+  over: false,
   countdown: COUNTDOWN_TICKS,
   ...RESTED,
   inputs: { left: false, right: false, down: false },
@@ -78,7 +85,12 @@ export const createInitialState = (mode, random) => ({
 const earned = (state, points) => (state.mode.sprint ? state.score : state.score + points);
 
 /** The end of a match that cannot go on: shown, then over, with the points it has. */
-const over = (state) => ({ ...state, phase: PHASE.CELEBRATING, events: state.events | EVENT.OVER });
+const over = (state) => ({
+  ...state,
+  phase: PHASE.CELEBRATING,
+  over: true,
+  events: state.events | EVENT.OVER,
+});
 
 /** The next piece from the queue at the top, or the end when it does not fit. */
 function next(state, random) {
@@ -89,8 +101,10 @@ function next(state, random) {
 }
 
 /** The piece set in the well: its rows cleared and counted, the level, and the next piece or the end. */
-function settle(state, piece, random) {
-  const locked = { ...state, well: lock(state.well, piece), events: state.events | EVENT.LOCK };
+function settle(state, piece, random, trail = null) {
+  const well0 = lock(state.well, piece);
+  const landed = { n: (state.landed?.n ?? 0) + 1, cells: cellsOf(piece), well: well0, trail };
+  const locked = { ...state, well: well0, landed, events: state.events | EVENT.LOCK };
   if (toppedOut(piece)) return over({ ...locked, piece: null });
   const { well, lines: rows } = clearLines(locked.well);
   const n = rows.length;
@@ -173,7 +187,7 @@ export function act(state, action, random) {
         score: earned(state, rows * DROP_POINTS.HARD),
         events: state.events | EVENT.DROP,
       };
-      return settle(dropped, landed, random);
+      return settle(dropped, landed, random, { cells: cellsOf(state.piece), rows });
     }
     case "hold": {
       const dealt = hold(state);
@@ -247,6 +261,6 @@ export function step(state, random) {
 
 /** The score the match ends on: the Marathon's points; a Sprint won, by its time, else nothing. */
 export const finalScore = (state) => {
-  if (!state.mode.sprint) return state.score;
+  if (!state.mode.sprint) return Math.min(state.score, CEILING);
   return state.won ? sprintPoints(state.clock.ticks) : 0;
 };

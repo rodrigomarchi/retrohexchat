@@ -13,9 +13,11 @@ import {
   boardDefinition,
   boardFlow,
   boardScene,
+  drawMoved,
   endTick,
   eventSounds,
   loadAtlas,
+  reducedMotion,
 } from "../core/solo/board_game.js";
 import { PHASE, TAP_SLOP } from "../core/solo/phases.js";
 import { laidFor, tableView } from "../core/solo/view.js";
@@ -33,9 +35,6 @@ const EVENT_SOUNDS = eventSounds(EVENT);
 /** How long the board shows how the match ended before its result is told: a win's flags all light. */
 const SHOW_TICKS = Object.freeze({ lost: 90, won: 150 });
 
-const reducedMotion = () =>
-  globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
-
 const levelOf = (game) => LEVEL[game.gameId] ?? LEVEL.hex_mines;
 
 /** An action from the board, played, with what it draws. */
@@ -43,16 +42,9 @@ function play(game, action) {
   if (!action) return;
   const before = game.gameState;
   game.gameState = act(before, action, game.random);
-  boardEffects(game.fx, {
-    before,
-    after: game.gameState,
-    laid: game.laid,
-    now: game.frameCount,
-    random: game.fxRandom,
-  });
+  drawMoved(game, before, boardEffects);
   // A flag planted with a long press: a short buzz where the phone allows it.
   if (action.type === "flag" && action.held) globalThis.navigator?.vibrate?.(15);
-  game.invalidate();
 }
 
 /** The square a press is held on, shown pressed while it is. */

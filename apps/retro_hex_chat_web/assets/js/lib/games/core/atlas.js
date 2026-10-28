@@ -58,3 +58,19 @@ export function drawPiece(ctx, atlas, name, r, fallback) {
   const a = atlas.regions[name];
   ctx.drawImage(atlas.image, a.x, a.y, a.w, a.h, r.x, r.y, r.w, r.h);
 }
+
+/**
+ * Lit digits in a row, each a region of the atlas (`digit_0`..`digit_9`,
+ * `colon`, `dot`), a pixel apart from `place`'s left: a digit `digit` wide, a
+ * colon or a dot `colon` wide, all `place.h` high.
+ */
+export function drawLed(ctx, atlas, text, place, fallback, { digit, colon }) {
+  const NAMES = { ":": "colon", ".": "dot" };
+  let x = place.x;
+  for (const char of text) {
+    const name = NAMES[char] ?? `digit_${char}`;
+    const w = NAMES[char] ? colon : digit;
+    drawPiece(ctx, atlas, name, { ...place, x, w }, fallback);
+    x += w + 1;
+  }
+}

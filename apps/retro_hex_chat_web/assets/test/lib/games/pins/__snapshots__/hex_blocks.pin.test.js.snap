@@ -1,0 +1,166 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_blocks pins > solo following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "08bc6daf6f3c3cc5",
+      "ops": 516,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "237ad2d63ebadcee",
+      "ops": 701,
+      "phase": 4,
+      "side": "host",
+      "t": 20304,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 20288,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 22288,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 404,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "9e542165b8dfe042",
+      "voices": {
+        "createGain": 115,
+        "createOscillator": 114,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "canHold": true,
+      "combo": -1,
+      "countdown": 0,
+      "events": 0,
+      "fall": 0,
+      "held": 0,
+      "level": 1,
+      "lines": 0,
+      "lock": 0,
+      "over": true,
+      "phase": 3,
+      "resets": 0,
+      "score": 404,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_blocks pins > solo to the end: hex_blocks 1`] = `
+{
+  "draws": [
+    {
+      "digest": "08bc6daf6f3c3cc5",
+      "ops": 516,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "084fcdc15fdbde8a",
+      "ops": 606,
+      "phase": 4,
+      "side": "host",
+      "t": 118032,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 118016,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 120016,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "ae3048a8e995737a",
+      "voices": {
+        "createGain": 21,
+        "createOscillator": 20,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "canHold": true,
+      "combo": -1,
+      "countdown": 0,
+      "events": 0,
+      "fall": 29,
+      "level": 1,
+      "lines": 0,
+      "lock": 29,
+      "over": true,
+      "phase": 3,
+      "resets": 0,
+      "score": 0,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;

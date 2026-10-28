@@ -16,6 +16,7 @@ const DEFINITION_LOADERS = {
   hex_jungle: () => import("./hex_jungle/index.js"),
   hex_mines: () => import("./hex_mines/index.js"),
   hex_sudoku: () => import("./hex_sudoku/index.js"),
+  hex_blocks: () => import("./hex_blocks/index.js"),
   hex_solitaire: () => import("./hex_solitaire/index.js"),
   hex_spider: () => import("./hex_spider/index.js"),
   hex_outlaw: () => import("./hex_outlaw/index.js"),

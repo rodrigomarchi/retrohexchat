@@ -353,6 +353,7 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_game_spider, RetroHexChatWeb.Icons.Games},
     {:icon_game_mines, RetroHexChatWeb.Icons.Games},
     {:icon_game_sudoku, RetroHexChatWeb.Icons.Games},
+    {:icon_game_blocks, RetroHexChatWeb.Icons.Games},
     {:icon_game_doom, RetroHexChatWeb.Icons.Games},
     {:icon_game_freedoom1, RetroHexChatWeb.Icons.Games},
     {:icon_game_freedoom2, RetroHexChatWeb.Icons.Games},

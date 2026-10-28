@@ -263,6 +263,41 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
              control_rows(sudoku)
   end
 
+  test "Hex Blocks stands up to its buttons, and is played by the keyboard or the buttons" do
+    blocks = %{@jungle | id: "hex_blocks", name: "Hex Blocks", icon: "game_blocks"}
+    sprint = %{blocks | id: "hex_blocks_sprint", name: "Hex Blocks: Sprint"}
+
+    box =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        status: "ready",
+        selected_game: blocks,
+        difficulty: "normal",
+        canvas_ready: true
+      )
+      |> Floki.parse_document!()
+      |> Floki.find(~s([data-testid="retro-game-canvas-hex_blocks"]))
+      |> Floki.attribute("class")
+      |> List.first()
+
+    assert box =~ "aspect-[400/640]"
+    assert box =~ "sm:aspect-[4/3]"
+    assert goal_label(blocks) == "Clear rows as the pieces speed up"
+    assert goal_label(sprint) == "40 rows, as fast as you can"
+
+    assert [
+             %{keys: ["←", "→"]},
+             %{keys: ["↑", "X"]},
+             %{keys: ["Z"]},
+             %{keys: ["↓"]},
+             %{keys: ["Space"]},
+             %{keys: ["C", "Shift"]},
+             %{keys: ["Tap the buttons"]}
+           ] = control_rows(blocks)
+
+    assert control_rows(sprint) == control_rows(blocks)
+  end
+
   test "Hex Spider is played by taps and drags and a tap on the deck, toward eight suits" do
     spider = %{@jungle | id: "hex_spider", name: "Hex Spider", icon: "game_spider"}
 

@@ -289,6 +289,25 @@ describe("the end", () => {
     expect(s.level).toBe(1);
   });
 
+  it("is over, and says so, when the next piece has no room to come in", () => {
+    const { state, r } = started();
+    const cells = [...state.well.cells];
+    // The middle of the top rows filled: the piece locks low, the next cannot come in.
+    for (let row = 0; row < 3; row++) for (let c = 3; c < 8; c++) cells[row * COLS + c] = 1;
+    const s = act(
+      { ...state, piece: { ...state.piece, c: 0, r: 10 }, well: { cells } },
+      { type: "drop" },
+      r,
+    );
+    expect(s.phase).toBe(PHASE.CELEBRATING);
+    expect(s.over).toBe(true);
+  });
+
+  it("never scores more than the server takes", () => {
+    const { state } = started();
+    expect(finalScore({ ...state, score: 12_345_678 })).toBe(9_999_999);
+  });
+
   it("calls time after three hours, as it stands", () => {
     const { state, r } = started();
     const s = step({ ...state, clock: { started: true, ticks: SAFETY_TICKS - 1 }, score: 77 }, r);

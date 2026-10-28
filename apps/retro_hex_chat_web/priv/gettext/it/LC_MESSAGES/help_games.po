@@ -607,6 +607,7 @@ msgstr "Controllare la distanza"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:8
@@ -1282,6 +1283,7 @@ msgid "Infinite descent — the course never ends"
 msgstr "Discesa infinita — il corso non finisce mai"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:70
@@ -1719,6 +1721,7 @@ msgid "Round 3"
 msgstr "Fase 3"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:38
@@ -1827,6 +1830,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:82
@@ -1863,7 +1867,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:177
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:183
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -4000,7 +4004,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:182
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:188
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -4056,6 +4060,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
@@ -4069,7 +4074,7 @@ msgstr ""
 msgid "Retro Games"
 msgstr "Giochi retro"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr ""
@@ -4084,7 +4089,7 @@ msgstr ""
 "mentre l'IA controlla quello destro. La difficoltà cambia quanto l'IA "
 "gestisce distanza, schivate e tempismo dei pugni."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:177
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4615,7 +4620,7 @@ msgstr "— la classifica del gioco"
 msgid "— this week's challenge and who leads it"
 msgstr "— la sfida di questa settimana e chi la guida"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:179
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:185
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
@@ -4743,6 +4748,7 @@ msgstr "Ogni dieci secondi di gioco costa 2 punti. Una vittoria guadagna un bonu
 msgid "Klondike is a card game from the nineteenth century, made famous on the PC by the solitaire that came with Windows."
 msgstr "Klondike è un gioco di carte del XIX secolo, reso famoso sul PC dal solitario che è venuto con Windows."
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
@@ -5134,3 +5140,108 @@ msgstr "Toccare una cifra accanto alla griglia, o premere 1 a 9"
 #, elixir-autogen, elixir-format
 msgid "— Write that digit in the square you chose. A digit turns grey next to the grid once all nine are in place"
 msgstr "- Scrivi quella cifra nella piazza che hai scelto. Una cifra diventa grigia accanto alla griglia una volta che tutti i nove sono in posizione"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "C or %{shift}"
+msgstr "C o %{shift}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Hex Blocks is the Marathon: every ten rows the level goes up and the pieces fall faster. Hex Blocks: Sprint is 40 rows against the clock, and the speed never changes."
+msgstr "Hex Blocks è la maratona: ogni dieci righe il livello sale e i pezzi cadono più velocemente. Hex Blocks: Sprint è 40 righe contro l'orologio, e la velocità non cambia mai."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku"
+msgstr "Hex Sudoku"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "In the Sprint, only your time counts: 40 rows in 30 seconds score 10,000, and a slower time scores less. If the pile reaches the top first, it scores nothing."
+msgstr "Nella Sprint, solo il tuo tempo conta: 40 righe in 30 secondi segnano 10.000, e un tempo più lento segna meno. Se la pila raggiunge la cima prima, non segna nulla."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "On a phone"
+msgstr "Sul telefono"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "The down arrow"
+msgstr "La freccia giù"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The left and right arrows"
+msgstr "Le frecce sinistra e destra"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "The next three pieces are shown beside the well. Every ten pieces, each of the ten shapes comes once."
+msgstr "I prossimi tre pezzi sono mostrati accanto al pozzo. Ogni dieci pezzi, ognuna delle dieci forme viene una volta."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "The space bar"
+msgstr "La barra spaziatrice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The up arrow or X, and Z"
+msgstr "La freccia su o X, e Z"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Hold it to make the piece fall faster"
+msgstr "— Tienilo per far cadere il pezzo più velocemente"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "When a piece lands on the pile, you have half a second to slide it into a gap before it stays there."
+msgstr "Quando un pezzo atterra sulla pila, hai mezzo secondo per scivolare in un gap prima che rimanga lì."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "— Drop the piece to the bottom at once. Its shadow in the well shows where it will land"
+msgstr "— Getta il pezzo in fondo subito. La sua ombra nel pozzo mostra dove atterra"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Games of falling blocks have been loved since the 1980s. Hex Blocks is played on a honeycomb, so its pieces are made of hexagons and each row is a zigzag."
+msgstr "Giochi di blocchi di caduta sono stati amati dal 1980. Hex Blocks è giocato su un nido d'ape, quindi i suoi pezzi sono fatti di esagoni e ogni fila è uno zigzag."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Turn the piece one way or the other. Next to a wall, the piece moves aside to turn"
+msgstr "— Girare il pezzo in un modo o nell'altro. Accanto a un muro, il pezzo si muove da parte per girare"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "In the Marathon, rows cleared together are worth more: 100, 300, 600 or 1,000 points, multiplied by the level. Clearing rows with several pieces in a row adds a bonus. Making a piece fall faster, or dropping it, also adds points."
+msgstr "Nella Maratona, le file cancellate insieme valgono più: 100, 300, 600 o 1.000 punti, moltiplicate per il livello. Cancellare le righe con diversi pezzi in fila aggiunge un bonus. Rendere un pezzo cadere più veloce, o cadere, aggiunge anche punti."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Move the piece left or right. Keep the arrow pressed to keep moving"
+msgstr "— Spostare il pezzo a sinistra o a destra. Tenere premuto la freccia per continuare a muoversi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "— Save the piece for later and take the next one. You can do this once for each piece"
+msgstr "— Salvare il pezzo per più tardi e prendere il prossimo. Puoi farlo una volta per ogni pezzo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Blocks is a game for one player. Pieces made of four hexagons fall into a well shaped like a honeycomb. Turn each piece and slide it left or right as it falls. When a zigzag row is full from side to side, it disappears. The game ends when the pieces reach the top."
+msgstr "Hex Blocks è un gioco per un giocatore. I pezzi fatti di quattro esagoni cadono in una forma ben sagomata come un nido d'ape. Girare ogni pezzo e scorrerlo a sinistra o a destra come cade. Quando una riga zigzag è piena da lato a lato, scompare. Il gioco termina quando i pezzi raggiungono la parte superiore."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#, elixir-autogen, elixir-format
+msgid "In Hex Blocks, pieces made of hexagons fall into a well. Use the keyboard to turn each piece and slide it to the side, or the buttons under the well on a phone."
+msgstr "In Hex Blocks, pezzi fatti di esagoni cadono in un pozzo. Utilizzare la tastiera per girare ogni pezzo e farlo scivolare sul lato, o i pulsanti sotto il pozzo su un telefono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "— Tap the buttons under the well. You can hold a move with one thumb and turn with the other"
+msgstr "— Toccare i pulsanti sotto il pozzo. Si può tenere una mossa con un pollice e girare con l'altro"

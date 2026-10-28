@@ -76,6 +76,12 @@ export const DROP_POINTS = Object.freeze({ SOFT: 1, HARD: 2 });
 /** A Sprint's win: `NUMERATOR` / its ticks, never fewer than `MIN_TICKS` (30 s): 30 s is 10,000. */
 export const SPRINT = Object.freeze({ NUMERATOR: 18_000_000, MIN_TICKS: 1_800 });
 
+/**
+ * The most a Marathon scores: a score game's ceiling on the server. A long
+ * run of clears can go past it, and the server would refuse the whole result.
+ */
+export const CEILING = 9_999_999;
+
 /** Three hours: a match still open then ends as it stands. */
 export const SAFETY_TICKS = 3 * 60 * 60 * 60;
 
