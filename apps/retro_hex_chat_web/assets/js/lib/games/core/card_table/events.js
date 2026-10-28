@@ -19,3 +19,14 @@ export const EVENT = Object.freeze({
   RETURN: 128,
   WIN: WIN_EVENT,
 });
+
+/**
+ * What the table's gestures say without moving a card: a card refused or a
+ * drag put back is only its event (the shake, the sound). Any other action
+ * leaves the match as it was.
+ */
+export function feedback(state, action) {
+  if (action.type === "refuse") return { ...state, events: state.events | EVENT.REFUSE };
+  if (action.type === "return") return { ...state, events: state.events | EVENT.RETURN };
+  return state;
+}

@@ -1,7 +1,18 @@
 import { describe, it, expect } from "vitest";
-import { createGesture, toCanvasPoint } from "../../../../js/lib/games/core/pointer.js";
+import { contains, createGesture, toCanvasPoint } from "../../../../js/lib/games/core/pointer.js";
 
 const rect = (left, top, width, height) => ({ left, top, width, height });
+
+describe("contains", () => {
+  it("tells a point on a place, its far edges outside, and nothing on no place", () => {
+    const r = { x: 10, y: 20, w: 30, h: 40 };
+    expect(contains(r, 10, 20)).toBe(true);
+    expect(contains(r, 39, 59)).toBe(true);
+    expect(contains(r, 40, 20)).toBe(false);
+    expect(contains(r, 10, 60)).toBe(false);
+    expect(contains(null, 10, 20)).toBe(false);
+  });
+});
 
 describe("toCanvasPoint", () => {
   it("scales a point on a canvas drawn at twice its size", () => {

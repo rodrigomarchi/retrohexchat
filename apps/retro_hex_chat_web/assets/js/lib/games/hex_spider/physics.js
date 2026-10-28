@@ -10,6 +10,7 @@
  * @module games/hex_spider/physics
  */
 
+import { feedback } from "../core/card_table/events.js";
 import { addPoints, startClock, tickMatch, untilTimeUp } from "../core/solo/clock.js";
 import { PHASE, ending } from "../core/solo/phases.js";
 import { EVENT, GEOMETRY, POINTS } from "./protocol.js";
@@ -52,12 +53,8 @@ export function act(state, action) {
       return played(state, applyMove(state.table, action.move), EVENT.PLACE);
     case "deal":
       return played(state, dealRow(state.table), EVENT.DEAL);
-    case "refuse":
-      return { ...state, events: state.events | EVENT.REFUSE };
-    case "return":
-      return { ...state, events: state.events | EVENT.RETURN };
     default:
-      return state;
+      return feedback(state, action);
   }
 }
 

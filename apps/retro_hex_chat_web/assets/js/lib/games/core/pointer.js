@@ -10,6 +10,10 @@
  * @module games/core/pointer
  */
 
+/** Whether `x`, `y` lands on the place `r` (`{ x, y, w, h }`); never on a place there is none of. */
+export const contains = (r, x, y) =>
+  Boolean(r) && x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
+
 /**
  * The canvas pixel under a point of the page, or null off the picture.
  *

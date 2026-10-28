@@ -87,6 +87,3 @@ export function cellAt(laid, x, y) {
   if (bx >= laid.level.cols || by >= laid.level.rows) return null;
   return by * laid.level.cols + bx;
 }
-
-/** Whether a point lands on a place. */
-export const on = (r, x, y) => r !== null && x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;

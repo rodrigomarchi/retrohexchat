@@ -36,9 +36,14 @@ import { defineGame } from "../define_game.js";
 import { playFlags } from "../events.js";
 import { createLayer } from "../layers.js";
 import { createGesture } from "../pointer.js";
-import { soundTheEnd } from "../solo/board_game.js";
+import {
+  boardDefinition,
+  boardFlow,
+  eventSounds,
+  loadAtlas,
+  reducedMotion,
+} from "../solo/board_game.js";
 import { laidFor, tableView } from "../solo/view.js";
-import { soloResult } from "../result.js";
 import { active, createEffects, settle, stepEffects } from "./effects.js";
 import { feltWeave, readTableColors } from "./render.js";
 import { CELEBRATION_TICKS, PHASE, TAP_SLOP } from "../solo/phases.js";
@@ -51,13 +56,6 @@ export { EVENT } from "./events.js";
 /** The back a player last chose, kept by the browser for every card game. */
 const BACK_KEY = "retrohex.cards.back";
 const BACKS = 4;
-
-/** The sound of each event bit, by the event's name: `FOUNDATION` plays `foundation`. */
-const eventSounds = (events) =>
-  Object.entries(events).map(([name, bit]) => [bit, name.toLowerCase()]);
-
-const reducedMotion = () =>
-  globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
 
 /**
  * The layer the cascade of a win leaves its trail on, or null where the page
@@ -185,28 +183,40 @@ export function defineCardTable(table) {
     }
   }
 
+  // The cascade of a win, before the result is told: until its cards are
+  // off the felt, or a tap ends it.
+  const ending = boardFlow({
+    tick,
+    sounds,
+    showTicks: () => CELEBRATION_TICKS,
+    settled: (game) => !active(game.fx),
+    finalScore: match.finalScore,
+    onShow: (game) => {
+      game.drag = null;
+      game.trail = reducedMotion() ? null : trailLayer(game);
+      effects.cascadeEffects(game.fx, game.gameState.table, game.frameCount, game.fxRandom);
+    },
+    onFinish: (game) => {
+      game.drag = null;
+    },
+  });
+
   return defineGame({
-    players: 1,
-    pointer: true,
-    pixelArt: true,
-    resolution: 2,
-    inputs: {},
-    audio: { sounds: table.sounds ?? SOUNDS, masterVolume: MASTER_VOLUME },
-    theme: readTableColors,
+    // A match ended mid-celebration keeps the bonus its win earned (`standing`).
+    ...boardDefinition({
+      sounds: table.sounds ?? SOUNDS,
+      masterVolume: MASTER_VOLUME,
+      theme: readTableColors,
+      finalScore: match.finalScore,
+    }),
     setup: (game) => {
       game.frameCount = 0;
       game.gesture = createGesture({ slop: TAP_SLOP });
       game.drag = null;
       game.heldDrag = null;
       game.back = storedBack();
-      game.atlas = null;
       game.trail = null;
-      browserCardAtlasLoader()(CARD_ATLAS_URL)
-        .then((atlas) => {
-          game.atlas = atlas;
-          game.invalidate();
-        })
-        .catch((error) => log.warn(`[${name}] the card atlas did not load`, error));
+      loadAtlas(game, CARD_ATLAS_URL, name, browserCardAtlasLoader());
     },
     // A phone held upright gives the canvas a box taller than wide: the table
     // stands up in it, so the cards are as big as the phone allows.
@@ -220,10 +230,9 @@ export function defineCardTable(table) {
     },
     onPointer,
     flow: {
-      phases: PHASE,
-      initial: "WAITING",
-      begin: "PLAYING",
+      ...ending,
       states: {
+        ...ending.states,
         PLAYING: {
           enter: (game) => {
             effects.dealEffects(game.fx, game.gameState.table, game.frameCount);
@@ -232,38 +241,8 @@ export function defineCardTable(table) {
           tick,
         },
         AUTO_FINISH: { tick },
-        // The cascade of a win, before the result is told.
-        CELEBRATING: {
-          enter: (game) => {
-            game.drag = null;
-            game.celebration = 0;
-            game.trail = reducedMotion() ? null : trailLayer(game);
-            effects.cascadeEffects(game.fx, game.gameState.table, game.frameCount, game.fxRandom);
-            soundTheEnd(game, sounds);
-          },
-          tick: (game) => {
-            game.frameCount++;
-            game.celebration++;
-            stepEffects(game.fx, game.frameCount);
-            game.invalidate();
-            if (!active(game.fx) || game.celebration >= CELEBRATION_TICKS) {
-              game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
-            }
-          },
-        },
-        FINISHED: {
-          final: true,
-          enter: (game) => {
-            game.drag = null;
-            playFlags(game, sounds, game.gameState.events);
-            game.invalidate();
-            game.finish({ result: soloResult(match.finalScore(game.gameState)) });
-          },
-        },
       },
     },
-    // A match ended mid-celebration keeps the bonus its win earned.
-    standing: (game) => soloResult(match.finalScore(game.gameState)),
     render: (game) => {
       // Made once the colours are read; false where the page cannot make one.
       game.felt ??= feltWeave(game.ctx, game.colors, game.canvas.ownerDocument) ?? false;

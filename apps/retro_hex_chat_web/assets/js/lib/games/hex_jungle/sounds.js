@@ -4,22 +4,14 @@
  * @module games/hex_jungle/sounds
  */
 
-import { fade, glide } from "../core/synth.js";
+import { fade, glide, notes } from "../core/synth.js";
 import { DEATH_TICKS } from "./protocol.js";
 
 export const MASTER_VOLUME = 0.3;
 
-/** A square note that rings out, `delay` seconds in. */
-const note = (freq, dur, vol, delay = 0) => ({
-  wave: "square",
-  freq,
-  vol: fade(vol, dur, "exp"),
-  dur,
-  delay,
-});
-
-/** A run of square notes, each `step` seconds after the last. */
-const run = (freqs, step, vol) => freqs.map((freq, i) => note(freq, step * 0.9, vol, i * step));
+/** A run of square notes that ring out, each `step` seconds after the last. */
+const run = (freqs, step, vol) =>
+  notes(freqs, { wave: "square", note: step * 0.9, vol, gap: step * 0.1, fadeKind: "exp" });
 
 const DEATH_TUNE = [523, 494, 440, 392, 349, 330, 294, 262, 247, 220, 196, 175];
 

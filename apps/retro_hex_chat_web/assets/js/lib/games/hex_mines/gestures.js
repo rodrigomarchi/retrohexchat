@@ -8,7 +8,8 @@
  * @module games/hex_mines/gestures
  */
 
-import { cellAt, on } from "./layout.js";
+import { contains } from "../core/pointer.js";
+import { cellAt } from "./layout.js";
 import { CELL } from "./rules.js";
 
 /**
@@ -20,7 +21,7 @@ import { CELL } from "./rules.js";
  */
 export function interpret(state, laid, gesture) {
   if (gesture.type !== "tap" && gesture.type !== "hold") return null;
-  if (gesture.type === "tap" && on(laid.mode, gesture.x, gesture.y)) return { type: "mode" };
+  if (gesture.type === "tap" && contains(laid.mode, gesture.x, gesture.y)) return { type: "mode" };
   const i = cellAt(laid, gesture.x, gesture.y);
   if (i === null) return null;
   const flagging = gesture.type === "hold" || gesture.button === "secondary";

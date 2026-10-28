@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { boardFlow } from "../../../../../js/lib/games/core/solo/board_game.js";
 import {
   SAFETY_TICKS,
   scoreWithBonus,
@@ -67,5 +68,50 @@ describe("the table a solo game is laid on", () => {
     );
     expect(perGame(canvasIn(800, 600), "big")).toEqual({ width: 720, height: 480 });
     expect(laidFor(GEOMETRY, { width: 464, height: 720 })).toBe(GEOMETRY.PORTRAIT);
+  });
+});
+
+describe("a board game's flow", () => {
+  const game = (overrides = {}) => ({
+    frameCount: 0,
+    fx: { list: [] },
+    gameState: { phase: PHASE.CELEBRATING, events: 0, score: 7 },
+    invalidate: () => {},
+    finish: () => {},
+    playSound: () => {},
+    ...overrides,
+  });
+  const flow = (options = {}) =>
+    boardFlow({
+      tick: () => {},
+      sounds: [],
+      showTicks: () => 3,
+      finalScore: (s) => s.score,
+      ...options,
+    });
+
+  it("shows the end for its ticks, or until it settles", () => {
+    const shown = game();
+    const { CELEBRATING } = flow().states;
+    CELEBRATING.enter(shown);
+    CELEBRATING.tick(shown);
+    CELEBRATING.tick(shown);
+    expect(shown.gameState.phase).toBe(PHASE.CELEBRATING);
+    CELEBRATING.tick(shown);
+    expect(shown.gameState.phase).toBe(PHASE.FINISHED);
+
+    const settled = game();
+    const early = flow({ settled: () => true }).states.CELEBRATING;
+    early.enter(settled);
+    early.tick(settled);
+    expect(settled.gameState.phase).toBe(PHASE.FINISHED);
+  });
+
+  it("tells the result once finished, after its own last word", () => {
+    const order = [];
+    const finished = game({ finish: ({ result }) => order.push(["finish", result]) });
+    flow({ onFinish: () => order.push(["onFinish"]) }).states.FINISHED.enter(finished);
+    expect(order[0]).toEqual(["onFinish"]);
+    expect(order[1][0]).toBe("finish");
   });
 });

@@ -11,6 +11,8 @@
  * @module games/hex_sudoku/layout
  */
 
+import { contains } from "../core/pointer.js";
+
 const BAR = 44;
 
 /** The tools, in the order they stand. */
@@ -92,21 +94,18 @@ export function layout(geometry) {
 export const squarePlace = (laid, i) =>
   place(laid.grid.x + (i % 9) * laid.cell, laid.grid.y + Math.floor(i / 9) * laid.cell, laid.cell);
 
-/** Whether a point lands on a place. */
-const on = (r, x, y) => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
-
 /**
  * What a point of the canvas lands on: a square `{ type: "square", i }`, a
  * key `{ type: "key", d }`, a tool `{ type: "tool", name }`, or null.
  */
 export function hitAt(laid, x, y) {
-  if (on(laid.grid, x, y)) {
+  if (contains(laid.grid, x, y)) {
     const col = Math.floor((x - laid.grid.x) / laid.cell);
     const row = Math.floor((y - laid.grid.y) / laid.cell);
     return { type: "square", i: row * 9 + col };
   }
-  const key = laid.keys.findIndex((r) => on(r, x, y));
+  const key = laid.keys.findIndex((r) => contains(r, x, y));
   if (key >= 0) return { type: "key", d: key + 1 };
-  const tool = TOOLS.find((name) => on(laid.tools[name], x, y));
+  const tool = TOOLS.find((name) => contains(laid.tools[name], x, y));
   return tool ? { type: "tool", name: tool } : null;
 }

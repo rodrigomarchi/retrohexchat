@@ -38,15 +38,18 @@ export const boardDefinition = ({ sounds, masterVolume, theme, finalScore }) => 
   standing: (game) => soloResult(finalScore(game.gameState)),
 });
 
-/** The game's atlas, fetched in the background: `game.atlas` once it is here, a frame drawn. */
-export function loadAtlas(game, url, name) {
+/**
+ * The game's atlas, fetched in the background with `loader` (a card table's
+ * checks its cards): `game.atlas` once it is here, a frame drawn.
+ */
+export function loadAtlas(game, url, name, loader = createAtlasLoader(browserAtlasIO)) {
   game.atlas = null;
-  createAtlasLoader(browserAtlasIO)(url)
+  loader(url)
     .then((atlas) => {
       game.atlas = atlas;
       game.invalidate();
     })
-    .catch((error) => log.warn(`[${name}] the tiles did not load`, error));
+    .catch((error) => log.warn(`[${name}] the atlas did not load`, error));
 }
 
 /** The sounds of how a match ended, played once: its events are cleared, and a frame drawn. */
@@ -72,11 +75,22 @@ export function endTick(game, { step, sounds }) {
 
 /**
  * The flow of a board game: in play (`tick`), then the board shown as the
- * match ended for `showTicks(state)` ticks, then the result.
+ * match ended for `showTicks(state)` ticks — or until `settled(game)`, its
+ * effects run out — then the result, with the sounds of an end that came
+ * without a show.
  * @param {{ tick: Function, sounds: Array, showTicks: (state: object) => number,
- *   finalScore: (state: object) => number, onShow?: (game: object) => void }} flow
+ *   finalScore: (state: object) => number, onShow?: (game: object) => void,
+ *   settled?: (game: object) => boolean, onFinish?: (game: object) => void }} flow
  */
-export const boardFlow = ({ tick, sounds, showTicks, finalScore, onShow = () => {} }) => ({
+export const boardFlow = ({
+  tick,
+  sounds,
+  showTicks,
+  finalScore,
+  onShow = () => {},
+  settled = () => false,
+  onFinish = () => {},
+}) => ({
   phases: PHASE,
   initial: "WAITING",
   begin: "PLAYING",
@@ -93,7 +107,7 @@ export const boardFlow = ({ tick, sounds, showTicks, finalScore, onShow = () => 
         game.shown++;
         stepEffects(game.fx, game.frameCount);
         game.invalidate();
-        if (game.shown >= showTicks(game.gameState)) {
+        if (settled(game) || game.shown >= showTicks(game.gameState)) {
           game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
         }
       },
@@ -101,7 +115,8 @@ export const boardFlow = ({ tick, sounds, showTicks, finalScore, onShow = () => 
     FINISHED: {
       final: true,
       enter: (game) => {
-        game.invalidate();
+        onFinish(game);
+        soundTheEnd(game, sounds);
         game.finish({ result: soloResult(finalScore(game.gameState)) });
       },
     },

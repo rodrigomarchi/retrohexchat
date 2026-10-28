@@ -10,6 +10,7 @@
  * @module games/hex_solitaire/physics
  */
 
+import { feedback } from "../core/card_table/events.js";
 import { AUTO_TICKS, EVENT, GEOMETRY, PHASE } from "./protocol.js";
 import { applyMove, autoFinishReady, deal, draw, nextAutoMove, recycle, won } from "./rules.js";
 import { scoreWithBonus, tickMatch, untilTimeUp } from "../core/solo/clock.js";
@@ -74,12 +75,8 @@ export function act(state, action) {
       const next = played(state, action.move);
       return next === state ? state : { ...next, clock: startClock(next.clock) };
     }
-    case "refuse":
-      return { ...state, events: state.events | EVENT.REFUSE };
-    case "return":
-      return { ...state, events: state.events | EVENT.RETURN };
     default:
-      return state;
+      return feedback(state, action);
   }
 }
 

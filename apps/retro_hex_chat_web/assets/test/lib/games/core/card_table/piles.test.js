@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   cardPlace,
   columnCards,
-  contains,
   fanOffsets,
   overlap,
 } from "../../../../../js/lib/games/core/card_table/piles.js";
+import { contains } from "../../../../../js/lib/games/core/pointer.js";
 
 const CARD = { width: 64, height: 88 };
 

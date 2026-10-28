@@ -6,7 +6,8 @@
  * @module games/hex_solitaire/layout
  */
 
-import { cardPlace, contains, hitColumns, layColumns } from "../core/card_table/piles.js";
+import { cardPlace, hitColumns, layColumns } from "../core/card_table/piles.js";
+import { contains } from "../core/pointer.js";
 import { CARD, COLUMNS, GEOMETRY, TABLE, TOP_ROW } from "./protocol.js";
 
 /** The table a game is laid out on: its own, or lying down when it names none. */

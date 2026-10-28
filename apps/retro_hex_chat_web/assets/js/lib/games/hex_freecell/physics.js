@@ -11,6 +11,7 @@
  * @module games/hex_freecell/physics
  */
 
+import { feedback } from "../core/card_table/events.js";
 import {
   addPoints,
   scoreWithBonus,
@@ -70,12 +71,8 @@ export function act(state, action) {
       const next = played(state, action.move);
       return next === state ? state : { ...next, clock: startClock(next.clock), autoTicks: 0 };
     }
-    case "refuse":
-      return { ...state, events: state.events | EVENT.REFUSE };
-    case "return":
-      return { ...state, events: state.events | EVENT.RETURN };
     default:
-      return state;
+      return feedback(state, action);
   }
 }
 

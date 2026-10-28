@@ -7,7 +7,8 @@
  * @module games/hex_spider/layout
  */
 
-import { cardPlace, columnX, contains, hitColumns, layColumns } from "../core/card_table/piles.js";
+import { cardPlace, columnX, hitColumns, layColumns } from "../core/card_table/piles.js";
+import { contains } from "../core/pointer.js";
 import { COLUMNS, GEOMETRY } from "./protocol.js";
 
 /** The table a game is laid out on: its own, or lying down when it names none. */

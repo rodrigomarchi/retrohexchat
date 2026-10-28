@@ -1,16 +1,15 @@
 /**
- * The geometry every card table shares: a card's place, whether a point lands
- * on it, how much two places cover each other, and how far apart a column's
+ * The geometry every card table shares: a card's place, how much two places
+ * cover each other, and how far apart a column's
  * cards stand when it grows longer than the felt below it.
  *
  * @module games/core/card_table/piles
  */
 
+import { contains } from "../pointer.js";
+
 /** A card's place at `x`, `y`, the size of `card` (`{ width, height }`). */
 export const cardPlace = (x, y, card) => ({ x, y, w: card.width, h: card.height });
-
-/** Whether `x`, `y` lands on the place `r`. */
-export const contains = (r, x, y) => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
 
 /** How many pixels two places cover of each other. */
 export const overlap = (a, b) =>
