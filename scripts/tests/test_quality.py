@@ -75,6 +75,14 @@ class DegenerateTest(unittest.TestCase):
     def test_ignores_short_repetition(self):
         self.assertFalse(is_degenerate("muito muito bom"))
 
+    def test_detects_a_loop_inside_a_sentence_without_spaces(self):
+        # ja: "You can do it once for each piece" -> "ひとつひとつひとつ…" after a
+        # good first sentence: the whole text is not the loop, only its tail.
+        looped = "— 後からピースを保ち、次のいずれかを取ります。 " + "ひとつ" * 11 + "にできる"
+        self.assertTrue(is_degenerate(looped))
+        self.assertFalse(is_degenerate("ひとつひとつ丁寧に作ります。"))
+        self.assertFalse(is_degenerate("いろいろいろな色"))
+
     def test_detects_a_label_doubled_without_spaces(self):
         # ja: "Time" -> "タイムタイム". Japanese has no spaces, so the token
         # count never saw the loop.

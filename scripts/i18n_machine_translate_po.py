@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from i18n import catalogs, glossary, locales, numerals  # noqa: E402
 from i18n.pipeline import DEFAULT_BATCH_CHARS, DEFAULT_BATCH_SIZE, Pipeline, wrong_words  # noqa: E402
 from i18n.protection import has_sentinel_residue  # noqa: E402
+from i18n.quality import introduced_degeneration  # noqa: E402
 from i18n.terms import brazilian_forms, italian_accents  # noqa: E402
 from i18n.translator import TraditionalChinesePostprocessor, build, build_back  # noqa: E402
 
@@ -342,6 +343,8 @@ def cached_usable(cache: dict, code: str, source: str) -> bool:
         value is not None
         and value != source
         and not has_sentinel_residue(value)
+        # A loop the checks learned to see after it was cached.
+        and not introduced_degeneration(source, value)
         # A term added since it was cached may refuse it now: the cache would
         # otherwise hand the refused wording back in every run.
         and not wrong_words(source, value, code)

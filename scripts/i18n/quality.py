@@ -25,6 +25,10 @@ DEGENERATE_CHAR_RUN = re.compile(r"(\S)\1{7,}")
 # read this way: an alphabet has spaces, and "ricarica" is Italian.
 DEGENERATE_UNSPACED = re.compile(r"(\S{3,}?)\1+")
 LATIN_LETTER = re.compile(r"[A-Za-z\u00c0-\u024f]")
+# A unit of two characters or more repeated five times in a row inside text
+# written without spaces, e.g. ja "ひとつひとつひとつ…" after a good first
+# sentence. A word doubled (ひとつひとつ, いろいろ) is far short of five.
+DEGENERATE_UNSPACED_RUN = re.compile(r"(\S{2,}?)\1{4,}")
 # One translation serving at least this many distinct sources means the model
 # collapsed unrelated strings onto a single output.
 COLLAPSE_THRESHOLD = 5
@@ -46,6 +50,10 @@ def is_degenerate(text: str) -> bool:
 
     if not LATIN_LETTER.search(text) and DEGENERATE_UNSPACED.fullmatch(text.strip()):
         return True
+
+    for run in DEGENERATE_UNSPACED_RUN.finditer(text):
+        if not LATIN_LETTER.search(run.group(1)):
+            return True
 
     return bool(DEGENERATE_CHAR_RUN.search(text))
 

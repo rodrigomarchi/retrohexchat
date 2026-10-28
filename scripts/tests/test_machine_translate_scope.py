@@ -107,6 +107,15 @@ class CacheTest(unittest.TestCase):
         good = {self.key("es", source): "Una celda libre guarda una carta."}
         self.assertFalse(machine_translate_po.must_translate(good, "es", source, False))
 
+    def test_a_cached_loop_is_translated_again(self):
+        # Cached before the loop check saw inside a sentence, "ひとつひとつ…"
+        # came back from the cache in every run.
+        source = "— Keep the piece for later and take the next one. You can do it once for each piece"
+        looped = "— 後からピースを保ち、次のいずれかを取ります。 " + "ひとつ" * 11 + "にできる"
+        cache = {self.key("ja", source): looped}
+
+        self.assertTrue(machine_translate_po.must_translate(cache, "ja", source, False))
+
     def test_a_forced_msgid_never_comes_from_the_cache(self):
         cache = {self.key("nl", "Who runs a room"): "Wie leidt een kamer"}
 
