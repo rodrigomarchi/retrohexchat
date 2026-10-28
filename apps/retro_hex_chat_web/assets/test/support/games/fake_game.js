@@ -178,3 +178,13 @@ export const FakeTwoButtonGame = defineGame({
     s.log.push([s.ticks, event.type, event.x ?? null, event.y ?? null, event.button ?? null]);
   },
 });
+
+/** A pointer game that follows every finger: its log keeps which finger each event is. */
+export const FakeMultiTouchGame = defineGame({
+  ...pointerDefinition,
+  multiTouch: true,
+  onPointer: (game, event) => {
+    const s = game.gameState;
+    s.log.push([s.ticks, event.type, event.x ?? null, event.y ?? null, event.finger]);
+  },
+});
