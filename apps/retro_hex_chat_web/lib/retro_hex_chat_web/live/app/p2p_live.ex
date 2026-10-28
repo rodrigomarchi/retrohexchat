@@ -28,6 +28,8 @@ defmodule RetroHexChatWeb.App.P2PLive do
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.Games.ArcadeIcon
+  import RetroHexChatWeb.Components.UI.Games.GameStage
   import RetroHexChatWeb.Components.UI.SessionNotice
   import RetroHexChatWeb.Components.UI.P2P.StartingRoom
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
@@ -196,7 +198,11 @@ defmodule RetroHexChatWeb.App.P2PLive do
             on_share="share_p2p"
             on_revoke="revoke_p2p"
             class="justify-start"
-          />
+            scope={if @match_game, do: :window, else: :viewport}
+            variant={if @match_game, do: "arcade-secondary", else: "default"}
+          >
+            <:icon :if={@match_game}><.arcade_icon name={:link} /></:icon>
+          </.live_component>
         </:footer>
       </.p2p_starting_room>
 
@@ -256,34 +262,46 @@ defmodule RetroHexChatWeb.App.P2PLive do
   attr :ended, :map, default: nil
   attr :game, :map, default: nil
 
+  defp p2p_left(%{game: %{}} = assigns) do
+    ~H"""
+    <%!-- A match ends on its game's stage, as every Retro Game does. --%>
+    <.game_stage id="p2p-left" class="h-full" data-testid="p2p-left" menu_open menu_lock>
+      <div class="h-full w-full"></div>
+      <:menu>
+        <div class="grid justify-items-center gap-retro-6">
+          <Icons.game_icon game_id={@game.id} class="h-12 w-12" />
+          <h3 class="arcade-title" data-testid="p2p-left-reason">{ended_text(@ended, @game)}</h3>
+          <p :if={match_unplayed?(@ended)} class="arcade-muted" data-testid="p2p-left-detail">
+            {dgettext("p2p", "The match did not start.")}
+          </p>
+          <div class="grid w-full grid-cols-2 gap-retro-6">
+            <.button
+              variant="arcade"
+              navigate={Paths.play_path(@game.id) <> "?match=new"}
+              data-testid="p2p-left-play-again"
+            >
+              <:icon><.arcade_icon name={:again} /></:icon>
+              {dgettext("p2p", "Play again")}
+            </.button>
+            <.button
+              variant="arcade-secondary"
+              navigate={Paths.play_path(@game.id)}
+              data-testid="p2p-left-back-to-game"
+            >
+              <:icon><.arcade_icon name={:play} /></:icon>
+              {dgettext("p2p", "Back to the game")}
+            </.button>
+          </div>
+        </div>
+      </:menu>
+    </.game_stage>
+    """
+  end
+
   defp p2p_left(assigns) do
     ~H"""
     <.session_notice icon={:icon_protocol_p2p_compact} testid="p2p-left">
       <span data-testid="p2p-left-reason">{ended_text(@ended, @game)}</span>
-      <:note :if={@game}>
-        <p :if={match_unplayed?(@ended)} data-testid="p2p-left-detail">
-          {dgettext("p2p", "The match did not start.")}
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <.button
-            size="sm"
-            navigate={Paths.play_path(@game.id) <> "?match=new"}
-            data-testid="p2p-left-play-again"
-          >
-            <:icon><Icons.icon_btn_join class="h-4 w-4" /></:icon>
-            {dgettext("p2p", "Play again")}
-          </.button>
-          <.button
-            size="sm"
-            variant="outline"
-            navigate={Paths.play_path(@game.id)}
-            data-testid="p2p-left-back-to-game"
-          >
-            <:icon><Icons.game_icon game_id={@game.id} class="h-4 w-4" /></:icon>
-            {dgettext("p2p", "Back to the game")}
-          </.button>
-        </div>
-      </:note>
     </.session_notice>
     """
   end

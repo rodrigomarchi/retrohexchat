@@ -403,7 +403,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M38 | An admin gives a bot a language with /bot set or Bot Management, and its flag is drawn beside its nickname in the user list, the roster and its detail | `tests/chat-bot-management-window.spec.ts` | done |
 | M39 | /bot set game_announce on gives a bot the Game capability, which Bot Management shows as a working capability that can be switched off | `tests/chat-bot-management-window.spec.ts` | done |
 | M40 | Play on an arcade game's public page opens the Arcade on that game for a member, and asks a visitor to sign in from the Arcade icon | `tests/chat-arcade.spec.ts` | done |
-| M41 | End pressed mid-match writes the match down as it stood: the score and "Ended early", with nobody named the winner (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M41 | End pressed mid-match (from the menu over it) writes the match down as it stood: the score and "Ended early", with nobody named the winner (features P2) | `tests/chat-retro-games.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 
@@ -450,7 +450,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N39 | A conference participant reloads while applying the SFU offer and rejoins media | `tests/chat-call-fault-injection.spec.ts` | done |
 | N40 | Conference retry rejoins media when the participant PeerServer disappears | `tests/chat-call-fault-injection.spec.ts` | done |
 | N41 | The conference recovery-error Leave button opens confirm and exits cleanly | `tests/chat-call-fault-injection.spec.ts` | done |
-| N42 | The P2P session at /p2p/:token carries real video both ways, and file transfer and the game share the same connection | `tests/p2p-surface.spec.ts` | done |
+| N42 | The P2P session at /p2p/:token carries real video both ways, and file transfer and the game share the same connection; the game is on its stage, and Esc opens and closes the menu over the match | `tests/p2p-surface.spec.ts` | done |
 | N43 | A second tab of the same session moves it, and the displaced tab takes it back | `tests/p2p-surface.spec.ts` | done |
 | N44 | Closing the P2P tab does not end the session for the other side | `tests/p2p-surface.spec.ts` | done |
 | N45 | A match link minted inside a game is followed from another browser, the seat is taken and the game runs over the P2P session | `tests/game-open-lobby.spec.ts` | done |
@@ -475,32 +475,32 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N64 | A game's channel names its game under the topic, and Find a partner puts one seat's card in the channel; pressing it again points at the same card | `tests/game-channels.spec.ts` | done |
 | N65 | A match between two people is written down once: Scoreboard, the room's announcing bot, says it in the game's channel with a card, and the same card lands in the two players' private conversation | `tests/game-channels.spec.ts` | done |
 | N66 | A visitor reads a game's channel and its public page — ranking, latest matches, the channel's last lines — and pressing Find a partner opens the sign-in window | `tests/game-channels.spec.ts` | done |
-| N67 | Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames | `tests/game-open-lobby.spec.ts` | done |
-| N68 | The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page | `tests/game-open-lobby.spec.ts` | done |
+| N67 | Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames, with nothing over it but the key that opens its menu | `tests/game-open-lobby.spec.ts` | done |
+| N68 | The players see how many are watching and the watch link to hand on, in the menu over their match (which fits a phone-sized window); the match is offered to watch under its game channel's topic and on the game's page | `tests/game-open-lobby.spec.ts` | done |
 | N69 | A full match's link, a playing nickname's menu and the game's page each lead to watching it; a member's Play on the game's page opens beside the desktop | `tests/game-open-lobby.spec.ts` | done |
 | N70 | A result card's game name opens the game's home, whose You tab shows the player's own rating and latest matches | `tests/game-channels.spec.ts` | done |
 | N71 | Whoever enters a game's channel is told by Scoreboard what the game is and where its weekly challenge stands, and !ranking is answered in the room from the game's own data | `tests/game-channels.spec.ts` | done |
 | N72 | An arcade game's channel names its game under the topic and Pixel tells whoever arrives what the game is and its controls; Play opens the in-app Arcade on that game, and starting it is said by Pixel in the game's channel and in #arcade, each line with its card | `tests/arcade-channels.spec.ts` | done |
 | N73 | An arcade game's page is its home: Play with the game's sheet, who played it lately, who plays it most, the reader's own plays and the channel's last lines | `tests/arcade-channels.spec.ts` | done |
 | N74 | A visitor reads an arcade game's channel and its page; pressing Play opens the sign-in window, which returns to the same game | `tests/arcade-channels.spec.ts` | done |
-| N75 | A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End is written down, in the player's own record and among the best runs | `tests/game-solo-only.spec.ts` | done |
+| N75 | A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End from the menu is written down, in the player's own record and among the best runs | `tests/game-solo-only.spec.ts` | done |
 | N76 | In the channel of a game played alone, the strip offers Play without Find a partner, and /lfg says the game is played alone | `tests/game-solo-only.spec.ts` | done |
 | N77 | Players who take their time in a match room — reading it, pressing Ready a while after arriving — still get the game when the host presses Start | `tests/game-open-lobby.spec.ts` | done |
 | N78 | When a match room ends, the window says why and that the match did not start, and offers Play again — a new room for the same game — or the game's page | `tests/game-open-lobby.spec.ts` | done |
-| N79 | Hex Solitaire on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock turns a card), ended with End and written down | `tests/game-hex-solitaire.spec.ts` | done |
+| N79 | Hex Solitaire on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock turns a card), ended with End from the menu and written down | `tests/game-hex-solitaire.spec.ts` | done |
 | N80 | Hex Solitaire on a phone: the table stands up, fits the screen, and a tap on the stock turns a card | `tests/game-hex-solitaire.spec.ts` | done |
-| N81 | Hex FreeCell on the desktop: opened from the Retro Games folder, played with the mouse (a click on a column's foot moves its card), ended with End and written down | `tests/game-hex-freecell.spec.ts` | done |
+| N81 | Hex FreeCell on the desktop: opened from the Retro Games folder, played with the mouse (a click on a column's foot moves its card), ended with End from the menu and written down | `tests/game-hex-freecell.spec.ts` | done |
 | N82 | Hex FreeCell on a phone: the table stands up with the mini cards, fits the screen, and a tap moves a card | `tests/game-hex-freecell.spec.ts` | done |
-| N83 | Hex Spider on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock deals a row), ended with End and written down | `tests/game-hex-spider.spec.ts` | done |
+| N83 | Hex Spider on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock deals a row), ended with End from the menu and written down | `tests/game-hex-spider.spec.ts` | done |
 | N84 | Hex Spider on a phone: the table stands up with the mini cards, fits the screen, and a tap on the stock deals a row | `tests/game-hex-spider.spec.ts` | done |
-| N85 | Hex Mines on the desktop: opened from the Retro Games folder, a click opens the field, a right click plants a flag, ended with End and written down | `tests/game-hex-mines.spec.ts` | done |
+| N85 | Hex Mines on the desktop: opened from the Retro Games folder, a click opens the field, a right click plants a flag, ended with End from the menu and written down | `tests/game-hex-mines.spec.ts` | done |
 | N86 | Hex Mines on a phone: the board stands up and fits the screen, a tap opens it, and the switch turns a tap into a flag | `tests/game-hex-mines.spec.ts` | done |
-| N87 | Hex Sudoku on the desktop: opened from the Retro Games folder, the grid is made, a click chooses a square, the arrows move it, H gives a hint, N turns the pencil on, ended with End and written down | `tests/game-hex-sudoku.spec.ts` | done |
+| N87 | Hex Sudoku on the desktop: opened from the Retro Games folder, the grid is made, a click chooses a square, the arrows move it, H gives a hint, N turns the pencil on, ended with End from the menu and written down | `tests/game-hex-sudoku.spec.ts` | done |
 | N88 | Hex Sudoku on a phone: the keypad stands under the grid and fits the screen, a tap chooses a square, the pencil switches on, the lamp gives a hint, and the page does not scroll | `tests/game-hex-sudoku.spec.ts` | done |
-| N89 | Hex Blocks on the desktop: opened from the Retro Games folder, the count runs out, the pad and End stand in sight, the arrows move the piece and the space bar drops it, ended with End and written down | `tests/game-hex-blocks.spec.ts` | done |
-| N90 | Hex Blocks on a phone: the pad every keyboard game shares stands under the game and fits the screen, a tap on its drop button drops a piece, two fingers hold the cross and a button at once, and the page does not scroll | `tests/game-hex-blocks.spec.ts` | done |
-| N91 | The pad under a keyboard game on the desktop: Hex Pong shows its cross with only the arrows it uses, the pad and End stand in sight, and a press held on the pad holds the key the game reads | `tests/game-pad.spec.ts` | done |
-| N92 | The pad under a keyboard game on a phone: Hex Pong fits the screen with its pad, a finger on the cross holds the arrow key down and lifting it lets go, and the page does not scroll | `tests/game-pad.spec.ts` | done |
+| N89 | Hex Blocks on the desktop: opened from the Retro Games folder, the count runs out with nothing over the game but the corner key (no pad on a computer), the arrows move the piece and the space bar drops it, ended with End from the menu and written down | `tests/game-hex-blocks.spec.ts` | done |
+| N90 | Hex Blocks on a phone: the pad every keyboard game shares lies over the game and fits the screen, a tap on its drop button drops a piece, two fingers hold the cross and a button at once, and the page does not scroll | `tests/game-hex-blocks.spec.ts` | done |
+| N91 | A Retro Game on its stage, on the desktop: Hex Pong fills the window with its menu over it (what it plays to, its keys, the difficulty, Play vs AI) and no pad; once the match runs nothing is over the game but the corner key; Esc holds it under the Paused menu and Continue goes on; End shows the result in the menu, and Again brings the ready menu back | `tests/game-stage.spec.ts` | done |
+| N92 | A Retro Game on its stage, on a phone: Hex Pong and its pad fit the screen, the pad lies over the game, a finger on the cross holds the arrow key down and lifting it lets go, the page does not scroll, and the corner key opens the Paused menu | `tests/game-stage.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

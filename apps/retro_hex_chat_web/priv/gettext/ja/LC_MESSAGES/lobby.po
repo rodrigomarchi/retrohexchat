@@ -11,28 +11,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:285
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:283
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer} はミュートされます"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:199
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:198
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer}のカメラは消えます"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:168
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:306
 #, elixir-autogen, elixir-format
 msgid "%{score} P2"
 msgstr "%{score}のP2"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:220
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:196
 #, elixir-autogen, elixir-format
 msgid "Accept"
 msgstr "承認"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:186
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:190
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:327
 #, elixir-autogen, elixir-format
 msgid "Back to games"
 msgstr "ゲームに戻る"
@@ -42,7 +41,7 @@ msgstr "ゲームに戻る"
 msgid "Browse files"
 msgstr "ファイルの閲覧"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:47
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:54
 #, elixir-autogen, elixir-format
 msgid "Connect to play a game."
 msgstr "ゲームを再生するために接続します。"
@@ -57,24 +56,23 @@ msgstr "ファイルを送信するために接続します。"
 msgid "Could not access your microphone or camera."
 msgstr "マイクやカメラにアクセスできません。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:228
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:206
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "拒否"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:703
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:714
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:701
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:712
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "デバイス"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:343
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:372
 #, elixir-autogen, elixir-format
 msgid "Draw."
 msgstr "ドロー。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:116
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:117
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:283
 #, elixir-autogen, elixir-format
 msgid "End game"
 msgstr "エンドゲーム"
@@ -84,88 +82,88 @@ msgstr "エンドゲーム"
 msgid "File transfer completed: %{name}"
 msgstr "ファイル転送完了: %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:151
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:297
 #, elixir-autogen, elixir-format
 msgid "Final Score"
 msgstr "最終スコア"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:608
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:606
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "フォーカス"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:89
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:250
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "ゲーム進行中"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:164
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:302
 #, elixir-autogen, elixir-format
 msgid "P1 %{score}"
 msgstr "P1 %{score}の特長"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:564
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:562
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "ピクチャー・イン・ピクチャー"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:406
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:404
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "オーディオの開始"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:393
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:391
 #, elixir-autogen, elixir-format
 msgid "Start audio or video — or the peer can, independently. You'll join automatically."
 msgstr "オーディオまたはビデオの開始 — またはピアは独立してできます。 自動的に参加します。"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:415
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:413
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "ビデオを始める"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:470
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:468
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "カメラをオンにする"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:448
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:446
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "マイクをオンにする"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:240
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:222
 #, elixir-autogen, elixir-format
 msgid "Waiting for %{peer} to accept..."
 msgstr "%{peer} をリクエストする"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:340
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:369
 #, elixir-autogen, elixir-format
 msgid "You lose."
 msgstr "あなたは失います。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:339
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:368
 #, elixir-autogen, elixir-format
 msgid "You win!"
 msgstr "勝つ!"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:166
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:304
 #, elixir-autogen, elixir-format
 msgid "×"
 msgstr "・時間"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:291
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:340
 #, elixir-autogen, elixir-format
 msgid "%{count} games"
 msgstr "%{count} ゲーム"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:207
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:184
 #, elixir-autogen, elixir-format
 msgid "%{peer} wants to play"
 msgstr "%{peer} がプレイしたがっています"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:215
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:190
 #, elixir-autogen, elixir-format
 msgid "Accept game invite"
 msgstr "ゲームの招待を受け入れて下さい"
@@ -181,12 +179,12 @@ msgstr "アクティブ"
 msgid "Call and game stay active with %{peer}."
 msgstr "通話とゲームは %{peer} と引き続き有効です。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:252
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:234
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:248
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:229
 #, elixir-autogen, elixir-format
 msgid "Cancel game invite"
 msgstr "ゲームをキャンセルする"
@@ -196,7 +194,7 @@ msgstr "ゲームをキャンセルする"
 msgid "Check file"
 msgstr "ファイルをチェックする"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:223
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:200
 #, elixir-autogen, elixir-format
 msgid "Decline game invite"
 msgstr "Declineゲーム招待"
@@ -212,13 +210,8 @@ msgstr "ここにファイルをドロップするか、参照してください
 msgid "Files"
 msgstr "ファイル"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:299
-#, elixir-autogen, elixir-format
-msgid "Finished"
-msgstr "終了"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:45
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:58
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:52
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:119
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "ゲーム"
@@ -227,11 +220,6 @@ msgstr "ゲーム"
 #, elixir-autogen, elixir-format
 msgid "Incoming"
 msgstr "インカム"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:305
-#, elixir-autogen, elixir-format
-msgid "Invite"
-msgstr "招待"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:67
 #, elixir-autogen, elixir-format
@@ -246,18 +234,13 @@ msgstr "提供サービス"
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:155
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "パユース"
+msgstr "一時停止中"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:65
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:68
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:129
 #, elixir-autogen, elixir-format
 msgid "Peer %{peer}"
 msgstr "ピア %{peer}"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:296
-#, elixir-autogen, elixir-format
-msgid "Playing"
-msgstr "プレイ中"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:83
 #, elixir-autogen, elixir-format
@@ -265,25 +248,20 @@ msgid "Preparing file transfer."
 msgstr "ファイル転送の準備"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:160
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:307
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:135
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "準備完了"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:244
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:224
 #, elixir-autogen, elixir-format
 msgid "The call remains live while the invite is pending."
 msgstr "招待が終わる間、呼び出しは生き残ります。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:211
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:186
 #, elixir-autogen, elixir-format
 msgid "The call stays active while the game runs."
 msgstr "ゲームが実行している間、コールはアクティブにとどまります。"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:302
-#, elixir-autogen, elixir-format
-msgid "Waiting"
-msgstr "待ち合わせ"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/panel_parts.ex:40
 #, elixir-autogen, elixir-format
@@ -291,7 +269,7 @@ msgid "Waiting for P2P connection"
 msgstr "P2P接続待ち"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:148
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:287
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:336
 #, elixir-autogen, elixir-format
 msgid "peer"
 msgstr "パートナー"
@@ -301,28 +279,27 @@ msgstr "パートナー"
 msgid "Queued for after the current transfer: %{name}"
 msgstr "現在の転送のあとに送ります: %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:728
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:726
 #, elixir-autogen, elixir-format
 msgid "No devices to choose from. Check the browser's camera and microphone permissions."
 msgstr "選べるデバイスがありません。ブラウザーのカメラとマイクの許可を確認してください。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:341
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:370
 #, elixir-autogen, elixir-format
 msgid "Cleared together!"
 msgstr "一緒にクリア!"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:344
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:373
 #, elixir-autogen, elixir-format
 msgid "Match over."
 msgstr "マッチオーバー。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:342
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:371
 #, elixir-autogen, elixir-format
 msgid "Out of lives."
 msgstr "人生を生きる"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:177
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:183
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:319
 #, elixir-autogen, elixir-format
 msgid "Rematch"
 msgstr "再戦"

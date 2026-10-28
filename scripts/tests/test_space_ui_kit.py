@@ -109,6 +109,33 @@ class BuildTest(unittest.TestCase):
         for path, data in author_ui.build().items():
             self.assertTrue(author_ui.same_output(path, data), os.path.relpath(path))
 
+    def test_the_arcade_kit_is_its_own(self):
+        arcade = author_ui.KITS["arcade"]
+        files = author_ui.build(arcade)
+        self.assertEqual(files, author_ui.build(arcade))
+        for path, data in files.items():
+            self.assertTrue(author_ui.same_output(path, data), os.path.relpath(path))
+        space = author_ui.build()
+        self.assertFalse(set(files) & set(space), "the two kits write the same file")
+        css = files[arcade.css_out].decode()
+        self.assertIn(".arcade-ui {", css)
+        self.assertNotIn("--space-ui-", css)
+
+
+class NeonStatesTest(unittest.TestCase):
+    NAVY = (24, 22, 51, 255)
+    OUTLINE = (3, 2, 5, 255)
+    CYAN = (87, 233, 236, 255)
+
+    def test_lit_lights_the_face_and_leaves_the_outline_black(self):
+        lit = author_ui.STATES["lit"]
+        self.assertGreater(lit(*self.NAVY[:3])[1], self.NAVY[1] + 30)
+        self.assertEqual(lit(*self.OUTLINE[:3]), self.OUTLINE[:3])
+
+    def test_alarm_turns_the_cyan_line_red(self):
+        r, g, b = author_ui.STATES["alarm"](*self.CYAN[:3])
+        self.assertGreater(r, g + 80)
+
 
 if __name__ == "__main__":
     unittest.main()

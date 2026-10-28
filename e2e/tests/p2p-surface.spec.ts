@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N42 [done] The P2P session at /p2p/:token carries real video both ways, and file transfer and the game share the same connection
+ * @flow N42 [done] The P2P session at /p2p/:token carries real video both ways, and file transfer and the game share the same connection; the game is on its stage, and Esc opens and closes the menu over the match
  * @flow N43 [done] A second tab of the same session moves it, and the displaced tab takes it back
  * @flow N44 [done] Closing the P2P tab does not end the session for the other side
  *
@@ -155,8 +155,9 @@ test.describe("P2P session at its own address", () => {
 
       const consent = bobSession.getByTestId("lobby-game-consent");
       await expect(consent).toBeVisible({ timeout: 15_000 });
-      await shot(aliceSession.getByTestId("lobby-game-panel"), "games-waiting");
-      await shot(bobSession.getByTestId("lobby-game-panel"), "games-consent");
+      // From the proposal on, the game is on its stage, the question its menu.
+      await shot(aliceSession.getByTestId("lobby-game-stage"), "games-waiting");
+      await shot(bobSession.getByTestId("lobby-game-stage"), "games-consent");
       await consent.getByRole("button", { name: "Accept" }).click();
 
       for (const page of [aliceSession, bobSession]) {
@@ -164,6 +165,20 @@ test.describe("P2P session at its own address", () => {
           timeout: 20_000,
         });
       }
+      // Nothing over the match but the corner key; it opens the menu, and the
+      // match goes on under it.
+      await expect(aliceSession.getByTestId("game-stage-menu")).toBeHidden();
+      await shot(aliceSession.getByTestId("lobby-game-stage"), "games-playing");
+      await aliceSession.getByTestId("game-stage-menu-key").click();
+      await expect(aliceSession.getByTestId("lobby-game-end")).toBeVisible();
+      await shot(aliceSession.getByTestId("lobby-game-stage"), "games-menu");
+      // Esc closes it, though the match it lies over takes every other key.
+      await aliceSession.keyboard.press("Escape");
+      await expect(aliceSession.getByTestId("game-stage-menu")).toBeHidden();
+      await aliceSession.keyboard.press("Escape");
+      await expect(aliceSession.getByTestId("lobby-game-end")).toBeVisible();
+      await aliceSession.getByTestId("lobby-game-resume").click();
+      await expect(aliceSession.getByTestId("game-stage-menu")).toBeHidden();
 
       // The thesis: call + file + game coexist, and the video is STILL flowing
       // after everything else ran — in a tab with no chat in it.

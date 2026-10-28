@@ -3053,32 +3053,32 @@ msgstr "切換 P2P 屏幕共享"
 msgid "the other user"
 msgstr "另一個用戶"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:74
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:68
 #, elixir-autogen, elixir-format
 msgid "Attack"
 msgstr "攻擊"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:32
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:34
 #, elixir-autogen, elixir-format
 msgid "Virtual control pad"
 msgstr "虛擬方向板"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:94
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:79
 #, elixir-autogen, elixir-format
 msgid "Walk down"
 msgstr "向下走"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:86
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:80
 #, elixir-autogen, elixir-format
 msgid "Walk left"
 msgstr "向左走"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:90
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:81
 #, elixir-autogen, elixir-format
 msgid "Walk right"
 msgstr "向右走"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:82
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:78
 #, elixir-autogen, elixir-format
 msgid "Walk up"
 msgstr "向上走"
@@ -3100,7 +3100,7 @@ msgstr "正在加入..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:152
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:153
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:628
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:646
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P 工作階段"
@@ -3267,7 +3267,7 @@ msgstr "工作階段 ID 無效。"
 msgid "Invalid terminal id."
 msgstr "終端機 ID 無效。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:299
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:317
 #: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Session ended."
@@ -3782,7 +3782,7 @@ msgstr "你需要先加入 %{channel} 才能進入它的空間。"
 msgid "The P2P signaling channel refused this session."
 msgstr "P2P 訊令通道拒絕了此工作階段。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:626
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:644
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
@@ -3792,12 +3792,12 @@ msgstr "P2P · %{peer}"
 msgid "This P2P session moved to another window of yours."
 msgstr "此 P2P 工作階段已移到你的另一個視窗。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:620
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:623
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · 對局"
@@ -4401,7 +4401,7 @@ msgstr "現場已經有一塊了"
 msgid "Only one piece at a time, please wait."
 msgstr "一次只有一塊,請等待。"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:65
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:61
 #: lib/retro_hex_chat_web/live/app/space_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Use"
@@ -5512,7 +5512,7 @@ msgstr "棕褐色"
 msgid "Colour"
 msgstr "顏色"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:54
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Dance"
@@ -6047,7 +6047,7 @@ msgstr "%{channel} 已不在你的自動加入清單中。"
 msgid "Could not connect to %{peer}."
 msgstr "無法連接到 %{peer} 。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:294
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:312
 #, elixir-autogen, elixir-format
 msgid "The game expired before it started."
 msgstr "遊戲開始前已過期."

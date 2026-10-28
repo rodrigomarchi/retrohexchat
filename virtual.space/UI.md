@@ -140,6 +140,36 @@ change adds characters:
     /tmp/rh_font_venv/bin/pip install -r virtual.space/tools/requirements-font.txt
     /tmp/rh_font_venv/bin/python virtual.space/tools/subset_pixel_font.py
 
+## The arcade kit (the Retro Games' stage)
+
+The Retro Games are played on a stage of their own (`Games.GameStage`), drawn in a second kit
+built the same way: `virtual.space/ui-arcade/` (`kit.json`, `manifest.json`, `pixellab/`,
+`reference/master.png`), `python3 virtual.space/tools/author_ui.py --kit arcade`
+(`make arcade.ui`, checked by `make arcade.ui.check` in `make lint.css`). Its outputs are
+`priv/static/images/arcade/ui/`, `arcade-ui-kit.generated.css` (tokens `--arcade-ui-*` on
+`.arcade-ui`, icons `.arcade-icon--*`) and, by hand, `arcade-ui.css`. It has no canvas pieces,
+so no geometry file. Black chrome lit by a cyan and a magenta line, in the canvas's own neon.
+
+What it taught:
+
+- **A dark kit needs its own state recipes.** Lightening toward white does nothing to navy:
+  `glow`, `lit`, `lit_pressed`, `alarm` light the face toward cyan or turn the cyan line red,
+  and touch only the face's navy — not the black outline, which otherwise grows a halo.
+- **Measure the slice; the seam check is not enough.** A slice thinner than the frame put the
+  inner neon line in the fill, and `fill` repeats it as stripes across the panel; a slice cut
+  through a rounded corner repeats the corner as "joints" along the edge. Widen the slice to
+  where every column of the edge is the same.
+- **A large face is flat under the frame.** The master's face is shaded toward its edges; tiled
+  across a bigger panel the shading shows tile seams. The panel takes the frame without `fill`
+  and a flat navy inset under it, as the space's drawer does with parchment.
+- **Icons at 16 px with a silhouette.** A "two players" icon came back as blobs at 16 px; the
+  gamepad was drawn in `kit.json` instead, and so was the exit-fullscreen glyph: the quadrant
+  flip of art cropped to its brackets meets in the middle as a plus.
+
+The pad is the space's pad: the same component and script, worn in the arcade kit by its root
+class, with neon arrows (`pad_cross skin="arcade"`). It lies over the game on a touch screen
+only, and steps aside while the menu is open.
+
 ## Adding a control
 
 1. Find a piece that fits in `kit.json` — the same frame at another size is the

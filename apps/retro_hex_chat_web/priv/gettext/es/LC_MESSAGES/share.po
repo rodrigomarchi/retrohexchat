@@ -41,19 +41,19 @@ msgstr "Enlace caducado"
 msgid "Open the chat"
 msgstr "Abrir el chat"
 
-#: lib/retro_hex_chat_web/live/share_control.ex:128
+#: lib/retro_hex_chat_web/live/share_control.ex:137
 #, elixir-autogen, elixir-format
 msgid "Register your nickname to share a link."
 msgstr "Registra tu apodo para compartir un enlace."
 
-#: lib/retro_hex_chat_web/live/share_control.ex:112
+#: lib/retro_hex_chat_web/live/share_control.ex:118
 #, elixir-autogen, elixir-format
 msgid "Share"
 msgstr "Compartir"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:41
 #: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:72
-#: lib/retro_hex_chat_web/live/share_control.ex:124
+#: lib/retro_hex_chat_web/live/share_control.ex:133
 #, elixir-autogen, elixir-format
 msgid "Share link"
 msgstr "Enlace para compartir"
@@ -212,7 +212,7 @@ msgid "It is already open in another window of yours."
 msgstr "Ya está abierto en otra ventana tuya."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:96
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:108
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:263
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:140
 #, elixir-autogen, elixir-format
 msgid "Copied!"
@@ -255,7 +255,7 @@ msgstr "Llamada en %{channel}"
 msgid "Closed"
 msgstr "Cerrado"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:112
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:267
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:144
 #, elixir-autogen, elixir-format
 msgid "Copy link"
@@ -390,7 +390,7 @@ msgstr "Ver la partida"
 msgid "Watching a match"
 msgstr "Viendo una partida"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:163
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:296
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:89
 #: lib/retro_hex_chat_web/space_panels.ex:110
 #, elixir-autogen, elixir-format

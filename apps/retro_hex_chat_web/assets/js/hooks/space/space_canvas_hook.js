@@ -15,7 +15,7 @@ import { t } from "../../lib/i18n.js";
 import { Socket } from "phoenix";
 
 import { SpaceEngine } from "../../lib/space/engine.js";
-import { FullscreenToggleController } from "../../lib/space/fullscreen.js";
+import { FullscreenToggleController } from "../../lib/fullscreen.js";
 import { InputController } from "../../lib/space/input.js";
 import { VirtualPadController } from "../../lib/virtual_pad.js";
 import { ModalController } from "../../lib/space/modal.js";

@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.GamePadTest do
     end
   end
 
-  describe "the pad under the game" do
+  describe "the pad over the game" do
     defp panel(game) do
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.GamePadTest do
       |> Floki.parse_document!()
     end
 
-    test "stands under a keyboard game's canvas, its buttons named and keyed" do
+    test "lies over a keyboard game's canvas, its buttons named and keyed" do
       doc = panel(game("pixel_tanks"))
       assert [_] = Floki.find(doc, ~s([data-testid="retro-game-pad"][data-pad]))
       # Pixel Tanks turns with ← and →, drives with ↑, and never backs up.
@@ -90,6 +90,22 @@ defmodule RetroHexChatWeb.Components.UI.Games.GamePadTest do
 
       assert [_] = Floki.find(playing, "[data-pad]")
       assert [] = Floki.find(playing, "[data-pad][data-idle]")
+    end
+
+    test "steps aside while the menu is open over the match" do
+      held =
+        render_component(&retro_games_panel/1,
+          id: "retro-games-panel",
+          status: "playing",
+          selected_game: game("hex_pong"),
+          difficulty: "normal",
+          canvas_ready: true,
+          menu_open: true
+        )
+        |> Floki.parse_document!()
+
+      assert [_] = Floki.find(held, "[data-pad][data-hidden]")
+      assert [] = Floki.find(panel(game("pixel_tanks")), "[data-pad]:not([data-hidden])")
     end
 
     test "is not there for a game played by touch" do

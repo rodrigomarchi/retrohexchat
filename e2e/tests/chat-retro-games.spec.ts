@@ -2,7 +2,7 @@
  * @section M - Admin, Server Operations, Bots
  * @flow M36 [done] The Games folder is the catalogue: a game icon opens the game's home over the chat, and its Play opens the game in a tab of its own (features P2)
  * @flow M37 [done] Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2)
- * @flow M41 [done] End pressed mid-match writes the match down as it stood: the score and "Ended early", with nobody named the winner (features P2)
+ * @flow M41 [done] End pressed mid-match (from the menu over it) writes the match down as it stood: the score and "Ended early", with nobody named the winner (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -109,11 +109,13 @@ test.describe("Retro Games from the chat", () => {
     ).toBeInViewport({ ratio: 1 });
     await shot(games, "wide-window-ready");
     await games.getByTestId("retro-game-start-ai").click();
-    await expect(games.getByTestId("retro-game-end-match")).toBeInViewport({
+    await expect(games.getByTestId("game-stage-menu-key")).toBeInViewport({
       ratio: 1,
     });
     // Long enough to be a match the server keeps: anything under 3 s is not.
     await games.waitForTimeout(4000);
+    // End is in the menu, over the match it holds.
+    await games.getByTestId("game-stage-menu-key").click();
     await games.getByTestId("retro-game-end-match").click();
 
     const result = games.getByTestId("retro-game-result");

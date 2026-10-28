@@ -63,6 +63,25 @@ defmodule RetroHexChatWeb.App.WatchLiveTest do
              ~s(href="/games/hex-tennis")
   end
 
+  # The match fills the window: what is said about it is the menu, always
+  # there between games and a key away while one is played.
+  test "a live match has nothing over it but the key that opens its menu", %{conn: conn} do
+    %{token: token} = offered_match()
+    {:ok, view, _html} = live(conn, "/watch/#{token}")
+    refute has_element?(view, ~s([data-testid="game-stage-menu-key"]))
+
+    send(view.pid, {:watch_game, %{status: "playing", game_id: "hex_tennis_quick"}})
+    assert has_element?(view, ~s([data-testid="game-stage-menu-key"]))
+    refute has_element?(view, "#watch-stage-menu-show-trigger")
+
+    render_click(view, "watch_menu", %{})
+    assert has_element?(view, "#watch-stage-menu-show-trigger")
+    assert has_element?(view, ~s([data-testid="watch-resume"]))
+
+    render_click(view, "watch_menu_close", %{})
+    refute has_element?(view, "#watch-stage-menu-show-trigger")
+  end
+
   test "it hears the session itself, not a message sent to it by hand", %{conn: conn} do
     %{token: token, host: host, guest: guest} = offered_match()
     {:ok, view, _html} = live(conn, "/watch/#{token}")

@@ -9,6 +9,7 @@
  */
 import { log } from "../../lib/logger.js";
 import { createGameEngine } from "../../lib/games/engine_loader.js";
+import { menuShown, watchMenuKeys } from "../../lib/games/menu_keys.js";
 import { createHostTransport } from "../../lib/games/spectate_wire.js";
 import { subscribeDataChannel } from "../../lib/p2p/data_channels.js";
 
@@ -20,6 +21,13 @@ const LobbyGameCanvasHook = {
     this._engineLoading = false;
     this._gameId = this.el.dataset.gameId || null;
     this._isHost = this.el.dataset.isHost === "true";
+    // Before the engine's own capture listener, which keeps every key of a
+    // running match from going further: Esc opens the stage's menu. A match
+    // with somebody is not held; it goes on under the menu.
+    this._stopMenuKeys = watchMenuKeys({
+      wants: () => Boolean(this.engine?.running) && !menuShown(this.el),
+      open: () => this.pushEventTo(this.el, "game_menu", {}),
+    });
 
     this._unsubscribeChannel = subscribeDataChannel(
       document.getElementById("lobby-webrtc"),
@@ -118,6 +126,7 @@ const LobbyGameCanvasHook = {
   },
 
   destroyed() {
+    this._stopMenuKeys?.();
     this._unsubscribeChannel();
     this._cleanup();
   },

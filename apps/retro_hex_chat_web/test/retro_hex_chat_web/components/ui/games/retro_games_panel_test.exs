@@ -174,7 +174,9 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "32 treasures in 20 minutes"
   end
 
-  test "a card table stands up on a narrow screen, every other game keeps its 4:3" do
+  # A card table lays itself out on the box it is given (`view` in its
+  # definition): the stage is the box, so a phone held upright stands it up.
+  test "every game's canvas fills its stage, a card table as much as any" do
     solitaire = %{@jungle | id: "hex_solitaire", name: "Hex Solitaire", icon: "game_solitaire"}
 
     box = fn game ->
@@ -191,97 +193,35 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
       |> List.first()
     end
 
-    assert box.(solitaire) =~ "aspect-[464/720]"
-    assert box.(solitaire) =~ "sm:aspect-[4/3]"
-    assert box.(@jungle) =~ "aspect-[4/3]"
-    refute box.(@jungle) =~ "aspect-[464/720]"
-
-    freecell = %{@jungle | id: "hex_freecell", name: "Hex FreeCell", icon: "game_freecell"}
-    assert box.(freecell) =~ "aspect-[464/760]"
-    assert box.(freecell) =~ "sm:aspect-[4/3]"
-
-    spider = %{
-      @jungle
-      | id: "hex_spider_4suits",
-        name: "Hex Spider: Four Suits",
-        icon: "game_spider"
-    }
-
-    assert box.(spider) =~ "aspect-[464/760]"
-    assert box.(spider) =~ "sm:aspect-[4/3]"
+    for game <- [solitaire, @jungle, @game] do
+      assert box.(game) =~ "h-full w-full"
+      refute box.(game) =~ "aspect-"
+    end
   end
 
-  test "Hex Mines stands up to its board, and is played by clicks, flags and taps" do
+  test "Hex Mines is played by clicks, flags and taps, with no pad" do
     mines = %{@jungle | id: "hex_mines", name: "Hex Mines", icon: "game_mines"}
-    expert = %{mines | id: "hex_mines_expert", name: "Hex Mines: Expert"}
 
-    box = fn game ->
-      render_component(&retro_games_panel/1,
-        id: "retro-games-panel",
-        status: "ready",
-        selected_game: game,
-        difficulty: "normal",
-        canvas_ready: true
-      )
-      |> Floki.parse_document!()
-      |> Floki.find(~s([data-testid="retro-game-canvas-#{game.id}"]))
-      |> Floki.attribute("class")
-      |> List.first()
-    end
-
-    assert box.(mines) =~ "aspect-[464/760]"
-    assert box.(mines) =~ "sm:aspect-[4/3]"
-    assert box.(expert) =~ "aspect-[464/780]"
-    assert box.(expert) =~ "sm:aspect-[5/3]"
+    assert game_pad(mines) == nil
     assert goal_label(mines) == "Clear every square without a mine"
 
     assert [%{keys: ["Click", "Tap"]}, %{keys: ["Right click", "Long press"]}, %{}, %{}] =
              control_rows(mines)
   end
 
-  test "Hex Sudoku stands up to its keypad, and is played by taps or the keyboard" do
+  test "Hex Sudoku is played by taps or the keyboard" do
     sudoku = %{@jungle | id: "hex_sudoku", name: "Hex Sudoku", icon: "game_sudoku"}
 
-    box =
-      render_component(&retro_games_panel/1,
-        id: "retro-games-panel",
-        status: "ready",
-        selected_game: sudoku,
-        difficulty: "normal",
-        canvas_ready: true
-      )
-      |> Floki.parse_document!()
-      |> Floki.find(~s([data-testid="retro-game-canvas-hex_sudoku"]))
-      |> Floki.attribute("class")
-      |> List.first()
-
-    assert box =~ "aspect-[448/632]"
-    assert box =~ "sm:aspect-[4/3]"
     assert goal_label(sudoku) == "Every row, column and box holds 1 to 9"
 
     assert [%{keys: ["Tap" | _]}, %{keys: ["1–9"]}, %{}, %{}, %{keys: ["H"]}, %{keys: ["Z"]}] =
              control_rows(sudoku)
   end
 
-  test "Hex Blocks stands up to its buttons, and is played by the keyboard or the buttons" do
+  test "Hex Blocks is played by the keyboard or the pad" do
     blocks = %{@jungle | id: "hex_blocks", name: "Hex Blocks", icon: "game_blocks"}
     sprint = %{blocks | id: "hex_blocks_sprint", name: "Hex Blocks: Sprint"}
 
-    box =
-      render_component(&retro_games_panel/1,
-        id: "retro-games-panel",
-        status: "ready",
-        selected_game: blocks,
-        difficulty: "normal",
-        canvas_ready: true
-      )
-      |> Floki.parse_document!()
-      |> Floki.find(~s([data-testid="retro-game-canvas-hex_blocks"]))
-      |> Floki.attribute("class")
-      |> List.first()
-
-    assert box =~ "aspect-[400/484]"
-    assert box =~ "sm:aspect-[4/3]"
     assert goal_label(blocks) == "Clear rows as the pieces speed up"
     assert goal_label(sprint) == "40 rows, as fast as you can"
 
@@ -313,7 +253,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert [%{keys: ["Tap"]}, %{keys: ["Drag"]}] = control_rows(freecell)
   end
 
-  test "renders the ready game with an integrated control panel" do
+  test "a ready game is under its menu: the goal, the mode, the difficulty and Play" do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
@@ -325,10 +265,14 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     document = Floki.parse_document!(html)
 
-    assert Floki.find(document, ~s([data-testid="retro-game-status-label"]))
-           |> Floki.text() =~ "Ready"
+    assert [_] = Floki.find(document, ~s([data-testid="game-stage-menu"]))
 
-    assert Floki.text(document) =~ "First to 11"
+    assert Floki.find(document, ~s([data-testid="retro-game-goal"])) |> Floki.text() =~
+             "First to 11"
+
+    assert Floki.find(document, ~s([data-testid="retro-game-mode"])) |> Floki.text() =~ "Solo AI"
+    # Before the match there is no match to hold, and nothing to go back to.
+    assert Floki.find(document, ~s([data-testid="game-stage-menu-key"])) == []
 
     assert [_] =
              Floki.find(
@@ -609,8 +553,8 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Shift"
   end
 
-  test "locks difficulty and promotes the end action while playing" do
-    html =
+  test "a running match has nothing over it but the corner key" do
+    document =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
         status: "playing",
@@ -618,15 +562,33 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         difficulty: "hard",
         canvas_ready: true
       )
+      |> Floki.parse_document!()
 
-    document = Floki.parse_document!(html)
-
+    assert [_] = Floki.find(document, ~s([data-testid="game-stage-menu-key"]))
     assert Floki.find(document, ~s([data-testid="retro-game-start-ai"])) == []
-    assert [_] = Floki.find(document, ~s([data-testid="retro-game-end-match"]))
-    assert [_] = Floki.find(document, ~s([data-testid="retro-game-difficulty-hard"][disabled]))
+    assert Floki.find(document, ~s([data-testid="retro-game-difficulty-hard"])) == []
+    # The stage's dialog is drawn shut: its trigger is what opens it.
+    assert Floki.find(document, ~s([id="retro-games-panel-session-menu-show-trigger"])) == []
+  end
 
-    assert Floki.find(document, ~s([data-testid="retro-game-status-label"]))
-           |> Floki.text() =~ "Playing"
+  test "a match held under its menu offers Continue, End and the whole screen" do
+    document =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        status: "playing",
+        selected_game: @game,
+        difficulty: "hard",
+        canvas_ready: true,
+        menu_open: true
+      )
+      |> Floki.parse_document!()
+
+    assert [_] = Floki.find(document, ~s([data-testid="retro-game-paused"]))
+    assert [_] = Floki.find(document, ~s([data-testid="retro-game-resume"]))
+    assert [_] = Floki.find(document, ~s([data-testid="retro-game-end-match"]))
+    assert [_] = Floki.find(document, ~s([data-testid="game-stage-fullscreen"]))
+    assert [_] = Floki.find(document, ~s([id="retro-games-panel-session-menu-show-trigger"]))
+    assert Floki.find(document, ~s([data-testid="game-stage-menu-key"])) == []
   end
 
   defp finished_text(game, result, extra \\ []) do

@@ -148,7 +148,9 @@ defmodule RetroHexChatWeb.ComponentHelpers do
       "ghost" => Chrome.flat() <> " text-foreground hover:bg-surface",
       "link" => "text-primary underline-offset-4 hover:underline",
       "pixel" => Chrome.pixel(),
-      "pixel-secondary" => Chrome.pixel_secondary()
+      "pixel-secondary" => Chrome.pixel_secondary(),
+      "arcade" => Chrome.arcade(),
+      "arcade-secondary" => Chrome.arcade_secondary()
     },
     size: %{
       "default" => "h-9 px-4 py-2",
@@ -165,7 +167,7 @@ defmodule RetroHexChatWeb.ComponentHelpers do
   @doc """
   Reuseable button variant helper. Support 2 variant
   - size: `default|sm|lg`
-  - variant: `default|destructive|outline|secondary|ghost|link|pixel|pixel-secondary`
+  - variant: `default|destructive|outline|secondary|ghost|link|pixel|pixel-secondary|arcade|arcade-secondary`
   """
   def button_variant(props \\ %{}) do
     variants = Map.take(props, ~w(variant size)a)

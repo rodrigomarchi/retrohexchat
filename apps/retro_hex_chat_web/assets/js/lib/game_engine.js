@@ -147,6 +147,7 @@ export class GameEngine {
     });
 
     this._stepping = false;
+    this._paused = false;
     this._renderPending = true;
     this._inputSeq = 0;
     this._lastSentMask = 0;
@@ -195,6 +196,7 @@ export class GameEngine {
   stop() {
     this.running = false;
     this._stepping = false;
+    this._paused = false;
     this.setKeyboardCaptured(false);
 
     if (this.animFrame) {
@@ -327,6 +329,52 @@ export class GameEngine {
   }
 
   /**
+   * Hold the match where it stands: no step runs, no key reaches the game,
+   * the held inputs are let go and the sound stops. Only a match running on
+   * this screen alone can be held (`_canPause`): a partner's goes on.
+   * @returns {boolean} whether it paused
+   */
+  pause() {
+    if (this._paused || !this._stepping || !this._canPause()) return false;
+    this._paused = true;
+    this._stopSteps();
+    this.setKeyboardCaptured(false);
+    this._handleBlur();
+    // Best-effort, like every sound: a held tone resumes with the next one played.
+    this.audio?.ctx?.suspend?.().catch(() => {});
+    this._invalidate();
+    return true;
+  }
+
+  /**
+   * Go on from where `pause` held it. The clock restarts, so no step is owed
+   * for the time spent paused.
+   * @returns {boolean} whether it was paused
+   */
+  resume() {
+    if (!this._paused) return false;
+    this._paused = false;
+    this._startSteps();
+    this.setKeyboardCaptured(true);
+    this.audio?.ctx?.resume?.().catch(() => {});
+    this._invalidate();
+    return true;
+  }
+
+  /** @returns {boolean} */
+  get paused() {
+    return this._paused;
+  }
+
+  /**
+   * Whether a match may be held: one played against the computer or alone.
+   * @returns {boolean}
+   */
+  _canPause() {
+    return this.mode === "solo";
+  }
+
+  /**
    * Request a repaint on the next frame. Repaints coalesce, so calling this
    * many times within one frame costs one draw.
    * @returns {void}
@@ -355,7 +403,7 @@ export class GameEngine {
         this._telemetry.stepsRan(steps);
         const { droppedSteps, stallCount } = this._clock.drainStalls();
         this._telemetry.stalled(droppedSteps, stallCount);
-      } else {
+      } else if (!this._paused) {
         for (let i = 0; i < steps; i++) this._idleStep();
       }
 
@@ -624,7 +672,8 @@ export class GameEngine {
    * @returns {void}
    */
   _onKeyDown(event) {
-    if (this._isTextEntry(event.target)) return;
+    // Esc is never a game's: it opens and closes the menu over the game.
+    if (event.key === "Escape" || this._isTextEntry(event.target)) return;
 
     const captureKeyboard = this._shouldCaptureKeyboardEvent(event);
 
@@ -652,7 +701,7 @@ export class GameEngine {
    * @returns {void}
    */
   _onKeyUp(event) {
-    if (this._isTextEntry(event.target)) return;
+    if (event.key === "Escape" || this._isTextEntry(event.target)) return;
 
     const captureKeyboard = this._shouldCaptureKeyboardEvent(event);
     const alreadyPrevented = event.defaultPrevented;

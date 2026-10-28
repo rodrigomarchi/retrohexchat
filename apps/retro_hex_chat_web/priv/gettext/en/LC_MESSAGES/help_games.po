@@ -1809,7 +1809,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:189
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:241
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3887,18 +3887,18 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:194
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:246
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P Session"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:121
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:170
 #, elixir-autogen, elixir-format
 msgid "How It Plays"
 msgstr "How It Plays"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:123
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:172
 #, elixir-autogen, elixir-format
 msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell. In Star Duel variants, rotate, thrust, and fire with Space while the AI dogfights as player 2. In Block Breakers, move the bottom paddle with Left/Right or A/D while the AI covers the top paddle. In Hex Warlords, move the left shield with Up/Down or W/S, hold Space to catch, and release to launch at the AI castle. In Hex Raid variants, fly the left jet with Arrow keys or WASD, fire with Space, and use Shift for mines when the variant allows them. In Hex Outlaw, dodge visible bullets, line up your shot, and fire with Space or Shift. In Hex Tennis, move across your half, serve with Space or Shift, and let the AI cover the far court. In Hex Invaders, move with Left/Right or A/D, fire with Space, and let the AI clear the other cannon lane. In Hex Enduro, change lanes with Left/Right or A/D, accelerate and brake with Up/Down or W/S, and trigger turbo with Space or Shift. In Hex Skiing, steer with Left/Right or A/D, clear slalom gates, dodge obstacles, and outrun the avalanche when the variant has one. In Hex Frost, move with Arrow keys or WASD, jump between ice rows with Up/Down or W/S, build the igloo, and avoid arctic enemies. In Hex Hockey, skate with Arrow keys or WASD, shoot or tackle with Space or Shift, and challenge the AI from the far side."
 msgstr ""
@@ -3956,7 +3956,7 @@ msgstr ""
 msgid "Retro Games"
 msgstr "Retro Games"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:177
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:229
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr ""
@@ -3971,7 +3971,7 @@ msgstr ""
 "the right boxer. Difficulty changes how tightly the AI tracks range, dodges,"
 " and times punches."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:183
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:235
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -3986,43 +3986,36 @@ msgstr ""
 "the right tank. Difficulty changes how quickly the AI tracks corridors, "
 "dodges missiles, and takes shots."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:134
 #, elixir-autogen, elixir-format
 msgid "A game tab and the chat run side by side. Opening one does not close the other, and closing the game tab leaves the chat untouched."
 msgstr ""
 "A game tab and the chat run side by side. Opening one does not close the "
 "other, and closing the game tab leaves the chat untouched."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:140
 #, elixir-autogen, elixir-format
 msgid "Use the Chat link in the game window's status bar to go back."
 msgstr "Use the Chat link in the game window's status bar to go back."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:147
 #, elixir-autogen, elixir-format
 msgid "Sharing a Game"
 msgstr "Sharing a Game"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:114
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:163
 #, elixir-autogen, elixir-format
 msgid "Sharing needs a registered nickname, because the link records who created it. Register with /ns register first."
 msgstr ""
 "Sharing needs a registered nickname, because the link records who created "
 "it. Register with /ns register first."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:108
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:157
 #, elixir-autogen, elixir-format
 msgid "Whoever opens the link sees a card telling them what was shared. If they have no session yet they connect first and land back on the link."
 msgstr ""
 "Whoever opens the link sees a card telling them what was shared. If they "
 "have no session yet they connect first and land back on the link."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:102
-#, elixir-autogen, elixir-format
-msgid "With a game selected, press Share. You get a short link you can paste anywhere — a channel, a private message, or outside RetroHexChat entirely."
-msgstr ""
-"With a game selected, press Share. You get a short link you can paste "
-"anywhere — a channel, a private message, or outside RetroHexChat entirely."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:2
 #, elixir-autogen, elixir-format
@@ -4118,7 +4111,7 @@ msgstr ""
 "there for the host, and only until the match starts. To play again, open the"
 " game and press Play with someone for a new room and a new address."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "The address is the door"
 msgstr "The address is the door"
@@ -4417,22 +4410,17 @@ msgstr "The result of a private match stays in the conversation of its two playe
 msgid "In the list of users, the menu of a person who is playing has %{watch}."
 msgstr "In the list of users, the menu of a person who is playing has %{watch}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "Against the computer opens the game in a tab of its own. Choose Easy, Normal or Hard there, then click Play vs AI."
-msgstr "Against the computer opens the game in a tab of its own. Choose Easy, Normal or Hard there, then click Play vs AI."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Double-click the Retro Games desktop icon, or open Start ▸ Games and choose Retro Games. The folder shows one icon per game."
 msgstr "Double-click the Retro Games desktop icon, or open Start ▸ Games and choose Retro Games. The folder shows one icon per game."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:127
 #, elixir-autogen, elixir-format
 msgid "Every game has an address of its own, such as %{address}. Send someone the address and they land on the same game."
 msgstr "Every game has an address of its own, such as %{address}. Send someone the address and they land on the same game."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Find a partner takes you to the channel of the game and offers a seat there, like the command %{command}."
 msgstr "Find a partner takes you to the channel of the game and offers a seat there, like the command %{command}."
@@ -4457,12 +4445,12 @@ msgstr "The Play tab lists the game and each of its modes."
 msgid "The catalogue of games and the channel of each game lead to the same page."
 msgstr "The catalogue of games and the channel of each game lead to the same page."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "The last tab is the channel of the game, with its latest lines."
 msgstr "The last tab is the channel of the game, with its latest lines."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "To play with somebody you know, type their nickname and click Invite. It works like the command %{command}."
 msgstr "To play with somebody you know, type their nickname and click Invite. It works like the command %{command}."
@@ -4477,12 +4465,12 @@ msgstr "When somebody is playing the game in the open, a last link opens the mat
 msgid "How to Open a Game"
 msgstr "How to Open a Game"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "%{link} gives you a link to send to a friend."
 msgstr "%{link} gives you a link to send to a friend."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "The You tab shows your rating and your latest results."
 msgstr "The You tab shows your rating and your latest results."
@@ -4497,12 +4485,12 @@ msgstr "The icon of a game opens the page of the game, on top of the chat."
 msgid "The name of the game opens the page of the game, on top of the chat."
 msgstr "The name of the game opens the page of the game, on top of the chat."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "The Ranking tab lists the best players of the game."
 msgstr "The Ranking tab lists the best players of the game."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "In the Live tab, you see who is playing and which matches you can watch."
 msgstr "In the Live tab, you see who is playing and which matches you can watch."
@@ -4552,7 +4540,7 @@ msgstr "— the ranking of the game"
 msgid "— this week's challenge and who leads it"
 msgstr "— this week's challenge and who leads it"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:191
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:243
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
@@ -4627,7 +4615,7 @@ msgstr "The game ends when the twenty minutes are over, when the last life is lo
 msgid "— Catch the vine in a jump"
 msgstr "— Catch the vine in a jump"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:129
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:178
 #, elixir-autogen, elixir-format
 msgid "Hex Jungle is a game for one player: move with the arrow keys or WASD, jump with the space bar, and climb ladders with Up and Down."
 msgstr "Hex Jungle is a game for one player: move with the arrow keys or WASD, jump with the space bar, and climb ladders with Up and Down."
@@ -4714,7 +4702,7 @@ msgstr "A card on a pile at the top is worth 10 points; a card from the deck ont
 msgid "Hex Solitaire is Klondike, the classic game of patience, for one player. Put every card on the four piles at the top, each from the ace up to the king, using the seven columns of the table and the deck. Nobody plays against you: your score is your own, and your best games go into the ranking."
 msgstr "Hex Solitaire is Klondike, the classic game of patience, for one player. Put every card on the four piles at the top, each from the ace up to the king, using the seven columns of the table and the deck. Nobody plays against you: your score is your own, and your best games go into the ranking."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:135
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:184
 #, elixir-autogen, elixir-format
 msgid "Hex Solitaire is a game of cards for one player, played with the mouse or a finger: tap a card to move it to its place, or drag it onto another pile."
 msgstr "Hex Solitaire is a game of cards for one player, played with the mouse or a finger: tap a card to move it to its place, or drag it onto another pile."
@@ -4828,7 +4816,7 @@ msgstr "A card that no other card still needs goes up to its pile by itself. Whe
 msgid "Hex FreeCell is FreeCell, the game of patience where all the cards are face up from the start, for one player. Put every card on the four piles at the top, each from the ace up to the king, using the eight columns of the table and the four free cells. Almost every game can be won: your score is your own, and your best games go into the ranking."
 msgstr "Hex FreeCell is FreeCell, the game of patience where all the cards are face up from the start, for one player. Put every card on the four piles at the top, each from the ace up to the king, using the eight columns of the table and the four free cells. Almost every game can be won: your score is your own, and your best games go into the ranking."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:141
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:190
 #, elixir-autogen, elixir-format
 msgid "Hex FreeCell is played the same way, with all the cards face up and four free cells to hold a card each."
 msgstr "Hex FreeCell is played the same way, with all the cards face up and four free cells to hold a card each."
@@ -4848,7 +4836,7 @@ msgstr "Hex FreeCell"
 msgid "Hex Spider is Spider, the game of patience played with two decks, for one player. Build each suit from the king down to the ace in the ten columns of the table: a whole suit in order goes to its place by itself. Put away all eight suits to win. Your score is your own, and your best games go into the ranking."
 msgstr "Hex Spider is Spider, the game of patience played with two decks, for one player. Build each suit from the king down to the ace in the ten columns of the table: a whole suit in order goes to its place by itself. Put away all eight suits to win. Your score is your own, and your best games go into the ranking."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:147
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:196
 #, elixir-autogen, elixir-format
 msgid "Hex Spider is played the same way too, with two decks in ten columns: one suit, two or four."
 msgstr "Hex Spider is played the same way too, with two decks in ten columns: one suit, two or four."
@@ -4908,7 +4896,7 @@ msgstr "Click or tap a number"
 msgid "Click or tap a square"
 msgstr "Click or tap a square"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:211
 #, elixir-autogen, elixir-format
 msgid "Hex Mines is Minesweeper for one player, played with the mouse or a finger: click or tap a square to open it, and a right click or a long press plants a flag."
 msgstr "Hex Mines is Minesweeper for one player, played with the mouse or a finger: click or tap a square to open it, and a right click or a long press plants a flag."
@@ -5058,7 +5046,7 @@ msgstr "Points come only from a win: 10,000 divided by the minutes on your clock
 msgid "— Cancel your last move. A hint is not cancelled"
 msgstr "— Cancel your last move. A hint is not cancelled"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:217
 #, elixir-autogen, elixir-format
 msgid "Hex Sudoku is Sudoku for one player: tap a square, then a digit next to the grid, or play with the keyboard. Every grid is new and has one solution."
 msgstr "Hex Sudoku is Sudoku for one player: tap a square, then a digit next to the grid, or play with the keyboard. Every grid is new and has one solution."
@@ -5168,17 +5156,102 @@ msgstr "— Save the piece for later and take the next one. You can do this once
 msgid "Hex Blocks is a game for one player. Pieces made of four hexagons fall into a well shaped like a honeycomb. Turn each piece and slide it left or right as it falls. When a zigzag row is full from side to side, it disappears. The game ends when the pieces reach the top."
 msgstr "Hex Blocks is a game for one player. Pieces made of four hexagons fall into a well shaped like a honeycomb. Turn each piece and slide it left or right as it falls. When a zigzag row is full from side to side, it disappears. The game ends when the pieces reach the top."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
-#, elixir-autogen, elixir-format
-msgid "In Hex Blocks, pieces made of hexagons fall into a well. Use the keyboard to turn each piece and slide it to the side, or the buttons under the well on a phone."
-msgstr "In Hex Blocks, pieces made of hexagons fall into a well. Use the keyboard to turn each piece and slide it to the side, or the buttons under the well on a phone."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "— Tap the buttons under the well. You can hold a move with one thumb and turn with the other"
 msgstr "— Tap the buttons under the well. You can hold a move with one thumb and turn with the other"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:77
 #, elixir-autogen, elixir-format
-msgid "Every game played with the keyboard has on-screen buttons under it, on a computer and on a phone. Use the arrows to move. Each button does the action written on it. You can press two buttons at the same time."
-msgstr "Every game played with the keyboard has on-screen buttons under it, on a computer and on a phone. Use the arrows to move. Each button does the action written on it. You can press two buttons at the same time."
+msgid "The Menu over the Game"
+msgstr "The Menu over the Game"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "%{full_screen} in the menu shows the game on the whole screen. Press Esc to leave it."
+msgstr "%{full_screen} in the menu shows the game on the whole screen. Press Esc to leave it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Against the computer opens the game in a tab of its own, with a menu over it. Choose Easy, Normal or Hard in the menu, then click %{play}."
+msgstr "Against the computer opens the game in a tab of its own, with a menu over it. Choose Easy, Normal or Hard in the menu, then click %{play}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:116
+#, elixir-autogen, elixir-format
+msgid "At the end of a match, the menu shows the result. %{again} starts another match."
+msgstr "At the end of a match, the menu shows the result. %{again} starts another match."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:150
+#, elixir-autogen, elixir-format
+msgid "Press %{share} in the menu over the game. You get a short link you can paste anywhere — a channel, a private message, or outside RetroHexChat entirely."
+msgstr "Press %{share} in the menu over the game. You get a short link you can paste anywhere — a channel, a private message, or outside RetroHexChat entirely."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "Press Esc or the small button to open the menu."
+msgstr "Press Esc or the small button to open the menu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "The game fills its window. Before a match, a menu over the game shows its goal, the keyboard keys it uses and the difficulty."
+msgstr "The game fills its window. Before a match, a menu over the game shows its goal, the keyboard keys it uses and the difficulty."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:99
+#, elixir-autogen, elixir-format
+msgid "%{continue} goes back to the game."
+msgstr "%{continue} goes back to the game."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:102
+#, elixir-autogen, elixir-format
+msgid "%{end} ends the match as it stands."
+msgstr "%{end} ends the match as it stands."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Against the computer or alone, the game waits while the menu is open."
+msgstr "Against the computer or alone, the game waits while the menu is open."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "A small button stays in the top right corner."
+msgstr "A small button stays in the top right corner."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:202
+#, elixir-autogen, elixir-format
+msgid "On a phone or a tablet, every game played with the keyboard has buttons on the screen."
+msgstr "On a phone or a tablet, every game played with the keyboard has buttons on the screen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Once the match starts, the game is all you see."
+msgstr "Once the match starts, the game is all you see."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:208
+#, elixir-autogen, elixir-format
+msgid "You can press two buttons at the same time."
+msgstr "You can press two buttons at the same time."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:106
+#, elixir-autogen, elixir-format
+msgid "Your partner keeps playing while your menu is open."
+msgstr "Your partner keeps playing while your menu is open."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:223
+#, elixir-autogen, elixir-format
+msgid "In Hex Blocks, pieces made of hexagons fall into a well. Use the keyboard to turn each piece and slide it to the side, or the buttons under the well on a phone."
+msgstr "In Hex Blocks, pieces made of hexagons fall into a well. Use the keyboard to turn each piece and slide it to the side, or the buttons under the well on a phone."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:207
+#, elixir-autogen, elixir-format
+msgid "Each button does the action written on it."
+msgstr "Each button does the action written on it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:206
+#, elixir-autogen, elixir-format
+msgid "Use the arrows to move."
+msgstr "Use the arrows to move."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:105
+#, elixir-autogen, elixir-format
+msgid "When you play with somebody, the game does not pause."
+msgstr "When you play with somebody, the game does not pause."

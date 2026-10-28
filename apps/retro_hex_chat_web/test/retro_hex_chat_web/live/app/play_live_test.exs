@@ -129,6 +129,8 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       render_click(view, "retro_games_start_ai", %{})
       assert Map.has_key?(Activity.now(), Nickname.key(nick))
 
+      # End is in the menu, over the match it holds.
+      render_hook(view, "retro_games_menu", %{"game_id" => "hex_pong"})
       render_click(view, "retro_games_end", %{})
       assert_push_event(view, "retro_game_quit", %{game_id: "hex_pong"})
       assert has_element?(view, ~s([data-testid="retro-game-end-match"]))
@@ -162,6 +164,52 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       refute Map.has_key?(Activity.now(), Nickname.key(nick))
 
       # The canvas loads a fresh engine and says so before another match.
+      assert has_element?(view, ~s([data-testid="retro-game-start-disabled"]))
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
+      assert has_element?(view, ~s([data-testid="retro-game-start-ai"]))
+    end
+
+    # Esc, the corner key, or the tab put away: the match holds under its menu,
+    # and Continue (or Esc again) goes on from where it stood.
+    test "the menu holds the match, and Continue goes on with it", %{conn: conn} do
+      {:ok, view, _html} = conn |> chat_conn("Hold#{uid()}") |> live(~p"/play/hex_pong")
+
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
+      render_click(view, "retro_games_start_ai", %{})
+      refute has_element?(view, ~s([data-testid="retro-game-paused"]))
+
+      render_hook(view, "retro_games_menu", %{"game_id" => "hex_pong"})
+      assert_push_event(view, "retro_game_pause", %{game_id: "hex_pong"})
+      assert has_element?(view, ~s([data-testid="retro-game-paused"]))
+
+      render_click(view, "retro_games_resume", %{})
+      assert_push_event(view, "retro_game_resume", %{game_id: "hex_pong"})
+      refute has_element?(view, ~s([data-testid="retro-game-paused"]))
+    end
+
+    test "there is no match to hold before one starts", %{conn: conn} do
+      {:ok, view, _html} = conn |> chat_conn("NoHold#{uid()}") |> live(~p"/play/hex_pong")
+
+      render_hook(view, "retro_games_menu", %{"game_id" => "hex_pong"})
+      refute_push_event(view, "retro_game_pause", %{})
+      assert has_element?(view, ~s([data-testid="retro-game-start-disabled"]))
+    end
+
+    # The canvas stays through the result; Again loads a fresh engine on it.
+    test "Again after a result loads a fresh engine and waits for it", %{conn: conn} do
+      {:ok, view, _html} = conn |> chat_conn("Again#{uid()}") |> live(~p"/play/hex_pong")
+
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
+      render_click(view, "retro_games_start_ai", %{})
+
+      render_hook(view, "retro_game_result", %{
+        "game_id" => "hex_pong",
+        "score" => %{"p1" => 11, "p2" => 4}
+      })
+
+      assert has_element?(view, ~s([data-testid="retro-game-canvas-hex_pong"]))
+      render_click(view, "retro_games_play_again", %{})
+      assert_push_event(view, "retro_game_stop", %{game_id: "hex_pong"})
       assert has_element?(view, ~s([data-testid="retro-game-start-disabled"]))
       render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
       assert has_element?(view, ~s([data-testid="retro-game-start-ai"]))

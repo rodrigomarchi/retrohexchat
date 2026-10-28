@@ -1,5 +1,6 @@
 import { log } from "../../lib/logger.js";
 import { createGameEngine } from "../../lib/games/engine_loader.js";
+import { menuShown, watchMenuKeys } from "../../lib/games/menu_keys.js";
 
 export function createRetroGameCanvasHook({ engineFactory = createGameEngine } = {}) {
   return {
@@ -13,6 +14,18 @@ export function createRetroGameCanvasHook({ engineFactory = createGameEngine } =
       this._difficulty = this.el.dataset.difficulty || "normal";
       this._boundFocusGameSurface = this._focusGameSurface.bind(this);
       this.el.addEventListener("pointerdown", this._boundFocusGameSurface);
+      // Esc in a running match, or the tab put away: the match holds and the
+      // menu opens over it. Attached before the engine exists, so it hears Esc first.
+      this._stopMenuKeys = watchMenuKeys({
+        // Held but its menu not drawn yet: a second Esc is this one's again,
+        // not the dialog's (which would resume the match it never showed).
+        wants: () => Boolean(this.engine?.stepping || (this.engine?.paused && !menuShown(this.el))),
+        open: () => {
+          this.engine.pause?.();
+          this.pushEvent("retro_games_menu", { game_id: this._gameId });
+        },
+        onHidden: true,
+      });
 
       this.handleEvent("retro_game_begin", (payload = {}) => {
         this._beginMatch(payload);
@@ -24,6 +37,16 @@ export function createRetroGameCanvasHook({ engineFactory = createGameEngine } =
 
       this.handleEvent("retro_game_quit", (payload = {}) => {
         this._quitMatch(payload);
+      });
+
+      this.handleEvent("retro_game_pause", ({ game_id } = {}) => {
+        if (!game_id || game_id === this._gameId) this.engine?.pause?.();
+      });
+
+      this.handleEvent("retro_game_resume", ({ game_id } = {}) => {
+        if ((!game_id || game_id === this._gameId) && this.engine?.resume?.()) {
+          this._focusGameSurface();
+        }
       });
 
       this._enginePromise = this._maybeInitGame();
@@ -142,6 +165,7 @@ export function createRetroGameCanvasHook({ engineFactory = createGameEngine } =
 
     destroyed() {
       this.el.removeEventListener("pointerdown", this._boundFocusGameSurface);
+      this._stopMenuKeys?.();
       this._cleanup();
     },
   };

@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N75 [done] A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End is written down, in the player's own record and among the best runs
+ * @flow N75 [done] A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End from the menu is written down, in the player's own record and among the best runs
  * @flow N76 [done] In the channel of a game played alone, the strip offers Play without Find a partner, and /lfg says the game is played alone
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -32,7 +32,7 @@ test.describe("a game played alone", () => {
         0,
       );
       await game.getByTestId("retro-game-start-ai").click();
-      await expect(game.getByTestId("retro-game-end-match")).toBeVisible();
+      await expect(game.getByTestId("game-stage-menu-key")).toBeVisible();
 
       // Run right into the jungle for a few seconds, then stop and look.
       await game.getByTestId("retro-game-canvas-hex_jungle").click();
@@ -44,6 +44,10 @@ test.describe("a game played alone", () => {
         game.getByTestId("retro-game-canvas-hex_jungle"),
         "hex-jungle-playing",
       );
+
+      // End is in the menu, over the match it holds.
+
+      await game.getByTestId("game-stage-menu-key").click();
 
       await game.getByTestId("retro-game-end-match").click();
       const result = game.getByTestId("retro-game-result");

@@ -20,8 +20,10 @@ defmodule RetroHexChatWeb.App.WatchLive do
   """
   use RetroHexChatWeb, :live_view
 
-  import RetroHexChatWeb.Components.UI.Inset
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.Games.ArcadeIcon
+  import RetroHexChatWeb.Components.UI.Games.GameStage
   import RetroHexChatWeb.Components.UI.LiveMatch
   import RetroHexChatWeb.Components.UI.Window
 
@@ -76,10 +78,22 @@ defmodule RetroHexChatWeb.App.WatchLive do
            status: "closed",
            game_id: nil,
            result: nil,
-           others: others(token)
+           others: others(token),
+           live?: false,
+           menu_open: false
          )}
     end
   end
+
+  # The menu over a match being watched: the corner key opens it, Esc, a
+  # click outside or Continue closes it.
+  @impl true
+  @spec handle_event(String.t(), map(), Socket.t()) :: {:noreply, Socket.t()}
+  def handle_event("watch_menu", _params, socket),
+    do: {:noreply, assign(socket, menu_open: socket.assigns.live?)}
+
+  def handle_event("watch_menu_close", _params, socket),
+    do: {:noreply, assign(socket, menu_open: false)}
 
   @impl true
   @spec handle_info(term(), Socket.t()) :: {:noreply, Socket.t()}
@@ -95,7 +109,9 @@ defmodule RetroHexChatWeb.App.WatchLive do
       game_id: game.game_id,
       result: nil,
       round: socket.assigns.round + 1,
-      others: []
+      others: [],
+      live?: not is_nil(game.game_id),
+      menu_open: false
     )
   end
 
@@ -104,7 +120,9 @@ defmodule RetroHexChatWeb.App.WatchLive do
       status: game.status,
       game_id: Map.get(game, :game_id) || socket.assigns[:game_id],
       result: Map.get(game, :result),
-      others: others(socket.assigns.token)
+      others: others(socket.assigns.token),
+      live?: false,
+      menu_open: false
     )
   end
 
@@ -127,7 +145,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
           title={window_title(@game_id)}
           pinned
           default_maximized
-          body_class="h-full min-h-0 p-2"
+          body_class="h-full min-h-0 p-0"
           data-testid="watch-window"
         >
           <:icon>
@@ -146,62 +164,85 @@ defmodule RetroHexChatWeb.App.WatchLive do
             </.window_status_bar_field>
           </:status>
 
-          <div class="flex h-full min-h-0 flex-col gap-2">
+          <%!-- The match fills the window; what is said about it — who plays,
+                who is looking, how the last game went, what else is live —
+                is the menu over it: always there between games, and a key
+                away while one is played. --%>
+          <.game_stage
+            id="watch-stage"
+            class="h-full"
+            menu_open={not @live? or @menu_open}
+            menu_lock={not @live?}
+            on_close={JS.push("watch_menu_close")}
+            on_menu={@live? && JS.push("watch_menu")}
+          >
             <div
-              :if={@watchable? and @status == "playing" and @game_id}
+              :if={@live?}
               id={"watch-canvas-#{@round}"}
               phx-hook="SpectateCanvasHook"
               phx-update="ignore"
               data-token={@token}
               data-game-id={@game_id}
               data-frames="0"
-              class="shadow-retro-field relative flex min-h-[220px] flex-1 items-center justify-center overflow-hidden bg-black p-1"
+              class="relative h-full w-full"
               data-testid="watch-canvas"
             >
-              <canvas
-                width="640"
-                height="480"
-                class="aspect-[4/3] h-auto max-h-full w-full max-w-[720px] bg-black"
-              ></canvas>
+              <canvas width="640" height="480" class="block h-full w-full bg-black object-contain"></canvas>
               <div class="game-canvas__stub absolute inset-0 flex items-center justify-center bg-black text-xs font-bold text-white">
                 {dgettext("games", "Waiting for the first frame...")}
               </div>
             </div>
 
-            <.inset
-              :if={not (@watchable? and @status == "playing")}
-              class="flex min-h-[220px] flex-1 flex-col items-center justify-center gap-retro-8 p-retro-12 text-center"
-              data-testid="watch-idle"
-            >
-              <Icons.game_icon :if={@game_id} game_id={@game_id} class="h-16 w-16" />
-              <p class="text-sm font-bold">{idle_text(@watchable?, @status)}</p>
-              <p :if={@result} class="text-sm" data-testid="watch-result">
-                {result_text(@result, @players)}
-              </p>
+            <:menu>
+              <div class="grid justify-items-center gap-retro-6" data-testid="watch-idle">
+                <Icons.game_icon :if={@game_id} game_id={@game_id} class="h-12 w-12" />
+                <h3 class="arcade-title">
+                  {if @live?, do: status_label(@status), else: idle_text(@watchable?, @status)}
+                </h3>
+                <p :if={@watchable?} class="arcade-badge">{LiveMatch.watchers_label(@watchers)}</p>
+                <p :if={@result} data-testid="watch-result">{result_text(@result, @players)}</p>
 
-              <div :if={@others != []} class="mt-retro-8 text-sm" data-testid="watch-others">
-                <p class="font-bold">{dgettext("games", "Live now")}</p>
-                <ul class="space-y-1">
-                  <li :for={match <- @others}><.live_match_link match={match} /></li>
-                </ul>
+                <div :if={@others != []} class="mt-retro-4" data-testid="watch-others">
+                  <p class="arcade-muted">{dgettext("games", "Live now")}</p>
+                  <ul class="space-y-1">
+                    <li :for={match <- @others}><.live_match_link match={match} /></li>
+                  </ul>
+                </div>
+
+                <.button
+                  :if={@live?}
+                  variant="arcade"
+                  size="lg"
+                  class="w-full"
+                  phx-click="watch_menu_close"
+                  data-testid="watch-resume"
+                >
+                  <:icon><.arcade_icon name={:play} /></:icon>
+                  {dgettext("games", "Continue")}
+                </.button>
+                <.stage_fullscreen_button :if={@live?} stage="watch-stage" />
+
+                <p :if={@game_id} class="flex flex-wrap justify-center gap-x-retro-8">
+                  <%!-- The game's home: every way to play it, from the computer
+                        to a seat in its channel. --%>
+                  <.link
+                    href={Paths.game_page_path(@game_id)}
+                    class="underline"
+                    data-testid="watch-play"
+                  >
+                    {dgettext("games", "Play %{game} yourself", game: Catalog.game_name(@game_id))}
+                  </.link>
+                  <.link
+                    href={Paths.chat_path(Catalog.channel_name(@game_id))}
+                    class="underline"
+                    data-testid="watch-channel"
+                  >
+                    {Catalog.channel_name(@game_id)}
+                  </.link>
+                </p>
               </div>
-            </.inset>
-
-            <div :if={@game_id} class="flex flex-wrap items-center gap-retro-8 text-xs">
-              <%!-- The game's home: every way to play it, from the computer to
-                    a seat in its channel. --%>
-              <.link href={Paths.game_page_path(@game_id)} class="underline" data-testid="watch-play">
-                {dgettext("games", "Play %{game} yourself", game: Catalog.game_name(@game_id))}
-              </.link>
-              <.link
-                href={Paths.chat_path(Catalog.channel_name(@game_id))}
-                class="underline"
-                data-testid="watch-channel"
-              >
-                {Catalog.channel_name(@game_id)}
-              </.link>
-            </div>
-          </div>
+            </:menu>
+          </.game_stage>
         </.desktop_window>
       </.desktop>
     </div>

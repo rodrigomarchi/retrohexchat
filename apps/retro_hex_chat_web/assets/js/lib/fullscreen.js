@@ -1,21 +1,21 @@
 /**
- * Fullscreen toggle for the virtual space shell.
+ * Fullscreen toggle: the virtual space's shell, a Retro Game's stage.
  *
- * One translucent button both enters and exits fullscreen on the space shell
- * element. State is derived from the document's `fullscreenchange` (never
+ * One button both enters and exits fullscreen on its target element. State is derived from the document's `fullscreenchange` (never
  * assumed from the click), so exiting via Esc or any other UA affordance keeps
  * the button glyph in sync — the `data-fullscreen` attribute on the button
  * drives the enter/exit icon swap in CSS. WebKit-prefixed fallbacks cover
  * Safari versions that predate the unprefixed API.
- * @module space/fullscreen
+ * @module fullscreen
  */
-import { log } from "../logger.js";
+import { log } from "./logger.js";
 
 export class FullscreenToggleController {
   /**
    * @param {object} opts
-   * @param {HTMLElement} opts.button the `[data-space-fullscreen-toggle]` element
-   * @param {HTMLElement} opts.target the element to present fullscreen (the space shell)
+   * @param {HTMLElement} opts.button the toggle (`[data-space-fullscreen-toggle]`,
+   *   `[data-stage-fullscreen-toggle]`)
+   * @param {HTMLElement} opts.target the element to present fullscreen
    * @param {Document} [opts.doc] injected document (tests)
    */
   constructor({ button, target, doc } = {}) {
@@ -51,7 +51,7 @@ export class FullscreenToggleController {
     const request = this._target.requestFullscreen ?? this._target.webkitRequestFullscreen;
     const result = request?.call(this._target);
     // The UA may reject (permission, iframe policy); surface it, never swallow.
-    result?.catch?.((error) => log.warn("[space] fullscreen request rejected", error));
+    result?.catch?.((error) => log.warn("[fullscreen] request rejected", error));
   }
 
   _onChange() {

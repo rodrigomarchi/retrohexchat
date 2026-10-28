@@ -38,6 +38,13 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       ":viewport centers over the whole screen; :window anchors to the nearest positioned " <>
         "ancestor — render it inside a desktop window to modally block just that window"
 
+  attr :skin, :string,
+    default: "retro",
+    values: ~w(retro arcade),
+    doc:
+      "retro is the Win98 window; arcade the Retro Games' neon panel, a card on every " <>
+        "screen (it never takes a phone's whole screen), inside an `.arcade-ui` stage"
+
   attr :class, :string, default: nil
   slot :inner_block, required: true
 
@@ -61,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       <%!-- Overlay --%>
       <div
         id={"#{@id}-bg"}
-        class={"#{scope_position(@scope)} inset-0 bg-black/30 group-data-[state=open]/dialog:animate-in group-data-[state=closed]/dialog:animate-out group-data-[state=closed]/dialog:fade-out-0 group-data-[state=open]/dialog:fade-in-0"}
+        class={"#{scope_position(@scope)} inset-0 #{backdrop_class(@skin)} group-data-[state=open]/dialog:animate-in group-data-[state=closed]/dialog:animate-out group-data-[state=closed]/dialog:fade-out-0 group-data-[state=open]/dialog:fade-in-0"}
         aria-hidden="true"
       />
       <%!-- Centering container --%>
@@ -70,6 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
         role="dialog"
         aria-modal="true"
         tabindex="0"
+        data-skin={@skin}
       >
         <.focus_wrap
           id={"#{@id}-wrap"}
@@ -77,7 +85,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
           phx-key="escape"
           class={
             classes([
-              "w-full max-w-none md:max-w-lg p-0 md:p-4",
+              wrap_size_classes(@skin),
               scope_wrap_classes(@scope),
               @class
             ])
@@ -86,7 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
           <%!-- Window frame (Win98 3D border) --%>
           <div
             id={"#{@id}-surface"}
-            class={scope_frame_classes(@scope)}
+            class={frame_classes(@scope, @skin)}
             phx-click-away={!@lock && close_modal(@on_cancel, @id)}
           >
             {render_slot(@inner_block)}
@@ -115,6 +123,17 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   # that may shrink lets the body scroll instead.
   defp scope_wrap_classes(:window), do: "flex min-h-0 max-h-full flex-col"
   defp scope_wrap_classes(:viewport), do: nil
+
+  defp backdrop_class("arcade"), do: "arcade-dialog-backdrop"
+  defp backdrop_class(_retro), do: "bg-black/30"
+
+  defp wrap_size_classes("arcade"), do: "w-full max-w-md p-retro-8"
+  defp wrap_size_classes(_retro), do: "w-full max-w-none md:max-w-lg p-0 md:p-4"
+
+  # The arcade's panel is a card over the game on any screen: the game stays
+  # in sight around it, and the body scrolls inside the frame when it is tall.
+  defp frame_classes(_scope, "arcade"), do: "arcade-panel flex min-h-0 max-h-full flex-col"
+  defp frame_classes(scope, _retro), do: scope_frame_classes(scope)
 
   defp scope_frame_classes(:viewport) do
     "flex flex-col bg-surface shadow-retro-window p-[3px] " <>

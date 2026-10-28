@@ -35,6 +35,8 @@ defmodule RetroHexChatWeb.Live.ShareControl do
     default: "default",
     doc: "how loudly the control reads beside whatever else the surface puts next to it"
 
+  slot :icon, doc: "the button's icon, where the surface draws its own (the link's by default)"
+
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
@@ -48,6 +50,7 @@ defmodule RetroHexChatWeb.Live.ShareControl do
        share_target: nil,
        scope: :viewport,
        variant: "default",
+       icon: [],
        class: nil
      )}
   end
@@ -108,7 +111,10 @@ defmodule RetroHexChatWeb.Live.ShareControl do
         disabled={!@available}
         data-testid="share-create"
       >
-        <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
+        <:icon>
+          <Icons.icon_btn_link :if={@icon == []} class="h-4 w-4" />
+          {render_slot(@icon)}
+        </:icon>
         {dgettext("share", "Share")}
       </Button.button>
 
@@ -120,7 +126,10 @@ defmodule RetroHexChatWeb.Live.ShareControl do
         phx-target={@myself}
         data-testid="share-open"
       >
-        <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
+        <:icon>
+          <Icons.icon_btn_link :if={@icon == []} class="h-4 w-4" />
+          {render_slot(@icon)}
+        </:icon>
         {dgettext("share", "Share link")}
       </Button.button>
 

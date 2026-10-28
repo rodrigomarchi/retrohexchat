@@ -35,6 +35,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.NickFlag
+  import RetroHexChatWeb.Components.UI.Games.ArcadeIcon
+  import RetroHexChatWeb.Components.UI.Games.GameStage
 
   alias RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect
   alias RetroHexChatWeb.Components.UI.MediaSession.PermissionNotice
@@ -56,7 +58,118 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   slot :footer, doc: "the way back and the share bar, which the host decides"
 
   @spec p2p_starting_room(map()) :: Phoenix.LiveView.Rendered.t()
-  def p2p_starting_room(assigns) do
+  def p2p_starting_room(%{game: game} = assigns) when is_map(game), do: match_room(assigns)
+  def p2p_starting_room(assigns), do: session_room(assigns)
+
+  # A match's room is the game's stage, as every Retro Game is: the room —
+  # what is played, who is here, Ready and Start — is the menu over it.
+  defp match_room(assigns) do
+    assigns =
+      assign(assigns,
+        occupants: occupants(assigns.room),
+        turn_only: turn_configured?(assigns.setup) and turn_only?(assigns.setup)
+      )
+
+    ~H"""
+    <.game_stage
+      id={@id}
+      class="h-full"
+      data-testid="p2p-starting-room"
+      menu_open
+      menu_lock
+    >
+      <div class="h-full w-full"></div>
+      <:menu>
+        <.form
+          id={"#{@id}-form"}
+          for={%{}}
+          as={:p2p_setup}
+          phx-submit={@on_ready}
+          class="grid gap-retro-8"
+          data-testid="p2p-setup-form"
+        >
+          <%!-- A game has nothing to send: the form says so, or `[Ready]`
+                would submit no `p2p_setup` at all and quietly do nothing. --%>
+          <input type="hidden" name="p2p_setup[audio]" value="false" />
+          <input type="hidden" name="p2p_setup[video]" value="false" />
+          <input type="hidden" name="p2p_setup[turn_only]" value={to_string(@turn_only)} />
+
+          <header class="grid justify-items-center gap-retro-4" data-testid="p2p-room-game">
+            <Icons.game_icon game_id={@game.id} class="h-12 w-12" />
+            <h3 class="arcade-title" data-testid="p2p-room-game-name">{@game.name}</h3>
+            <p :if={@game[:tagline]} class="arcade-muted">{@game.tagline}</p>
+          </header>
+          <p :if={@game[:controls]} class="arcade-keys arcade-muted">{@game.controls}</p>
+
+          <section class="grid gap-retro-4 text-left" data-testid="p2p-room-roster">
+            <p class="arcade-muted">{dgettext("p2p", "In the room")}</p>
+            <ul class="grid gap-retro-2">
+              <li
+                :for={occupant <- @occupants}
+                class="flex min-w-0 items-center justify-between gap-retro-8"
+                data-testid={"p2p-room-occupant-#{occupant.slot}"}
+              >
+                <span class="inline-flex min-w-0 items-center gap-1">
+                  <.nick_flag locale={occupant.locale} />
+                  <span class="truncate">{occupant.nickname}</span>
+                  <span :if={occupant.host?} class="arcade-muted shrink-0">
+                    ({dgettext("p2p", "host")})
+                  </span>
+                </span>
+                <span class="arcade-badge shrink-0">{occupant.status}</span>
+              </li>
+            </ul>
+            <p class="arcade-muted" data-testid="p2p-room-waiting">{waiting(@room)}</p>
+          </section>
+
+          <%!-- Only the creator gets Start, because only the creator can offer:
+                a second offerer is the one thing this negotiation has never
+                survived. --%>
+          <div class="grid grid-cols-2 gap-retro-6">
+            <.button
+              type="submit"
+              variant="arcade"
+              disabled={@room.ready?}
+              class={!@room.host? && "col-span-2"}
+              data-testid="p2p-room-ready"
+            >
+              <:icon><.arcade_icon name={:play} /></:icon>
+              {ready_label(@room.ready?)}
+            </.button>
+            <.button
+              :if={@room.host?}
+              type="button"
+              variant="arcade"
+              phx-click={@on_start}
+              disabled={not @room.can_start?}
+              data-testid="p2p-room-start"
+            >
+              <:icon><.arcade_icon name={:partner} /></:icon>
+              {dgettext("p2p", "Start")}
+            </.button>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-retro-6">
+            {render_slot(@footer)}
+            <%!-- A room does not outlive the person waiting in it. --%>
+            <.button
+              :if={@room.host? and not @room.started?}
+              type="button"
+              variant="arcade-secondary"
+              phx-click={@on_cancel}
+              data-testid="p2p-room-cancel"
+            >
+              <:icon><.arcade_icon name={:stop} /></:icon>
+              {dgettext("p2p", "Cancel")}
+            </.button>
+          </div>
+        </.form>
+      </:menu>
+    </.game_stage>
+    """
+  end
+
+  defp session_room(assigns) do
     turn_configured = turn_configured?(assigns.setup)
 
     assigns =
@@ -84,23 +197,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         class="my-auto flex w-full max-w-[920px] flex-col gap-2"
         data-testid="p2p-setup-form"
       >
-        <%!-- A match still submits the same form, and it says what a game has
-              to say about media: nothing to send. Without these the submit
-              would carry no `p2p_setup` at all and `[Ready]` would quietly do
-              nothing — the fields are the answer, not decoration. --%>
-        <input :if={@game} type="hidden" name="p2p_setup[audio]" value="false" />
-        <input :if={@game} type="hidden" name="p2p_setup[video]" value="false" />
-        <input
-          :if={@game}
-          type="hidden"
-          name="p2p_setup[turn_only]"
-          value={to_string(@turn_only)}
-        />
-
         <div class="grid min-w-0 gap-2 md:grid-cols-[260px_minmax(0,1fr)]">
-          <.match_subject :if={@game} game={@game} />
           <.room_preview
-            :if={!@game}
             media={@media}
             setup={@setup}
             device_preferences={@device_preferences}
@@ -110,7 +208,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
             <.roster occupants={@occupants} room={@room} />
 
             <.inset
-              :if={!@game}
               bevel="sunken"
               tone="none"
               as="section"
@@ -147,7 +244,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
             </.inset>
 
             <.inset
-              :if={!@game}
               bevel="sunken"
               tone="none"
               as="section"
@@ -183,7 +279,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
             </.inset>
 
             <details
-              :if={!@game}
               class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
               data-testid="p2p-setup-advanced"
             >
@@ -315,43 +410,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         </li>
       </ul>
       <p class="text-muted-foreground" data-testid="p2p-room-waiting">{waiting(@room)}</p>
-    </.inset>
-    """
-  end
-
-  attr :game, :map, required: true
-
-  # A match puts the game where a session puts the camera, and for the same
-  # reason: it is the answer to "what did I just walk into". Somebody who
-  # followed a link pasted in a channel has seen nothing of this match but its
-  # address, and there is no picker here — the link named the game, and
-  # offering another one would be the room contradicting the way in.
-  defp match_subject(assigns) do
-    ~H"""
-    <.inset
-      bevel="sunken"
-      tone="none"
-      as="section"
-      class="grid min-w-0 content-start gap-2 self-start border border-border p-2"
-      data-testid="p2p-room-game"
-    >
-      <div class="flex min-w-0 items-center gap-2">
-        <span class="shadow-retro-field bg-surface shrink-0 p-2">
-          <Icons.game_icon game_id={@game.id} class="h-8 w-8" />
-        </span>
-        <span class="min-w-0">
-          <span class="block truncate font-bold" data-testid="p2p-room-game-name">
-            {@game.name}
-          </span>
-          <span :if={@game[:tagline]} class="block truncate text-muted-foreground">
-            {@game.tagline}
-          </span>
-        </span>
-      </div>
-      <p :if={@game[:controls]} class="flex items-start gap-1 text-muted-foreground">
-        <Icons.icon_btn_keyboard class="mt-[1px] h-3.5 w-3.5 shrink-0" />
-        <span class="min-w-0">{@game.controls}</span>
-      </p>
     </.inset>
     """
   end

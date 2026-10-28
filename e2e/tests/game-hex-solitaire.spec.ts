@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N79 [done] Hex Solitaire on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock turns a card), ended with End and written down
+ * @flow N79 [done] Hex Solitaire on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock turns a card), ended with End from the menu and written down
  * @flow N80 [done] Hex Solitaire on a phone: the table stands up, fits the screen, and a tap on the stock turns a card
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -43,7 +43,7 @@ const pixels = (canvas: Locator) =>
 
 async function startAndWaitForTheDeal(game: Page): Promise<Locator> {
   await game.getByTestId("retro-game-start-ai").click();
-  await expect(game.getByTestId("retro-game-end-match")).toBeVisible();
+  await expect(game.getByTestId("game-stage-menu-key")).toBeVisible();
   // The deal flies out for about a second and a half.
   await game.waitForTimeout(2500);
   return game.getByTestId("retro-game-canvas-hex_solitaire").locator("canvas");
@@ -67,6 +67,10 @@ test.describe("Hex Solitaire", () => {
       await game.waitForTimeout(600);
       expect(await pixels(canvas)).not.toBe(before);
       await shot(canvas, "hex-solitaire-stock-turned");
+
+      // End is in the menu, over the match it holds.
+
+      await game.getByTestId("game-stage-menu-key").click();
 
       await game.getByTestId("retro-game-end-match").click();
       const result = game.getByTestId("retro-game-result");

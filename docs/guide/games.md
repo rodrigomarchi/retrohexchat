@@ -42,6 +42,15 @@ another copy of the core (§G.5).
 
 The engine underneath is `js/lib/game_engine.js`; a game never imports it.
 
+**Where a game is shown.** Every screen that runs one — against the computer (`/play/<game>`,
+`RetroGamesPanel`), with somebody (the P2P room's Games section, `Lobby.GamePanel`; its match
+room, `P2P.StartingRoom`), watched (`/watch/<token>`) — puts the canvas on a
+`Games.GameStage`: the canvas fills it (letterboxed by `object-contain`, so a table stands up on
+a phone by the box alone), and what is chosen around a match is the stage's menu, an
+`Dialog skin="arcade"` over the game. While a match runs only a dim corner key is over the
+picture, and on a touch screen the pad (`VirtualPad` in the arcade kit, `game_pad/1`). The kit is
+`virtual.space/ui-arcade/`, built by `author_ui.py --kit arcade` (`virtual.space/UI.md`).
+
 ## G.2 A game's folder
 
 | File | Holds |
@@ -78,7 +87,7 @@ The rest of what a new game needs, and what stops you when it is missing:
 | Step | Where | Caught by |
 |---|---|---|
 | Ranking: versus, score or co-op | `@versus_game_ids` / `@score_game_ids` / `@coop_game_ids` in `Games.Catalog` | compilation stops |
-| Goal and keys in the library panel | `goal_label/1` and `control_rows/1` in `RetroGamesPanel` | `retro_games_panel_test.exs` |
+| Goal and keys in the stage's menu, and its touch pad | `goal_label/1` and `control_rows/1` in `RetroGamesPanel` (`game_pad/1` reads the keys) | `retro_games_panel_test.exs`, `game_pad_test.exs` |
 | Box art | an `icon_game_*` in `components/icons/games.ex`, its line in `icons/registry.ex`, and the catalog entry's `icon:` naming it | `icons_test.exs`, `icons_registry_test.exs` |
 | Help topic | `HelpTopics` features list + topic, `controllers/help_content/feature_<id>.html.heex` | `games_catalog_test.exs`, `help_content_coverage_test.exs` |
 | Translations | `make i18n.gettext.merge`, then every locale | `make i18n.gettext.check`, `i18n.catalog.check` |
@@ -94,6 +103,10 @@ and pick a new folder up by themselves.
 
 - **Time is ticks.** The simulation steps at a fixed 60 Hz; a pause is `after: { ticks: n }`, a
   repeat is `every`. No `setTimeout`, no `setInterval`, no milliseconds.
+- **A solo match can be held.** Esc, the stage's corner key or a hidden tab calls
+  `GameEngine.pause()`: no step runs, no key reaches the game and the sound is suspended, until
+  `resume()`. It holds everything only because time is ticks. A match with somebody is never
+  held (`_canPause` is solo only).
 - **One seed plays one match.** The host's simulation draws only from `game.random`, so a seed
   replays the same match; decoration draws from `game.fxRandom`, the AI from its own `rng`.
   A renderer may use `Math.random()` for sparkle no replay depends on.

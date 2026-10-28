@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   use RetroHexChatWeb, :live_view
 
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.Games.ArcadeIcon
   import RetroHexChatWeb.Components.UI.RetroGamesPanel
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
@@ -57,6 +58,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         selected_game: nil,
         difficulty: "normal",
         canvas_ready: false,
+        menu_open: false,
         result: nil,
         record: nil,
         player: SessionHelpers.identified_player(session, socket.assigns.surface_nickname),
@@ -94,7 +96,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
           title={dgettext("games", "Retro Games")}
           pinned
           default_maximized
-          body_class="h-full min-h-0 p-2"
+          body_class="h-full min-h-0 p-0"
           data-testid="retro-games-window"
         >
           <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
@@ -134,26 +136,36 @@ defmodule RetroHexChatWeb.App.PlayLive do
     """
   end
 
+  # The game fills the window; what is chosen around a match is its menu.
+  # A partner and a link are offered there, before the match, deliberately
+  # inside the game rather than beside it: you decide to play with somebody
+  # while looking at what you would play. The room comes first and the link
+  # second — opening a game does not mint an address, pressing Share does.
   defp games_body(assigns) do
     ~H"""
-    <div class="flex h-full min-h-0 flex-col gap-2">
-      <div class="flex flex-wrap items-center gap-2">
-        <%!-- Where a match is born, and deliberately inside the game rather
-              than beside it: you decide to play with somebody while looking at
-              what you would play. The room comes first and the link second —
-              opening a game does not mint an address, pressing Share does.
-
-              Both are invitations, so they are read together and weighted:
-              a match is the whole thing, a link is one way to hand it out. --%>
+    <.retro_games_panel
+      id="retro-games-panel"
+      status={@status}
+      selected_game={@selected_game}
+      difficulty={@difficulty}
+      canvas_ready={@canvas_ready}
+      menu_open={@menu_open}
+      result={@result}
+      record={@record}
+      ranked?={not is_nil(@player)}
+      error_message={@error_message}
+    >
+      <:invite>
         <%!-- The match room seats only an identified nickname, so the
               button is offered to nobody it would turn away. --%>
         <Button.button
           :if={@host_id && not Catalog.solo_only?(@selected_game.id)}
           type="button"
+          variant="arcade-secondary"
           phx-click="create_match"
           data-testid="play-create-match"
         >
-          <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
+          <:icon><.arcade_icon name={:partner} /></:icon>
           {dgettext("games", "Play with someone")}
         </Button.button>
         <.live_component
@@ -163,25 +175,16 @@ defmodule RetroHexChatWeb.App.PlayLive do
           available={@sharable}
           on_share="share_game"
           on_revoke="revoke_game"
-          variant="outline"
-        />
-        <p :if={@match_error} class="text-warning text-sm" data-testid="play-match-error">
+          scope={:window}
+          variant="arcade-secondary"
+        >
+          <:icon><.arcade_icon name={:link} /></:icon>
+        </.live_component>
+        <p :if={@match_error} class="w-full text-warning" data-testid="play-match-error">
           {@match_error}
         </p>
-      </div>
-      <.retro_games_panel
-        id="retro-games-panel"
-        status={@status}
-        selected_game={@selected_game}
-        difficulty={@difficulty}
-        canvas_ready={@canvas_ready}
-        result={@result}
-        record={@record}
-        ranked?={not is_nil(@player)}
-        error_message={@error_message}
-        class="min-h-0 flex-1"
-      />
-    </div>
+      </:invite>
+    </.retro_games_panel>
     """
   end
 
@@ -199,9 +202,13 @@ defmodule RetroHexChatWeb.App.PlayLive do
     {:noreply, begin_match(socket)}
   end
 
+  # The canvas stayed on screen through the result: a fresh engine is loaded
+  # on it, and it says when it is ready.
   def handle_event("retro_games_play_again", _params, socket) do
     {:noreply,
-     assign(socket,
+     socket
+     |> push_event("retro_game_stop", %{game_id: socket.assigns.selected_game.id})
+     |> assign(
        status: "ready",
        canvas_ready: false,
        result: nil,
@@ -209,6 +216,29 @@ defmodule RetroHexChatWeb.App.PlayLive do
        error_message: nil
      )}
   end
+
+  # Esc, the corner key, or the tab put away: the match holds under its menu.
+  def handle_event(
+        "retro_games_menu",
+        _params,
+        %{assigns: %{status: "playing", selected_game: %{id: game_id}}} = socket
+      ) do
+    {:noreply,
+     socket |> assign(menu_open: true) |> push_event("retro_game_pause", %{game_id: game_id})}
+  end
+
+  def handle_event("retro_games_menu", _params, socket), do: {:noreply, socket}
+
+  def handle_event(
+        "retro_games_resume",
+        _params,
+        %{assigns: %{status: "playing", menu_open: true, selected_game: %{id: game_id}}} = socket
+      ) do
+    {:noreply,
+     socket |> assign(menu_open: false) |> push_event("retro_game_resume", %{game_id: game_id})}
+  end
+
+  def handle_event("retro_games_resume", _params, socket), do: {:noreply, socket}
 
   # End mid-match ends it as it stands: the canvas reports the score, and that
   # report finishes the match like any other.
@@ -323,6 +353,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
     socket
     |> assign(
       status: "playing",
+      menu_open: false,
       result: nil,
       record: nil,
       error_message: nil,
@@ -349,7 +380,14 @@ defmodule RetroHexChatWeb.App.PlayLive do
     socket
     |> stop_playing()
     |> push_event("retro_game_stop", %{game_id: game_id})
-    |> assign(status: "ready", canvas_ready: false, result: nil, record: nil, error_message: nil)
+    |> assign(
+      status: "ready",
+      canvas_ready: false,
+      menu_open: false,
+      result: nil,
+      record: nil,
+      error_message: nil
+    )
   end
 
   defp reset_match(socket), do: socket
@@ -372,6 +410,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
       |> assign(
         status: "finished",
         canvas_ready: false,
+        menu_open: false,
         result: result,
         record: record_match(socket, payload)
       )
@@ -411,6 +450,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
       |> assign(
         status: "error",
         canvas_ready: false,
+        menu_open: false,
         error_message: dgettext("games", "The game engine could not be loaded."),
         result: nil
       )

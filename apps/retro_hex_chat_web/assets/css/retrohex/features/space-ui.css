@@ -468,7 +468,8 @@
   pointer-events: none;
 }
 
-/* A key with its action's name instead of a picture: the Retro Games' pad. */
+/* A key with its action's name instead of a picture (the Retro Games' pad, in
+   the arcade kit, draws its keys the same way: `arcade-ui.css`). */
 .pad-button--label {
   /* Clear of the key's 10px frame, in the light ink that reads on its wood. */
   padding: 0 14px;

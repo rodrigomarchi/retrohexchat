@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N87 [done] Hex Sudoku on the desktop: opened from the Retro Games folder, the grid is made, a click chooses a square, the arrows move it, H gives a hint, N turns the pencil on, ended with End and written down
+ * @flow N87 [done] Hex Sudoku on the desktop: opened from the Retro Games folder, the grid is made, a click chooses a square, the arrows move it, H gives a hint, N turns the pencil on, ended with End from the menu and written down
  * @flow N88 [done] Hex Sudoku on a phone: the keypad stands under the grid and fits the screen, a tap chooses a square, the pencil switches on, the lamp gives a hint, and the page does not scroll
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -59,7 +59,7 @@ async function changes(canvas: Locator, act: () => Promise<void>) {
 
 async function startAndWaitForTheGrid(game: Page): Promise<Locator> {
   await game.getByTestId("retro-game-start-ai").click();
-  await expect(game.getByTestId("retro-game-end-match")).toBeVisible();
+  await expect(game.getByTestId("game-stage-menu-key")).toBeVisible();
   // The grid is made within a second; the server writes down only a match of
   // three seconds or more, so the test plays as long as a person would.
   await game.waitForTimeout(3000);
@@ -86,6 +86,10 @@ test.describe("Hex Sudoku", () => {
       await changes(canvas, () => game.keyboard.press("h"));
       await changes(canvas, () => game.keyboard.press("n"));
       await shot(canvas, "hex-sudoku-played");
+
+      // End is in the menu, over the match it holds.
+
+      await game.getByTestId("game-stage-menu-key").click();
 
       await game.getByTestId("retro-game-end-match").click();
       const result = game.getByTestId("retro-game-result");

@@ -3080,32 +3080,32 @@ msgstr "Ligar/desligar compartilhamento de tela P2P"
 msgid "the other user"
 msgstr "o outro usuário"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:74
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:68
 #, elixir-autogen, elixir-format
 msgid "Attack"
 msgstr "Atacar"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:32
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:34
 #, elixir-autogen, elixir-format
 msgid "Virtual control pad"
 msgstr "Direcional virtual"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:94
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:79
 #, elixir-autogen, elixir-format
 msgid "Walk down"
 msgstr "Andar para baixo"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:86
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:80
 #, elixir-autogen, elixir-format
 msgid "Walk left"
 msgstr "Andar para a esquerda"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:90
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:81
 #, elixir-autogen, elixir-format
 msgid "Walk right"
 msgstr "Andar para a direita"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:82
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:78
 #, elixir-autogen, elixir-format
 msgid "Walk up"
 msgstr "Andar para cima"
@@ -3127,7 +3127,7 @@ msgstr "Juntando-se..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:152
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:153
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:628
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:646
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sessão P2P"
@@ -3297,7 +3297,7 @@ msgstr "ID de sessão inválido."
 msgid "Invalid terminal id."
 msgstr "ID de terminal inválido."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:299
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:317
 #: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Session ended."
@@ -3813,7 +3813,7 @@ msgstr "Você precisa estar em %{channel} para entrar no espaço dele."
 msgid "The P2P signaling channel refused this session."
 msgstr "O canal de sinalização P2P recusou esta sessão."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:626
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:644
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
@@ -3823,12 +3823,12 @@ msgstr "P2P · %{peer}"
 msgid "This P2P session moved to another window of yours."
 msgstr "Esta sessão P2P foi para outra janela sua."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:620
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:623
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · partida"
@@ -4444,7 +4444,7 @@ msgstr "Já há uma peça nesse local."
 msgid "Only one piece at a time, please wait."
 msgstr "Só um pedaço de cada vez, por favor espere."
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:65
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:61
 #: lib/retro_hex_chat_web/live/app/space_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Use"
@@ -5555,7 +5555,7 @@ msgstr "Morena"
 msgid "Colour"
 msgstr "Cor"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:54
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Dance"
@@ -6090,7 +6090,7 @@ msgstr "%{channel} não está mais na sua lista de entrada automática."
 msgid "Could not connect to %{peer}."
 msgstr "Não foi possível conectar ao %{peer}."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:294
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:312
 #, elixir-autogen, elixir-format
 msgid "The game expired before it started."
 msgstr "O jogo expirou antes de começar."

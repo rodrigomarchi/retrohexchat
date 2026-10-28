@@ -26,7 +26,8 @@
   <li>
     {dgettext(
       "help_games",
-      "Against the computer opens the game in a tab of its own. Choose Easy, Normal or Hard there, then click Play vs AI."
+      "Against the computer opens the game in a tab of its own, with a menu over it. Choose Easy, Normal or Hard in the menu, then click %{play}.",
+      play: dgettext("games", "Play vs AI")
     )}
   </li>
   <li>
@@ -73,6 +74,53 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "The Menu over the Game")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
+      "The game fills its window. Before a match, a menu over the game shows its goal, the keyboard keys it uses and the difficulty."
+    )}
+  </li>
+  <li>
+    {dgettext("help_games", "Once the match starts, the game is all you see.")}
+    {dgettext("help_games", "A small button stays in the top right corner.")}
+  </li>
+  <li>
+    {dgettext("help_games", "Press Esc or the small button to open the menu.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Against the computer or alone, the game waits while the menu is open."
+    )}
+  </li>
+  <li>
+    {dgettext("help_games", "%{continue} goes back to the game.",
+      continue: dgettext("games", "Continue")
+    )}
+    {dgettext("help_games", "%{end} ends the match as it stands.", end: dgettext("games", "End"))}
+  </li>
+  <li>
+    {dgettext("help_games", "When you play with somebody, the game does not pause.")}
+    {dgettext("help_games", "Your partner keeps playing while your menu is open.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "%{full_screen} in the menu shows the game on the whole screen. Press Esc to leave it.",
+      full_screen: dgettext("games", "Full screen")
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "At the end of a match, the menu shows the result. %{again} starts another match.",
+      again: dgettext("games", "Again")
+    )}
+  </li>
+</ul>
+
 <.help_h4 icon={:icon_game_pong}>{dgettext("help_games", "The address is the door")}</.help_h4>
 <ul>
   <li>
@@ -101,7 +149,8 @@
   <li>
     {dgettext(
       "help_games",
-      "With a game selected, press Share. You get a short link you can paste anywhere — a channel, a private message, or outside RetroHexChat entirely."
+      "Press %{share} in the menu over the game. You get a short link you can paste anywhere — a channel, a private message, or outside RetroHexChat entirely.",
+      share: dgettext("share", "Share")
     )}
   </li>
   <li>
@@ -152,8 +201,11 @@
 <p>
   {dgettext(
     "help_games",
-    "Every game played with the keyboard has on-screen buttons under it, on a computer and on a phone. Use the arrows to move. Each button does the action written on it. You can press two buttons at the same time."
+    "On a phone or a tablet, every game played with the keyboard has buttons on the screen."
   )}
+  {dgettext("help_games", "Use the arrows to move.")}
+  {dgettext("help_games", "Each button does the action written on it.")}
+  {dgettext("help_games", "You can press two buttons at the same time.")}
 </p>
 <p>
   {dgettext(

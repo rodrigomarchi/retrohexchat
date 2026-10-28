@@ -5,8 +5,10 @@ defmodule RetroHexChatWeb.Components.UI.VirtualPad do
   by `data-pad-dir` (a direction) or `data-pad-action` (an action), and the
   cross of the directions a pad uses, on the gilded compass rose.
 
-  The art is the space's UI kit (`.space-ui` scopes its variables and pixel
-  font), so a pad's root carries that class. All behaviour — several fingers
+  A pad wears one of two kits, chosen by the class on its root: the space's
+  (`.space-ui`, wood and gold) or the arcade's (`.arcade-ui`, the Retro Games'
+  neon). The keys are the same; only the cross's arrows differ (`skin`), since
+  the space's are raster icons of its own kit. All behaviour — several fingers
   at once, sliding between directions, the pressed look (`data-pressed`) — is
   `assets/js/lib/virtual_pad.js`, attached to the root (`data-pad`).
   Buttons are `tabindex="-1"`: the pad is a pointer affordance, and keyboard
@@ -45,6 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.VirtualPad do
 
   attr :dirs, :list, default: ~w(up down left right)
   attr :labels, :map, required: true, doc: "each direction's spoken name"
+  attr :skin, :string, default: "space", values: ~w(space arcade)
   attr :class, :any, default: nil
 
   @spec pad_cross(map()) :: Phoenix.LiveView.Rendered.t()
@@ -55,7 +58,8 @@ defmodule RetroHexChatWeb.Components.UI.VirtualPad do
     <div class={["pad-cross grid grid-cols-3 grid-rows-3", @class]}>
       <%= for cell <- @cells do %>
         <.pad_button :if={cell in @dirs} dir={cell} label={@labels[cell]} class="h-11 w-11">
-          <.pixel_icon name={@icons[cell]} />
+          <.pixel_icon :if={@skin == "space"} name={@icons[cell]} />
+          <span :if={@skin == "arcade"} class={"arcade-arrow arcade-arrow--#{cell}"}></span>
         </.pad_button>
         <div :if={cell not in @dirs}></div>
       <% end %>

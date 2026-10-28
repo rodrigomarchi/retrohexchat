@@ -1,0 +1,365 @@
+/* ── The Retro Games' arcade stage ───────────────────────────────────────────
+   A Retro Game is played on a stage: the canvas fills the window, and what is
+   chosen around a match (the mode, the difficulty, sharing, the result) is a
+   neon panel over it. Nothing else is drawn while a match runs, except the
+   on-screen pad on a touch screen and a small key in the corner that opens the
+   menu. Everything here is scoped to `.arcade-ui`, the stage's root.
+
+   The frames are PixelLab art sliced by `virtual.space/tools/author_ui.py
+   --kit arcade` (`arcade-ui-kit.generated.css` holds each piece's image per
+   state, slice and width); the type is the space's RH Pixel. Art renders 1:1
+   and edges repeat, never stretch. Playbook: virtual.space/UI.md. */
+
+.arcade-ui {
+  --arcade-ui-ink: rgb(200, 250, 246);
+  --arcade-ui-ink-muted: rgb(132, 160, 190);
+  --arcade-ui-cyan: rgb(87, 233, 236);
+  --arcade-ui-magenta: rgb(254, 84, 255);
+  --arcade-ui-amber: rgb(250, 197, 85);
+  --arcade-ui-face: rgb(24, 22, 51);
+  --arcade-ui-danger: rgb(255, 120, 130);
+  --arcade-ui-backdrop: rgba(4, 4, 14, 0.62);
+  --arcade-ui-font: "RH Pixel", "RH Pixel SC", "RH Pixel SC Ext", "Source Code Pro", monospace;
+
+  font-family: var(--arcade-ui-font);
+  font-size: 12px;
+  line-height: 1.25;
+  font-synthesis: none;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:lang(ja) .arcade-ui {
+  --arcade-ui-font: "RH Pixel", "RH Pixel JP", "RH Pixel JP Ext", "Source Code Pro", monospace;
+}
+
+:lang(zh-Hant) .arcade-ui {
+  --arcade-ui-font: "RH Pixel", "RH Pixel TC", "RH Pixel TC Ext", "Source Code Pro", monospace;
+}
+
+/* A platform dialog raised over the stage (the share link's) is the
+   platform's own, Win98 chrome and all: it keeps the platform's type. */
+.arcade-ui [role="dialog"]:not([data-skin="arcade"]) {
+  font-family: "Source Code Pro", monospace;
+  font-size: revert;
+  -webkit-font-smoothing: auto;
+}
+
+.arcade-ui [role="dialog"]:not([data-skin="arcade"]) a {
+  color: revert;
+}
+
+/* The pixel font has one weight; a synthesized bold smears it. */
+.arcade-ui
+  :is(b, strong, h1, h2, h3, h4, .font-bold, .font-medium):not(
+    [role="dialog"]:not([data-skin="arcade"]) *
+  ) {
+  font-weight: 400;
+}
+
+.arcade-ui :is(input, button, textarea, select) {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Keyboard focus: a dashed amber ring outside the frame, never mistaken for
+   a choice lit by its own art. */
+.arcade-ui :focus-visible:not(canvas) {
+  outline: 1px dashed var(--arcade-ui-amber);
+  outline-offset: 2px;
+}
+
+.arcade-ui a:not([role="dialog"]:not([data-skin="arcade"]) *) {
+  color: var(--arcade-ui-cyan);
+}
+
+/* ── The stage ── */
+
+.game-stage {
+  position: relative;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: rgb(0, 0, 0);
+}
+
+/* The key that opens the menu: in the corner, dim until reached for. */
+.game-stage__menu-key {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  opacity: 0.45;
+  transition: opacity 0.15s steps(2, jump-none);
+}
+
+.game-stage__menu-key:hover,
+.game-stage__menu-key:focus-visible {
+  opacity: 1;
+}
+
+/* The pad lies over the bottom of the game, on a touch screen only: with a
+   keyboard there is nothing over the picture. */
+.game-stage__pad {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  display: none;
+  padding: 0 12px calc(10px + env(safe-area-inset-bottom));
+  opacity: 0.82;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .game-stage__pad {
+    display: flex;
+  }
+}
+
+/* While the menu is open there is nothing beside it. */
+.game-stage__pad[data-hidden] {
+  display: none;
+}
+
+/* ── Frames ── */
+
+/* The menu's panel: black chrome lit by a cyan and a magenta line. Its face
+   is flat navy under the frame (no `fill`): the art's own face is shaded
+   toward its edges, and tiled across a larger panel its shading shows seams. */
+.arcade-panel {
+  border: 0 solid transparent;
+  border-image-source: var(--arcade-ui-panel);
+  border-image-slice: var(--arcade-ui-panel-slice);
+  border-image-width: var(--arcade-ui-panel-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  background: linear-gradient(var(--arcade-ui-face), var(--arcade-ui-face)) center /
+    calc(100% - 60px) calc(100% - 60px) no-repeat;
+  padding: 44px 44px 46px;
+  color: var(--arcade-ui-ink);
+}
+
+/* A narrow screen gives the panel its slim frame. */
+@media (max-width: 480px) {
+  .arcade-panel {
+    border-image-source: var(--arcade-ui-panel-slim);
+    border-image-slice: var(--arcade-ui-panel-slim-slice);
+    border-image-width: var(--arcade-ui-panel-slim-width);
+    background-size: calc(100% - 30px) calc(100% - 30px);
+    padding: 24px 22px 22px;
+  }
+}
+
+.arcade-dialog-backdrop {
+  background: var(--arcade-ui-backdrop);
+}
+
+/* A small label plate: the mode, a score. */
+.arcade-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0 solid transparent;
+  border-image-source: var(--arcade-ui-badge);
+  border-image-slice: var(--arcade-ui-badge-slice) fill;
+  border-image-width: var(--arcade-ui-badge-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  min-height: 24px;
+  padding: 0 10px;
+  color: var(--arcade-ui-amber);
+}
+
+.arcade-muted {
+  color: var(--arcade-ui-ink-muted);
+}
+
+.arcade-title {
+  font-size: 24px;
+  line-height: 1.1;
+  color: var(--arcade-ui-cyan);
+  text-shadow: 0 0 6px var(--arcade-ui-cyan);
+}
+
+/* A key of the keyboard, named in the menu. A touch screen plays with the
+   pad and is not told about keys it does not have. */
+.arcade-key {
+  display: inline-flex;
+  min-width: 20px;
+  justify-content: center;
+  border: 1px solid var(--arcade-ui-cyan);
+  padding: 1px 4px;
+  color: var(--arcade-ui-cyan);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .arcade-keys {
+    display: none;
+  }
+}
+
+/* ── Buttons (Button variant="arcade" / "arcade-secondary"; the one that ends a
+   match adds `arcade-button--danger`) ── */
+
+.arcade-button {
+  border: 0 solid transparent;
+  border-image-source: var(--arcade-ui-button);
+  border-image-slice: var(--arcade-ui-button-slice) fill;
+  border-image-width: var(--arcade-ui-button-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  min-height: 36px;
+  padding-inline: 16px;
+  color: var(--arcade-ui-ink);
+  cursor: pointer;
+}
+
+.arcade-button:hover {
+  border-image-source: var(--arcade-ui-button--glow);
+}
+
+.arcade-button:active {
+  border-image-source: var(--arcade-ui-button--lit-pressed);
+}
+
+.arcade-button:disabled {
+  border-image-source: var(--arcade-ui-button--disabled);
+  color: var(--arcade-ui-ink-muted);
+}
+
+.arcade-button--secondary,
+.arcade-button--danger {
+  border-image-source: var(--arcade-ui-button-alt);
+  border-image-slice: var(--arcade-ui-button-alt-slice) fill;
+  border-image-width: var(--arcade-ui-button-alt-width);
+}
+
+.arcade-button--secondary:hover {
+  border-image-source: var(--arcade-ui-button-alt--glow);
+}
+
+.arcade-button--secondary:active {
+  border-image-source: var(--arcade-ui-button-alt--lit-pressed);
+}
+
+.arcade-button--secondary:disabled {
+  border-image-source: var(--arcade-ui-button-alt--disabled);
+}
+
+.arcade-button--danger {
+  border-image-source: var(--arcade-ui-button-alt--alarm);
+  color: var(--arcade-ui-danger);
+}
+
+.arcade-button--danger:hover,
+.arcade-button--danger:active {
+  border-image-source: var(--arcade-ui-button-alt--alarm-pressed);
+}
+
+/* ── A choice of a few, lit while chosen (aria-pressed) ── */
+
+.arcade-toggle {
+  border: 0 solid transparent;
+  border-image-source: var(--arcade-ui-toggle);
+  border-image-slice: var(--arcade-ui-toggle-slice) fill;
+  border-image-width: var(--arcade-ui-toggle-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  min-height: 32px;
+  padding-inline: 10px;
+  color: var(--arcade-ui-ink-muted);
+  cursor: pointer;
+}
+
+.arcade-toggle:hover {
+  border-image-source: var(--arcade-ui-toggle--glow);
+}
+
+.arcade-toggle[aria-pressed="true"] {
+  border-image-source: var(--arcade-ui-toggle--lit);
+  color: var(--arcade-ui-ink);
+}
+
+.arcade-toggle:disabled {
+  border-image-source: var(--arcade-ui-toggle--disabled);
+}
+
+/* ── The corner key ── */
+
+.arcade-corner-key {
+  display: flex;
+  width: 37px;
+  height: 37px;
+  align-items: center;
+  justify-content: center;
+  border: 0 solid transparent;
+  border-image-source: var(--arcade-ui-corner-key);
+  border-image-slice: var(--arcade-ui-corner-key-slice) fill;
+  border-image-width: var(--arcade-ui-corner-key-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  color: var(--arcade-ui-cyan);
+  cursor: pointer;
+}
+
+.arcade-corner-key:hover {
+  border-image-source: var(--arcade-ui-corner-key--glow);
+}
+
+.arcade-corner-key:active {
+  border-image-source: var(--arcade-ui-corner-key--lit-pressed);
+}
+
+/* ── The pad (VirtualPad, under an `.arcade-ui` root) ── */
+
+/* The cross sits on the round base plate, its keys inside the ring. */
+.arcade-ui .pad-cross {
+  width: 145px;
+  height: 145px;
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(3, 44px);
+  place-content: center;
+  background-image: var(--arcade-ui-dpad);
+  background-size: var(--arcade-ui-dpad-size);
+}
+
+.arcade-ui .pad-button {
+  border-image-source: var(--arcade-ui-pad-key);
+  border-image-slice: var(--arcade-ui-pad-key-slice) fill;
+  border-image-width: var(--arcade-ui-pad-key-width);
+  color: var(--arcade-ui-ink);
+}
+
+.arcade-ui .pad-button[data-pressed] {
+  border-image-source: var(--arcade-ui-pad-key--lit-pressed);
+}
+
+.arcade-ui .pad-button--label {
+  color: var(--arcade-ui-ink);
+}
+
+/* An arrow on a pad key: a neon triangle, magenta while held. */
+.arcade-arrow {
+  width: 14px;
+  height: 14px;
+  background: var(--arcade-ui-cyan);
+  clip-path: polygon(50% 8%, 96% 88%, 4% 88%);
+}
+
+.pad-button[data-pressed] .arcade-arrow {
+  background: var(--arcade-ui-magenta);
+}
+
+.arcade-arrow--right {
+  rotate: 90deg;
+}
+
+.arcade-arrow--down {
+  rotate: 180deg;
+}
+
+.arcade-arrow--left {
+  rotate: 270deg;
+}

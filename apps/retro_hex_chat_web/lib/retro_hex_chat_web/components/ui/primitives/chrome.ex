@@ -13,6 +13,8 @@ defmodule RetroHexChatWeb.Components.UI.Chrome do
     * `pixel/0` and `pixel_secondary/0` — the Virtual Space's pixel-art
       buttons, wood and parchment. Their look lives in `features/space-ui.css`,
       inside a `.space-ui` page only.
+    * `arcade/0` and `arcade_secondary/0` — the Retro Games' neon arcade buttons, inside an `.arcade-ui` stage only
+      (`features/arcade-ui.css`).
 
   Plain strings and no dependencies: `Button`'s variant table reads them at
   compile time.
@@ -32,6 +34,14 @@ defmodule RetroHexChatWeb.Components.UI.Chrome do
   @doc "The Virtual Space's parchment button, for the quieter choice (`.space-ui` only)."
   @spec pixel_secondary() :: String.t()
   def pixel_secondary, do: "space-pixel-button space-pixel-button--secondary"
+
+  @doc "The Retro Games' neon arcade button, for the one thing to do (`.arcade-ui` only)."
+  @spec arcade() :: String.t()
+  def arcade, do: "arcade-button"
+
+  @doc "The arcade's quieter button, for the other choices (`.arcade-ui` only)."
+  @spec arcade_secondary() :: String.t()
+  def arcade_secondary, do: "arcade-button arcade-button--secondary"
 
   @doc "The sunken look of a toggle that is on."
   @spec active() :: String.t()

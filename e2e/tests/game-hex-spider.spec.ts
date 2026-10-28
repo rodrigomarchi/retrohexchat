@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N83 [done] Hex Spider on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock deals a row), ended with End and written down
+ * @flow N83 [done] Hex Spider on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock deals a row), ended with End from the menu and written down
  * @flow N84 [done] Hex Spider on a phone: the table stands up with the mini cards, fits the screen, and a tap on the stock deals a row
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -44,7 +44,7 @@ const pixels = (canvas: Locator) =>
 
 async function startAndWaitForTheDeal(game: Page): Promise<Locator> {
   await game.getByTestId("retro-game-start-ai").click();
-  await expect(game.getByTestId("retro-game-end-match")).toBeVisible();
+  await expect(game.getByTestId("game-stage-menu-key")).toBeVisible();
   // The deal flies out, 54 cards, for about three seconds.
   await game.waitForTimeout(3500);
   return game.getByTestId("retro-game-canvas-hex_spider").locator("canvas");
@@ -68,6 +68,10 @@ test.describe("Hex Spider", () => {
       await game.waitForTimeout(600);
       expect(await pixels(canvas)).not.toBe(before);
       await shot(canvas, "hex-spider-row-dealt");
+
+      // End is in the menu, over the match it holds.
+
+      await game.getByTestId("game-stage-menu-key").click();
 
       await game.getByTestId("retro-game-end-match").click();
       const result = game.getByTestId("retro-game-result");

@@ -80,6 +80,14 @@ exception to the SVG rule above, and only inside a space. The generated files
 `js/lib/space/ui_kit_geometry.js`) are never edited by hand. Playbook:
 `virtual.space/UI.md`.
 
+The Retro Games' stage (`.arcade-ui`, `Games.GameStage`) is a second kit, built the same
+way (`author_ui.py --kit arcade`): neon on black chrome. Use the `arcade*` variants
+(`Button variant="arcade"`, `"arcade-secondary"` — with `class="arcade-button--danger"` for
+the one that ends a match — `Dialog skin="arcade"`),
+the classes in `features/arcade-ui.css`, and its raster icons through
+`<.arcade_icon name={...} />` (`Components.UI.Games.ArcadeIcon`) — like `pixel_icon`, only
+inside a stage. `arcade-ui-kit.generated.css` is never edited by hand.
+
 ## Catalog
 
 There is no hand-written inventory — a list of icons rots the week it is written.

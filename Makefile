@@ -7,7 +7,7 @@
        ci ci.full ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
        i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots spaces.shots dup.report dup.test seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.js.translate i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
-       lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle space.ui space.ui.check space.creator space.creator.check precommit compile \
+       lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle space.ui space.ui.check arcade.ui arcade.ui.check space.creator space.creator.check precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
        deps.tree deps.update deps.unlock app.tree \
@@ -462,6 +462,7 @@ lint.css: ## Audit inline styles and CSS class consistency
 	@mix lint.css_consistency
 	@mix audit.styles --strict
 	@$(MAKE) --no-print-directory space.ui.check
+	@$(MAKE) --no-print-directory arcade.ui.check
 	@$(MAKE) --no-print-directory space.creator.check
 	@$(MAKE) --no-print-directory lint.css.build
 
@@ -470,6 +471,9 @@ lint.css: ## Audit inline styles and CSS class consistency
 # change nobody rebuilt, fails here.
 space.ui: ## Rebuild the Virtual Space UI kit from virtual.space/ui/kit.json
 	python3 virtual.space/tools/author_ui.py
+
+arcade.ui: ## Rebuild the Retro Games' arcade UI kit from virtual.space/ui-arcade/kit.json
+	python3 virtual.space/tools/author_ui.py --kit arcade
 
 space.creator: ## Rebuild the Space character creator from virtual.space/characters/creator
 	python3 virtual.space/tools/build_creator.py
@@ -493,6 +497,9 @@ space.creator.check: ## Fail when the committed character creator is not what it
 
 space.ui.check: ## Fail when the committed Virtual Space UI kit is not what kit.json builds
 	@python3 virtual.space/tools/author_ui.py --check
+
+arcade.ui.check: ## Fail when the committed arcade UI kit is not what its kit.json builds
+	@python3 virtual.space/tools/author_ui.py --kit arcade --check
 
 # The three audits above read the stylesheet; none of them compile it. An
 # `@apply` of a utility that does not exist passes every one of them and then

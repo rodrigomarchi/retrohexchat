@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N85 [done] Hex Mines on the desktop: opened from the Retro Games folder, a click opens the field, a right click plants a flag, ended with End and written down
+ * @flow N85 [done] Hex Mines on the desktop: opened from the Retro Games folder, a click opens the field, a right click plants a flag, ended with End from the menu and written down
  * @flow N86 [done] Hex Mines on a phone: the board stands up and fits the screen, a tap opens it, and the switch turns a tap into a flag
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -50,7 +50,7 @@ const pixels = (canvas: Locator) =>
 
 async function startAndWaitForTheDeal(game: Page): Promise<Locator> {
   await game.getByTestId("retro-game-start-ai").click();
-  await expect(game.getByTestId("retro-game-end-match")).toBeVisible();
+  await expect(game.getByTestId("game-stage-menu-key")).toBeVisible();
   // The board is ready at once; the server writes down only a match of three
   // seconds or more, so the test plays as long as a person would.
   await game.waitForTimeout(3000);
@@ -83,6 +83,10 @@ test.describe("Hex Mines", () => {
       await game.waitForTimeout(600);
       expect(await pixels(canvas)).not.toBe(flagged);
       await shot(canvas, "hex-mines-opened");
+
+      // End is in the menu, over the match it holds.
+
+      await game.getByTestId("game-stage-menu-key").click();
 
       await game.getByTestId("retro-game-end-match").click();
       const result = game.getByTestId("retro-game-result");

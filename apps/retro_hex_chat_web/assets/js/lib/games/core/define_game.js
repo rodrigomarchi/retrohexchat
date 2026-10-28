@@ -357,9 +357,10 @@ export function defineGame(def) {
      * @returns {boolean} whether a match was running to end
      */
     quit() {
-      if (this.mode !== "solo" || !this.stepping || !this.gameState) return false;
+      if (this.mode !== "solo" || !(this.stepping || this.paused) || !this.gameState) return false;
       if (this.gameState.phase === final) return false;
       const { score } = (def.standing ?? def.disconnectResult)(this);
+      this._paused = false;
       this._stopSteps();
       this.setKeyboardCaptured(false);
       this._cancelPendingPhase();
@@ -367,6 +368,19 @@ export function defineGame(def) {
       this._onMatchAbandoned();
       this._invalidate();
       this._reportResult({ score, ended_early: true });
+      return true;
+    }
+
+    /**
+     * Hold a solo match: a press still down is let go (cancelled), and none
+     * is taken while it is held.
+     * @returns {boolean} whether it paused
+     */
+    pause() {
+      if (!super.pause()) return false;
+      // The press let go by the pause (its cancel) is kept for the resume.
+      this._pointerQueue = this._pointerQueue.filter((event) => event.type === "cancel");
+      this._activePointer = null;
       return true;
     }
 

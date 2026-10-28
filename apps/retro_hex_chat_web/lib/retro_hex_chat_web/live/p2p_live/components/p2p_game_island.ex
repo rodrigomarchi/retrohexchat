@@ -43,7 +43,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
        peer_nick: nil,
        peer_locale: nil,
        watchers: 0,
-       watch_url: nil
+       watch_url: nil,
+       menu_open: false
      )}
   end
 
@@ -70,10 +71,25 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
         peer_locale={@peer_locale}
         watchers={@watchers}
         watch_url={@watch_url}
+        menu_open={@menu_open}
+        target={@myself}
       />
     </div>
     """
   end
+
+  # The menu over a running match: Esc or the corner key opens it, Esc, a
+  # click outside or Continue closes it. The match goes on under it.
+  @impl true
+  @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
+  def handle_event("game_menu", _params, %{assigns: %{game: %{status: "playing"}}} = socket),
+    do: {:noreply, assign(socket, menu_open: true)}
+
+  def handle_event("game_menu", _params, socket), do: {:noreply, socket}
+
+  def handle_event("game_menu_close", _params, socket),
+    do: {:noreply, assign(socket, menu_open: false)}
 
   @spec assign_context(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   # Only what the parent sent changes; the rest keeps its value from mount.
@@ -86,7 +102,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
     surface_games()
 
     socket
-    |> assign(game: @idle, game_request: request, game_outgoing: outgoing)
+    |> assign(game: @idle, game_request: request, game_outgoing: outgoing, menu_open: false)
   end
 
   defp handle_action(socket, :request_declined) do
@@ -100,7 +116,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
     |> assign(
       game: %{status: "playing", game_id: game_id, is_host: is_host},
       game_request: nil,
-      game_outgoing: false
+      game_outgoing: false,
+      menu_open: false
     )
     |> push_event("lobby_game_start", %{game_id: game_id, is_host: is_host})
     |> summarize()
@@ -108,7 +125,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
 
   defp handle_action(socket, :idle) do
     socket
-    |> assign(game: @idle)
+    |> assign(game: @idle, menu_open: false)
     |> push_event("lobby_game_end", %{})
     |> summarize()
   end
@@ -124,7 +141,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
     |> assign(
       game: %{status: "finished", game_id: game.game_id, is_host: game.is_host, result: result},
       game_request: nil,
-      game_outgoing: false
+      game_outgoing: false,
+      menu_open: false
     )
     |> summarize()
   end

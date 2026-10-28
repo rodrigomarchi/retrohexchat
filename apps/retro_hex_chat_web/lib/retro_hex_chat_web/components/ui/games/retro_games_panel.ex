@@ -1,19 +1,24 @@
 defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
-  @moduledoc false
+  @moduledoc """
+  A Retro Game against the computer, or alone: the game's stage
+  (`Games.GameStage`) with the canvas filling it, and the menu over it in
+  each state of a match — what to play and how before it (`ready`), held
+  while it runs (`playing`, opened with Esc or the corner key), how it ended
+  (`finished`), or why it could not start (`error`).
+
+  The page decides when the menu is open; the ready menu's `:invite` slot is
+  where it puts what only it can offer (a partner, a link).
+  """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Inset
-  import RetroHexChatWeb.Components.UI.Keycap
-  import RetroHexChatWeb.Components.UI.ToolButton
-  import RetroHexChatWeb.Components.UI.VirtualPad
+  import RetroHexChatWeb.Components.UI.Games.ArcadeIcon
+  import RetroHexChatWeb.Components.UI.Games.GameStage
+  import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Result
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Icons
-
-  import RetroHexChatWeb.Components.UI.Badge
-  import RetroHexChatWeb.Components.UI.Button
 
   @difficulties ~w(easy normal hard)
 
@@ -22,341 +27,303 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   attr :selected_game, :map, required: true
   attr :difficulty, :string, default: "normal"
   attr :canvas_ready, :boolean, default: false
+  attr :menu_open, :boolean, default: false, doc: "the menu held open over a running match"
   attr :result, Result, default: nil
   attr :record, :map, default: nil, doc: "the `Games.Results.card/1` of the match just written"
   attr :ranked?, :boolean, default: false, doc: "whether this player's matches are written down"
   attr :error_message, :string, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
+  slot :invite, doc: "the ready menu's other ways to play: a partner, a link"
 
   @spec retro_games_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def retro_games_panel(assigns) do
+    assigns =
+      assigns
+      |> assign(:game, assigns.selected_game)
+      |> assign(:difficulties, @difficulties)
+      |> assign(:control_rows, control_rows(assigns.selected_game))
+      |> assign(:pad, game_pad(assigns.selected_game))
+      # A one-player game has no opponent: no difficulty, nobody to beat.
+      |> assign(:alone, Catalog.solo_only?(assigns.selected_game.id))
+
     ~H"""
-    <section id={@id} class={classes(["flex h-full min-h-0 flex-col gap-retro-10", @class])} {@rest}>
-      <.game_state
+    <section id={@id} class={classes(["h-full min-h-0", @class])} {@rest}>
+      <.game_stage
         id={"#{@id}-session"}
-        game={@selected_game}
-        status={@status}
-        difficulty={@difficulty}
-        canvas_ready={@canvas_ready}
-        result={@result}
-        record={@record}
-        ranked?={@ranked?}
-        error_message={@error_message}
-      />
+        data-testid={"retro-game-session-#{@game.id}"}
+        menu_open={@status != "playing" or @menu_open}
+        menu_lock={@status != "playing"}
+        on_close={JS.push("retro_games_resume")}
+        on_menu={@status == "playing" && JS.push("retro_games_menu")}
+        pad={@pad}
+        pad_idle={@status != "playing" or @menu_open}
+        game_id={@game.id}
+      >
+        <%!-- The canvas stays through the result, the last picture of the
+              match behind it; Again loads a fresh engine on it. --%>
+        <div
+          id={"#{@id}-session-canvas"}
+          phx-hook="RetroGameCanvasHook"
+          phx-update="ignore"
+          data-game-id={@game.id}
+          data-difficulty={@difficulty}
+          tabindex="-1"
+          class="relative h-full w-full"
+          data-testid={"retro-game-canvas-#{@game.id}"}
+        >
+          <canvas width="640" height="480" class="block h-full w-full bg-black object-contain"></canvas>
+          <div class="game-canvas__stub absolute inset-0 flex items-center justify-center bg-black text-xs font-bold text-white">
+            {dgettext("games", "Loading game...")}
+          </div>
+        </div>
+
+        <:menu>
+          <.ready_menu
+            :if={@status == "ready"}
+            game={@game}
+            alone={@alone}
+            difficulty={@difficulty}
+            difficulties={@difficulties}
+            control_rows={@control_rows}
+            canvas_ready={@canvas_ready}
+            invite={@invite}
+          />
+          <.paused_menu :if={@status == "playing" and @menu_open} stage={"#{@id}-session"} />
+          <.result_menu
+            :if={@status == "finished"}
+            game={@game}
+            alone={@alone}
+            result={@result}
+            record={@record}
+            ranked?={@ranked?}
+          />
+          <div
+            :if={@status == "error"}
+            class="grid justify-items-center gap-retro-8"
+            data-testid="retro-game-error"
+          >
+            <Icons.icon_warning class="h-10 w-10" />
+            <h4 class="arcade-title">{dgettext("games", "Could not start this game")}</h4>
+            <p class="arcade-muted">{@error_message}</p>
+            <.again_button />
+          </div>
+        </:menu>
+      </.game_stage>
     </section>
     """
   end
 
-  attr :id, :string, required: true
   attr :game, :map, required: true
-  attr :status, :string, required: true
+  attr :alone, :boolean, required: true
   attr :difficulty, :string, required: true
-  attr :canvas_ready, :boolean, default: false
+  attr :difficulties, :list, required: true
+  attr :control_rows, :list, required: true
+  attr :canvas_ready, :boolean, required: true
+  attr :invite, :list, required: true
+
+  # What to play and how, before the match: the game, what it plays to, its
+  # keys, how hard the computer plays, and the ways to start.
+  defp ready_menu(assigns) do
+    ~H"""
+    <header class="grid justify-items-center gap-retro-4" data-testid="retro-game-sidebar-header">
+      <Icons.game_icon game_id={@game.id} class="h-12 w-12" />
+      <h3 class="arcade-title">{@game.name}</h3>
+      <p class="arcade-muted">{@game.tagline}</p>
+    </header>
+
+    <div class="flex flex-wrap justify-center gap-retro-6">
+      <span class="arcade-badge" data-testid="retro-game-mode">
+        {if @alone, do: dgettext("games", "Solo"), else: dgettext("games", "Solo AI")}
+      </span>
+      <span class="arcade-badge" data-testid="retro-game-goal">{goal_label(@game)}</span>
+    </div>
+
+    <%!-- The keys, for a keyboard; a touch screen plays with the pad. --%>
+    <dl class="arcade-keys grid gap-retro-4 text-left" data-testid="retro-game-controls-panel">
+      <div
+        :for={row <- @control_rows}
+        class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-retro-8"
+      >
+        <dt class="arcade-muted">{row.label}</dt>
+        <dd class="flex flex-wrap justify-end gap-retro-4">
+          <kbd :for={key <- row.keys} class="arcade-key">{key}</kbd>
+        </dd>
+      </div>
+    </dl>
+
+    <div
+      :if={not @alone}
+      class="grid grid-cols-3 gap-retro-4"
+      role="group"
+      aria-label={dgettext("games", "Difficulty")}
+      data-testid="retro-game-difficulty-panel"
+    >
+      <%!-- A choice of three, lit while chosen: a toggle, not a command. --%>
+      <button
+        :for={difficulty <- @difficulties}
+        type="button"
+        class="arcade-toggle"
+        aria-pressed={to_string(@difficulty == difficulty)}
+        phx-click="retro_games_set_difficulty"
+        phx-value-difficulty={difficulty}
+        data-testid={"retro-game-difficulty-#{difficulty}"}
+      >
+        {difficulty_label(difficulty)}
+      </button>
+    </div>
+
+    <.button
+      :if={@canvas_ready}
+      variant="arcade"
+      size="lg"
+      class="w-full"
+      phx-click="retro_games_start_ai"
+      data-testid="retro-game-start-ai"
+    >
+      <:icon><.arcade_icon name={:play} /></:icon>
+      {if @alone, do: dpgettext("games", "game", "Play"), else: dgettext("games", "Play vs AI")}
+    </.button>
+    <.button
+      :if={not @canvas_ready}
+      variant="arcade"
+      size="lg"
+      class="w-full"
+      disabled
+      data-testid="retro-game-start-disabled"
+    >
+      <:icon><.arcade_icon name={:play} /></:icon>
+      {dgettext("games", "Loading")}
+    </.button>
+
+    <div :if={@invite != []} class="flex flex-wrap justify-center gap-retro-6">
+      {render_slot(@invite)}
+    </div>
+    """
+  end
+
+  attr :stage, :string, required: true
+
+  # The match, held: go on, end it as it stands, or take the whole screen.
+  defp paused_menu(assigns) do
+    ~H"""
+    <h3 class="arcade-title" data-testid="retro-game-paused">{dgettext("games", "Paused")}</h3>
+    <.button
+      variant="arcade"
+      size="lg"
+      class="w-full"
+      phx-click="retro_games_resume"
+      data-testid="retro-game-resume"
+    >
+      <:icon><.arcade_icon name={:play} /></:icon>
+      {dgettext("games", "Continue")}
+    </.button>
+    <div class="grid grid-cols-2 gap-retro-6">
+      <.button
+        variant="arcade-secondary"
+        class="arcade-button--danger"
+        phx-click="retro_games_end"
+        data-testid="retro-game-end-match"
+      >
+        <:icon><.arcade_icon name={:stop} /></:icon>
+        {dgettext("games", "End")}
+      </.button>
+      <.stage_fullscreen_button stage={@stage} />
+    </div>
+    <p class="arcade-muted">{dgettext("games", "Press Esc to go back to the game.")}</p>
+    """
+  end
+
+  attr :game, :map, required: true
+  attr :alone, :boolean, required: true
   attr :result, Result, default: nil
   attr :record, :map, default: nil
-  attr :ranked?, :boolean, default: false
-  attr :error_message, :string, default: nil
+  attr :ranked?, :boolean, required: true
 
-  defp game_state(assigns) do
-    assigns =
-      assigns
-      |> assign(:difficulties, @difficulties)
-      |> assign(:control_rows, control_rows(assigns.game))
-      |> assign(:pad, game_pad(assigns.game))
-      # A one-player game has no opponent: no difficulty, nobody to beat.
-      |> assign(:alone, Catalog.solo_only?(assigns.game.id))
-
+  defp result_menu(assigns) do
     ~H"""
-    <div
-      id={@id}
-      class="flex h-full min-h-0 flex-col"
-      data-testid={"retro-game-session-#{@game.id}"}
-    >
-      <%!-- On a wide screen the game and its panel share the window's height:
-            the canvas fits inside it (letterboxed), so neither the bottom of
-            the game nor the panel's buttons fall below what the window shows. --%>
-      <div class="grid min-h-0 flex-1 auto-rows-max content-start grid-cols-1 gap-retro-10 overflow-auto pr-retro-1 lg:grid-cols-[minmax(0,1fr)_240px] lg:auto-rows-[minmax(0,1fr)] lg:content-stretch lg:overflow-hidden lg:pr-0">
-        <div class="flex min-h-0 flex-col">
-          <div
-            :if={@status in ["ready", "playing"]}
-            id={"#{@id}-canvas"}
-            phx-hook="RetroGameCanvasHook"
-            phx-update="ignore"
-            data-game-id={@game.id}
-            data-difficulty={@difficulty}
-            tabindex="-1"
-            class={[
-              "relative min-h-[220px] w-full overflow-hidden bg-black p-[2px] shadow-retro-field lg:aspect-auto lg:min-h-0 lg:flex-1",
-              canvas_box_aspect(@game)
-            ]}
-            data-testid={"retro-game-canvas-#{@game.id}"}
-          >
-            <canvas width="640" height="480" class="block h-full w-full bg-black object-contain"></canvas>
-            <div class="game-canvas__stub absolute inset-0 flex items-center justify-center bg-black text-xs font-bold text-white">
-              {dgettext("games", "Loading game...")}
-            </div>
-          </div>
-          <.game_pad_strip
-            :if={@pad && @status in ["ready", "playing"]}
-            id={"#{@id}-pad"}
-            pad={@pad}
-            game_id={@game.id}
-            idle={@status != "playing"}
-          />
-
-          <.inset
-            :if={@status == "finished"}
-            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 p-retro-12 text-center lg:aspect-auto lg:h-full lg:min-h-0"
-            data-testid="retro-game-result"
-          >
-            <Icons.game_icon game_id={@game.id} class="h-16 w-16" />
-            <h4 class="text-base font-bold">{dgettext("games", "Match Finished")}</h4>
-            <p :if={@alone} class="text-sm">
-              {dgettext("games", "%{points} points", points: (@result && @result.p1_score) || 0)}
-            </p>
-            <p :if={not @alone} class="text-sm">
-              {dgettext("games", "You %{you} x %{ai} AI",
-                you: (@result && @result.p1_score) || 0,
-                ai: (@result && @result.p2_score) || 0
-              )}
-            </p>
-            <p
-              :if={not @alone and verdict_label(@result)}
-              class="text-xs text-muted-foreground"
-              data-testid="retro-game-verdict"
-            >
-              {verdict_label(@result)}
-            </p>
-            <p
-              :if={@result && @result.ended_early?}
-              class="text-xs text-muted-foreground"
-              data-testid="retro-game-ended-early"
-            >
-              {dgettext("games", "Ended early")}
-            </p>
-            <.badge :if={@record && @record.personal_best} variant="success">
-              <:icon><Icons.icon_star class="h-3 w-3" /></:icon>
-              {dgettext("games", "Personal best")}
-            </.badge>
-            <%!-- Where the match went, or why it went nowhere: a signed-in
-                  player's result is in the game's channel and ranking, and a
-                  guest is told what would have put it there. --%>
-            <p :if={@record} class="text-xs" data-testid="retro-game-recorded">
-              {dgettext("games", "Saved to your record.")}
-            </p>
-            <p
-              :if={not @ranked?}
-              class="text-xs text-muted-foreground"
-              data-testid="retro-game-unranked"
-            >
-              {dgettext("games", "Only registered nicknames appear in the ranking.")}
-              <.link
-                href={Paths.localized("/chat/help/nickserv")}
-                target="_blank"
-                rel="noopener"
-                class="underline"
-                data-testid="retro-game-how-to-register"
-              >
-                {dgettext("games", "How to register")}
-              </.link>
-            </p>
-            <%!-- Everything else about the game — partners, the ranking — is
-                  at its home and in its channel. --%>
-            <p class="flex flex-wrap justify-center gap-x-retro-8 text-xs">
-              <.link
-                href={Paths.game_page_path(@game.id)}
-                class="underline"
-                data-testid="retro-game-home-link"
-              >
-                {dgettext("share", "Other ways to play")}
-              </.link>
-              <.link
-                href={Paths.chat_path(Catalog.channel_name(@game.id))}
-                class="underline"
-                data-testid="retro-game-channel-link"
-              >
-                {Catalog.channel_name(@game.id)}
-              </.link>
-            </p>
-          </.inset>
-
-          <.inset
-            :if={@status == "error"}
-            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 p-retro-12 text-center lg:aspect-auto lg:h-full lg:min-h-0"
-            data-testid="retro-game-error"
-          >
-            <Icons.icon_warning class="h-10 w-10 text-destructive" />
-            <h4 class="text-sm font-bold">{dgettext("games", "Could not start this game")}</h4>
-            <p class="text-xs text-muted-foreground">{@error_message}</p>
-          </.inset>
-        </div>
-
-        <aside
-          class="flex min-h-0 flex-col gap-retro-8 lg:overflow-y-auto"
-          data-testid="retro-game-control-panel"
+    <div class="grid justify-items-center gap-retro-6" data-testid="retro-game-result">
+      <Icons.game_icon game_id={@game.id} class="h-12 w-12" />
+      <h4 class="arcade-title">{dgettext("games", "Match Finished")}</h4>
+      <p :if={@alone} class="arcade-badge">
+        {dgettext("games", "%{points} points", points: (@result && @result.p1_score) || 0)}
+      </p>
+      <p :if={not @alone} class="arcade-badge">
+        {dgettext("games", "You %{you} x %{ai} AI",
+          you: (@result && @result.p1_score) || 0,
+          ai: (@result && @result.p2_score) || 0
+        )}
+      </p>
+      <p :if={not @alone and verdict_label(@result)} data-testid="retro-game-verdict">
+        {verdict_label(@result)}
+      </p>
+      <p
+        :if={@result && @result.ended_early?}
+        class="arcade-muted"
+        data-testid="retro-game-ended-early"
+      >
+        {dgettext("games", "Ended early")}
+      </p>
+      <p
+        :if={@record && @record.personal_best}
+        class="arcade-badge"
+        data-testid="retro-game-personal-best"
+      >
+        {dgettext("games", "Personal best")}
+      </p>
+      <%!-- Where the match went, or why it went nowhere: a signed-in
+            player's result is in the game's channel and ranking, and a
+            guest is told what would have put it there. --%>
+      <p :if={@record} data-testid="retro-game-recorded">
+        {dgettext("games", "Saved to your record.")}
+      </p>
+      <p :if={not @ranked?} class="arcade-muted" data-testid="retro-game-unranked">
+        {dgettext("games", "Only registered nicknames appear in the ranking.")}
+        <.link
+          href={Paths.localized("/chat/help/nickserv")}
+          target="_blank"
+          rel="noopener"
+          class="underline"
+          data-testid="retro-game-how-to-register"
         >
-          <section
-            class="order-1 grid gap-retro-6 bg-white p-retro-8 text-xs shadow-retro-field"
-            data-testid="retro-game-session-status"
-          >
-            <div
-              class="flex min-w-0 items-center gap-retro-6 border-b border-border pb-retro-6"
-              data-testid="retro-game-sidebar-header"
-            >
-              <Icons.game_icon game_id={@game.id} class="h-7 w-7 shrink-0" />
-              <div class="min-w-0">
-                <h3 class="truncate text-sm font-bold leading-tight">{@game.name}</h3>
-                <p class="truncate text-[11px] text-muted-foreground">{@game.tagline}</p>
-              </div>
-            </div>
-            <div class="flex items-center justify-between gap-retro-6">
-              <span class="flex min-w-0 items-center gap-retro-4 font-bold">
-                <Icons.icon_robot class="h-4 w-4 shrink-0" />
-                {dgettext("games", "Mode")}
-              </span>
-              <.badge variant="success" class="shrink-0">
-                <:icon><Icons.icon_joystick class="h-3 w-3" /></:icon>
-                {if @alone, do: dgettext("games", "Solo"), else: dgettext("games", "Solo AI")}
-              </.badge>
-            </div>
-            <dl class="grid gap-retro-4 text-[11px] leading-tight">
-              <div class="flex items-center justify-between gap-retro-6">
-                <dt class="flex min-w-0 items-center gap-retro-4 text-muted-foreground">
-                  <Icons.icon_status_signal class="h-3 w-3 shrink-0" />
-                  {dgettext("games", "Status")}
-                </dt>
-                <dd class="shrink-0 font-bold" data-testid="retro-game-status-label">
-                  {status_label(@status)}
-                </dd>
-              </div>
-              <div class="flex items-center justify-between gap-retro-6">
-                <dt class="flex shrink-0 items-center gap-retro-4 text-muted-foreground">
-                  <Icons.icon_chart_bars class="h-3 w-3 shrink-0" />
-                  {dgettext("games", "Goal")}
-                </dt>
-                <%!-- A long goal, in a long language, wraps under itself rather than
-                     pushing the column wider than its window. --%>
-                <dd class="min-w-0 text-right font-bold">{goal_label(@game)}</dd>
-              </div>
-            </dl>
-          </section>
-
-          <.inset
-            :if={not @alone}
-            bevel="sunken"
-            tone="surface"
-            as="section"
-            class="order-2 grid gap-retro-6 p-retro-8"
-            data-testid="retro-game-difficulty-panel"
-          >
-            <div class="flex items-center justify-between gap-retro-6">
-              <h4 class="flex min-w-0 items-center gap-retro-4 text-xs font-bold">
-                <Icons.icon_chart_bars class="h-4 w-4 shrink-0" />
-                {dgettext("games", "Difficulty")}
-              </h4>
-              <span class="flex shrink-0 items-center gap-retro-4 bg-white px-retro-4 py-px text-[11px] font-bold border border-border">
-                <.difficulty_icon difficulty={@difficulty} class="h-3.5 w-3.5 shrink-0" />
-                {difficulty_label(@difficulty)}
-              </span>
-            </div>
-            <div
-              class="grid grid-cols-3 gap-[2px] bg-muted p-[2px] shadow-retro-sunken"
-              role="group"
-              aria-label={dgettext("games", "Difficulty")}
-            >
-              <.tool_button
-                :for={difficulty <- @difficulties}
-                label={difficulty_label(difficulty)}
-                size="md"
-                active={@difficulty == difficulty}
-                pressed={@difficulty == difficulty}
-                class="h-8 min-h-0 w-auto min-w-0 gap-retro-4 px-retro-4 text-[11px] font-bold leading-none"
-                phx-click="retro_games_set_difficulty"
-                phx-value-difficulty={difficulty}
-                disabled={@status == "playing"}
-                data-testid={"retro-game-difficulty-#{difficulty}"}
-              >
-                <.difficulty_icon difficulty={difficulty} class="h-4 w-4 shrink-0" />
-                <span class="min-w-0 truncate">{difficulty_label(difficulty)}</span>
-              </.tool_button>
-            </div>
-          </.inset>
-
-          <section
-            class="order-4 hidden gap-retro-6 bg-white p-retro-8 shadow-retro-field md:grid lg:order-3"
-            data-testid="retro-game-controls-panel"
-          >
-            <h4 class="flex items-center gap-retro-4 text-xs font-bold">
-              <Icons.icon_btn_keyboard class="h-4 w-4 shrink-0" />
-              {dgettext("games", "Controls")}
-            </h4>
-            <div
-              :for={row <- @control_rows}
-              class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-retro-6 text-[11px]"
-            >
-              <span class="text-muted-foreground">{row.label}</span>
-              <span class="flex min-w-0 flex-wrap gap-retro-4">
-                <.keycap :for={key <- row.keys}>{key}</.keycap>
-              </span>
-            </div>
-            <p class="text-[11px] leading-relaxed text-muted-foreground">{@game.controls}</p>
-          </section>
-
-          <.inset
-            bevel="sunken"
-            tone="surface"
-            as="section"
-            class="order-3 grid grid-cols-[minmax(0,1fr)_112px] gap-retro-4 p-retro-6 lg:order-4 lg:mt-auto lg:grid-cols-1 lg:gap-retro-6 lg:p-retro-8"
-            data-testid="retro-game-actions"
-          >
-            <.button
-              :if={@status == "ready" and @canvas_ready}
-              size="sm"
-              class="h-8 w-full lg:h-10"
-              phx-click="retro_games_start_ai"
-              data-testid="retro-game-start-ai"
-            >
-              <:icon><Icons.icon_btn_play class="h-4 w-4" /></:icon>
-              {if @alone,
-                do: dpgettext("games", "game", "Play"),
-                else: dgettext("games", "Play vs AI")}
-            </.button>
-            <.button
-              :if={@status == "ready" and not @canvas_ready}
-              size="sm"
-              class="h-8 w-full lg:h-10"
-              disabled
-              data-testid="retro-game-start-disabled"
-            >
-              <:icon><Icons.icon_btn_play class="h-4 w-4" /></:icon>
-              {dgettext("games", "Loading")}
-            </.button>
-            <.button
-              :if={@status == "playing"}
-              variant="destructive"
-              size="sm"
-              class="h-8 w-full lg:h-10"
-              phx-click="retro_games_end"
-              data-testid="retro-game-end-match"
-            >
-              <:icon><Icons.icon_btn_disconnect class="h-4 w-4" /></:icon>
-              {dgettext("games", "End")}
-            </.button>
-            <.button
-              :if={@status in ["finished", "error"]}
-              size="sm"
-              class="h-8 w-full lg:h-10"
-              phx-click="retro_games_play_again"
-              data-testid="retro-game-play-again"
-            >
-              <:icon><Icons.icon_retry class="h-4 w-4" /></:icon>
-              {dgettext("games", "Again")}
-            </.button>
-          </.inset>
-        </aside>
-      </div>
+          {dgettext("games", "How to register")}
+        </.link>
+      </p>
+      <.again_button />
+      <%!-- Everything else about the game — partners, the ranking — is
+            at its home and in its channel. --%>
+      <p class="flex flex-wrap justify-center gap-x-retro-8">
+        <.link
+          href={Paths.game_page_path(@game.id)}
+          class="underline"
+          data-testid="retro-game-home-link"
+        >
+          {dgettext("share", "Other ways to play")}
+        </.link>
+        <.link
+          href={Paths.chat_path(Catalog.channel_name(@game.id))}
+          class="underline"
+          data-testid="retro-game-channel-link"
+        >
+          {Catalog.channel_name(@game.id)}
+        </.link>
+      </p>
     </div>
+    """
+  end
+
+  defp again_button(assigns) do
+    ~H"""
+    <.button
+      variant="arcade"
+      size="lg"
+      class="w-full"
+      phx-click="retro_games_play_again"
+      data-testid="retro-game-play-again"
+    >
+      <:icon><.arcade_icon name={:again} /></:icon>
+      {dgettext("games", "Again")}
+    </.button>
     """
   end
 
@@ -421,27 +388,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: "hex_blocks"}), do: dgettext("games", "Clear rows as the pieces speed up")
   def goal_label(%{id: "hex_blocks_sprint"}), do: dgettext("games", "40 rows, as fast as you can")
 
-  # A card table stands up on a phone held upright: the game lays itself out
-  # on the box it is given (`view` in its definition), so on a narrow screen
-  # the box is tall and the cards are as big as the phone allows.
-  defp canvas_box_aspect(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
-    do: "aspect-[464/720] sm:aspect-[4/3]"
-
-  defp canvas_box_aspect(%{id: "hex_mines_expert"}), do: "aspect-[464/780] sm:aspect-[5/3]"
-
-  defp canvas_box_aspect(%{id: id}) when id in ~w(hex_sudoku hex_sudoku_medium hex_sudoku_hard),
-    do: "aspect-[448/632] sm:aspect-[4/3]"
-
-  defp canvas_box_aspect(%{id: id}) when id in ~w(hex_blocks hex_blocks_sprint),
-    do: "aspect-[400/484] sm:aspect-[4/3]"
-
-  defp canvas_box_aspect(%{id: id})
-       when id in ~w(hex_freecell hex_spider hex_spider_2suits hex_spider_4suits hex_mines
-                     hex_mines_intermediate),
-       do: "aspect-[464/760] sm:aspect-[4/3]"
-
-  defp canvas_box_aspect(_game), do: "aspect-[4/3]"
-
   # The games played by touch on the canvas itself: no pad under them.
   @touch_game_ids ~w(hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits
                      hex_spider_4suits hex_mines hex_mines_intermediate hex_mines_expert hex_sudoku
@@ -481,63 +427,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp action_key("Shift"), do: "Shift"
   defp action_key(<<c>>) when c in ?A..?Z and c not in ~c"WASD", do: String.downcase(<<c>>)
   defp action_key(_key), do: nil
-
-  attr :id, :string, required: true
-  attr :pad, :map, required: true
-  attr :game_id, :string, required: true
-
-  attr :idle, :boolean,
-    default: false,
-    doc: "no match running yet: the pad is dimmed and takes no press"
-
-  # Under the game, always in sight: the actions under the left thumb, the
-  # cross under the right, as a handheld is held. The space's pad art.
-  defp game_pad_strip(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      phx-hook="RetroGamePadHook"
-      data-pad
-      data-idle={@idle}
-      data-testid="retro-game-pad"
-      role="group"
-      aria-label={dgettext("games", "On-screen controls")}
-      class="space-ui flex shrink-0 select-none items-center justify-between gap-retro-8 bg-black px-retro-12 py-retro-4 touch-none"
-    >
-      <%!-- The keys are left alone by later renders: a finger holding one keeps
-            its pressed look (`data-pressed`, set by the pad's script). Their id
-            names the game, so another game's pad is drawn anew. --%>
-      <div
-        id={"#{@id}-keys-#{@game_id}"}
-        phx-update="ignore"
-        class="flex min-w-0 flex-1 items-center justify-between gap-retro-8"
-      >
-        <%!-- Two columns: four actions at most, two rows, a long name on two lines. --%>
-        <div class="grid min-w-0 flex-1 grid-cols-2 gap-retro-6 sm:max-w-[420px]">
-          <.pad_button
-            :for={action <- @pad.actions}
-            action={action.key}
-            label={action.label}
-            class="pad-button--label h-12 w-full"
-          >
-            {action.label}
-          </.pad_button>
-        </div>
-        <.pad_cross
-          dirs={@pad.dirs}
-          labels={
-            %{
-              "up" => dgettext("games", "Up"),
-              "down" => dgettext("games", "Down"),
-              "left" => dgettext("games", "Left"),
-              "right" => dgettext("games", "Right")
-            }
-          }
-        />
-      </div>
-    </div>
-    """
-  end
 
   @doc """
   The keys of `game`, one row per action, as the library panel lists them.
@@ -787,23 +676,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       %{label: dgettext("games", "Shoot/Tackle"), keys: ["Space", "Shift"]}
     ]
   end
-
-  attr :difficulty, :string, required: true
-  attr :class, :string, default: nil
-
-  defp difficulty_icon(assigns) do
-    ~H"""
-    <Icons.icon_shield :if={@difficulty == "easy"} class={@class} />
-    <Icons.icon_joystick :if={@difficulty == "normal"} class={@class} />
-    <Icons.icon_sword :if={@difficulty == "hard"} class={@class} />
-    """
-  end
-
-  defp status_label("ready"), do: dgettext("games", "Ready")
-  defp status_label("playing"), do: dgettext("games", "Playing")
-  defp status_label("finished"), do: dgettext("games", "Finished")
-  defp status_label("error"), do: dgettext("games", "Error")
-  defp status_label(_status), do: dgettext("games", "Loading")
 
   # A match ended early names nobody, whoever led: it says only that it ended early.
   defp verdict_label(%Result{ended_early?: true}), do: nil

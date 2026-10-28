@@ -1,7 +1,7 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N89 [done] Hex Blocks on the desktop: opened from the Retro Games folder, the count runs out, the pad and End stand in sight, the arrows move the piece and the space bar drops it, ended with End and written down
- * @flow N90 [done] Hex Blocks on a phone: the pad every keyboard game shares stands under the game and fits the screen, a tap on its drop button drops a piece, two fingers hold the cross and a button at once, and the page does not scroll
+ * @flow N89 [done] Hex Blocks on the desktop: opened from the Retro Games folder, the count runs out with nothing over the game but the corner key (no pad on a computer), the arrows move the piece and the space bar drops it, ended with End from the menu and written down
+ * @flow N90 [done] Hex Blocks on a phone: the pad every keyboard game shares lies over the game and fits the screen, a tap on its drop button drops a piece, two fingers hold the cross and a button at once, and the page does not scroll
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -40,7 +40,7 @@ async function centreOf(element: Locator) {
 
 async function startAndWaitForThePiece(game: Page): Promise<Locator> {
   await game.getByTestId("retro-game-start-ai").click();
-  await expect(game.getByTestId("retro-game-end-match")).toBeVisible();
+  await expect(game.getByTestId("game-stage-menu-key")).toBeVisible();
   // The count is three seconds; the server writes down only a match of three
   // seconds or more, so the test plays as long as a person would.
   await game.waitForTimeout(3500);
@@ -60,11 +60,10 @@ test.describe("Hex Blocks", () => {
       });
       const canvas = await startAndWaitForThePiece(game);
       expect(await viewOf(canvas)).toEqual({ width: 640, height: 480 });
-      // The pad stands under the game on a computer too, and End stays in sight.
-      await expect(game.getByTestId("retro-game-pad")).toBeInViewport({
-        ratio: 1,
-      });
-      await expect(game.getByTestId("retro-game-end-match")).toBeInViewport({
+      // A keyboard plays it on a computer: no pad over the game, only the
+      // corner key that opens the menu.
+      await expect(game.getByTestId("retro-game-pad")).toBeHidden();
+      await expect(game.getByTestId("game-stage-menu-key")).toBeInViewport({
         ratio: 1,
       });
       await shot(game, "hex-blocks-falling");
@@ -74,6 +73,10 @@ test.describe("Hex Blocks", () => {
       await changes(canvas, () => game.keyboard.press(" "));
       await changes(canvas, () => game.keyboard.press(" "));
       await shot(canvas, "hex-blocks-dropped");
+
+      // End is in the menu, over the match it holds.
+
+      await game.getByTestId("game-stage-menu-key").click();
 
       await game.getByTestId("retro-game-end-match").click();
       const result = game.getByTestId("retro-game-result");

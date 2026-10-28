@@ -47,7 +47,8 @@ msgid "Audio Call"
 msgstr "Appel audio"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:134
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:254
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:163
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:349
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Annuler"
@@ -115,7 +116,7 @@ msgstr "En attente..."
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:157
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:331
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:256
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:520
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:578
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:262
 #, elixir-autogen, elixir-format
 msgid "Ready"
@@ -282,12 +283,12 @@ msgstr "Appeler %{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:660
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:959
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:171
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:267
 #, elixir-autogen, elixir-format
 msgid "Camera"
 msgstr "Caméra"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:416
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:474
 #, elixir-autogen, elixir-format
 msgid "Camera preview is off"
 msgstr "L'aperçu de la caméra est désactivé"
@@ -302,7 +303,7 @@ msgstr "Capacité"
 msgid "Change self view"
 msgstr "Changer d'image de soi"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:395
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:453
 #, elixir-autogen, elixir-format
 msgid "Checking devices"
 msgstr "Dispositifs de contrôle"
@@ -379,7 +380,7 @@ msgstr "Fichiers"
 msgid "Focus peer video"
 msgstr "Vidéo de groupe"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:560
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:618
 #, elixir-autogen, elixir-format
 msgid "Force WebRTC through the relay to hide peer IPs. Latency can increase."
 msgstr ""
@@ -492,7 +493,7 @@ msgstr "Messages"
 msgid "Mic"
 msgstr "Mic"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:162
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:258
 #, elixir-autogen, elixir-format
 msgid "Microphone"
 msgstr "Microphone"
@@ -589,12 +590,12 @@ msgstr ""
 msgid "Poor"
 msgstr "Pauvre"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:386
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:444
 #, elixir-autogen, elixir-format
 msgid "Preview"
 msgstr "Aperçu"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:227
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:322
 #, elixir-autogen, elixir-format
 msgid "Privacy relay"
 msgstr "Relais de confidentialité"
@@ -614,7 +615,7 @@ msgstr "Reçu"
 msgid "Relay"
 msgstr "Relais"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:564
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:622
 #, elixir-autogen, elixir-format
 msgid "Relay privacy is unavailable until TURN is configured on this server."
 msgstr ""
@@ -631,7 +632,7 @@ msgstr "Résolution"
 msgid "Resolution of the received video, in pixels."
 msgstr "Résolution de la vidéo reçue, en pixels."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:425
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:483
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:304
 #, elixir-autogen, elixir-format
 msgid "Retry"
@@ -710,7 +711,7 @@ msgstr "Afficher la vue en tant que tuile"
 msgid "Source"
 msgstr "Source"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:180
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:276
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "Haut-parleur"
@@ -725,12 +726,12 @@ msgstr "Séparer"
 msgid "Start P2P media"
 msgstr "Démarrer les médias P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:136
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:233
 #, elixir-autogen, elixir-format
 msgid "Start with camera"
 msgstr "Démarrer avec une caméra"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:129
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:226
 #, elixir-autogen, elixir-format
 msgid "Start with microphone"
 msgstr "Démarrer avec le microphone"
@@ -748,7 +749,7 @@ msgid "Total messages exchanged over this feature's data channel."
 msgstr ""
 "Total des messages échangés sur le canal de données de cette fonctionnalité."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:142
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:239
 #, elixir-autogen, elixir-format
 msgid "Turn both off to join receive-only and start media later."
 msgstr ""
@@ -810,13 +811,13 @@ msgid "Your screen"
 msgstr "Votre écran"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:903
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:481
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:518
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:539
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:576
 #, elixir-autogen, elixir-format
 msgid "peer"
 msgstr "pair"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:206
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:301
 #, elixir-autogen, elixir-format
 msgid "Direct P2P topology"
 msgstr "Topologie directe P2P"
@@ -827,7 +828,7 @@ msgid "End"
 msgstr "Terminer"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:270
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:311
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Session P2P"
@@ -863,14 +864,14 @@ msgstr "Réactions"
 msgid "Stats"
 msgstr "Statistiques"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:532
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:590
 #, elixir-autogen, elixir-format
 msgid "When the network allows it, packets travel browser-to-browser instead of through the conference server."
 msgstr ""
 "Lorsque le réseau le permet, les paquets voyagent navigateur-à-navigateur au"
 " lieu de passer par le serveur de conférence."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:525
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:583
 #, elixir-autogen, elixir-format
 msgid "Your browser uses the relay path for this session, while the session still stays one-to-one."
 msgstr ""
@@ -939,7 +940,7 @@ msgstr "La connexion nécessite une attention particulière"
 msgid "Data"
 msgstr "Données"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:570
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:628
 #, elixir-autogen, elixir-format
 msgid "Direct preferred"
 msgstr "Priorité directe"
@@ -986,7 +987,7 @@ msgstr "Offre de fichier entrant"
 msgid "Media"
 msgstr "Médias"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:121
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:218
 #, elixir-autogen, elixir-format
 msgid "Media defaults"
 msgstr "Par défaut des médias"
@@ -1017,12 +1018,12 @@ msgstr "Sections des sessions P2P"
 msgid "Peer media state"
 msgstr "Etat des médias pairs"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:568
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:626
 #, elixir-autogen, elixir-format
 msgid "Relay on"
 msgstr "Relais"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:569
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:627
 #, elixir-autogen, elixir-format
 msgid "Relay unavailable"
 msgstr "Relais non disponible"
@@ -1042,7 +1043,7 @@ msgstr "Réessayer la connexion P2P"
 msgid "Retrying the peer connection, attempt %{attempt} of 3."
 msgstr "Nouvelle tentative de connexion au pair, essai %{attempt} sur 3."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:193
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:288
 #, elixir-autogen, elixir-format
 msgid "Route and privacy"
 msgstr "Route et vie privée"
@@ -1112,7 +1113,8 @@ msgid "Invite pending"
 msgstr "Inviter"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:140
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:275
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:148
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:370
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Démarrer"
@@ -1243,125 +1245,127 @@ msgstr ""
 msgid "Trigger"
 msgstr "Déclencheur"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:334
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:352
 #, elixir-autogen, elixir-format
 msgid "Bring it back here"
 msgstr "La ramener ici"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:499
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:557
 #, elixir-autogen, elixir-format
 msgid "Choose your devices, then press Ready."
 msgstr "Choisissez vos périphériques, puis appuyez sur Prêt."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:512
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:570
 #, elixir-autogen, elixir-format
 msgid "Everyone is ready. Start when you like."
 msgstr "Tout le monde est prêt. Démarrez quand vous voulez."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:521
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:579
 #, elixir-autogen, elixir-format
 msgid "I am ready"
 msgstr "Je suis prêt"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:298
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:105
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:393
 #, elixir-autogen, elixir-format
 msgid "In the room"
 msgstr "Dans la salle"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:562
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:580
 #, elixir-autogen, elixir-format
 msgid "This P2P session is no longer available."
 msgstr "Cette session P2P n'est plus disponible."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:324
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "This session is open in another window of yours."
 msgstr "Cette session est ouverte dans une autre de vos fenêtres."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:507
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:565
 #, elixir-autogen, elixir-format
 msgid "Waiting for %{peer} to accept the invite."
 msgstr "En attente que %{peer} accepte l'invitation."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:510
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:568
 #, elixir-autogen, elixir-format
 msgid "Waiting for %{peer} to be ready."
 msgstr "En attente que %{peer} soit prêt."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:515
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:573
 #, elixir-autogen, elixir-format
 msgid "Waiting for %{peer} to start."
 msgstr "En attente que %{peer} démarre."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:555
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:573
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use P2P sessions."
 msgstr ""
 "Vous devez être enregistré auprès de NickServ pour utiliser les sessions "
 "P2P."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:485
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:493
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:543
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:551
 #, elixir-autogen, elixir-format
 msgid "choosing devices"
 msgstr "choix des périphériques"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:311
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:116
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:406
 #, elixir-autogen, elixir-format
 msgid "host"
 msgstr "hôte"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:490
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:548
 #, elixir-autogen, elixir-format
 msgid "invited"
 msgstr "invité"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:483
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:491
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:541
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:549
 #, elixir-autogen, elixir-format
 msgid "ready"
 msgstr "prêt"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:177
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:548
-#: lib/retro_hex_chat_web/live/app/play_live.ex:305
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:566
+#: lib/retro_hex_chat_web/live/app/play_live.ex:335
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use P2P sessions."
 msgstr ""
 "Vous devez être identifié auprès de NickServ pour utiliser les sessions P2P."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:497
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:555
 #, elixir-autogen, elixir-format
 msgid "Press Ready when the game has your attention."
 msgstr "Appuyez sur Prêt quand le jeu a votre attention."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:504
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:562
 #, elixir-autogen, elixir-format
 msgid "Share the link — the match starts when somebody takes the seat."
 msgstr "Partagez le lien — la partie commence quand quelqu'un prend la place."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:567
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "This match is already full."
 msgstr "Cette partie est déjà complète."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:484
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:492
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:542
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:550
 #, elixir-autogen, elixir-format
 msgid "getting ready"
 msgstr "en préparation"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:488
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:546
 #, elixir-autogen, elixir-format
 msgid "seat open"
 msgstr "place libre"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:480
+#: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:538
 #, elixir-autogen, elixir-format
 msgid "whoever joins"
 msgstr "qui rejoindra"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:312
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Taking your seat..."
 msgstr "Réservation de votre place..."
@@ -1426,17 +1430,17 @@ msgstr "Tu es toujours dedans. Ils peuvent rejoindre à nouveau, ou vous pouvez 
 msgid "Playing %{game}"
 msgstr "Lecture de %{game}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:283
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:292
 #, elixir-autogen, elixir-format
 msgid "Back to the game"
 msgstr "Retour au jeu"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:274
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "Play again"
 msgstr "Rejouer"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:265
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "The match did not start."
 msgstr "Le match n'a pas commencé."

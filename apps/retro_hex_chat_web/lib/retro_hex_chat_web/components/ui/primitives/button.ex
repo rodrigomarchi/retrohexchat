@@ -23,9 +23,12 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   attr :class, :any, default: nil
 
   attr :variant, :string,
-    values: ~w(default secondary destructive outline ghost link pixel pixel-secondary),
+    values:
+      ~w(default secondary destructive outline ghost link pixel pixel-secondary arcade arcade-secondary),
     default: "default",
-    doc: "the button variant style; `pixel*` is the Virtual Space's, inside `.space-ui` only"
+    doc:
+      "the button variant style; `pixel*` is the Virtual Space's, inside `.space-ui` only; " <>
+        "`arcade*` the Retro Games' stage's, inside `.arcade-ui` only"
 
   attr :size, :string,
     values: ~w(default sm lg),

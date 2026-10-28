@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
-"""Author the Virtual Space's pixel-art UI kit from its PixelLab generations.
+"""Author a pixel-art UI kit from its PixelLab generations.
 
-Reads ``virtual.space/ui/kit.json`` and the raw art it names, and writes:
+Two kits are built the same way (``--kit``): the Virtual Space's
+(``virtual.space/ui``) and the arcade's, the Retro Games' stage
+(``virtual.space/ui-arcade``, outputs under ``images/arcade/ui`` and
+``arcade-ui-kit.generated.css``, its tokens on ``.arcade-ui``; no canvas
+pieces, so no geometry file). The space's kit reads ``virtual.space/ui/kit.json``
+and the raw art it names, and writes:
 
 * ``priv/static/images/space/ui/<piece>__<state>.webp`` — one image per state of
   every ``css`` piece. CSS ``border-image`` cannot address part of an image, so
@@ -46,12 +51,31 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sheet_io import _WEBP  # noqa: E402  (the one place encoder settings live)
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-UI = os.path.join(REPO, "virtual.space/ui")
 WEB = os.path.join(REPO, "apps/retro_hex_chat_web")
-IMG_DIR = os.path.join(WEB, "priv/static/images/space/ui")
-IMG_URL = "/images/space/ui"
-CSS_OUT = os.path.join(WEB, "assets/css/retrohex/features/space-ui-kit.generated.css")
-JS_OUT = os.path.join(WEB, "assets/js/lib/space/ui_kit_geometry.js")
+
+
+class Kit:
+    """Where one kit's definition lives and where its outputs go. The space's
+    kit draws the virtual space; the arcade's draws the Retro Games' stage."""
+
+    def __init__(self, name, ui, img, css, js=None):
+        self.name = name
+        self.ui = os.path.join(REPO, ui)
+        self.ui_rel = ui
+        self.img_dir = os.path.join(WEB, "priv/static", img)
+        self.img_url = "/" + img
+        self.css_out = os.path.join(WEB, css)
+        self.js_out = os.path.join(WEB, js) if js else None
+
+
+KITS = {
+    "space": Kit("space", "virtual.space/ui", "images/space/ui",
+                 "assets/css/retrohex/features/space-ui-kit.generated.css",
+                 "assets/js/lib/space/ui_kit_geometry.js"),
+    "arcade": Kit("arcade", "virtual.space/ui-arcade", "images/arcade/ui",
+                  "assets/css/retrohex/features/arcade-ui-kit.generated.css"),
+}
+SPACE = KITS["space"]
 
 # An edge column may differ from the edge's median column by this much (mean
 # per-channel difference over its pixels) before it counts as a seam.
@@ -145,6 +169,33 @@ def _then(*fns):
     return fn
 
 
+# The arcade's art is dark chrome around a navy face, lit by neon lines: a
+# recipe that lifts toward white does nothing there. Its states light the face
+# and the lines instead, or turn the cyan line red.
+
+def _neon_lit(k):
+    # The navy face glows toward cyan by `k`; the neon lines brighten.
+    def fn(r, g, b):
+        h, l, s = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+        if s > 0.45 and l > 0.3:
+            rr, gg, bb = colorsys.hls_to_rgb(h, min(0.82, l + 0.12), s)
+            return (_clamp(rr * 255), _clamp(gg * 255), _clamp(bb * 255))
+        # The face's navy only: not the black outline, nor the chrome's violet.
+        if 0.08 < l < 0.21 and 0.6 < h < 0.8:
+            return (_clamp(r + (0 - r) * k), _clamp(g + (190 - g) * k), _clamp(b + (160 - b) * k))
+        return (r, g, b)
+    return fn
+
+
+def _alarm(r, g, b):
+    # The cyan line and the amber corners turn red; the magenta line stays.
+    h, l, s = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+    if s > 0.45 and (0.38 < h < 0.56 or 0.06 < h < 0.16):
+        rr, gg, bb = colorsys.hls_to_rgb(0.99, l, s)
+        return (_clamp(rr * 255), _clamp(gg * 255), _clamp(bb * 255))
+    return (r, g, b)
+
+
 STATES = {
     "normal": None,
     "hover": _lighten(0.16),
@@ -156,6 +207,11 @@ STATES = {
     "inactive": _desaturate(0.35),
     "danger": _redden,
     "danger_pressed": _then(_redden, _scale(0.82)),
+    "glow": _neon_lit(0.12),
+    "lit": _neon_lit(0.3),
+    "lit_pressed": _then(_neon_lit(0.3), _scale(0.85)),
+    "alarm": _alarm,
+    "alarm_pressed": _then(_alarm, _neon_lit(0.2), _scale(0.85)),
 }
 
 
@@ -254,7 +310,7 @@ def _drawn(kit, name):
     return image
 
 
-def _icon(kit, name, spec, done):
+def _icon(kit, name, spec, done, ui):
     if "drawn" in spec:
         return _drawn(kit, spec["drawn"])
     if "rotate" in spec:
@@ -263,7 +319,7 @@ def _icon(kit, name, spec, done):
         return done[spec["from"]].rotate(spec["rotate"], expand=True)
     if spec.get("quadrants") == "flip":
         return _flip_quadrants(name, done[spec["from"]])
-    image = Image.open(os.path.join(UI, spec["src"])).convert("RGBA")
+    image = Image.open(os.path.join(ui, spec["src"])).convert("RGBA")
     _check_native(f"icon {name}", image)
     return image
 
@@ -295,16 +351,17 @@ def _pack_row(images, gap=1):
     return sheet, where
 
 
-def build():
-    with open(os.path.join(UI, "kit.json")) as f:
+def build(k=SPACE):
+    with open(os.path.join(k.ui, "kit.json")) as f:
         kit = json.load(f)
-    sources = {k: Image.open(os.path.join(UI, v)).convert("RGBA") for k, v in kit["sources"].items()}
+    sources = {n: Image.open(os.path.join(k.ui, v)).convert("RGBA") for n, v in kit["sources"].items()}
+    img_dir, img_url, p = k.img_dir, k.img_url, k.name
     files = {}
     css = [
-        "/* Generated by virtual.space/tools/author_ui.py from virtual.space/ui/kit.json — do not edit. */\n",
-        "/* Each piece: --space-ui-<piece>[--<state>] (its image), -slice (border-image-slice)\n",
+        f"/* Generated by virtual.space/tools/author_ui.py from {k.ui_rel}/kit.json — do not edit. */\n",
+        f"/* Each piece: --{p}-ui-<piece>[--<state>] (its image), -slice (border-image-slice)\n",
         "   and -width (border-image-width). */\n",
-        ".space-ui {\n",
+        f".{p}-ui {{\n",
     ]
     canvas_pieces, canvas_geo = {}, {}
 
@@ -324,11 +381,11 @@ def build():
                 # `__`, never `-` (the digest gitignore) or `.` (read as a class by
                 # the CSS lint).
                 file = f"{name}__{state}.webp"
-                files[os.path.join(IMG_DIR, file)] = _webp(image)
-                var = f"--space-ui-{css_name}" + ("" if state == "normal" else f"--{css_state}")
-                css.append(f'  {var}: url("{IMG_URL}/{file}");\n')
-            css.append(f"  --space-ui-{css_name}-slice: {t} {r} {b} {l};\n")
-            css.append(f"  --space-ui-{css_name}-width: {t}px {r}px {b}px {l}px;\n")
+                files[os.path.join(img_dir, file)] = _webp(image)
+                var = f"--{p}-ui-{css_name}" + ("" if state == "normal" else f"--{css_state}")
+                css.append(f'  {var}: url("{img_url}/{file}");\n')
+            css.append(f"  --{p}-ui-{css_name}-slice: {t} {r} {b} {l};\n")
+            css.append(f"  --{p}-ui-{css_name}-width: {t}px {r}px {b}px {l}px;\n")
         if "canvas" in spec["targets"]:
             canvas_pieces[name] = piece
             canvas_geo[name] = {"t": t, "r": r, "b": b, "l": l}
@@ -336,65 +393,71 @@ def build():
     for name, spec in kit.get("images", {}).items():
         image = _check_rect(name, sources[spec["src"]], tuple(spec["rect"]))
         _check_native(name, image)
-        files[os.path.join(IMG_DIR, f"{name}.webp")] = _webp(image)
-        css.append(f'  --space-ui-{name}: url("{IMG_URL}/{name}.webp");\n')
-        css.append(f"  --space-ui-{name}-size: {image.width}px {image.height}px;\n")
+        files[os.path.join(img_dir, f"{name}.webp")] = _webp(image)
+        css.append(f'  --{p}-ui-{name}: url("{img_url}/{name}.webp");\n')
+        css.append(f"  --{p}-ui-{name}-size: {image.width}px {image.height}px;\n")
     css.append("}\n\n")
 
     # Every state image but the normal ones, fetched with the page, so the first
     # hover or press does not flash an empty frame while its image loads.
-    states = [p for p in files if p.startswith(IMG_DIR) and "__" in p
-              and "__normal." not in p]
-    css.append(".space-ui::after {\n  content: \"\";\n  position: absolute;\n"
-               "  width: 0;\n  height: 0;\n  overflow: hidden;\n  background-image:\n")
-    css.append(",\n".join(f'    url("{IMG_URL}/{os.path.basename(p)}")' for p in sorted(states)))
-    css.append(";\n}\n\n")
+    states = [f for f in files if f.startswith(img_dir) and "__" in f
+              and "__normal." not in f]
+    if states:
+        css.append(f".{p}-ui::after {{\n  content: \"\";\n  position: absolute;\n"
+                   "  width: 0;\n  height: 0;\n  overflow: hidden;\n  background-image:\n")
+        css.append(",\n".join(f'    url("{img_url}/{os.path.basename(f)}")' for f in sorted(states)))
+        css.append(";\n}\n\n")
 
     for name, spec in kit.get("canvas_sprites", {}).items():
         if name.startswith("_"):
             continue
         canvas_pieces[name] = _drawn(kit, spec["drawn"])
         canvas_geo[name] = {}
-    sheet, where = _pack_row(canvas_pieces)
-    files[os.path.join(IMG_DIR, "canvas.webp")] = _webp(sheet)
+    # A kit without canvas pieces (the arcade's) has no sheet and no geometry.
+    if canvas_pieces:
+        sheet, where = _pack_row(canvas_pieces)
+        files[os.path.join(img_dir, "canvas.webp")] = _webp(sheet)
 
     icons = {}
-    for name, spec in kit["icons"].items():
+    for name, spec in kit.get("icons", {}).items():
         if not name.startswith("_"):
-            icons[name] = _icon(kit, name, spec, icons)
-    icon_sheet, icon_where = _pack_row(icons)
-    files[os.path.join(IMG_DIR, "icons.webp")] = _webp(icon_sheet)
-    # `display` under `:where()`, so a utility (`hidden`) still wins over it.
-    css.append(":where(.space-icon) {\n  display: inline-block;\n}\n")
-    css.append(
-        ".space-icon {\n"
-        "  flex-shrink: 0;\n"
-        f'  background-image: url("{IMG_URL}/icons.webp");\n'
-        "  background-repeat: no-repeat;\n"
-        "  image-rendering: pixelated;\n"
-        "}\n")
-    for name, (x, y, w, h) in icon_where.items():
+            icons[name] = _icon(kit, name, spec, icons, k.ui)
+    if icons:
+        icon_sheet, icon_where = _pack_row(icons)
+        files[os.path.join(img_dir, "icons.webp")] = _webp(icon_sheet)
+        # `display` under `:where()`, so a utility (`hidden`) still wins over it.
+        css.append(f":where(.{p}-icon) {{\n  display: inline-block;\n}}\n")
         css.append(
-            f".space-icon--{name.replace('_', '-')} {{\n"
-            f"  width: {w}px;\n  height: {h}px;\n"
-            f"  background-position: {-x}px {-y}px;\n}}\n")
+            f".{p}-icon {{\n"
+            "  flex-shrink: 0;\n"
+            f'  background-image: url("{img_url}/icons.webp");\n'
+            "  background-repeat: no-repeat;\n"
+            "  image-rendering: pixelated;\n"
+            "}\n")
+        for name, (x, y, w, h) in icon_where.items():
+            css.append(
+                f".{p}-icon--{name.replace('_', '-')} {{\n"
+                f"  width: {w}px;\n  height: {h}px;\n"
+                f"  background-position: {-x}px {-y}px;\n}}\n")
 
-    geo_lines = [
-        "// Generated by virtual.space/tools/author_ui.py from virtual.space/ui/kit.json — do not edit.\n",
-        "// Where each canvas UI piece sits in /images/space/ui/canvas.webp (x, y, w, h) and,\n",
-        "// for a sliced piece, its slice in native pixels (t, r, b, l).\n",
-        "export const UI_KIT_GEOMETRY = Object.freeze({\n",
-    ]
-    for name, (x, y, w, h) in where.items():
-        fields = {"x": x, "y": y, "w": w, "h": h, **canvas_geo[name]}
-        body = ", ".join(f"{k}: {v}" for k, v in fields.items())
-        geo_lines.append(f"  {name}: Object.freeze({{ {body} }}),\n")
-    geo_lines.append("});\n")
-
-    files[CSS_OUT] = "".join(css).encode()
-    files[JS_OUT] = "".join(geo_lines).encode()
+    files[k.css_out] = "".join(css).encode()
+    if k.js_out:
+        if not canvas_pieces:
+            raise KitError(f"{k.name}: a geometry file is asked for, but no piece targets the canvas")
+        geo_lines = [
+            f"// Generated by virtual.space/tools/author_ui.py from {k.ui_rel}/kit.json — do not edit.\n",
+            f"// Where each canvas UI piece sits in {img_url}/canvas.webp (x, y, w, h) and,\n",
+            "// for a sliced piece, its slice in native pixels (t, r, b, l).\n",
+            "export const UI_KIT_GEOMETRY = Object.freeze({\n",
+        ]
+        for name, (x, y, w, h) in where.items():
+            fields = {"x": x, "y": y, "w": w, "h": h, **canvas_geo[name]}
+            body = ", ".join(f"{key}: {v}" for key, v in fields.items())
+            geo_lines.append(f"  {name}: Object.freeze({{ {body} }}),\n")
+        geo_lines.append("});\n")
+        files[k.js_out] = "".join(geo_lines).encode()
     for path in files:
-        if path.startswith(IMG_DIR):
+        if path.startswith(img_dir):
             _check_name(path)
     return files
 
@@ -416,13 +479,16 @@ def same_output(path, data):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--check", action="store_true", help="fail if a committed output differs")
+    parser.add_argument("--kit", choices=sorted(KITS), default="space", help="which kit to build")
     args = parser.parse_args()
+    k = KITS[args.kit]
     try:
-        files = build()
+        files = build(k)
     except KitError as e:
         sys.exit(f"author_ui: {e}")
 
-    owned = {os.path.join(IMG_DIR, f) for f in os.listdir(IMG_DIR)} if os.path.isdir(IMG_DIR) else set()
+    img_dir = k.img_dir
+    owned = {os.path.join(img_dir, f) for f in os.listdir(img_dir)} if os.path.isdir(img_dir) else set()
     if args.check:
         stale = [p for p, d in files.items() if not same_output(p, d)]
         stale += sorted(owned - set(files))

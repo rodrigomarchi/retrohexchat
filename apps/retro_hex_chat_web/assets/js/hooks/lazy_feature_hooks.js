@@ -78,6 +78,12 @@ export const lazyFeatureHooks = {
     serverEvents: [],
     reason: "The on-screen pad is only needed under a Retro Game played with keys.",
   }),
+  StageFullscreenHook: lazyFeatureHook({
+    name: "StageFullscreenHook",
+    loader: () => import("./games/stage_fullscreen_hook"),
+    serverEvents: [],
+    reason: "The full-screen key is only in a Retro Game's menu.",
+  }),
   SpectateCanvasHook: lazyFeatureHook({
     name: "SpectateCanvasHook",
     loader: () => import("./games/spectate_canvas_hook"),
@@ -87,7 +93,13 @@ export const lazyFeatureHooks = {
   RetroGameCanvasHook: lazyFeatureHook({
     name: "RetroGameCanvasHook",
     loader: () => import("./games/retro_game_canvas_hook"),
-    serverEvents: ["retro_game_begin", "retro_game_stop", "retro_game_quit"],
+    serverEvents: [
+      "retro_game_begin",
+      "retro_game_stop",
+      "retro_game_quit",
+      "retro_game_pause",
+      "retro_game_resume",
+    ],
     readyEvent: "retro_game_canvas_ready",
     reason: "Solo retro game canvas and engine loading are only needed inside Retro Games.",
   }),

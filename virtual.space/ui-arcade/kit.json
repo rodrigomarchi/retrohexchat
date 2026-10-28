@@ -1,0 +1,296 @@
+{
+  "_doc": "The arcade's pixel-art UI kit \u2014 the Retro Games' stage: its menu, its buttons and its on-screen pad \u2014 read by tools/author_ui.py --kit arcade. Pieces are cut from the PixelLab generations under pixellab/ (rect = exact opaque bounding box), sliced at `slice` [top, right, bottom, left], with derived `states`. See ../UI.md.",
+  "palette": {
+    "outline": [
+      3,
+      2,
+      5
+    ],
+    "navy": [
+      24,
+      22,
+      51
+    ],
+    "cyan": [
+      87,
+      233,
+      236
+    ],
+    "magenta": [
+      254,
+      84,
+      255
+    ],
+    "amber": [
+      250,
+      197,
+      85
+    ]
+  },
+  "sources": {
+    "master": "pixellab/master/master_b.png",
+    "neon": "pixellab/controls/controls_neon.png"
+  },
+  "pieces": {
+    "panel": {
+      "src": "master",
+      "rect": [
+        24,
+        30,
+        359,
+        360
+      ],
+      "slice": [
+        41,
+        40,
+        46,
+        40
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "panel_slim": {
+      "src": "neon",
+      "rect": [
+        104,
+        80,
+        281,
+        213
+      ],
+      "slice": [
+        22,
+        22,
+        22,
+        22
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "button": {
+      "src": "neon",
+      "rect": [
+        16,
+        16,
+        145,
+        53
+      ],
+      "slice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "states": [
+        "normal",
+        "glow",
+        "lit_pressed",
+        "disabled"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "button_alt": {
+      "src": "neon",
+      "rect": [
+        168,
+        16,
+        297,
+        53
+      ],
+      "slice": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "states": [
+        "normal",
+        "glow",
+        "lit_pressed",
+        "disabled",
+        "alarm",
+        "alarm_pressed"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "toggle": {
+      "src": "neon",
+      "rect": [
+        16,
+        80,
+        81,
+        113
+      ],
+      "slice": [
+        10,
+        11,
+        10,
+        10
+      ],
+      "states": [
+        "normal",
+        "glow",
+        "lit",
+        "disabled"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "badge": {
+      "src": "neon",
+      "rect": [
+        16,
+        136,
+        81,
+        161
+      ],
+      "slice": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "pad_key": {
+      "src": "neon",
+      "rect": [
+        320,
+        16,
+        377,
+        73
+      ],
+      "slice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "states": [
+        "normal",
+        "lit_pressed",
+        "alarm",
+        "alarm_pressed"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "corner_key": {
+      "src": "neon",
+      "rect": [
+        400,
+        16,
+        437,
+        53
+      ],
+      "slice": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "states": [
+        "normal",
+        "glow",
+        "lit_pressed"
+      ],
+      "targets": [
+        "css"
+      ]
+    }
+  },
+  "images": {
+    "dpad": {
+      "src": "neon",
+      "rect": [
+        328,
+        88,
+        473,
+        233
+      ]
+    }
+  },
+  "icons": {
+    "play": {
+      "src": "pixellab/icons/play/cand_43.png"
+    },
+    "again": {
+      "src": "pixellab/icons/again/cand_20.png"
+    },
+    "stop": {
+      "src": "pixellab/icons/stop/cand_0.png"
+    },
+    "link": {
+      "src": "pixellab/icons/link/cand_44.png"
+    },
+    "fullscreen_enter": {
+      "src": "pixellab/icons/fullscreen_enter/cand_42.png"
+    },
+    "pause": {
+      "src": "pixellab/icons/pause/cand_40.png"
+    },
+    "fullscreen_exit": {
+      "drawn": "fullscreen_exit"
+    },
+    "_partner": "Drawn, not generated: the gamepad's candidates came back as blobs at 16 px.",
+    "partner": {
+      "drawn": "partner"
+    },
+    "_fullscreen_exit": "Drawn: the quadrant flip of the enter brackets, cropped to their art, meets in the middle as a plus."
+  },
+  "drawn": {
+    "keys": {
+      "o": "outline",
+      "c": "cyan",
+      "m": "magenta"
+    },
+    "partner": [
+      "................",
+      "................",
+      "................",
+      "................",
+      "...oooooooooo...",
+      "..occcccccccco..",
+      ".occcccccccccco.",
+      ".occocccccccmco.",
+      ".ocooocccccmcmo.",
+      ".occocccccccmco.",
+      ".occcccccccccco.",
+      ".occcooooooccco.",
+      ".occo......occo.",
+      "..oo........oo..",
+      "................",
+      "................"
+    ],
+    "fullscreen_exit": [
+      ".oco..oco.",
+      "ooco..ocoo",
+      "ccco..occc",
+      "oooo..oooo",
+      "..........",
+      "..........",
+      "oooo..oooo",
+      "ccco..occc",
+      "ooco..ocoo",
+      ".oco..oco."
+    ]
+  }
+}

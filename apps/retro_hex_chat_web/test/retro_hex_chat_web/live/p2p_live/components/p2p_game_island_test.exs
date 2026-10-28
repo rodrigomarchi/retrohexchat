@@ -30,7 +30,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
         games: Catalog.list_games(),
         peer_nick: "trinity",
         watchers: 2,
-        watch_url: watch_url
+        watch_url: watch_url,
+        menu_open: true
       )
     end
 
@@ -40,6 +41,38 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
     assert html =~ ~s(data-copy-text="https://example.test/watch/tok")
 
     refute panel.(nil) =~ "lobby-game-watchers"
+  end
+
+  # A match is played on its stage, as every Retro Game is: nothing over the
+  # game but the corner key and, on a touch screen, the pad; the menu (Esc or
+  # the key) holds Continue, End game and the whole screen, and the match goes
+  # on under it.
+  test "a running match has its stage, and its menu only when asked" do
+    panel = fn menu_open ->
+      render_component(&GamePanel.game_panel/1,
+        connected: true,
+        game: %{status: "playing", game_id: "hex_pong", is_host: true},
+        game_request: nil,
+        game_outgoing: false,
+        games: Catalog.list_games(),
+        peer_nick: "trinity",
+        menu_open: menu_open
+      )
+      |> Floki.parse_document!()
+    end
+
+    running = panel.(false)
+    assert [_] = Floki.find(running, ~s([data-testid="lobby-game-stage"] #lobby-game-canvas))
+    assert [_] = Floki.find(running, ~s([data-testid="game-stage-menu-key"]))
+    assert [_] = Floki.find(running, ~s([data-testid="retro-game-pad"]))
+    assert Floki.find(running, ~s([data-testid="lobby-game-end"])) == []
+    assert Floki.find(running, ~s([data-testid="lobby-game-panel"])) == []
+
+    held = panel.(true)
+    assert [_] = Floki.find(held, ~s([data-testid="lobby-game-resume"]))
+    assert [_] = Floki.find(held, ~s([data-testid="lobby-game-end"]))
+    assert [_] = Floki.find(held, ~s([data-testid="game-stage-fullscreen"]))
+    assert Floki.find(held, ~s([data-testid="game-stage-menu-key"])) == []
   end
 
   test "lists the game catalog when connected and idle" do
@@ -88,7 +121,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
     refute html =~ ~s(data-testid="p2p-games-catalog")
   end
 
-  test "renders the in-progress state and canvas while playing" do
+  test "a game that starts is on its stage, with nothing over it" do
     html =
       render_component(P2PGameIsland,
         id: P2PGameIsland.id(),
@@ -96,8 +129,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
         action: {:playing, "hex_pong", true}
       )
 
-    assert html =~ "Game in progress"
     assert html =~ ~s(id="lobby-game-canvas")
+    assert html =~ ~s(data-testid="game-stage-menu-key")
+    refute html =~ "Game in progress"
   end
 
   test "renders the final-score card when a game finishes" do

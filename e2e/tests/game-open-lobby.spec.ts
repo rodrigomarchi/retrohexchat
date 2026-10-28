@@ -2,8 +2,8 @@
  * @section N - P2P, File, Call, Game
  * @flow N45 [done] A match link minted inside a game is followed from another browser, the seat is taken and the game runs over the P2P session
  * @flow N46 [done] A third person following the same match link is told the seat is taken, and it stays taken after the match ends
- * @flow N67 [done] Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames
- * @flow N68 [done] The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page
+ * @flow N67 [done] Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames, with nothing over it but the key that opens its menu
+ * @flow N68 [done] The players see how many are watching and the watch link to hand on, in the menu over their match (which fits a phone-sized window); the match is offered to watch under its game channel's topic and on the game's page
  * @flow N77 [done] Players who take their time in a match room — reading it, pressing Ready a while after arriving — still get the game when the host presses Start
  * @flow N78 [done] When a match room ends, the window says why and that the match did not start, and offers Play again — a new room for the same game — or the game's page
  * @flow N69 [done] A full match's link, a playing nickname's menu and the game's page each lead to watching it; a member's Play on the game's page opens beside the desktop
@@ -122,13 +122,9 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
         timeout: 30_000,
       });
       await expect(page.getByTestId("lobby-game-consent")).toHaveCount(0);
-      await expect(page.getByTestId("lobby-game-panel")).toContainText(
-        "Hex Pong",
-        { timeout: 30_000 },
-      );
-      await expect(page.locator("#lobby-game-canvas canvas")).toBeVisible({
-        timeout: 30_000,
-      });
+      await expect(
+        page.locator('#lobby-game-canvas[data-game-id="hex_pong"] canvas'),
+      ).toBeVisible({ timeout: 30_000 });
       await expect(page.getByTestId("p2p-call-window")).toContainText(
         "Connected",
         { timeout: 30_000 },
@@ -153,11 +149,19 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
         .toBeGreaterThan(0);
       await expect(watcher.getByTestId("watch-status")).toHaveText("Live");
       await shot(watcher, "match-watched-without-an-account");
+      // Nothing over the match but the key that opens what is said about it.
+      await watcher.getByTestId("game-stage-menu-key").click();
+      await expect(watcher.getByTestId("watch-resume")).toBeVisible();
+      await shot(watcher, "match-watched-menu");
+      await watcher.getByTestId("watch-resume").click();
+      await expect(watcher.getByTestId("game-stage-menu")).toBeHidden();
       await expect(watcher.getByTestId("watch-watchers")).toHaveText(
         "1 watching",
       );
 
-      // The players are told somebody is watching, and can hand the address on.
+      // The players are told somebody is watching, and can hand the address
+      // on, in the menu over their match.
+      await host.getByTestId("game-stage-menu-key").click();
       await expect(host.getByTestId("lobby-game-watchers")).toContainText(
         "1 watching",
         { timeout: 15_000 },
@@ -167,6 +171,13 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
         new RegExp(`/watch/${token}$`),
       );
       await shot(host, "match-host-sees-who-watches");
+      // The same menu fits a phone-sized window.
+      await host.setViewportSize({ width: 390, height: 844 });
+      await expect(host.getByTestId("lobby-game-end")).toBeInViewport({
+        ratio: 1,
+      });
+      await shot(host, "match-host-menu-phone-size");
+      await host.setViewportSize({ width: 1280, height: 720 });
 
       // Where people already are, the match is there to be found: the game's
       // channel, under its topic, and the game's own page.

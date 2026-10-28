@@ -142,6 +142,23 @@ describe("defineGame", () => {
       expect(logOf(match)[0].slice(1)).toEqual(["down", 100, 50]);
     });
 
+    it("lets go of a press held when the match is paused, on resume, and takes none meanwhile", async () => {
+      match = await pointerMatch({});
+      match.advance(100);
+      match.pointer("down", 100, 50);
+      match.advance(17);
+      const { host } = match.engines;
+
+      expect(host.pause()).toBe(true);
+      match.pointer("up", 100, 50);
+      match.advance(200);
+      expect(logOf(match).map((entry) => entry[1])).toEqual(["down"]);
+
+      host.resume();
+      match.advance(100);
+      expect(logOf(match).map((entry) => entry[1])).toEqual(["down", "cancel"]);
+    });
+
     it("reads the press where the picture is drawn, not where the element is", async () => {
       // A 640×480 picture in a 1280×960 element: every pixel is two.
       match = await pointerMatch({ rect: { left: 0, top: 0, width: 1280, height: 960 } });
@@ -486,6 +503,95 @@ describe("defineGame", () => {
       match.advance(500);
       expect(match.engines.host.quit()).toBe(false);
       expect(match.engines.guest.quit()).toBe(false);
+    });
+  });
+
+  describe("pausing a solo match", () => {
+    it("holds the match still, lets go of held keys, and goes on where it stood", async () => {
+      match = await playMatch({
+        EngineClass: FakeGame,
+        gameId: "fake",
+        mode: "solo",
+        script: hold("host", "ArrowRight"),
+      });
+      match.advance(200);
+      const { host } = match.engines;
+
+      expect(host.pause()).toBe(true);
+      expect(host.pause()).toBe(false);
+      expect(host.paused).toBe(true);
+      expect(host.stepping).toBe(false);
+      expect(Object.values(host.localInputs).some(Boolean)).toBe(false);
+      const held = JSON.stringify(host.gameState);
+      match.advance(1000);
+      expect(JSON.stringify(host.gameState)).toBe(held);
+
+      expect(host.resume()).toBe(true);
+      expect(host.resume()).toBe(false);
+      expect(host.paused).toBe(false);
+      expect(host.stepping).toBe(true);
+      match.advance(200);
+      expect(JSON.stringify(host.gameState)).not.toBe(held);
+    });
+
+    it("never takes Esc: it goes on to the page's menu, through a match that holds every other key", () => {
+      const game = new FakeGame(
+        recordingCanvas(64, 48),
+        createLocalTransport(),
+        "fake",
+        true,
+        null,
+        { mode: "solo" },
+      );
+      game.start();
+      game.beginMatch();
+      const page = vi.fn();
+      window.addEventListener("keydown", page);
+
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", cancelable: true }));
+      expect(page).not.toHaveBeenCalled();
+      const esc = new KeyboardEvent("keydown", { key: "Escape", cancelable: true });
+      window.dispatchEvent(esc);
+      expect(page).toHaveBeenCalledOnce();
+      expect(esc.defaultPrevented).toBe(false);
+
+      window.removeEventListener("keydown", page);
+      game.stop();
+    });
+
+    it("ends a paused match when it is quit", async () => {
+      match = await playMatch({
+        EngineClass: FakeSoloGame,
+        gameId: "fake_solo",
+        mode: "solo",
+        script: hold("host", "ArrowRight"),
+      });
+      match.advance(300);
+      const { host } = match.engines;
+      host.pause();
+
+      expect(host.quit()).toBe(true);
+      expect(host.paused).toBe(false);
+      expect(match.results.host).toHaveLength(1);
+    });
+
+    it("holds nothing before the match begins or on either side of a P2P match", async () => {
+      const waiting = new FakeGame(
+        recordingCanvas(64, 48),
+        createLocalTransport(),
+        "fake",
+        true,
+        null,
+        { mode: "solo" },
+      );
+      waiting.start();
+      expect(waiting.pause()).toBe(false);
+      waiting.stop();
+
+      match = await play();
+      match.advance(500);
+      expect(match.engines.host.pause()).toBe(false);
+      expect(match.engines.guest.pause()).toBe(false);
     });
   });
 

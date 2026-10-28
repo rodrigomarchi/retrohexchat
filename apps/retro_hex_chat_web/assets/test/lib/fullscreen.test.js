@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import { FullscreenToggleController } from "../../../js/lib/space/fullscreen.js";
+import { FullscreenToggleController } from "../../js/lib/fullscreen.js";
 
 describe("FullscreenToggleController", () => {
   let button;

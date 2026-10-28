@@ -1,0 +1,75 @@
+{
+  "_doc": "Where every piece of raw art under pixellab/ came from: the PixelLab job, its prompt and seed, and the sha1 of the file kept. Panels and control sheets come from create_ui_asset.",
+  "panels": {
+    "master/master_b.png": {
+      "tool": "create_ui_asset",
+      "job": "9d10dafa-8523-4733-87a1-052719eec1f6",
+      "size": "384x384",
+      "seed": 902,
+      "palette": "black chrome, deep navy, neon cyan, hot magenta, amber",
+      "prompt": "synthwave 80s arcade game window: thick black chrome frame with a double glowing neon outline, cyan outer line and magenta inner line, tiny amber pixel corner brackets, very dark navy interior, pixel art game UI, crisp 1px outlines, clean straight edges, flat front view, no text",
+      "note": "chosen over a gunmetal-and-rivets variant (job 1f77c20a-d64a-4b2c-a0f6-87429743f863); also reference/master.png",
+      "sha1": "b25a742d41a9ac2ea2126733a59058f13759c124"
+    },
+    "controls/controls_neon.png": {
+      "tool": "create_ui_asset",
+      "job": "7d12d921-e5b5-4b7e-9c50-a34da8d8b6c7",
+      "size": "512x512",
+      "seed": 903,
+      "style": "the master panel's top-left 192x192",
+      "pieces": "button, button_alt, pad_key, corner_key, toggle, panel_slim, dpad (circle), badge at exact sizes",
+      "prompt": "sprite sheet of separate matching synthwave arcade game UI elements on transparent background: each shape is its own small framed widget with a black chrome bevelled border, a thin glowing neon cyan outline and a thin magenta inner line, tiny amber corner brackets, and a very dark navy inner face; crisp 1px pixel art outlines, straight edges, flat front view, no text, no icons",
+      "sha1": "c4f6bd90bf3db2af18b915551fc2be934b8eeb10"
+    }
+  },
+  "icons": {
+    "icons/play/cand_43.png": {
+      "tool": "create_image_pro",
+      "job": "76de9b88-42f2-4ea7-be0d-b5a151418be1",
+      "seed": 31,
+      "palette": "outline 030205, navy 181633, cyan 57e9ec, magenta fe54ff, amber fac555, ink c8faf6 (synthwave neon)",
+      "prompt": "16x16 pixel art UI icon: a bold glowing neon cyan play triangle pointing right with a solid 1px near-black outline, synthwave arcade game interface icon, centered, readable at small size",
+      "sha1": "d76ad26cf593dd77a1acd70fbd96b272b84dd5eb"
+    },
+    "icons/again/cand_20.png": {
+      "tool": "create_image_pro",
+      "job": "bf24a527-0748-40f1-be0d-ca6d0f6f34e8",
+      "seed": 32,
+      "palette": "outline 030205, navy 181633, cyan 57e9ec, magenta fe54ff, amber fac555, ink c8faf6 (synthwave neon)",
+      "prompt": "16x16 pixel art UI icon: a circular arrow going clockwise with a big clear arrowhead, glowing neon cyan with a solid 1px near-black outline, retry or play again, synthwave arcade game interface icon, centered, readable at small size",
+      "sha1": "5686066e058fb206eb2148b8151f670b4972d98c"
+    },
+    "icons/stop/cand_0.png": {
+      "tool": "create_image_pro",
+      "job": "7f752d46-3828-4d0b-87ca-8b89ae5225e4",
+      "seed": 33,
+      "palette": "outline 030205, navy 181633, cyan 57e9ec, magenta fe54ff, amber fac555, ink c8faf6 (synthwave neon)",
+      "prompt": "16x16 pixel art UI icon: a bold solid square stop sign, glowing neon hot magenta pink with a solid 1px near-black outline, stop or end the game, synthwave arcade game interface icon, centered, readable at small size",
+      "sha1": "6ef051e40141e43b203911bd1b81af86b77afa9b"
+    },
+    "icons/link/cand_44.png": {
+      "tool": "create_image_pro",
+      "job": "47ab8e4f-f2a0-4473-b8e6-5bfded00d16b",
+      "seed": 35,
+      "palette": "outline 030205, navy 181633, cyan 57e9ec, magenta fe54ff, amber fac555, ink c8faf6 (synthwave neon)",
+      "prompt": "16x16 pixel art UI icon: two interlocked chain links drawn diagonally, glowing neon cyan with a solid 1px near-black outline, share link, synthwave arcade game interface icon, centered, readable at small size",
+      "sha1": "3e70366d4b211bf9ffd65b3adbf33c0ccd4cc1bc"
+    },
+    "icons/fullscreen_enter/cand_42.png": {
+      "tool": "create_image_pro",
+      "job": "1a9e52b0-2fae-431c-82d0-2007d697b466",
+      "seed": 36,
+      "palette": "outline 030205, navy 181633, cyan 57e9ec, magenta fe54ff, amber fac555, ink c8faf6 (synthwave neon)",
+      "prompt": "16x16 pixel art UI icon: four bold corner brackets pointing outward at the four corners, an expand to fullscreen sign, glowing neon cyan with a solid 1px near-black outline, synthwave arcade game interface icon, centered, readable at small size",
+      "sha1": "d0981e81ccabc3783d7e3483a8ee42686784936e"
+    },
+    "icons/pause/cand_40.png": {
+      "tool": "create_image_pro",
+      "job": "175405db-0b03-4651-a10d-5daa74a28399",
+      "seed": 37,
+      "palette": "outline 030205, navy 181633, cyan 57e9ec, magenta fe54ff, amber fac555, ink c8faf6 (synthwave neon)",
+      "prompt": "16x16 pixel art UI icon: a bold pause sign, two thick vertical bars, glowing neon cyan with a solid 1px near-black outline, synthwave arcade game interface icon, centered, readable at small size",
+      "sha1": "f316a033272d3be28d21c2697c90197ec1ea1051"
+    }
+  }
+}
