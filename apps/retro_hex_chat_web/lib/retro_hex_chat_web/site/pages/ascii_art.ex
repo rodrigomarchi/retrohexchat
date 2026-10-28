@@ -34,9 +34,9 @@ defmodule RetroHexChatWeb.Site.Pages.AsciiArt do
         description:
           dgettext(
             "landing",
-            "Turn a word, a picture or a pixel drawing into ASCII art in mIRC colours, in your browser, and post it to a chat room as one message. Free."
+            "Make ASCII art in mIRC colours for free: text banners, pictures and pixel drawings, posted to a chat room as one message."
           ),
-        title: dgettext("landing", "ASCII Art generator: text banners in mIRC colours"),
+        title: dgettext("landing", "Free ASCII art generator: text banners in mIRC colours"),
         alt: dgettext("landing", "The word RETRO as a rainbow banner made of text characters"),
         help: ~w(ui-ascii-art cmd-ascii ui-hex-paint formatting-colors),
         intro: &intro/1,

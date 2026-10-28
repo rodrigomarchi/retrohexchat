@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.Site.Pages.Paint do
         description:
           dgettext(
             "landing",
-            "Draw pixel art in sixteen retro colours in your browser, then post your drawing to a chat room. Free, with a Windows 98 look."
+            "Draw pixel art in your browser for free, in sixteen retro colours, and post your drawings to a chat room."
           ),
         title: dgettext("landing", "Hex Paint: draw pixel art online and share it in a chat"),
         alt: dgettext("landing", "Hex Paint open on a pixel-art heart over a starry night"),

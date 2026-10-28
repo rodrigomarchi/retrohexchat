@@ -90,7 +90,8 @@ defmodule RetroHexChatWeb.Site.Pages.Accessory do
          )
        ],
        page_title: page.title,
-       page_description: page.description
+       # Translated, a description can outgrow what a search result shows.
+       page_description: SEO.meta_description(page.description)
      }}
   end
 
