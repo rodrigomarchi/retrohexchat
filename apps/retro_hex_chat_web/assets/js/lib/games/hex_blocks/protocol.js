@@ -28,3 +28,6 @@ export const KICKS = Object.freeze([
   [2, 0],
   [0, -1],
 ]);
+
+/** The atlas's description, versioned (`assets/art/blocks/build_tiles.py` rewrites it). */
+export const TILES_URL = "/images/games/blocks/tiles.json?vsn=47e0ee8c8e46";
