@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import { VirtualPadController } from "../../../js/lib/space/virtual_pad.js";
+import { VirtualPadController } from "../../js/lib/virtual_pad.js";
 
 // jsdom has no PointerEvent constructor; a MouseEvent with a defined pointerId
 // carries everything the controller reads.
@@ -12,16 +12,16 @@ function pointerEvent(type, { id = 1, x = 0, y = 0 } = {}) {
 
 function buildPad() {
   const root = document.createElement("div");
-  root.setAttribute("data-space-pad", "");
+  root.setAttribute("data-pad", "");
   const buttons = {};
   for (const dir of ["up", "down", "left", "right"]) {
     const el = document.createElement("button");
-    el.setAttribute("data-space-pad-dir", dir);
+    el.setAttribute("data-pad-dir", dir);
     root.appendChild(el);
     buttons[dir] = el;
   }
   const attack = document.createElement("button");
-  attack.setAttribute("data-space-pad-action", "attack");
+  attack.setAttribute("data-pad-action", "attack");
   root.appendChild(attack);
   buttons.attack = attack;
   document.body.appendChild(root);
@@ -38,7 +38,12 @@ describe("VirtualPadController", () => {
 
   beforeEach(() => {
     ({ root, buttons } = buildPad());
-    input = { pressDirection: vi.fn(), releaseDirection: vi.fn(), triggerAction: vi.fn() };
+    input = {
+      pressDirection: vi.fn(),
+      releaseDirection: vi.fn(),
+      triggerAction: vi.fn(),
+      releaseAction: vi.fn(),
+    };
     under = null;
     controller = new VirtualPadController({
       root,
@@ -61,6 +66,31 @@ describe("VirtualPadController", () => {
     };
     root.dispatchEvent(pointerEvent("pointerdown", { id }));
   }
+
+  it("tells when an action's button comes up, for an action held down", () => {
+    press("attack");
+    expect(input.releaseAction).not.toHaveBeenCalled();
+    root.dispatchEvent(pointerEvent("pointerup"));
+    expect(input.releaseAction).toHaveBeenCalledWith("attack");
+  });
+
+  it("lets every finger go when the window loses focus", () => {
+    press("up", { id: 1 });
+    press("attack", { id: 2 });
+    window.dispatchEvent(new Event("blur"));
+    expect(input.releaseDirection).toHaveBeenCalledWith("up");
+    expect(input.releaseAction).toHaveBeenCalledWith("attack");
+    expect(buttons.up.hasAttribute("data-pressed")).toBe(false);
+  });
+
+  it("works with an input that only fires actions, as the space's does", () => {
+    controller.detach();
+    const fires = { pressDirection: vi.fn(), releaseDirection: vi.fn(), triggerAction: vi.fn() };
+    controller = new VirtualPadController({ root, input: fires, hitTest: () => under });
+    controller.attach();
+    press("attack");
+    expect(() => root.dispatchEvent(pointerEvent("pointerup"))).not.toThrow();
+  });
 
   it("presses a direction on pointerdown and releases on pointerup", () => {
     press("up");
@@ -151,7 +181,7 @@ describe("VirtualPadController", () => {
 
   it("lights the use key while something is in reach", () => {
     const use = document.createElement("button");
-    use.setAttribute("data-space-pad-action", "use");
+    use.setAttribute("data-pad-action", "use");
     root.appendChild(use);
     controller.setReady(true);
     expect(use.hasAttribute("data-ready")).toBe(true);

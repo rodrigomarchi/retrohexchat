@@ -95,7 +95,7 @@ test.describe("A space at an address of its own", () => {
 
       // Walking works with nothing but this tab: the frame changes after a step.
       const before = await canvasSignature(space);
-      await space.locator('[data-space-pad-dir="right"]').click();
+      await space.locator('[data-pad-dir="right"]').click();
       await expect.poll(() => canvasSignature(space)).not.toBe(before);
     } finally {
       await closeUsers([user]);

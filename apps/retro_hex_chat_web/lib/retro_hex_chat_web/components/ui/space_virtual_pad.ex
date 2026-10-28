@@ -10,10 +10,10 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
 
   Pure static markup inside the `phx-update="ignore"` space shell — all
   behavior (pointer capture, sliding between directions, press visuals) is
-  wired client-side by `assets/js/lib/space/virtual_pad.js` through the same
+  wired client-side by `assets/js/lib/virtual_pad.js` through the same
   `InputController` the physical keyboard feeds, so a held button walks at the
   same paced cadence as a held key. Buttons are addressed by
-  `data-space-pad-dir` / `data-space-pad-action`; the pressed visual is the
+  `data-pad-dir` / `data-pad-action`; the pressed visual is the
   `data-pressed` attribute the pad controller toggles. Buttons are
   `tabindex="-1"`: the pad is a pointer affordance — keyboard users already
   have the real keys, and stealing tab focus would fight the chat composer.
@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
   def space_virtual_pad(assigns) do
     ~H"""
     <div
-      data-space-pad
+      data-pad
       data-testid="space-virtual-pad"
       role="group"
       aria-label={dgettext("chat", "Virtual control pad")}
@@ -34,12 +34,12 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
     >
       <%!-- Staggered like a handheld's A and B: the thumb rolls from one to the
             other instead of reaching across. --%>
-      <div class="pointer-events-auto flex items-end gap-2" data-space-pad-actions>
+      <div class="pointer-events-auto flex items-end gap-2" data-pad-actions>
         <div class="flex flex-col gap-2">
           <button
             type="button"
             tabindex="-1"
-            data-space-pad-action="wave"
+            data-pad-action="wave"
             data-testid="space-pad-wave"
             aria-label={dgettext("chat", "Wave")}
             class="space-pad-button h-11 w-11"
@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
           <button
             type="button"
             tabindex="-1"
-            data-space-pad-action="dance"
+            data-pad-action="dance"
             data-testid="space-pad-dance"
             aria-label={dgettext("chat", "Dance")}
             class="space-pad-button h-11 w-11"
@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
         <button
           type="button"
           tabindex="-1"
-          data-space-pad-action="use"
+          data-pad-action="use"
           data-testid="space-pad-use"
           aria-label={dgettext("chat", "Use")}
           class="space-pad-button h-14 w-14"
@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
         <button
           type="button"
           tabindex="-1"
-          data-space-pad-action="attack"
+          data-pad-action="attack"
           aria-label={dgettext("chat", "Attack")}
           class="space-pad-button space-pad-button--attack mb-8 h-14 w-14"
         >
@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
     <button
       type="button"
       tabindex="-1"
-      data-space-pad-dir={@dir}
+      data-pad-dir={@dir}
       aria-label={@label}
       class={["space-pad-button h-11 w-11", @class]}
     >

@@ -70,7 +70,7 @@ test.describe("Space virtual pad", () => {
 
       // Press-and-hold the D-pad up button for ~1.2s: at the 150ms server
       // cadence that is a continuous stream of steps, not a single one.
-      const up = pad.locator('[data-space-pad-dir="up"]');
+      const up = pad.locator('[data-pad-dir="up"]');
       const upBox = (await up.boundingBox())!;
       await page.mouse.move(
         upBox.x + upBox.width / 2,
@@ -94,7 +94,7 @@ test.describe("Space virtual pad", () => {
       // pad's halves and lifts there lets go: the pad holds the pointer, the
       // floor under it does not.
       // Down, back the way it came: up may be a wall by now.
-      const down = pad.locator('[data-space-pad-dir="down"]');
+      const down = pad.locator('[data-pad-dir="down"]');
       const downBox = (await down.boundingBox())!;
       await page.mouse.move(
         downBox.x + downBox.width / 2,
@@ -118,7 +118,7 @@ test.describe("Space virtual pad", () => {
       );
 
       // The sword button broadcasts one visual attack.
-      await pad.locator('[data-space-pad-action="attack"]').click();
+      await pad.locator('[data-pad-action="attack"]').click();
       await expect
         .poll(() => sentFrames.filter((f) => f.includes("space_action")).length)
         .toBeGreaterThanOrEqual(1);

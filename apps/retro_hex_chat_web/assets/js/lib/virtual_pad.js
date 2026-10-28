@@ -1,23 +1,26 @@
 /**
- * Pointer wiring for the on-screen virtual pad (D-pad + attack button).
+ * Pointer wiring for an on-screen virtual pad (a D-pad and action buttons):
+ * the virtual space's, and the Retro Games' under each game.
  *
  * Pointer Events unify mouse, touch and pen in one handler set. The pad root
  * captures the pointer on press so a finger can slide between D-pad directions
  * without lifting (hit-tested per move, like a physical pad); sliding off the
  * pad releases movement, and `pointercancel`/detach clear everything so no
- * direction sticks. All presses feed the shared `InputController`, so a held
- * pad button walks at the same paced cadence as a held key.
+ * direction sticks, nor does anything when the window loses focus. Presses
+ * go to an `input` — `pressDirection`, `releaseDirection`, `triggerAction` and,
+ * for an action held down, `releaseAction`: the space's `InputController`
+ * walks at the pace of a held key; a game's turns each into its key.
  *
  * The pressed visual is the `data-pressed` attribute on the active button
  * (styled by the component's Tailwind `data-[pressed]:` variants).
- * @module space/virtual_pad
+ * @module virtual_pad
  */
 
 export class VirtualPadController {
   /**
    * @param {object} opts
-   * @param {HTMLElement} opts.root the `[data-space-pad]` element
-   * @param {object} opts.input the shared `InputController`
+   * @param {HTMLElement} opts.root the `[data-pad]` element
+   * @param {object} opts.input what the presses go to (see above)
    * @param {Function} [opts.hitTest] injected control resolver (tests):
    *   (root, x, y) -> {el, dir, action} | null
    */
@@ -33,6 +36,7 @@ export class VirtualPadController {
     this._onPointerMove = this._onPointerMove.bind(this);
     this._onPointerEnd = this._onPointerEnd.bind(this);
     this._onContextMenu = (event) => event.preventDefault();
+    this._onBlur = () => this._releaseAll();
   }
 
   attach() {
@@ -43,6 +47,8 @@ export class VirtualPadController {
     this._root.addEventListener("pointercancel", this._onPointerEnd);
     // A long-press on mobile must not open the browser context menu.
     this._root.addEventListener("contextmenu", this._onContextMenu);
+    // A finger held while the window loses focus never comes up here.
+    window.addEventListener("blur", this._onBlur);
   }
 
   detach() {
@@ -52,6 +58,11 @@ export class VirtualPadController {
     this._root.removeEventListener("pointerup", this._onPointerEnd);
     this._root.removeEventListener("pointercancel", this._onPointerEnd);
     this._root.removeEventListener("contextmenu", this._onContextMenu);
+    window.removeEventListener("blur", this._onBlur);
+    this._releaseAll();
+  }
+
+  _releaseAll() {
     for (const pointerId of [...this._pointers.keys()]) this._releasePointer(pointerId);
   }
 
@@ -60,7 +71,7 @@ export class VirtualPadController {
    * @param {boolean} ready
    */
   setReady(ready) {
-    const el = this._root?.querySelector?.('[data-space-pad-action="use"]');
+    const el = this._root?.querySelector?.('[data-pad-action="use"]');
     if (!el) return;
     if (ready) el.setAttribute("data-ready", "");
     else el.removeAttribute("data-ready");
@@ -77,7 +88,12 @@ export class VirtualPadController {
     if (control.action) {
       // Actions are one-shot on a fresh press; no slide-into, no repeat.
       this._input?.triggerAction?.(control.action);
-      this._pointers.set(event.pointerId, { kind: "action", dir: null, el: control.el });
+      this._pointers.set(event.pointerId, {
+        kind: "action",
+        action: control.action,
+        dir: null,
+        el: control.el,
+      });
       this._setPressed(control.el, true);
       return;
     }
@@ -122,6 +138,7 @@ export class VirtualPadController {
     const tracked = this._pointers.get(pointerId);
     if (!tracked) return;
     if (tracked.dir) this._input?.releaseDirection?.(tracked.dir);
+    if (tracked.kind === "action") this._input?.releaseAction?.(tracked.action);
     this._setPressed(tracked.el, false);
     this._pointers.delete(pointerId);
   }
@@ -136,13 +153,11 @@ export class VirtualPadController {
 // Resolve the pad control under a viewport point. Geometric (elementFromPoint),
 // so it keeps working while the pad root holds the pointer capture.
 function defaultHitTest(root, x, y) {
-  const el = document
-    .elementFromPoint(x, y)
-    ?.closest("[data-space-pad-dir], [data-space-pad-action]");
+  const el = document.elementFromPoint(x, y)?.closest("[data-pad-dir], [data-pad-action]");
   if (!el || !root.contains(el)) return null;
   return {
     el,
-    dir: el.dataset.spacePadDir ?? null,
-    action: el.dataset.spacePadAction ?? null,
+    dir: el.dataset.padDir ?? null,
+    action: el.dataset.padAction ?? null,
   };
 }

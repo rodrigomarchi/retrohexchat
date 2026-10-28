@@ -81,7 +81,7 @@ async function handheldAndOneLine(space: Page) {
     (await space.getByTestId(testid).boundingBox())!;
   const stage = await box("channel-space-shell");
   const use = await box("space-pad-use");
-  const up = (await space.locator('[data-space-pad-dir="up"]').boundingBox())!;
+  const up = (await space.locator('[data-pad-dir="up"]').boundingBox())!;
   expect(use.x + use.width).toBeLessThan(stage.x + stage.width / 2);
   expect(up.x).toBeGreaterThan(stage.x + stage.width / 2);
 

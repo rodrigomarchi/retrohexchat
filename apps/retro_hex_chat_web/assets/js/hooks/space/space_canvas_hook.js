@@ -17,7 +17,7 @@ import { Socket } from "phoenix";
 import { SpaceEngine } from "../../lib/space/engine.js";
 import { FullscreenToggleController } from "../../lib/space/fullscreen.js";
 import { InputController } from "../../lib/space/input.js";
-import { VirtualPadController } from "../../lib/space/virtual_pad.js";
+import { VirtualPadController } from "../../lib/virtual_pad.js";
 import { ModalController } from "../../lib/space/modal.js";
 import { actionRequest } from "../../lib/space/action_request.js";
 import { createSpriteAtlas } from "../../lib/space/sprite_atlas.js";
@@ -144,7 +144,7 @@ export function createSpaceCanvasHook(deps = {}) {
 
       // The on-screen pad (mobile/mouse) feeds the same InputController, so a
       // held pad button walks exactly like a held key.
-      const padRoot = this.el.querySelector("[data-space-pad]");
+      const padRoot = this.el.querySelector("[data-pad]");
       this._pad = padRoot ? padFactory({ root: padRoot, input: this._input }) : null;
       this._pad?.attach();
 

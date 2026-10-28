@@ -486,7 +486,7 @@ test.describe("EP05 a party at the End of Time", () => {
         await me.goTo({ x: 48, y: 16 });
 
         await cue("No keyboard");
-        const pad = page.locator('[data-space-pad-dir="down"]');
+        const pad = page.locator('[data-pad-dir="down"]');
         await focus(page.locator(".space-pad-dpad"));
         const box = (await pad.boundingBox())!;
         await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, {

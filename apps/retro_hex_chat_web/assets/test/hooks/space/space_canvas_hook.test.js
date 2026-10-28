@@ -471,7 +471,7 @@ describe("SpaceCanvasHook implementation", () => {
 
     const ctx = mountContext();
     const padRoot = document.createElement("div");
-    padRoot.setAttribute("data-space-pad", "");
+    padRoot.setAttribute("data-pad", "");
     ctx.el.appendChild(padRoot);
 
     const hook = Object.assign(

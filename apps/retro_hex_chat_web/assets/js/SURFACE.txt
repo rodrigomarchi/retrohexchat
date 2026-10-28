@@ -135,8 +135,10 @@ restore_session
 retro_game_begin
 retro_game_canvas_ready
 retro_game_error
+retro_game_quit
 retro_game_result
 retro_game_stop
+retro_game_stopped
 rum_session
 save_reconnect_state
 scroll_to_bottom
@@ -310,7 +312,9 @@ dataset.focusedParticipantId
 dataset.formName
 dataset.formatCode
 dataset.frames
+dataset.gameHeight
 dataset.gameId
+dataset.gameWidth
 dataset.getupText
 dataset.groupCallReaction
 dataset.groupCallReactionBubble
@@ -361,6 +365,8 @@ dataset.nickFlag
 dataset.offlineDisabled
 dataset.open
 dataset.openedByKey
+dataset.padAction
+dataset.padDir
 dataset.paintHint
 dataset.participantId
 dataset.persist
@@ -394,8 +400,6 @@ dataset.sessionToken
 dataset.sheet
 dataset.showTarget
 dataset.spaceChannel
-dataset.spacePadAction
-dataset.spacePadDir
 dataset.spacePanelIcon
 dataset.spacePrompts
 dataset.spriteSheets

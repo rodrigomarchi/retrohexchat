@@ -9,15 +9,15 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPadTest do
   test "renders the four D-pad directions and the attack button for the pad JS" do
     html = render_component(&space_virtual_pad/1, %{})
 
-    assert html =~ ~s(data-space-pad)
+    assert html =~ ~s(data-pad)
     assert html =~ ~s(data-testid="space-virtual-pad")
 
     for dir <- ~w(up down left right) do
-      assert html =~ ~s(data-space-pad-dir="#{dir}")
+      assert html =~ ~s(data-pad-dir="#{dir}")
     end
 
-    assert html =~ ~s(data-space-pad-action="attack")
-    assert html =~ ~s(data-space-pad-action="use")
+    assert html =~ ~s(data-pad-action="attack")
+    assert html =~ ~s(data-pad-action="use")
   end
 
   test "buttons never steal keyboard focus and stay pointer-only" do
