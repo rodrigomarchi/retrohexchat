@@ -391,6 +391,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       group(:site, dgettext("landing", "About this site"), :icon_hex_stone, site_items(cap)),
       group(:view, dgettext("ui", "View"), :icon_channels, view_items(cap)),
       group(:tools, dgettext("ui", "Tools"), :icon_group_tools, tools_items(cap)),
+      group(:accessories, dgettext("ui", "Accessories"), :icon_paint, accessories_items(cap)),
       group(
         :automation,
         dgettext("ui", "Automation"),
@@ -540,6 +541,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   defp tools_items(cap), do: group_items(cap, :tools)
+
+  defp accessories_items(cap), do: group_items(cap, :accessories)
 
   defp automation_items(cap), do: group_items(cap, :automation)
 

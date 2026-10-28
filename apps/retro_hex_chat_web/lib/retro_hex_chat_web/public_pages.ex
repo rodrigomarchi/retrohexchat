@@ -45,7 +45,9 @@ defmodule RetroHexChatWeb.PublicPages do
   @guides [
     {:mirc_commands, "/mirc-commands", :icon_terminal, Pages.MircCommands},
     {:mirc_online, "/mirc-online", :icon_chat, Pages.MircOnline},
-    {:irc_chat, "/irc-chat", :icon_channels, Pages.IrcChat}
+    {:irc_chat, "/irc-chat", :icon_channels, Pages.IrcChat},
+    {:paint, "/paint", :icon_paint, Pages.Paint},
+    {:ascii_art, "/ascii-art", :icon_ascii_art, Pages.AsciiArt}
   ]
 
   @doc "Every public page, in menu order, labelled in the current locale."
@@ -113,4 +115,6 @@ defmodule RetroHexChatWeb.PublicPages do
   defp label(:mirc_commands), do: dgettext("landing", "mIRC commands")
   defp label(:mirc_online), do: dgettext("landing", "mIRC online")
   defp label(:irc_chat), do: dgettext("landing", "IRC chat")
+  defp label(:paint), do: "Hex Paint"
+  defp label(:ascii_art), do: dgettext("landing", "ASCII Art")
 end

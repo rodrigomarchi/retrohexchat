@@ -67,6 +67,24 @@ defmodule RetroHexChat.Chat.ServiceTest do
       assert msg.plain_content == "Hello doc"
     end
 
+    test "sends a block of text art as one message, its lines and colours kept" do
+      channel = unique_channel()
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      art =
+        Enum.map_join(1..20, "\n", fn i -> "\x03#{rem(i, 16)}" <> String.duplicate("█", 40) end)
+
+      assert {:ok, msg} =
+               Service.send_message(channel, "Alice", art, "message", content_format: "irc_art")
+
+      assert msg.content == art
+      assert msg.content_format == "irc_art"
+      assert msg.plain_content |> String.split("\n") |> length() == 20
+      assert_receive %{event: "new_message", payload: %{id: id, content_format: "irc_art"}}
+      assert id == msg.id
+      refute_receive %{event: "new_message"}
+    end
+
     test "broadcasts content format for channel messages" do
       channel = unique_channel()
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")

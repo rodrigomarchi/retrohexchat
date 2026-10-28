@@ -310,6 +310,30 @@ defmodule RetroHexChatWeb.SEO do
     |> Jason.encode!(escape: :html_safe)
   end
 
+  @doc """
+  A program of the site that runs in the browser — Hex Paint, ASCII Art — as
+  schema.org's `WebApplication`, described on its own page: its name, what it
+  does, its picture and that page's address, in the page's language.
+  """
+  @spec web_application_json_ld(String.t(), String.t(), String.t(), String.t()) :: String.t()
+  def web_application_json_ld(name, description, path, image_url) do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "WebApplication",
+      "name" => name,
+      "description" => description,
+      "url" => canonical_url(path),
+      "image" => image_url,
+      "inLanguage" => I18n.html_lang(),
+      "applicationCategory" => "DesignApplication",
+      "browserRequirements" => "Requires JavaScript",
+      "operatingSystem" => "Web browser",
+      "isAccessibleForFree" => true,
+      "offers" => %{"@type" => "Offer", "price" => "0", "priceCurrency" => "USD"}
+    }
+    |> Jason.encode!(escape: :html_safe)
+  end
+
   # A game of cards says so, for a search that asks for one.
   defp put_genre(data, %{id: id})
        when id in ~w(hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits

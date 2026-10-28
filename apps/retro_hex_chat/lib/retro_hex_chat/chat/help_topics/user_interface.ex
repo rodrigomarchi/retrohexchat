@@ -538,6 +538,44 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-hex-paint",
+        title: "Hex Paint",
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "paint",
+          "/paint",
+          dgettext("help", "pixel art"),
+          dgettext("help", "drawing"),
+          dgettext("help", "Accessories"),
+          "png"
+        ],
+        icon: :icon_paint,
+        description:
+          dgettext(
+            "help",
+            "Draw pixel art in the sixteen chat colours and post the picture to a channel."
+          )
+      },
+      %{
+        id: "ui-ascii-art",
+        title: dgettext("help", "ASCII Art"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "ascii",
+          "/ascii",
+          dgettext("help", "text art"),
+          dgettext("help", "banner"),
+          dgettext("help", "mIRC colours"),
+          dgettext("help", "Accessories")
+        ],
+        icon: :icon_ascii_art,
+        description:
+          dgettext(
+            "help",
+            "Turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it as one message."
+          )
+      },
+      %{
         id: "ui-timers-dialog",
         title: dgettext("help", "Timers Dialog"),
         category: dgettext("help", "User Interface"),

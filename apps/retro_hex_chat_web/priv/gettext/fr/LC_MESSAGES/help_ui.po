@@ -69,7 +69,7 @@ msgstr "Appel audio :"
 msgid "Auto-Respond"
 msgstr "Réponse automatique"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Autocomplete"
 msgstr "Compléter automatiquement"
@@ -133,11 +133,12 @@ msgstr "Palette de couleur"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:137
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Colors"
 msgstr "Couleurs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "Command Syntax Tooltip"
 msgstr "Commande Syntaxe Tooltip"
@@ -230,7 +231,7 @@ msgstr ""
 "Les messages d'état vides disparaissent automatiquement lorsque le contenu "
 "arrive. Le texte n'est pas sélectionnable."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:97
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Enhanced History"
 msgstr "Historique amélioré"
@@ -326,6 +327,7 @@ msgid "Input & Autocomplete"
 msgstr "Entrée & Autocomplete"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
@@ -493,7 +495,7 @@ msgstr "Rôles"
 msgid "Save to your address book."
 msgstr "Enregistrer dans votre carnet d'adresses."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Search"
@@ -513,12 +515,14 @@ msgstr "Sections"
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:131
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:98
@@ -557,7 +561,7 @@ msgstr "Services :"
 msgid "Set Nick Color:"
 msgstr "Définir la couleur Nick :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "Feuilles de chaleur raccourcies"
@@ -1174,7 +1178,7 @@ msgstr "Bureau :"
 msgid "Edit"
 msgstr "Modifier"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:106
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:218
 #, elixir-autogen, elixir-format
@@ -1239,6 +1243,7 @@ msgstr "Identité & Présence"
 msgid "Layout Persistence"
 msgstr "Mise en page Persistance"
 
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Limits"
@@ -1482,7 +1487,7 @@ msgstr ""
 msgid "Toolbar"
 msgstr "Barre d'outils"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:100
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "Recherche utilisateur"
@@ -2382,7 +2387,7 @@ msgid "Empty States"
 msgstr "États vides"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Listings & Tables"
@@ -4055,3 +4060,143 @@ msgstr "Shift+Tab — De la boîte de message, retournez à la conversation (ré
 #, elixir-autogen, elixir-format
 msgid "— Retro Games, and %{arcade}. %{arcade} saves scores under your nickname, so your nickname must be identified first."
 msgstr "— Jeux rétro et %{arcade}. %{arcade} enregistre des scores sous votre surnom, donc votre surnom doit être identifié en premier."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "/ascii Command"
+msgstr "/ascii Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "/paint Command"
+msgstr "/paint Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "ASCII Art"
+msgstr "Art ASCII"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "ASCII Art needs an account: visitors are asked to register"
+msgstr "Art ASCII a besoin d'un compte : les visiteurs sont invités à s'inscrire"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "ASCII Art turns a word, a picture or your Hex Paint drawing into text art in mIRC colours, and posts it to a channel or a private conversation as one message. Open it from Start > Accessories > ASCII Art, the Accessories folder on the desktop, or by typing /ascii."
+msgstr "Art ASCII transforme un mot, une image ou votre dessin Hex Paint en art texte en couleurs mIRC, et le poste sur un canal ou une conversation privée comme un message. Ouvrez-le depuis Start > Accessoires > Art ASCII, le dossier Accessoires sur le bureau, ou en tapant /ascii."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "At most 30 lines of 100 characters in one block"
+msgstr "Au plus 30 lignes de 100 caractères dans un bloc"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Choose a picture from your computer, set how wide the art is, and draw it in colour blocks or in characters alone. The picture is read in your browser and never uploaded: only the art made from it is posted."
+msgstr "Choisissez une image de votre ordinateur, définissez la largeur de l'art et dessinez-la en blocs de couleurs ou en caractères seuls. L'image est lue dans votre navigateur et jamais téléchargée: seul l'art fait à partir de elle est affiché."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Choose a tool on the left and draw on the grid with the mouse or a finger. The left button paints the first colour, the right button the second: pick the first with a click on the palette and the second with a right-click. Mirror paints the same stroke on the other half of the picture too."
+msgstr "Choisissez un outil à gauche et dessinez sur la grille avec la souris ou un doigt. Le bouton gauche peint la première couleur, le bouton droit la seconde : choisissez le premier avec un clic sur la palette et le second avec un clic droit. Le miroir peint le même trait sur l'autre moitié de l'image aussi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Z — Undo the last stroke Ctrl+Y or Ctrl+Shift+Z — Redo P — Pencil L — Line R / Shift+R — Rectangle / filled rectangle E / Shift+E — Ellipse / filled ellipse B — Fill X — Eraser I — Pick a colour"
+msgstr "Ctrl+Z — Annuler la dernière course Ctrl+Y ou Ctrl+Shift+Z — Redo P — Crayon L — Ligne R / Shift+R — Rectangle / rectangle rempli E / Shift+E — Ellipse / ellipse remplie B — Remplir X — Effacer I — Choisir une couleur"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Drawing"
+msgstr "Dessin"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "File > Post to channel… shows the art exactly as the channel will see it. It arrives as one block, every character in its column; on a narrow screen the block scrolls sideways. Edit > Copy puts the art on the clipboard with its colour codes."
+msgstr "File > Post to channel… shows the art exactly as the channel will see it. It arrives as one block, every character in its column; on a narrow screen the block scrolls sideways. Edit > Copy puts the art on the clipboard with its colour codes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "File > Post to channel… shows the picture, a conversation you are in to post it to, and an optional line of text. The picture arrives as an image, enlarged so every pixel stays a sharp square."
+msgstr "File > Post to channel… shows the picture, a conversation you are in to post it to, and an optional line of text. The picture arrives as an image, enlarged so every pixel stays a sharp square."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "File starts a new drawing of 32, 64 or 128 pixels a side, saves it to your computer as a PNG, posts it, or opens it in ASCII Art. Edit undoes and redoes each stroke and clears the drawing. View shows or hides the grid and zooms in and out."
+msgstr "Le fichier démarre un nouveau dessin de 32, 64 ou 128 pixels par côté, l'enregistre sur votre ordinateur en tant que PNG, le poste ou l'ouvre dans Art ASCII. Modifier défaire et refaire chaque course et effacer le dessin. Afficher affiche ou masque la grille et zooms en entrée et en sortie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "File, Edit and View"
+msgstr "Fichier, édition et vue"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Fill: paints every touching pixel of the same colour"
+msgstr "Remplir : peint chaque pixel touchant de la même couleur"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Good to Know"
+msgstr "Bon à savoir"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Paint draws pixel art in the sixteen chat colours, and posts the picture to a channel or a private conversation. Open it from Start > Accessories > Hex Paint, the Accessories folder on the desktop, or by typing /paint."
+msgstr "Hex Paint draws pixel art in the sixteen chat colours, and posts the picture to a channel or a private conversation. Open it from Start > Accessories > Hex Paint, the Accessories folder on the desktop, or by typing /paint."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Hex Paint needs an account: visitors are asked to register"
+msgstr "Hex Paint a besoin d'un compte : les visiteurs sont invités à s'inscrire"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Line, Rectangle and Ellipse: press, drag and let go; the shape shows while you drag"
+msgstr "Ligne, rectangle et ellipse: appuyez, faites glisser et relâchez; la forme montre pendant que vous faites glisser"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Pencil and Eraser: draw and clear one pixel at a time"
+msgstr "Crayon et Eraser: dessiner et effacer un pixel à la fois"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Pick colour: takes the colour of the pixel you press"
+msgstr "Couleur de choix : prend la couleur du pixel que vous appuyez"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Picture"
+msgstr "Image"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Posting"
+msgstr "Affectation"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Posting and Copying"
+msgstr "Affichage et copie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Text"
+msgstr "Texte"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The Hex Paint tab draws the picture open in Hex Paint, two pixels to a character. File > Open in ASCII Art in Hex Paint comes here directly."
+msgstr "The Hex Paint tab draws the picture open in Hex Paint, two pixels to a character. File > Open in ASCII Art in Hex Paint comes here directly."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Type a word or two and choose a style — blocks, hashes or a shadow — and how it is coloured: one colour, a colour on a background, a rainbow or two tones. Click a colour for the letters and right-click one for the background."
+msgstr "Tapez un mot ou deux et choisissez un style — bloc, hachage ou ombre — et comment il est coloré: une couleur, une couleur sur un fond, un arc-en-ciel ou deux tons. Cliquez sur une couleur pour les lettres et faites un clic droit pour le fond."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Your drawing is kept in this browser while the window is closed"
+msgstr "Votre dessin est conservé dans ce navigateur pendant que la fenêtre est fermée"

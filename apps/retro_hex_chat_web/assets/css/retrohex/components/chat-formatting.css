@@ -68,6 +68,22 @@
   color: #d2d2d2;
 }
 
+/* ── The two chosen colours (ColorPicker.colour_pair/1) ───── */
+/* The left button's over the right's, as Windows drew them by its palette. */
+.colour-pair {
+  @apply relative h-8 w-8 shrink-0;
+}
+.colour-pair__fg,
+.colour-pair__bg {
+  @apply absolute h-4 w-4 border border-black;
+}
+.colour-pair__fg {
+  @apply left-1 top-1 z-10;
+}
+.colour-pair__bg {
+  @apply bottom-1 right-1;
+}
+
 /* ── mIRC color palette: 16 background colors ────────────── */
 .irc-bg-0 {
   background-color: #ffffff;
@@ -313,4 +329,14 @@
 }
 .char-counter--danger {
   @apply text-error font-bold;
+}
+
+/* ── Text art block (content_format "irc_art") ────────────── */
+/* One message of several lines drawn in characters: every character keeps its
+   column, nothing wraps, and a block wider than the screen scrolls sideways. */
+.irc-art {
+  @apply my-0.5 max-w-full overflow-x-auto font-mono whitespace-pre;
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0;
 }

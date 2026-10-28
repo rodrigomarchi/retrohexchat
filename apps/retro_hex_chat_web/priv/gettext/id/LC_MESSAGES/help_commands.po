@@ -1949,6 +1949,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:30
@@ -1982,6 +1983,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:37
@@ -2063,6 +2065,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:16
@@ -2093,6 +2096,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:14
@@ -2672,6 +2676,7 @@ msgstr "Admin root tidak dapat diturunkan melalui perintah"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:27
@@ -2702,6 +2707,7 @@ msgstr "Admin root tidak dapat diturunkan melalui perintah"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
@@ -2752,6 +2758,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:32
@@ -2783,6 +2790,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:39
@@ -2959,6 +2967,7 @@ msgstr "Sub perintah"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:7
@@ -2992,6 +3001,7 @@ msgstr "Sub perintah"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:7
@@ -6055,3 +6065,102 @@ msgstr "Ruang tentang Satu Topik"
 #, elixir-autogen, elixir-format
 msgid "The Category list beside the search box narrows the rooms to one subject — news, games, technology and the rest — as the plaque beside each channel name says. It works together with the search: both apply at once. While a category is chosen, a line above the rooms names it; its X button shows every category again. The \"See more…\" link under a sidebar section opens this window already set to that section's subject."
 msgstr "Daftar Kategori di samping kotak pencarian membatasi ruang ke satu topik — berita, permainan, teknologi, dan lainnya — sesuai plakat di samping nama setiap kanal. Daftar ini bekerja bersama pencarian: keduanya berlaku sekaligus. Selama sebuah kategori dipilih, satu baris di atas ruang menyebutkannya; tombol X pada baris itu menampilkan semua kategori lagi. Tautan \"Lihat lainnya…\" di bawah bagian bilah samping membuka jendela ini dengan topik bagian tersebut."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "/ascii"
+msgstr "/ascii"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "/paint"
+msgstr "/paint"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "ASCII Art"
+msgstr "Seni ASCII"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "At most 30 lines of 100 characters in one block"
+msgstr "Paling banyak 30 baris dari 100 karakter dalam satu blok"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Draw on a grid of 32, 64 or 128 pixels a side in the sixteen chat colours"
+msgstr "Gambar pada kisi dari 32, 64 atau 128 piksel sisi dalam enam belas warna obrolan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Needs an account: a visitor is asked to register first"
+msgstr "Perlu akun: pengunjung diminta untuk mendaftar pertama"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens ASCII Art: turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel as one message."
+msgstr "Buka Seni ASCII: putar kata, gambar, atau Hex Paint gambar menjadi seni teks dalam warna mIRC dan posting ke saluran sebagai satu pesan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens Hex Paint, the pixel drawing program: draw in the sixteen chat colours and post the picture to a channel."
+msgstr "Buka Hex Paint, program gambar pixel: gambar warna obrolan enam belas dan posting gambar ke saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the ASCII Art window, or brings it to the front when it is already open — the same window Start > Accessories > ASCII Art opens."
+msgstr "Buka jendela Seni ASCII, atau bawa ke depan ketika sudah terbuka - jendela sama Mulai > Aksesoris > Seni ASCII terbuka."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the Hex Paint window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Paint opens."
+msgstr "Buka jendela Hex Paint, atau bawa ke depan ketika sudah terbuka - jendela sama Mulai > Aksesoris > Hex Paint terbuka."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Post the art as one message, or copy it with its colour codes"
+msgstr "Kirim seni sebagai satu pesan, atau salin dengan kode warna"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Post the picture to a channel or a private conversation, with a line of text"
+msgstr "Kirim gambar ke saluran atau percakapan pribadi, dengan baris teks"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Save it to your computer as a PNG, or turn it into text art in ASCII Art"
+msgstr "Simpan ke komputer Anda sebagai PNG, atau mengubahnya menjadi seni teks di Seni ASCII"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "The drawing is kept in your browser while the window is closed"
+msgstr "Gambar disimpan dalam peramban Anda saat jendela ditutup"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Turn a picture from your computer into coloured blocks or characters; the picture is never uploaded"
+msgstr "Mengubah gambar dari komputer Anda menjadi blok berwarna atau karakter; gambar ini tidak pernah diunggah"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Turn your Hex Paint drawing into text art"
+msgstr "Mengubah gambar Hex Paint Anda menjadi seni teks"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Use a pencil, lines, rectangles, ellipses, a fill and an eraser, with undo and redo"
+msgstr "Gunakan pensil, garis, persegi panjang, elips, isi dan penghapus, dengan membatalkan dan redo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "What You Can Do There"
+msgstr "What You Can Do There"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
+msgstr "Tulis sebuah kata dalam huruf besar yang terbuat dari blok, hashes atau berbayang blok, dalam satu warna, pelangi atau dua nada"

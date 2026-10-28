@@ -410,6 +410,27 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           )
       },
       %{
+        id: "cmd-paint",
+        title: "/paint",
+        category: dgettext("help", "Chat & Messaging"),
+        keywords: [
+          "paint",
+          "hex paint",
+          dgettext("help", "drawing"),
+          dgettext("help", "pixel art")
+        ],
+        icon: :icon_paint,
+        description: dgettext("help", "Open Hex Paint, the pixel drawing program.")
+      },
+      %{
+        id: "cmd-ascii",
+        title: "/ascii",
+        category: dgettext("help", "Chat & Messaging"),
+        keywords: ["ascii", dgettext("help", "text art"), dgettext("help", "banner")],
+        icon: :icon_ascii_art,
+        description: dgettext("help", "Open ASCII Art, to make text art in mIRC colours.")
+      },
+      %{
         id: "cmd-popups",
         title: "/popups",
         category: dgettext("help", "Automation"),

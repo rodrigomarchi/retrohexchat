@@ -1055,7 +1055,7 @@ msgstr "Tambahkan pengguna ke daftar pemberitahuan Anda"
 msgid "Add an auto-respond rule"
 msgstr "Tambahkan aturan auto- respon"
 
-#: lib/retro_hex_chat/commands/registry.ex:77
+#: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Tingkat lanjut"
@@ -1101,7 +1101,7 @@ msgstr "Ban"
 msgid "Ban user from channel"
 msgstr "Ban pengguna dari saluran"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Basics"
@@ -1149,7 +1149,7 @@ msgstr ""
 "Diijinkan karakter: huruf, nomor, []\\ ^ _ '{126;} dan tanda hubung.\n"
 "Tidak dapat mengubah ke nama panggilan Anda saat ini atau salah satu yang telah digunakan."
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Kanal"
@@ -1227,7 +1227,7 @@ msgstr "Bersihkan seluruh daftar autojoin Anda"
 msgid "Command name to view detailed help"
 msgstr "Nama perintah untuk menampilkan bantuan terrinci"
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Konfigurasi"
@@ -2617,7 +2617,7 @@ msgstr "Penggunaan: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Penggunaan: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Pengguna"
@@ -3755,3 +3755,15 @@ msgstr "[BotService] Bot '%{name}' dibuat."
 #, elixir-autogen, elixir-format
 msgid "%{game} is a game for one player."
 msgstr "%{game} adalah permainan untuk satu pemain."
+
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:15
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open ASCII Art, to turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel."
+msgstr "Buka Seni ASCII, untuk mengubah kata, gambar atau Hex Paint gambar menjadi seni teks dalam warna mIRC dan posting ke saluran."
+
+#: lib/retro_hex_chat/commands/handlers/paint.ex:15
+#: lib/retro_hex_chat/commands/handlers/paint.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open Hex Paint, the pixel drawing program, to draw a picture and post it to a channel."
+msgstr "Buka Hex Paint, program gambar pixel, untuk menggambar dan posting ke saluran."

@@ -225,7 +225,12 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             avatar={@show_avatars && Map.get(@msg, :avatar)}
             layout={card_layout(@msg)}
           >
-            <span :if={is_nil(card_of(@msg, @strip_formatting))}>
+            <%!-- A block of text art is a block: it cannot sit inside the
+                  line's span. --%>
+            <div :if={is_nil(card_of(@msg, @strip_formatting)) and text_art?(@msg)}>
+              {raw(formatted_content(@msg, @strip_formatting))}
+            </div>
+            <span :if={is_nil(card_of(@msg, @strip_formatting)) and not text_art?(@msg)}>
               {raw(formatted_content(@msg, @strip_formatting))}
             </span>
             <%!-- A line the games service wrote about a match, in the game's
@@ -465,6 +470,8 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
     do: ChatHelpers.format_datetime(ended_at, timezone)
 
   defp share_ended_at_text(_card, _timezone), do: nil
+
+  defp text_art?(msg), do: Map.get(msg, :content_format) == "irc_art"
 
   defp formatted_content(msg, strip_formatting) do
     content = Map.get(msg, :content, "")

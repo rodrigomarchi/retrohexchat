@@ -1,0 +1,35 @@
+<h1 id="ascii-art-heading" class="text-lg font-bold mb-retro-8 text-text">
+  {dgettext("landing", "Make ASCII art in mIRC colours")}
+</h1>
+<p class="text-sm max-w-3xl mb-retro-12">
+  {dgettext("landing", "ASCII Art turns a word into a big banner made of text characters.")}
+  {dgettext(
+    "landing",
+    "Choose blocks, hashes or a shadow, and colour it in one colour, a rainbow or two tones."
+  )}
+  {dgettext("landing", "It also turns a picture or a Hex Paint drawing into coloured characters.")}
+  {dgettext(
+    "landing",
+    "Post the art to a chat room as one message, or copy it with its mIRC colour codes."
+  )}
+</p>
+
+<div class="flex flex-wrap items-center gap-retro-8 mb-retro-12" data-testid="ascii-art-actions">
+  <.button patch={@open_path} class="font-bold" data-testid="ascii-art-open">
+    <:icon><Icons.icon_ascii_art class="h-4 w-4" /></:icon>
+    {dgettext("landing", "Open ASCII Art")}
+  </.button>
+  <.button variant="outline" patch={@help["ui-ascii-art"].path} data-testid="ascii-art-how">
+    <:icon><Icons.icon_question class="h-4 w-4" /></:icon>
+    {dgettext("landing", "How it works")}
+  </.button>
+</div>
+
+<.inset tone="screen" class="p-1">
+  <.screenshot
+    {@shots["ascii_art"]}
+    alt={dgettext("landing", "The word RETRO as a rainbow banner made of text characters")}
+    sizes="(min-width: 900px) 880px, 100vw"
+    main
+  />
+</.inset>

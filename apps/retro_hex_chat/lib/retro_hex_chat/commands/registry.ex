@@ -9,6 +9,7 @@ defmodule RetroHexChat.Commands.Registry do
   @commands %{
     "admin" => RetroHexChat.Commands.Handlers.Admin,
     "alias" => RetroHexChat.Commands.Handlers.Alias,
+    "ascii" => RetroHexChat.Commands.Handlers.Ascii,
     "announce" => RetroHexChat.Commands.Handlers.Announce,
     "autorespond" => RetroHexChat.Commands.Handlers.AutoRespond,
     "autojoin" => RetroHexChat.Commands.Handlers.AutoJoin,
@@ -45,6 +46,7 @@ defmodule RetroHexChat.Commands.Registry do
     "ns" => RetroHexChat.Commands.Handlers.Ns,
     "op" => RetroHexChat.Commands.Handlers.Op,
     "p2p" => RetroHexChat.Commands.Handlers.Lobby,
+    "paint" => RetroHexChat.Commands.Handlers.Paint,
     "part" => RetroHexChat.Commands.Handlers.Part,
     "popups" => RetroHexChat.Commands.Handlers.Popups,
     "perform" => RetroHexChat.Commands.Handlers.Perform,

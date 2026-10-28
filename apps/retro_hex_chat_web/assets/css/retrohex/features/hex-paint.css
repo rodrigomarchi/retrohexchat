@@ -1,0 +1,38 @@
+/* ── Hex Paint (components/ui/paint/paint.ex, lib/paint/) ──── */
+/* The tools are flat buttons; the chosen one and the mirror, when on, are
+   drawn sunken from aria-pressed, which paint_controller.js keeps true. */
+.hex-paint__tools {
+  grid-template-columns: repeat(2, 24px);
+}
+.hex-paint__tools .tool-button[aria-pressed="true"] {
+  @apply bg-hover-bg shadow-retro-sunken;
+}
+.hex-paint__stage {
+  @apply flex items-center justify-center p-1;
+  touch-action: none;
+}
+/* Transparent pixels show the checks a picture program shows. */
+.hex-paint__canvas {
+  @apply block shrink-0 cursor-crosshair;
+  image-rendering: pixelated;
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(45deg, #d2d2d2 25%, transparent 25%, transparent 75%, #d2d2d2 75%),
+    linear-gradient(45deg, #d2d2d2 25%, transparent 25%, transparent 75%, #d2d2d2 75%);
+  background-position:
+    0 0,
+    6px 6px;
+  background-size: 12px 12px;
+}
+.hex-paint__posted {
+  @apply mx-auto block max-h-48 max-w-full;
+  image-rendering: pixelated;
+}
+
+/* ── ASCII Art (components/ui/ascii_art/ascii_art.ex, lib/ascii_art/) ── */
+.ascii-art__preview {
+  @apply p-2;
+}
+.ascii-art__posted {
+  @apply max-h-60 overflow-auto;
+}

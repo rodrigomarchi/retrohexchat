@@ -122,7 +122,7 @@ msgstr "フォーマット"
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr "無効なタイマー名。 文字、数字、ハイフン、アンダースコア(最大%{max_name_length}文字)のみを使用してください。"
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -495,7 +495,7 @@ msgstr "トグル会議カメラ"
 msgid "Toggle Conference Microphone"
 msgstr "トグル会議マイク"
 
-#: lib/retro_hex_chat/channels/server.ex:1881
+#: lib/retro_hex_chat/channels/server.ex:1796
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -511,7 +511,7 @@ msgstr "付属品は%{mb} MBの限界を超過します"
 msgid "Attachment is empty"
 msgstr "付属品は空です"
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "サポートされていないメッセージ形式"
@@ -523,7 +523,7 @@ msgstr "サポートされていないメッセージ形式"
 msgid "file"
 msgstr "ファイル"
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "メッセージが最大文字数 %{count} 文字を超えています"
@@ -685,3 +685,8 @@ msgstr "threw the coin, and it landed silver side up"
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "ダイスを投げ、%{face}を得ました"
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
+msgstr "%{columns} 文字のほとんどの %{lines} 線でテキストアートができる"

@@ -1053,7 +1053,7 @@ msgstr ""
 msgid "Add an auto-respond rule"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:77
+#: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr ""
@@ -1093,7 +1093,7 @@ msgstr ""
 msgid "Ban user from channel"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr ""
@@ -1130,7 +1130,7 @@ msgstr ""
 msgid "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr ""
@@ -1206,7 +1206,7 @@ msgstr ""
 msgid "Command name to view detailed help"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr ""
@@ -2442,7 +2442,7 @@ msgstr ""
 msgid "Usage: /whowas <nickname>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr ""
@@ -3529,4 +3529,16 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handler/guards.ex:110
 #, elixir-autogen, elixir-format
 msgid "%{game} is a game for one player."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:15
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open ASCII Art, to turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/paint.ex:15
+#: lib/retro_hex_chat/commands/handlers/paint.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open Hex Paint, the pixel drawing program, to draw a picture and post it to a channel."
 msgstr ""

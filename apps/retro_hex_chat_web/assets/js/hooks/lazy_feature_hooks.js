@@ -115,6 +115,18 @@ export const lazyFeatureHooks = {
     serverEvents: [],
     reason: "The character creator's preview only draws at the door of a space.",
   }),
+  PaintHook: lazyFeatureHook({
+    name: "PaintHook",
+    loader: () => import("./paint/paint_hook"),
+    serverEvents: [],
+    reason: "Hex Paint's drawing and tools are only needed once its window opens.",
+  }),
+  AsciiArtHook: lazyFeatureHook({
+    name: "AsciiArtHook",
+    loader: () => import("./ascii_art/ascii_art_hook"),
+    serverEvents: [],
+    reason: "ASCII Art's font, picture reader and preview are only needed once its window opens.",
+  }),
   MetricChartHook: lazyFeatureHook({
     name: "MetricChartHook",
     loader: () => import("./system/metric_chart_hook"),

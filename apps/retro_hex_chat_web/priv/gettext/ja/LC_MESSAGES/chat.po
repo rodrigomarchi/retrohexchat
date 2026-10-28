@@ -632,7 +632,7 @@ msgid "Added %{nickname} to notify list"
 msgstr "リストに通知するために%{nickname}を追加"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:137
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:277
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:279
 #, elixir-autogen, elixir-format
 msgid "Address Book"
 msgstr "アドレス帳"
@@ -659,7 +659,7 @@ msgstr "エイリアスリストがいっぱい(最大50)"
 msgid "Alias not found"
 msgstr "エイリアスが見つかりません"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:357
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:368
 #, elixir-autogen, elixir-format
 msgid "Alias recursion limit reached (max 5 levels)"
 msgstr "アリアス再帰限度に達した(最大5レベル)"
@@ -679,7 +679,7 @@ msgstr "動物と自然"
 msgid "Attempt %{attempt} of %{max_attempts}"
 msgstr "%{max_attempts}の%{attempt}を試みる"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:544
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:555
 #, elixir-autogen, elixir-format
 msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr "Auto-join リストは 20 チャンネル です。 %{channel} は自動ジョイントに追加されませんでした。"
@@ -719,7 +719,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:117
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:160
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:139
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:365
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:384
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "離席中"
@@ -741,12 +741,12 @@ msgstr "バンエラー: %{message}"
 msgid "Ban exception error: %{message}"
 msgstr "禁止例外エラー:%{message}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:160
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "ブラック"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:171
 #, elixir-autogen, elixir-format
 msgid "Blue"
 msgstr "ブルージュ"
@@ -773,7 +773,7 @@ msgstr "%{channel} で既にボット。"
 msgid "Bot management is restricted to server administrators."
 msgstr "ボット管理はサーバー管理者に制限されます。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:164
 #, elixir-autogen, elixir-format
 msgid "Brown"
 msgstr "ブラウン"
@@ -796,7 +796,7 @@ msgstr "ブラウザー"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
 #: lib/retro_hex_chat_web/live/app/space_live.ex:238
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:536
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:537
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "キャンセル"
@@ -892,7 +892,7 @@ msgstr "%{target}に転送されるチャネルの所有権。"
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:202
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:138
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:198
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:394
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:413
 #, elixir-autogen, elixir-format
 msgid "Channels"
 msgstr "チャンネル"
@@ -909,7 +909,7 @@ msgid "Close tab"
 msgstr "タブを閉じる"
 
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:86
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:109
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:112
 #, elixir-autogen, elixir-format
 msgid "Color %{index}: %{name}"
 msgstr "色 %{index}: %{name}"
@@ -1181,12 +1181,12 @@ msgstr "Op を贈る (+o)"
 msgid "Give Voice (+v)"
 msgstr "声をあげて下さい(+v)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:162
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "緑"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:144
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:173
 #, elixir-autogen, elixir-format
 msgid "Grey"
 msgstr "グレー"
@@ -1367,25 +1367,25 @@ msgstr "Lang"
 msgid "Leave Channel"
 msgstr "チャネルを残す"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:484
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:495
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:385
+#: lib/retro_hex_chat_web/live/desktop_live.ex:391
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "リベット"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:170
 #, elixir-autogen, elixir-format
 msgid "Light Cyan"
 msgstr "ライトシアン"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:168
 #, elixir-autogen, elixir-format
 msgid "Light Green"
 msgstr "ライトグリーン"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:145
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:174
 #, elixir-autogen, elixir-format
 msgid "Light Grey"
 msgstr "ライトグレー"
@@ -1411,8 +1411,8 @@ msgstr "最大10個の自動応答ルール"
 msgid "Menu is full (max 10 items per type)"
 msgstr "メニューがいっぱいです(最大10個/種類)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:192
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:197
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:212
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:217
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "%{target}へのメッセージ — / コマンド"
@@ -1452,7 +1452,7 @@ msgstr "名前"
 msgid "Nature"
 msgstr "ネイチャー"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:161
 #, elixir-autogen, elixir-format
 msgid "Navy"
 msgstr "ネイビー"
@@ -1462,7 +1462,7 @@ msgstr "ネイビー"
 msgid "Next"
 msgstr "次へ"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1186
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1176
 #, elixir-autogen, elixir-format
 msgid "Next: %{parameter}"
 msgstr "次へ: %{parameter}"
@@ -1483,7 +1483,7 @@ msgstr "ニックカラーリストがいっぱい(最大50)"
 msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr "NickServはパスワードであなたのニックネームを保護しますので、他の人はそれを使用することはできません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:405
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:416
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:637
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} is already in use"
@@ -1583,7 +1583,7 @@ msgstr "ヘルプトピックを開く"
 msgid "Operator"
 msgstr "オペレータ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:166
 #, elixir-autogen, elixir-format
 msgid "Orange"
 msgstr "オレンジ"
@@ -1614,7 +1614,7 @@ msgstr "実行リストはフルです(最大50コマンド)"
 msgid "Perform: invalid command format: %{command}"
 msgstr "実行: 無効なコマンド形式: %{command}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:172
 #, elixir-autogen, elixir-format
 msgid "Pink"
 msgstr "ピンク"
@@ -1634,7 +1634,7 @@ msgstr "前のページ"
 msgid "Private Message"
 msgstr "プライベートメッセージ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:165
 #, elixir-autogen, elixir-format
 msgid "Purple"
 msgstr "パープル"
@@ -1661,7 +1661,7 @@ msgstr "再接続"
 msgid "Reconnecting..."
 msgstr "再接続..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:163
 #, elixir-autogen, elixir-format
 msgid "Red"
 msgstr "レッド"
@@ -1801,7 +1801,7 @@ msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "サーバーの設定 '%{key}' は '%{value}' に変更されます。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:118
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:515
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:526
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:100
 #, elixir-autogen, elixir-format
 msgid "Service"
@@ -1851,7 +1851,7 @@ msgstr "シンボル"
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:98
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:134
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:159
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:461
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:480
 #: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "System"
@@ -1867,7 +1867,7 @@ msgstr "管理者が起動したシステムリセット"
 msgid "TZ"
 msgstr "TZ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:169
 #, elixir-autogen, elixir-format
 msgid "Teal"
 msgstr "青緑"
@@ -1927,8 +1927,8 @@ msgstr "/helpチャンザーまたは/helpチャンネル権限をフル詳細�
 msgid "Type /help nickserv for full details."
 msgstr "詳細は/helpnickservを入力してください。"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:189
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:202
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:209
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:222
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "コマンド - / リスト"
@@ -2042,7 +2042,7 @@ msgstr "ウェルカムメッセージを更新しました。"
 msgid "Welcome to %{server_name}!"
 msgstr "%{server_name}へようこそ!"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:159
 #, elixir-autogen, elixir-format
 msgid "White"
 msgstr "ホワイト"
@@ -2058,7 +2058,7 @@ msgstr "Whois"
 msgid "Word not in highlight list"
 msgstr "ハイライトリストではない単語"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:167
 #, elixir-autogen, elixir-format
 msgid "Yellow"
 msgstr "イエロー"
@@ -2073,9 +2073,9 @@ msgid "Yes"
 msgstr "はい"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:509
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:220
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:241
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:266
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:233
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:252
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:277
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
 msgstr "あなたは管理者によってミュートされます"
@@ -2101,7 +2101,7 @@ msgstr "%{nickname} として識別できるようになりました"
 msgid "You are now known as %{nickname}"
 msgstr "あなたは今、%{nickname}として知られています"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1199
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1189
 #, elixir-autogen, elixir-format
 msgid "You are setting: %{flag} (%{label})"
 msgstr "設定:%{flag} (%{label})"
@@ -2375,22 +2375,22 @@ msgid "* Missing invite target"
 msgstr "* 招待対象を見逃すこと"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:352
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:371
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "パスワード"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:330
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:349
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "エイリアスエディタ"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:378
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:397
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "アーケード"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:327
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:346
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
 msgstr "自動応答"
@@ -2405,7 +2405,7 @@ msgstr "バイオテクノロジー"
 msgid "Bio is limited to 200 characters; extra text was not kept."
 msgstr "バイオは200文字に制限され、テキストが保存されていない。"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:444
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:463
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
 msgstr "ボット管理"
@@ -2416,17 +2416,17 @@ msgid "Cancel notice"
 msgstr "キャンセルについて"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:136
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:263
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:265
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "チャネルの中央"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:709
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:743
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "チャンネル セントラル: %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:242
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:244
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "チャンネルリスト"
@@ -2452,7 +2452,7 @@ msgstr "アクセスレベルを選択します。"
 msgid "Contact note"
 msgstr "コンタクトノート"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:333
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:352
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
 msgstr "カスタムメニュー"
@@ -2517,12 +2517,12 @@ msgstr "エラー"
 msgid "Failed to update bot status."
 msgstr "ボットステータスを更新できなかった。"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:344
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:363
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "洪水の保護"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:299
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:301
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "高い単語"
@@ -2552,7 +2552,7 @@ msgstr "スロットルに参加するには、非負の整数でなければな
 msgid "Join throttle set to %{seconds} seconds."
 msgstr "参加制限を%{seconds}秒に設定しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:269
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:271
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
 msgstr "キーボードショートカット"
@@ -2584,7 +2584,7 @@ msgid "Loading %{channel}..."
 msgstr "%{channel}を読み込み中..."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:97
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:412
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:431
 #, elixir-autogen, elixir-format
 msgid "MOTD"
 msgstr "モットD"
@@ -2627,7 +2627,7 @@ msgstr "サーバーの設定は変更されません。"
 msgid "Notice message"
 msgstr "Notice message"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:704
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:705
 #, elixir-autogen, elixir-format
 msgid "Notice message cannot be empty"
 msgstr "通知メッセージは空にすることはできません"
@@ -2637,7 +2637,7 @@ msgstr "通知メッセージは空にすることはできません"
 msgid "Notice to %{target}:"
 msgstr "%{target}への通知:"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:294
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:296
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "リストを通知する"
@@ -2682,7 +2682,7 @@ msgstr "パスワードが必要です"
 msgid "Passwords do not match"
 msgstr "パスワードは一致しません"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:315
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:334
 #, elixir-autogen, elixir-format
 msgid "Perform"
 msgstr "パフォーマンス"
@@ -2740,7 +2740,7 @@ msgstr "Send Notice..."
 msgid "Shared channels"
 msgstr "共有チャネル"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:341
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:360
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "サウンド設定"
@@ -2756,7 +2756,7 @@ msgstr "制限エラー: %{message}"
 msgid "Timer not found"
 msgstr "タイマーが見つかりません"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:307
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:309
 #, elixir-autogen, elixir-format
 msgid "Timers"
 msgstr "タイマー"
@@ -2776,7 +2776,7 @@ msgstr "チャンネル名を入力して確認します。"
 msgid "Type the server name to confirm."
 msgstr "確認するサーバー名を入力します。"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:235
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:237
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "URLキャッチャー"
@@ -2788,7 +2788,7 @@ msgid "Unmute (channel)"
 msgstr "Unmute (チャンネル)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:147
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:304
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:306
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "ユーザー検索"
@@ -2896,7 +2896,7 @@ msgstr "アーケードセッション終了"
 msgid "Channel Space"
 msgstr "チャネルスペース"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:228
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:230
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "チャット"
@@ -3154,32 +3154,32 @@ msgstr "焦点付きP2Pコールウィンドウで画面共有を開始または
 msgid "Admin tools are restricted to server administrators."
 msgstr "管理者ツールは、サーバー管理者に制限されます。"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:406
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:425
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
 msgstr "監査ログ"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:424
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:443
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
 msgstr "ブロードキャスト"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:436
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:455
 #, elixir-autogen, elixir-format
 msgid "Console"
 msgstr "コンソール"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:430
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:449
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr "危険ゾーン"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:400
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:419
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
 msgstr "サーバー設定"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:418
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:437
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "ターンン"
@@ -3188,7 +3188,7 @@ msgstr "ターンン"
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:80
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:216
 #: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:450
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:388
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:407
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "ユーザ名"
@@ -3198,7 +3198,7 @@ msgstr "ユーザ名"
 msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer} P2Pリクエストを承諾 - 接続..."
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:321
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:340
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "自動ジョイント"
@@ -3218,22 +3218,22 @@ msgstr "P2P リクエスト %{from} - PM ヘッダから入力します。"
 msgid "Use the P2P control in this private message."
 msgstr "このプライベートメッセージでP2P制御を使用してください。"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:361
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:380
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "プロフィール"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:369
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:388
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "ユーザーモード"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:288
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:290
 #, elixir-autogen, elixir-format
 msgid "Ignore List"
 msgstr "無視リスト"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:282
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:284
 #, elixir-autogen, elixir-format
 msgid "Nick Colors"
 msgstr "ニックカラー"
@@ -3286,7 +3286,7 @@ msgstr "セッションを終了しました。"
 msgid "This terminal is not remembered."
 msgstr "この端末は記憶されていません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:356
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:375
 #, elixir-autogen, elixir-format
 msgid "Trusted Terminals"
 msgstr "信頼済み端末"
@@ -3439,32 +3439,34 @@ msgstr "ユーザー一覧バー"
 msgid "Archive"
 msgstr "アーカイブ"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:488
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:489
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:490
 #, elixir-autogen, elixir-format
 msgid "Attach file"
 msgstr "ファイルを添付"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:747
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:742
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "付属品は%{mb} MBの限界を超過します"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:753
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:748
 #, elixir-autogen, elixir-format
 msgid "Attachment type not accepted"
 msgstr "付属品のタイプは受け入れられません"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:682
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:806
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:683
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:796
+#: lib/retro_hex_chat_web/live/chat_live/components/paint_window.ex:146
 #, elixir-autogen, elixir-format
 msgid "Attachment upload could not be confirmed"
 msgstr "添付ファイルアップロードは確認できません"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:754
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:767
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:842
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:853
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:749
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:762
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:832
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:843
+#: lib/retro_hex_chat_web/live/chat_live/components/paint_window.ex:174
 #, elixir-autogen, elixir-format
 msgid "Attachment upload failed"
 msgstr "添付ファイルアップロード失敗"
@@ -3504,7 +3506,7 @@ msgstr "コードブロック"
 msgid "Copy Source"
 msgstr "ソースをコピー"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:743
+#: lib/retro_hex_chat_web/live/chat_live/direct_upload.ex:40
 #, elixir-autogen, elixir-format
 msgid "Could not store attachment: %{reason}"
 msgstr "添付ファイルを保存できません: %{reason}"
@@ -3596,7 +3598,7 @@ msgstr "プレビュー"
 msgid "Quote"
 msgstr "引用"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:586
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:587
 #, elixir-autogen, elixir-format
 msgid "Remove attachment"
 msgstr "添付ファイルを削除"
@@ -3607,7 +3609,7 @@ msgid "Strikethrough"
 msgstr "取り消し線"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:325
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:507
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:508
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:337
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:139
 #, elixir-autogen, elixir-format
@@ -3619,8 +3621,8 @@ msgstr "書式を解除"
 msgid "Text"
 msgstr "テキスト"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:752
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:845
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:747
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:835
 #, elixir-autogen, elixir-format
 msgid "Too many attachments"
 msgstr "添付ファイルが多すぎます"
@@ -3635,7 +3637,7 @@ msgstr "ビデオ"
 msgid "Write"
 msgstr "作成"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:925
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:915
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "あなた"
@@ -3645,42 +3647,42 @@ msgstr "あなた"
 msgid "file"
 msgstr "ファイル"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:467
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:486
 #, elixir-autogen, elixir-format
 msgid "App Info"
 msgstr "アプリ情報"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:490
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:509
 #, elixir-autogen, elixir-format
 msgid "Applications"
 msgstr "アプリケーション"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:521
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:540
 #, elixir-autogen, elixir-format
 msgid "Database Stats"
 msgstr "データベースのステータス"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:495
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:514
 #, elixir-autogen, elixir-format
 msgid "ETS Tables"
 msgstr "ETSテーブル"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:527
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:546
 #, elixir-autogen, elixir-format
 msgid "Live Log"
 msgstr "ライブログ"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:510
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:529
 #, elixir-autogen, elixir-format
 msgid "Memory Allocators"
 msgstr "メモリアロケータ"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:473
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:492
 #, elixir-autogen, elixir-format
 msgid "Metrics"
 msgstr "メトリック"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:515
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:534
 #, elixir-autogen, elixir-format
 msgid "OS Data"
 msgstr "OSデータ"
@@ -3691,17 +3693,17 @@ msgstr "OSデータ"
 msgid "P2P action failed: %{reason}"
 msgstr "P2P アクションが失敗しました: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:500
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:519
 #, elixir-autogen, elixir-format
 msgid "Ports"
 msgstr "ポート"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:485
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:504
 #, elixir-autogen, elixir-format
 msgid "Processes"
 msgstr "プロセス"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:505
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:524
 #, elixir-autogen, elixir-format
 msgid "Sockets"
 msgstr "ソケット"
@@ -3923,7 +3925,7 @@ msgid "%{count} mention"
 msgid_plural "%{count} mentions"
 msgstr[0] "%{count} 件のメンション"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:248
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:250
 #, elixir-autogen, elixir-format
 msgid "Mentions"
 msgstr "メンション"
@@ -3956,7 +3958,7 @@ msgstr "固定を解除しました。"
 
 #: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:116
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:251
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:253
 #, elixir-autogen, elixir-format
 msgid "Pinned"
 msgstr "固定"
@@ -3991,7 +3993,7 @@ msgstr "保存から削除"
 msgid "Save for Later"
 msgstr "後で見る"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:254
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:256
 #, elixir-autogen, elixir-format
 msgid "Saved Messages"
 msgstr "保存したメッセージ"
@@ -4024,7 +4026,7 @@ msgid "Open Thread (%{count} reply)"
 msgid_plural "Open Thread (%{count} replies)"
 msgstr[0] "スレッドを開く（%{count}件の返信）"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:257
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:259
 #, elixir-autogen, elixir-format
 msgid "Thread"
 msgstr "スレッド"
@@ -4050,7 +4052,7 @@ msgstr "%{title} は中止されました。"
 msgid "Called off"
 msgstr "中止"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:260
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:262
 #, elixir-autogen, elixir-format
 msgid "Events"
 msgstr "イベント"
@@ -4076,7 +4078,7 @@ msgstr "場所"
 msgid "Character Portraits"
 msgstr "キャラクターの肖像"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:449
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:468
 #, elixir-autogen, elixir-format
 msgid "Server Emoji"
 msgstr "サーバー絵文字"
@@ -4097,24 +4099,24 @@ msgstr "このサーバー"
 msgid "Discard the recording"
 msgstr "録音を破棄"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:886
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:876
 #, elixir-autogen, elixir-format
 msgid "This browser cannot record. Attach an audio file instead."
 msgstr "このブラウザは録音できません。代わりに音声ファイルを添付してください。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:880
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:870
 #, elixir-autogen, elixir-format
 msgid "This browser did not give access to the microphone."
 msgstr "このブラウザはマイクへのアクセスを許可しませんでした。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:861
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:851
 #, elixir-autogen, elixir-format
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "このブラウザはこのチャットが送信できない形式で録音しました"
 
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:153
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:341
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:530
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:531
 #, elixir-autogen, elixir-format
 msgid "Voice message"
 msgstr "音声メッセージ"
@@ -4209,7 +4211,7 @@ msgstr "録音中"
 msgid "Record a voice message"
 msgstr "音声メッセージを録音"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:883
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:873
 #, elixir-autogen, elixir-format
 msgid "No microphone is available."
 msgstr "マイクは使用できません。"
@@ -5820,7 +5822,7 @@ msgctxt "space room"
 msgid "Game Room"
 msgstr "ゲームルーム"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:273
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:280
 #, elixir-autogen, elixir-format
 msgid "%{channel} is no longer open to visitors."
 msgstr "%{channel}は、訪問者に公開されていません。"
@@ -5835,12 +5837,12 @@ msgstr "訪問者"
 msgid "Watching without an account"
 msgstr "アカウントなしで監視"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:250
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:257
 #, elixir-autogen, elixir-format
 msgid "%{channel} cannot be watched without an account."
 msgstr "%{channel}はアカウントなしで視聴できません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:191
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:194
 #, elixir-autogen, elixir-format
 msgid "Calls are for registered members."
 msgstr "会員の募集は必須です。"
@@ -5850,32 +5852,32 @@ msgstr "会員の募集は必須です。"
 msgid "Create an account or sign in, and you come back right where you were."
 msgstr "アカウントを作成したり、サインインしたり、自分がどこにいたかをすぐに返したりします。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:190
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:193
 #, elixir-autogen, elixir-format
 msgid "Games are for registered players."
 msgstr "ゲームは登録済みプレーヤーのためです。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:195
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:198
 #, elixir-autogen, elixir-format
 msgid "Private sessions are for registered members."
 msgstr "ご登録いただいた方には、プライベートセッションをご用意いたします。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:192
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:195
 #, elixir-autogen, elixir-format
 msgid "Spaces are for registered members."
 msgstr "スペースは登録済み会員の対象となります。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:198
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:203
 #, elixir-autogen, elixir-format
 msgid "This feature needs an account."
 msgstr "この機能はアカウントが必要です。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:189
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:192
 #, elixir-autogen, elixir-format
 msgid "Writing in the chat needs an account."
 msgstr "チャットでの書き込みにはアカウントが必要です。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:197
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:200
 #, elixir-autogen, elixir-format
 msgid "You need an account to open links."
 msgstr "リンクを開くにはアカウントが必要です。"
@@ -5885,7 +5887,7 @@ msgstr "リンクを開くにはアカウントが必要です。"
 msgid "Create an account to talk"
 msgstr "会話するアカウントを作成する"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:623
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:624
 #, elixir-autogen, elixir-format
 msgid "You are watching as a visitor."
 msgstr "訪問者として見守っています。"
@@ -5933,6 +5935,8 @@ msgstr "直接電話、ファイル転送、または1人でゲーム。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:67
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:290
+#: lib/retro_hex_chat_web/site/pages/ascii_art/how.html.heex:2
+#: lib/retro_hex_chat_web/site/pages/paint/how.html.heex:2
 #: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "An account only needs a nickname and a password."
@@ -6035,12 +6039,12 @@ msgstr "%{nick} のメッセージにリアクション"
 msgid "(attachment)"
 msgstr "(添付ファイル)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:170
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:190
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:172
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:192
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m %{seconds}s"
 msgstr "%{minutes}m %{seconds}s"
@@ -6059,3 +6063,23 @@ msgstr "%{peer} に接続できません。"
 #, elixir-autogen, elixir-format
 msgid "The game expired before it started."
 msgstr "開始前にゲームが終了しました。"
+
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:324
+#, elixir-autogen, elixir-format
+msgid "ASCII Art"
+msgstr "アスキーアート"
+
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:202
+#, elixir-autogen, elixir-format
+msgid "ASCII Art is for registered members."
+msgstr "アスキーアート は、登録メンバーの登録です。"
+
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:201
+#, elixir-autogen, elixir-format
+msgid "Hex Paint is for registered members."
+msgstr "ヘックスペイント は、登録メンバーの登録です。"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
+#, elixir-autogen, elixir-format
+msgid "Left button colour, right button colour"
+msgstr "左ボタンの色、右ボタンの色"

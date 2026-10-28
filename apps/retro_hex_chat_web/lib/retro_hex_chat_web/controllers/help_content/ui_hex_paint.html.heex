@@ -1,0 +1,52 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "Hex Paint draws pixel art in the sixteen chat colours, and posts the picture to a channel or a private conversation. Open it from Start > Accessories > Hex Paint, the Accessories folder on the desktop, or by typing /paint."
+  )}
+</p>
+<.help_h4 icon={:icon_paint_pencil}>{dgettext("help_ui", "Drawing")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Choose a tool on the left and draw on the grid with the mouse or a finger. The left button paints the first colour, the right button the second: pick the first with a click on the palette and the second with a right-click. Mirror paints the same stroke on the other half of the picture too."
+  )}
+</p>
+<ul>
+  <li>{dgettext("help_ui", "Pencil and Eraser: draw and clear one pixel at a time")}</li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Line, Rectangle and Ellipse: press, drag and let go; the shape shows while you drag"
+    )}
+  </li>
+  <li>{dgettext("help_ui", "Fill: paints every touching pixel of the same colour")}</li>
+  <li>{dgettext("help_ui", "Pick colour: takes the colour of the pixel you press")}</li>
+</ul>
+<.help_h4 icon={:icon_folder}>{dgettext("help_ui", "File, Edit and View")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "File starts a new drawing of 32, 64 or 128 pixels a side, saves it to your computer as a PNG, posts it, or opens it in ASCII Art. Edit undoes and redoes each stroke and clears the drawing. View shows or hides the grid and zooms in and out."
+  )}
+</p>
+<.help_h4 icon={:icon_file_send}>{dgettext("help_ui", "Posting")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "File > Post to channel… shows the picture, a conversation you are in to post it to, and an optional line of text. The picture arrives as an image, enlarged so every pixel stays a sharp square."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_ui", "Good to Know")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_ui", "Your drawing is kept in this browser while the window is closed")}
+  </li>
+  <li>{dgettext("help_ui", "Hex Paint needs an account: visitors are asked to register")}</li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-paint">{dgettext("help_ui", "/paint Command")}</.help_link>
+  · <.help_link topic="ui-ascii-art">{dgettext("help_ui", "ASCII Art")}</.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">{dgettext("help_ui", "Keyboard Shortcuts")}</.help_link>
+</p>

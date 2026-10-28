@@ -1055,7 +1055,7 @@ msgstr "在通知列表中添加一個用戶"
 msgid "Add an auto-respond rule"
 msgstr "添加自動對應的規則"
 
-#: lib/retro_hex_chat/commands/registry.ex:77
+#: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "高級"
@@ -1099,7 +1099,7 @@ msgstr "禁止"
 msgid "Ban user from channel"
 msgstr "從頻道禁止用戶"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "基本情況"
@@ -1143,7 +1143,7 @@ msgstr ""
 "Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
 "Cannot change to your current nickname or one already in use."
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "頻道"
@@ -1219,7 +1219,7 @@ msgstr "清除全部自動連接列表"
 msgid "Command name to view detailed help"
 msgstr "查看詳細幫助的命令名稱"
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "配置"
@@ -2550,7 +2550,7 @@ msgstr "用法:/whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "用法:/whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "用戶"
@@ -3684,3 +3684,15 @@ msgstr "[BotService] Bot'%{name}'創建."
 #, elixir-autogen, elixir-format
 msgid "%{game} is a game for one player."
 msgstr "%{game}是一個玩家的遊戲."
+
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:15
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open ASCII Art, to turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel."
+msgstr "打開 ASCII 藝術,以mIRC顏色將一個字,一個圖片或一個Hex Paint繪製成文本藝術並張貼到一個頻道."
+
+#: lib/retro_hex_chat/commands/handlers/paint.ex:15
+#: lib/retro_hex_chat/commands/handlers/paint.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open Hex Paint, the pixel drawing program, to draw a picture and post it to a channel."
+msgstr "打開Hex Paint,像素繪圖程序,繪製一張圖片並張貼到一個頻道."

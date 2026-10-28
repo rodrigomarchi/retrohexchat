@@ -1055,7 +1055,7 @@ msgstr "Añadir un usuario a su lista de notificación"
 msgid "Add an auto-respond rule"
 msgstr "Añadir una regla de respuesta automática"
 
-#: lib/retro_hex_chat/commands/registry.ex:77
+#: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Avances"
@@ -1101,7 +1101,7 @@ msgstr "Ban"
 msgid "Ban user from channel"
 msgstr "Usuario de la Ban desde el canal"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Básicos"
@@ -1149,7 +1149,7 @@ msgstr ""
 "Permisos permitidos: letras, números, [ ] \\ ^   ` { Silencio } e hipens.\n"
 "No puede cambiar a su apodo actual o uno ya en uso."
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Canal"
@@ -1227,7 +1227,7 @@ msgstr "Limpia toda tu lista de autos"
 msgid "Command name to view detailed help"
 msgstr "Nombre del comando para ver la ayuda detallada"
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Configuración"
@@ -2622,7 +2622,7 @@ msgstr "Uso: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Uso: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Usuario"
@@ -3770,3 +3770,15 @@ msgstr "[BotService] Bot '%{name}' creado."
 #, elixir-autogen, elixir-format
 msgid "%{game} is a game for one player."
 msgstr "%{game} es un juego para un jugador."
+
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:15
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open ASCII Art, to turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel."
+msgstr "Abra Arte ASCII, para convertir una palabra, una imagen o un dibujo Hex Paint en arte de texto en colores mIRC y publicarla en un canal."
+
+#: lib/retro_hex_chat/commands/handlers/paint.ex:15
+#: lib/retro_hex_chat/commands/handlers/paint.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open Hex Paint, the pixel drawing program, to draw a picture and post it to a channel."
+msgstr "Abra Hex Paint, el programa de dibujo pixel, para dibujar una imagen y publicarla en un canal."

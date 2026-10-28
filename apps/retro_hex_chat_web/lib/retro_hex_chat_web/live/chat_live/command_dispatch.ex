@@ -200,8 +200,8 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
-  @typedoc "The conversation a recording was made in."
-  @type voice_target :: {:channel, String.t()} | {:pm, String.t()}
+  @typedoc "A conversation named outright, not read from what is on screen."
+  @type target :: {:channel, String.t()} | {:pm, String.t()}
 
   @doc """
   Sends a recorded voice message — no text, one attachment — to the
@@ -213,26 +213,37 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   drawn: the conversation may not be on screen, and the echo draws the row with
   its player in either case.
   """
-  @spec send_voice_message(Phoenix.LiveView.Socket.t(), String.t(), voice_target(), integer()) ::
+  @spec send_voice_message(Phoenix.LiveView.Socket.t(), String.t(), target(), integer()) ::
           Phoenix.LiveView.Socket.t()
   def send_voice_message(socket, nickname, target, file_id) do
+    send_to(socket, nickname, target, "", content_format: "irc", attachment_ids: [file_id])
+  end
+
+  @doc """
+  Sends a message made somewhere other than the composer — a recording, a
+  drawing, a block of text art — to the conversation it names, under the same
+  rules the composer's messages go by: a muted sender is told so, and the
+  channel refuses what its modes refuse. As with a recording, no optimistic row
+  is drawn; the echo draws it.
+  """
+  @spec send_to(Phoenix.LiveView.Socket.t(), String.t(), target(), String.t(), keyword()) ::
+          Phoenix.LiveView.Socket.t()
+  def send_to(socket, nickname, target, text, opts) do
     if GlobalMutes.muted?(nickname) do
       error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
-      opts = [content_format: "irc", attachment_ids: [file_id]]
-
-      case deliver_voice(nickname, target, opts) do
+      case deliver(nickname, target, text, opts) do
         {:ok, _sent} -> socket
         {:error, reason} -> error_event(socket, reason)
       end
     end
   end
 
-  defp deliver_voice(nickname, {:channel, channel}, opts),
-    do: Server.send_message(channel, nickname, "", opts)
+  defp deliver(nickname, {:channel, channel}, text, opts),
+    do: Server.send_message(channel, nickname, text, opts)
 
-  defp deliver_voice(nickname, {:pm, peer}, opts),
-    do: Service.send_private_message(nickname, peer, "", "message", opts)
+  defp deliver(nickname, {:pm, peer}, text, opts),
+    do: Service.send_private_message(nickname, peer, text, "message", opts)
 
   # ── Private: message sending ─────────────────────────────
 

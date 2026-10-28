@@ -13,9 +13,9 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/shell/app_header.ex:83
 #: lib/retro_hex_chat_web/components/ui/shell/app_header.ex:98
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:682
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:685
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:496
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:570
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:587
 #, elixir-autogen, elixir-format
 msgid "About RetroHexChat"
 msgstr "RetroHexChatについて"
@@ -27,14 +27,14 @@ msgstr "RetroHexChatについて"
 msgid "Address Book"
 msgstr "アドレス帳"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:60
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:69
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:426
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:170
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "エイリアスエディタ"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:59
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:68
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:438
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:182
 #, elixir-autogen, elixir-format
@@ -75,7 +75,7 @@ msgstr "閉じる"
 msgid "Connect"
 msgstr "接続"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:61
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:70
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:432
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:176
 #, elixir-autogen, elixir-format
@@ -83,7 +83,7 @@ msgid "Custom Menus"
 msgstr "カスタムメニュー"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:266
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:509
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:526
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:52
 #, elixir-autogen, elixir-format
 msgid "Disconnect"
@@ -94,19 +94,27 @@ msgstr "切断"
 msgid "Dismiss"
 msgstr "非表示"
 
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:50
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:61
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:50
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:65
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:69
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:170
 #, elixir-autogen, elixir-format
 msgid "Edit"
 msgstr "編集"
 
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:46
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:60
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:46
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:64
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:61
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:169
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr "ファイル"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:516
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:517
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:295
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:162
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:100
@@ -122,20 +130,20 @@ msgid "Flood Protection"
 msgstr "洪水の保護"
 
 #: lib/retro_hex_chat_web/components/ui/layout/window.ex:187
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:405
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:406
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:102
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:191
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:460
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:477
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "ヘルプ"
 
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:77
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:664
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:673
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:667
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:676
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:477
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:544
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:555
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:561
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:572
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:297
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
@@ -182,7 +190,7 @@ msgstr "Notifications"
 msgid "Options"
 msgstr "オプション"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:57
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:66
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:401
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:146
 #, elixir-autogen, elixir-format
@@ -200,9 +208,9 @@ msgstr "リストア"
 msgid "Retry"
 msgstr "再試行"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:638
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:641
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:488
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:468
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:485
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "ショートカットシート"
@@ -214,7 +222,7 @@ msgstr "ショートカットシート"
 msgid "Sounds"
 msgstr "サウンド"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:497
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:498
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:315
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:125
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:82
@@ -222,7 +230,7 @@ msgstr "サウンド"
 msgid "Toggle Conversations"
 msgstr "会話を切り替える"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:501
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:502
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:321
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:132
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:88
@@ -230,6 +238,7 @@ msgstr "会話を切り替える"
 msgid "Toggle Nicklist"
 msgstr "Toggle Nicklist"
 
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:146
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:393
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:86
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:179
@@ -245,6 +254,8 @@ msgstr "ツール"
 msgid "URL Catcher"
 msgstr "URLキャッチャー"
 
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:54
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:66
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:392
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:76
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:173
@@ -254,10 +265,10 @@ msgid "View"
 msgstr "表示"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:87
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:404
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:405
 #: lib/retro_hex_chat_web/components/ui/shell/language_menu.ex:31
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:185
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:440
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:457
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "言語"
@@ -269,23 +280,23 @@ msgid "%{count} buddy online"
 msgid_plural "%{count} buddies online"
 msgstr[0] "%{count} オンラインバディー"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:74
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:401
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:83
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:402
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:208
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:211
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:273
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:290
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:202
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "パスワード"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:82
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:91
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:253
 #, elixir-autogen, elixir-format
 msgid "Account Info"
 msgstr "アカウント情報"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:76
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:85
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:214
 #: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:115
 #, elixir-autogen, elixir-format
@@ -308,16 +319,17 @@ msgstr "カスケードWindows"
 msgid "Change Nickname..."
 msgstr "ニックネームを変更..."
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:512
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:513
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:279
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:154
 #, elixir-autogen, elixir-format
 msgid "Clear Window"
 msgstr "明確な窓"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:748
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:78
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:751
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:286
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:716
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:733
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "コピー"
@@ -332,7 +344,7 @@ msgstr "Ctrl + シフト+F"
 msgid "Edit Profile..."
 msgstr "プロフィールの編集"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:239
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:256
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "ゲーム"
@@ -347,7 +359,7 @@ msgstr "ゲスト"
 msgid "Identified"
 msgstr "識別される"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:72
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:81
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:223
 #, elixir-autogen, elixir-format
 msgid "Identify..."
@@ -358,9 +370,9 @@ msgstr "識別する..."
 msgid "Loading"
 msgstr "読み込み中"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:641
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:644
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:481
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:475
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:492
 #, elixir-autogen, elixir-format
 msgid "Message of the Day"
 msgstr "当日のメッセージ"
@@ -382,7 +394,7 @@ msgstr "リストを通知する"
 msgid "Opening..."
 msgstr "オープニング"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:71
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:80
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:217
 #, elixir-autogen, elixir-format
 msgid "Register Nickname..."
@@ -413,7 +425,7 @@ msgstr "タイルの窓 横に"
 msgid "Tile Windows Vertically"
 msgstr "タイルWindows垂直"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:62
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:71
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:444
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:188
 #, elixir-autogen, elixir-format
@@ -433,8 +445,8 @@ msgstr "ユーザー検索"
 msgid "Menu"
 msgstr "メニュー"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:402
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:291
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:403
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:308
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "管理"
@@ -484,20 +496,20 @@ msgstr "ターンン"
 msgid "Users"
 msgstr "ユーザ名"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:58
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:67
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:407
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:152
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "自動ジョイント"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:75
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:84
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:208
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "プロフィール"
 
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:77
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:86
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:220
 #, elixir-autogen, elixir-format
 msgid "User Modes"
@@ -554,7 +566,7 @@ msgid "The list is empty."
 msgstr "リストは空です。"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:225
-#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:78
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:87
 #, elixir-autogen, elixir-format
 msgid "Trusted Terminals"
 msgstr "信頼済み端末"
@@ -641,35 +653,35 @@ msgstr "ユーア"
 msgid "Unknown"
 msgstr "不明"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:396
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:222
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:397
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:239
 #, elixir-autogen, elixir-format
 msgid "Automation"
 msgstr "自動化"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:362
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:379
 #, elixir-autogen, elixir-format
 msgid "Navigate"
 msgstr "移動"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:349
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:366
 #, elixir-autogen, elixir-format
 msgid "No windows"
 msgstr "ウィンドウなし"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:334
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:351
 #, elixir-autogen, elixir-format
 msgid "Windows"
 msgstr "ウィンドウ"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:403
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:311
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:404
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:328
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "システム"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:400
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:252
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:401
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:269
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "レトロゲーム"
@@ -713,8 +725,8 @@ msgstr "サーバー絵文字"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:21
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:121
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:428
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:263
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:429
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:280
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:5
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:59
@@ -752,3 +764,268 @@ msgstr "信頼の期限"
 #, elixir-autogen, elixir-format
 msgid "Trusted since"
 msgstr "信頼開始"
+
+#: lib/retro_hex_chat_web/components/ui/shell/app_groups.ex:60
+#, elixir-autogen, elixir-format
+msgid "ASCII Art"
+msgstr "アスキーアート"
+
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:394
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:222
+#, elixir-autogen, elixir-format
+msgid "Accessories"
+msgstr "アクセサリ"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:182
+#, elixir-autogen, elixir-format
+msgid "Characters"
+msgstr "文字"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/ascii_art_window.ex:52
+#: lib/retro_hex_chat_web/live/chat_live/components/paint_window.ex:68
+#, elixir-autogen, elixir-format
+msgid "Choose where to post it."
+msgstr "投稿する場所を選択します。"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:82
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:111
+#, elixir-autogen, elixir-format
+msgid "Clear"
+msgstr "クリア"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:181
+#, elixir-autogen, elixir-format
+msgid "Colour blocks"
+msgstr "カラーブロック"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:138
+#, elixir-autogen, elixir-format
+msgid "Colours:"
+msgstr "色:"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:105
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Y"
+msgstr "Ctrl+Y"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:100
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Z"
+msgstr "Ctrl+Z"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:187
+#, elixir-autogen, elixir-format
+msgid "Drawing"
+msgstr "デッサン"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:179
+#, elixir-autogen, elixir-format
+msgid "Drawn in:"
+msgstr "で引かれる:"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:245
+#, elixir-autogen, elixir-format
+msgid "Ellipse (E)"
+msgstr "楕円(E)"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:252
+#, elixir-autogen, elixir-format
+msgid "Eraser (X)"
+msgstr "消しゴム(X)"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:251
+#, elixir-autogen, elixir-format
+msgid "Fill (B)"
+msgstr "充填(B)"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:248
+#, elixir-autogen, elixir-format
+msgid "Filled ellipse (Shift+E)"
+msgstr "満たされた楕円(Shift+E)"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:242
+#, elixir-autogen, elixir-format
+msgid "Filled rectangle (Shift+R)"
+msgstr "充填長方形(Shift+R)"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:120
+#, elixir-autogen, elixir-format
+msgid "Grid"
+msgstr "グリッド"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:132
+#, elixir-autogen, elixir-format
+msgid "Hash marks"
+msgstr "シャープ記号"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:238
+#, elixir-autogen, elixir-format
+msgid "Line (L)"
+msgstr "ライン(L)"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:163
+#, elixir-autogen, elixir-format
+msgid "Mirror"
+msgstr "左右対称"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:78
+#, elixir-autogen, elixir-format
+msgid "New %{size}×%{size}"
+msgstr "新しい%{size}×%{size}"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:141
+#, elixir-autogen, elixir-format
+msgid "On a background"
+msgstr "背景について"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:140
+#, elixir-autogen, elixir-format
+msgid "One colour"
+msgstr "単色"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:91
+#, elixir-autogen, elixir-format
+msgid "Open in ASCII Art"
+msgstr "アスキーアートで開く"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:228
+#, elixir-autogen, elixir-format
+msgid "Pencil"
+msgstr "鉛筆"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:237
+#, elixir-autogen, elixir-format
+msgid "Pencil (P)"
+msgstr "ペンシル(P)"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:253
+#, elixir-autogen, elixir-format
+msgid "Pick colour (I)"
+msgstr "ピックカラー(I)"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:276
+#, elixir-autogen, elixir-format
+msgid "Picture"
+msgstr "プロフィール"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:155
+#, elixir-autogen, elixir-format
+msgid "Picture:"
+msgstr "映像:"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/paint_window.ex:107
+#, elixir-autogen, elixir-format
+msgid "Post drawing"
+msgstr "ポストのデッサン"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/ascii_art_window.ex:75
+#, elixir-autogen, elixir-format
+msgid "Post text art"
+msgstr "投稿テキストアート"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:69
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:87
+#, elixir-autogen, elixir-format
+msgid "Post to channel…"
+msgstr "チャンネルへの投稿"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/paint_window.ex:119
+#, elixir-autogen, elixir-format
+msgid "Preparing the picture…"
+msgstr "写真の準備..."
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:142
+#, elixir-autogen, elixir-format
+msgid "Rainbow"
+msgstr "虹色"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:239
+#, elixir-autogen, elixir-format
+msgid "Rectangle (R)"
+msgstr "長方形(R)"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:106
+#, elixir-autogen, elixir-format
+msgid "Redo"
+msgstr "やり直し"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:83
+#, elixir-autogen, elixir-format
+msgid "Save as PNG"
+msgstr "PNGで保存"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:131
+#, elixir-autogen, elixir-format
+msgid "Solid blocks"
+msgstr "塗りつぶしブロック"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:129
+#, elixir-autogen, elixir-format
+msgid "Style:"
+msgstr "スタイル:"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:122
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:275
+#, elixir-autogen, elixir-format
+msgid "Text"
+msgstr "テキスト"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:197
+#, elixir-autogen, elixir-format
+msgid "The drawing open in Hex Paint, two pixels to a character."
+msgstr "The drawing open in Hex Paint, two pixels to a character."
+
+#: lib/retro_hex_chat_web/live/chat_live/components/paint_window.ex:150
+#, elixir-autogen, elixir-format
+msgid "The picture is still being prepared."
+msgstr "絵はまだ準備中です。"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/paint_window.ex:173
+#, elixir-autogen, elixir-format
+msgid "The picture is too large to post."
+msgstr "The picture is too large to post."
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:187
+#, elixir-autogen, elixir-format
+msgid "The picture stays on this computer: only the art made from it is posted."
+msgstr "写真は、このコンピュータにとどまります。そこから作られたアートのみが掲載されています。"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:143
+#, elixir-autogen, elixir-format
+msgid "Two tones"
+msgstr "2トーン"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:121
+#, elixir-autogen, elixir-format
+msgid "Type a word or two"
+msgstr "単語か2つをタイプして下さい"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:101
+#, elixir-autogen, elixir-format
+msgid "Undo"
+msgstr "元に戻す"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:265
+#, elixir-autogen, elixir-format
+msgid "Up to %{lines} lines of %{columns} characters"
+msgstr "%{columns} 文字の %{lines} 行まで"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:165
+#, elixir-autogen, elixir-format
+msgid "Width:"
+msgstr "幅:"
+
+#: lib/retro_hex_chat_web/components/ui/ascii_art/ascii_art.ex:133
+#, elixir-autogen, elixir-format
+msgid "With a shadow"
+msgstr "影付き"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:124
+#, elixir-autogen, elixir-format
+msgid "Zoom in"
+msgstr "拡大"
+
+#: lib/retro_hex_chat_web/components/ui/paint/paint.ex:128
+#, elixir-autogen, elixir-format
+msgid "Zoom out"
+msgstr "縮小"

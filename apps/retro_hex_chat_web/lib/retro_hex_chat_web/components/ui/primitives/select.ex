@@ -194,7 +194,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
         ])
       }
       {%{"data-disabled": @disabled}}
-      phx-click={select_item_push(@builder.id, @on_select, @on_select_value)}
+      phx-click={select_item_push(@builder.id, @on_select, @on_select_value, @label)}
       {@rest}
     >
       <input
@@ -259,9 +259,14 @@ defmodule RetroHexChatWeb.Components.UI.Select do
     |> JS.focus_first(to: "##{id}[data-state=open] .select-content label:has(input:checked)")
   end
 
-  defp select_item_push(_root_id, nil, _on_select_value), do: nil
+  # A choice the browser owns (no `on_select`) shows itself on the trigger and
+  # closes the list at once; with `on_select` the server renders the label.
+  defp select_item_push(root_id, nil, _on_select_value, label) do
+    JS.set_attribute({"data-content", label}, to: "##{root_id} .select-value")
+    |> JS.exec("x-hide-select", to: "##{root_id}")
+  end
 
-  defp select_item_push(root_id, on_select, on_select_value) do
+  defp select_item_push(root_id, on_select, on_select_value, _label) do
     JS.push(on_select, value: on_select_value)
     |> JS.exec("x-hide-select", to: "##{root_id}")
   end

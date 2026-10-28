@@ -1,0 +1,16 @@
+<ol class="list-decimal space-y-retro-4 pl-retro-16 text-sm" data-testid="paint-steps">
+  <li>{dgettext("chat", "An account only needs a nickname and a password.")}</li>
+  <li>
+    {dgettext(
+      "landing",
+      "Open Start, then Accessories, then Hex Paint, or type /paint in the chat."
+    )}
+  </li>
+  <li>{dgettext("landing", "Draw, then choose File, then Post to channel.")}</li>
+</ol>
+
+<ul class="text-sm mt-retro-8 space-y-retro-2" data-testid="paint-help">
+  <li :for={id <- ~w(ui-hex-paint cmd-paint keyboard-shortcuts ui-ascii-art)}>
+    <.link patch={@help[id].path} class="underline">{@help[id].title}</.link>
+  </li>
+</ul>

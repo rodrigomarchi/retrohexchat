@@ -1055,7 +1055,7 @@ msgstr "通知リストにユーザーを追加"
 msgid "Add an auto-respond rule"
 msgstr "自動応答ルールを追加する"
 
-#: lib/retro_hex_chat/commands/registry.ex:77
+#: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "アドバンスト"
@@ -1099,7 +1099,7 @@ msgstr "Ban"
 msgid "Ban user from channel"
 msgstr "チャネルからユーザーを禁止"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "基本情報"
@@ -1143,7 +1143,7 @@ msgstr ""
 "許可された文字: 文字、数字、 [ ] \\ ^   `{ | } およびハイフン。\n"
 "現在のニックネームや既に使用しているニックネームに変更することはできません。"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "チャンネル"
@@ -1219,7 +1219,7 @@ msgstr "オートジョイントリスト全体をクリアする"
 msgid "Command name to view detailed help"
 msgstr "詳細なヘルプを表示するコマンド名"
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "コンテンツ"
@@ -2551,7 +2551,7 @@ msgstr "使用法: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "使用法: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "ユーザー登録"
@@ -3686,3 +3686,15 @@ msgstr "[BotService] '%{name}' が作成されました。"
 #, elixir-autogen, elixir-format
 msgid "%{game} is a game for one player."
 msgstr "%{game}は1人のプレーヤーのためのゲームです。"
+
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:15
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open ASCII Art, to turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel."
+msgstr "アスキーアート を開き、単語、画像、または ヘックスペイント を mIRC の色でテキストアートに変換し、チャンネルに投稿します。"
+
+#: lib/retro_hex_chat/commands/handlers/paint.ex:15
+#: lib/retro_hex_chat/commands/handlers/paint.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open Hex Paint, the pixel drawing program, to draw a picture and post it to a channel."
+msgstr "ヘックスペイント、ピクセル描画プログラムを開き、画像を描画してチャンネルに投稿します。"

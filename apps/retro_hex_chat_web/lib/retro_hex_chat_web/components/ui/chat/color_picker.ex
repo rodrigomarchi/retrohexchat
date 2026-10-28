@@ -86,11 +86,14 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
               dgettext("chat", "Color %{index}: %{name}", index: idx, name: color_name(color))
             }
           />
-          <span class={[
-            "absolute inset-0 border border-gray-500 pointer-events-none",
-            "irc-bg-#{idx}",
-            "peer-checked:border-black peer-checked:border-2"
-          ]} />
+          <span
+            data-irc-colour={idx}
+            class={[
+              "absolute inset-0 border border-gray-500 pointer-events-none",
+              "irc-bg-#{idx}",
+              "peer-checked:border-black peer-checked:border-2"
+            ]}
+          />
         </label>
         <button
           :for={{{color, _hex}, idx} <- @colors}
@@ -112,9 +115,35 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
           phx-target={@target}
           phx-value-index={idx}
           phx-value-picker={@id}
+          data-irc-colour={idx}
         />
       </div>
       {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  @doc """
+  The two colours a painting program holds, the left button's over the right
+  button's, as Windows drew them beside its palette. The squares start on
+  `fg` and `bg`; a page that changes them in the browser repaints their
+  `irc-bg-N` class (`data-irc-current`).
+  """
+  attr :fg, :integer, default: 1
+  attr :bg, :integer, default: 0
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @spec colour_pair(map()) :: Phoenix.LiveView.Rendered.t()
+  def colour_pair(assigns) do
+    ~H"""
+    <div
+      class={classes(["colour-pair", @class])}
+      title={dgettext("chat", "Left button colour, right button colour")}
+      {@rest}
+    >
+      <span class={"colour-pair__fg irc-bg-#{@fg}"} data-irc-current="fg"></span>
+      <span class={"colour-pair__bg irc-bg-#{@bg}"} data-irc-current="bg"></span>
     </div>
     """
   end

@@ -133,7 +133,8 @@ defmodule Mix.Tasks.Retrohex.Icons.Sprite do
   end
 
   defp drop_attrs(attrs, dropped) do
-    ~r/([a-zA-Z-]+)="([^"]*)"/
+    # A name may carry digits (`x1`, `y2`) and a namespace (`xlink:href`).
+    ~r/([a-zA-Z_:][-a-zA-Z0-9_:.]*)="([^"]*)"/
     |> Regex.scan(attrs)
     |> Enum.reject(fn [_, name, value] ->
       name in dropped or String.starts_with?(name, "data-phx-") or value == ""

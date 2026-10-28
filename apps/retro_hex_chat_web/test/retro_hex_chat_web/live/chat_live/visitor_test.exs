@@ -258,6 +258,8 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
 
       for {event, params, feature} <- [
             {"open_arcade", %{}, :games},
+            {"open_paint", %{}, :paint},
+            {"open_ascii_art", %{}, :ascii_art},
             {"arcade_select_game", %{"game" => "doom"}, :games},
             {"group_call_open", %{}, :calls},
             {"space_open", %{}, :space},

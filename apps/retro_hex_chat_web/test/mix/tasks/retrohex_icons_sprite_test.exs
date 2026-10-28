@@ -49,6 +49,10 @@ defmodule Mix.Tasks.Retrohex.Icons.SpriteTest do
       assert Enum.sort(ids) == Enum.sort(registered)
     end
 
+    test "every registered line keeps its ends", %{sprite: sprite} do
+      refute sprite =~ ~r/<line(?![^>]*\bx1=)[^>]*>/
+    end
+
     test "is deterministic" do
       assert Sprite.build() == Sprite.build()
     end
@@ -79,6 +83,16 @@ defmodule Mix.Tasks.Retrohex.Icons.SpriteTest do
                ~s(<symbol id="icon_community" viewBox="0 0 16 16" ) <>
                  ~s(shape-rendering="crispEdges">) <>
                  ~s(<rect x="1" y="1" width="4" height="4" fill="#000"/></symbol>)
+    end
+
+    test "keeps an attribute whose name carries a digit, a line's ends" do
+      symbol =
+        Sprite.symbol_from_svg(
+          :icon_x,
+          ~s(<svg viewBox="0 0 16 16"><line x1="2" y1="14" x2="14" y2="2" stroke="#000" /></svg>)
+        )
+
+      assert symbol =~ ~s(x1="2" y1="14" x2="14" y2="2")
     end
 
     test "keeps the geometry and drops what belongs to the call site" do

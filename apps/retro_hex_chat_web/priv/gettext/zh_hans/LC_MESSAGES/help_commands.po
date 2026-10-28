@@ -1874,6 +1874,7 @@ msgstr "输入要读取和发送消息的聊天频道 。 如果这个频道还�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:30
@@ -1907,6 +1908,7 @@ msgstr "输入要读取和发送消息的聊天频道 。 如果这个频道还�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:37
@@ -1982,6 +1984,7 @@ msgstr "隐藏特定用户的消息 。 被忽略的用户没有被通知——�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:16
@@ -2012,6 +2015,7 @@ msgstr "隐藏特定用户的消息 。 被忽略的用户没有被通知——�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:14
@@ -2521,6 +2525,7 @@ msgstr "根管理员不能通过命令降级"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:27
@@ -2551,6 +2556,7 @@ msgstr "根管理员不能通过命令降级"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
@@ -2598,6 +2604,7 @@ msgstr "将命令排在延迟之后运行, 可在正常间隔中选择重复 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:32
@@ -2629,6 +2636,7 @@ msgstr "将命令排在延迟之后运行, 可在正常间隔中选择重复 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:39
@@ -2777,6 +2785,7 @@ msgstr "子命令"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:7
@@ -2810,6 +2819,7 @@ msgstr "子命令"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:7
@@ -5640,3 +5650,102 @@ msgstr "同一话题的房间"
 #, elixir-autogen, elixir-format
 msgid "The Category list beside the search box narrows the rooms to one subject — news, games, technology and the rest — as the plaque beside each channel name says. It works together with the search: both apply at once. While a category is chosen, a line above the rooms names it; its X button shows every category again. The \"See more…\" link under a sidebar section opens this window already set to that section's subject."
 msgstr "搜索框旁的“分类”列表可将房间限定为一个话题——新闻、游戏、科技等——与每个频道名称旁的标牌一致。它与搜索一起生效：两者同时应用。选中某个分类时，房间上方会有一行显示它；该行的 X 按钮可重新显示所有分类。侧边栏某一分区下方的“查看更多…”链接会打开此窗口，并已设为该分区的话题。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "/ascii"
+msgstr "/ascii"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "/paint"
+msgstr "/paint"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "ASCII Art"
+msgstr "ASCII 艺术"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "At most 30 lines of 100 characters in one block"
+msgstr "一个街区最多30行100个字符"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Draw on a grid of 32, 64 or 128 pixels a side in the sixteen chat colours"
+msgstr "在十六个聊天颜色中绘制一个32、64或128像素的网格"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Needs an account: a visitor is asked to register first"
+msgstr "Needs an account: a visitor is asked to register first"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens ASCII Art: turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel as one message."
+msgstr "打开 ASCII 艺术:将一个字,一个图片或Hex Paint在mIRC颜色中绘制成文本艺术,并作为一个消息发布到一个频道."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens Hex Paint, the pixel drawing program: draw in the sixteen chat colours and post the picture to a channel."
+msgstr "打开Hex Paint,像素绘图程序:在十六聊天色彩中绘图,并将图片张贴到一个频道."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the ASCII Art window, or brings it to the front when it is already open — the same window Start > Accessories > ASCII Art opens."
+msgstr "打开 ASCII 艺术 窗口,或当它已经打开时将其带到前面——同一窗口 Start > Accessories > ASCII 艺术 打开."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the Hex Paint window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Paint opens."
+msgstr "打开 Hex Paint 窗口,或当它已经打开时将其带到前面——同一窗口 Start > Accessories > Hex Paint 打开."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Post the art as one message, or copy it with its colour codes"
+msgstr "将艺术张贴为一条信息, 或复制其颜色代码"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Post the picture to a channel or a private conversation, with a line of text"
+msgstr "将图片张贴到频道或私人对话中,并附上一行文字"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Save it to your computer as a PNG, or turn it into text art in ASCII Art"
+msgstr "保存到您的计算机中作为 PNG, 或者将其变成 ASCII 艺术 中的文本艺术"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "The drawing is kept in your browser while the window is closed"
+msgstr "在窗口关闭时, 绘图保存在您的浏览器中"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Turn a picture from your computer into coloured blocks or characters; the picture is never uploaded"
+msgstr "将计算机上的图片转换成彩色块或字符; 图片从未上传"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Turn your Hex Paint drawing into text art"
+msgstr "将您的 Hex Paint 绘制成文本艺术"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Use a pencil, lines, rectangles, ellipses, a fill and an eraser, with undo and redo"
+msgstr "使用铅笔、线条、矩形、椭圆形、填充和擦除器,并带有撤销和重做"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "What You Can Do There"
+msgstr "你在那里能做什么吗?"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
+msgstr "用大字母写一个字,用块、散列或阴影块组成,用一种颜色、彩虹或两吨"

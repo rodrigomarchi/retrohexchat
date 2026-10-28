@@ -9,10 +9,10 @@ defmodule RetroHexChat.Chat.Content do
 
   use Gettext, backend: RetroHexChat.Gettext
 
-  alias RetroHexChat.Chat.Content.{Irc, Markdown, Plain}
+  alias RetroHexChat.Chat.Content.{Irc, IrcArt, Markdown, Plain}
   alias RetroHexChat.Text
 
-  @type format :: :irc | :markdown | :plain
+  @type format :: :irc | :irc_art | :markdown | :plain
   @type format_input :: format() | String.t()
   @type safe_html :: {:safe, String.t()}
 
@@ -50,11 +50,16 @@ defmodule RetroHexChat.Chat.Content do
     max_length = Keyword.get(opts, :max_length, @default_preview_length)
 
     content
-    |> plain_text(format)
+    |> preview_text(normalize_format!(format))
     |> String.replace(~r/\s+/, " ")
     |> String.trim()
     |> Text.truncate(max_length)
   end
+
+  # A block of art is previewed by its first drawn line, marked as cut: its
+  # lines run together would be a smear of block characters.
+  defp preview_text(content, :irc_art), do: IrcArt.first_line(content) <> " …"
+  defp preview_text(content, format), do: plain_text(content, format)
 
   @doc """
   The snippet of a message shown inside the reply that quotes it.
@@ -81,20 +86,23 @@ defmodule RetroHexChat.Chat.Content do
   Validates content against the shared format contract.
   """
   @spec validate(String.t(), format_input(), keyword()) ::
-          :ok | {:error, :unsupported_format | :blank | :too_long}
+          :ok | {:error, :unsupported_format | :blank | :too_long | :art_too_large}
   def validate(content, format, opts \\ [])
 
   def validate(content, format, opts) when is_binary(content) do
-    max_length = Keyword.get(opts, :max_length, @default_max_length)
-
     case normalize_format(format) do
       {:ok, normalized_format} ->
+        max_length = Keyword.get(opts, :max_length, max_length(normalized_format))
+
         cond do
           String.length(content) > max_length ->
             {:error, :too_long}
 
           content |> plain_text(normalized_format) |> String.trim() == "" ->
             {:error, :blank}
+
+          normalized_format == :irc_art ->
+            IrcArt.check_size(content)
 
           true ->
             :ok
@@ -138,7 +146,14 @@ defmodule RetroHexChat.Chat.Content do
       {:error, :too_long} ->
         {:error,
          dgettext("chat", "Message exceeds maximum length of %{count} characters",
-           count: Keyword.get(opts, :max_length, @default_max_length)
+           count: Keyword.get(opts, :max_length, max_length(format))
+         )}
+
+      {:error, :art_too_large} ->
+        {:error,
+         dgettext("chat", "Text art can have at most %{lines} lines of %{columns} characters",
+           lines: IrcArt.max_lines(),
+           columns: IrcArt.max_columns()
          )}
 
       {:error, :unsupported_format} ->
@@ -170,7 +185,9 @@ defmodule RetroHexChat.Chat.Content do
   def normalize_format(:irc), do: {:ok, :irc}
   def normalize_format(:markdown), do: {:ok, :markdown}
   def normalize_format(:plain), do: {:ok, :plain}
+  def normalize_format(:irc_art), do: {:ok, :irc_art}
   def normalize_format("irc"), do: {:ok, :irc}
+  def normalize_format("irc_art"), do: {:ok, :irc_art}
   def normalize_format("markdown"), do: {:ok, :markdown}
   def normalize_format("plain"), do: {:ok, :plain}
   def normalize_format(_), do: :error
@@ -186,8 +203,18 @@ defmodule RetroHexChat.Chat.Content do
     end
   end
 
+  # The longest a message may be in its format: a block of art carries a code
+  # on nearly every character of its many lines.
+  defp max_length(format) do
+    case normalize_format(format) do
+      {:ok, :irc_art} -> IrcArt.max_length()
+      _other -> @default_max_length
+    end
+  end
+
   @spec renderer(format()) :: module()
   defp renderer(:irc), do: Irc
+  defp renderer(:irc_art), do: IrcArt
   defp renderer(:markdown), do: Markdown
   defp renderer(:plain), do: Plain
 end

@@ -151,6 +151,28 @@ NAMES: dict[str, dict[str, str]] = {
     "Hex Sudoku": {
         "ja": "ヘックス数独",
     },
+    # The text art program, by the name each language gives ASCII art — the
+    # same as its label in the glossary. Translated inside a sentence it came
+    # back half done, "ASCII Arte".
+    "ASCII Art": {
+        "pt": "Arte ASCII",
+        "es": "Arte ASCII",
+        "fr": "Art ASCII",
+        "de": "ASCII-Art",
+        "it": "Arte ASCII",
+        "nl": "ASCII-art",
+        "ru": "ASCII-арт",
+        "id": "Seni ASCII",
+        "ja": "アスキーアート",
+        "zh_hans": "ASCII 艺术",
+        "zh_hant": "ASCII 藝術",
+    },
+    # The drawing program's name, kept as it is: translated as words it came
+    # back as a painting ("Pintura Hex"), and the sentence around it was
+    # rejected, leaving it in English.
+    "Hex Paint": {
+        "ja": "ヘックスペイント",
+    },
     "Sudoku": {
         "ja": "数独",
         "zh_hans": "数独",

@@ -229,6 +229,9 @@ defmodule RetroHexChatWeb.DesktopLive do
     if connected?(socket) and is_binary(params["arcade"]),
       do: send(self(), {:open_arcade_link, params["arcade"]})
 
+    if connected?(socket) and is_binary(params["open"]),
+      do: send(self(), {:open_window_link, params["open"]})
+
     ChatLive.Helpers.safe_track_user(
       Topics.presence(),
       nickname,
@@ -338,6 +341,9 @@ defmodule RetroHexChatWeb.DesktopLive do
 
     if socket.assigns[:address_ready?] == true and is_binary(params["arcade"]),
       do: send(self(), {:open_arcade_link, params["arcade"]})
+
+    if socket.assigns[:address_ready?] == true and is_binary(params["open"]),
+      do: send(self(), {:open_window_link, params["open"]})
 
     {:noreply, assign(socket, address_ready?: connected?(socket))}
   end
@@ -541,6 +547,19 @@ defmodule RetroHexChatWeb.DesktopLive do
        content_format,
        attachment_ids
      )}
+  end
+
+  # A link of ours that opens a program (`?open=paint`, `Paths.chat_window_path/1`):
+  # only the programs a page of the site links to, never any window by name.
+  def handle_info({:open_window_link, id}, socket) do
+    if id in Paths.linkable_windows() and not socket.assigns.visitor?,
+      do: {:noreply, ChatLive.Windows.open(socket, id)},
+      else: {:noreply, socket}
+  end
+
+  def handle_info({:tool_post, target, text, opts}, socket) do
+    {:noreply,
+     ChatLive.CommandDispatch.send_to(socket, socket.assigns.session.nickname, target, text, opts)}
   end
 
   def handle_info({:composer_voice, target, file_id}, socket) do

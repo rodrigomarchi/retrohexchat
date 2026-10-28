@@ -126,7 +126,7 @@ msgstr ""
 "Nom du minuteur non valide. Utilisez seulement des lettres, des nombres, des"
 " tirets, des accents (maximum %{max_name_length} chars)."
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -501,7 +501,7 @@ msgstr "Basculer la caméra de conférence"
 msgid "Toggle Conference Microphone"
 msgstr "Toggle Microphone de Conférence"
 
-#: lib/retro_hex_chat/channels/server.ex:1881
+#: lib/retro_hex_chat/channels/server.ex:1796
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -517,7 +517,7 @@ msgstr "Pièce jointe supérieure à la limite %{mb} MB"
 msgid "Attachment is empty"
 msgstr "La pièce jointe est vide"
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "Format de message non pris en charge"
@@ -529,7 +529,7 @@ msgstr "Format de message non pris en charge"
 msgid "file"
 msgstr "fichier"
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "Le message dépasse la longueur maximale de %{count} caractères"
@@ -694,3 +694,8 @@ msgstr "jeté la pièce, et il a atterri côté argent"
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "lancé les dés et obtenu %{face}"
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
+msgstr "L'art textuel peut avoir au plus des lignes %{lines} de caractères %{columns}"

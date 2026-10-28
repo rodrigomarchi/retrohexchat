@@ -122,7 +122,7 @@ msgstr "格式化"
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr "無效的計時器名稱 。 只使用字母,數字,連字符,下劃線(最大 %{max_name_length}字符)."
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -495,7 +495,7 @@ msgstr "切換會議相機"
 msgid "Toggle Conference Microphone"
 msgstr "切換會議麥克風"
 
-#: lib/retro_hex_chat/channels/server.ex:1881
+#: lib/retro_hex_chat/channels/server.ex:1796
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -511,7 +511,7 @@ msgstr "附件超過 %{mb} MB 限制"
 msgid "Attachment is empty"
 msgstr "附件爲空"
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "不支持的消息格式"
@@ -523,7 +523,7 @@ msgstr "不支持的消息格式"
 msgid "file"
 msgstr "文件"
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "信件超過最大長度 %{count} 個字元"
@@ -685,3 +685,8 @@ msgstr "把硬幣扔了,它把銀色的一面扔了"
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "擲骰子,得到%{face}"
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
+msgstr "文本藝術最多可以有 %{lines} 行 %{columns} 字符"

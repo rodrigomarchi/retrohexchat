@@ -126,7 +126,7 @@ msgstr ""
 "Niepoprawna nazwa zegara. Używaj tylko liter, liczb, myślników, podkreśleń "
 "(max %{max_name_length} )."
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -500,7 +500,7 @@ msgstr "Włączenie / wyłączenie kamery konferencyjnej"
 msgid "Toggle Conference Microphone"
 msgstr "Włączenie / wyłączenie mikrofonu konferencji"
 
-#: lib/retro_hex_chat/channels/server.ex:1881
+#: lib/retro_hex_chat/channels/server.ex:1796
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -516,7 +516,7 @@ msgstr "Dodatek przekracza limit %{mb} MB"
 msgid "Attachment is empty"
 msgstr "Załącznik jest pusty"
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "Nieobsługiwany format wiadomości"
@@ -528,7 +528,7 @@ msgstr "Nieobsługiwany format wiadomości"
 msgid "file"
 msgstr "plik"
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "Wiadomość przekracza maksymalną długość %{count} znaków"
@@ -696,3 +696,8 @@ msgstr "rzucił monetą, i wylądował srebrną stroną w górę"
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "rzucił kostką i dostał %{face}"
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
+msgstr "Sztuka tekstowa może mieć co najwyżej linie %{lines} znaków %{columns}"

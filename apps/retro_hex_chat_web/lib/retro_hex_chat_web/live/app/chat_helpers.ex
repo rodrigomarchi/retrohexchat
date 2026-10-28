@@ -39,8 +39,28 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
 
   @spec format_content(String.t(), Content.format_input(), boolean()) :: String.t()
   def format_content(content, content_format, strip_formatting) do
-    normalized_format = normalize_content_format(content_format)
+    content
+    |> format_as(normalize_content_format(content_format), strip_formatting)
+  end
 
+  # A block of art is a picture: its `#` runs and colons are drawing, not
+  # channels, emoji or links. Without colours it is the same block in one ink.
+  defp format_as(content, :irc_art, false) do
+    {:safe, html} = Content.render_html(content, :irc_art)
+    html
+  end
+
+  defp format_as(content, :irc_art, true) do
+    rows =
+      content
+      |> Content.plain_text(:irc_art)
+      |> Phoenix.HTML.html_escape()
+      |> Phoenix.HTML.safe_to_string()
+
+    ~s(<pre class="irc-art">) <> rows <> "</pre>"
+  end
+
+  defp format_as(content, normalized_format, strip_formatting) do
     html =
       if strip_formatting do
         content |> Content.strip_formatting(normalized_format) |> URLDetector.linkify()

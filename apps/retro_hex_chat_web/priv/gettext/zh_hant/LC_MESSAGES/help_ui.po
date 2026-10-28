@@ -64,7 +64,7 @@ msgstr "音頻調用 :"
 msgid "Auto-Respond"
 msgstr "自動響應"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Autocomplete"
 msgstr "自動完成"
@@ -128,11 +128,12 @@ msgstr "顏色調色板"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:137
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Colors"
 msgstr "顏色"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "Command Syntax Tooltip"
 msgstr "命令語法工具提示"
@@ -219,7 +220,7 @@ msgstr "Emoji Picker — 在格式化工具欄中點擊微笑按鈕"
 msgid "Empty state messages disappear automatically when content arrives. The text is not selectable."
 msgstr "當內容到達時,空的狀態信息會自動消失. 文本無法選擇 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:97
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Enhanced History"
 msgstr "增強歷史"
@@ -306,6 +307,7 @@ msgid "Input & Autocomplete"
 msgstr "輸入自動完成( A)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
@@ -469,7 +471,7 @@ msgstr "角色"
 msgid "Save to your address book."
 msgstr "保存到您的地址簿。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Search"
@@ -489,12 +491,14 @@ msgstr "節"
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:131
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:98
@@ -533,7 +537,7 @@ msgstr "服務:"
 msgid "Set Nick Color:"
 msgstr "設置暱稱顏色 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "快捷鍵計費表"
@@ -1102,7 +1106,7 @@ msgstr "桌面 :"
 msgid "Edit"
 msgstr "編輯"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:106
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:218
 #, elixir-autogen, elixir-format
@@ -1161,6 +1165,7 @@ msgstr "身份和存在"
 msgid "Layout Persistence"
 msgstr "佈局持久性"
 
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Limits"
@@ -1367,7 +1372,7 @@ msgstr "斷開或重新裝入頁面時丟失計時器"
 msgid "Toolbar"
 msgstr "工具欄"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:100
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "用戶查詢"
@@ -2071,7 +2076,7 @@ msgid "Empty States"
 msgstr "空國家"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Listings & Tables"
@@ -3534,3 +3539,143 @@ msgstr "Shift+Tab — 從信息框中返回對話( 重複到選定行) 箭頭向
 #, elixir-autogen, elixir-format
 msgid "— Retro Games, and %{arcade}. %{arcade} saves scores under your nickname, so your nickname must be identified first."
 msgstr "——復古遊戲,和%{arcade}. %{arcade}在你的暱稱下保存分數,所以你的暱稱必須先被識別出來."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "/ascii Command"
+msgstr "/ascii Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "/paint Command"
+msgstr "/paint Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "ASCII Art"
+msgstr "ASCII 藝術"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "ASCII Art needs an account: visitors are asked to register"
+msgstr "ASCII 藝術 需要一個賬戶: 訪問者需要註冊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "ASCII Art turns a word, a picture or your Hex Paint drawing into text art in mIRC colours, and posts it to a channel or a private conversation as one message. Open it from Start > Accessories > ASCII Art, the Accessories folder on the desktop, or by typing /ascii."
+msgstr "ASCII 藝術將一個字,一個圖片或你的Hex Paint在mIRC顏色中繪製成文本藝術,並張貼到一個頻道或私人對話中作爲一條消息. 從開始打開 > 附屬件 > ASCII 藝術,桌面上的附屬件文件夾,或者通過輸入/ascii."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "At most 30 lines of 100 characters in one block"
+msgstr "一個街區最多30行100個字符"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Choose a picture from your computer, set how wide the art is, and draw it in colour blocks or in characters alone. The picture is read in your browser and never uploaded: only the art made from it is posted."
+msgstr "從您的計算機中選擇一個圖片, 設定藝術的寬度, 並用顏色塊或單用字符繪製 。 該圖片在您的瀏覽器中被讀取, 並且從未上傳: 只有由它製作的藝術被髮布 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Choose a tool on the left and draw on the grid with the mouse or a finger. The left button paints the first colour, the right button the second: pick the first with a click on the palette and the second with a right-click. Mirror paints the same stroke on the other half of the picture too."
+msgstr "選擇左邊的工具,並用鼠標或手指繪製網格。 左鍵畫第一色,右鍵畫第二色:用點擊調色板的方式選擇第一色,用右鍵選擇第二色. 鏡子在另一半的照片上也畫了同樣的中風."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Z — Undo the last stroke Ctrl+Y or Ctrl+Shift+Z — Redo P — Pencil L — Line R / Shift+R — Rectangle / filled rectangle E / Shift+E — Ellipse / filled ellipse B — Fill X — Eraser I — Pick a colour"
+msgstr "Ctrl+Z — 撤銷上次中風 Ctrl+Y 或 Ctrl+Shift+Z — Redo P — Pencil L — L線 R / Shift+R — 矩形/填充矩形 E / Shift+E — 橢圓形 B — 填充X — Eraser I — 選擇一種顏色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Drawing"
+msgstr "繪圖"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "File > Post to channel… shows the art exactly as the channel will see it. It arrives as one block, every character in its column; on a narrow screen the block scrolls sideways. Edit > Copy puts the art on the clipboard with its colour codes."
+msgstr "文件 > 到頻道的帖子... 顯示的藝術與頻道看到的完全一樣 它作爲一個塊,每個字符在它的柱子中到達;在一個狹長的屏幕上,塊滾動側面. 編輯 > 複製將藝術及其顏色代碼放在剪貼板上 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "File > Post to channel… shows the picture, a conversation you are in to post it to, and an optional line of text. The picture arrives as an image, enlarged so every pixel stays a sharp square."
+msgstr "文件 > 發送到頻道的帖子... 顯示圖片,一個您要發送到的對話, 和一個可選的文本行。 圖片以圖像形式出現,放大後,每個像素都保持一個尖銳的方形."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "File starts a new drawing of 32, 64 or 128 pixels a side, saves it to your computer as a PNG, posts it, or opens it in ASCII Art. Edit undoes and redoes each stroke and clears the drawing. View shows or hides the grid and zooms in and out."
+msgstr "文件開始一個32,64或128像素的新繪圖一個側面,保存到您的計算機上作爲PNG,張貼它,或者在ASCII 藝術中打開. 編輯撤消和重做每次劃線並清除繪圖。 視圖顯示或隱藏網格並縮放進出."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "File, Edit and View"
+msgstr "文件、 編輯和查看"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Fill: paints every touching pixel of the same colour"
+msgstr "填充: 畫出每個相同顏色的觸摸像素"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Good to Know"
+msgstr "很高興知道"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Paint draws pixel art in the sixteen chat colours, and posts the picture to a channel or a private conversation. Open it from Start > Accessories > Hex Paint, the Accessories folder on the desktop, or by typing /paint."
+msgstr "Hex Paint在十六個聊天色彩中繪製像素藝術,並將圖片張貼到一個頻道或私人對話中. 從開始打開 > 附屬件 > Hex Paint,桌面上的附屬件文件夾,或者通過打入/paint."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Hex Paint needs an account: visitors are asked to register"
+msgstr "Hex Paint 需要一個賬戶: 訪問者需要註冊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Line, Rectangle and Ellipse: press, drag and let go; the shape shows while you drag"
+msgstr "行、 矩形和橢圓形: 按、 拖放; 拖放時顯示形狀"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Pencil and Eraser: draw and clear one pixel at a time"
+msgstr "Pencil 和 Eraser: 一次繪製並清除一個像素"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Pick colour: takes the colour of the pixel you press"
+msgstr "選擇顏色: 選擇您按的像素的顏色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Picture"
+msgstr "圖片"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Posting"
+msgstr "張貼"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Posting and Copying"
+msgstr "張貼和複製"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Text"
+msgstr "文字"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The Hex Paint tab draws the picture open in Hex Paint, two pixels to a character. File > Open in ASCII Art in Hex Paint comes here directly."
+msgstr "The Hex Paint tab draws the picture open in Hex Paint, two pixels to a character. File > Open in ASCII Art in Hex Paint comes here directly."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_ascii_art.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Type a word or two and choose a style — blocks, hashes or a shadow — and how it is coloured: one colour, a colour on a background, a rainbow or two tones. Click a colour for the letters and right-click one for the background."
+msgstr "鍵入一兩字並選擇一種風格——塊狀,散狀或陰影狀,以及顏色如何:一個顏色,一個背景上的顏色,一個彩虹或兩個色調. 單擊字母顏色,右鍵單擊背景顏色。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Your drawing is kept in this browser while the window is closed"
+msgstr "窗口關閉時, 您的畫被保存在這個瀏覽器中"

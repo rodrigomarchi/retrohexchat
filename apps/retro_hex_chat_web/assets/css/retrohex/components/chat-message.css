@@ -147,6 +147,13 @@
   white-space: pre-wrap;
 }
 
+/* A block of text art is not a code block: no frame, no paper, and never
+   wrapped — a wrapped row would break the picture. */
+.chat-message__text pre.irc-art {
+  @apply bg-transparent p-0 shadow-none;
+  white-space: pre;
+}
+
 .chat-message__text pre code,
 .composer-markdown-preview pre code {
   @apply bg-transparent p-0 shadow-none;
@@ -169,16 +176,8 @@
 .chat-markdown-image-shell[data-image-state="loading"] {
   background-color: #d4d0c8;
   background-image:
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.42) 0 1px,
-      transparent 1px 7px
-    ),
-    repeating-linear-gradient(
-      135deg,
-      rgba(0, 0, 0, 0.08) 0 1px,
-      transparent 1px 7px
-    );
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.42) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 7px);
 }
 
 .chat-markdown-image-shell[data-image-state="loading"]::before {
@@ -187,21 +186,11 @@
   inset: 14px;
   background-color: #e8e4dc;
   background-image:
-    linear-gradient(90deg, #000080, #1084d0),
-    linear-gradient(#ffffff, #ffffff),
+    linear-gradient(90deg, #000080, #1084d0), linear-gradient(#ffffff, #ffffff),
+    linear-gradient(#c0c0c0, #c0c0c0), linear-gradient(#ffffff, #ffffff),
     linear-gradient(#c0c0c0, #c0c0c0),
-    linear-gradient(#ffffff, #ffffff),
-    linear-gradient(#c0c0c0, #c0c0c0),
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.3) 0 1px,
-      transparent 1px 7px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.06) 0 1px,
-      transparent 1px 7px
-    );
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 7px);
   background-position:
     0 0,
     14px 31px,
@@ -210,14 +199,7 @@
     94px 47px,
     0 0,
     0 0;
-  background-repeat:
-    no-repeat,
-    no-repeat,
-    no-repeat,
-    no-repeat,
-    no-repeat,
-    repeat,
-    repeat;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
   background-size:
     100% 16px,
     42px 8px,

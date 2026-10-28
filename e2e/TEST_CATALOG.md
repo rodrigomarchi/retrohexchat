@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **269 spec files** under `e2e/tests/`.
-- **677 Playwright `test()` cases**.
-- **620 documented flows**, 619 done, 1 not done.
+- **271 spec files** under `e2e/tests/`.
+- **683 Playwright `test()` cases**.
+- **628 documented flows**, 627 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -882,6 +882,19 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW32 | A trusted terminal set to Auto-login is signed in by the first page it opens after the browser restarts, with no sign-in window or form in between; Log out keeps it out until the browser closes; Log in beside a remembered nickname works before the chat's socket has joined — on a desktop and on a phone | `tests/trusted-terminal-return.spec.ts` | done |
 | PW33 | The public Spaces page shows the world in real pictures — the island, the Construct, the Game Room, the Office and the character creator — on a desktop and a phone, and its way in takes a visitor through creating an account straight into the #lobby Space, put in the channel on arrival | `tests/spaces-page.spec.ts` | done |
 | PW34 | A member's way in on the Spaces page opens the #lobby Space in a tab of its own, and the features window and the home page lead to the Spaces page | `tests/spaces-page.spec.ts` | done |
+| PW40 | /paint and /ascii-art show the program in real pictures, with its own title and share card | `tests/accessory-pages.spec.ts` | done |
+| PW41 | A visitor's Open Hex Paint asks for an account; a member's opens Hex Paint on the desktop | `tests/accessory-pages.spec.ts` | done |
+
+### AC - Accessories: Hex Paint And ASCII Art
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| AC1 | Hex Paint opens from Start > Accessories, a drag draws a line, Ctrl+Z takes it back | `tests/accessories.spec.ts` | done |
+| AC2 | A drawing posted from Hex Paint reaches another member of the channel as a picture with its line of text | `tests/accessories.spec.ts` | done |
+| AC3 | ASCII Art turns a word into a banner and posts it as one block that another member sees whole, with no flood ignore | `tests/accessories.spec.ts` | done |
+| AC4 | Hex Paint's File > Open in ASCII Art opens ASCII Art on the drawing | `tests/accessories.spec.ts` | done |
+| AC5 | A visitor who picks Start > Accessories > Hex Paint is asked to register | `tests/accessories.spec.ts` | done |
+| AC6 | Both windows fit a phone, their menus on the rail | `tests/accessories.spec.ts` | done |
 
 ### Dialog Gallery
 

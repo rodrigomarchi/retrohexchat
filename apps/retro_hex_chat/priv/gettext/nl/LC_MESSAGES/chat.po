@@ -125,7 +125,7 @@ msgstr ""
 "Ongeldige timernaam. Gebruik alleen letters, getallen, koppeltekens, "
 "onderstrepingen (max %{max_name_length} tekens)."
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -498,7 +498,7 @@ msgstr "Conferentiecamera aan/uit"
 msgid "Toggle Conference Microphone"
 msgstr "Conference-microfoon aan/uit"
 
-#: lib/retro_hex_chat/channels/server.ex:1881
+#: lib/retro_hex_chat/channels/server.ex:1796
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -514,7 +514,7 @@ msgstr "Bijlage overschrijdt de %{mb} MB limiet"
 msgid "Attachment is empty"
 msgstr "Bijlage is leeg"
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "Niet ondersteund berichtformaat"
@@ -526,7 +526,7 @@ msgstr "Niet ondersteund berichtformaat"
 msgid "file"
 msgstr "bestand"
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "Bericht overschrijdt de maximale lengte van %{count} tekens"
@@ -691,3 +691,8 @@ msgstr "gooide de munt, en het landde zilveren kant omhoog"
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "gooide de dobbelstenen en kreeg %{face}"
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
+msgstr "Tekst kunst kan hoogstens %{lines} lijnen van %{columns} tekens hebben"

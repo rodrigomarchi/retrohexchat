@@ -114,6 +114,20 @@ defmodule RetroHexChatWeb.App.ChatHelpersTest do
   end
 
   describe "format_content/3" do
+    test "draws text art as a block, its # runs not taken for channels nor its colons for emoji" do
+      art = "\x034#general :x:\x03\nhttps://example.com"
+
+      html = ChatHelpers.format_content(art, "irc_art", false)
+
+      assert html =~ ~s(<pre class="irc-art">)
+      assert html =~ "irc-fg-4"
+      refute html =~ "data-channel"
+      refute html =~ "<a "
+
+      plain = ChatHelpers.format_content(art, "irc_art", true)
+      assert plain == ~s(<pre class="irc-art">#general :x:\nhttps://example.com</pre>)
+    end
+
     test "renders markdown formatting" do
       html = ChatHelpers.format_content("**bold** [doc](https://example.com)", "markdown", false)
 

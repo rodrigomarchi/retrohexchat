@@ -127,7 +127,7 @@ msgstr ""
 "Nama timer tidak valid. Gunakan hanya huruf, angka, tanda hubung, garis "
 "bawah (maksimum chars %{max_name_length})."
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -500,7 +500,7 @@ msgstr "Jungkitkan Kamera Konferensi"
 msgid "Toggle Conference Microphone"
 msgstr "Jungkitkan Mikrofon Konferensi"
 
-#: lib/retro_hex_chat/channels/server.ex:1881
+#: lib/retro_hex_chat/channels/server.ex:1796
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -516,7 +516,7 @@ msgstr "Lampiran melebihi batas %{mb} MB"
 msgid "Attachment is empty"
 msgstr "Lampiran kosong"
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "Format pesan tidak didukung"
@@ -528,7 +528,7 @@ msgstr "Format pesan tidak didukung"
 msgid "file"
 msgstr "berkas"
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "Pesan melebihi panjang maksimum %{count} karakter"
@@ -690,3 +690,8 @@ msgstr "melemparkan koin, dan mendarat sisi perak atas"
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "melemparkan dadu dan mendapat %{face}"
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
+msgstr "Seni teks dapat memiliki paling banyak %{lines} baris dari karakter %{columns}"

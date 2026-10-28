@@ -651,6 +651,40 @@
         />
       </.desktop_window>
 
+      <%!-- Hex Paint — server-managed: the drawing lives in the browser and
+          waits there as a draft while the window is closed. --%>
+      <.desktop_window
+        :if={"paint" in @open_windows}
+        {WindowRegistry.attrs("paint")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="paint-window"
+      >
+        <:menu><RetroHexChatWeb.Components.UI.Paint.paint_menu_bar /></:menu>
+        <:status><RetroHexChatWeb.Components.UI.Paint.paint_status /></:status>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.PaintWindow}
+          id={RetroHexChatWeb.ChatLive.Components.PaintWindow.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- ASCII Art — server-managed: the art is made in the browser; a
+          picture read there never leaves it. --%>
+      <.desktop_window
+        :if={"ascii-art" in @open_windows}
+        {WindowRegistry.attrs("ascii-art")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="ascii-art-window"
+      >
+        <:menu><RetroHexChatWeb.Components.UI.AsciiArt.ascii_menu_bar /></:menu>
+        <:status><RetroHexChatWeb.Components.UI.AsciiArt.ascii_status /></:status>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AsciiArtWindow}
+          id={RetroHexChatWeb.ChatLive.Components.AsciiArtWindow.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
       <%!-- Timers — server-managed: closing unmounts the island (draft state
           resets by design); reopening mounts a fresh one. --%>
       <.desktop_window

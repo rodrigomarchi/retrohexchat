@@ -1967,6 +1967,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:30
@@ -2000,6 +2001,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:37
@@ -2081,6 +2083,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:16
@@ -2111,6 +2114,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:14
@@ -2714,6 +2718,7 @@ msgstr "Les admins racine ne peuvent pas être démodés via des commandes"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:27
@@ -2744,6 +2749,7 @@ msgstr "Les admins racine ne peuvent pas être démodés via des commandes"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
@@ -2794,6 +2800,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:32
@@ -2825,6 +2832,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:39
@@ -3007,6 +3015,7 @@ msgstr "Sous-commandes"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:7
@@ -3040,6 +3049,7 @@ msgstr "Sous-commandes"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:7
@@ -6128,3 +6138,102 @@ msgstr "Salons sur un même sujet"
 #, elixir-autogen, elixir-format
 msgid "The Category list beside the search box narrows the rooms to one subject — news, games, technology and the rest — as the plaque beside each channel name says. It works together with the search: both apply at once. While a category is chosen, a line above the rooms names it; its X button shows every category again. The \"See more…\" link under a sidebar section opens this window already set to that section's subject."
 msgstr "La liste Catégorie, à côté du champ de recherche, limite les salons à un sujet — actualités, jeux, technologie et les autres —, celui qu'indique la plaque à côté du nom de chaque canal. Elle s'utilise avec la recherche : les deux s'appliquent en même temps. Tant qu'une catégorie est choisie, une ligne au-dessus des salons la nomme ; son bouton X affiche de nouveau toutes les catégories. Le lien « Voir plus… » au bas d'une section de la barre latérale ouvre cette fenêtre déjà réglée sur le sujet de cette section."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "/ascii"
+msgstr "/ascii"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "/paint"
+msgstr "/paint"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "ASCII Art"
+msgstr "Art ASCII"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "At most 30 lines of 100 characters in one block"
+msgstr "Au plus 30 lignes de 100 caractères dans un bloc"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Draw on a grid of 32, 64 or 128 pixels a side in the sixteen chat colours"
+msgstr "Dessiner sur une grille de 32, 64 ou 128 pixels un côté dans les seize couleurs de chat"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Needs an account: a visitor is asked to register first"
+msgstr "Besoin d'un compte : un visiteur doit d'abord s'inscrire"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens ASCII Art: turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel as one message."
+msgstr "Ouvre Art ASCII : transformez un mot, une image ou un dessin Hex Paint en art texte en couleurs mIRC et postez-le sur un canal en un seul message."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens Hex Paint, the pixel drawing program: draw in the sixteen chat colours and post the picture to a channel."
+msgstr "Ouvre Hex Paint, le programme de dessin du pixel : dessinez dans les seize couleurs de chat et postez l'image sur un canal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the ASCII Art window, or brings it to the front when it is already open — the same window Start > Accessories > ASCII Art opens."
+msgstr "Ouvre la fenêtre Art ASCII, ou la porte à l'avant lorsqu'elle est déjà ouverte — la même fenêtre Démarrer > Accessoires > Art ASCII s'ouvre."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the Hex Paint window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Paint opens."
+msgstr "Ouvre la fenêtre Hex Paint, ou la porte à l'avant lorsqu'elle est déjà ouverte — la même fenêtre Démarrer > Accessoires > Hex Paint s'ouvre."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Post the art as one message, or copy it with its colour codes"
+msgstr "Affichez l'art comme un seul message, ou copiez-le avec ses codes de couleurs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Post the picture to a channel or a private conversation, with a line of text"
+msgstr "Affichez l'image sur un canal ou une conversation privée, avec une ligne de texte"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Save it to your computer as a PNG, or turn it into text art in ASCII Art"
+msgstr "Enregistrez-le sur votre ordinateur en tant que PNG, ou transformez-le en art texte dans Art ASCII"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "The drawing is kept in your browser while the window is closed"
+msgstr "Le dessin est conservé dans votre navigateur pendant que la fenêtre est fermée"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Turn a picture from your computer into coloured blocks or characters; the picture is never uploaded"
+msgstr "Transformez une image de votre ordinateur en blocs ou caractères colorés; l'image n'est jamais téléchargée"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Turn your Hex Paint drawing into text art"
+msgstr "Transformez votre dessin Hex Paint en art texte"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Use a pencil, lines, rectangles, ellipses, a fill and an eraser, with undo and redo"
+msgstr "Utilisez un crayon, des lignes, des rectangles, des ellipses, un remplissage et une gomme, avec défaire et refaire"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "What You Can Do There"
+msgstr "Ce que vous pouvez y faire"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
+msgstr "Écrire un mot en grandes lettres en blocs, haches ou blocs ombragés, en une couleur, en arc-en-ciel ou en deux tons"

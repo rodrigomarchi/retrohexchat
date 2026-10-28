@@ -1055,7 +1055,7 @@ msgstr "Een gebruiker toevoegen aan uw berichtenlijst"
 msgid "Add an auto-respond rule"
 msgstr "Een regel voor automatisch antwoord toevoegen"
 
-#: lib/retro_hex_chat/commands/registry.ex:77
+#: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Geavanceerd"
@@ -1101,7 +1101,7 @@ msgstr "Verbod"
 msgid "Ban user from channel"
 msgstr "Gebruiker van kanaal verbieden"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Basis"
@@ -1149,7 +1149,7 @@ msgstr ""
 "Toegestane tekens: letters, nummers, [ ] \\ ^   \n"
 "Kan niet veranderen naar uw huidige bijnaam of een reeds in gebruik."
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Kanaal"
@@ -1227,7 +1227,7 @@ msgstr "Wis je volledige autojoin lijst"
 msgid "Command name to view detailed help"
 msgstr "Commandonaam om gedetailleerde hulp te bekijken"
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Instellingen"
@@ -2614,7 +2614,7 @@ msgstr "Gebruik: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Gebruik: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Gebruiker"
@@ -3754,3 +3754,15 @@ msgstr "[BotService] Bot '%{name}' aangemaakt."
 #, elixir-autogen, elixir-format
 msgid "%{game} is a game for one player."
 msgstr "%{game} is een spel voor één speler."
+
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:15
+#: lib/retro_hex_chat/commands/handlers/ascii.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open ASCII Art, to turn a word, a picture or a Hex Paint drawing into text art in mIRC colours and post it to a channel."
+msgstr "Open ASCII-art, om een woord, een afbeelding of een Hex Paint tekening te veranderen in tekstkunst in mIRC kleuren en post het op een kanaal."
+
+#: lib/retro_hex_chat/commands/handlers/paint.ex:15
+#: lib/retro_hex_chat/commands/handlers/paint.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open Hex Paint, the pixel drawing program, to draw a picture and post it to a channel."
+msgstr "Open Hex Paint, het pixel tekenprogramma, om een afbeelding te tekenen en op een kanaal te plaatsen."

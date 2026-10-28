@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     desktop-icon-site
     desktop-icon-view
     desktop-icon-tools
+    desktop-icon-accessories
     desktop-icon-automation
     desktop-icon-games
     desktop-icon-arcade
@@ -26,6 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     desktop-icon-site
     desktop-icon-view
     desktop-icon-tools
+    desktop-icon-accessories
     desktop-icon-automation
     desktop-icon-games
     desktop-icon-arcade

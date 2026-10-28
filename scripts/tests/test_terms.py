@@ -367,6 +367,32 @@ class MissingTermsTest(unittest.TestCase):
         self.assertEqual(names.form("Hex Jungle", "pt_BR"), "Hex Jungle")
         self.assertEqual(names.form("Hex Jungle", "ja"), "ヘックスジャングル")
 
+    def test_the_drawing_programs_name_is_kept_not_translated(self):
+        from i18n import names
+
+        # Translated as words it came back as a painting, and the sentence
+        # around it was rejected and left in English.
+        self.assertEqual(names.form("Hex Paint", "pt_BR"), "Hex Paint")
+        self.assertEqual(names.form("Hex Paint", "ja"), "ヘックスペイント")
+
+    def test_the_text_art_program_is_named_as_each_language_names_ascii_art(self):
+        from i18n import names
+
+        # Inside a sentence the engine left it half translated, "ASCII Arte".
+        self.assertEqual(names.form("ASCII Art", "pt_BR"), "Arte ASCII")
+        self.assertEqual(names.form("ASCII Art", "de"), "ASCII-Art")
+        self.assertEqual(names.form("ASCII Art", "pl"), "ASCII Art")
+
+    def test_the_picture_programs_are_masked_whole_wherever_the_sentence_puts_them(self):
+        from i18n.protection import protect
+
+        # Unmasked at the start of a sentence, "ASCII Art turns…" came back
+        # "ASCII Arte transforma…", and "Hex Paint" as "Tinta Hex".
+        for text, name in [("ASCII Art turns a word", "ASCII Art"), ("Open Hex Paint now", "Hex Paint")]:
+            masked, replacements = protect(text)
+            self.assertNotIn(name, masked)
+            self.assertIn(name, replacements.values())
+
     def test_a_url_a_placeholder_a_command_and_a_channel_keep_their_feed(self):
         from i18n import names
         from i18n.protection import protect, restore

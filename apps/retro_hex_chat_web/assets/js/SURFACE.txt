@@ -1,5 +1,6 @@
 ## liveview-events
 0s
+ascii_post_open
 autocomplete_close
 autocomplete_navigate
 autocomplete_query
@@ -115,7 +116,9 @@ nick_hover
 nick_hover_dismiss
 nick_right_click
 nicklist_dblclick
+open_ascii_art
 open_url
+paint_post_open
 paste_lines
 ping
 play_sound
@@ -207,6 +210,8 @@ lobby_signal_rejected
 lobby_signal_replay
 ## custom-events
 abort
+ascii:command
+ascii:source
 blur
 change
 click
@@ -240,6 +245,7 @@ offline
 online
 orientationchange
 p2p-lobby:recovery-state
+paint:command
 paste
 phx:live_reload:attached
 phx:page-loading-start
@@ -336,6 +342,7 @@ dataset.highlighted
 dataset.hint
 dataset.imageState
 dataset.inputHistory
+dataset.ircColour
 dataset.isHost
 dataset.joinToken
 dataset.kind
@@ -372,6 +379,7 @@ dataset.openedByKey
 dataset.padAction
 dataset.padDir
 dataset.paintHint
+dataset.paintTool
 dataset.participantId
 dataset.persist
 dataset.persistKey

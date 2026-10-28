@@ -17,6 +17,23 @@ defmodule RetroHexChatWeb.Icons.Registry do
   alias RetroHexChat.Games.Catalog, as: GamesCatalog
 
   @icons [
+    # Drawing
+    {:icon_paint_pencil, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_line, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_rect, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_rect_fill, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_ellipse, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_ellipse_fill, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_bucket, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_eraser, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_picker, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_mirror, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_undo, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_redo, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_zoom_in, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint_zoom_out, RetroHexChatWeb.Icons.Drawing},
+    {:icon_paint, RetroHexChatWeb.Icons.Drawing},
+    {:icon_ascii_art, RetroHexChatWeb.Icons.Drawing},
     # People
     {:icon_community, RetroHexChatWeb.Icons.People},
     {:icon_toolbar_community, RetroHexChatWeb.Icons.People},

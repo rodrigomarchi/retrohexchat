@@ -1,0 +1,38 @@
+<h1 id="paint-heading" class="text-lg font-bold mb-retro-8 text-text">
+  {dgettext("landing", "Draw pixel art and share it in the chat")}
+</h1>
+<p class="text-sm max-w-3xl mb-retro-12">
+  {dgettext("landing", "Hex Paint is a pixel drawing program that opens on the chat's desktop.")}
+  {dgettext(
+    "landing",
+    "Draw on a grid of 32, 64 or 128 pixels in the sixteen colours of the chat."
+  )}
+  {dgettext(
+    "landing",
+    "Use a pencil, lines, rectangles, ellipses and a fill, and undo any stroke."
+  )}
+  {dgettext(
+    "landing",
+    "When it is ready, post it to a channel or a friend with a line of text, or save it as a PNG."
+  )}
+</p>
+
+<div class="flex flex-wrap items-center gap-retro-8 mb-retro-12" data-testid="paint-actions">
+  <.button patch={@open_path} class="font-bold" data-testid="paint-open">
+    <:icon><Icons.icon_paint class="h-4 w-4" /></:icon>
+    {dgettext("landing", "Open Hex Paint")}
+  </.button>
+  <.button variant="outline" patch={@help["ui-hex-paint"].path} data-testid="paint-how">
+    <:icon><Icons.icon_question class="h-4 w-4" /></:icon>
+    {dgettext("landing", "How it works")}
+  </.button>
+</div>
+
+<.inset tone="screen" class="p-1">
+  <.screenshot
+    {@shots["paint"]}
+    alt={dgettext("landing", "Hex Paint open on a pixel-art heart over a starry night")}
+    sizes="(min-width: 900px) 880px, 100vw"
+    main
+  />
+</.inset>

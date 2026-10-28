@@ -45,6 +45,7 @@ import {
 import { EFFECT, step } from "./transfer_session.js";
 import { subscribeDataChannel } from "./data_channels.js";
 import { t } from "../i18n.js";
+import { saveBlob } from "../save_blob.js";
 
 export function createFileTransferController(el, ports) {
   return {
@@ -476,14 +477,7 @@ export function createFileTransferController(el, ports) {
       if (this._objectUrl) {
         URL.revokeObjectURL(this._objectUrl);
       }
-      this._objectUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = this._objectUrl;
-      a.download = fileName;
-      a.className = "u-hidden";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      this._objectUrl = saveBlob(document, blob, fileName);
     },
 
     // --- Reducer plumbing ---

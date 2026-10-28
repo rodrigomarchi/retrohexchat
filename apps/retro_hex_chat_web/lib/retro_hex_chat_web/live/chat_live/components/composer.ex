@@ -54,6 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Registry}
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
+  alias RetroHexChatWeb.ChatLive.DirectUpload
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Components.UI.FormattingToolbar
@@ -737,12 +738,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     end
   end
 
-  defp upload_store_error(reason) when is_binary(reason), do: reason
-
-  defp upload_store_error(reason) do
-    dgettext("chat", "Could not store attachment: %{reason}", reason: inspect(reason))
-  end
-
   defp upload_error_to_string(:too_large) do
     dgettext("chat", "Attachment exceeds the %{mb} MB limit",
       mb: Integer.to_string(div(Attachments.max_size_bytes(), 1_024 * 1_024))
@@ -769,18 +764,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   end
 
   defp prepare_direct_upload(entry, socket, preview_metadata) do
-    metadata = %{
-      filename: entry.client_name,
-      content_type: entry.client_type,
-      byte_size: entry.client_size,
-      directory_path: upload_directory_path(socket),
-      preview_metadata: preview_metadata
-    }
-
-    case Attachments.prepare_direct_upload(socket.assigns.nickname, metadata) do
-      {:ok, _uploaded_file, meta} -> {:ok, meta, socket}
-      {:error, reason} -> {:error, %{reason: upload_store_error(reason)}, socket}
-    end
+    DirectUpload.presign(
+      entry,
+      socket,
+      socket.assigns.nickname,
+      upload_directory_path(socket),
+      preview_metadata
+    )
   end
 
   # A recording is a message of its own: the moment its upload lands it is sent,

@@ -48,7 +48,8 @@ defmodule RetroHexChatWeb.Site.RegistryTest do
   # A locale segment is the first segment of an address; one spelled like a
   # path the desktop already uses would make that path mean two things.
   test "no locale segment is spelled like one of the desktop's own paths" do
-    reserved = ~w(c chat connect join archive games play call space p2p api locale showcase)
+    reserved =
+      ~w(c chat connect join archive games play call space p2p api locale showcase paint ascii-art)
 
     for segment <- SEO.localized_locale_segments() do
       refute String.downcase(segment) in reserved, "#{segment} is a reserved path segment"

@@ -24,10 +24,10 @@ defmodule RetroHexChatWeb.Site.Pages.Spaces do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.App.Paths
-  alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
+  alias RetroHexChatWeb.Site.Shots
 
   @pictures ~w(island construct game_room office creator)
   @help_topics ~w(feature-virtual-spaces feature-space-construct feature-space-game-room
@@ -74,13 +74,13 @@ defmodule RetroHexChatWeb.Site.Pages.Spaces do
          )
        ],
        canonical_path: "/spaces",
-       og_image: %{
-         url: SEO.site_url(Endpoint.static_path("/images/spaces/og/spaces.jpg")),
-         width: @manifest["og/spaces"]["width"],
-         height: @manifest["og/spaces"]["height"],
-         type: "image/jpeg",
-         alt: dgettext("landing", "Three characters talking on an island, in pixel art")
-       },
+       og_image:
+         Shots.card(
+           @manifest,
+           "/images/spaces",
+           "spaces",
+           dgettext("landing", "Three characters talking on an island, in pixel art")
+         ),
        json_ld: [
          SEO.breadcrumb_json_ld([
            {dgettext("landing", "Home"), PublicPages.localized_path("/")},
@@ -103,21 +103,7 @@ defmodule RetroHexChatWeb.Site.Pages.Spaces do
   defp enter_path(channel, _visitor),
     do: Paths.visitor_sign_in_path(:space, Paths.space_path(channel))
 
-  defp shots do
-    Map.new(@pictures, fn name ->
-      full = Endpoint.static_path("/images/spaces/#{name}.webp")
-      half = Endpoint.static_path("/images/spaces/#{name}-half.webp")
-      %{"width" => width, "height" => height} = @manifest[name]
-
-      {name,
-       %{
-         src: full,
-         width: width,
-         height: height,
-         srcset: "#{half} #{div(width, 2)}w, #{full} #{width}w"
-       }}
-    end)
-  end
+  defp shots, do: Shots.pictures(@manifest, "/images/spaces", @pictures)
 
   # Each topic's address and its own title, in the reader's language — the
   # same words the help shows — read once per page.

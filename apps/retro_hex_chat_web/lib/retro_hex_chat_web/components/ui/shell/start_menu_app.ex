@@ -219,6 +219,23 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         </.start_menu_submenu>
 
         <.start_menu_submenu
+          label={dgettext("ui", "Accessories")}
+          muted={!@chat?}
+          key="accessories"
+          testid="start-menu-accessories-submenu"
+        >
+          <:icon><Icons.icon_paint class="h-4 w-4" /></:icon>
+          <%= if @full do %>
+            <.group_item
+              :for={item <- AppGroups.items(:accessories)}
+              item={item}
+              on_action={@on_action}
+              disabled={!@chat?}
+            />
+          <% end %>
+        </.start_menu_submenu>
+
+        <.start_menu_submenu
           label={dgettext("ui", "Automation")}
           muted={!@chat?}
           key="automation"

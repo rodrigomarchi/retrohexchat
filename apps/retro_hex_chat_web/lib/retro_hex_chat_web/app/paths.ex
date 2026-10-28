@@ -66,6 +66,14 @@ defmodule RetroHexChatWeb.App.Paths do
   @spec chat_arcade_path(String.t()) :: String.t()
   def chat_arcade_path(game_id \\ ""), do: localized(~p"/?arcade=#{game_id}")
 
+  @doc "The programs a link may open on the desktop, by window id."
+  @spec linkable_windows() :: [String.t()]
+  def linkable_windows, do: ~w(paint ascii-art)
+
+  @doc "The desktop with one of `linkable_windows/0` open."
+  @spec chat_window_path(String.t()) :: String.t()
+  def chat_window_path(id), do: localized(~p"/?open=#{id}")
+
   @doc "`path` in the language of the current reader."
   @spec localized(String.t()) :: String.t()
   def localized(path), do: SEO.localized_path(path, I18n.current_locale())

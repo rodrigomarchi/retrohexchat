@@ -76,12 +76,7 @@ def main() -> int:
         export_name = exports[code]
         catalog = dict(current.get(export_name, {}))
         curated = glossary.for_locale(code)
-        absent = sorted(
-            message
-            for message in messages
-            if message not in catalog
-            or (args.retry_english and catalog[message] == message and message not in curated)
-        )
+        absent = pending(messages, catalog, curated, retry_english=args.retry_english)
 
         if not absent:
             continue
@@ -101,6 +96,25 @@ def main() -> int:
         subprocess.run([str(PRETTIER), "--write", str(catalogs.JS_CATALOG_DIR)], check=True)
 
     return 0
+
+
+def pending(messages, catalog: dict, curated: dict, retry_english: bool = False) -> list:
+    """The messages a catalog still needs, in order.
+
+    One it lacks always. One it holds in English only with `retry_english`,
+    and then not when the glossary's word for it is that English word ("OK"
+    kept literal): a message the glossary words otherwise is owed that word.
+    """
+    return sorted(
+        message
+        for message in messages
+        if message not in catalog
+        or (
+            retry_english
+            and catalog[message] == message
+            and curated.get(message, "") != message
+        )
+    )
 
 
 if __name__ == "__main__":

@@ -404,7 +404,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # conversation it was recorded in, which need not be the one on screen now.
   @spec dispatch_composer_voice(
           Phoenix.LiveView.Socket.t(),
-          ChatLive.CommandDispatch.voice_target(),
+          ChatLive.CommandDispatch.target(),
           integer()
         ) :: Phoenix.LiveView.Socket.t()
   def dispatch_composer_voice(socket, target, file_id) do

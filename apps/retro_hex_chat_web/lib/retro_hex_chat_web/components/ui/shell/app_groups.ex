@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
           | %{kind: :action, action: String.t(), label: String.t(), icon_fn: atom()}
           | %{kind: :separator}
 
-  @type group :: :tools | :automation | :account
+  @type group :: :tools | :accessories | :automation | :account
 
   @doc "The items of one group, in display order."
   @spec items(group()) :: [item()]
@@ -49,6 +49,15 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
       window("nick-colors", dgettext("ui", "Nick Colors"), :icon_btn_nick_colors),
       window("sound-settings", dgettext("ui", "Sounds"), :icon_btn_sounds),
       window("flood-protection", dgettext("ui", "Flood Protection"), :icon_btn_flood_protection)
+    ]
+  end
+
+  # The programs that make pictures: the server opens them, so a visitor who
+  # asks for one is asked to register instead.
+  def items(:accessories) do
+    [
+      action("open_paint", "Hex Paint", :icon_paint),
+      action("open_ascii_art", dgettext("ui", "ASCII Art"), :icon_ascii_art)
     ]
   end
 

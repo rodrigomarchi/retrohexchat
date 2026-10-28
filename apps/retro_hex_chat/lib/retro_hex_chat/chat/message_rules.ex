@@ -21,7 +21,7 @@ defmodule RetroHexChat.Chat.MessageRules do
 
   alias RetroHexChat.Chat.Content
 
-  @content_formats ~w(irc markdown plain)
+  @content_formats ~w(irc irc_art markdown plain)
 
   @doc """
   The columns every written message has, after the ones that address it:

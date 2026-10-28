@@ -122,7 +122,7 @@ msgstr ""
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr ""
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -511,7 +511,7 @@ msgstr ""
 msgid "Attachment is empty"
 msgstr ""
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr ""
@@ -523,7 +523,7 @@ msgstr ""
 msgid "file"
 msgstr ""
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr ""
@@ -687,4 +687,9 @@ msgstr ""
 #: lib/retro_hex_chat/virtual_space.ex:337
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
+msgstr ""
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
 msgstr ""

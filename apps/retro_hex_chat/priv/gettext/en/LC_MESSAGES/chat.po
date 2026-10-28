@@ -122,7 +122,7 @@ msgstr "Formatting"
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -495,7 +495,7 @@ msgstr "Toggle Conference Camera"
 msgid "Toggle Conference Microphone"
 msgstr "Toggle Conference Microphone"
 
-#: lib/retro_hex_chat/channels/server.ex:1881
+#: lib/retro_hex_chat/channels/server.ex:1796
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -511,7 +511,7 @@ msgstr "Attachment exceeds the %{mb} MB limit"
 msgid "Attachment is empty"
 msgstr "Attachment is empty"
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "Unsupported message format"
@@ -523,7 +523,7 @@ msgstr "Unsupported message format"
 msgid "file"
 msgstr "file"
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "Message exceeds maximum length of %{count} characters"
@@ -688,3 +688,8 @@ msgstr "threw the coin, and it landed silver side up"
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "threw the dice and got %{face}"
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
+msgstr "Text art can have at most %{lines} lines of %{columns} characters"

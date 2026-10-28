@@ -23,6 +23,8 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
        catalogue_path: PublicPages.localized_path("/games"),
        arcade: GameCatalog.arcade_cards(),
        mirc_commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
+       paint_path: PublicPages.localized_path(PublicPages.path(:paint)),
+       ascii_art_path: PublicPages.localized_path(PublicPages.path(:ascii_art)),
        windows: [
          Window.intro(dgettext("landing", "Retro Hex Chat Features"), :icon_chat,
            taskbar_label: dgettext("landing", "Features"),

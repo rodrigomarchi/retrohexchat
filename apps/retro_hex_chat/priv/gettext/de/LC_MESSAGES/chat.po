@@ -127,7 +127,7 @@ msgstr ""
 "Ungültiger Timername. Verwenden Sie nur Buchstaben, Zahlen, Bindestriche, "
 "Unterstriche (maximal %{max_name_length} Zeichen)."
 
-#: lib/retro_hex_chat/chat/content.ex:136
+#: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -502,7 +502,7 @@ msgstr "Toggle Conference Kamera"
 msgid "Toggle Conference Microphone"
 msgstr "Toggle Conference Mikrofon"
 
-#: lib/retro_hex_chat/channels/server.ex:1881
+#: lib/retro_hex_chat/channels/server.ex:1796
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -518,7 +518,7 @@ msgstr "Die Befestigung übersteigt das %{mb} MB Limit"
 msgid "Attachment is empty"
 msgstr "Befestigung ist leer"
 
-#: lib/retro_hex_chat/chat/content.ex:145
+#: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "Ununterstütztes Nachrichtenformat"
@@ -530,7 +530,7 @@ msgstr "Ununterstütztes Nachrichtenformat"
 msgid "file"
 msgstr "Datei"
 
-#: lib/retro_hex_chat/chat/content.ex:140
+#: lib/retro_hex_chat/chat/content.ex:148
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "Nachricht überschreitet die maximale Länge von %{count} Zeichen"
@@ -695,3 +695,8 @@ msgstr "warf die Münze, und es landete Silberseite nach oben"
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "würfeln und erhalten %{face}"
+
+#: lib/retro_hex_chat/chat/content.ex:154
+#, elixir-autogen, elixir-format
+msgid "Text art can have at most %{lines} lines of %{columns} characters"
+msgstr "Textkunst kann maximal %{lines} Zeilen von %{columns} Zeichen haben"

@@ -91,7 +91,9 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
   """
   @spec windows() :: [t()]
   def windows do
-    core() ++ tools() ++ automation() ++ settings() ++ account() ++ calls() ++ admin() ++ system()
+    core() ++
+      tools() ++
+      accessories() ++ automation() ++ settings() ++ account() ++ calls() ++ admin() ++ system()
   end
 
   @doc "One window by id, or nil."
@@ -306,6 +308,23 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
       ),
       window("timers", dgettext("chat", "Timers"), :icon_btn_timers,
         geometry: geometry(120, 90, 720, 470, 520, 320)
+      )
+    ]
+  end
+
+  # The programs that make pictures to post: managed, so closing one unmounts
+  # its island; the drawing waits in the browser as a draft.
+  defp accessories do
+    [
+      window("paint", "Hex Paint", :icon_paint,
+        island: Components.PaintWindow,
+        opener: "open_paint",
+        geometry: geometry(140, 60, 720, 560, 420, 420)
+      ),
+      window("ascii-art", dgettext("chat", "ASCII Art"), :icon_ascii_art,
+        island: Components.AsciiArtWindow,
+        opener: "open_ascii_art",
+        geometry: geometry(180, 80, 760, 560, 420, 420)
       )
     ]
   end

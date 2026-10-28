@@ -15,3 +15,21 @@
   </:item>
   <:item icon={:icon_link}>{dgettext("landing", "Link previews with rich metadata")}</:item>
 </.feature_list>
+<p class="text-xs mt-2 flex flex-wrap gap-x-retro-8 gap-y-retro-2">
+  <.link
+    patch={@paint_path}
+    class="inline-flex items-center gap-1 underline"
+    data-testid="features-paint-link"
+  >
+    <Icons.icon_paint class="w-3 h-3 shrink-0" />
+    {dgettext("landing", "Draw pixel art to post with Hex Paint")}
+  </.link>
+  <.link
+    patch={@ascii_art_path}
+    class="inline-flex items-center gap-1 underline"
+    data-testid="features-ascii-art-link"
+  >
+    <Icons.icon_ascii_art class="w-3 h-3 shrink-0" />
+    {dgettext("landing", "Make ASCII art in mIRC colours")}
+  </.link>
+</p>
