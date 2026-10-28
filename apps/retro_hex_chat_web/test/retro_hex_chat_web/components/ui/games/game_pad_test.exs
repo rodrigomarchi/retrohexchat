@@ -40,6 +40,9 @@ defmodule RetroHexChatWeb.Components.UI.Games.GamePadTest do
     test "names each button by its row, on the row's first key that is not an arrow" do
       assert [%{key: " ", label: "Jump"}] = game_pad(game("hex_jungle")).actions
       assert [%{key: " ", label: "Fire"}] = game_pad(game("pixel_tanks")).actions
+      # Hex Raid fires and lays a mine with two keys: two buttons.
+      assert [%{key: " ", label: "Fire"}, %{key: "Shift", label: "Drop a mine"}] =
+               game_pad(game("hex_raid")).actions
 
       assert [
                %{key: "x", label: "Turn"},
@@ -69,6 +72,24 @@ defmodule RetroHexChatWeb.Components.UI.Games.GamePadTest do
       assert length(Floki.find(doc, "[data-pad-dir]")) == 3
       assert [fire] = Floki.find(doc, ~s([data-pad-action=" "]))
       assert Floki.text(fire) =~ "Fire"
+    end
+
+    test "is dimmed and takes no press before the match starts, and wakes when it runs" do
+      waiting = panel(game("hex_pong"))
+      assert [_] = Floki.find(waiting, ~s([data-pad][data-idle]))
+
+      playing =
+        render_component(&retro_games_panel/1,
+          id: "retro-games-panel",
+          status: "playing",
+          selected_game: game("hex_pong"),
+          difficulty: "normal",
+          canvas_ready: true
+        )
+        |> Floki.parse_document!()
+
+      assert [_] = Floki.find(playing, "[data-pad]")
+      assert [] = Floki.find(playing, "[data-pad][data-idle]")
     end
 
     test "is not there for a game played by touch" do

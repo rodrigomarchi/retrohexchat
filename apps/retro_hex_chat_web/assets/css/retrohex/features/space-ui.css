@@ -462,10 +462,19 @@
   image-rendering: pixelated;
 }
 
+/* A pad waiting for its match to start: dimmed, and no press reaches it. */
+[data-pad][data-idle] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
 /* A key with its action's name instead of a picture: the Retro Games' pad. */
 .pad-button--label {
-  color: var(--space-ui-ink);
-  white-space: nowrap;
+  /* Clear of the key's 10px frame, in the light ink that reads on its wood. */
+  padding: 0 14px;
+  color: var(--space-ui-on-wood);
+  line-height: 1.1;
+  text-align: center;
 }
 
 .pad-button--label[data-pressed] {

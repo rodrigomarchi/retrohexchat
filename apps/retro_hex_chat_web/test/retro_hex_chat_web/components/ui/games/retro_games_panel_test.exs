@@ -468,7 +468,8 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     assert text =~ "5 sections"
     assert text =~ "Move/Speed"
-    assert text =~ "Fire/Mine"
+    assert text =~ "Fire"
+    assert text =~ "Drop a mine"
     assert text =~ "Space"
     assert text =~ "Shift"
   end

@@ -771,6 +771,15 @@ _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("空间",),
         "zh_hant": ("空間",),
     },
+    # Buttons on the screen: Indonesian kept the English "on" ("tombol layar on").
+    r"\bon-screen\b": {
+        "id": ("layar on",),
+    },
+    # Every game, never every time: Chinese gave "每一次用键盘玩的游戏".
+    r"\bevery\s+game\b": {
+        "zh_hans": ("每一次",),
+        "zh_hant": ("每一次",),
+    },
     # A game's piece, never a scrap of something.
     r"\b(?:the|a|each|several)\s+pieces?\b|\bpieces\s+(?:made|fall)\b": {
         "pt": ("pedaço",),

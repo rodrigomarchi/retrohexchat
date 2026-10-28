@@ -97,7 +97,13 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               {dgettext("games", "Loading game...")}
             </div>
           </div>
-          <.game_pad_strip :if={@pad && @status in ["ready", "playing"]} id={"#{@id}-pad"} pad={@pad} />
+          <.game_pad_strip
+            :if={@pad && @status in ["ready", "playing"]}
+            id={"#{@id}-pad"}
+            pad={@pad}
+            game_id={@game.id}
+            idle={@status != "playing"}
+          />
 
           <.inset
             :if={@status == "finished"}
@@ -478,6 +484,11 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
   attr :id, :string, required: true
   attr :pad, :map, required: true
+  attr :game_id, :string, required: true
+
+  attr :idle, :boolean,
+    default: false,
+    doc: "no match running yet: the pad is dimmed and takes no press"
 
   # Under the game, always in sight: the actions under the left thumb, the
   # cross under the right, as a handheld is held. The space's pad art.
@@ -487,32 +498,43 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       id={@id}
       phx-hook="RetroGamePadHook"
       data-pad
+      data-idle={@idle}
       data-testid="retro-game-pad"
       role="group"
       aria-label={dgettext("games", "On-screen controls")}
-      class="space-ui flex shrink-0 select-none items-center justify-between gap-retro-8 bg-black px-retro-8 py-retro-4 touch-none"
+      class="space-ui flex shrink-0 select-none items-center justify-between gap-retro-8 bg-black px-retro-12 py-retro-4 touch-none"
     >
-      <div class="flex flex-wrap items-center gap-retro-6">
-        <.pad_button
-          :for={action <- @pad.actions}
-          action={action.key}
-          label={action.label}
-          class="pad-button--label h-12 min-w-12 px-retro-6"
-        >
-          {action.label}
-        </.pad_button>
-      </div>
-      <.pad_cross
-        dirs={@pad.dirs}
-        labels={
-          %{
-            "up" => dgettext("games", "Up"),
-            "down" => dgettext("games", "Down"),
-            "left" => dgettext("games", "Left"),
-            "right" => dgettext("games", "Right")
+      <%!-- The keys are left alone by later renders: a finger holding one keeps
+            its pressed look (`data-pressed`, set by the pad's script). Their id
+            names the game, so another game's pad is drawn anew. --%>
+      <div
+        id={"#{@id}-keys-#{@game_id}"}
+        phx-update="ignore"
+        class="flex min-w-0 flex-1 items-center justify-between gap-retro-8"
+      >
+        <%!-- Two columns: four actions at most, two rows, a long name on two lines. --%>
+        <div class="grid min-w-0 flex-1 grid-cols-2 gap-retro-6 sm:max-w-[420px]">
+          <.pad_button
+            :for={action <- @pad.actions}
+            action={action.key}
+            label={action.label}
+            class="pad-button--label h-12 w-full"
+          >
+            {action.label}
+          </.pad_button>
+        </div>
+        <.pad_cross
+          dirs={@pad.dirs}
+          labels={
+            %{
+              "up" => dgettext("games", "Up"),
+              "down" => dgettext("games", "Down"),
+              "left" => dgettext("games", "Left"),
+              "right" => dgettext("games", "Right")
+            }
           }
-        }
-      />
+        />
+      </div>
     </div>
     """
   end
@@ -666,7 +688,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
            ] do
     [
       %{label: dgettext("games", "Move/Speed"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
-      %{label: dgettext("games", "Fire/Mine"), keys: ["Space", "Shift"]}
+      # Two keys, two moves: each its own row, so the pad has a button for each.
+      %{label: dgettext("games", "Fire"), keys: ["Space"]},
+      %{label: dgettext("games", "Drop a mine"), keys: ["Shift", "Q"]}
     ]
   end
 

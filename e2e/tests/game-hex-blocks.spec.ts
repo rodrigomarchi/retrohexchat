@@ -1,7 +1,7 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N89 [done] Hex Blocks on the desktop: opened from the Retro Games folder, the count runs out, the arrows move the piece and the space bar drops it, ended with End and written down
- * @flow N90 [done] Hex Blocks on a phone: the buttons stand under the well and fit the screen, a tap drops a piece, two fingers hold two buttons at once, and the page does not scroll
+ * @flow N89 [done] Hex Blocks on the desktop: opened from the Retro Games folder, the count runs out, the pad and End stand in sight, the arrows move the piece and the space bar drops it, ended with End and written down
+ * @flow N90 [done] Hex Blocks on a phone: the pad every keyboard game shares stands under the game and fits the screen, a tap on its drop button drops a piece, two fingers hold the cross and a button at once, and the page does not scroll
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -14,31 +14,12 @@ import { waitForView } from "../helpers/liveView";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 
-// Standing up (400×640): the buttons are 60 pixels, the first row at y 486
-// (left at x 44, drop at x 296), the second at y 560 (turn clockwise at x 170).
-const BUTTON = (x: number, y: number) => ({ x: x + 30, y: y + 30 });
-const LEFT = BUTTON(44, 486);
-const DROP = BUTTON(296, 486);
-const TURN = BUTTON(170, 560);
-
 /** The picture the game draws: its canvas has twice its pixels. */
 const viewOf = (canvas: Locator) =>
   canvas.evaluate((c: HTMLCanvasElement) => ({
     width: c.width / 2,
     height: c.height / 2,
   }));
-
-/** Where a point of the table is on the page, fitted into its canvas and centred. */
-async function pagePoint(canvas: Locator, point: { x: number; y: number }) {
-  const box = await canvas.boundingBox();
-  if (!box) throw new Error("the canvas has no box");
-  const view = await viewOf(canvas);
-  const scale = Math.min(box.width / view.width, box.height / view.height);
-  return {
-    x: box.x + (box.width - view.width * scale) / 2 + point.x * scale,
-    y: box.y + (box.height - view.height * scale) / 2 + point.y * scale,
-  };
-}
 
 const pixels = (canvas: Locator) =>
   canvas.evaluate((c: HTMLCanvasElement) => c.toDataURL("image/png"));
@@ -48,6 +29,13 @@ async function changes(canvas: Locator, act: () => Promise<void>) {
   const before = await pixels(canvas);
   await act();
   await expect.poll(() => pixels(canvas)).not.toBe(before);
+}
+
+/** The middle of an element on the page. */
+async function centreOf(element: Locator) {
+  const box = await element.boundingBox();
+  if (!box) throw new Error("the element has no box");
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
 }
 
 async function startAndWaitForThePiece(game: Page): Promise<Locator> {
@@ -72,6 +60,13 @@ test.describe("Hex Blocks", () => {
       });
       const canvas = await startAndWaitForThePiece(game);
       expect(await viewOf(canvas)).toEqual({ width: 640, height: 480 });
+      // The pad stands under the game on a computer too, and End stays in sight.
+      await expect(game.getByTestId("retro-game-pad")).toBeInViewport({
+        ratio: 1,
+      });
+      await expect(game.getByTestId("retro-game-end-match")).toBeInViewport({
+        ratio: 1,
+      });
       await shot(game, "hex-blocks-falling");
 
       await changes(canvas, () => game.keyboard.press("ArrowLeft"));
@@ -92,7 +87,7 @@ test.describe("Hex Blocks", () => {
 
   test.describe("on a phone", () => {
     const PIXEL_5 = devices["Pixel 5"];
-    test("fits the screen and is played with two fingers", async ({
+    test("fits the screen and is played with two fingers on the pad", async ({
       browser,
     }) => {
       const ctx = await browser.newContext({
@@ -114,36 +109,36 @@ test.describe("Hex Blocks", () => {
         await page.goto("/play/hex_blocks");
         await waitForView(page);
         const canvas = await startAndWaitForThePiece(page);
-        // The buttons stand under the well on a phone held upright.
-        expect(await viewOf(canvas)).toEqual({ width: 400, height: 640 });
+        // The table stands up on a phone held upright, the pad under it.
+        expect(await viewOf(canvas)).toEqual({ width: 400, height: 484 });
+        const pad = page.getByTestId("retro-game-pad");
         await expect(canvas).toBeInViewport({ ratio: 1 });
+        await expect(pad).toBeInViewport({ ratio: 1 });
         await shot(page, "hex-blocks-phone");
 
         const scrolled = await page.evaluate(() => window.scrollY);
-        const drop = await pagePoint(canvas, DROP);
-        await changes(canvas, () => page.touchscreen.tap(drop.x, drop.y));
+        await changes(canvas, () => pad.locator('[data-pad-action=" "]').tap());
 
-        // Two thumbs at once: one holds left, the other holds the turn; both buttons sink.
+        // Two thumbs at once: one holds left on the cross, the other the turn; both sink.
+        const left = pad.locator('[data-pad-dir="left"]');
+        const turn = pad.locator('[data-pad-action="x"]');
+        const [l, t] = [await centreOf(left), await centreOf(turn)];
         const cdp = await ctx.newCDPSession(page);
-        const left = await pagePoint(canvas, LEFT);
-        const turn = await pagePoint(canvas, TURN);
-        const both = [
-          { x: left.x, y: left.y, id: 1 },
-          { x: turn.x, y: turn.y, id: 2 },
-        ];
-        await changes(canvas, () =>
-          cdp.send("Input.dispatchTouchEvent", {
-            type: "touchStart",
-            touchPoints: both,
-          }),
-        );
-        await shot(canvas, "hex-blocks-phone-two-fingers");
-        await changes(canvas, () =>
-          cdp.send("Input.dispatchTouchEvent", {
-            type: "touchEnd",
-            touchPoints: [],
-          }),
-        );
+        await cdp.send("Input.dispatchTouchEvent", {
+          type: "touchStart",
+          touchPoints: [
+            { x: l.x, y: l.y, id: 1 },
+            { x: t.x, y: t.y, id: 2 },
+          ],
+        });
+        await expect(left).toHaveAttribute("data-pressed", "");
+        await expect(turn).toHaveAttribute("data-pressed", "");
+        await shot(page, "hex-blocks-phone-two-fingers");
+        await cdp.send("Input.dispatchTouchEvent", {
+          type: "touchEnd",
+          touchPoints: [],
+        });
+        await expect(pad.locator("[data-pressed]")).toHaveCount(0);
         expect(await page.evaluate(() => window.scrollY)).toBe(scrolled);
       } finally {
         await ctx.close();

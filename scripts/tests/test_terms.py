@@ -121,6 +121,8 @@ class MissingTermsTest(unittest.TestCase):
         self.assertEqual(missing_terms("fill a row to clear it", "preencha uma linha para limpá-la", "pt_BR"), [])
         self.assertTrue(missing_terms("Hold the key to keep moving", "Halten Sie den Schlüssel", "de"))
         self.assertTrue(missing_terms("Keep the piece for later", "Guarde o pedaço para mais tarde", "pt_BR"))
+        self.assertTrue(missing_terms("Every game has on-screen buttons", "Setiap permainan memiliki tombol layar on", "id"))
+        self.assertTrue(missing_terms("Every game played with the keyboard", "每一次用键盘玩的游戏", "zh_hans"))
         self.assertTrue(missing_terms("Pieces fall into a well", "六角形の部分がよく落ちます", "ja"))
         self.assertTrue(missing_terms("Pieces fall into a well", "piezas caen en un bien formado", "es"))
         self.assertTrue(missing_terms("Pieces made of hexagons fall", "用六边形制成的碎片掉入井中", "zh_hans"))

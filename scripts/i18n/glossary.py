@@ -756,6 +756,14 @@ _ROWS = {
     # never a theatre piece or a drop of water; the well is never "well done".
     "Hexagon pieces falling into a honeycomb": ("Peças de hexágonos caindo num favo de mel", "Peças de hexágonos a cair num favo de mel", "Piezas de hexágonos que caen en un panal", "Des pièces hexagonales qui tombent dans une ruche", "Sechseck-Teile fallen in eine Wabe", "Pezzi esagonali che cadono in un alveare", "Zeshoekige stukken vallen in een honingraat", "Sześciokątne klocki spadają w plaster miodu", "Шестиугольные фигуры падают в соты", "Keping segi enam jatuh ke sarang lebah", "ハニカムに落ちる六角形のピース", "落入蜂巢的六边形方块", "落入蜂巢的六邊形方塊"),
     "On a phone":     ("No celular", "No telemóvel", "En el móvil", "Sur un téléphone", "Auf dem Handy", "Sul telefono", "Op een telefoon", "Na telefonie", "На телефоне", "Di ponsel", "スマホでは", "在手机上", "在手機上"),
+    # The pad under a Retro Game: its whole, and the cross's four ways.
+    "On-screen controls": ("Controles na tela", "Controlos no ecrã", "Controles en pantalla", "Commandes à l'écran", "Bildschirmsteuerung", "Comandi a schermo", "Bediening op het scherm", "Sterowanie ekranowe", "Экранное управление", "Kontrol di layar", "画面上の操作", "屏幕控制", "螢幕控制"),
+    "Up":             ("Para cima", "Para cima", "Arriba", "Haut", "Hoch", "Su", "Omhoog", "W górę", "Вверх", "Atas", "上", "上", "上"),
+    "Down":           ("Para baixo", "Para baixo", "Abajo", "Bas", "Runter", "Giù", "Omlaag", "W dół", "Вниз", "Bawah", "下", "下", "下"),
+    "Left":           ("Esquerda", "Esquerda", "Izquierda", "Gauche", "Links", "Sinistra", "Links", "W lewo", "Влево", "Kiri", "左", "左", "左"),
+    "Right":          ("Direita", "Direita", "Derecha", "Droite", "Rechts", "Destra", "Rechts", "W prawo", "Вправо", "Kanan", "右", "右", "右"),
+    # Hex Raid's second key: a mine laid, never "minha" (Portuguese "my").
+    "Drop a mine":    ("Soltar uma mina", "Largar uma mina", "Soltar una mina", "Larguer une mine", "Mine legen", "Sgancia una mina", "Mijn leggen", "Zrzuć minę", "Сбросить мину", "Jatuhkan ranjau", "機雷を落とす", "投放水雷", "投放水雷"),
     "Turn the other way": ("Girar para o outro lado", "Rodar para o outro lado", "Girar al otro lado", "Tourner dans l'autre sens", "In die andere Richtung drehen", "Ruota nell'altro senso", "Andersom draaien", "Obróć w drugą stronę", "Повернуть в другую сторону", "Putar ke arah lain", "逆に回転", "反向旋转", "反向旋轉"),
     "Fall faster":    ("Cair mais rápido", "Cair mais depressa", "Caer más rápido", "Tomber plus vite", "Schneller fallen", "Caduta più veloce", "Sneller vallen", "Szybsze opadanie", "Ускорить падение", "Jatuh lebih cepat", "速く落とす", "加速下落", "加速下落"),
     "Drop to the bottom": ("Soltar até o fundo", "Largar até ao fundo", "Soltar hasta el fondo", "Lâcher jusqu'en bas", "Ganz nach unten fallen lassen", "Fai cadere sul fondo", "Naar de bodem laten vallen", "Upuść na dno", "Сбросить вниз", "Jatuhkan ke dasar", "一気に落とす", "直接落到底", "直接落到底"),

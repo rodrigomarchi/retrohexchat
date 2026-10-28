@@ -135,7 +135,7 @@ test.describe("The space's pixel-art interface", () => {
       ).toBeVisible();
       await expect(toggle.locator(".space-icon--fullscreen-exit")).toBeHidden();
       // The pad's keys are a thumb wide.
-      for (const key of await space.locator(".space-pad-button").all()) {
+      for (const key of await space.locator(".pad-button").all()) {
         const box = (await key.boundingBox())!;
         expect(Math.min(box.width, box.height)).toBeGreaterThanOrEqual(44);
       }
