@@ -15,6 +15,7 @@ import {
   drawGlitchBanner,
   drawParticleDots,
   drawScanlines,
+  drawTopLabel,
   drawVignette,
   drawWaiting,
 } from "../core/render.js";
@@ -232,13 +233,7 @@ export function drawHUD(ctx, state, colors) {
   drawDigit(ctx, state.score2, CANVAS_W - 40, 8, pixelSize);
 
   // Round indicator (center top)
-  ctx.shadowColor = colors.muted;
-  ctx.shadowBlur = 4;
-  ctx.fillStyle = colors.muted;
-  ctx.font = "12px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  ctx.fillText(jt`ROUND ${state.round + 1}`, CANVAS_W / 2, 8);
+  drawTopLabel(ctx, jt`ROUND ${state.round + 1}`, colors.muted, CANVAS_W, 8);
 
   ctx.shadowBlur = 0;
   ctx.shadowColor = "transparent";

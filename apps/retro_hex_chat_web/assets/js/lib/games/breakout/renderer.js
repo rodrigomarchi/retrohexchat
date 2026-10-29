@@ -16,18 +16,8 @@ import {
 } from "./physics.js";
 import { t } from "../../i18n.js";
 import { gameColor } from "../../game_colors.js";
-import {
-  drawBackground,
-  drawCountdown,
-  drawDigit,
-  drawGetReady,
-  drawGlitchBanner,
-  drawGrid,
-  drawParticleDots,
-  drawScanlines,
-  drawVignette,
-  drawWaiting,
-} from "../core/render.js";
+import { drawDigit, drawGlitchBanner, drawParticleDots } from "../core/render.js";
+import { drawArena, drawGlass, drawLifeSquares, drawStartOverlay } from "../core/paddle_render.js";
 import { drawNeonBall, drawNeonPaddle } from "../core/neon.js";
 
 export { neonColors as getColors } from "../core/neon.js";
@@ -40,8 +30,7 @@ export { neonColors as getColors } from "../core/neon.js";
  * @param {number} time - timestamp for animations
  */
 export function render(ctx, state, colors, time) {
-  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
-  drawGrid(ctx, colors, CANVAS_W, CANVAS_H, { alpha: 0.2 });
+  drawArena(ctx, colors, CANVAS_W, CANVAS_H, 0.2);
 
   // Draw blocks
   if (state.blocks) {
@@ -69,21 +58,17 @@ export function render(ctx, state, colors, time) {
   }
 
   drawScore(ctx, state.score, colors);
-  // ex_dna:disable-for-lines:8 this game's own drawing
   drawLives(ctx, state.lives, colors);
 
-  if (state.phase === PHASE.COUNTDOWN) {
-    drawCountdown(ctx, state.countdown, colors, time, CANVAS_W, CANVAS_H);
-  } else if (state.phase === PHASE.SERVING) {
-    drawGetReady(ctx, colors, time, CANVAS_W, CANVAS_H);
-  } else if (state.phase === PHASE.WAITING) {
-    drawWaiting(ctx, colors, time, CANVAS_W, CANVAS_H, { partner: true });
-  } else if (state.phase === PHASE.FINISHED) {
+  const screen = { width: CANVAS_W, height: CANVAS_H, waiting: { partner: true } };
+  if (
+    !drawStartOverlay(ctx, state, colors, time, PHASE, screen) &&
+    state.phase === PHASE.FINISHED
+  ) {
     drawFinished(ctx, state.won, colors, time);
   }
 
-  drawScanlines(ctx, CANVAS_W, CANVAS_H);
-  drawVignette(ctx, CANVAS_W, CANVAS_H);
+  drawGlass(ctx, CANVAS_W, CANVAS_H);
 }
 
 /**
@@ -155,22 +140,7 @@ export function drawScore(ctx, score, colors) {
  * Draw lives as small ball icons in bottom-left corner.
  */
 export function drawLives(ctx, lives, colors) {
-  const startX = 10;
-  const y = CANVAS_H - 10;
-  const size = 6;
-  const gap = 12;
-
-  ctx.shadowColor = colors.warning;
-  ctx.shadowBlur = 4;
-  // ex_dna:disable-for-lines:13 this game's own drawing
-  ctx.fillStyle = colors.warning;
-
-  for (let i = 0; i < Math.min(lives, INITIAL_LIVES); i++) {
-    ctx.fillRect(startX + i * gap, y - size, size, size);
-  }
-
-  ctx.shadowBlur = 0;
-  ctx.shadowColor = "transparent";
+  drawLifeSquares(ctx, 10, CANVAS_H - 10, lives, INITIAL_LIVES, colors.warning);
 }
 
 /**

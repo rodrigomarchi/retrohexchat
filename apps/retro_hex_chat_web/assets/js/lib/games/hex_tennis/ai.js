@@ -17,7 +17,7 @@ import {
   SERVICE_LINE_TOP,
   HIT_ZONE_H,
 } from "./physics.js";
-import { aiRequest, aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
+import { TableAI, clamp, createApproachAim, normalizeDifficulty, toward } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = 12;
 const PLAYER_MIN_X = COURT_LEFT + PLAYER_HALF_SIZE;
@@ -83,27 +83,32 @@ export function createTennisAI(options = {}) {
   return new TennisAI(options);
 }
 
-export class TennisAI {
+export class TennisAI extends TableAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeTennisAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
+    super(options, normalizeTennisAIDifficulty, TENNIS_AI_DIFFICULTIES);
     this.serveDelay = 0;
     this._lastServeKey = null;
     this._target = null;
+    this.aim = createApproachAim();
+    this.recovery = createApproachAim();
   }
 
   /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
+   * A new serve, point or match: no target held, no serve under way, and the
+   * next approach and recovery draw fresh errors.
    * @returns {void}
    */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizeTennisAIDifficulty(difficulty);
+  forget() {
+    this._target = null;
+    this.serveDelay = 0;
+    this._lastServeKey = null;
+    this.aim.reset();
+    this.recovery.reset();
   }
 
   /**
@@ -114,18 +119,19 @@ export class TennisAI {
    * @returns {{up: boolean, down: boolean, left: boolean, right: boolean, serve: boolean}}
    */
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
+    const { state, player } = this.startTurn(request);
 
-    this.frame++;
+    const rally = state?.phase === PHASE.RALLY;
+    this.aim.track(rally && isBallIncoming(state, player));
+    // Each stretch of the rally with the ball going away is one recovery, with one error
+    this.recovery.track(rally && !isBallIncoming(state, player));
 
     if (!state || (state.phase !== PHASE.SERVING && state.phase !== PHASE.RALLY)) {
       this._target = null;
       return NEUTRAL_INPUTS;
     }
 
-    const difficulty = normalizeTennisAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-    const config = TENNIS_AI_DIFFICULTIES[difficulty];
+    const config = this.rowFor(request);
 
     if (state.phase === PHASE.SERVING) {
       return this._servingInputs(state, player, config);
@@ -186,8 +192,8 @@ export class TennisAI {
       const recovery = recoveryPosition(state, player, config.recoverBias);
 
       const x = predicted
-        ? predicted.x + errorOffset(config.targetErrorPx, this.rng)
-        : recovery.x + errorOffset(config.targetErrorPx * 0.35, this.rng);
+        ? predicted.x + this.aim.hold(() => errorOffset(config.targetErrorPx, this.rng))
+        : recovery.x + this.recovery.hold(() => errorOffset(config.targetErrorPx * 0.35, this.rng));
 
       const y = predicted ? clamp(predicted.y, playerMinY(player), playerMaxY(player)) : recovery.y;
 

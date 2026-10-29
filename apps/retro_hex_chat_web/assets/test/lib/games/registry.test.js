@@ -21,6 +21,17 @@ function canvas() {
   return c;
 }
 
+/** A game's engine for a solo match, on a seed of its own. */
+function soloEngine(gameId) {
+  return createGameEngine({
+    canvas: canvas(),
+    gameId,
+    mode: "solo",
+    transport: createLocalTransport(),
+    engineOptions: { seed: 7 },
+  });
+}
+
 describe("the games registry", () => {
   it("names every game folder, and only game folders", () => {
     const folders = readdirSync(GAMES_DIR, { withFileTypes: true })
@@ -52,13 +63,7 @@ describe("the games registry", () => {
     "plays %s, a one-player game, solo and without an opponent",
     async (id) => {
       expect(supportsSolo(id)).toBe(true);
-      const engine = await createGameEngine({
-        canvas: canvas(),
-        gameId: id,
-        mode: "solo",
-        transport: createLocalTransport(),
-        engineOptions: { seed: 7 },
-      });
+      const engine = await soloEngine(id);
       expect(engine.opponentController ?? null).toBeNull();
       engine.stop();
     },
@@ -67,13 +72,7 @@ describe("the games registry", () => {
   it.each(ENTRIES.filter(([, game]) => game.solo && !game.soloOnly))(
     "gives a solo %s an opponent of its own",
     async (id) => {
-      const engine = await createGameEngine({
-        canvas: canvas(),
-        gameId: id,
-        mode: "solo",
-        transport: createLocalTransport(),
-        engineOptions: { seed: 7 },
-      });
+      const engine = await soloEngine(id);
       expect(engine.opponentController).toBeTruthy();
       engine.stop();
     },

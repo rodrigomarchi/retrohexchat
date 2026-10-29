@@ -7,11 +7,37 @@ import {
   encodeGameReady,
   getMessageType,
 } from "../../../../js/lib/games/pong/protocol.js";
+import {
+  describeHandshake,
+  expectCloseAfterRoundTrip,
+  expectGameMessageRange,
+  expectNumbered,
+  itFramesMessages,
+  itRoundTripsEach,
+  roundTrip,
+} from "../../../support/games/protocol_tests.js";
+
+/** A snapshot with every field zero, but for `overrides`. */
+function makeState(overrides = {}) {
+  return {
+    ballX: 0,
+    ballY: 0,
+    ballVX: 0,
+    ballVY: 0,
+    paddle1Y: 0,
+    paddle2Y: 0,
+    score1: 0,
+    score2: 0,
+    phase: PHASE.WAITING,
+    countdown: 0,
+    ...overrides,
+  };
+}
 
 describe("pong_protocol", () => {
   describe("GAME_STATE encode/decode", () => {
     it("roundtrips a full game state", () => {
-      const state = {
+      const state = makeState({
         ballX: 320.5,
         ballY: 240.25,
         ballVX: 4.5,
@@ -21,158 +47,52 @@ describe("pong_protocol", () => {
         score1: 7,
         score2: 11,
         phase: PHASE.PLAYING,
-        countdown: 0,
-      };
+      });
 
       const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(25);
 
-      const decoded = SNAPSHOT.decode(buf);
-      expect(decoded.ballX).toBeCloseTo(320.5, 1);
-      expect(decoded.ballY).toBeCloseTo(240.25, 1);
-      expect(decoded.ballVX).toBeCloseTo(4.5, 1);
-      expect(decoded.ballVY).toBeCloseTo(-2.75, 1);
-      expect(decoded.paddle1Y).toBe(200);
-      expect(decoded.paddle2Y).toBe(180);
-      expect(decoded.score1).toBe(7);
-      expect(decoded.score2).toBe(11);
-      expect(decoded.phase).toBe(PHASE.PLAYING);
-      expect(decoded.countdown).toBe(0);
+      expect(SNAPSHOT.decode(buf)).toMatchObject({
+        ballX: expect.closeTo(320.5, 1),
+        ballY: expect.closeTo(240.25, 1),
+        ballVX: expect.closeTo(4.5, 1),
+        ballVY: expect.closeTo(-2.75, 1),
+        paddle1Y: 200,
+        paddle2Y: 180,
+        score1: 7,
+        score2: 11,
+        phase: PHASE.PLAYING,
+        countdown: 0,
+      });
     });
 
-    it("produces exactly 25 bytes", () => {
-      const state = {
-        ballX: 0,
-        ballY: 0,
-        ballVX: 0,
-        ballVY: 0,
-        paddle1Y: 0,
-        paddle2Y: 0,
-        score1: 0,
-        score2: 0,
-        phase: PHASE.WAITING,
-        countdown: 0,
-      };
-      expect(SNAPSHOT.encode(state).byteLength).toBe(25);
-    });
-
-    it("sets type byte to GAME_STATE (0x80)", () => {
-      const state = {
-        ballX: 0,
-        ballY: 0,
-        ballVX: 0,
-        ballVY: 0,
-        paddle1Y: 0,
-        paddle2Y: 0,
-        score1: 0,
-        score2: 0,
-        phase: 0,
-        countdown: 0,
-      };
-      const buf = SNAPSHOT.encode(state);
-      expect(new DataView(buf).getUint8(0)).toBe(0x80);
+    itFramesMessages(SNAPSHOT, {
+      sample: makeState(),
+      bytes: 25,
+      type: 0x80,
+      short: [24, 0],
+      length: 25,
+      wrongType: 0x81,
     });
 
     it("rounds paddle positions to nearest integer", () => {
-      const state = {
-        ballX: 0,
-        ballY: 0,
-        ballVX: 0,
-        ballVY: 0,
-        paddle1Y: 199.7,
-        paddle2Y: 300.3,
-        score1: 0,
-        score2: 0,
-        phase: 0,
-        countdown: 0,
-      };
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
+      const decoded = roundTrip(SNAPSHOT, makeState({ paddle1Y: 199.7, paddle2Y: 300.3 }));
       expect(decoded.paddle1Y).toBe(200);
       expect(decoded.paddle2Y).toBe(300);
     });
 
     it("handles max paddle Y (480)", () => {
-      const state = {
-        ballX: 0,
-        ballY: 0,
-        ballVX: 0,
-        ballVY: 0,
-        paddle1Y: 480,
-        paddle2Y: 0,
-        score1: 0,
-        score2: 0,
-        phase: 0,
-        countdown: 0,
-      };
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-      expect(decoded.paddle1Y).toBe(480);
+      expect(roundTrip(SNAPSHOT, makeState({ paddle1Y: 480 })).paddle1Y).toBe(480);
     });
 
-    it("handles all phase values", () => {
-      for (const [, value] of Object.entries(PHASE)) {
-        const state = {
-          ballX: 0,
-          ballY: 0,
-          ballVX: 0,
-          ballVY: 0,
-          paddle1Y: 0,
-          paddle2Y: 0,
-          score1: 0,
-          score2: 0,
-          phase: value,
-          countdown: 0,
-        };
-        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-        expect(decoded.phase).toBe(value);
-      }
-    });
-
-    it("handles countdown values 0-3", () => {
-      for (let cd = 0; cd <= 3; cd++) {
-        const state = {
-          ballX: 0,
-          ballY: 0,
-          ballVX: 0,
-          ballVY: 0,
-          paddle1Y: 0,
-          paddle2Y: 0,
-          score1: 0,
-          score2: 0,
-          phase: PHASE.COUNTDOWN,
-          countdown: cd,
-        };
-        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-        expect(decoded.countdown).toBe(cd);
-      }
+    itRoundTripsEach(SNAPSHOT, makeState, {
+      phase: Object.values(PHASE),
+      countdown: { values: [0, 1, 2, 3], with: { phase: PHASE.COUNTDOWN } },
     });
 
     it("handles negative ball velocities", () => {
-      const state = {
-        ballX: 100,
-        ballY: 200,
-        ballVX: -5.5,
-        ballVY: -3.25,
-        paddle1Y: 0,
-        paddle2Y: 0,
-        score1: 0,
-        score2: 0,
-        phase: 0,
-        countdown: 0,
-      };
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-      expect(decoded.ballVX).toBeCloseTo(-5.5, 1);
-      expect(decoded.ballVY).toBeCloseTo(-3.25, 1);
-    });
-
-    it("returns null for buffer too small", () => {
-      expect(SNAPSHOT.decode(new ArrayBuffer(24))).toBeNull();
-      expect(SNAPSHOT.decode(new ArrayBuffer(0))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(25);
-      new DataView(buf).setUint8(0, 0x81);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
+      const state = makeState({ ballX: 100, ballY: 200, ballVX: -5.5, ballVY: -3.25 });
+      expectCloseAfterRoundTrip(SNAPSHOT, state, ["ballVX", "ballVY"]);
     });
   });
 
@@ -180,59 +100,32 @@ describe("pong_protocol", () => {
     it("roundtrips a game end", () => {
       const buf = GAME_END.encode({ score1: 11, score2: 7, winner: 1 });
       expect(buf.byteLength).toBe(4);
-      const decoded = GAME_END.decode(buf);
-      expect(decoded.score1).toBe(11);
-      expect(decoded.score2).toBe(7);
-      expect(decoded.winner).toBe(1);
+      expect(GAME_END.decode(buf)).toMatchObject({ score1: 11, score2: 7, winner: 1 });
     });
 
     it("roundtrips player 2 win", () => {
-      const decoded = GAME_END.decode(GAME_END.encode({ score1: 9, score2: 11, winner: 2 }));
-      expect(decoded.score1).toBe(9);
-      expect(decoded.score2).toBe(11);
-      expect(decoded.winner).toBe(2);
+      const end = { score1: 9, score2: 11, winner: 2 };
+      expect(roundTrip(GAME_END, end)).toMatchObject(end);
     });
 
-    it("sets type byte to GAME_END (0x83)", () => {
-      const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 1 });
-      expect(new DataView(buf).getUint8(0)).toBe(0x83);
-    });
-
-    it("returns null for buffer too small", () => {
-      expect(GAME_END.decode(new ArrayBuffer(3))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(4);
-      new DataView(buf).setUint8(0, 0x80);
-      expect(GAME_END.decode(buf)).toBeNull();
+    itFramesMessages(GAME_END, {
+      sample: { score1: 0, score2: 0, winner: 1 },
+      type: 0x83,
+      short: [3],
+      length: 4,
+      wrongType: 0x80,
     });
   });
 
-  describe("GAME_READY encode", () => {
-    it("produces 1 byte with type GAME_READY", () => {
-      const buf = encodeGameReady();
-      expect(buf.byteLength).toBe(1);
-      expect(new DataView(buf).getUint8(0)).toBe(0x84);
-    });
-  });
-
-  describe("getMessageType", () => {
-    it("returns null for empty buffer", () => {
-      expect(getMessageType(new ArrayBuffer(0))).toBeNull();
-    });
-  });
+  describeHandshake({ encodeGameReady, getMessageType, MSG_TYPE });
 
   describe("protocol constants", () => {
     it("all message types are >= 0x80 (game message range)", () => {
-      for (const type of Object.values(MSG_TYPE)) {
-        expect(type).toBeGreaterThanOrEqual(0x80);
-      }
+      expectGameMessageRange(MSG_TYPE);
     });
 
     it("phase enum has 6 values (0-5)", () => {
-      expect(Object.keys(PHASE)).toHaveLength(6);
-      expect(PHASE.WAITING).toBe(0);
+      expectNumbered(PHASE, 6);
       expect(PHASE.FINISHED).toBe(5);
     });
   });

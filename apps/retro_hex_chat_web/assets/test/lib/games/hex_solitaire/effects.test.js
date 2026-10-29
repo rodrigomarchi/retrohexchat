@@ -19,15 +19,9 @@ import {
 import { layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
 import { CARD, EVENT, FX, MODE } from "../../../../js/lib/games/hex_solitaire/protocol.js";
 import { applyMove, deal } from "../../../../js/lib/games/hex_solitaire/rules.js";
+import { card } from "../../../support/games/card_tables.js";
+import { table } from "./tables.js";
 
-const card = (rank, suit) => suit * 13 + rank - 1;
-function table({ waste = [], foundations = [[], [], [], []], columns = [] } = {}) {
-  const tableau = Array.from({ length: 7 }, (_, i) => ({
-    down: columns[i]?.down ?? [],
-    up: columns[i]?.up ?? [],
-  }));
-  return { mode: MODE.DRAW1, stock: [], waste, fan: waste.length ? 1 : 0, foundations, tableau };
-}
 const random = () => createRng(9).next;
 
 describe("the deal", () => {
@@ -62,17 +56,21 @@ describe("an action's effects", () => {
   const move = { from: { pile: "tableau", col: 0, index: 0 }, to: { pile: "foundation", suit: 1 } };
   const after = applyMove(before, move).state;
   const events = EVENT.FOUNDATION | EVENT.FLIP;
-
-  it("flies the card to its foundation, turns the one left and throws sparks", () => {
-    const fx = createEffects();
+  /** The move's effects, from the table before it to the table after, at `now`. */
+  const moved = (fx, { now = 0, drag } = {}) =>
     actionEffects(fx, {
       before,
       after,
       action: { type: "move", move },
       events,
-      now: 10,
+      now,
+      drag,
       random: random(),
     });
+
+  it("flies the card to its foundation, turns the one left and throws sparks", () => {
+    const fx = createEffects();
+    moved(fx, { now: 10 });
     const kinds = fx.list.map((e) => e.kind).sort();
     expect(kinds).toEqual(["flight", "flip", "sparks"]);
     const trip = fx.list.find((e) => e.kind === "flight");
@@ -86,14 +84,7 @@ describe("an action's effects", () => {
 
   it("turns a card over back first, then face, and sparks only once it has landed", () => {
     const fx = createEffects();
-    actionEffects(fx, {
-      before,
-      after,
-      action: { type: "move", move },
-      events,
-      now: 10,
-      random: random(),
-    });
+    moved(fx, { now: 10 });
     const flip = fx.list.find((e) => e.kind === "flip");
     expect([flipShowsFace(flip, 10), flipShowsFace(flip, 10 + FX.flip)]).toEqual([false, true]);
     const spark = fx.list.find((e) => e.kind === "sparks");
@@ -106,15 +97,7 @@ describe("an action's effects", () => {
   it("flies a dropped card from where the finger let it go", () => {
     const fx = createEffects();
     const drag = { x: 300, y: 200, cards: [card(1, 1)], from: move.from };
-    actionEffects(fx, {
-      before,
-      after,
-      action: { type: "move", move },
-      events,
-      now: 0,
-      drag,
-      random: random(),
-    });
+    moved(fx, { drag });
     expect(
       flightAt(
         fx.list.find((e) => e.kind === "flight"),
@@ -158,14 +141,7 @@ describe("an action's effects", () => {
 
   it("ends every movement at once when the next gesture comes", () => {
     const fx = createEffects();
-    actionEffects(fx, {
-      before,
-      after,
-      action: { type: "move", move },
-      events,
-      now: 0,
-      random: random(),
-    });
+    moved(fx);
     settle(fx);
     expect(flying(fx).size).toBe(0);
     expect(fx.list.map((e) => e.kind)).toEqual(["sparks"]);
@@ -174,35 +150,14 @@ describe("an action's effects", () => {
   it("draws the same sparks for the same seed", () => {
     const one = createEffects();
     const two = createEffects();
-    actionEffects(one, {
-      before,
-      after,
-      action: { type: "move", move },
-      events,
-      now: 0,
-      random: random(),
-    });
-    actionEffects(two, {
-      before,
-      after,
-      action: { type: "move", move },
-      events,
-      now: 0,
-      random: random(),
-    });
+    moved(one);
+    moved(two);
     expect(one.list).toEqual(two.list);
   });
 
   it("puts the cards straight in their places with motion reduced", () => {
     const fx = createEffects({ reduced: true });
-    actionEffects(fx, {
-      before,
-      after,
-      action: { type: "move", move },
-      events,
-      now: 0,
-      random: random(),
-    });
+    moved(fx);
     expect(flying(fx).size).toBe(0);
     expect(fx.list.map((e) => e.kind)).toEqual(["sparks"]);
   });

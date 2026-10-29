@@ -20,6 +20,24 @@ export function matchResult(p1, p2, winner) {
 }
 
 /**
+ * The end of a match scored as two numbers: the guest is told
+ * `{ score1, score2, winner }`, and the page the same score as a result.
+ * @param {object} game
+ * @param {number} score1
+ * @param {number} score2
+ * @param {number} winner
+ * @param {{ broadcast?: boolean }} [options] - `broadcast: false` leaves out
+ *   the last snapshot, for a game that sent it before the end
+ */
+export function finishScored(game, score1, score2, winner, { broadcast = true } = {}) {
+  game.finish({
+    end: { score1, score2, winner },
+    result: matchResult(score1, score2, winner),
+    broadcast,
+  });
+}
+
+/**
  * A one-player game's result: its points, and nobody beaten. The server reads
  * the same spelling as every other result, with player two on nothing.
  * @param {number} points
@@ -69,5 +87,23 @@ export function guestEnd({ phase, fields = [], sound, repaint = true }) {
     Object.assign(game.gameState, copied);
     sound(game, result);
     if (repaint) game.invalidate();
+  };
+}
+
+/**
+ * The guest's end of a race: the state, when it has one, shown finished in
+ * `phase`; the keyboard released; `quiet(game)` stops what the race kept
+ * playing; then the victory or the game-over sound.
+ * @param {number} phase - the game's final phase
+ * @param {(game: object) => void} quiet
+ * @returns {(game: object, result: { winner: number }) => void} for defineGame's `onEnd`
+ */
+export function raceEnd(phase, quiet) {
+  return (game, result) => {
+    if (game.gameState) game.gameState = { ...game.gameState, phase };
+    game.invalidate();
+    game.setKeyboardCaptured(false);
+    quiet(game);
+    playOutcome(game, result.winner, "playVictory", "playGameOver");
   };
 }

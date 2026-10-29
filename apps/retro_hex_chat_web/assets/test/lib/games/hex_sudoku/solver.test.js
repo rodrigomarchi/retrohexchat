@@ -87,6 +87,7 @@ describe("solving by technique", () => {
   });
 
   it("names the level of every technique", () => {
+    // ex_dna:disable-for-lines:10 the expected table written out, apart from the code
     expect(LEVEL_OF).toEqual({
       nakedSingle: 1,
       hiddenSingle: 1,

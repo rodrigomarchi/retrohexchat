@@ -35,7 +35,7 @@ import {
 import { PHASE, GAME_MODE, BAILEY_STATE, ENEMY_TYPE, BLOCK_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawVignette, snowfall, waitingText } from "../core/render.js";
+import { drawScanlines, drawVignette, snowfall, waitingText } from "../core/render.js";
 
 // ── Color reading ──────────────────────────────────────────────
 
@@ -166,19 +166,28 @@ function drawAuroraBorealis(ctx, colors, frameCount) {
     const hue = wave === 0 ? colors.fg : wave === 1 ? colors.accent : gameColor("8040ff");
     ctx.strokeStyle = hue;
     ctx.lineWidth = 3;
-    ctx.beginPath();
-    for (let x = 0; x < CANVAS_W; x += 4) {
-      const y =
+    strokeWave(
+      ctx,
+      4,
+      (x) =>
         15 +
         wave * 8 +
         Math.sin(x * 0.01 + frameCount * 0.02 + wave * 2) * 8 +
-        Math.sin(x * 0.005 + frameCount * 0.01) * 4;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
+        Math.sin(x * 0.005 + frameCount * 0.01) * 4,
+    );
   }
   ctx.globalAlpha = 1;
+}
+
+/** One wavy line across the canvas: its height every `step` pixels is `yAt(x)`. */
+function strokeWave(ctx, step, yAt) {
+  ctx.beginPath();
+  for (let x = 0; x < CANVAS_W; x += step) {
+    const y = yAt(x);
+    if (x === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
 }
 
 function drawSnowParticles(ctx, particles, colors, frameCount) {
@@ -204,14 +213,8 @@ function drawWater(ctx, colors, frameCount) {
   ctx.globalAlpha = 0.15;
   ctx.lineWidth = 1;
   for (let wave = 0; wave < 3; wave++) {
-    ctx.beginPath();
     const wy = WATER_Y + 8 + wave * 12;
-    for (let x = 0; x < CANVAS_W; x += 4) {
-      const y = wy + Math.sin(x * 0.03 + frameCount * 0.04 + wave) * 3;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
+    strokeWave(ctx, 4, (x) => wy + Math.sin(x * 0.03 + frameCount * 0.04 + wave) * 3);
   }
   ctx.globalAlpha = 1;
 }
@@ -836,16 +839,14 @@ function drawFinished(ctx, state, colors, frameCount) {
     ];
     ctx.strokeStyle = hues[wave];
     ctx.lineWidth = 4;
-    ctx.beginPath();
-    for (let x = 0; x < CANVAS_W; x += 3) {
-      const y =
+    strokeWave(
+      ctx,
+      3,
+      (x) =>
         CANVAS_H / 4 +
         Math.sin(x * 0.008 + frameCount * 0.03 + wave * 1.5) * 30 +
-        Math.cos(x * 0.012 + frameCount * 0.02) * 15;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
+        Math.cos(x * 0.012 + frameCount * 0.02) * 15,
+    );
   }
   ctx.globalAlpha = 1;
 
@@ -892,11 +893,6 @@ function drawFinished(ctx, state, colors, frameCount) {
 // ── CRT scanlines ──────────────────────────────────────────────
 
 function drawCRT(ctx) {
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  for (let y = 0; y < CANVAS_H; y += 3) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
-
-  // Vignette
+  drawScanlines(ctx, CANVAS_W, CANVAS_H, { step: 3 });
   drawVignette(ctx, CANVAS_W, CANVAS_H, { from: 0.3, to: 0.7, of: "width", edge: 0.3 });
 }

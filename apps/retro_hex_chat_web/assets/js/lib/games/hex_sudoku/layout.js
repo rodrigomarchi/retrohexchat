@@ -16,6 +16,7 @@ import { contains } from "../core/pointer.js";
 const BAR = 44;
 
 /** The tools, in the order they stand. */
+// ex_dna:disable-for-lines:21 this game's own table sizes
 export const TOOLS = Object.freeze(["undo", "eraser", "pencil", "hint"]);
 
 /** The two tables: the view each draws, and the sizes on it. */

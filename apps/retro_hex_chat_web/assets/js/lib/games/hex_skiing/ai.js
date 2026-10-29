@@ -2,57 +2,64 @@
  * Deterministic opponent controller for Hex Skiing solo sessions.
  * It drives the same held-input shape used by P2P input transport, keeping
  * solo play on the host simulation path.
+ *
+ * It plays like a person at the keys: it sees only the slope on screen
+ * below the skier, sees it `reaction` frames late, and aims with an error
+ * drawn once per gate it heads for (once per look when there is none), so a
+ * bad line into a gate stays bad and costs the gate.
  * @module games/hex_skiing_ai
  */
 
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import { GAME_MODE, PHASE } from "./protocol.js";
-import { CANVAS_W, SKIER_SCREEN_Y } from "./physics.js";
-import { aiRequest, aiRng, edgeAware } from "../core/ai.js";
+import { CANVAS_H, CANVAS_W, SKIER_SCREEN_Y } from "./physics.js";
+import { TableAI, createCommitment, createDelayedView, edgeAware, randomUnit } from "../core/ai.js";
 
 const EDGE_MARGIN = 24;
-const { clampX, edgeRisk, maybeApplyMistake } = edgeAware(CANVAS_W, EDGE_MARGIN);
+// How far down the slope the screen shows below the skier.
+export const VIEW_AHEAD = CANVAS_H - SKIER_SCREEN_Y;
+const { clampX, edgeRisk } = edgeAware(CANVAS_W, EDGE_MARGIN);
 const NEUTRAL_INPUTS = Object.freeze({ left: false, right: false });
 
 export const SKIING_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
-    interval: 14,
-    obstacleLookAhead: 190,
-    gateLookAhead: 420,
-    itemLookAhead: 320,
-    safetyWidth: 20,
+    interval: 8,
+    reaction: 8,
+    obstacleLookAhead: 80,
+    gateLookAhead: VIEW_AHEAD,
+    itemLookAhead: VIEW_AHEAD,
+    safetyWidth: 8,
     candidateStep: 24,
-    deadzone: 18,
-    velocityLead: 5,
-    mistakeOdds: 0.28,
-    mistakePixels: 60,
-    gatePadding: 14,
+    deadzone: 14,
+    velocityLead: 6,
+    aimError: 6,
+    gatePadding: 8,
   }),
   normal: Object.freeze({
-    interval: 7,
-    obstacleLookAhead: 270,
-    gateLookAhead: 650,
-    itemLookAhead: 500,
-    safetyWidth: 28,
+    interval: 8,
+    reaction: 7,
+    obstacleLookAhead: 80,
+    gateLookAhead: VIEW_AHEAD,
+    itemLookAhead: VIEW_AHEAD,
+    safetyWidth: 8,
     candidateStep: 18,
-    deadzone: 12,
+    deadzone: 10,
     velocityLead: 8,
-    mistakeOdds: 0.1,
-    mistakePixels: 34,
-    gatePadding: 10,
+    aimError: 4,
+    gatePadding: 12,
   }),
   hard: Object.freeze({
-    interval: 3,
-    obstacleLookAhead: 380,
-    gateLookAhead: 850,
-    itemLookAhead: 700,
-    safetyWidth: 36,
+    interval: 8,
+    reaction: 7,
+    obstacleLookAhead: VIEW_AHEAD,
+    gateLookAhead: VIEW_AHEAD,
+    itemLookAhead: VIEW_AHEAD,
+    safetyWidth: 12,
     candidateStep: 12,
-    deadzone: 8,
-    velocityLead: 11,
-    mistakeOdds: 0.02,
-    mistakePixels: 16,
-    gatePadding: 6,
+    deadzone: 10,
+    velocityLead: 8,
+    aimError: 3,
+    gatePadding: 12,
   }),
 });
 
@@ -69,7 +76,7 @@ export function createHexSkiingAI(options = {}) {
   return new HexSkiingAI(options);
 }
 
-export class HexSkiingAI {
+export class HexSkiingAI extends TableAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
@@ -77,18 +84,22 @@ export class HexSkiingAI {
    * @param {number} [options.seed]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeSkiingAIDifficulty(options.difficulty);
-    this.rng = aiRng(options, 0x736b6969);
-    this.frame = 0;
+    super(options, normalizeSkiingAIDifficulty, SKIING_AI_DIFFICULTIES, 0x736b6969);
     this._target = null;
+    this._looks = 0;
+    this._view = createDelayedView();
+    this._aim = createCommitment();
   }
 
   /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
+   * A new round is a new slope: what it saw, the line it held and the aim
+   * it committed to all belonged to the last one.
    * @returns {void}
    */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizeSkiingAIDifficulty(difficulty);
+  forget() {
+    this._target = null;
+    this._view.reset();
+    this._aim.reset();
   }
 
   /**
@@ -99,25 +110,25 @@ export class HexSkiingAI {
    * @returns {{left: boolean, right: boolean}}
    */
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
-
-    this.frame++;
+    const { state, player } = this.startTurn(request);
 
     if (!state || state.phase !== PHASE.RACING) {
-      this._target = null;
+      this.forget();
       return NEUTRAL_INPUTS;
     }
 
+    const config = this.rowFor(request);
+    // It knows where its own skier is now, but sees the slope late — and
+    // keeps watching it while down after a crash.
+    const seen = this._view.see(state, config.reaction);
+
     const actor = playerState(state, player);
     if (!actor || actor.stunTimer > 0) return NEUTRAL_INPUTS;
-
-    const difficulty = normalizeSkiingAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-    const config = SKIING_AI_DIFFICULTIES[difficulty];
-
     if (this.frame % config.interval === 0 || !this._target) {
-      const target = chooseSkiingTarget(state, player, config);
-      this._target = maybeApplyMistake(target, config, this.rng);
+      this._looks++;
+      const target = chooseSkiingTarget(seen, player, config);
+      const error = this._aim.hold(target.gateY ?? -this._looks, () => gaussian(this.rng));
+      this._target = { ...target, x: clampX(target.x + error * config.aimError) };
     }
 
     return movementInputs(actor, this._target, config);
@@ -163,6 +174,7 @@ export function chooseSkiingTarget(state, player = 2, config = SKIING_AI_DIFFICU
     x: target,
     reason: preferredRisk >= 7 && risk < preferredRisk ? "avoid" : reason,
     risk,
+    gateY: gateBounds ? gateBounds.y : null,
   };
 }
 
@@ -198,7 +210,7 @@ export function nearestGate(state, player = 2, config = SKIING_AI_DIFFICULTIES.n
   return (
     gates
       .filter((gate) => !gate[clearedKey])
-      .filter((gate) => gate.y >= skierY - 8 && gate.y <= skierY + config.gateLookAhead)
+      .filter((gate) => gate.y >= skierY - 8 && gate.y <= skierY + lookAhead(config.gateLookAhead))
       .sort((a, b) => a.y - b.y)[0] || null
   );
 }
@@ -217,7 +229,7 @@ export function nearestBoostItem(state, config = SKIING_AI_DIFFICULTIES.normal) 
   return (
     items
       .filter((item) => item.collected === 0)
-      .filter((item) => item.y >= skierY - 8 && item.y <= skierY + config.itemLookAhead)
+      .filter((item) => item.y >= skierY - 8 && item.y <= skierY + lookAhead(config.itemLookAhead))
       .sort((a, b) => a.y - b.y)[0] || null
   );
 }
@@ -234,18 +246,19 @@ export function pathRisk(state, x, player = 2, config = SKIING_AI_DIFFICULTIES.n
 
   const skierY = skierWorldY(state);
   const obstacles = Array.isArray(state.obstacles) ? state.obstacles : [];
+  const ahead = lookAhead(config.obstacleLookAhead);
   let risk = edgeRisk(x);
 
   for (const obstacle of obstacles) {
     const dy = obstacle.y - skierY;
-    if (dy < -24 || dy > config.obstacleLookAhead) continue;
+    if (dy < -24 || dy > ahead) continue;
 
     const width = (obstacle.w || 10) / 2 + config.safetyWidth;
     const dx = Math.abs(x - obstacle.x);
     if (dx > width) continue;
 
     const lateralOverlap = (width - dx) / width;
-    const proximity = 1 - Math.max(0, dy) / config.obstacleLookAhead;
+    const proximity = 1 - Math.max(0, dy) / ahead;
     const base = obstacle.type === "ice" ? 4 : obstacle.type === "rock" ? 13 : 16;
     risk += base * lateralOverlap * (0.45 + proximity);
   }
@@ -298,4 +311,19 @@ function playerState(state, player) {
 
 function skierWorldY(state) {
   return (state.scrollY || 0) + SKIER_SCREEN_Y;
+}
+
+/** A look-ahead no further than the screen shows. */
+function lookAhead(distance) {
+  return Math.min(distance, VIEW_AHEAD);
+}
+
+/**
+ * A standard normal draw: how far off, in aim errors, a line is.
+ * @param {() => number} rng
+ * @returns {number}
+ */
+export function gaussian(rng) {
+  const radius = Math.sqrt(-2 * Math.log(1 - randomUnit(rng)));
+  return radius * Math.cos(2 * Math.PI * randomUnit(rng));
 }

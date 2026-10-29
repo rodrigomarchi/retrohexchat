@@ -11,10 +11,12 @@
  */
 
 import { gameColor } from "../../game_colors.js";
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
-import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
+import { ARROW_KEYS, ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { COUNTDOWN, countdownState } from "../core/rounds.js";
+import { drawOnDisconnect, finishScored, guestEnd, playOutcome } from "../core/result.js";
 import { createSurroundAI, normalizeSurroundAIDifficulty } from "./ai.js";
 import {
+  applyDirection,
   CELL,
   createCrashParticles,
   createInitialState,
@@ -27,25 +29,50 @@ import { SOUNDS } from "./sounds.js";
 
 const TICK_STEPS = 6; // one grid move every 6 fixed steps (10 Hz)
 const ROUND_OVER_DELAY_TICKS = 180; // 3 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
-const KEYS = {
-  ArrowUp: INPUT_KEY.UP,
-  w: INPUT_KEY.UP,
-  W: INPUT_KEY.UP,
-  ArrowDown: INPUT_KEY.DOWN,
-  s: INPUT_KEY.DOWN,
-  S: INPUT_KEY.DOWN,
-  ArrowLeft: INPUT_KEY.LEFT,
-  a: INPUT_KEY.LEFT,
-  A: INPUT_KEY.LEFT,
-  ArrowRight: INPUT_KEY.RIGHT,
-  d: INPUT_KEY.RIGHT,
-  D: INPUT_KEY.RIGHT,
-};
+/** Each key of a direction, to the turn it asks for. */
+const KEYS = Object.fromEntries(
+  Object.entries(ARROW_KEYS).flatMap(([direction, keys]) =>
+    keys.map((key) => [key, INPUT_KEY[direction.toUpperCase()]]),
+  ),
+);
 
 const turnFor = (key) => (Object.hasOwn(KEYS, key) ? KEYS[key] : null);
+
+const MAX_QUEUED_TURNS = 2;
+
+/**
+ * A turn asked for by a player. While an earlier turn still waits for the
+ * grid to move, this one waits behind it for the move after, so two quick
+ * presses — up, then left — make both turns instead of only the last.
+ */
+function requestTurn(game, player, turn) {
+  const pendingKey = player === 1 ? "p1PendingDir" : "p2PendingDir";
+  const queue = player === 1 ? game.p1Turns : game.p2Turns;
+  const heading = (player === 1 ? game.gameState.p1 : game.gameState.p2).dir;
+  const pending = game[pendingKey];
+  const waiting = pending !== heading && applyDirection(heading, pending) === pending;
+  if (waiting && turn !== pending) {
+    if (queue.length < MAX_QUEUED_TURNS) queue.push(turn);
+    return;
+  }
+  game[pendingKey] = turn;
+}
+
+/** After a move, each player's next waiting turn becomes the pending one. */
+function takeQueuedTurns(game) {
+  const s = game.gameState;
+  game.p1PendingDir = game.p1Turns.shift() ?? s.p1.dir;
+  game.p2PendingDir = game.p2Turns.shift() ?? s.p2.dir;
+}
+
+/** Every round starts with nothing pending but each cycle's own heading. */
+function clearTurns(game) {
+  game.p1PendingDir = game.gameState.p1.dir;
+  game.p2PendingDir = game.gameState.p2.dir;
+  game.p1Turns = [];
+  game.p2Turns = [];
+}
 
 /** In solo play, the AI turns player two's cycle. */
 function steerOpponent(game) {
@@ -73,6 +100,7 @@ function move(game) {
     crash(game, s.p1Dead, s.p2Dead);
     return;
   }
+  takeQueuedTurns(game);
   game.broadcast();
 }
 
@@ -148,8 +176,7 @@ export default defineGame({
   theme: getColors,
   init: () => createInitialState(0),
   setup: (game) => {
-    game.p1PendingDir = game.gameState.p1.dir;
-    game.p2PendingDir = game.gameState.p2.dir;
+    clearTurns(game);
     game.savedScores = { score1: 0, score2: 0 };
     game.nextRound = 0;
     game.tickFrames = 0;
@@ -160,7 +187,7 @@ export default defineGame({
     const turn = turnFor(event.key);
     if (turn === null) return;
     event.preventDefault();
-    if (game.isHost) game.p1PendingDir = turn;
+    if (game.isHost) requestTurn(game, 1, turn);
     else game.sendInputEdge(turn);
     game.audio.playMove();
   },
@@ -168,7 +195,7 @@ export default defineGame({
     if (turnFor(event.key) !== null) event.preventDefault();
   },
   onRemoteEdge: (game, code) => {
-    if (code >= 0 && code <= 3) game.p2PendingDir = code;
+    if (code >= 0 && code <= 3) requestTurn(game, 2, code);
   },
 
   flow: {
@@ -178,27 +205,19 @@ export default defineGame({
     states: {
       // Every round starts from a fresh grid, keeping the scores.
       COUNTDOWN: {
+        ...countdownState({ next: "PLAYING" }),
         enter: (game) => {
           const fresh = createInitialState(game.nextRound);
           Object.assign(fresh, {
             ...game.savedScores,
             phase: PHASE.COUNTDOWN,
-            countdown: COUNTDOWN_FROM,
+            countdown: COUNTDOWN.from,
           });
           game.gameState = fresh;
-          game.p1PendingDir = fresh.p1.dir;
-          game.p2PendingDir = fresh.p2.dir;
+          clearTurns(game);
           game.broadcast();
           game.audio.playCountdown();
         },
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          if (remaining === 0) return;
-          game.gameState.countdown = remaining;
-          game.broadcast();
-          game.audio.playCountdown();
-        },
-        next: "PLAYING",
       },
       PLAYING: {
         enter: (game) => {
@@ -221,13 +240,8 @@ export default defineGame({
           const { score1, score2 } = game.gameState;
           const winner = score1 >= WINS_NEEDED ? 1 : 2;
           if (winner === 1) game.audio.playMatchWin();
-          // ex_dna:disable-for-lines:13 this game's own defineGame definition
           else game.audio.playMatchLose();
-          game.finish({
-            end: { score1, score2, winner },
-            result: { score: { p1: score1, p2: score2 }, winner },
-            broadcast: false,
-          });
+          finishScored(game, score1, score2, winner, { broadcast: false });
         },
       },
     },

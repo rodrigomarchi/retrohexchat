@@ -8,44 +8,16 @@ import {
   SNAPSHOT,
   GAME_END,
 } from "../../../../js/lib/games/hex_outlaw/protocol.js";
+import { describeMatchMessages, itFramesMessages } from "../../../support/games/protocol_tests.js";
 
-const BULLET_SPEED_X = 8; // Must match physics.js
+import { BULLET_SPEED_X, createInitialState } from "../../../../js/lib/games/hex_outlaw/physics.js";
+import { inFlight } from "./in_flight.js";
 
 describe("Hex Outlaw Protocol", () => {
+  /** A street at the start of play, both gunslingers and the obstacle on line 240. */
   function makeState(overrides) {
-    return {
-      p1x: 80,
-      p1y: 240,
-      p1shooting: false,
-      p2x: 560,
-      p2y: 240,
-      p2shooting: false,
-      b1x: 0,
-      b1y: 0,
-      b1vx: 0,
-      b1vy: 0,
-      b1active: false,
-      b1bounced: false,
-      b2x: 0,
-      b2y: 0,
-      b2vx: 0,
-      b2vy: 0,
-      b2active: false,
-      b2bounced: false,
-      obsY: 240,
-      obsDir: 1,
-      score1: 0,
-      score2: 0,
-      phase: PHASE.WAITING,
-      countdown: 0,
-      round: 1,
-      roundWins1: 0,
-      roundWins2: 0,
-      gameMode: GAME_MODE.QUICK_DRAW,
-      hitPauseTimer: 0,
-      lastHitPlayer: 0,
-      ...overrides,
-    };
+    const start = createInitialState(GAME_MODE.QUICK_DRAW);
+    return { ...start, p1y: 240, p2y: 240, obsY: 240, ...overrides };
   }
 
   describe("game state encode/decode", () => {
@@ -82,12 +54,7 @@ describe("Hex Outlaw Protocol", () => {
 
     it("roundtrips bullet state when active", () => {
       const state = makeState({
-        b1x: 200,
-        b1y: 150,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 0,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: 200, y: 150 }),
       });
       const buf = SNAPSHOT.encode(state);
       const decoded = SNAPSHOT.decode(buf);
@@ -101,12 +68,7 @@ describe("Hex Outlaw Protocol", () => {
 
     it("roundtrips bullet with negative vx", () => {
       const state = makeState({
-        b2x: 400,
-        b2y: 200,
-        b2vx: -BULLET_SPEED_X,
-        b2vy: 0,
-        b2active: true,
-        b2bounced: false,
+        ...inFlight("b2", { x: 400, y: 200 }),
       });
       const buf = SNAPSHOT.encode(state);
       const decoded = SNAPSHOT.decode(buf);
@@ -117,12 +79,7 @@ describe("Hex Outlaw Protocol", () => {
     it("roundtrips bullet with vy (ricochet)", () => {
       const vy = BULLET_SPEED_X * Math.sin(Math.PI / 6);
       const state = makeState({
-        b1x: 200,
-        b1y: 200,
-        b1vx: BULLET_SPEED_X,
-        b1vy: vy,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: 200, y: 200, vy: vy }),
       });
       const buf = SNAPSHOT.encode(state);
       const decoded = SNAPSHOT.decode(buf);
@@ -132,12 +89,7 @@ describe("Hex Outlaw Protocol", () => {
 
     it("roundtrips bounced flag", () => {
       const state = makeState({
-        b1x: 200,
-        b1y: 200,
-        b1vx: BULLET_SPEED_X,
-        b1vy: -4,
-        b1active: true,
-        b1bounced: true,
+        ...inFlight("b1", { x: 200, y: 200, vy: -4, bounced: true }),
       });
       const buf = SNAPSHOT.encode(state);
       const decoded = SNAPSHOT.decode(buf);
@@ -179,16 +131,7 @@ describe("Hex Outlaw Protocol", () => {
       expect(decoded.lastHitPlayer).toBe(1);
     });
 
-    it("returns null for too-small buffer", () => {
-      const buf = new ArrayBuffer(5);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(38);
-      new DataView(buf).setUint8(0, 0x81);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
+    itFramesMessages(SNAPSHOT, { short: [5], length: 38, wrongType: 0x81 });
 
     it("inactive bullets decode correctly", () => {
       const state = makeState({ b1active: false, b2active: false });
@@ -199,57 +142,8 @@ describe("Hex Outlaw Protocol", () => {
     });
   });
 
-  describe("game end encode/decode", () => {
-    it("roundtrips game end", () => {
-      const result = {
-        score1: 10,
-        score2: 7,
-        winner: 1,
-        roundWins1: 2,
-        roundWins2: 1,
-      };
-      const buf = GAME_END.encode(result);
-      const decoded = GAME_END.decode(buf);
-      expect(decoded.score1).toBe(10);
-      expect(decoded.score2).toBe(7);
-      expect(decoded.winner).toBe(1);
-      expect(decoded.roundWins1).toBe(2);
-      expect(decoded.roundWins2).toBe(1);
-    });
-
-    it("returns null for too-small buffer", () => {
-      const buf = new ArrayBuffer(2);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(6);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
-  });
-
-  describe("game ready", () => {
-    it("encodes a single byte", () => {
-      const buf = encodeGameReady();
-      expect(buf.byteLength).toBe(1);
-      expect(new DataView(buf).getUint8(0)).toBe(MSG_TYPE.GAME_READY);
-    });
-  });
-
-  describe("getMessageType", () => {
-    it("returns message type from buffer", () => {
-      const buf = encodeGameReady();
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_READY);
-    });
-
-    it("returns null for empty buffer", () => {
-      expect(getMessageType(new ArrayBuffer(0))).toBeNull();
-    });
-
-    it("identifies game state", () => {
-      const buf = SNAPSHOT.encode(makeState());
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
-    });
-  });
+  describeMatchMessages(
+    { GAME_END, MSG_TYPE, encodeGameReady, getMessageType },
+    { score1: 10, score2: 7, winner: 1, roundWins1: 2, roundWins2: 1 },
+  );
 });

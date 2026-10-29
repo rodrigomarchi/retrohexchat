@@ -217,7 +217,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies, steal fuel, and drop mines on your rival. 10 sections of pure chaos."
+          "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies, steal fuel, and drop mines into your rival's path. The river narrows the farther you fly."
         ),
       icon: "game_raid",
       controls:
@@ -231,7 +231,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "River Raid without sabotage — no mines allowed. Pure competition for points, fuel, and survival across 10 sections."
+          "River Raid without sabotage — no mines allowed. Pure competition for points, fuel, and survival."
         ),
       icon: "game_raid",
       controls: dgettext_noop("games", "Arrow keys to move/speed, Space to fire")
@@ -244,7 +244,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "5 sections of intense River Raid action — river starts narrow, fuel is scarce, mines recharge faster. Quick and chaotic."
+          "Intense River Raid action — the river starts narrow, fuel is scarce, mines recharge faster. Quick and chaotic."
         ),
       icon: "game_raid",
       controls:

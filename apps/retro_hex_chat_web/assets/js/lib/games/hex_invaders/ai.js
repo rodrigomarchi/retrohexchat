@@ -15,7 +15,14 @@ import {
   DIVIDER_X,
   HALF_W,
 } from "./physics.js";
-import { aiRequest, aiRng, clamp, normalizeDifficulty } from "../core/ai.js";
+import {
+  TableAI,
+  clamp,
+  createCommitment,
+  createPerThing,
+  normalizeDifficulty,
+  randomUnit,
+} from "../core/ai.js";
 
 const UFO_W = 24;
 const NEUTRAL_INPUTS = Object.freeze({
@@ -24,44 +31,71 @@ const NEUTRAL_INPUTS = Object.freeze({
   fire: false,
 });
 
+// `noticeChance` is drawn once per bomb: a bomb the AI does not notice stays
+// unnoticed until it lands. It only sees bombs below `bombDangerY` and within
+// `bombDangerX` of its cannon (a bomb hits within 16 px). `fireChance` is
+// drawn once per chance to shoot — a target lined up with the missile ready —
+// and a declined chance waits until the cannon comes into line again or takes
+// another target; `fireCooldownFrames`
+// holds the next shot past the missile's flight, which sets how fast it
+// clears its aliens and sends reinforcements across.
 export const INVADERS_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
-    decisionInterval: 8,
+    decisionInterval: 12,
     aimTolerancePx: 10,
     targetErrorPx: 22,
     targetDeadzonePx: 8,
-    fireCooldownFrames: 34,
-    fireChance: 0.45,
-    bombDangerY: 330,
-    bombDangerX: 26,
-    dodgeDistancePx: 42,
+    fireCooldownFrames: 110,
+    fireChance: 0.6,
+    noticeChance: 0.2,
+    bombDangerY: 380,
+    bombDangerX: 20,
+    dodgeDistancePx: 36,
     ufoPriority: false,
   }),
   normal: Object.freeze({
-    decisionInterval: 4,
+    decisionInterval: 6,
     aimTolerancePx: 8,
     targetErrorPx: 12,
     targetDeadzonePx: 6,
-    fireCooldownFrames: 22,
-    fireChance: 0.72,
-    bombDangerY: 300,
-    bombDangerX: 34,
-    dodgeDistancePx: 52,
+    fireCooldownFrames: 70,
+    fireChance: 0.8,
+    noticeChance: 0.5,
+    bombDangerY: 350,
+    bombDangerX: 22,
+    dodgeDistancePx: 44,
     ufoPriority: true,
   }),
   hard: Object.freeze({
-    decisionInterval: 1,
+    decisionInterval: 2,
     aimTolerancePx: 6,
     targetErrorPx: 4,
     targetDeadzonePx: 4,
-    fireCooldownFrames: 12,
+    fireCooldownFrames: 60,
     fireChance: 1,
-    bombDangerY: 260,
-    bombDangerX: 42,
-    dodgeDistancePx: 64,
+    noticeChance: 0.65,
+    bombDangerY: 320,
+    bombDangerX: 28,
+    dodgeDistancePx: 52,
     ufoPriority: true,
   }),
 });
+
+// In co-op the AI is the player's partner, not their opponent. The difficulty
+// the player picks is how hard the game should be for them, so an easy game
+// gets the strongest partner and a hard game the weakest.
+const COOP_PARTNER = Object.freeze({ easy: "hard", normal: "normal", hard: "easy" });
+
+/**
+ * The row of the table the AI plays by: the chosen difficulty against the
+ * player, its mirror beside them in co-op.
+ * @param {"easy"|"normal"|"hard"} difficulty
+ * @param {number} mode - GAME_MODE
+ * @returns {"easy"|"normal"|"hard"}
+ */
+export function invadersAILevel(difficulty, mode) {
+  return mode === GAME_MODE.COOP ? COOP_PARTNER[difficulty] : difficulty;
+}
 
 /**
  * @param {unknown} difficulty
@@ -81,26 +115,33 @@ export function createHexInvadersAI(options = {}) {
   return new HexInvadersAI(options);
 }
 
-export class HexInvadersAI {
+export class HexInvadersAI extends TableAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeInvadersAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
+    super(options, normalizeInvadersAIDifficulty, INVADERS_AI_DIFFICULTIES);
     this.fireCooldown = 0;
     this._target = null;
+    this.noticed = createPerThing();
+    this.willFire = createCommitment();
+    this._lined = false;
+    this._chance = 0;
   }
 
   /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
+   * A new wave or match: no target held, no shot decided on, no bomb
+   * noticed, the trigger ready.
    * @returns {void}
    */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizeInvadersAIDifficulty(difficulty);
+  forget() {
+    this._target = null;
+    this.willFire.reset();
+    this.noticed.reset();
+    this.fireCooldown = 0;
+    this._lined = false;
   }
 
   /**
@@ -110,23 +151,21 @@ export class HexInvadersAI {
    * @param {1|2} [request.player]
    * @returns {{left: boolean, right: boolean, fire: boolean}}
    */
-  // ex_dna:disable-for-lines:7 this AI's own turn: its cooldowns and the phase it plays in
+  // ex_dna:disable-for-lines:6 this AI's own turn: its cooldowns and the phase it plays in
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
-
-    this.frame++;
+    const { state, player } = this.startTurn(request);
     if (this.fireCooldown > 0) this.fireCooldown--;
 
-    if (!state || state.phase !== PHASE.PLAYING) {
-      this._target = null;
-      return NEUTRAL_INPUTS;
-    }
+    if (!state || state.phase !== PHASE.PLAYING) return NEUTRAL_INPUTS;
 
-    const difficulty = normalizeInvadersAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-    const config = INVADERS_AI_DIFFICULTIES[difficulty];
+    const difficulty = this.difficultyFor(request);
+    const config = INVADERS_AI_DIFFICULTIES[invadersAILevel(difficulty, state.mode)];
 
-    const threat = incomingBombThreat(state, player, config);
+    const bombs = Array.isArray(state.bombs) ? state.bombs : [];
+    this.noticed.keep(bombs.map(bombId));
+    const noticed = (bomb) =>
+      this.noticed.decide(bombId(bomb), () => randomUnit(this.rng) < config.noticeChance);
+    const threat = incomingBombThreat(state, player, config, noticed);
     if (threat) {
       const target = dodgeTarget(state, player, threat, config);
       return {
@@ -145,8 +184,20 @@ export class HexInvadersAI {
     if (!this._target) return NEUTRAL_INPUTS;
 
     const movement = movementInputs(state, player, this._target.x, config.targetDeadzonePx);
-    const fire = shouldFire(state, player, this._target, config, this.fireCooldown, this.rng);
-    if (fire) this.fireCooldown = config.fireCooldownFrames;
+    // A chance to shoot opens when the cannon comes into line with its target,
+    // the missile ready; it stays the same chance while the line holds.
+    const lined = canFire(state, player, this._target, config, this.fireCooldown);
+    if (lined && !this._lined) this._chance++;
+    this._lined = lined;
+    const fire =
+      lined &&
+      this.willFire.hold(`${targetId(this._target)}:${this._chance}`, () => {
+        return randomUnit(this.rng) < config.fireChance;
+      });
+    if (fire) {
+      this.fireCooldown = config.fireCooldownFrames;
+      this.willFire.reset();
+    }
 
     return {
       ...movement,
@@ -215,12 +266,19 @@ export function chooseInvaderTarget(
 }
 
 /**
+ * The lowest bomb close enough to hit the cannon, among those the AI noticed.
  * @param {object} state
  * @param {1|2} [player]
  * @param {object} [config]
+ * @param {(bomb: object) => boolean} [noticed] - every bomb, unless told
  * @returns {{side: number, x: number, y: number}|null}
  */
-export function incomingBombThreat(state, player = 2, config = INVADERS_AI_DIFFICULTIES.normal) {
+export function incomingBombThreat(
+  state,
+  player = 2,
+  config = INVADERS_AI_DIFFICULTIES.normal,
+  noticed = () => true,
+) {
   if (!state || !Array.isArray(state.bombs)) return null;
 
   const actorX = cannonX(state, player);
@@ -230,7 +288,8 @@ export function incomingBombThreat(state, player = 2, config = INVADERS_AI_DIFFI
       (bomb) =>
         bomb.y >= config.bombDangerY &&
         bomb.y <= CANNON_Y_OFFSET + CANNON_W &&
-        Math.abs(bomb.x - actorX) <= config.bombDangerX,
+        Math.abs(bomb.x - actorX) <= config.bombDangerX &&
+        noticed(bomb),
     )
     .sort((a, b) => b.y - a.y);
 
@@ -307,22 +366,40 @@ function isTargetStillValid(state, player, target) {
 }
 
 /**
+ * Whether the cannon has a shot: the missile ready and the target lined up.
  * @param {object} state
  * @param {1|2} player
  * @param {object} target
  * @param {object} config
  * @param {number} cooldown
- * @param {() => number} rng
  * @returns {boolean}
  */
-function shouldFire(state, player, target, config, cooldown, rng) {
+function canFire(state, player, target, config, cooldown) {
   if (cooldown > 0) return false;
   if (player === 1 ? state.m1Active : state.m2Active) return false;
 
-  return (
-    Math.abs(cannonX(state, player) - target.x) <= config.aimTolerancePx &&
-    rng() <= config.fireChance
-  );
+  return Math.abs(cannonX(state, player) - target.x) <= config.aimTolerancePx;
+}
+
+/**
+ * What a target is, the same for as long as it stays the target: the UFO,
+ * or an alien by its place in its formation — re-aimed at with a fresh
+ * error each look, but the same chance to shoot.
+ * @param {{kind: string, index?: number}} target
+ * @returns {string}
+ */
+function targetId(target) {
+  return target.kind === "alien" ? `alien:${target.index}` : target.kind;
+}
+
+/**
+ * A bomb's number, or — for one without — its side and column, which stay
+ * the same while it falls.
+ * @param {{id?: number, side: number, x: number}} bomb
+ * @returns {number|string}
+ */
+function bombId(bomb) {
+  return bomb.id ?? `${bomb.side}:${bomb.x}`;
 }
 
 /**

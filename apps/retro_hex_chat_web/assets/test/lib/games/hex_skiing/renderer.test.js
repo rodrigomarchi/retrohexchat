@@ -5,50 +5,48 @@ import {
   generateSnowParticles,
 } from "../../../../js/lib/games/hex_skiing/renderer.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "../../../../js/lib/games/hex_skiing/protocol.js";
+import { createMockCtx } from "../../../support/games/renderer_tests.js";
 
 function createMockCanvas() {
-  const ctx = {
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 0,
-    font: "",
-    textAlign: "",
-    textBaseline: "",
-    globalAlpha: 1,
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-    fillText: vi.fn(),
-    beginPath: vi.fn(),
-    moveTo: vi.fn(),
-    lineTo: vi.fn(),
-    fill: vi.fn(),
-    save: vi.fn(),
-    restore: vi.fn(),
-    translate: vi.fn(),
-    scale: vi.fn(),
-    createLinearGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
-    createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
-  };
+  const ctx = createMockCtx();
   return { width: 640, height: 480, getContext: vi.fn(() => ctx), _ctx: ctx };
+}
+
+/** Every colour the renderer draws with. */
+const PALETTE = Object.freeze({
+  bg: "#0a0a14",
+  fg: "#39ff14",
+  accent: "#00e5ff",
+  muted: "#1a1a2a",
+  snow: "#1a1a2e",
+  tree: "#1a3a1a",
+  rock: "#555",
+  avalanche: "#2a2a3a",
+  gateLeft: "#44f",
+  gateRight: "#f44",
+  boost: "#ff0",
+  ice: "#0cf",
+  trail: "rgba(57,255,20,0.3)",
+  glow: "rgba(57,255,20,0.15)",
+  warning: "#f44",
+});
+
+/** The colours read from a canvas whose CSS custom properties are `values`. */
+function readColorsFrom(values) {
+  globalThis.getComputedStyle = vi.fn(() => ({
+    getPropertyValue: vi.fn((name) => values[name] || ""),
+  }));
+  return readColors(createMockCanvas());
 }
 
 describe("Hex Skiing Renderer", () => {
   describe("readColors", () => {
     it("reads CSS custom properties from canvas", () => {
-      const mockGetComputedStyle = vi.fn(() => ({
-        getPropertyValue: vi.fn((name) => {
-          const map = {
-            "--game-bg-color": "#0a0a14",
-            "--game-fg-color": "#39ff14",
-            "--game-accent-color": "#00e5ff",
-          };
-          return map[name] || "";
-        }),
-      }));
-      globalThis.getComputedStyle = mockGetComputedStyle;
-
-      const canvas = createMockCanvas();
-      const colors = readColors(canvas);
+      const colors = readColorsFrom({
+        "--game-bg-color": "#0a0a14",
+        "--game-fg-color": "#39ff14",
+        "--game-accent-color": "#00e5ff",
+      });
 
       expect(colors.bg).toBe("#0a0a14");
       expect(colors.fg).toBe("#39ff14");
@@ -56,12 +54,7 @@ describe("Hex Skiing Renderer", () => {
     });
 
     it("uses defaults when CSS properties are missing", () => {
-      globalThis.getComputedStyle = vi.fn(() => ({
-        getPropertyValue: vi.fn(() => ""),
-      }));
-
-      const canvas = createMockCanvas();
-      const colors = readColors(canvas);
+      const colors = readColorsFrom({});
 
       expect(colors.bg).toBe("#0a0a14");
       expect(colors.fg).toBe("#39ff14");
@@ -93,21 +86,13 @@ describe("Hex Skiing Renderer", () => {
     });
 
     it("renders waiting screen", () => {
-      const canvas = createMockCanvas();
-      const ctx = canvas._ctx;
-      const colors = {
-        bg: "#0a0a14",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#1a1a2a",
-        snow: "#1a1a2e",
-      };
+      const ctx = createMockCanvas()._ctx;
       const state = {
         phase: PHASE.WAITING,
         mode: GAME_MODE.ALPINE_RACE,
       };
 
-      render(ctx, state, colors, 0, []);
+      render(ctx, state, PALETTE, 0, []);
 
       // Should have drawn background and text
       expect(ctx.fillRect).toHaveBeenCalled();
@@ -115,25 +100,7 @@ describe("Hex Skiing Renderer", () => {
     });
 
     it("renders racing phase", () => {
-      const canvas = createMockCanvas();
-      const ctx = canvas._ctx;
-      const colors = {
-        bg: "#0a0a14",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#1a1a2a",
-        snow: "#1a1a2e",
-        tree: "#1a3a1a",
-        rock: "#555",
-        avalanche: "#2a2a3a",
-        gateLeft: "#44f",
-        gateRight: "#f44",
-        boost: "#ff0",
-        ice: "#0cf",
-        trail: "rgba(57,255,20,0.3)",
-        glow: "rgba(57,255,20,0.15)",
-        warning: "#f44",
-      };
+      const ctx = createMockCanvas()._ctx;
       const state = {
         phase: PHASE.RACING,
         mode: GAME_MODE.ALPINE_RACE,
@@ -170,7 +137,7 @@ describe("Hex Skiing Renderer", () => {
         items: [],
       };
 
-      render(ctx, state, colors, 100, generateSnowParticles(10));
+      render(ctx, state, PALETTE, 100, generateSnowParticles(10));
 
       expect(ctx.fillRect).toHaveBeenCalled();
       expect(ctx.fillText).toHaveBeenCalled();

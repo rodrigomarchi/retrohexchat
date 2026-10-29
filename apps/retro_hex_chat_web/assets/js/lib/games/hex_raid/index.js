@@ -10,59 +10,26 @@
  * @module games/hex_raid
  */
 
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
-import { countdownState } from "../core/rounds.js";
-import { drawOnDisconnect, guestEnd, matchResult, playOutcome } from "../core/result.js";
-import { normalizeRaidAIDifficulty } from "./difficulty.js";
 import {
-  SCORE_FUEL_OUT,
-  accelerateJet,
-  checkBridgeCollision,
-  checkBridgeHits,
-  checkEnemyCollisions,
-  checkFuelCapture,
-  checkGameOver,
-  checkMineCollisions,
-  checkMissileHits,
-  checkRiverCollision,
-  clearEvents,
-  createInitialState,
-  deployMine,
-  drainFuel,
-  fireMissile,
-  getWinner,
-  handleDeath,
-  moveJet,
-  processRespawns,
-  spawnEntities,
-  tickTimers,
-  updateBridge,
-  updateEnemies,
-  updateFuels,
-  updateMines,
-  updateMissiles,
-  updateScroll,
-} from "./physics.js";
+  ARROWS_WASD_SPACE,
+  ARROW_KEYS,
+  defineGame,
+  freshOnHost,
+  seededInit,
+} from "../core/define_game.js";
+import { countdownState } from "../core/rounds.js";
+import { drawOnDisconnect, finishScored, guestEnd, playOutcome } from "../core/result.js";
+import { normalizeRaidAIDifficulty } from "./difficulty.js";
+// ex_dna:disable-for-lines:7 this game's own imports
+import { createInitialState, getWinner, stepTick } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
-
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const MODE_MAP = {
   hex_raid: GAME_MODE.RIVER_DUEL,
   hex_raid_pacifist: GAME_MODE.PACIFIST,
   hex_raid_blitz: GAME_MODE.BLITZ,
-};
-
-const RELEASED = {
-  left: false,
-  right: false,
-  accel: false,
-  decel: false,
-  fire: false,
-  mine: false,
 };
 
 /** What the guest copies from each snapshot as it comes. */
@@ -108,27 +75,11 @@ const SNAPSHOT_FIELDS = [
   "seed",
 ];
 
-/** Missiles and mines go on the press, not while the key is held. */
-function pressed(game, key, now) {
-  const fresh = now && !game[key];
-  game[key] = now;
-  return fresh;
-}
-
 function releaseTriggers(game) {
   game.localFirePressed = false;
   game.remoteFirePressed = false;
   game.localMinePressed = false;
   game.remoteMinePressed = false;
-}
-
-function steer(s, player, inputs) {
-  let next = s;
-  if (inputs.left) next = moveJet(next, player, -1);
-  if (inputs.right) next = moveJet(next, player, 1);
-  if (inputs.accel) next = accelerateJet(next, player, 1);
-  if (inputs.decel) next = accelerateJet(next, player, -1);
-  return next;
 }
 
 /** The sounds of a step's events, in the order they are heard. */
@@ -141,71 +92,38 @@ function playEvents(audio, events) {
   if (events.mineHit) audio.playMineHit();
 }
 
+/** The triggers each side had down the step before, as `stepTick` reads them. */
+function heldTriggers(game) {
+  return {
+    1: { fire: game.localFirePressed, mine: game.localMinePressed },
+    2: { fire: game.remoteFirePressed, mine: game.remoteMinePressed },
+  };
+}
+
+/** Plays `sound` once for each player whose bit is set. */
+function playFor(bits, sound) {
+  for (const player of [1, 2]) if (bits & player) sound();
+}
+
 function fly(game) {
-  let s = clearEvents(game.gameState);
   game.updateOpponent();
-  const local = game.localInputs;
-  const remote = game.remoteInputs;
-  s = steer(s, 1, local);
-  s = steer(s, 2, remote);
+  const step = stepTick(
+    game.gameState,
+    { 1: game.localInputs, 2: game.remoteInputs },
+    heldTriggers(game),
+    game.frameCount,
+  );
+  game.localFirePressed = step.held[1].fire;
+  game.remoteFirePressed = step.held[2].fire;
+  game.localMinePressed = step.held[1].mine;
+  game.remoteMinePressed = step.held[2].mine;
 
-  if (pressed(game, "localFirePressed", local.fire)) {
-    const prev = s.m1Active;
-    s = fireMissile(s, 1);
-    if (s.m1Active && !prev) game.audio.playFire();
-  }
-  if (pressed(game, "remoteFirePressed", remote.fire)) {
-    const prev = s.m2Active;
-    s = fireMissile(s, 2);
-    if (s.m2Active && !prev) game.audio.playFire();
-  }
-  if (pressed(game, "localMinePressed", local.mine)) {
-    const prevCount = s.mineCount;
-    s = deployMine(s, 1);
-    if (s.mineCount > prevCount) game.audio.playMineDeploy();
-  }
-  if (pressed(game, "remoteMinePressed", remote.mine)) {
-    const prevCount = s.mineCount;
-    s = deployMine(s, 2);
-    if (s.mineCount > prevCount) game.audio.playMineDeploy();
-  }
-
-  const scrolled = updateScroll(s);
-  s = scrolled.state;
-  const { scrollDelta } = scrolled;
-  s = spawnEntities(s);
-  s = updateMissiles(s);
-  s = updateEnemies(s, scrollDelta);
-  s = updateFuels(s, scrollDelta);
-  s = updateBridge(s, scrollDelta);
-  s = updateMines(s, scrollDelta);
-  s = drainFuel(s, game.frameCount);
-  s = checkMissileHits(s);
-  s = checkBridgeHits(s);
-  s = checkEnemyCollisions(s);
-  s = checkFuelCapture(s);
-  s = checkMineCollisions(s);
-  s = checkBridgeCollision(s);
-  for (const player of [1, 2]) {
-    if (checkRiverCollision(s, player)) s = { ...s, events: { ...s.events, death: player } };
-  }
-
+  const s = step.state;
+  playFor(step.fired, () => game.audio.playFire());
+  playFor(step.dropped, () => game.audio.playMineDeploy());
   playEvents(game.audio, s.events);
-  // A jet that runs dry hands its rival the fuel-out bonus.
-  if (s.events.death) {
-    game.audio.playDeath();
-    s = handleDeath(s, s.events.death);
-    if (s.events.fuelEmpty) {
-      const bonusKey = s.events.fuelEmpty === 1 ? "score2" : "score1";
-      s = { ...s, [bonusKey]: s[bonusKey] + SCORE_FUEL_OUT };
-    }
-  }
-
-  const prevJ1Alive = s.jet1Alive;
-  const prevJ2Alive = s.jet2Alive;
-  s = processRespawns(s);
-  if (s.jet1Alive && !prevJ1Alive) game.audio.playRespawn();
-  if (s.jet2Alive && !prevJ2Alive) game.audio.playRespawn();
+  if (s.events.death) game.audio.playDeath();
+  playFor(step.respawned, () => game.audio.playRespawn());
   if (
     game.frameCount % 30 === 0 &&
     ((s.jet1Alive && s.jet1Fuel < 50) || (s.jet2Alive && s.jet2Fuel < 50))
@@ -213,13 +131,10 @@ function fly(game) {
     game.audio.playFuelLow();
   }
 
+  game.gameState = s;
   // The match's end reports itself on entering FINISHED.
-  if (checkGameOver(s).ended) {
-    game.gameState = { ...s, phase: PHASE.FINISHED };
-    return;
-  }
+  if (s.phase === PHASE.FINISHED) return;
 
-  game.gameState = tickTimers(s);
   game.invalidate();
   game.frameCount++;
   game.broadcast();
@@ -239,10 +154,10 @@ function applySnapshot(game, decoded) {
 
 export default defineGame({
   inputs: {
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
-    accel: ["ArrowUp", "w", "W"],
-    decel: ["ArrowDown", "s", "S"],
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
+    accel: ARROW_KEYS.up,
+    decel: ARROW_KEYS.down,
     fire: [" "],
     mine: ["Shift", "q", "Q"],
   },
@@ -254,24 +169,15 @@ export default defineGame({
   audio: { sounds: SOUNDS },
   theme: getColors,
   // The game id picks the mode; only the host seeds the river.
-  init: (game) => {
-    game.gameMode = MODE_MAP[game.gameId] || GAME_MODE.RIVER_DUEL;
-    game.seed = game.isHost ? ((game.random() * 0xffffffff) | 0) >>> 0 : 0;
-    return createInitialState(game.gameMode, game.seed);
-  },
+  init: seededInit(MODE_MAP, GAME_MODE.RIVER_DUEL, createInitialState),
   setup: (game) => {
     game.particles = [];
     releaseTriggers(game);
   },
-  onStart: (game) => {
-    if (game.isHost) game.gameState = createInitialState(game.gameMode, game.seed);
-  },
+  onStart: freshOnHost(createInitialState),
   onStop: (game) => {
     releaseTriggers(game);
-    game.localInputs = { ...RELEASED };
-    game.remoteInputs = { ...RELEASED };
-    game.peerReady = false;
-    game.frameCount = 0;
+    game.forgetMatch();
   },
   // A fresh press of the guest's (or the AI's) trigger always counts.
   onRemoteInputChange: (game, previous, current) => {
@@ -284,11 +190,7 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: countdownState({
-        from: COUNTDOWN_FROM,
-        every: COUNTDOWN_EVERY_TICKS,
-        next: "FLYING",
-      }),
+      COUNTDOWN: countdownState({ next: "FLYING" }),
       FLYING: {
         enter: (game) => {
           game.broadcast();
@@ -305,10 +207,7 @@ export default defineGame({
           if (winner === 1) game.audio.playWin();
           else game.audio.playLose();
           game.invalidate();
-          game.finish({
-            end: { score1, score2, winner },
-            result: matchResult(score1, score2, winner),
-          });
+          finishScored(game, score1, score2, winner);
         },
       },
     },

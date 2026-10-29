@@ -41,6 +41,7 @@ export const SOUNDS = {
   /** The pencil switched. */
   pencil: { wave: "square", freq: 880, vol: fade(0.03, 0.03, "exp"), dur: 0.03 },
   /** The grid solved: a fanfare, up, a step back, and up to the top. */
+  // ex_dna:disable-for-lines:7 this game's own sound table
   win: notes([392, 523, 659, 784, 659, 1046], {
     wave: "square",
     note: 0.14,

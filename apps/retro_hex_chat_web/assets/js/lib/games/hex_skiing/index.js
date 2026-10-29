@@ -12,27 +12,19 @@
  * @module games/hex_skiing
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROW_KEYS, defineGame, drawSeed, packedSnapshot } from "../core/define_game.js";
 import { playFlags } from "../core/events.js";
-import { drawOnDisconnect, matchResult, playOutcome } from "../core/result.js";
+import { drawOnDisconnect, matchResult, raceEnd } from "../core/result.js";
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import {
-  checkCollisions,
-  checkGameOver,
-  checkGates,
   createInitialState,
   determineWinner,
-  ensureChunks,
-  ensureGates,
+  // ex_dna:disable-for-lines:9 this game's own imports
   getScrollSpeed,
   packState,
   startNextRound,
+  stepTick,
   unpackState,
-  updateAvalanche,
-  updateBlizzard,
-  updateItems,
-  updateScroll,
-  updateSkier,
 } from "./physics.js";
 import { EVENT, GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { generateSnowParticles, readColors, render } from "./renderer.js";
@@ -98,20 +90,8 @@ function race(game, previous) {
   // The AI sees the step's state with last step's events already cleared.
   game.gameState = previous;
   game.updateOpponent();
-  let state = previous;
-  state.p1 = updateSkier(state.p1, game.localInputs);
-  state.p2 = updateSkier(state.p2, game.remoteInputs);
-  state = updateScroll(state);
-  state = ensureChunks(state);
-  state = ensureGates(state);
-  state = updateItems(state);
-  state = checkCollisions(state);
-  state = checkGates(state);
-  state = updateAvalanche(state);
-  state = updateBlizzard(state);
-
-  const prevPhase = state.phase;
-  state = checkGameOver(state);
+  const prevPhase = previous.phase;
+  const state = stepTick(previous, { p1: game.localInputs, p2: game.remoteInputs });
   if (state.phase === PHASE.ROUND_END && prevPhase === PHASE.RACING) {
     game.roundEndTimer = ROUND_END_STEPS;
     game.audio.playRoundEnd();
@@ -149,8 +129,8 @@ function step(game) {
 
 export default defineGame({
   inputs: {
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
   },
   captureKeys: ["ArrowLeft", "ArrowRight", "a", "A", "d", "D"],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
@@ -174,15 +154,11 @@ export default defineGame({
     game.snowParticles = generateSnowParticles(40);
     // ex_dna:disable-for-lines:7 this game's own defineGame definition
     if (game.isHost) {
-      const seed = (game.random() * 0xffffffff) >>> 0;
-      game.gameState = createInitialState(game.gameMode, seed);
+      game.gameState = createInitialState(game.gameMode, drawSeed(game));
     }
   },
   onStop: (game) => {
-    game.localInputs = { left: false, right: false };
-    game.remoteInputs = { left: false, right: false };
-    game.peerReady = false;
-    game.frameCount = 0;
+    game.forgetMatch();
     game.countdownFrames = 0;
     game.roundEndTimer = 0;
     game.audio.stopSkiDrone();
@@ -210,24 +186,14 @@ export default defineGame({
       COUNTDOWN: { tick: step },
       RACING: { tick: step },
       ROUND_END: { tick: step },
-      // ex_dna:disable-for-lines:15 this game's own defineGame definition
+      // ex_dna:disable-for-lines:7 this game's own defineGame definition
       FINISHED: { final: true },
     },
   },
 
-  toWire: (game) => packState(game.gameState),
-  applySnapshot: (game, decoded) => {
-    game.gameMode = decoded.mode;
-    game.gameState = unpackState(decoded);
-  },
+  ...packedSnapshot(packState, unpackState),
   cues: [{ flags: (s) => s.events, sounds: EVENT_SOUNDS }],
-  onEnd: (game, result) => {
-    if (game.gameState) game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
-    game.invalidate();
-    game.setKeyboardCaptured(false);
-    game.audio.stopSkiDrone();
-    playOutcome(game, result.winner, "playVictory", "playGameOver");
-  },
+  onEnd: raceEnd(PHASE.FINISHED, (game) => game.audio.stopSkiDrone()),
   render: (game) => {
     render(game.ctx, game.gameState, game.colors, game.frameCount, game.snowParticles);
   },

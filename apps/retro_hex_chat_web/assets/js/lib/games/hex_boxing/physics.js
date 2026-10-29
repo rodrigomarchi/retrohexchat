@@ -5,7 +5,7 @@
  */
 
 import { PHASE, PUNCH_STATE } from "./protocol.js";
-import { tallyRound } from "../core/rounds.js";
+import { closeRound, pointsReached } from "../core/rounds.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -24,6 +24,7 @@ export const BOXER_SPEED = 2.5;
 
 // --- Punch ---
 export const PUNCH_RANGE = 24;
+export const PUNCH_WINDUP = 14; // frames (~230ms) the arm is drawn back before it flies
 export const PUNCH_DURATION = 9; // frames (~150ms)
 export const PUNCH_COOLDOWN = 12; // frames (~200ms)
 export const FIST_RADIUS = 3;
@@ -108,7 +109,8 @@ export function clampToRing(x, y) {
 }
 
 /**
- * Move boxer in the given direction (0-7) and update facing.
+ * Move boxer in the given direction (0-7) and update facing, which holds
+ * while a punch is wound up or in flight.
  * Also pushes opponent apart if body collision occurs.
  * @param {object} state
  * @param {number} player - 1 or 2
@@ -130,8 +132,12 @@ export function moveBoxer(state, player, dirIndex) {
   newX = clamped.x;
   newY = clamped.y;
 
-  // Update facing direction
-  let result = { ...state, [`${prefix}x`]: newX, [`${prefix}y`]: newY, [`${prefix}dir`]: dirIndex };
+  // Update facing direction — except mid-punch: a punch wound up flies the
+  // way the boxer faced when it was thrown.
+  const punchState = state[`${prefix}punchState`];
+  const throwing = punchState === PUNCH_STATE.WINDUP || punchState === PUNCH_STATE.PUNCHING;
+  const dir = throwing ? state[`${prefix}dir`] : dirIndex;
+  let result = { ...state, [`${prefix}x`]: newX, [`${prefix}y`]: newY, [`${prefix}dir`]: dir };
 
   // Check body-body collision and push apart
   result = resolveBodyCollision(result, prefix, otherPrefix);
@@ -177,8 +183,8 @@ function resolveBodyCollision(state, movedPrefix, otherPrefix) {
 }
 
 /**
- * Start a punch if boxer is idle.
- * Alternates between left (0) and right (1) arm.
+ * Start a punch if boxer is idle: it winds up first, and lands nothing until
+ * it flies. Alternates between left (0) and right (1) arm.
  * @param {object} state
  * @param {number} player - 1 or 2
  * @returns {object}
@@ -190,14 +196,16 @@ export function startPunch(state, player) {
 
   return {
     ...state,
-    [`${prefix}punchState`]: PUNCH_STATE.PUNCHING,
-    [`${prefix}punchTimer`]: PUNCH_DURATION,
+    [`${prefix}punchState`]: PUNCH_STATE.WINDUP,
+    [`${prefix}punchTimer`]: PUNCH_WINDUP,
     [`${prefix}arm`]: state[`${prefix}arm`] === 0 ? 1 : 0,
   };
 }
 
 /**
  * Tick punch timers for both boxers. Transitions:
+ * WINDUP (timer > 1) → WINDUP (timer--)
+ * WINDUP (timer = 1) → PUNCHING (timer = PUNCH_DURATION)
  * PUNCHING (timer > 0) → PUNCHING (timer--)
  * PUNCHING (timer = 0) → COOLDOWN (timer = PUNCH_COOLDOWN)
  * COOLDOWN (timer > 0) → COOLDOWN (timer--)
@@ -216,6 +224,18 @@ function _tickPunchTimer(state, prefix) {
   const ps = state[`${prefix}punchState`];
   const timer = state[`${prefix}punchTimer`];
   const cdTimer = state[`${prefix}cooldownTimer`];
+
+  if (ps === PUNCH_STATE.WINDUP) {
+    if (timer > 1) {
+      return { ...state, [`${prefix}punchTimer`]: timer - 1 };
+    }
+    // Wind-up done → the punch flies
+    return {
+      ...state,
+      [`${prefix}punchState`]: PUNCH_STATE.PUNCHING,
+      [`${prefix}punchTimer`]: PUNCH_DURATION,
+    };
+  }
 
   if (ps === PUNCH_STATE.PUNCHING) {
     if (timer > 1) {
@@ -329,6 +349,69 @@ export function checkPunchHit(state, attacker) {
 }
 
 /**
+ * The eight directions as the ring's numbering, or -1 for none.
+ * @param {{ up?: boolean, down?: boolean, left?: boolean, right?: boolean }} inputs
+ * @returns {number}
+ */
+export function direction({ up, down, left, right }) {
+  if (right && !left) {
+    if (up && !down) return 7;
+    if (down && !up) return 1;
+    return 0;
+  }
+  if (left && !right) {
+    if (up && !down) return 5;
+    if (down && !up) return 3;
+    return 4;
+  }
+  if (up && !down) return 6;
+  if (down && !up) return 2;
+  return -1;
+}
+
+/**
+ * One frame of the fight on the host: both boxers step, a punch starts on
+ * the press (not while the key is held), the punches play out, and a landed
+ * punch scores by how close it landed, and the round's clock ticks.
+ *
+ * `pressed` is whether each punch key was already down last frame; the next
+ * frame's comes back beside the state. `events.hits` lists the punches that
+ * landed this frame, for the sounds and sparks.
+ * @param {object} state
+ * @param {{ 1: object, 2: object }} inputs - each player's held inputs
+ * @param {{ 1: boolean, 2: boolean }} pressed
+ * @returns {{
+ *   state: object,
+ *   pressed: { 1: boolean, 2: boolean },
+ *   events: { hits: { attacker: number, points: number }[] },
+ * }}
+ */
+export function stepTick(state, inputs, pressed) {
+  let s = { ...state, lastHitPlayer: 0, lastHitPoints: 0 };
+  for (const player of [1, 2]) {
+    const dir = direction(inputs[player]);
+    if (dir >= 0) s = moveBoxer(s, player, dir);
+  }
+
+  const nextPressed = { ...pressed };
+  for (const player of [1, 2]) {
+    if (inputs[player].punch && !pressed[player]) s = startPunch(s, player);
+    nextPressed[player] = inputs[player].punch;
+  }
+
+  s = tickPunchTimers(s);
+  const hits = [];
+  for (const attacker of [1, 2]) {
+    const score = attacker === 1 ? "score1" : "score2";
+    const before = s[score];
+    s = checkPunchHit(s, attacker);
+    if (s[score] > before) hits.push({ attacker, points: s.lastHitPoints });
+  }
+
+  return { state: tickRoundTimer(s), pressed: nextPressed, events: { hits } };
+}
+
+/**
  * Tick the round timer.
  * @param {object} state
  * @returns {object}
@@ -344,16 +427,11 @@ export function tickRoundTimer(state) {
  * @returns {{ ended: boolean, roundWinner: number }}
  */
 export function checkRoundEnd(state) {
-  if (state.score1 >= KO_SCORE) {
-    return { ended: true, roundWinner: 1 };
-  }
-  if (state.score2 >= KO_SCORE) {
-    return { ended: true, roundWinner: 2 };
-  }
+  const knockout = pointsReached(state, KO_SCORE);
+  if (knockout.ended) return knockout;
   if (state.roundTimer <= 0) {
     // Decision by points; tie goes to player 1 (host advantage, rare edge case)
     const winner = state.score1 >= state.score2 ? 1 : 2;
-    // ex_dna:disable-for-lines:19 this game's own rule on the shared core helper
     return { ended: true, roundWinner: winner };
   }
   return { ended: false, roundWinner: 0 };
@@ -366,12 +444,8 @@ export function checkRoundEnd(state) {
  * @returns {object}
  */
 export function advanceRound(state, roundWinner) {
-  const { matchOver, ...roundWins } = tallyRound(state, roundWinner, ROUNDS_TO_WIN);
-
   return {
-    ...state,
-    ...roundWins,
-    phase: matchOver ? PHASE.MATCH_OVER : PHASE.ROUND_OVER,
+    ...closeRound(state, roundWinner, ROUNDS_TO_WIN, PHASE),
     koPlayer: state.score1 >= KO_SCORE ? 2 : state.score2 >= KO_SCORE ? 1 : 0,
   };
 }

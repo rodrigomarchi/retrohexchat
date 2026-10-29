@@ -8,7 +8,8 @@
  *   removeEventListener: Function, emit: (type: string, event?: object) => void }}
  */
 export function fakeChannel() {
-  const listeners = { message: new Set(), close: new Set() };
+  const events = channelEvents();
+  const { listeners } = events;
   return {
     readyState: "open",
     bufferedAmount: 0,
@@ -16,15 +17,27 @@ export function fakeChannel() {
     send(data) {
       this.sent.push(data);
     },
+    ...events,
+    emit(type, event = {}) {
+      if (type === "close") this.readyState = "closed";
+      for (const listener of [...(listeners[type] ?? [])]) listener({ type, ...event });
+    },
+  };
+}
+
+/**
+ * The listeners of one end of a channel, by event type (`message`, `close`),
+ * and the methods that add and remove them; spread into the end.
+ */
+export function channelEvents() {
+  const listeners = { message: new Set(), close: new Set() };
+  return {
+    listeners,
     addEventListener(type, listener) {
       listeners[type]?.add(listener);
     },
     removeEventListener(type, listener) {
       listeners[type]?.delete(listener);
-    },
-    emit(type, event = {}) {
-      if (type === "close") this.readyState = "closed";
-      for (const listener of [...(listeners[type] ?? [])]) listener({ type, ...event });
     },
   };
 }

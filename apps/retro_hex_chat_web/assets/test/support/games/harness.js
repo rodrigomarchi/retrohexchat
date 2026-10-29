@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { afterEach, vi } from "vitest";
 import { createGameEngine } from "../../../js/lib/games/engine_loader.js";
 import { createLocalTransport } from "../../../js/lib/games/transport.js";
 import { channelPair } from "./channel_pair.js";
@@ -260,6 +260,12 @@ export async function playMatch({
       return pointerAt("host", type, x, y, options);
     },
 
+    /** A press and its release at one point of the host's canvas, as `pointer` places them. */
+    tap(x, y, options) {
+      pointerAt("host", "down", x, y, options);
+      pointerAt("host", "up", x, y, options);
+    },
+
     /** One datagram from a side, as a broken or out-of-date peer might send it. */
     send(from, data) {
       pair[from].send(data);
@@ -304,6 +310,38 @@ export async function playMatch({
       vi.unstubAllGlobals();
     },
   };
+}
+
+/**
+ * The matches a `describe` plays, each stopped with the real clock put back
+ * after its test: `const play = matchPerTest(defaults)`, then
+ * `const match = await play(options)` plays one on the defaults and the options.
+ */
+export function matchPerTest(defaults = {}) {
+  let played = [];
+  // Every match stops on the test clock before the clock and the stubs are put
+  // back, once: restoring is global, and a match stopped after it would run
+  // its teardown on the real clock.
+  afterEach(() => {
+    for (const match of played) match.stop();
+    played[0]?.restore();
+    played = [];
+  });
+  return async (options = {}) => {
+    const match = await playMatch({ ...defaults, ...options });
+    played.push(match);
+    return match;
+  };
+}
+
+/** The record of a match played for `ms` and stopped, the real clock put back. */
+export async function recordedMatch(options, ms) {
+  const run = await playMatch(options);
+  run.advance(ms);
+  const record = run.record();
+  run.stop();
+  run.restore();
+  return record;
 }
 
 /**

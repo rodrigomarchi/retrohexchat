@@ -1,18 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { bestDestination, interpret } from "../../../../js/lib/games/hex_freecell/gestures.js";
 import { layout } from "../../../../js/lib/games/hex_freecell/layout.js";
+import { C, H, S, card } from "../../../support/games/card_tables.js";
+import { table as freeCell } from "./tables.js";
 
-const S = 0;
-const H = 1;
-const C = 3;
-const card = (rank, suit) => suit * 13 + rank - 1;
-function table({ columns = [], cells = [], foundations = [] } = {}) {
-  return {
-    columns: Array.from({ length: 8 }, (_, i) => columns[i] ?? [card(13, S)]),
-    cells: Array.from({ length: 4 }, (_, i) => cells[i] ?? null),
-    foundations: Array.from({ length: 4 }, (_, i) => foundations[i] ?? []),
-  };
-}
+/** A table built by hand, a king of spades in every column not given. */
+const table = (piles) => freeCell(piles, () => [card(13, S)]);
 const centre = (r) => ({ x: r.x + 10, y: r.y + 10 });
 const tap = (t, r) => interpret(t, null, { type: "tap", ...centre(r) }).action;
 

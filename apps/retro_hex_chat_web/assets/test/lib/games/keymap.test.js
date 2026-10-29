@@ -1,7 +1,7 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { loadP2PEngineClass } from "../../../js/lib/games/engine_loader.js";
 import { keymap } from "../../../js/lib/game_engine.js";
-import { playMatch } from "../../support/games/harness.js";
+import { matchPerTest } from "../../support/games/harness.js";
 import { ENGINE_GAME_IDS, isOnePlayer } from "../../support/games/engines.js";
 
 // Every engine whose keys hold an input (Light Trails steers by command).
@@ -16,13 +16,7 @@ describe("keymap", () => {
 });
 
 describe.each(GAMES)("%s keys", (gameId) => {
-  let match;
-
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
+  const play = matchPerTest();
 
   it("drive exactly the inputs the game sends", async () => {
     const Engine = await loadP2PEngineClass(gameId);
@@ -34,7 +28,7 @@ describe.each(GAMES)("%s keys", (gameId) => {
     // A two-player game is driven from the guest's side; a one-player game
     // has only its player.
     const side = isOnePlayer(gameId) ? "host" : "guest";
-    match = await playMatch({ gameId, mode: side === "host" ? "solo" : "p2p" });
+    const match = await play({ gameId, mode: side === "host" ? "solo" : "p2p" });
     const engine = match.engines[side];
 
     for (const [name, input] of Object.entries(Engine.KEYMAP)) {

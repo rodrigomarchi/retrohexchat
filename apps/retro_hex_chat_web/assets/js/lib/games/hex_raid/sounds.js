@@ -3,7 +3,7 @@
  * @module games/hex_raid/sounds
  */
 
-import { blip, notes, sweep } from "../core/synth.js";
+import { LOSE_SWEEP, WIN_FANFARE, blip, notes, sweep } from "../core/synth.js";
 
 export const SOUNDS = {
   /** River Raid's pew: falling 1200 → 800 Hz sine, 60 ms. */
@@ -38,7 +38,7 @@ export const SOUNDS = {
   /** 600 Hz square blip, 80 ms. */
   countdown: blip("square", 600, 0.08, 0.12),
   /** A military fanfare: rising C5-E5-G5-C6-E6. */
-  win: notes([523, 659, 784, 1047, 1319], { wave: "square", note: 0.12, vol: 0.12 }),
+  win: WIN_FANFARE,
   /** Falling 500 → 150 Hz sawtooth, 700 ms. */
-  lose: sweep("sawtooth", 500, 150, 0.7, 0.1),
+  lose: LOSE_SWEEP,
 };

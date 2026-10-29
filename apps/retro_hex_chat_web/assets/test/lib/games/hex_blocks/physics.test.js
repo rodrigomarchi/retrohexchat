@@ -27,6 +27,7 @@ import {
   spawn,
 } from "../../../../js/lib/games/hex_blocks/rules.js";
 import { sprintPoints } from "../../../../js/lib/games/hex_blocks/scoring.js";
+import { bottomRowForPiece } from "./wells.js";
 
 const random = () => createRng(3).fork("bag").next;
 /** A new match as the flow begins it: in play. */
@@ -46,12 +47,6 @@ const run = (state, r, ticks) => {
 };
 const rowOf = (piece) => piece.r;
 const colOf = (piece) => piece.c;
-/** The well with every square of a zigzag row filled but the columns given. */
-function fillRow(well, r, gaps) {
-  const cells = [...well.cells];
-  for (let c = 0; c < COLS; c++) if (!gaps.includes(c)) cells[r * COLS + c] = 1;
-  return { ...well, cells };
-}
 
 describe("the start of a match", () => {
   it("counts three seconds down before the first piece comes in, the clock stopped", () => {
@@ -194,10 +189,7 @@ describe("clearing rows", () => {
   it("clears a full row, scores it by the level, and counts it", () => {
     const { state, r } = started();
     const piece = landing(state.well, state.piece);
-    const bottom = cellsOf(piece)
-      .filter(([, row]) => row === ROWS - 1)
-      .map(([c]) => c);
-    const well = fillRow(state.well, ROWS - 1, bottom);
+    const well = bottomRowForPiece(state);
     const s = act({ ...state, well, level: 3 }, { type: "drop" }, r);
     expect(s.lines).toBe(1);
     expect(s.score).toBe(2 * (piece.r - state.piece.r) + 100 * 3);
@@ -207,15 +199,7 @@ describe("clearing rows", () => {
 
   it("goes up a level every ten rows, and falls faster for it", () => {
     const { state, r } = started();
-    const piece = landing(state.well, state.piece);
-    const bottom = cellsOf(piece)
-      .filter(([, row]) => row === ROWS - 1)
-      .map(([c]) => c);
-    const s = act(
-      { ...state, well: fillRow(state.well, ROWS - 1, bottom), lines: 9 },
-      { type: "drop" },
-      r,
-    );
+    const s = act({ ...state, well: bottomRowForPiece(state), lines: 9 }, { type: "drop" }, r);
     expect(s.level).toBe(2);
     expect(s.events & EVENT.LEVEL).toBeTruthy();
     expect(fallTicks(2)).toBeLessThan(fallTicks(1));
@@ -225,11 +209,7 @@ describe("clearing rows", () => {
   it("adds a bonus for a clear right after a clear", () => {
     const { state, r } = started();
     const clearing = (s) => {
-      const piece = landing(s.well, s.piece);
-      const bottom = cellsOf(piece)
-        .filter(([, row]) => row === ROWS - 1)
-        .map(([c]) => c);
-      return act({ ...s, well: fillRow(s.well, ROWS - 1, bottom) }, { type: "drop" }, r);
+      return act({ ...s, well: bottomRowForPiece(s) }, { type: "drop" }, r);
     };
     const first = clearing(state);
     const second = clearing({ ...first, well: { cells: Array(COLS * ROWS).fill(0) } });
@@ -255,14 +235,10 @@ describe("the end", () => {
 
   it("wins the Sprint at forty rows, scored by its time", () => {
     const { state, r } = started(MODE.hex_blocks_sprint);
-    const piece = landing(state.well, state.piece);
-    const bottom = cellsOf(piece)
-      .filter(([, row]) => row === ROWS - 1)
-      .map(([c]) => c);
     const s = act(
       {
         ...state,
-        well: fillRow(state.well, ROWS - 1, bottom),
+        well: bottomRowForPiece(state),
         lines: 39,
         clock: { started: true, ticks: 3600 },
       },
@@ -277,15 +253,7 @@ describe("the end", () => {
   it("scores a Sprint that tops out nothing, and keeps the Sprint at level 1", () => {
     const { state, r } = started(MODE.hex_blocks_sprint);
     expect(finalScore({ ...state, phase: PHASE.FINISHED, score: 500 })).toBe(0);
-    const piece = landing(state.well, state.piece);
-    const bottom = cellsOf(piece)
-      .filter(([, row]) => row === ROWS - 1)
-      .map(([c]) => c);
-    const s = act(
-      { ...state, well: fillRow(state.well, ROWS - 1, bottom), lines: 19 },
-      { type: "drop" },
-      r,
-    );
+    const s = act({ ...state, well: bottomRowForPiece(state), lines: 19 }, { type: "drop" }, r);
     expect(s.level).toBe(1);
   });
 

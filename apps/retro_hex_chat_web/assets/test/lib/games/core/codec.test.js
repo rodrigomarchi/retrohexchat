@@ -305,53 +305,28 @@ describe("codec", () => {
         list("xs", { capacity: 2, fixed: true, count: "n" }, [f32("v")]),
       ]);
 
+      // A number's spec: every option at its default unless named.
+      const number = (kind, name, options = {}) => ({
+        kind,
+        name,
+        round: false,
+        scale: null,
+        clamp: null,
+        or: null,
+        from: null,
+        encode: null,
+        decode: null,
+        bigEndian: false,
+        ...options,
+      });
+
       expect(msg.fields.map((field) => field.spec)).toEqual([
-        {
-          kind: "u16",
-          name: "y",
-          round: true,
-          scale: null,
-          clamp: null,
-          or: null,
-          from: null,
-          encode: null,
-          decode: null,
-          bigEndian: false,
-        },
-        {
-          kind: "i16",
-          name: "x",
-          round: false,
-          scale: 10,
-          clamp: null,
-          or: null,
-          from: null,
-          encode: null,
-          decode: null,
-          bigEndian: false,
-        },
+        number("u16", "y", { round: true }),
+        number("i16", "x", { scale: 10 }),
         { kind: "bool", name: "on" },
         { kind: "flags", names: ["a", "b"] },
         { kind: "bitmap", name: "blocks", count: 4, key: null, as: null },
-        {
-          kind: "struct",
-          name: "p1",
-          flat: false,
-          fields: [
-            {
-              kind: "u8",
-              name: "lives",
-              round: false,
-              scale: null,
-              clamp: null,
-              or: null,
-              from: null,
-              encode: null,
-              decode: null,
-              bigEndian: false,
-            },
-          ],
-        },
+        { kind: "struct", name: "p1", flat: false, fields: [number("u8", "lives")] },
         {
           kind: "list",
           name: "xs",
@@ -360,20 +335,7 @@ describe("codec", () => {
           count: "n",
           countFrom: null,
           trim: false,
-          fields: [
-            {
-              kind: "f32",
-              name: "v",
-              round: false,
-              scale: null,
-              clamp: null,
-              or: null,
-              from: null,
-              encode: null,
-              decode: null,
-              bigEndian: false,
-            },
-          ],
+          fields: [number("f32", "v")],
         },
       ]);
     });

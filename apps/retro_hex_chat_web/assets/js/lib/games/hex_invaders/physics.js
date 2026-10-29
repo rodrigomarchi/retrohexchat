@@ -186,6 +186,7 @@ export function createInitialState(mode, seed) {
 
     bombs: [],
     bombCount: 0,
+    bombSerial: 0,
     bombTimer: BOMB_INTERVAL_BASE,
 
     shields,
@@ -417,6 +418,7 @@ export function spawnBombs(state) {
   if (s.phase !== PHASE.PLAYING || s.bombTimer > 0) return s;
 
   const bombs = [...s.bombs];
+  let serial = s.bombSerial ?? 0;
 
   // Pick a random alive alien from each active side to drop a bomb
   const spawnFromSide = (aliensKey, side) => {
@@ -425,7 +427,9 @@ export function spawnBombs(state) {
     // Use a simple deterministic pick based on bomb count
     const idx = (s.bombCount + side) % alive.length;
     const a = alive[idx];
-    bombs.push({ side, x: a.x + ALIEN_W / 2, y: a.y + ALIEN_H });
+    // Each bomb is numbered: what watches the bombs can tell one from another.
+    serial += 1;
+    bombs.push({ id: serial, side, x: a.x + ALIEN_W / 2, y: a.y + ALIEN_H });
   };
 
   if (state.mode === GAME_MODE.COOP) {
@@ -437,6 +441,7 @@ export function spawnBombs(state) {
 
   s.bombs = bombs;
   s.bombCount = bombs.length;
+  s.bombSerial = serial;
 
   // Reset timer — decreases with wave
   const interval = Math.max(BOMB_INTERVAL_MIN, BOMB_INTERVAL_BASE - s.wave * 10);
@@ -914,6 +919,22 @@ export function checkWaveClear(state) {
 // ── Game Over ──
 
 /**
+ * Whether a co-op crew held out: the last wave cleared with someone still
+ * standing. Anything else that ends co-op — both cannons lost, or the aliens
+ * landing — is an invasion.
+ * @param {object} state
+ * @returns {boolean}
+ */
+export function coopSurvived(state) {
+  return (
+    state.mode === GAME_MODE.COOP &&
+    (state.lives1 > 0 || state.lives2 > 0) &&
+    state.wave >= MAX_WAVES_COOP &&
+    checkWaveClear(state)
+  );
+}
+
+/**
  * Check game over conditions.
  * @param {object} state
  * @returns {{ ended: boolean, winner: number }}
@@ -932,9 +953,8 @@ export function checkGameOver(state) {
     if (state.lives1 <= 0 && state.lives2 <= 0) {
       return { ended: true, winner: 0 }; // 0 = no winner in coop
     }
-    // Max waves cleared
-    if (state.wave >= MAX_WAVES_COOP && checkWaveClear(state)) {
-      return { ended: true, winner: 0 }; // survived!
+    if (coopSurvived(state)) {
+      return { ended: true, winner: 0 };
     }
     return { ended: false, winner: 0 };
   }
@@ -983,4 +1003,70 @@ export function tickTimers(state) {
  */
 export function clearEvents(state) {
   return { ...state, events: emptyEvents() };
+}
+
+// ── One Frame ──
+
+/**
+ * One frame of a wave in play: both cannons move and fire, then the aliens,
+ * missiles, bombs and UFO, every hit, the drops and the combos. A missile
+ * goes on the press, not while the key is held: `held` says which fire keys
+ * were down on the frame before, and the step's own `held` which are down
+ * now. A frame that ends the match leaves the state FINISHED, one that clears
+ * the wave leaves it WAVE_CLEAR; only a frame that does neither counts the
+ * timers down.
+ * @param {object} state
+ * @param {{left: boolean, right: boolean, fire: boolean}} local - player one's inputs
+ * @param {{left: boolean, right: boolean, fire: boolean}} remote - player two's inputs
+ * @param {{local: boolean, remote: boolean}} [held]
+ * @returns {{
+ *   state: object,
+ *   held: {local: boolean, remote: boolean},
+ *   fired: {local: boolean, remote: boolean},
+ *   marched: boolean,
+ *   over: {ended: boolean, winner: number},
+ * }} `fired` names the presses that fired, `marched` a step of player one's aliens
+ */
+export function stepTick(state, local, remote, held = { local: false, remote: false }) {
+  let s = clearEvents(state);
+  if (local.left) s = moveCannon(s, 1, -1);
+  if (local.right) s = moveCannon(s, 1, 1);
+  if (remote.left) s = moveCannon(s, 2, -1);
+  if (remote.right) s = moveCannon(s, 2, 1);
+
+  const fired = { local: local.fire && !held.local, remote: remote.fire && !held.remote };
+  if (fired.local) s = fireMissile(s, 1);
+  if (fired.remote) s = fireMissile(s, 2);
+
+  s = moveAliens(s, 1);
+  if (s.mode !== GAME_MODE.COOP) s = moveAliens(s, 2);
+  const marched = s.alien1MoveTimer > state.alien1MoveTimer + 5;
+
+  for (const advance of [
+    spawnBombs,
+    updateMissiles,
+    updateBombs,
+    updateUFO,
+    checkMissileAlienHits,
+    checkMissileUFOHit,
+    checkBombShieldHits,
+    checkBombCannonHits,
+    checkAlienReachedGround,
+    processDropQueue,
+    updateCombos,
+  ]) {
+    s = advance(s);
+  }
+
+  const over = checkGameOver(s);
+  if (over.ended) {
+    s.phase = PHASE.FINISHED;
+  } else if (checkWaveClear(s)) {
+    s.phase = PHASE.WAVE_CLEAR;
+    s.events.waveCleared = true;
+  } else {
+    s = tickTimers(s);
+  }
+
+  return { state: s, held: { local: local.fire, remote: remote.fire }, fired, marched, over };
 }

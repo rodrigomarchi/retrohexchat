@@ -8,6 +8,12 @@ import {
   SNAPSHOT,
   GAME_END,
 } from "../../../../js/lib/games/hex_boxing/protocol.js";
+import {
+  describeMatchMessages,
+  itFramesMessages,
+  itRoundTripsEach,
+  roundTrip,
+} from "../../../support/games/protocol_tests.js";
 
 describe("Hex Boxing Protocol", () => {
   function makeState(overrides) {
@@ -41,219 +47,71 @@ describe("Hex Boxing Protocol", () => {
   describe("game state encode/decode", () => {
     it("roundtrips a full state", () => {
       const state = makeState({
-        b1x: 200,
-        b1y: 240,
-        b1dir: 0,
         b1punchState: PUNCH_STATE.PUNCHING,
         b1arm: 1,
         b1punchTimer: 5,
-        b2x: 440,
         b2y: 200,
-        b2dir: 4,
         b2punchState: PUNCH_STATE.COOLDOWN,
-        b2arm: 0,
         b2punchTimer: 3,
         score1: 47,
         score2: 32,
         phase: PHASE.FIGHTING,
-        countdown: 0,
         round: 2,
         roundWins1: 1,
-        roundWins2: 0,
         roundTimer: 3600,
         lastHitPlayer: 1,
         lastHitPoints: 3,
       });
 
-      const buf = SNAPSHOT.encode(state);
-      expect(buf.byteLength).toBe(26);
-
-      const decoded = SNAPSHOT.decode(buf);
-      expect(decoded).not.toBeNull();
-      expect(decoded.b1x).toBe(200);
-      expect(decoded.b1y).toBe(240);
-      expect(decoded.b1dir).toBe(0);
-      expect(decoded.b1punchState).toBe(PUNCH_STATE.PUNCHING);
-      expect(decoded.b1arm).toBe(1);
-      expect(decoded.b1punchTimer).toBe(5);
-      expect(decoded.b2x).toBe(440);
-      expect(decoded.b2y).toBe(200);
-      expect(decoded.b2dir).toBe(4);
-      expect(decoded.b2punchState).toBe(PUNCH_STATE.COOLDOWN);
-      expect(decoded.b2arm).toBe(0);
-      expect(decoded.b2punchTimer).toBe(3);
-      expect(decoded.score1).toBe(47);
-      expect(decoded.score2).toBe(32);
-      expect(decoded.phase).toBe(PHASE.FIGHTING);
-      expect(decoded.countdown).toBe(0);
-      expect(decoded.round).toBe(2);
-      expect(decoded.roundWins1).toBe(1);
-      expect(decoded.roundWins2).toBe(0);
-      expect(decoded.roundTimer).toBe(3600);
-      expect(decoded.lastHitPlayer).toBe(1);
-      expect(decoded.lastHitPoints).toBe(3);
+      expect(roundTrip(SNAPSHOT, state)).toEqual(state);
     });
 
-    it("encodes message type 0x80", () => {
-      const buf = SNAPSHOT.encode(makeState());
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
-    });
-
-    it("returns null for buffer too small", () => {
-      const buf = new ArrayBuffer(10);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(26);
-      const view = new DataView(buf);
-      view.setUint8(0, 0x81);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
+    itFramesMessages(SNAPSHOT, {
+      sample: makeState(),
+      bytes: 26,
+      type: MSG_TYPE.GAME_STATE,
+      short: [10],
+      length: 26,
+      wrongType: 0x81,
     });
 
     it("encodes all boxer flag combinations", () => {
-      for (const ps of [PUNCH_STATE.IDLE, PUNCH_STATE.PUNCHING, PUNCH_STATE.COOLDOWN]) {
-        for (const arm of [0, 1]) {
-          const decoded = SNAPSHOT.decode(
-            SNAPSHOT.encode(makeState({ b1punchState: ps, b1arm: arm })),
-          );
-          expect(decoded.b1punchState).toBe(ps);
-          expect(decoded.b1arm).toBe(arm);
+      for (const b1punchState of Object.values(PUNCH_STATE)) {
+        for (const b1arm of [0, 1]) {
+          const state = makeState({ b1punchState, b1arm });
+          expect(roundTrip(SNAPSHOT, state)).toMatchObject({ b1punchState, b1arm });
         }
       }
     });
 
-    it("handles max scores (100 = KO)", () => {
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ score1: 100, score2: 99 })));
-      expect(decoded.score1).toBe(100);
-      expect(decoded.score2).toBe(99);
-    });
-
-    it("handles all 8 directions", () => {
-      for (let dir = 0; dir < 8; dir++) {
-        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ b1dir: dir })));
-        expect(decoded.b1dir).toBe(dir);
-      }
-    });
-
-    it("handles all PHASE values", () => {
-      for (const [, value] of Object.entries(PHASE)) {
-        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ phase: value })));
-        expect(decoded.phase).toBe(value);
-      }
-    });
-
-    it("handles max roundTimer value", () => {
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ roundTimer: 65535 })));
-      expect(decoded.roundTimer).toBe(65535);
-    });
-
-    it("handles max Uint8 punchTimer", () => {
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ b1punchTimer: 255 })));
-      expect(decoded.b1punchTimer).toBe(255);
-    });
-
-    it("handles event flags", () => {
-      const decoded = SNAPSHOT.decode(
-        SNAPSHOT.encode(makeState({ lastHitPlayer: 2, lastHitPoints: 3 })),
-      );
-      expect(decoded.lastHitPlayer).toBe(2);
-      expect(decoded.lastHitPoints).toBe(3);
-    });
-
-    it("handles zero event flags (no hit)", () => {
-      const decoded = SNAPSHOT.decode(
-        SNAPSHOT.encode(makeState({ lastHitPlayer: 0, lastHitPoints: 0 })),
-      );
-      expect(decoded.lastHitPlayer).toBe(0);
-      expect(decoded.lastHitPoints).toBe(0);
-    });
-
-    it("handles position at canvas boundaries", () => {
-      const decoded = SNAPSHOT.decode(
-        SNAPSHOT.encode(makeState({ b1x: 0, b1y: 0, b2x: 640, b2y: 480 })),
-      );
-      expect(decoded.b1x).toBe(0);
-      expect(decoded.b1y).toBe(0);
-      expect(decoded.b2x).toBe(640);
-      expect(decoded.b2y).toBe(480);
+    itRoundTripsEach(SNAPSHOT, makeState, {
+      score1: [0, 99, 100],
+      b1dir: [0, 1, 2, 3, 4, 5, 6, 7],
+      phase: Object.values(PHASE),
+      roundTimer: [0, 3600, 65535],
+      b1punchTimer: [0, 255],
+      lastHitPlayer: [0, 1, 2],
+      lastHitPoints: [0, 1, 2, 3],
+      b1x: [0, 640],
+      b2y: [0, 480],
     });
 
     it("rounds float positions to nearest integer", () => {
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ b1x: 200.7, b1y: 240.3 })));
-      expect(decoded.b1x).toBe(201);
-      expect(decoded.b1y).toBe(240);
+      expect(roundTrip(SNAPSHOT, makeState({ b1x: 200.7, b1y: 240.3 }))).toMatchObject({
+        b1x: 201,
+        b1y: 240,
+      });
     });
 
     it("does not transmit cooldownTimer (internal-only field)", () => {
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState()));
-      // cooldownTimer is not in the decoded object — physics uses it internally
+      const decoded = roundTrip(SNAPSHOT, makeState({ b1cooldownTimer: 5, b2cooldownTimer: 5 }));
       expect(decoded.b1cooldownTimer).toBeUndefined();
       expect(decoded.b2cooldownTimer).toBeUndefined();
     });
   });
 
-  describe("game end encode/decode", () => {
-    it("roundtrips a result", () => {
-      const result = {
-        score1: 100,
-        score2: 47,
-        winner: 1,
-        roundWins1: 2,
-        roundWins2: 1,
-      };
-      const buf = GAME_END.encode(result);
-      expect(buf.byteLength).toBe(6);
-      const decoded = GAME_END.decode(buf);
-      expect(decoded).not.toBeNull();
-      expect(decoded.score1).toBe(100);
-      expect(decoded.score2).toBe(47);
-      expect(decoded.winner).toBe(1);
-      expect(decoded.roundWins1).toBe(2);
-      expect(decoded.roundWins2).toBe(1);
-    });
-
-    it("encodes message type 0x83", () => {
-      const buf = GAME_END.encode({
-        score1: 0,
-        score2: 0,
-        winner: 1,
-        roundWins1: 0,
-        roundWins2: 0,
-      });
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_END);
-    });
-
-    it("returns null for buffer too small", () => {
-      const buf = new ArrayBuffer(2);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(6);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
-  });
-
-  describe("game ready", () => {
-    it("encodes 1-byte ready signal", () => {
-      const buf = encodeGameReady();
-      expect(buf.byteLength).toBe(1);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_READY);
-    });
-  });
-
-  describe("getMessageType", () => {
-    it("returns null for empty buffer", () => {
-      expect(getMessageType(new ArrayBuffer(0))).toBeNull();
-    });
-
-    it("reads first byte as type", () => {
-      const buf = new ArrayBuffer(1);
-      new DataView(buf).setUint8(0, 0x83);
-      expect(getMessageType(buf)).toBe(0x83);
-    });
-  });
+  describeMatchMessages(
+    { GAME_END, MSG_TYPE, encodeGameReady, getMessageType },
+    { score1: 100, score2: 47, winner: 1, roundWins1: 2, roundWins2: 1 },
+  );
 });

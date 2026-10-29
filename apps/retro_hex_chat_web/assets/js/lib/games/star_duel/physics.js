@@ -499,6 +499,132 @@ export function checkAsteroidMissileCollision(missiles, asteroids) {
 
 // --- Particles ---
 
+/** A living ship turned, thrust and coasted by its pilot's held inputs. */
+function fly(ship, inputs) {
+  if (!ship.alive) return ship;
+  const turned = updateShipRotation(ship, inputs.rotateLeft, inputs.rotateRight);
+  const thrusting = { ...turned, thrustActive: inputs.thrust };
+  return updateShipPosition(capSpeed(applyDrag(applyThrust(thrusting))));
+}
+
+const wreck = (ship) => ({ ...ship, alive: false, exploding: true });
+
+/**
+ * One frame of the duel on the host: both ships fly, missiles and warps go
+ * on the press (not while the key is held), the missiles fly, the star pulls
+ * or the asteroids strike, hits wreck ships, and a kill scores for the other
+ * pilot — both dying at once scores for nobody.
+ *
+ * `pressed` is whether each fire and warp key was already down last frame;
+ * the next frame's comes back beside the state. `events` says what the frame
+ * did, for the sounds and explosions: the players who fired and warped, how
+ * many hits landed, the players who died, and whether the score changed.
+ * @param {object} state
+ * @param {{ 1: object, 2: object }} inputs - each player's held inputs
+ * @param {{ fire1: boolean, fire2: boolean, warp1: boolean, warp2: boolean }} pressed
+ * @param {() => number} random - the match's draws, for where a warp lands
+ * @returns {{
+ *   state: object,
+ *   pressed: { fire1: boolean, fire2: boolean, warp1: boolean, warp2: boolean },
+ *   events: { fired: number[], warped: number[], hits: number, died: number[], scored: boolean },
+ * }}
+ */
+export function stepTick(state, inputs, pressed, random) {
+  const events = { fired: [], warped: [], hits: 0, died: [], scored: false };
+  const ships = { 1: fly(state.ship1, inputs[1]), 2: fly(state.ship2, inputs[2]) };
+  let { missiles } = state;
+  const nextPressed = { ...pressed };
+
+  for (const player of [1, 2]) {
+    const fire = inputs[player].fire;
+    if (fire && !pressed[`fire${player}`] && ships[player].alive) {
+      const shot = fireMissile(ships[player], player, missiles);
+      if (shot) {
+        ships[player] = shot.ship;
+        missiles = [...missiles, shot.missile];
+        events.fired.push(player);
+      }
+    }
+    nextPressed[`fire${player}`] = fire;
+  }
+  for (const player of [1, 2]) {
+    const warp = inputs[player].warp;
+    if (warp && !pressed[`warp${player}`]) {
+      const jump = attemptWarp(ships[player], random);
+      if (jump) {
+        ships[player] = jump.ship;
+        events.warped.push(player);
+      }
+    }
+    nextPressed[`warp${player}`] = warp;
+  }
+
+  missiles = updateMissiles(missiles);
+
+  if (state.mode === GAME_MODE.GRAVITY_WELL) {
+    for (const player of [1, 2]) {
+      if (!ships[player].alive) continue;
+      const pulled = capSpeed(applyGravity(ships[player], STAR_X, STAR_Y));
+      ships[player] = checkStarCollision(pulled) ? wreck(pulled) : pulled;
+    }
+    missiles = missiles.map((m) => applyGravityToMissile(m, STAR_X, STAR_Y));
+  }
+
+  if (state.mode === GAME_MODE.DEBRIS_FIELD) {
+    for (const player of [1, 2]) {
+      if (ships[player].alive && checkAsteroidShipCollision(ships[player], state.asteroids)) {
+        ships[player] = wreck(ships[player]);
+      }
+    }
+    missiles = checkAsteroidMissileCollision(missiles, state.asteroids);
+  }
+
+  for (const player of [1, 2]) {
+    const check = checkMissileShipCollision(missiles, ships[player], player);
+    missiles = check.missiles;
+    if (check.hit) {
+      ships[player] = wreck(ships[player]);
+      events.hits++;
+    }
+  }
+  if (checkShipShipCollision(ships[1], ships[2])) {
+    ships[1] = wreck(ships[1]);
+    ships[2] = wreck(ships[2]);
+    events.hits++;
+  }
+
+  for (const player of [1, 2]) {
+    if (ships[player].alive) ships[player] = tickCooldowns(ships[player]);
+  }
+
+  let { score1, score2 } = state;
+  let lastScorer = state.lastScorer || 0;
+  const before = { 1: state.ship1, 2: state.ship2 };
+  for (const player of [1, 2]) {
+    const ship = ships[player];
+    if (ship.exploding && ship.alive === false && !before[player].exploding) {
+      events.died.push(player);
+    }
+  }
+  if (events.died.length > 0) {
+    events.scored = true;
+    if (events.died.length === 2) lastScorer = 0;
+    else if (events.died[0] === 1) {
+      score2++;
+      lastScorer = 2;
+    } else {
+      score1++;
+      lastScorer = 1;
+    }
+  }
+
+  return {
+    state: { ...state, ship1: ships[1], ship2: ships[2], missiles, score1, score2, lastScorer },
+    pressed: nextPressed,
+    events,
+  };
+}
+
 /**
  * Generate explosion particles at a position.
  * @param {number} x - origin x

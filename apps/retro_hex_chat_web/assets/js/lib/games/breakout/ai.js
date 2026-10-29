@@ -16,18 +16,15 @@ import {
   PADDLE_W,
 } from "./physics.js";
 import {
-  aiRequest,
-  aiRng,
   clamp,
-  createReaction,
   dutyFrame,
   finiteMotion,
   interceptAt,
   normalizeDifficulty,
-  randomUnit,
   reflect,
   toward,
 } from "../core/ai.js";
+import { PaddleAI } from "../core/paddle_ai.js";
 
 const BALL_MIN_X = BALL_SIZE / 2;
 const BALL_MAX_X = CANVAS_W - BALL_SIZE / 2;
@@ -38,24 +35,29 @@ const P2_PADDLE_FACE_Y = PADDLE_MARGIN + PADDLE_H + BALL_SIZE / 2;
 const P1_PADDLE_FACE_Y = CANVAS_H - PADDLE_MARGIN - PADDLE_H - BALL_SIZE / 2;
 const NEUTRAL_INPUTS = Object.freeze({ left: false, right: false });
 
+/**
+ * How each difficulty plays, "hard" being the strongest paddle. `errorPx` is
+ * the aim error drawn once for each approach of the ball: past
+ * PADDLE_W / 2 + BALL_SIZE / 2 (44 px) the paddle misses it.
+ */
 export const BREAKOUT_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
     reactionFrames: 14,
-    errorPx: 46,
+    errorPx: 90,
     deadzonePx: 18,
     movementDuty: 0.55,
     followBias: 0.25,
   }),
   normal: Object.freeze({
     reactionFrames: 7,
-    errorPx: 22,
+    errorPx: 64,
     deadzonePx: 10,
     movementDuty: 0.82,
     followBias: 0.45,
   }),
   hard: Object.freeze({
     reactionFrames: 3,
-    errorPx: 8,
+    errorPx: 54,
     deadzonePx: 6,
     movementDuty: 1,
     followBias: 0.7,
@@ -146,27 +148,15 @@ export function createBreakoutAI(options = {}) {
   return new BreakoutAI(options);
 }
 
-export class BreakoutAI {
+export class BreakoutAI extends PaddleAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeBreakoutAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
-    this.reaction = createReaction();
+    super(options, normalizeBreakoutAIDifficulty, BREAKOUT_AI_DIFFICULTIES);
     this.sampledTargetX = TABLE_CENTER_X;
-  }
-
-  /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
-   * @returns {void}
-   */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizeBreakoutAIDifficulty(difficulty);
-    this.reaction.reset();
   }
 
   /**
@@ -177,21 +167,15 @@ export class BreakoutAI {
    * @returns {{left: boolean, right: boolean}}
    */
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
+    const turn = this.playFrame(request, PHASE.PLAYING, {
+      incoming: (state, player) => predictBreakoutInterceptX(state, player) !== null,
+      every: "reactionFrames",
+      look: (state, player, config) => this._sampleTargetX(state, player, config),
+    });
+    if (!turn) return NEUTRAL_INPUTS;
 
-    if (!state || state.phase !== PHASE.PLAYING) {
-      this.frame++;
-      return NEUTRAL_INPUTS;
-    }
-
-    const difficulty = normalizeBreakoutAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-
-    const config = BREAKOUT_AI_DIFFICULTIES[difficulty];
-    this.sampledTargetX = this.reaction.sample(config.reactionFrames, () =>
-      this._sampleTargetX(state, player, config),
-    );
-
+    const { state, player, config } = turn;
+    this.sampledTargetX = turn.target;
     const inputs = dutyFrame(this.frame, config.movementDuty)
       ? breakoutMovementInputs(state, player, this.sampledTargetX, config.deadzonePx)
       : NEUTRAL_INPUTS;
@@ -202,7 +186,9 @@ export class BreakoutAI {
 
   _sampleTargetX(state, player, config) {
     const targetX = breakoutTargetX(state, player, config);
-    const error = (randomUnit(this.rng) * 2 - 1) * config.errorPx || 0;
+    if (!this.aim.incoming) return targetX;
+
+    const error = this.aimError(config.errorPx);
     return clamp(targetX + error, PADDLE_MIN_CENTER_X, PADDLE_MAX_CENTER_X);
   }
 }

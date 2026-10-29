@@ -4,7 +4,7 @@
  * @module games/hex_skiing/sounds
  */
 
-import { blip, notes, sweep } from "../core/synth.js";
+import { FANFARE, blip, notes, sweep } from "../core/synth.js";
 
 /** A sound starting `delay` seconds later. */
 const later = (delay, sound) => ({ ...sound, delay });
@@ -43,7 +43,7 @@ export const SOUNDS = {
   /** A bell: 880 Hz, then 1100 Hz ringing longer. */
   roundEnd: [blip("sine", 880, 0.3, 0.1), later(0.15, blip("sine", 1100, 0.4, 0.08))],
   /** Rising C5-E5-G5-C6-E6. */
-  victory: notes([523, 659, 784, 1047, 1319], { wave: "square", note: 0.12, vol: 0.1 }),
+  victory: notes(FANFARE, { wave: "square", note: 0.12, vol: 0.1 }),
   /** Falling 200 → 30 Hz sawtooth, 800 ms. */
   gameOver: sweep("sawtooth", 200, 30, 0.8, 0.12),
 };

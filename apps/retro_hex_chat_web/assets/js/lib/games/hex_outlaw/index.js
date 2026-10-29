@@ -11,32 +11,13 @@
  */
 
 import { settleParticles } from "../core/render.js";
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
-import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
+import { ARROWS_WASD_SPACE, ARROW_KEYS, defineGame } from "../core/define_game.js";
 import { createOutlawAI, normalizeOutlawAIDifficulty } from "./ai.js";
-import {
-  advanceRound,
-  checkBulletCollisions,
-  checkRoundEnd,
-  createInitialState,
-  enterHitPause,
-  fireBullet,
-  moveGunslinger,
-  resetForNewRound,
-  tickBullets,
-  tickHitPause,
-  tickObstacle,
-} from "./physics.js";
-// ex_dna:disable-for-lines:11 this game's own defineGame definition
+import { createInitialState, resetForNewRound, stepTick } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { createHitParticles, getColors, render, updateParticles } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
-import { roundsFlow } from "../core/rounds.js";
-
-const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
-const SPAWNING_DELAY_TICKS = 60; // 1 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
+import { endRoundStep, publishStep, roundsEnding, roundsFlow } from "../core/rounds.js";
 
 const MODE_MAP = {
   hex_outlaw_ricochet: GAME_MODE.RICOCHET,
@@ -50,86 +31,53 @@ function aimRemote(game) {
   if (game.remoteInputs.down) game.remoteAimUp = false;
 }
 
-/** Publish a step's state: particles settle, the frame repaints, the guest hears of it. */
-function publish(game, s) {
-  game.particles = updateParticles(game.particles);
-  game.gameState = s;
-  game.invalidate();
-  game.frameCount++;
-  game.broadcast();
-}
-
 function addHitParticles(game, x, y) {
   game.particles = [...game.particles, ...createHitParticles(x, y, game.fxRandom)];
 }
 
 function duel(game) {
-  let s = { ...game.gameState, lastHitPlayer: 0 };
+  const playing = game.gameState.phase !== PHASE.HIT_PAUSE;
+  if (playing) {
+    game.updateOpponent();
+    // In solo play the AI's aim counts for this step's shot.
+    if (game.mode === "solo") aimRemote(game);
+  }
 
-  if (s.phase === PHASE.HIT_PAUSE) {
-    publish(game, tickObstacle(tickHitPause(s)));
+  const step = stepTick(
+    game.gameState,
+    { 1: game.localInputs, 2: game.remoteInputs },
+    { 1: game.localFirePressed, 2: game.remoteFirePressed },
+    { 1: game.localAimUp, 2: game.remoteAimUp },
+  );
+  const s = step.state;
+  if (step.paused) {
+    publishStep(game, s, updateParticles);
     return;
   }
 
-  game.updateOpponent();
-  // In solo play the AI's aim counts for this step's shot.
-  if (game.mode === "solo") aimRemote(game);
-
-  const local = game.localInputs;
-  const remote = game.remoteInputs;
-  const p1dy = (local.down ? 1 : 0) - (local.up ? 1 : 0);
-  const p1dx = (local.right ? 1 : 0) - (local.left ? 1 : 0);
-  if (p1dy !== 0 || p1dx !== 0) s = moveGunslinger(s, 1, p1dy, p1dx);
-  const p2dy = (remote.down ? 1 : 0) - (remote.up ? 1 : 0);
-  const p2dx = (remote.right ? 1 : 0) - (remote.left ? 1 : 0);
-  if (p2dy !== 0 || p2dx !== 0) s = moveGunslinger(s, 2, p2dy, p2dx);
-
-  // A shot goes on the press, not while the key is held.
-  if (local.fire && !game.localFirePressed) {
-    const prev = s;
-    s = fireBullet(s, 1, game.localAimUp);
-    if (s !== prev) game.audio.playGunshot();
-  }
-  game.localFirePressed = local.fire;
-  if (remote.fire && !game.remoteFirePressed) {
-    const prev = s;
-    s = fireBullet(s, 2, game.remoteAimUp);
-    if (s !== prev) game.audio.playGunshot();
-  }
-  game.remoteFirePressed = remote.fire;
+  game.localFirePressed = step.pressed[1];
+  game.remoteFirePressed = step.pressed[2];
   aimRemote(game);
 
-  s = tickObstacle(s);
-  const prevB1Bounced = s.b1bounced;
-  const prevB2Bounced = s.b2bounced;
-  s = tickBullets(s);
-  if (!prevB1Bounced && s.b1bounced) game.audio.playRicochet();
-  if (!prevB2Bounced && s.b2bounced) game.audio.playRicochet();
-
-  const { state: hitState, p1Hit, p2Hit, obsHit } = checkBulletCollisions(s);
-  s = hitState;
-  if (p1Hit || p2Hit) {
+  const { fired, ricochets, hit, obstacleHit, roundOver } = step.events;
+  for (let i = 0; i < fired.length; i++) game.audio.playGunshot();
+  for (let i = 0; i < ricochets; i++) game.audio.playRicochet();
+  if (hit) {
     game.audio.playHit();
-    const hit = p2Hit ? "p2" : "p1";
-    addHitParticles(game, s[`${hit}x`], s[`${hit}y`]);
+    addHitParticles(game, hit.x, hit.y);
   }
-  if (obsHit) game.audio.playObstacleHit();
+  if (obstacleHit) game.audio.playObstacleHit();
 
-  if (p1Hit || p2Hit) {
-    const { ended, roundWinner } = checkRoundEnd(s);
-    if (ended) {
-      s = advanceRound(s, roundWinner);
-      game.gameState = s;
-      // The match's end reports itself on entering MATCH_OVER.
-      if (s.phase !== PHASE.MATCH_OVER) game.broadcast();
+  if (hit) {
+    if (roundOver) {
+      endRoundStep(game, s);
       return;
     }
-    s = enterHitPause(s);
     game.gameState = s;
     game.broadcast();
   }
 
-  publish(game, s);
+  publishStep(game, s, updateParticles);
 }
 
 /** The guest takes the snapshot field by field, and sees every hit. */
@@ -148,10 +96,10 @@ const releaseTriggers = (game) => {
 
 export default defineGame({
   inputs: {
-    up: ["ArrowUp", "w", "W"],
-    down: ["ArrowDown", "s", "S"],
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
+    up: ARROW_KEYS.up,
+    down: ARROW_KEYS.down,
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
     fire: [" ", "Shift"],
   },
   captureKeys: ARROWS_WASD_SPACE,
@@ -173,7 +121,7 @@ export default defineGame({
   onKeyDown: (game, event) => {
     const input = game.keyInput(event);
     if (input === "up") game.localAimUp = true;
-    // ex_dna:disable-for-lines:11 this game's own defineGame definition
+    // ex_dna:disable-for-lines:8 this game's own defineGame definition
     if (input === "down") game.localAimUp = false;
   },
   idle: settleParticles(updateParticles),
@@ -181,9 +129,6 @@ export default defineGame({
   flow: roundsFlow({
     phases: PHASE,
     play: "PLAYING",
-    countdown: { from: COUNTDOWN_FROM, every: COUNTDOWN_EVERY_TICKS },
-    spawnTicks: SPAWNING_DELAY_TICKS,
-    roundOverTicks: ROUND_OVER_DELAY_TICKS,
     bell: (game) => game.audio.playBell(),
     // A trigger already held at the bell does not fire until pressed again.
     startRound: (game) => {
@@ -205,13 +150,7 @@ export default defineGame({
     { phase: PHASE.COUNTDOWN, play: "countdown" },
     { phase: PHASE.SPAWNING, play: "bell" },
   ],
-  // ex_dna:disable-for-lines:7 this game's own defineGame definition
   onSnapshot: (game) => game.invalidate(),
-  onEnd: guestEnd({
-    phase: PHASE.MATCH_OVER,
-    fields: ["roundWins1", "roundWins2"],
-    sound: (game, result) => playOutcome(game, result.winner),
-  }),
+  ...roundsEnding(PHASE),
   render: (game) => render(game.ctx, game.gameState, game.colors, game.frameCount, game.particles),
-  disconnectResult: drawOnDisconnect((s) => [s.roundWins1, s.roundWins2]),
 });

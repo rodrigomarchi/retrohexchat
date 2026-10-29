@@ -6,6 +6,7 @@ import { LEVEL } from "../../../../js/lib/games/hex_mines/protocol.js";
 import { render } from "../../../../js/lib/games/hex_mines/renderer.js";
 import { CELL } from "../../../../js/lib/games/hex_mines/rules.js";
 import { recordingCanvas } from "../../../support/games/recording_canvas.js";
+import { cutsOf } from "../../../support/games/canvas_log.js";
 
 const NAMES = ["closed", "pressed", "open", "flag", "mine", "boom", "wrong", "dig", "mark"]
   .concat([1, 2, 3, 4, 5, 6, 7, 8].map((n) => `n${n}`))
@@ -16,8 +17,7 @@ const regions = Object.fromEntries(
 );
 const atlas = { image: { id: "tiles" }, regions };
 const colors = { back: "b", bar: "r", frame: "f", glow: "g", closed: "c", open: "o" };
-const cut = (log, name) =>
-  log.filter(([op, , sx]) => op === "drawImage" && sx === regions[name].x).length;
+const cut = (log, name) => cutsOf(log, regions[name]);
 
 function drawn(id, side, state) {
   const geometry = geometryFor(id)[side];

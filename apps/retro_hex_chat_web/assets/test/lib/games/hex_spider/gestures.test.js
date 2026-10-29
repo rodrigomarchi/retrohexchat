@@ -1,10 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { bestDestination, interpret } from "../../../../js/lib/games/hex_spider/gestures.js";
 import { layout } from "../../../../js/lib/games/hex_spider/layout.js";
+import { H, S, card } from "../../../support/games/card_tables.js";
 
-const S = 0;
-const H = 1;
-const card = (rank, suit, copy = 0) => copy * 52 + suit * 13 + rank - 1;
 const full = () => ({ down: [card(13, H, 7)], up: [card(13, S, 7)] });
 function table({ columns = [], stock = [] } = {}) {
   return {

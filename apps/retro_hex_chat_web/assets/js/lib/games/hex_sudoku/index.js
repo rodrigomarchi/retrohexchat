@@ -19,12 +19,12 @@ import {
   drawMoved,
   endTick,
   eventSounds,
-  loadAtlas,
-  reducedMotion,
+  playKeys,
+  queueKey,
 } from "../core/solo/board_game.js";
 import { PHASE, TAP_SLOP } from "../core/solo/phases.js";
 import { laidFor, tableView } from "../core/solo/view.js";
-import { createEffects, playedEffects } from "./effects.js";
+import { playedEffects } from "./effects.js";
 import { createGeneration } from "./generator.js";
 import { KEYS, interpret, keyAction } from "./gestures.js";
 import { GEOMETRY, layout } from "./layout.js";
@@ -58,27 +58,25 @@ function tick(game) {
     const grid = game.generation.next();
     if (grid) play(game, { type: "grid", grid });
   }
-  const keys = game.keys;
-  game.keys = [];
-  for (const action of keys) play(game, action);
+  playKeys(game, play);
   endTick(game, { step, sounds: EVENT_SOUNDS });
 }
 
 export default defineGame({
+  // ex_dna:disable-for-lines:12 this game's own defineGame definition
   ...boardDefinition({
+    name: "HexSudoku",
+    tilesUrl: TILES_URL,
     sounds: SOUNDS,
     masterVolume: MASTER_VOLUME,
     theme: readColors,
     finalScore,
+    setup: (game) => {
+      game.gesture = createGesture({ slop: TAP_SLOP });
+      game.keys = [];
+    },
   }),
   captureKeys: KEYS,
-  setup: (game) => {
-    game.frameCount = 0;
-    game.fx = createEffects({ reduced: reducedMotion() });
-    game.gesture = createGesture({ slop: TAP_SLOP });
-    game.keys = [];
-    loadAtlas(game, TILES_URL, "HexSudoku");
-  },
   // A phone held upright stands the table up: the keypad under the grid.
   view: tableView(GEOMETRY),
   init: (game) => {
@@ -90,10 +88,7 @@ export default defineGame({
   },
   onPointer,
   // A key is played in the tick, in order with the taps, so a match replays the same.
-  onKeyDown: (game, event) => {
-    const action = keyAction(event.key);
-    if (action && game.gameState.phase === PHASE.PLAYING) game.keys.push(action);
-  },
+  onKeyDown: (game, event) => queueKey(game, keyAction(event.key)),
   // The grid lighting up, before the result.
   flow: boardFlow({ tick, sounds: EVENT_SOUNDS, showTicks: () => SHOW_TICKS, finalScore }),
   render: (game) => render(game.ctx, boardScene(game)),

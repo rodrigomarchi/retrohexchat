@@ -38,6 +38,7 @@ export { EVENT } from "../core/card_table/events.js";
  * phone held upright, with the minis. The columns hang from the top; the
  * suits completed and the stock wait along the bottom, as on Windows.
  */
+// ex_dna:disable-for-lines:28 this game's own table sizes
 export const GEOMETRY = Object.freeze({
   LANDSCAPE: Object.freeze({
     view: Object.freeze({ width: 720, height: 540 }),

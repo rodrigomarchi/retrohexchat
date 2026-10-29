@@ -24,6 +24,7 @@ import {
   drawCountdown,
   drawGlitchText,
   drawScanlines,
+  drawSquareParticles,
   drawVignette,
   drawWaiting,
 } from "../core/render.js";
@@ -269,12 +270,11 @@ export function drawExplosion(ctx, particles, colors) {
  * @param {object} colors
  */
 export function drawParticles(ctx, particles, colors) {
-  for (const p of particles) {
-    ctx.globalAlpha = p.life;
-    ctx.fillStyle = p.life > 0.5 ? colors.explosion : colors.warning;
-    ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
-  }
-  ctx.globalAlpha = 1.0;
+  drawSquareParticles(ctx, particles, (p) => ({
+    alpha: p.life,
+    color: p.life > 0.5 ? colors.explosion : colors.warning,
+    size: 4,
+  }));
 }
 
 /**

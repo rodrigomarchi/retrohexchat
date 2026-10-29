@@ -6,7 +6,8 @@ import {
   updateParticles,
 } from "../../../../js/lib/games/hex_boxing/renderer.js";
 import { createInitialState } from "../../../../js/lib/games/hex_boxing/physics.js";
-import { PHASE } from "../../../../js/lib/games/hex_boxing/protocol.js";
+import { PHASE, PUNCH_STATE } from "../../../../js/lib/games/hex_boxing/protocol.js";
+import { createMockCtx, itRendersEach } from "../../../support/games/renderer_tests.js";
 
 function createMockCanvas() {
   return {
@@ -16,287 +17,94 @@ function createMockCanvas() {
   };
 }
 
-function createMockCtx() {
-  return {
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-    fillText: vi.fn(),
-    beginPath: vi.fn(),
-    arc: vi.fn(),
-    fill: vi.fn(),
-    stroke: vi.fn(),
-    moveTo: vi.fn(),
-    lineTo: vi.fn(),
-    clearRect: vi.fn(),
-    save: vi.fn(),
-    restore: vi.fn(),
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 1,
-    lineCap: "butt",
-    font: "",
-    textAlign: "start",
-    textBaseline: "alphabetic",
-  };
-}
+/** The palette the renders draw with. */
+const COLORS = Object.freeze({
+  bg: "#0a0808",
+  fg: "#39ff14",
+  accent: "#00e5ff",
+  muted: "#2a1a1a",
+  glow: "rgba(57, 255, 20, 0.15)",
+  warning: "#ff4444",
+  rope: "#aaaaaa",
+  ring: "#1a1208",
+  hit: "#ffffff",
+});
 
 describe("Hex Boxing Renderer", () => {
   describe("getColors", () => {
-    it("extracts CSS custom properties", () => {
+    it.each([
+      [
+        "extracts CSS custom properties",
+        { "--game-bg-color": " #0a0808 ", "--game-fg-color": " #39ff14 " },
+      ],
+      ["uses defaults when properties are empty", {}],
+    ])("%s", (_case, properties) => {
       vi.spyOn(window, "getComputedStyle").mockReturnValue({
-        getPropertyValue: (prop) => {
-          if (prop === "--game-bg-color") return " #0a0808 ";
-          if (prop === "--game-fg-color") return " #39ff14 ";
-          return "";
-        },
+        getPropertyValue: (prop) => properties[prop] ?? "",
       });
 
-      const canvas = createMockCanvas();
-      const colors = getColors(canvas);
-      expect(colors.bg).toBe("#0a0808");
-      expect(colors.fg).toBe("#39ff14");
-    });
-
-    it("uses defaults when properties are empty", () => {
-      vi.spyOn(window, "getComputedStyle").mockReturnValue({
-        getPropertyValue: () => "",
-      });
-
-      const canvas = createMockCanvas();
-      const colors = getColors(canvas);
-      expect(colors.bg).toBe("#0a0808");
-      expect(colors.fg).toBe("#39ff14");
+      expect(getColors(createMockCanvas())).toMatchObject({ bg: "#0a0808", fg: "#39ff14" });
     });
   });
 
   describe("render", () => {
-    it("renders without throwing", () => {
+    const at = (fields) => ({ ...createInitialState(), ...fields });
+
+    itRendersEach(render, COLORS, [
+      { name: "the waiting ring", state: at() },
+      { name: "the fight", state: at({ phase: PHASE.FIGHTING, roundTimer: 3600 }), frame: 100 },
+      { name: "the countdown", state: at({ phase: PHASE.COUNTDOWN, countdown: 3 }) },
+      { name: "hit particles", state: at(), particles: createHitParticles(300, 240, 3) },
+      {
+        name: "a round over",
+        state: at({ phase: PHASE.ROUND_OVER, score1: 50, score2: 30, roundWins1: 1 }),
+      },
+      {
+        name: "a round over by KO",
+        state: at({ phase: PHASE.ROUND_OVER, score1: 100, score2: 47, roundWins1: 1, koPlayer: 2 }),
+      },
+      {
+        name: "the match over",
+        state: at({ phase: PHASE.MATCH_OVER, roundWins1: 2, roundWins2: 1 }),
+      },
+      { name: "the spawn", state: at({ phase: PHASE.SPAWNING }) },
+      // The hit flash lands on player two, the defender.
+      { name: "a hit flash", state: at({ lastHitPlayer: 1, lastHitPoints: 3 }) },
+      {
+        name: "a boxer winding up",
+        state: at({ b1punchState: PUNCH_STATE.WINDUP, b1punchTimer: 6, b1arm: 0 }),
+      },
+      {
+        name: "a punching boxer",
+        state: at({ b1punchState: PUNCH_STATE.PUNCHING, b1punchTimer: 5, b1arm: 1 }),
+      },
+      // 5 seconds left — the warning zone.
+      {
+        name: "the low-timer warning",
+        state: at({ phase: PHASE.FIGHTING, roundTimer: 300 }),
+        frame: 15,
+      },
+    ]);
+  });
+
+  describe("wind-up", () => {
+    const warningStrokes = (state) => {
       const ctx = createMockCtx();
-      const state = createInitialState();
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
+      const strokes = [];
+      ctx.stroke = vi.fn(() => strokes.push(ctx.strokeStyle));
+      render(ctx, state, COLORS, 0, []);
+      return strokes.filter((style) => style === COLORS.warning).length;
+    };
 
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders FIGHTING phase without throwing", () => {
-      const ctx = createMockCtx();
-      const state = { ...createInitialState(), phase: PHASE.FIGHTING, roundTimer: 3600 };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-
-      expect(() => render(ctx, state, colors, 100, [])).not.toThrow();
-    });
-
-    it("renders COUNTDOWN phase without throwing", () => {
-      const ctx = createMockCtx();
-      const state = { ...createInitialState(), phase: PHASE.COUNTDOWN, countdown: 3 };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders with particles without throwing", () => {
-      const ctx = createMockCtx();
-      const state = createInitialState();
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-      const particles = createHitParticles(300, 240, 3);
-
-      expect(() => render(ctx, state, colors, 0, particles)).not.toThrow();
-    });
-
-    it("renders ROUND_OVER phase without throwing", () => {
-      const ctx = createMockCtx();
-      const state = {
+    it("rings the cocked fist in the warning colour so the rival sees the punch coming", () => {
+      const winding = {
         ...createInitialState(),
-        phase: PHASE.ROUND_OVER,
-        score1: 50,
-        score2: 30,
-        roundWins1: 1,
-        roundWins2: 0,
-      };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
+        b1punchState: PUNCH_STATE.WINDUP,
+        b1punchTimer: 6,
       };
 
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders ROUND_OVER with KO without throwing", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(),
-        phase: PHASE.ROUND_OVER,
-        score1: 100,
-        score2: 47,
-        roundWins1: 1,
-        roundWins2: 0,
-        koPlayer: 2,
-      };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders MATCH_OVER phase without throwing", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(),
-        phase: PHASE.MATCH_OVER,
-        roundWins1: 2,
-        roundWins2: 1,
-      };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders SPAWNING phase without throwing", () => {
-      const ctx = createMockCtx();
-      const state = { ...createInitialState(), phase: PHASE.SPAWNING };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders hit flash on defender (lastHitPlayer set)", () => {
-      const ctx = createMockCtx();
-      const state = { ...createInitialState(), lastHitPlayer: 1, lastHitPoints: 3 };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-
-      // Should not throw — hit flash applied to P2 (defender)
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders punching boxer without throwing", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(),
-        b1punchState: 1, // PUNCHING
-        b1punchTimer: 5,
-        b1arm: 1,
-      };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders low timer warning without throwing", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(),
-        phase: PHASE.FIGHTING,
-        roundTimer: 300, // 5 seconds left — warning zone
-      };
-      const colors = {
-        bg: "#0a0808",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#2a1a1a",
-        glow: "rgba(57, 255, 20, 0.15)",
-        warning: "#ff4444",
-        rope: "#aaaaaa",
-        ring: "#1a1208",
-        hit: "#ffffff",
-      };
-
-      expect(() => render(ctx, state, colors, 15, [])).not.toThrow();
+      expect(warningStrokes(winding)).toBe(1);
+      expect(warningStrokes(createInitialState())).toBe(0);
     });
   });
 

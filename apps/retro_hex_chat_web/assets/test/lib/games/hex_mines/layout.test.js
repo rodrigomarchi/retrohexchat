@@ -7,6 +7,7 @@ import {
 } from "../../../../js/lib/games/hex_mines/layout.js";
 import { CEILING, LEVEL } from "../../../../js/lib/games/hex_mines/protocol.js";
 import { winPoints } from "../../../../js/lib/games/hex_mines/scoring.js";
+import { within } from "../../../support/games/places.js";
 
 describe("a win's points", () => {
   it("are more the faster it was, a second at least, and nothing for a loss", () => {
@@ -18,9 +19,6 @@ describe("a win's points", () => {
     expect(CEILING).toBe(10_000);
   });
 });
-
-const within = (r, view) =>
-  r.x >= 0 && r.y >= 0 && r.x + r.w <= view.width && r.y + r.h <= view.height;
 
 describe.each(Object.entries(LEVEL))("the %s board", (id, level) => {
   describe.each(["LANDSCAPE", "PORTRAIT"])("lying %s", (side) => {

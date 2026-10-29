@@ -4,12 +4,9 @@
  * @module games/hex_hockey/sounds
  */
 
-import { fade, glide, notes } from "../core/synth.js";
+import { fade, glide, notes, ring } from "../core/synth.js";
 
 export const MASTER_VOLUME = 0.3;
-
-/** A note that rings out exponentially. */
-const ring = (wave, freq, dur, vol) => ({ wave, freq, vol: fade(vol, dur, "exp"), dur });
 
 /** A burst of noise that rings out; its samples are scaled by its volume too. */
 const burst = (dur, vol) => ({ wave: "noise", vol: fade(vol, dur, "exp"), dur, amplitude: vol });

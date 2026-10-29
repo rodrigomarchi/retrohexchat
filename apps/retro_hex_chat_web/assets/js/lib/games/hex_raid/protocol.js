@@ -6,7 +6,7 @@
  */
 
 import { schema, bool, f32, flags, list, u8, u16, u32 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+import { MSG_TYPE, missileFields } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
@@ -46,22 +46,14 @@ const jet = (j) => [
   u8(`${j}Fuel`),
   u8(`${j}Lives`),
   flags([`${j}Alive`, `${j}Invuln`, `${j}Respawning`]),
-  // ex_dna:disable-for-lines:10 this game's own wire fields
-];
-
-/** A missile: position and whether it is in flight. */
-const missile = (m) => [
-  u16(`${m}X`, { round: true }),
-  u16(`${m}Y`, { round: true }),
-  bool(`${m}Active`),
 ];
 
 /** The host's snapshot of the river, sent every step. */
 export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
   ...jet("jet1"),
   ...jet("jet2"),
-  ...missile("m1"),
-  ...missile("m2"),
+  ...missileFields("m1"),
+  ...missileFields("m2"),
   list("enemies", { capacity: MAX_ENEMIES, fixed: true, count: "enemyCount" }, [
     u8("type"),
     u16("x", { round: true }),

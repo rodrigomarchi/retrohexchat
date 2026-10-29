@@ -1,22 +1,16 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { ENGINE_GAME_IDS } from "../../support/games/engines.js";
-import { playMatch } from "../../support/games/harness.js";
+import { matchPerTest } from "../../support/games/harness.js";
 
 /**
  * End pressed mid-match, in every game: the match is written down as it
  * stands, so each engine must tell its score at any moment of play.
  */
 describe.each(ENGINE_GAME_IDS)("%s ended early", (gameId) => {
-  let match;
-
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
+  const play = matchPerTest();
 
   it("reports the score as it stands, once", async () => {
-    match = await playMatch({ gameId, mode: "solo", seed: 4 });
+    const match = await play({ gameId, mode: "solo", seed: 4 });
     match.advance(5000);
     expect(match.over()).toBe(false);
 

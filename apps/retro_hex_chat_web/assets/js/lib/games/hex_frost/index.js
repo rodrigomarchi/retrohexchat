@@ -10,28 +10,19 @@
  * @module games/hex_frost
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROW_KEYS, defineGame, drawSeed, packedSnapshot } from "../core/define_game.js";
 import { playFlags } from "../core/events.js";
-import { drawOnDisconnect, matchResult, playOutcome } from "../core/result.js";
+import { drawOnDisconnect, matchResult, raceEnd } from "../core/result.js";
 import { createHexFrostAI } from "./ai.js";
 import { normalizeFrostAIDifficulty } from "./difficulty.js";
 import {
-  checkEnemyCollisions,
-  checkIglooEntry,
-  checkRoundEnd,
   createInitialState,
+  // ex_dna:disable-for-lines:9 this game's own imports
   determineWinner,
-  handleRespawns,
   packState,
-  spawnFish,
   startNextRound,
+  stepTick,
   unpackState,
-  updateBailey,
-  updateBlocks,
-  updateEnemies,
-  updateFish,
-  updateFlashTimers,
-  updateTemperature,
 } from "./physics.js";
 import { EVENT, GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { generateSnowParticles, readColors, render } from "./renderer.js";
@@ -109,36 +100,24 @@ function roundEndTick(game) {
 }
 
 function buildingTick(game) {
-  let state = nextFrame(game);
+  const before = nextFrame(game);
 
-  game.gameState = state;
+  game.gameState = before;
   game.updateOpponent();
 
-  state = updateBlocks(state);
-  state = updateBailey(state, "p1", game.localInputs);
+  const state = stepTick(before, game.localInputs, game.remoteInputs);
+  // A jump is one press: it is spent on the frame it starts.
   game.localInputs.up = false;
   game.localInputs.down = false;
-  state = updateBailey(state, "p2", game.remoteInputs);
   game.remoteInputs.up = false;
   game.remoteInputs.down = false;
-  state = updateEnemies(state);
-  state = spawnFish(state);
-  state = updateFish(state);
-  state = checkEnemyCollisions(state, "p1");
-  state = checkEnemyCollisions(state, "p2");
-  state = handleRespawns(state);
-  state = updateTemperature(state);
-  state = checkIglooEntry(state);
 
-  const prevPhase = state.phase;
-  state = checkRoundEnd(state);
-  if (state.phase === PHASE.ROUND_END && prevPhase === PHASE.BUILDING) {
+  if (state.phase === PHASE.ROUND_END && before.phase === PHASE.BUILDING) {
     game.roundEndTimer = ROUND_END_DELAY;
     game.audio.playRoundEnd();
   }
-  if (state.phase === PHASE.FINISHED && prevPhase !== PHASE.FINISHED) finishMatch(game, state);
+  if (state.phase === PHASE.FINISHED && before.phase !== PHASE.FINISHED) finishMatch(game, state);
 
-  state = updateFlashTimers(state);
   playFlags(game, EVENT_SOUNDS, state.events);
   publish(game, state);
 }
@@ -156,16 +135,15 @@ function finishMatch(game, state) {
   else game.audio.playGameOver();
 
   const end = { score1: state.p1.roundWins, score2: state.p2.roundWins, winner };
-  // ex_dna:disable-for-lines:10 this game's own defineGame definition
   game.finish({ end, result: matchResult(end.score1, end.score2, winner), broadcast: false });
 }
 
 export default defineGame({
   inputs: {
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
-    up: ["ArrowUp", "w", "W"],
-    down: ["ArrowDown", "s", "S"],
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
+    up: ARROW_KEYS.up,
+    down: ARROW_KEYS.down,
   },
   captureKeys: [
     "ArrowLeft",
@@ -201,15 +179,11 @@ export default defineGame({
     game.snowParticles = generateSnowParticles(35);
     // ex_dna:disable-for-lines:7 this game's own defineGame definition
     if (game.mode === "solo" || game.isHost) {
-      const seed = (game.random() * 0xffffffff) >>> 0;
-      game.gameState = createInitialState(game.gameMode, seed);
+      game.gameState = createInitialState(game.gameMode, drawSeed(game));
     }
   },
   onStop: (game) => {
-    game.localInputs = { left: false, right: false, up: false, down: false };
-    game.remoteInputs = { left: false, right: false, up: false, down: false };
-    game.peerReady = false;
-    game.frameCount = 0;
+    game.forgetMatch();
     game.countdownTimer = 0;
     game.roundEndTimer = 0;
     game.audio.stopAmbientWind();
@@ -238,24 +212,14 @@ export default defineGame({
       FINISHED: {
         final: true,
         enter: (game) => finishMatch(game, game.gameState),
-        // ex_dna:disable-for-lines:15 this game's own defineGame definition
+        // ex_dna:disable-for-lines:7 this game's own defineGame definition
       },
     },
   },
 
-  toWire: (game) => packState(game.gameState),
-  applySnapshot: (game, decoded) => {
-    game.gameMode = decoded.mode;
-    game.gameState = unpackState(decoded);
-  },
+  ...packedSnapshot(packState, unpackState),
   cues: [{ flags: (s) => s.events, sounds: EVENT_SOUNDS }],
-  onEnd: (game, result) => {
-    if (game.gameState) game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
-    game.invalidate();
-    game.setKeyboardCaptured(false);
-    game.audio.stopAmbientWind();
-    playOutcome(game, result.winner, "playVictory", "playGameOver");
-  },
+  onEnd: raceEnd(PHASE.FINISHED, (game) => game.audio.stopAmbientWind()),
   render: (game) =>
     render(game.ctx, game.gameState, game.colors, game.frameCount, game.snowParticles),
   disconnectResult: drawOnDisconnect((s) => [

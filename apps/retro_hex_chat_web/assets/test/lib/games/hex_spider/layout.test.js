@@ -3,11 +3,7 @@ import { createRng } from "../../../../js/lib/games/core/rng.js";
 import { hitTest, layout } from "../../../../js/lib/games/hex_spider/layout.js";
 import { GEOMETRY } from "../../../../js/lib/games/hex_spider/protocol.js";
 import { deal } from "../../../../js/lib/games/hex_spider/rules.js";
-
-const inside = (r, view) =>
-  r.x >= 0 && r.y >= 0 && r.x + r.w <= view.width && r.y + r.h <= view.height;
-const apart = (a, b) =>
-  a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
+import { expectLaidApart } from "../../../support/games/places.js";
 
 describe.each(Object.entries(GEOMETRY))("the Spider table lying %s", (name, geometry) => {
   const table = { ...deal(createRng(1).next, 4), geometry };
@@ -16,28 +12,18 @@ describe.each(Object.entries(GEOMETRY))("the Spider table lying %s", (name, geom
   it("fits the ten columns, the stock and the suits' place in the view, apart", () => {
     const places = layout(table);
     const piles = [...places.columns.map((c) => c.slot), places.stockSlot, places.next];
-    for (const r of piles) {
-      expect(inside(r, view)).toBe(true);
-      expect([r.w, r.h]).toEqual([card.width, card.height]);
-    }
-    for (const [i, a] of piles.entries()) {
-      for (const b of piles.slice(i + 1)) expect(apart(a, b)).toBe(true);
-    }
+    expectLaidApart(piles, view);
+    for (const r of piles) expect([r.w, r.h]).toEqual([card.width, card.height]);
     expect(places.stock).toHaveLength(5);
   });
 
   it("squeezes a column of 25 cards and keeps its foot above the bottom row", () => {
     const long = { down: [0, 1, 2, 3, 4], up: Array.from({ length: 20 }, (_, i) => 100 + i) };
-    const places = layout({ ...table, columns: [long, ...table.columns.slice(1)] });
+    const longest = { ...table, columns: [long, ...table.columns.slice(1)] };
+    const places = layout(longest);
     const foot = places.columns[0].cards.at(-1);
     expect(foot.y + card.height).toBeLessThanOrEqual(places.stockSlot.y);
-    expect(
-      hitTest(
-        { ...table, columns: [long, ...table.columns.slice(1)] },
-        foot.x + 2,
-        foot.y + card.height - 2,
-      ),
-    ).toEqual({
+    expect(hitTest(longest, foot.x + 2, foot.y + card.height - 2)).toEqual({
       pile: "column",
       col: 0,
       index: 19,

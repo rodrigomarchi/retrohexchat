@@ -9,6 +9,7 @@ import {
   SNAPSHOT,
   GAME_END,
 } from "../../../../js/lib/games/warlords/protocol.js";
+import { describeHandshake, itFramesMessages } from "../../../support/games/protocol_tests.js";
 
 describe("Warlords Protocol", () => {
   describe("game state encode/decode", () => {
@@ -58,16 +59,7 @@ describe("Warlords Protocol", () => {
       }
     });
 
-    it("returns null for too-small buffer", () => {
-      const buf = new ArrayBuffer(10);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(33);
-      new DataView(buf).setUint8(0, 0x81);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
+    itFramesMessages(SNAPSHOT, { short: [10], length: 33, wrongType: 0x81 });
 
     it("encodes caught state", () => {
       const state = {
@@ -111,36 +103,10 @@ describe("Warlords Protocol", () => {
       expect(decoded.winner).toBe(2);
     });
 
-    it("returns null for too-small buffer", () => {
-      expect(GAME_END.decode(new ArrayBuffer(2))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(4);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
+    itFramesMessages(GAME_END, { short: [2], length: 4, wrongType: MSG_TYPE.GAME_STATE });
   });
 
-  describe("game ready", () => {
-    it("encodes single byte with correct type", () => {
-      const buf = encodeGameReady();
-      expect(buf.byteLength).toBe(1);
-      expect(new DataView(buf).getUint8(0)).toBe(MSG_TYPE.GAME_READY);
-    });
-  });
-
-  describe("getMessageType", () => {
-    it("returns type from valid buffer", () => {
-      const buf = new ArrayBuffer(1);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
-    });
-
-    it("returns null for empty buffer", () => {
-      expect(getMessageType(new ArrayBuffer(0))).toBeNull();
-    });
-  });
+  describeHandshake({ encodeGameReady, getMessageType, MSG_TYPE });
 
   describe("constants", () => {
     it("has correct brick count", () => {
@@ -152,11 +118,13 @@ describe("Warlords Protocol", () => {
     });
 
     it("has all phases", () => {
-      expect(PHASE.WAITING).toBe(0);
-      expect(PHASE.COUNTDOWN).toBe(1);
-      expect(PHASE.PLAYING).toBe(2);
-      expect(PHASE.KING_HIT).toBe(3);
-      expect(PHASE.FINISHED).toBe(4);
+      expect(PHASE).toMatchObject({
+        WAITING: 0,
+        COUNTDOWN: 1,
+        PLAYING: 2,
+        KING_HIT: 3,
+        FINISHED: 4,
+      });
     });
   });
 });

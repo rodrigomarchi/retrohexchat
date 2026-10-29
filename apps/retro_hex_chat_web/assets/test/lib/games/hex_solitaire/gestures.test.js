@@ -2,27 +2,8 @@ import { describe, expect, it } from "vitest";
 import { MODE } from "../../../../js/lib/games/hex_solitaire/protocol.js";
 import { layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
 import { bestDestination, interpret } from "../../../../js/lib/games/hex_solitaire/gestures.js";
-
-const S = 0;
-const H = 1;
-const D = 2;
-const C = 3;
-const card = (rank, suit) => suit * 13 + rank - 1;
-
-function table({
-  mode = MODE.DRAW1,
-  stock = [],
-  waste = [],
-  fan,
-  foundations = [[], [], [], []],
-  columns = [],
-} = {}) {
-  const tableau = Array.from({ length: 7 }, (_, i) => ({
-    down: columns[i]?.down ?? [],
-    up: columns[i]?.up ?? [],
-  }));
-  return { mode, stock, waste, fan: fan ?? Math.min(1, waste.length), foundations, tableau };
-}
+import { C, D, H, S, card } from "../../../support/games/card_tables.js";
+import { table, twoOfSpadesUp } from "./tables.js";
 
 const tapOn = (state, r) => interpret(state, null, { type: "tap", x: r.x + 4, y: r.y + 4 });
 
@@ -177,10 +158,7 @@ describe("a drag", () => {
 
 describe("a tap that would undo the player's own work", () => {
   it("does nothing on a foundation: taking a card back costs points, so only a drag does it", () => {
-    const state = table({
-      foundations: [[card(1, S), card(2, S)], [], [], []],
-      columns: [{ up: [card(3, H)] }],
-    });
+    const state = twoOfSpadesUp();
     expect(tapOn(state, layout(state).foundations[S]).action).toBeNull();
   });
 

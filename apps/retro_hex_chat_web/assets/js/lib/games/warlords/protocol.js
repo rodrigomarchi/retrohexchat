@@ -6,18 +6,12 @@
  */
 
 import { schema, bitmap, f32, u8, u16 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+import { MSG_TYPE, phases } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
-// Game phase enum
-export const PHASE = {
-  WAITING: 0,
-  COUNTDOWN: 1,
-  PLAYING: 2,
-  KING_HIT: 3,
-  FINISHED: 4,
-};
+/** The match's phases, by their value on the wire. */
+export const PHASE = phases("PLAYING", "KING_HIT", "FINISHED");
 
 // Castle constants
 export const BRICKS_ROWS = 6;

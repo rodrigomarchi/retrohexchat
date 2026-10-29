@@ -5,7 +5,7 @@
  */
 
 import { PHASE, GAME_MODE, ALIEN_TYPE } from "./protocol.js";
-import { CANVAS_W, CANVAS_H, INITIAL_LIVES, SHIELD_SEGMENTS } from "./physics.js";
+import { CANVAS_W, CANVAS_H, INITIAL_LIVES, SHIELD_SEGMENTS, coopSurvived } from "./physics.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
 import { drawScanlines, drawVignette, waitingText } from "../core/render.js";
@@ -468,6 +468,7 @@ function drawOverlayText(ctx, colors, text, color, size) {
   ctx.fillStyle = "rgba(0,0,0,0.5)";
   ctx.fillRect(0, CANVAS_H / 2 - fontSize, CANVAS_W, fontSize * 2);
   ctx.font = `bold ${fontSize}px monospace`;
+  // ex_dna:disable-for-lines:8 this game's own overlay: its draw order is pinned
   ctx.fillStyle = color;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -487,7 +488,7 @@ function drawGameOver(ctx, state, colors) {
   ctx.textBaseline = "middle";
 
   if (state.mode === GAME_MODE.COOP) {
-    const survived = state.lives1 > 0 || state.lives2 > 0;
+    const survived = coopSurvived(state);
     ctx.fillStyle = survived ? colors.p1 : colors.warning;
     ctx.fillText(
       survived ? t("MISSION COMPLETE") : t("EARTH INVADED"),

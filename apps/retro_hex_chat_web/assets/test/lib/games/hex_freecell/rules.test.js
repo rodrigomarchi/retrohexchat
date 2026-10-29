@@ -11,26 +11,15 @@ import {
   nextSafeMove,
   won,
 } from "../../../../js/lib/games/hex_freecell/rules.js";
+import { C, D, H, S, card } from "../../../support/games/card_tables.js";
+import { table } from "./tables.js";
 
-const S = 0;
-const H = 1;
-const D = 2;
-const C = 3;
-const card = (rank, suit) => suit * 13 + rank - 1;
 const column = (col, index) => ({ pile: "column", col, index });
 const cell = (n) => ({ pile: "cell", cell: n });
 const toColumn = (col) => ({ pile: "column", col });
 const toCell = (n) => ({ pile: "cell", cell: n });
 const toFoundation = (suit) => ({ pile: "foundation", suit });
 
-/** A table with the columns, cells and foundations given; the rest empty. */
-function table({ columns = [], cells = [], foundations = [] } = {}) {
-  return {
-    columns: Array.from({ length: 8 }, (_, i) => columns[i] ?? []),
-    cells: Array.from({ length: 4 }, (_, i) => cells[i] ?? null),
-    foundations: Array.from({ length: 4 }, (_, i) => foundations[i] ?? []),
-  };
-}
 const upTo = (rank, suit) => Array.from({ length: rank }, (_, i) => card(i + 1, suit));
 
 describe("the deal", () => {

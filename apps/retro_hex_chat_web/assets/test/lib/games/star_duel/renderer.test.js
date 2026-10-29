@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { PHASE, GAME_MODE } from "../../../../js/lib/games/star_duel/protocol.js";
 import {
   CANVAS_W,
@@ -22,38 +22,12 @@ import {
   drawWarpEffect,
   drawHUD,
 } from "../../../../js/lib/games/star_duel/renderer.js";
-
-function createMockCtx() {
-  return {
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 0,
-    globalAlpha: 1.0,
-    font: "",
-    textAlign: "",
-    textBaseline: "",
-    shadowColor: "transparent",
-    shadowBlur: 0,
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-    fillText: vi.fn(),
-    beginPath: vi.fn(),
-    moveTo: vi.fn(),
-    lineTo: vi.fn(),
-    stroke: vi.fn(),
-    setLineDash: vi.fn(),
-    createRadialGradient: vi.fn(() => ({
-      addColorStop: vi.fn(),
-    })),
-    save: vi.fn(),
-    restore: vi.fn(),
-    arc: vi.fn(),
-    closePath: vi.fn(),
-    fill: vi.fn(),
-    translate: vi.fn(),
-    rotate: vi.fn(),
-  };
-}
+import {
+  createMockCtx,
+  describeFullFrames,
+  drawnTexts,
+  itReadsColors,
+} from "../../../support/games/renderer_tests.js";
 
 function createDefaultColors() {
   return {
@@ -70,6 +44,7 @@ function createDefaultColors() {
   };
 }
 
+// ex_dna:disable-for-lines:11 this test file's own context and palette, made fresh per test
 describe("star_duel_renderer", () => {
   let ctx;
   let colors;
@@ -80,28 +55,7 @@ describe("star_duel_renderer", () => {
   });
 
   describe("getColors", () => {
-    it("reads CSS custom properties from canvas", () => {
-      const canvas = document.createElement("canvas");
-      canvas.style.setProperty("--game-bg-color", "#111111");
-      document.body.appendChild(canvas);
-
-      const result = getColors(canvas);
-      expect(result.bg).toBeDefined();
-
-      document.body.removeChild(canvas);
-    });
-
-    it("returns fallback colors when properties not set", () => {
-      const canvas = document.createElement("canvas");
-      document.body.appendChild(canvas);
-
-      const result = getColors(canvas);
-      expect(result.bg).toBe("#0a0a1a");
-      expect(result.p1).toBe("#39ff14");
-      expect(result.p2).toBe("#00e5ff");
-
-      document.body.removeChild(canvas);
-    });
+    itReadsColors(getColors, { bg: "#0a0a1a", p1: "#39ff14", p2: "#00e5ff" });
 
     it("reads missile and explosion custom properties", () => {
       const canvas = document.createElement("canvas");
@@ -156,21 +110,19 @@ describe("star_duel_renderer", () => {
   });
 
   describe("drawParticles", () => {
+    // One bright (life above 0.5, the explosion colour) and one fading (the warning colour).
+    const particles = [
+      { x: 10, y: 20, life: 0.8 },
+      { x: 30, y: 40, life: 0.3 },
+    ];
+
     it("draws squares with alpha", () => {
-      const particles = [
-        { x: 10, y: 20, life: 0.8 },
-        { x: 30, y: 40, life: 0.3 },
-      ];
       drawParticles(ctx, particles, colors);
       expect(ctx.fillRect).toHaveBeenCalledTimes(2);
       expect(ctx.globalAlpha).toBe(1.0);
     });
 
     it("uses explosion color for high life, warning for low life", () => {
-      const particles = [
-        { x: 10, y: 20, life: 0.8 },
-        { x: 30, y: 40, life: 0.3 },
-      ];
       drawParticles(ctx, particles, colors);
       // After first particle (life 0.8 > 0.5), fillStyle should have been explosion
       // After second particle (life 0.3 <= 0.5), fillStyle should have been warning
@@ -252,15 +204,13 @@ describe("star_duel_renderer", () => {
     it("draws PLAYER 1 SCORES when lastScorer=1", () => {
       const state = { lastScorer: 1 };
       drawRoundOver(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("PLAYER 1 SCORES!");
+      expect(drawnTexts(ctx)).toContain("PLAYER 1 SCORES!");
     });
 
     it("draws PLAYER 2 SCORES when lastScorer=2", () => {
       const state = { lastScorer: 2 };
       drawRoundOver(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("PLAYER 2 SCORES!");
+      expect(drawnTexts(ctx)).toContain("PLAYER 2 SCORES!");
     });
 
     it("lastScorer=0 falls through to scorer=1 due to || default", () => {
@@ -268,15 +218,13 @@ describe("star_duel_renderer", () => {
       // When lastScorer is 0 (falsy), scorer becomes 1, so PLAYER 1 SCORES is shown
       const state = { lastScorer: 0 };
       drawRoundOver(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("PLAYER 1 SCORES!");
+      expect(drawnTexts(ctx)).toContain("PLAYER 1 SCORES!");
     });
 
     it("defaults to PLAYER 1 SCORES when lastScorer is missing", () => {
       const state = {};
       drawRoundOver(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("PLAYER 1 SCORES!");
+      expect(drawnTexts(ctx)).toContain("PLAYER 1 SCORES!");
     });
   });
 
@@ -284,15 +232,13 @@ describe("star_duel_renderer", () => {
     it("draws PLAYER 1 WINS!", () => {
       const state = { score1: WIN_SCORE, score2: 3 };
       drawWinner(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("PLAYER 1 WINS!");
+      expect(drawnTexts(ctx)).toContain("PLAYER 1 WINS!");
     });
 
     it("uses p2 color for player 2", () => {
       const state = { score1: 3, score2: WIN_SCORE };
       drawWinner(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("PLAYER 2 WINS!");
+      expect(drawnTexts(ctx)).toContain("PLAYER 2 WINS!");
     });
 
     it("is deterministic (no Math.random) — glitch depends on time", () => {
@@ -312,8 +258,7 @@ describe("star_duel_renderer", () => {
     it("shows FIRST TO N sub-text", () => {
       const state = { score1: WIN_SCORE, score2: 3 };
       drawWinner(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain(`FIRST TO ${WIN_SCORE}`);
+      expect(drawnTexts(ctx)).toContain(`FIRST TO ${WIN_SCORE}`);
     });
   });
 
@@ -321,77 +266,55 @@ describe("star_duel_renderer", () => {
     it("renders scores", () => {
       const state = { score1: 3, score2: 5, mode: 0 };
       drawHUD(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("P1  3");
-      expect(texts).toContain("5  P2");
+      expect(drawnTexts(ctx)).toContain("P1  3");
+      expect(drawnTexts(ctx)).toContain("5  P2");
     });
 
     it("renders mode name", () => {
       const state = { score1: 0, score2: 0, mode: GAME_MODE.GRAVITY_WELL };
       drawHUD(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("GRAVITY WELL");
+      expect(drawnTexts(ctx)).toContain("GRAVITY WELL");
     });
 
     it("renders OPEN SPACE for mode 0", () => {
       const state = { score1: 0, score2: 0, mode: GAME_MODE.OPEN_SPACE };
       drawHUD(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("OPEN SPACE");
+      expect(drawnTexts(ctx)).toContain("OPEN SPACE");
     });
 
     it("renders DEBRIS FIELD for mode 2", () => {
       const state = { score1: 0, score2: 0, mode: GAME_MODE.DEBRIS_FIELD };
       drawHUD(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("DEBRIS FIELD");
+      expect(drawnTexts(ctx)).toContain("DEBRIS FIELD");
     });
   });
 
-  describe("the vignette", () => {
-    it("frames every rendered frame with a radial gradient across the canvas", () => {
-      render(ctx, { ...createInitialState(GAME_MODE.OPEN_SPACE), phase: PHASE.PLAYING }, colors, 0);
-      expect(ctx.createRadialGradient).toHaveBeenCalled();
-      expect(ctx.fillRect).toHaveBeenLastCalledWith(0, 0, CANVAS_W, CANVAS_H);
-    });
-  });
-
-  describe("render (full frame)", () => {
-    it("renders all phases without throwing", () => {
-      const phases = [
+  describeFullFrames(
+    {
+      render,
+      start: () => createInitialState(GAME_MODE.OPEN_SPACE),
+      playing: PHASE.PLAYING,
+      phases: [
         PHASE.WAITING,
         PHASE.COUNTDOWN,
         PHASE.SPAWNING,
         PHASE.PLAYING,
         PHASE.ROUND_OVER,
         PHASE.FINISHED,
-      ];
+      ],
+      ended: { score1: 3, score2: 2, winner: 1 },
+      width: CANVAS_W,
+      height: CANVAS_H,
+    },
+    () => ({ ctx, colors }),
+  );
 
-      for (const phase of phases) {
-        const state = {
-          ...createInitialState(GAME_MODE.OPEN_SPACE),
-          phase,
-          score1: 3,
-          score2: 2,
-          winner: 1,
-        };
-        expect(() => render(createMockCtx(), state, colors, 0)).not.toThrow();
-      }
-    });
-
-    it("renders gravity well mode", () => {
-      const state = {
-        ...createInitialState(GAME_MODE.GRAVITY_WELL),
-        phase: PHASE.PLAYING,
-      };
-      expect(() => render(createMockCtx(), state, colors, 0)).not.toThrow();
-    });
-
-    it("renders debris field mode", () => {
-      const state = {
-        ...createInitialState(GAME_MODE.DEBRIS_FIELD),
-        phase: PHASE.PLAYING,
-      };
+  describe("render (modes)", () => {
+    it.each([
+      ["gravity well", GAME_MODE.GRAVITY_WELL],
+      ["debris field", GAME_MODE.DEBRIS_FIELD],
+    ])("renders %s mode", (_mode, mode) => {
+      const state = { ...createInitialState(mode), phase: PHASE.PLAYING };
       expect(() => render(createMockCtx(), state, colors, 0)).not.toThrow();
     });
   });

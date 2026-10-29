@@ -9,6 +9,12 @@ import {
   SNAPSHOT,
   GAME_END,
 } from "../../../../js/lib/games/hex_skiing/protocol.js";
+import { itFramesMessages } from "../../../support/games/protocol_tests.js";
+
+/** A snapshot as the guest gets it: encoded by the host, decoded on arrival. */
+function roundtrip(state) {
+  return SNAPSHOT.decode(SNAPSHOT.encode(state));
+}
 
 describe("Hex Skiing Protocol", () => {
   describe("getMessageType", () => {
@@ -69,8 +75,7 @@ describe("Hex Skiing Protocol", () => {
 
     it("roundtrips game state", () => {
       const original = makeState();
-      const buf = SNAPSHOT.encode(original);
-      const decoded = SNAPSHOT.decode(buf);
+      const decoded = roundtrip(original);
 
       expect(decoded).not.toBeNull();
       expect(decoded.phase).toBe(original.phase);
@@ -95,8 +100,7 @@ describe("Hex Skiing Protocol", () => {
 
     it("roundtrips gates including y position", () => {
       const original = makeState();
-      const buf = SNAPSHOT.encode(original);
-      const decoded = SNAPSHOT.decode(buf);
+      const decoded = roundtrip(original);
 
       expect(decoded.gateCount).toBe(2);
       expect(decoded.gates[0].x).toBe(200);
@@ -110,8 +114,7 @@ describe("Hex Skiing Protocol", () => {
 
     it("roundtrips items", () => {
       const original = makeState();
-      const buf = SNAPSHOT.encode(original);
-      const decoded = SNAPSHOT.decode(buf);
+      const decoded = roundtrip(original);
 
       expect(decoded.itemCount).toBe(1);
       expect(decoded.items[0].type).toBe(0);
@@ -122,8 +125,7 @@ describe("Hex Skiing Protocol", () => {
 
     it("handles empty gates and items", () => {
       const original = makeState({ gateCount: 0, gates: [], itemCount: 0, items: [] });
-      const buf = SNAPSHOT.encode(original);
-      const decoded = SNAPSHOT.decode(buf);
+      const decoded = roundtrip(original);
 
       expect(decoded.gateCount).toBe(0);
       expect(decoded.gates).toEqual([]);
@@ -133,22 +135,13 @@ describe("Hex Skiing Protocol", () => {
 
     it("handles blizzard active state", () => {
       const original = makeState({ blizzardActive: true, blizzardTimer: 300 });
-      const buf = SNAPSHOT.encode(original);
-      const decoded = SNAPSHOT.decode(buf);
+      const decoded = roundtrip(original);
 
       expect(decoded.blizzardActive).toBe(true);
       expect(decoded.blizzardTimer).toBe(300);
     });
 
-    it("returns null for invalid buffer", () => {
-      expect(SNAPSHOT.decode(new ArrayBuffer(5))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(100);
-      new DataView(buf).setUint8(0, 0x81);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
+    itFramesMessages(SNAPSHOT, { short: [5], length: 100, wrongType: 0x81 });
 
     it("returns null when gateCount exceeds MAX_GATES", () => {
       const original = makeState({ gateCount: 0, gates: [], itemCount: 0, items: [] });
@@ -178,16 +171,14 @@ describe("Hex Skiing Protocol", () => {
           clearedP2: false,
         })),
       });
-      const buf = SNAPSHOT.encode(state);
-      const decoded = SNAPSHOT.decode(buf);
+      const decoded = roundtrip(state);
       expect(decoded).not.toBeNull();
       expect(decoded.gateCount).toBeLessThanOrEqual(8);
     });
 
     it("roundtrips events bitmask", () => {
       const original = makeState({ events: 0xff });
-      const buf = SNAPSHOT.encode(original);
-      const decoded = SNAPSHOT.decode(buf);
+      const decoded = roundtrip(original);
       expect(decoded.events).toBe(0xff);
     });
   });

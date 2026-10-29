@@ -3,10 +3,10 @@
 // Cooperative endings (Block Breakers, Invaders' co-op) are heard alike by
 // both players, and a one-player game has nobody to beat: neither is here.
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { fakeChannel } from "../../support/games/fake_channel.js";
 import { createLocalTransport } from "../../../js/lib/games/transport.js";
-import { recordingAudio } from "../../support/games/recording_audio.js";
+import { IDLE_SOLO, engineEachTest, loadGame } from "../../support/games/engine_ends.js";
 import { recordingCanvas } from "../../support/games/recording_canvas.js";
 import { GAME_DIRS, ONE_PLAYER_DIRS } from "../../support/games/engines.js";
 
@@ -29,29 +29,20 @@ const games = {
   hex_enduro: { win: "playVictory", lose: "playGameOver" },
 };
 
-async function load(gameId) {
-  const dir = games[gameId].dir ?? gameId;
-  const [{ default: Game }, { GAME_END }] = await Promise.all([
-    import(`../../../js/lib/games/${dir}/index.js`),
-    import(`../../../js/lib/games/${dir}/protocol.js`),
-  ]);
-  return { Game, GAME_END };
-}
+const load = (gameId) => loadGame(games[gameId].dir ?? gameId);
 
 function spySounds(engine, gameId) {
   const { win, lose } = games[gameId];
   return { win: vi.spyOn(engine.audio, win), lose: vi.spyOn(engine.audio, lose) };
 }
 
-let engine = null;
-beforeEach(() => {
-  recordingAudio();
-});
-afterEach(() => {
-  engine?.stop();
-  engine = null;
-  vi.restoreAllMocks();
-});
+const keep = engineEachTest();
+
+/** The `heard` sound played once, and the other not at all. */
+function expectHeardAlone(sounds, heard) {
+  expect(sounds[heard]).toHaveBeenCalledTimes(1);
+  expect(sounds[heard === "win" ? "lose" : "win"]).not.toHaveBeenCalled();
+}
 
 describe("the games heard here", () => {
   it("are every game folder but the co-operative one and the one-player ones", () => {
@@ -69,15 +60,14 @@ describe("the guest's end-of-match sound", () => {
       it(`${gameId}: a guest told player ${winner} won hears the ${heard}`, async () => {
         const { Game, GAME_END } = await load(gameId);
         const channel = fakeChannel();
-        engine = new Game(createMockCanvas(), channel, gameId, false, null);
+        const engine = keep(new Game(createMockCanvas(), channel, gameId, false, null));
         engine.start();
         const sounds = spySounds(engine, gameId);
         const wire = games[gameId].wire?.[winner] ?? winner;
 
         channel.emit("message", { data: GAME_END.encode({ winner: wire, score1: 0, score2: 0 }) });
 
-        expect(sounds[heard]).toHaveBeenCalledTimes(1);
-        expect(sounds[heard === "win" ? "lose" : "win"]).not.toHaveBeenCalled();
+        expectHeardAlone(sounds, heard);
       });
     }
   }
@@ -133,17 +123,15 @@ describe("the host's end-of-match sound", () => {
     ]) {
       it(`${gameId}: a host whose match player ${winner} won hears the ${heard}`, async () => {
         const { Game } = await load(gameId);
-        engine = new Game(createMockCanvas(), createLocalTransport(), gameId, true, null, {
-          mode: "solo",
-          opponentController: { nextInputs: () => ({}), nextDirection: () => null },
-        });
+        const engine = keep(
+          new Game(createMockCanvas(), createLocalTransport(), gameId, true, null, IDLE_SOLO),
+        );
         engine.start();
         const sounds = spySounds(engine, gameId);
 
         await end(engine, winner);
 
-        expect(sounds[heard]).toHaveBeenCalledTimes(1);
-        expect(sounds[heard === "win" ? "lose" : "win"]).not.toHaveBeenCalled();
+        expectHeardAlone(sounds, heard);
       });
     }
   }

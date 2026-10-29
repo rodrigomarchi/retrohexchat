@@ -11,29 +11,8 @@ import {
   recycle,
   won,
 } from "../../../../js/lib/games/hex_solitaire/rules.js";
-
-const S = 0; // spades
-const H = 1; // hearts
-const D = 2; // diamonds
-const C = 3; // clubs
-/** A card by its rank (1 ace … 13 king) and suit. */
-const card = (rank, suit) => suit * 13 + rank - 1;
-
-/** A table built by hand: every pile empty unless given. */
-function table({
-  mode = MODE.DRAW1,
-  stock = [],
-  waste = [],
-  fan,
-  foundations = [[], [], [], []],
-  columns = [],
-} = {}) {
-  const tableau = Array.from({ length: 7 }, (_, i) => ({
-    down: columns[i]?.down ?? [],
-    up: columns[i]?.up ?? [],
-  }));
-  return { mode, stock, waste, fan: fan ?? Math.min(waste.length, 1), foundations, tableau };
-}
+import { C, D, H, S, card } from "../../../support/games/card_tables.js";
+import { table, twoOfSpadesUp } from "./tables.js";
 
 const everyCard = (state) => [
   ...state.stock,
@@ -162,10 +141,7 @@ describe("moving to a foundation", () => {
   });
 
   it("takes a card back from a foundation onto the table", () => {
-    const state = table({
-      foundations: [[card(1, S), card(2, S)], [], [], []],
-      columns: [{ up: [card(3, H)] }],
-    });
+    const state = twoOfSpadesUp();
     const move = { from: { pile: "foundation", suit: S }, to: toColumn(0) };
 
     expect(canMove(state, move)).toBe(true);

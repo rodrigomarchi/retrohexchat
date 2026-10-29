@@ -41,7 +41,9 @@ import {
   checkAsteroidMissileCollision,
   createExplosionParticles,
   updateParticles,
+  stepTick,
 } from "../../../../js/lib/games/star_duel/physics.js";
+import { pressAndHold, released } from "../../../support/games/physics_tests.js";
 
 describe("star_duel_physics", () => {
   describe("createInitialState", () => {
@@ -1010,5 +1012,53 @@ describe("star_duel_physics", () => {
       const result = checkShipShipCollision(ship1, ship2);
       expect(result).toBe(true);
     });
+  });
+});
+
+describe("stepTick", () => {
+  const idle = released("rotateLeft", "rotateRight", "thrust", "fire", "warp");
+  const keysUp = released("fire1", "fire2", "warp1", "warp2");
+  const random = () => 0.5;
+  const open = () => {
+    const state = { ...createInitialState(GAME_MODE.OPEN_SPACE, 1), phase: PHASE.PLAYING };
+    for (const ship of ["ship1", "ship2"]) {
+      state[ship] = { ...state[ship], invulnerable: false, invulnTimer: 0 };
+    }
+    return state;
+  };
+  const missileAt = (ship, owner) => ({ x: ship.x - 4, y: ship.y, vx: 8, vy: 0, owner, age: 0 });
+
+  it("fires on the press, not while the key is held", () => {
+    const { first, held } = pressAndHold(
+      (state, pressed) => stepTick(state, { 1: { ...idle, fire: true }, 2: idle }, pressed, random),
+      open(),
+      keysUp,
+      (state) => ({ ...state, ship1: { ...state.ship1, fireCooldown: 0 } }),
+    );
+
+    expect(first.events.fired).toEqual([1]);
+    expect(first.state.missiles).toHaveLength(1);
+    expect(held.events.fired).toEqual([]);
+  });
+
+  it("scores a kill for the other pilot", () => {
+    const state = open();
+    state.missiles = [missileAt(state.ship2, 1)];
+
+    const step = stepTick(state, { 1: idle, 2: idle }, keysUp, random);
+
+    expect(step.events.died).toEqual([2]);
+    expect(step.events.scored).toBe(true);
+    expect(step.state).toMatchObject({ score1: 1, score2: 0, lastScorer: 1 });
+  });
+
+  it("scores nobody when both ships die at once", () => {
+    const state = open();
+    state.missiles = [missileAt(state.ship2, 1), missileAt(state.ship1, 2)];
+
+    const step = stepTick(state, { 1: idle, 2: idle }, keysUp, random);
+
+    expect(step.events.died).toEqual([1, 2]);
+    expect(step.state).toMatchObject({ score1: 0, score2: 0, lastScorer: 0 });
   });
 });

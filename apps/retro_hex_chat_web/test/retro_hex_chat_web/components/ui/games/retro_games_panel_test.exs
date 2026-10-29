@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     id: "hex_raid_blitz",
     name: "Hex Raid: Blitz",
     tagline: "Fast and furious",
-    description: "5 sections of intense River Raid action.",
+    description: "Intense River Raid action.",
     icon: "game_raid",
     controls: "Arrow keys to move/speed, Space to fire, Shift to drop mine"
   }
@@ -410,7 +410,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     document = Floki.parse_document!(html)
     text = Floki.text(document)
 
-    assert text =~ "5 sections"
+    assert text =~ "3 lives — top score wins"
     assert text =~ "Move/Speed"
     assert text =~ "Fire"
     assert text =~ "Drop a mine"

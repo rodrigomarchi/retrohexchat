@@ -11,12 +11,21 @@ import {
   CANVAS_W,
   MAX_MISSILES,
   MISSILE_RADIUS,
+  MISSILE_SPEED,
   SHIP_RADIUS,
   STAR_DANGER_RADIUS,
   STAR_X,
   STAR_Y,
 } from "./physics.js";
-import { aiRequest, aiRng, clamp, normalizeDifficulty, rotationDelta } from "../core/ai.js";
+import {
+  TableAI,
+  clamp,
+  createCommitment,
+  createDelayedView,
+  createPerThing,
+  normalizeDifficulty,
+  rotationDelta,
+} from "../core/ai.js";
 
 const NEUTRAL_INPUTS = Object.freeze({
   rotateLeft: false,
@@ -26,16 +35,26 @@ const NEUTRAL_INPUTS = Object.freeze({
   warp: false,
 });
 
+// reactionFrames: how old the rival's position and course are when this AI
+// reads them. leadSkill: how much of a shot's flight time it leads the rival
+// by. aimErrorAngle: the most a shot is off, drawn once per shot and kept
+// until it is fired. turnDeadzone never exceeds aimTolerance, and neither
+// loosens with difficulty. fireChance: the odds an opening is taken; a passed
+// one waits out the cooldown. dodgeChance: the odds a missile is dodged at
+// all, decided once per missile, and only once it is reactionFrames old.
 export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
-    turnDeadzone: 0.18,
-    aimTolerance: 0.09,
+    reactionFrames: 12,
+    turnDeadzone: 0.05,
+    aimTolerance: 0.06,
+    aimErrorAngle: 0.13,
     thrustAngle: 0.65,
     evasionThrustAngle: 1.25,
     standoffDistance: 185,
-    leadFrames: 7,
-    fireCooldownFrames: 42,
-    fireChance: 0.5,
+    leadSkill: 0.6,
+    fireCooldownFrames: 34,
+    fireChance: 0.8,
+    dodgeChance: 0.28,
     threatFrames: 28,
     threatRadius: 130,
     missileAvoidMargin: 22,
@@ -45,14 +64,17 @@ export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
     emergencyWarp: false,
   }),
   normal: Object.freeze({
-    turnDeadzone: 0.11,
-    aimTolerance: 0.15,
+    reactionFrames: 11,
+    turnDeadzone: 0.05,
+    aimTolerance: 0.05,
+    aimErrorAngle: 0.12,
     thrustAngle: 0.82,
     evasionThrustAngle: 1.45,
     standoffDistance: 155,
-    leadFrames: 11,
-    fireCooldownFrames: 26,
-    fireChance: 0.78,
+    leadSkill: 0.6,
+    fireCooldownFrames: 32,
+    fireChance: 0.9,
+    dodgeChance: 0.3,
     threatFrames: 42,
     threatRadius: 175,
     missileAvoidMargin: 34,
@@ -62,14 +84,17 @@ export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
     emergencyWarp: false,
   }),
   hard: Object.freeze({
-    turnDeadzone: 0.07,
-    aimTolerance: 0.24,
+    reactionFrames: 4,
+    turnDeadzone: 0.04,
+    aimTolerance: 0.04,
+    aimErrorAngle: 0.03,
     thrustAngle: 1,
     evasionThrustAngle: 1.7,
     standoffDistance: 125,
-    leadFrames: 16,
-    fireCooldownFrames: 15,
+    leadSkill: 1,
+    fireCooldownFrames: 18,
     fireChance: 1,
+    dodgeChance: 0.65,
     threatFrames: 62,
     threatRadius: 220,
     missileAvoidMargin: 48,
@@ -79,6 +104,10 @@ export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
     emergencyWarp: true,
   }),
 });
+
+// The odds the hard AI warps away from a missile it cannot otherwise escape,
+// decided once per missile.
+const EMERGENCY_WARP_CHANCE = 0.08;
 
 /**
  * @param {unknown} difficulty
@@ -98,25 +127,30 @@ export function createStarDuelAI(options = {}) {
   return new StarDuelAI(options);
 }
 
-export class StarDuelAI {
+export class StarDuelAI extends TableAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeStarDuelAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
+    super(options, normalizeStarDuelAIDifficulty, STAR_DUEL_AI_DIFFICULTIES);
     this.fireCooldown = 0;
+    this.shot = 0;
+    this._aim = createCommitment();
+    this._view = createDelayedView();
+    this._missiles = createPerThing();
   }
 
   /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
+   * A new round or match: the rival unseen until it is looked at again, no
+   * missile under watch, and the next shot draws a fresh aim.
    * @returns {void}
    */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizeStarDuelAIDifficulty(difficulty);
+  forget() {
+    this._view.reset();
+    this._missiles.reset();
+    this._aim.reset();
   }
 
   /**
@@ -126,37 +160,82 @@ export class StarDuelAI {
    * @param {1|2} [request.player]
    * @returns {{rotateLeft: boolean, rotateRight: boolean, thrust: boolean, fire: boolean, warp: boolean}}
    */
-  // ex_dna:disable-for-lines:9 this AI's own turn: its cooldowns and the phase it plays in
+  // ex_dna:disable-for-lines:6 this AI's own turn: its cooldowns and the phase it plays in
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
-
-    this.frame++;
+    const { state, player } = this.startTurn(request);
     if (this.fireCooldown > 0) this.fireCooldown--;
 
     if (!state || state.phase !== PHASE.PLAYING) return NEUTRAL_INPUTS;
 
-    const difficulty = normalizeStarDuelAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-    const config = STAR_DUEL_AI_DIFFICULTIES[difficulty];
+    const config = this.rowFor(request);
 
     const actor = shipFor(state, player);
     const opponent = shipFor(state, player === 1 ? 2 : 1);
+    const seen = this._view.see(opponent, config.reactionFrames);
     if (!isLiveShip(actor)) return NEUTRAL_INPUTS;
 
-    const target = chooseTarget(state, player, actor, opponent, config);
+    const noticed = this._noticedMissiles(state, player, config);
+    const aimError = this._aim.hold(
+      this.shot,
+      () => (randomUnit(this.rng) * 2 - 1) * config.aimErrorAngle,
+    );
+    const target = chooseTarget(
+      noticed,
+      player,
+      actor,
+      readOpponent(opponent, seen),
+      config,
+      aimError,
+    );
     if (!target) return NEUTRAL_INPUTS;
 
     const turn = turnInputs(actor.rotation, target.angle, config.turnDeadzone);
-    const fire = shouldFire(state, player, target, config, this.fireCooldown, this.rng);
-    if (fire) this.fireCooldown = config.fireCooldownFrames;
-
-    return {
+    const inputs = {
       ...turn,
       thrust: shouldThrust(target, config),
-      fire,
-      warp: shouldWarp(actor, target, config, this.rng),
+      fire: false,
+      warp: shouldWarp(actor, target, config),
     };
+    if (!shouldFire(state, player, target, config, this.fireCooldown)) return inputs;
+
+    // One roll per opening; a passed one waits out the cooldown like a shot.
+    this.fireCooldown = config.fireCooldownFrames;
+    this.shot++;
+    return { ...inputs, fire: randomUnit(this.rng) < config.fireChance };
   }
+
+  /**
+   * The state as this AI sees it: a rival missile is there only once it is
+   * reactionFrames old, and only if this AI is to dodge it — decided once per
+   * missile, along with whether it would warp away from it.
+   */
+  _noticedMissiles(state, player, config) {
+    const missiles = Array.isArray(state.missiles) ? state.missiles : [];
+    const ids = missiles.map((missile) => `${missile.owner}:${this.frame - (missile.age || 0)}`);
+    this._missiles.keep(ids);
+
+    const kept = missiles
+      .map((missile, i) => {
+        if (missile.owner === player) return missile;
+        const plan = this._missiles.decide(ids[i], () => ({
+          dodges: randomUnit(this.rng) < config.dodgeChance,
+          warps: randomUnit(this.rng) < EMERGENCY_WARP_CHANCE,
+        }));
+        if (!plan.dodges || (missile.age || 0) < config.reactionFrames) return null;
+        return { ...missile, warps: plan.warps };
+      })
+      .filter(Boolean);
+    return kept.length === missiles.length ? state : { ...state, missiles: kept };
+  }
+}
+
+/**
+ * The rival as this AI reads it: where it was and how it moved
+ * reactionFrames ago, but whether it is alive and shielded as it is now.
+ */
+function readOpponent(opponent, seen) {
+  if (!opponent || !seen) return opponent;
+  return { ...opponent, x: seen.x, y: seen.y, vx: seen.vx, vy: seen.vy };
 }
 
 /**
@@ -252,13 +331,14 @@ export function incomingMissileThreat(
   return best;
 }
 
-function chooseTarget(state, player, actor, opponent, config) {
+function chooseTarget(state, player, actor, opponent, config, aimError = 0) {
   const missileThreat = incomingMissileThreat(state, player, config);
   if (missileThreat) {
     return {
       angle: missileEvasionAngle(missileThreat),
       kind: "evade",
       urgency: missileThreat.frames <= 10 ? "emergency" : "threat",
+      warps: missileThreat.missile.warps === true,
       angleError: null,
       distance: missileThreat.vector.distance,
     };
@@ -272,14 +352,16 @@ function chooseTarget(state, player, actor, opponent, config) {
 
   if (!isLiveShip(opponent)) return null;
 
+  const flight = toroidalVector(actor.x, actor.y, opponent.x, opponent.y).distance / MISSILE_SPEED;
+  const lead = flight * config.leadSkill;
   const predictedOpponent = {
-    x: wrap(opponent.x + (opponent.vx || 0) * config.leadFrames, CANVAS_W),
-    y: wrap(opponent.y + (opponent.vy || 0) * config.leadFrames, CANVAS_H),
+    x: wrap(opponent.x + (opponent.vx || 0) * lead, CANVAS_W),
+    y: wrap(opponent.y + (opponent.vy || 0) * lead, CANVAS_H),
   };
   const attackVector = toroidalVector(actor.x, actor.y, predictedOpponent.x, predictedOpponent.y);
   if (attackVector.distance <= 0) return null;
 
-  const angle = Math.atan2(attackVector.dy, attackVector.dx);
+  const angle = Math.atan2(attackVector.dy, attackVector.dx) + aimError;
   return {
     angle,
     kind: "attack",
@@ -338,7 +420,7 @@ function missileEvasionAngle(threat) {
   return Math.atan2(missile.vy, missile.vx) + side * (Math.PI / 2);
 }
 
-function shouldFire(state, player, target, config, fireCooldown, rng) {
+function shouldFire(state, player, target, config, fireCooldown) {
   if (target.kind !== "attack") return false;
   if (target.angleError > config.aimTolerance) return false;
   if (fireCooldown > 0) return false;
@@ -350,9 +432,7 @@ function shouldFire(state, player, target, config, fireCooldown, rng) {
 
   const ownMissiles = (state.missiles || []).filter((missile) => missile.owner === player);
   if (ownMissiles.length >= MAX_MISSILES) return false;
-  if (lineOfFireBlockedByAsteroid(state, player, config.asteroidShotMargin)) return false;
-
-  return randomUnit(rng) <= config.fireChance;
+  return !lineOfFireBlockedByAsteroid(state, player, config.asteroidShotMargin);
 }
 
 function shouldThrust(target, config) {
@@ -363,13 +443,13 @@ function shouldThrust(target, config) {
   return target.distance > config.standoffDistance && target.angleError <= config.thrustAngle;
 }
 
-function shouldWarp(actor, target, config, rng) {
+function shouldWarp(actor, target, config) {
   return (
     config.emergencyWarp === true &&
     target.kind === "evade" &&
     target.urgency === "emergency" &&
-    (actor.warpCooldown || 0) === 0 &&
-    randomUnit(rng) < 0.08
+    target.warps === true &&
+    (actor.warpCooldown || 0) === 0
   );
 }
 

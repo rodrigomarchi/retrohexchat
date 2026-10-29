@@ -20,8 +20,12 @@ import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
 import {
   drawBackground,
+  // ex_dna:disable-for-lines:17 this game's own imports and palette
   drawGrid,
   drawScanlines,
+  drawShotDot,
+  drawShotTrail,
+  drawSquareParticles,
   drawVignette,
   waitingText,
 } from "../core/render.js";
@@ -168,47 +172,22 @@ function drawMissile(ctx, x, y, vx, vy, color, _time) {
 
   // Trail (3 fading dots behind missile)
   const speed = Math.sqrt(vx * vx + vy * vy);
-  if (speed > 0) {
-    const nx = vx / speed;
-    const ny = vy / speed;
-    ctx.globalAlpha = 0.2;
-    ctx.fillStyle = color;
-    for (let i = 1; i <= 3; i++) {
-      const tx = x - nx * i * 4;
-      const ty = y - ny * i * 4;
-      ctx.beginPath();
-      ctx.arc(tx, ty, MISSILE_RADIUS * (1 - i * 0.2), 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-  }
+  if (speed > 0) drawShotTrail(ctx, x, y, vx / speed, vy / speed, MISSILE_RADIUS, color);
 
   // Main dot with glow
   ctx.shadowColor = color;
   ctx.shadowBlur = 6;
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.arc(x, y, MISSILE_RADIUS, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Bright core
-  ctx.fillStyle = gameColor("ffffff");
-  ctx.beginPath();
-  ctx.arc(x, y, MISSILE_RADIUS * 0.5, 0, Math.PI * 2);
-  ctx.fill();
+  drawShotDot(ctx, x, y, MISSILE_RADIUS, color, gameColor("ffffff"));
 
   ctx.restore();
 }
 
 function drawParticles(ctx, particles, colors) {
-  for (const p of particles) {
+  drawSquareParticles(ctx, particles, (p) => {
     const alpha = p.life / p.maxLife;
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle = p.spark ? colors.missile : colors.explosion;
-    const size = p.spark ? 2 : 2 + alpha * 2;
-    ctx.fillRect(p.x - size / 2, p.y - size / 2, size, size);
-  }
-  ctx.globalAlpha = 1;
+    if (p.spark) return { alpha, color: colors.missile, size: 2 };
+    return { alpha, color: colors.explosion, size: 2 + alpha * 2 };
+  });
 }
 
 function drawHUD(ctx, state, colors, time) {

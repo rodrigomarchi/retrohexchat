@@ -41,13 +41,6 @@ msgstr "Timer di servizio di 10 secondi — auto-serve su timeout"
 msgid "15 pieces to complete the igloo"
 msgstr "15 pezzi per completare l'igloo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "3 lives per player — highest score when all sections clear or both out of lives wins"
-msgstr ""
-"3 vite per giocatore — punteggio più alto quando tutte le sezioni chiare o "
-"entrambe fuori di vite vince"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "3 lives per player — lose a life when hit by an alien bomb"
@@ -84,15 +77,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "40% failure"
 msgstr "Insufficienza del 40%"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "5 sections of intense River Raid action — river starts narrow, fuel is scarce, mines recharge faster. Quick and chaotic. Every second counts in this compressed, high-pressure variant where mistakes are immediately punished."
-msgstr ""
-"5 sezioni di azione intensa del fiume Raid — il fiume inizia stretto, il "
-"carburante è scarso, le miniere ricaricano più velocemente. Veloce e "
-"caotico. Ogni secondo conta in questa variante compressa e ad alta pressione"
-" dove gli errori vengono puniti immediatamente."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:68
 #, elixir-autogen, elixir-format
@@ -307,7 +291,7 @@ msgstr ""
 "Velocità della palla aumenta con ogni colpo di pagaia, fino a 2.4x velocità "
 "iniziale"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Based on Activision's Boxing (1980) for the Atari 2600."
 msgstr "Basato su Activision's Boxing (1980) per l'Atari 2600."
@@ -336,7 +320,7 @@ msgstr ""
 msgid "Based on Outlaw (1978) by David Crane for the Atari 2600."
 msgstr "Basato su Outlaw (1978) da David Crane per l'Atari 2600."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Best of 3 days — highest total score wins"
 msgstr "Miglior di 3 giorni — il punteggio totale più alto vince"
@@ -354,7 +338,7 @@ msgstr "Migliore di 3 giri con maggiore difficoltà"
 msgid "Best of 3 rounds — first to 2 round wins takes the match"
 msgstr "Miglior di 3 giri — prima a 2 vittorie rotonde prende la partita"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Best of 5 rounds (first to 3 wins)"
 msgstr "Migliore di 5 giri (prima a 3 vittorie)"
@@ -368,7 +352,7 @@ msgstr "Migliore di 5 giri — stesso di Gara artica"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Blitz"
 msgstr "Blitz"
@@ -387,7 +371,7 @@ msgstr ""
 "gioco aggressivo è ricompensato — catena uccide per seppellire il vostro "
 "avversario in alieni."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:102
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Blizzard"
 msgstr "Blizzard"
@@ -397,7 +381,7 @@ msgstr "Blizzard"
 msgid "Blizzard Mode Rules"
 msgstr "Regole modalità Blizzard"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Blizzard events reduce visibility periodically"
 msgstr "Gli eventi Blizzard riducono periodicamente la visibilità"
@@ -460,12 +444,12 @@ msgstr ""
 msgid "Brake before fog"
 msgstr "Freno prima della nebbia"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Build fast to maximize your temperature bonus!"
 msgstr "Costruisci velocemente per massimizzare il tuo bonus di temperatura!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Build your igloo by collecting 15 pieces from ice blocks"
 msgstr "Costruisci il tuo igloo raccogliendo 15 pezzi da blocchi di ghiaccio"
@@ -514,7 +498,7 @@ msgstr ""
 msgid "Chain kills relentlessly"
 msgstr "La catena uccide senza sosta"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "Clams"
 msgstr "Chiusure"
@@ -528,7 +512,7 @@ msgstr ""
 "Sopravvivere insieme o cadere insieme. La comunicazione e il coordinamento "
 "sono tutto: dividere lo schermo e coprire i punti ciechi dell'altro."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Clean Run"
 msgstr "Clean Run"
@@ -659,7 +643,7 @@ msgstr "Tiri ad angolo ad alta velocità"
 msgid "Count your overtakes"
 msgstr "Conta i tuoi errori"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Crabs"
 msgstr "Craps"
@@ -681,11 +665,6 @@ msgstr ""
 "carburante, solo velocità. 90 secondi per ottenere il massimo superamento. "
 "La forma più pura di Enduro — spogliare tutto tranne le corse crude e vedere"
 " chi può tessere attraverso il traffico più veloce."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "Destroy bridges (3 HP) to advance to the next section"
-msgstr "Distruggere ponti (3 HP) per avanzare alla sezione successiva"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:34
 #, elixir-autogen, elixir-format
@@ -711,7 +690,7 @@ msgstr ""
 msgid "Deuce and advantage rules still apply"
 msgstr "Si applicano ancora le regole di decollo e di vantaggio"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Difficulty Progression"
 msgstr "Difficoltà Progressione"
@@ -763,11 +742,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Draft between cars"
 msgstr "Progetto tra auto"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "Drop mines to sabotage your opponent"
-msgstr "Getta mine per sabotare il tuo avversario"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:40
 #, elixir-autogen, elixir-format
@@ -825,7 +799,7 @@ msgstr ""
 "sciatore vince. Una prova di resistenza e nervo — quanto tempo si può "
 "continuare a schivare a velocità sempre crescenti?"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Enemies"
 msgstr "Enemies"
@@ -840,7 +814,7 @@ msgstr "Eremiti ancora presenti con progressiva difficoltà"
 msgid "Escalating speed"
 msgstr "Escalation della velocità"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Escape"
 msgstr "Fuga"
@@ -922,12 +896,7 @@ msgstr "Prima a 6 partite vince — nessun tiebreak, nessun win-by-2"
 msgid "First to eliminate all opponent lives wins the match"
 msgstr "Prima di eliminare tutte le vite avversarie vince la partita"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "First to reach the finish line wins the round"
-msgstr "Prima di raggiungere il traguardo vince il round"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "Fish"
 msgstr "Pesce"
@@ -1004,7 +973,7 @@ msgstr ""
 "Gioco sopra quando gli alieni raggiungono il terreno o entrambi i giocatori "
 "perdono tutte le vite"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Geese"
 msgstr "Formaggio"
@@ -1039,20 +1008,20 @@ msgstr "Prendi ogni spinta di velocità"
 msgid "Gravity handles forward momentum — steering slows you down"
 msgstr "Gravity maniglie slancio in avanti — lo sterzo rallenta"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Hex Enduro"
 msgstr "Hex Enduro"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Hex Enduro: Night Race"
 msgstr "Hex Enduro: Gara notturna"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Hex Enduro: Sprint"
@@ -1064,13 +1033,13 @@ msgstr "Hex Enduro: Sprint"
 msgid "Hex Frost"
 msgstr "Frost di Hex"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:124
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Hex Frost: Blizzard"
 msgstr "Frost Hex: Blizzard"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:128
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:134
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Hex Frost: Peaceful"
@@ -1132,20 +1101,20 @@ msgstr ""
 "riduce il tempo di reazione dell'avversario, ma ti lascia esposto troppo. Il"
 " test più puro di riflessi e posizionamento."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Hex Raid"
 msgstr "Hex Raid"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Hex Raid: Blitz"
 msgstr "Hex Raid: Blitz"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Hex Raid: Pacifist"
@@ -1157,13 +1126,13 @@ msgstr "Hex Raid: Pacifist"
 msgid "Hex Skiing"
 msgstr "Sciare l'esa"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Hex Skiing: Clean Run"
 msgstr "Scioglimento di esagonali: Clean Run"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Hex Skiing: Escape"
@@ -1242,13 +1211,13 @@ msgstr ""
 "Se entrambi sono inghiottiti simultaneamente, lo sciatore che scendeva vince"
 " ulteriormente"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "If both are engulfed, the skier who descended further wins"
 msgstr ""
 "Se entrambi sono inghiottiti, lo sciatore che scendeva vince ulteriormente"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:116
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "If it reaches 0°, the round ends — most igloo pieces wins"
 msgstr ""
@@ -1267,7 +1236,7 @@ msgstr ""
 msgid "If the ball passes your paddle, your opponent scores a point"
 msgstr "Se la palla passa la paddle, il tuo avversario segna un punto"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Igloo & Winning"
 msgstr "Igloo & Winning"
@@ -1284,10 +1253,10 @@ msgstr "Discesa infinita — il corso non finisce mai"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:82
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:63
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:119
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:125
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:120
@@ -1296,10 +1265,10 @@ msgstr "Discesa infinita — il corso non finisce mai"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:94
@@ -1314,14 +1283,14 @@ msgstr "Discesa infinita — il corso non finisce mai"
 msgid "Inspiration"
 msgstr "Ispirazione"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:126
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Inspired by Activision Frostbite (1983) by Steve Cartwright."
 msgstr "Ispirato da Activision Frostbite (1983) da Steve Cartwright."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:71
 #, elixir-autogen, elixir-format
@@ -1333,12 +1302,12 @@ msgstr "Ispirato da Activision Skiing (1980)."
 msgid "Inspired by Activision Tennis (1981)."
 msgstr "Ispirato da Activision Tennis (1981)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Inspired by Activision's Enduro (1983)."
 msgstr "Ispirato da Enduro di Activision (1983)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:66
 #, elixir-autogen, elixir-format
@@ -1385,13 +1354,13 @@ msgstr "Il mio presto, il mio spesso"
 msgid "Miss a block and fall in the water — lose a life!"
 msgstr "Manca un blocco e cadere in acqua — perdere una vita!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:64
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:98
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:72
 #, elixir-autogen, elixir-format
@@ -1408,7 +1377,7 @@ msgstr "Spostarsi con l'allenatore"
 msgid "Narrow river = slower flight"
 msgstr "Fiume stretto = volo più lento"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Night Race"
 msgstr "Gara notturna"
@@ -1426,7 +1395,7 @@ msgstr "No Man's Land"
 msgid "No avalanche chasing you — pure skill-based racing"
 msgstr "Nessuna valanga che ti insegue — pura abilità"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "No blocking — defense is all about movement and spacing"
 msgstr "Nessun blocco — la difesa è tutto su movimento e spaziatura"
@@ -1484,7 +1453,7 @@ msgstr ""
 msgid "Obstacle density increases the further you descend"
 msgstr "Densità di ostacolo aumenta ulteriormente si scende"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Once complete, return to shore and enter your igloo to win the round"
 msgstr ""
@@ -1541,7 +1510,7 @@ msgstr "Superare auto AI per 1 punto, superare il tuo avversario per 5 punti"
 msgid "Pace yourself"
 msgstr "Ritmata te stesso"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Pacifist"
 msgstr "Patifìci"
@@ -1552,7 +1521,7 @@ msgid "Pass through slalom gates for a time bonus (-2s per gate)"
 msgstr ""
 "Passare attraverso cancelli slalom per un bonus di tempo (-2 per cancello)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:108
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "Peaceful"
 msgstr "Pace"
@@ -1574,7 +1543,7 @@ msgstr ""
 "I giocatori si muovono liberamente nella loro metà della corte (non possono "
 "attraversare la rete)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Polar Bear"
 msgstr "Orso polare"
@@ -1683,39 +1652,22 @@ msgstr ""
 "Rischio contro ricompensa: gli attacchi aggressivi possono fare il "
 "contrario!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines on your rival. 10 sections of increasing difficulty."
-msgstr ""
-"River Raid riimmaginato per due — gara attraverso un canale tossico per "
-"scorrere, distruggere i nemici per punti, rubare carburante e gettare mine "
-"sul vostro rivale. 10 sezioni di crescente difficoltà."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "River Raid without sabotage — no mines allowed. Pure competition for points, fuel, and survival across 10 sections. Without mine drops, every point comes from skill alone — shooting accuracy, fuel management, and knowing when to push deeper into enemy territory."
-msgstr ""
-"River Raid senza sabotaggio — nessuna miniera consentita. Pura competizione "
-"per punti, carburante e sopravvivenza in 10 sezioni. Senza le mie gocce, "
-"ogni punto viene da sola abilità — la precisione di tiro, la gestione del "
-"carburante, e sapere quando spingere più a fondo nel territorio nemico."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "River starts at higher difficulty (narrower from the start)"
 msgstr "Il fiume inizia a difficoltà più elevate (sotto il sole dall'inizio)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Round 1"
 msgstr "Fase 1"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Round 2"
 msgstr "Fase 2"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Round 3"
 msgstr "Fase 3"
@@ -1754,15 +1706,10 @@ msgstr "Fase 3"
 msgid "Rules"
 msgstr "Regole"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Run out of fuel or crash into banks/enemies and you lose a life"
 msgstr "Eseguite il carburante o schiantatevi in banche"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:52
-#, elixir-autogen, elixir-format
-msgid "Running out of fuel ends the day early"
-msgstr "Esecuzione di carburante termina il giorno presto"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:29
 #, elixir-autogen, elixir-format
@@ -1792,11 +1739,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Same rules as Hex Raid, but mines are disabled"
 msgstr "Stesse regole di Hex Raid, ma le miniere sono disabilitate"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "Same rules as Hex Raid, but only 5 sections"
-msgstr "Stesse regole di Hex Raid, ma solo 5 sezioni"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:45
@@ -1831,12 +1773,12 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:89
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:77
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:121
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:127
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:122
@@ -1852,10 +1794,10 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:101
@@ -1894,7 +1836,7 @@ msgstr "La posizione di servizio è re"
 msgid "Server alternates after every point"
 msgstr "Il server si alterna dopo ogni punto"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "Shared timer starts at 45° and drops ~1°/second"
 msgstr "Timer condiviso inizia a 45° e scende ~1°"
@@ -1941,13 +1883,6 @@ msgstr ""
 "Angolo della scarpa dipende dalla posizione di contatto orizzontale "
 "(left/right = cross-court)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "Shot power depends on depth of contact (front = drop shot, back = drive)"
-msgstr ""
-"Potenza colpo dipende dalla profondità di contatto (fronte = tiro a goccia, "
-"indietro = unità)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:127
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:87
@@ -1975,7 +1910,7 @@ msgstr "Slalom cancelli ancora premio bonus tempo (-2 per cancello)"
 msgid "Smooth lines over speed"
 msgstr "Linee mooth sulla velocità"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Snow reduces max speed, fog limits visibility, night shows headlights only"
 msgstr ""
@@ -2064,7 +1999,7 @@ msgstr ""
 " avversario come rinforzi. Combos manda gocce extra. UFO uccide inviare "
 "alieni blindati. 10 onde di caos crescente."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Sprint"
 msgstr "Sprint"
@@ -2167,12 +2102,12 @@ msgstr "Tackle aggressivamente"
 msgid "Teams switch sides after each period"
 msgstr "Le squadre passano i lati dopo ogni periodo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:113
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:119
 #, elixir-autogen, elixir-format
 msgid "Temperature"
 msgstr "Temperatura"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Temperature bonus: remaining temperature × 10 points"
 msgstr "Bonus di temperatura: temperatura rimanente × 10 punti"
@@ -2186,11 +2121,6 @@ msgstr "La temperatura inizia a 60° e scende a 0,5° /second"
 #, elixir-autogen, elixir-format
 msgid "The avalanche accelerates continuously — it will catch you eventually"
 msgstr "La valanga accelera continuamente — la prenderà alla fine"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:29
-#, elixir-autogen, elixir-format
-msgid "The avalanche creeps closer — if it catches you, the round is lost"
-msgstr "La valanga si avvicina — se ti cattura, il giro è perso"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2369,7 +2299,7 @@ msgstr "Guarda la rotazione del servizio"
 msgid "Watch the temperature"
 msgstr "Guarda la temperatura"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Weather cycles: Day → Snow → Fog → Night → Dawn (~3.5 min per day)"
 msgstr "Cicli meteo: Giorno → Neve → Fog → Notte → Dawn (~3,5 min al giorno)"
@@ -2433,7 +2363,7 @@ msgstr "di 2 minuti ciascuno (6 minuti totali)"
 msgid "of 3 minutes (no side switching)"
 msgstr "di 3 minuti (senza commutazione laterale)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "— 1 epic round, 20-piece igloo, all enemies from the start"
 msgstr "— 1 giro epico, 20 pezzi igloo, tutti i nemici dall'inizio"
@@ -2448,22 +2378,17 @@ msgstr "— 1 periodo di 3 minuti, puck più veloce, 80% affrontare il successo"
 msgid "— 25% speed increase on all shots"
 msgstr "— aumento della velocità del 25% su tutti i colpi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "— 3-minute race in permanent darkness with fog bursts"
 msgstr "— gara di 3 minuti nelle tenebre permanenti con esplosioni di nebbia"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "— 5 sections, narrow river, faster mine recharge"
-msgstr "— 5 sezioni, fiume stretto, ricarica rapida della miniera"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "— 60% success rate (same as Classic)"
 msgstr "— tasso di successo del 60% (stesso come classico)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "— 90-second daylight sprint, no weather, no fuel drain"
 msgstr ""
@@ -2539,7 +2464,7 @@ msgstr ""
 "— A combo 4+, appaiono gocce corazzate. Questi prendono 2 colpi e possono "
 "intasare lo schermo del tuo avversario."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "— Bonus collectible between rows (200 points)"
 msgstr "— Bonus collezionabile tra righe (200 punti)"
@@ -2622,7 +2547,7 @@ msgstr ""
 "— Scelta in sezioni strette. Una mossa sbagliata ad alta velocità significa "
 "morte istantanea sulle banche."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "— Dense ice patches, fast avalanche, narrow gates"
 msgstr "— Pezze di ghiaccio denso, valanga veloce, cancelli stretti"
@@ -2726,7 +2651,7 @@ msgstr "— missili antincendio"
 msgid "— First to 3 games wins"
 msgstr "— Prima a 3 vittorie di giochi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "— Fly between rows, danger during jumps (from round 3)"
 msgstr "— Volare tra le righe, pericolo durante i salti (dal giro 3)"
@@ -2750,7 +2675,7 @@ msgstr ""
 msgid "— Free puck gradually slows down on the ice"
 msgstr "— Puck libero gradualmente rallenta sul ghiaccio"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "— Full Classic Duel: 3 days with weather cycle"
 msgstr "— Full Classic Duel: 3 giorni con ciclo meteo"
@@ -2759,11 +2684,6 @@ msgstr "— Full Classic Duel: 3 giorni con ciclo meteo"
 #, elixir-autogen, elixir-format
 msgid "— Full rules: alien drops, combos, 10 waves"
 msgstr "— Regole complete: gocce aliene, combo, 10 onde"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:53
-#, elixir-autogen, elixir-format
-msgid "— Full rules: mines, fuel competition, 10 sections"
-msgstr "— Regole complete: miniere, concorrenza dei combustibili, 10 sezioni"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:64
 #, elixir-autogen, elixir-format
@@ -2805,7 +2725,7 @@ msgstr ""
 "— In una breve partita, tenere il servizio è fondamentale. Mira agli angoli "
 "dei tuoi giochi di servizio."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "— Infinite descent, ever-accelerating avalanche, last skier standing wins"
 msgstr ""
@@ -2864,7 +2784,7 @@ msgstr ""
 "— Abbina la tua posizione verticale per rimanere nel vuoto il gioco di scena"
 " lascia dietro mentre si muove."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "— More rocks, faster avalanche, medium gates"
 msgstr "— Più rocce, valanga più veloce, cancelli medio"
@@ -2959,12 +2879,12 @@ msgstr ""
 msgid "— Neutral. Step on it to claim it (+1 igloo piece)"
 msgstr "— Neutral. Passo su di esso per rivendicarlo (+1 pezzo igloo)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "— No avalanche, no items, pure time trial racing"
 msgstr "— Nessuna valanga, nessun elemento, prova di tempo puro"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:110
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:116
 #, elixir-autogen, elixir-format
 msgid "— No block stealing, pure construction race"
 msgstr "— Nessun blocco rubare, pura gara di costruzione"
@@ -2976,7 +2896,7 @@ msgstr ""
 "— Nessun carburante significa nessun motivo per frenare a meno che non si "
 "sta per schiantarsi. Abbassa il pedale."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "— No mines, pure skill competition"
 msgstr "— Nessuna miniera, pura concorrenza di abilità"
@@ -3007,12 +2927,12 @@ msgstr ""
 "— Un proiettile alla volta. Un colpo sprecato sul pallone da palcoscenico dà"
 " al tuo avversario una finestra libera per riposizionare."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "— Open/close on blocks. Open = dangerous, closed = safe (from round 4)"
 msgstr "— Aprire i blocchi. Aperto = pericoloso, chiuso = sicuro (da tondo 4)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "— Patrols the shore. Dodge to reach your igloo!"
 msgstr "— Patrols la riva. Dodge per raggiungere il tuo igloo!"
@@ -3029,12 +2949,7 @@ msgstr ""
 msgid "— Puck reflects off top/bottom walls"
 msgstr "— Puck si riflette sulle pareti di alto livello"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "— Punch (alternates left/right arm automatically)"
-msgstr "— Punch (alterna automaticamente il braccio a sinistra"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "— Ride the ice blocks (from round 2)"
 msgstr "— Guidare i blocchi di ghiaccio (da tondo 2)"
@@ -3093,14 +3008,7 @@ msgstr ""
 msgid "— Shoot in your facing direction"
 msgstr "— Spara nella tua direzione di fronte"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:52
-#, elixir-autogen, elixir-format
-msgid "— Slow down for dense enemy clusters to maximize hits. Speed up in empty stretches to save fuel."
-msgstr ""
-"— Rallentare per cluster nemici densi per massimizzare i colpi. Accelerare "
-"in tratti vuoti per risparmiare carburante."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "— Sparse obstacles, slow avalanche, wide gates"
 msgstr "— Distruggi ostacoli, valanga lenta, porte larghe"
@@ -3301,13 +3209,6 @@ msgid "— With only 3 games needed, losing even one game puts you at a serious 
 msgstr ""
 "— Con solo 3 giochi necessari, perdendo anche un gioco ti mette a uno "
 "svantaggio serio."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:64
-#, elixir-autogen, elixir-format
-msgid "— With only 5 sections, maximizing points per section is key. Prioritize high-value targets."
-msgstr ""
-"— Con solo 5 sezioni, massimizzare i punti per sezione è fondamentale. "
-"Priorizzare obiettivi di alto valore."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:41
 #, elixir-autogen, elixir-format
@@ -3946,9 +3847,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:101
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:103
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:98
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:132
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:100
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:138
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:131
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:92
@@ -3956,10 +3857,10 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:95
@@ -3974,11 +3875,11 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:100
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:97
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:86
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:131
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:137
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:130
@@ -3992,10 +3893,10 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:75
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:94
@@ -4061,7 +3962,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:92
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:73
@@ -5325,3 +5226,93 @@ msgstr "Utilizzare le frecce per muoversi."
 #, elixir-autogen, elixir-format
 msgid "When you play with somebody, the game does not pause."
 msgstr "Quando giochi con qualcuno, il gioco non si ferma."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "3 lives a round — lose them all and you sit out the rest of it. If both players are out, the bigger igloo takes the round"
+msgstr "3 vive un giro — perderli tutti e ti siedi il resto di esso. Se entrambi i giocatori sono fuori, l'igloo più grande prende il giro"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "3 lives per player — the match ends as soon as either jet is out of lives, and the higher score wins"
+msgstr "3 vite per giocatore — la partita termina non appena un getto è fuori di vite, e il punteggio più alto vince"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "An empty tank slows you to a crawl until you reach a fuel station"
+msgstr "Un serbatoio vuoto ti rallenta fino a raggiungere una stazione di rifornimento"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Bridges take 3 hits and pay a big bonus — flying into one is a crash"
+msgstr "Ponti prendere 3 colpi e pagare un grande bonus — volare in uno è un crash"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Intense River Raid action that starts deep in — the river is narrow from the first second, fuel is scarce, mines recharge faster. Quick and chaotic. Every second counts in this high-pressure variant where mistakes are immediately punished."
+msgstr "Intenso fiume azione Raid che inizia in profondità — il fiume è stretto dal primo secondo, il carburante è scarso, le miniere ricaricano più velocemente. Veloce e caotico. Ogni secondo conta in questa variante ad alta pressione dove gli errori vengono immediatamente puniti."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Mines drop ahead of your jet and drift slowly down your lane — a rival who flies into one loses a life and you score"
+msgstr "Le mine scendono davanti al tuo jet e si allontanano lentamente lungo la corsia — un rivale che vola in uno perde una vita e si segna"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines in your rival's path. The further you fly, the narrower the river and the more enemies come."
+msgstr "River Raid riimmaginato per due — gara attraverso un canale tossico scorrevoli, distruggere i nemici per punti, rubare il carburante e gettare le miniere nel percorso del tuo rivale. Più si vola, più stretto il fiume e più nemici vengono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "River Raid without sabotage — no mines allowed. Pure competition for points, fuel, and survival. Without mine drops, every point comes from skill alone — shooting accuracy, fuel management, and knowing when to push deeper into enemy territory."
+msgstr "River Raid senza sabotaggio — nessuna miniera consentita. Pura competizione per punti, carburante e sopravvivenza. Senza le mie gocce, ogni punto viene da sola abilità — la precisione di tiro, la gestione del carburante, e sapere quando spingere più a fondo nel territorio nemico."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Same rules as Hex Raid"
+msgstr "Stesse regole di Hex Raid"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "The lowest time wins the round — gate bonuses included; a skier who doesn't finish loses to one who does"
+msgstr "Il tempo più basso vince il round — bonus cancello inclusi; uno sciatore che non finisce perde a uno che fa"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "— Full rules: mines and fuel competition"
+msgstr "— Regole complete: miniere e concorrenza dei combustibili"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "— Matches are short and brutal, so every point counts. Prioritize high-value targets."
+msgstr "— Le partite sono brevi e brutali, quindi ogni punto conta. Priorizzare obiettivi di alto valore."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "— Slow down for dense enemy clusters to maximize hits. Speed up in empty stretches to cover ground."
+msgstr "— Rallentare per cluster nemici densi per massimizzare i colpi. Accelerare in tratti vuoti per coprire il terreno."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "— Starts deep in: narrow river, scarce fuel, faster mine recharge"
+msgstr "— Comincia a fondo: fiume stretto, scarso carburante, ricarica più rapida delle miniere"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Shot power depends on depth of contact (front of your reach = harder shot, back = softer)"
+msgstr "L'alimentazione degli urti dipende dalla profondità di contatto (di fronte alla vostra portata = più duro colpo, posteriore = più morbido)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The avalanche creeps closer — if it catches you before the finish line, the round is lost"
+msgstr "La valanga si avvicina — se ti cattura prima del traguardo, il giro è perso"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Every punch winds up before it can land — the fist glows as the arm draws back, so step out of reach when you see it"
+msgstr "Ogni pugno si alza prima che possa atterrare — il pugno si gonfia mentre il braccio tira indietro, quindi uscire dalla portata quando lo vedi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "— Punch: the arm winds up for a moment, then strikes (alternates left/right arm automatically)"
+msgstr "— Punch: il braccio si alza per un momento, poi colpisce (alterna il braccio sinistro/right automaticamente)"

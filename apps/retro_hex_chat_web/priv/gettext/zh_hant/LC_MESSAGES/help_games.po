@@ -41,11 +41,6 @@ msgstr "10秒服務計時器——超時自動服務器"
 msgid "15 pieces to complete the igloo"
 msgstr "15塊完成膠布"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "3 lives per player — highest score when all sections clear or both out of lives wins"
-msgstr "每名選手3條命——當所有路段清除或兩者皆出後,得分最高"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "3 lives per player — lose a life when hit by an alien bomb"
@@ -77,12 +72,6 @@ msgstr "4行冰塊橫向浮動(改變方向)"
 #, elixir-autogen, elixir-format
 msgid "40% failure"
 msgstr "40%失敗"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "5 sections of intense River Raid action — river starts narrow, fuel is scarce, mines recharge faster. Quick and chaotic. Every second counts in this compressed, high-pressure variant where mistakes are immediately punished."
-msgstr ""
-"5段猛烈的河道突襲行動——河道開始狹窄,燃料匱乏,地雷補給更快. 快速和混亂。 在這種壓縮的高壓變體中,每一秒都算數,其中錯誤會被立即懲罰."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:68
 #, elixir-autogen, elixir-format
@@ -284,7 +273,7 @@ msgstr "球必須清除網(模擬高度弧)"
 msgid "Ball speed increases with each paddle hit, up to 2.4x initial speed"
 msgstr "球速隨每次槳擊球而增加,最高爲2.4x初速"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Based on Activision's Boxing (1980) for the Atari 2600."
 msgstr "根據Activision的\"拳擊\"(1980年)爲阿塔裏2600號."
@@ -309,7 +298,7 @@ msgstr "基於阿塔裏軍閥(1980年)——城堡防禦在正面對面的決鬥
 msgid "Based on Outlaw (1978) by David Crane for the Atari 2600."
 msgstr "根據David Crane爲Atari 2600作的《Outlaw》(1978年)。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Best of 3 days — highest total score wins"
 msgstr "最佳3天——最高總分獲勝"
@@ -327,7 +316,7 @@ msgstr "難度增加的三輪最佳"
 msgid "Best of 3 rounds — first to 2 round wins takes the match"
 msgstr "最佳3輪比賽——先以2輪勝負取勝."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Best of 5 rounds (first to 3 wins)"
 msgstr "最佳5輪(第一勝3負)"
@@ -341,7 +330,7 @@ msgstr "最佳5發子彈——與北極賽車相同"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Blitz"
 msgstr "閃光燈"
@@ -358,7 +347,7 @@ msgstr ""
 "Blitz Space Invaders——即時外星墜落,更容易的組合閾值,5波純混沌從一開始. "
 "降低的組合閾值意味着攻擊性遊戲得到獎勵——連鎖殺死將對手埋在外星人中."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:102
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Blizzard"
 msgstr "閃光燈"
@@ -368,7 +357,7 @@ msgstr "閃光燈"
 msgid "Blizzard Mode Rules"
 msgstr "閃光模式規則"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Blizzard events reduce visibility periodically"
 msgstr "布萊扎事件定期減少能見度"
@@ -424,12 +413,12 @@ msgstr "拳擊手不能通過對方——身體碰撞將移動器推回"
 msgid "Brake before fog"
 msgstr "霧前剎車"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Build fast to maximize your temperature bonus!"
 msgstr "快速建設,使溫度獎勵最大化!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Build your igloo by collecting 15 pieces from ice blocks"
 msgstr "從冰塊裏收集15塊塊 來建造你的冰盧"
@@ -474,7 +463,7 @@ msgstr "抓住機械師:在火球觸摸你的盾牌時保持空間,放出來瞄�
 msgid "Chain kills relentlessly"
 msgstr "連環無情的殺人"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "Clams"
 msgstr "槍聲"
@@ -486,7 +475,7 @@ msgstr ""
 "經典合作空間入侵者——兩門大炮在共享屏幕上對抗相同的異形波. 沒有外星空投機械師。 生存在一起或墜落在一起。 "
 "溝通與協調是一切——分割屏幕,覆蓋彼此的盲點."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Clean Run"
 msgstr "清理運行"
@@ -606,7 +595,7 @@ msgstr "高速轉角鏡頭"
 msgid "Count your overtakes"
 msgstr "數數你的超額"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Crabs"
 msgstr "蟹類"
@@ -623,11 +612,6 @@ msgstr ""
 msgid "Daylight sprint — no weather changes, no fuel drain, just speed. 90 seconds to score maximum overtakes. The purest form of Enduro — strip away everything except raw racing and see who can weave through traffic faster."
 msgstr ""
 "日光短跑——沒有天氣變化,沒有燃料排水,只有速度. 90秒得分最高超標. 最純潔的恩杜羅形式——除原始賽車外,將一切剝離,看誰能更快地通過交通編織."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "Destroy bridges (3 HP) to advance to the next section"
-msgstr "摧毀橋( 3 HP) 以推進到下一節"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:34
 #, elixir-autogen, elixir-format
@@ -649,7 +633,7 @@ msgstr "被摧毀的外星人只是被摧毀——對手沒有下降"
 msgid "Deuce and advantage rules still apply"
 msgstr "優劣和優勢規則仍然適用"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Difficulty Progression"
 msgstr "困難進度"
@@ -699,11 +683,6 @@ msgstr "在對手身後拖拖拖拉拉 以獲得速度獎勵"
 msgid "Draft between cars"
 msgstr "汽車之間的草稿"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "Drop mines to sabotage your opponent"
-msgstr "扔地雷破壞對手"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Each bullet bounces once off the ceiling or floor, then flies straight"
@@ -751,7 +730,7 @@ msgstr ""
 "無休止的生存下降——超過了不斷加速的放射性碎片雪崩. 沒有終點線 沒有子彈 最後一個滑雪選手站着獲勝。 "
 "對耐力和神經的考驗——在不斷增長的速度下,你還能躲多久?"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Enemies"
 msgstr "敵人"
@@ -766,7 +745,7 @@ msgstr "敵軍仍然有漸進的困難"
 msgid "Escalating speed"
 msgstr "加速速度"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Escape"
 msgstr "越獄"
@@ -841,12 +820,7 @@ msgstr "首勝6局——不打平局,不打平局2局."
 msgid "First to eliminate all opponent lives wins the match"
 msgstr "先消滅所有對手 才能贏得比賽"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "First to reach the finish line wins the round"
-msgstr "首先到達終點線 贏得回合"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "Fish"
 msgstr "魚"
@@ -916,7 +890,7 @@ msgstr "全速前進"
 msgid "Game over when aliens reach the ground or both players lose all lives"
 msgstr "當外星人到達地面或兩個玩家失去所有生命時遊戲結束"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Geese"
 msgstr "鵝"
@@ -951,20 +925,20 @@ msgstr "抓住每個加速器"
 msgid "Gravity handles forward momentum — steering slows you down"
 msgstr "重力處理前進動力——方向拖慢你的速度"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Hex Enduro"
 msgstr "十六進制"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Hex Enduro: Night Race"
 msgstr "Hex Enduro: 夜間賽車"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Hex Enduro: Sprint"
@@ -976,13 +950,13 @@ msgstr "Hex Enduro: 衝刺"
 msgid "Hex Frost"
 msgstr "螺旋凍"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:124
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Hex Frost: Blizzard"
 msgstr "海克斯霜:布萊扎德"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:128
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:134
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Hex Frost: Peaceful"
@@ -1041,20 +1015,20 @@ msgstr ""
 "無障礙的Hex Outlaw變體和完全水平運動. 每個槍手都可以在30%的競技場內推進——關閉距離會縮短對手的反應時間,但也會讓你暴露出來. "
 "反應和定位的最純度測試。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Hex Raid"
 msgstr "螺旋突襲"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Hex Raid: Blitz"
 msgstr "海克斯突擊:閃電"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Hex Raid: Pacifist"
@@ -1066,13 +1040,13 @@ msgstr "海克斯突擊隊:和平派"
 msgid "Hex Skiing"
 msgstr "海克斯滑雪"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Hex Skiing: Clean Run"
 msgstr "海克斯滑雪:乾淨的跑步"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Hex Skiing: Escape"
@@ -1143,12 +1117,12 @@ msgstr "如果外星人到達你身邊的地面 你就馬上輸了"
 msgid "If both are engulfed simultaneously, the skier who descended further wins"
 msgstr "如果兩者同時被吞沒,則滑雪者會進一步獲勝"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "If both are engulfed, the skier who descended further wins"
 msgstr "如果兩者都被吞沒,滑雪者再降下去就贏了"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:116
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "If it reaches 0°, the round ends — most igloo pieces wins"
 msgstr "如果達到0°,則圓形結束——大多數膠片獲勝"
@@ -1163,7 +1137,7 @@ msgstr "如果2分鐘的計時器用完的話 得分多的格鬥手就能贏得�
 msgid "If the ball passes your paddle, your opponent scores a point"
 msgstr "如果球通過你的槳,你的對手得分"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Igloo & Winning"
 msgstr "Igloo 勝利( W)"
@@ -1180,10 +1154,10 @@ msgstr "無限血統——航線永無止境."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:82
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:63
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:119
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:125
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:120
@@ -1192,10 +1166,10 @@ msgstr "無限血統——航線永無止境."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:94
@@ -1210,14 +1184,14 @@ msgstr "無限血統——航線永無止境."
 msgid "Inspiration"
 msgstr "靈感"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:126
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Inspired by Activision Frostbite (1983) by Steve Cartwright."
 msgstr "受Activision Frostbite(1983)的啓發,由史蒂夫·卡特賴特(Steve Cartwright)主演."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:71
 #, elixir-autogen, elixir-format
@@ -1229,12 +1203,12 @@ msgstr "受動作滑雪(1980年)啓發."
 msgid "Inspired by Activision Tennis (1981)."
 msgstr "受Activision Tennis(1981)啓發."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Inspired by Activision's Enduro (1983)."
 msgstr "受Activision的Enduro啓發(1983年)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:66
 #, elixir-autogen, elixir-format
@@ -1281,13 +1255,13 @@ msgstr "我的早,我經常"
 msgid "Miss a block and fall in the water — lose a life!"
 msgstr "錯過一個街區,掉進水裏——失去一條生命!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:64
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:98
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:72
 #, elixir-autogen, elixir-format
@@ -1304,7 +1278,7 @@ msgstr "和教練一起走"
 msgid "Narrow river = slower flight"
 msgstr "窄河=飛行較慢"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Night Race"
 msgstr "夜賽"
@@ -1322,7 +1296,7 @@ msgstr "無主之地"
 msgid "No avalanche chasing you — pure skill-based racing"
 msgstr "沒有雪崩追逐你 純粹基於技能的賽車"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "No blocking — defense is all about movement and spacing"
 msgstr "沒有阻隔——防守只涉及運動和間隔."
@@ -1374,7 +1348,7 @@ msgstr "無天氣變化——全程道路條件晴朗"
 msgid "Obstacle density increases the further you descend"
 msgstr "障礙密度會提高你的下降幅度"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Once complete, return to shore and enter your igloo to win the round"
 msgstr "完成後,回到岸上,進入你的伊格盧來贏得比賽"
@@ -1422,7 +1396,7 @@ msgstr "超過AI汽車1分,超過對手5分"
 msgid "Pace yourself"
 msgstr "貼自己"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Pacifist"
 msgstr "和平主義者"
@@ -1432,7 +1406,7 @@ msgstr "和平主義者"
 msgid "Pass through slalom gates for a time bonus (-2s per gate)"
 msgstr "穿過石板門領取時間獎金(每門2次)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:108
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "Peaceful"
 msgstr "和平"
@@ -1452,7 +1426,7 @@ msgstr "玩得安全點"
 msgid "Players move freely in their half of the court (cannot cross the net)"
 msgstr "玩家在半場自由移動(不能跨網)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Polar Bear"
 msgstr "極地熊"
@@ -1548,35 +1522,22 @@ msgstr "里科切特語Name"
 msgid "Risk vs reward: aggressive tackles can backfire!"
 msgstr "風險對回報:衝鋒陷陣能反擊!."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines on your rival. 10 sections of increasing difficulty."
-msgstr ""
-"River Raid重新設想了兩個——通過一個滾動的有毒運河進行比賽,摧毀敵人以獲得點數,偷取燃料,並向你的對手投下地雷. 10節越來越困難。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "River Raid without sabotage — no mines allowed. Pure competition for points, fuel, and survival across 10 sections. Without mine drops, every point comes from skill alone — shooting accuracy, fuel management, and knowing when to push deeper into enemy territory."
-msgstr ""
-"不加破壞的河襲——不允許佈雷. 純粹競爭點數,燃料,和生存 跨越10個區。 "
-"沒有地雷的下降,每個點都只來自技能——射擊精度,燃料管理,以及知道何時將更深地推向敵國領土."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "River starts at higher difficulty (narrower from the start)"
 msgstr "河流從更高的難度開始( 從起點開始縮小)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Round 1"
 msgstr "第1輪"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Round 2"
 msgstr "第2輪"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Round 3"
 msgstr "第3輪"
@@ -1615,15 +1576,10 @@ msgstr "第3輪"
 msgid "Rules"
 msgstr "規則"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Run out of fuel or crash into banks/enemies and you lose a life"
 msgstr "燃料用完或撞到銀行... .../enemies,你就會失去一條命"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:52
-#, elixir-autogen, elixir-format
-msgid "Running out of fuel ends the day early"
-msgstr "燃料耗盡 早早結束"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:29
 #, elixir-autogen, elixir-format
@@ -1650,11 +1606,6 @@ msgstr "與經典相同的擊打力學——自動擊打,基於接觸位置的�
 #, elixir-autogen, elixir-format
 msgid "Same rules as Hex Raid, but mines are disabled"
 msgstr "和Hex突擊隊一樣,但地雷被禁用"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "Same rules as Hex Raid, but only 5 sections"
-msgstr "和Hex突襲一樣 但只有5節"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:45
@@ -1687,12 +1638,12 @@ msgstr "賽制:愛~15~30~40~比賽(成績40~40,優勢,2勝)."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:89
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:77
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:121
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:127
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:122
@@ -1708,10 +1659,10 @@ msgstr "賽制:愛~15~30~40~比賽(成績40~40,優勢,2勝)."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:101
@@ -1750,7 +1701,7 @@ msgstr "服務安置是國王"
 msgid "Server alternates after every point"
 msgstr "每點後服務器替換"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "Shared timer starts at 45° and drops ~1°/second"
 msgstr "共享定時器起始於45°,下降~1°/second"
@@ -1791,11 +1742,6 @@ msgstr "在邊緣時開槍"
 msgid "Shot angle depends on horizontal contact position (left/right = cross-court)"
 msgstr "射擊角度取決於水平接觸位置(左/right = 跨法庭)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "Shot power depends on depth of contact (front = drop shot, back = drive)"
-msgstr "射擊功率取決於接觸深度(正面=投射,背=驅動)."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:127
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:87
@@ -1823,7 +1769,7 @@ msgstr "Slalom門仍然發放時間獎金(每門2次)"
 msgid "Smooth lines over speed"
 msgstr "超過速度的平滑線"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Snow reduces max speed, fog limits visibility, night shows headlights only"
 msgstr "雪會減少最大速度, 霧會限制能見度, 晚上只顯示前燈"
@@ -1908,7 +1854,7 @@ msgid "Split-screen Space Invaders — aliens you destroy fall on your opponent'
 msgstr ""
 "分裂-屏幕空間入侵者——你們摧毀的外星人作爲援軍落在對手一方. Combos發送額外的滴。 不明飛行物殺死了武裝外星人 10波不斷升級的混亂."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Sprint"
 msgstr "衝刺"
@@ -2009,12 +1955,12 @@ msgstr "大力打擊"
 msgid "Teams switch sides after each period"
 msgstr "每期後各小組互換側面"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:113
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:119
 #, elixir-autogen, elixir-format
 msgid "Temperature"
 msgstr "溫度"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Temperature bonus: remaining temperature × 10 points"
 msgstr "溫度獎金:剩餘溫度××10分"
@@ -2028,11 +1974,6 @@ msgstr "溫度開始於60°,下降至0.5°/second"
 #, elixir-autogen, elixir-format
 msgid "The avalanche accelerates continuously — it will catch you eventually"
 msgstr "雪崩會不斷加速 最終會抓住你"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:29
-#, elixir-autogen, elixir-format
-msgid "The avalanche creeps closer — if it catches you, the round is lost"
-msgstr "雪崩越走越近 如果它抓住你 輪子就不見了"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2192,7 +2133,7 @@ msgstr "注意服務旋轉"
 msgid "Watch the temperature"
 msgstr "注意溫度"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Weather cycles: Day → Snow → Fog → Night → Dawn (~3.5 min per day)"
 msgstr "天氣週期:日 雪 霧 夜 黎明(~3.5分鐘/日)"
@@ -2253,7 +2194,7 @@ msgstr "每分鐘2分鐘(共6分鐘)"
 msgid "of 3 minutes (no side switching)"
 msgstr "3分鐘(無側切換)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "— 1 epic round, 20-piece igloo, all enemies from the start"
 msgstr "1個史詩般的圓形,20塊的象牙,所有敵人從頭開始"
@@ -2268,22 +2209,17 @@ msgstr "- 1個3分鐘、更快的插板、80%處理成功"
 msgid "— 25% speed increase on all shots"
 msgstr "- 所有鏡頭的速度提高25%"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "— 3-minute race in permanent darkness with fog bursts"
 msgstr "- 3分鐘的比賽 永遠的黑暗與霧暴"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "— 5 sections, narrow river, faster mine recharge"
-msgstr "- 5個區段,河道狹窄,水雷補給速度更快"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "— 60% success rate (same as Classic)"
 msgstr "- 60%的成功率(與經典相同)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "— 90-second daylight sprint, no weather, no fuel drain"
 msgstr "——90秒日間衝刺,無天氣,無燃料排水."
@@ -2346,7 +2282,7 @@ msgstr "0.5°/second時,您有約2分鐘時間. 別慌,也別磨蹭"
 msgid "— At combo 4+, armored drops appear. These take 2 hits and can clog your opponent's screen."
 msgstr "——在4+組合時出現裝甲滴. 這需要2次命中,可以堵住對手的屏幕."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "— Bonus collectible between rows (200 points)"
 msgstr "——各行之間可收取獎金(200分)"
@@ -2419,7 +2355,7 @@ msgstr "減速"
 msgid "— Decelerate in narrow sections. One wrong move at high speed means instant death on the banks."
 msgstr "——狹節減速. 高速走錯一步 意味着銀行立即死亡"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "— Dense ice patches, fast avalanche, narrow gates"
 msgstr "- 冰塊、雪崩、狹窄的大門"
@@ -2507,7 +2443,7 @@ msgstr "- 火導彈"
 msgid "— First to 3 games wins"
 msgstr "– 第一至三局獲勝."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "— Fly between rows, danger during jumps (from round 3)"
 msgstr "——行間飛行,跳躍時的危險(從第3輪)."
@@ -2527,7 +2463,7 @@ msgstr "——霧暴將能見度降至近零. 霧落時減速,保持中心"
 msgid "— Free puck gradually slows down on the ice"
 msgstr "- 自由撲克在冰面上逐漸減速"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "— Full Classic Duel: 3 days with weather cycle"
 msgstr "完全經典決鬥:有3天天氣週期"
@@ -2536,11 +2472,6 @@ msgstr "完全經典決鬥:有3天天氣週期"
 #, elixir-autogen, elixir-format
 msgid "— Full rules: alien drops, combos, 10 waves"
 msgstr "——完全規則:外星滴水,梳子,10波"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:53
-#, elixir-autogen, elixir-format
-msgid "— Full rules: mines, fuel competition, 10 sections"
-msgstr "——全面規則:礦山,燃料競爭,10節."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:64
 #, elixir-autogen, elixir-format
@@ -2572,7 +2503,7 @@ msgstr "——在布萊茨語中,殺人量比完美的準確性更重要. 繼續
 msgid "— In a short match, holding serve is critical. Aim for the corners on your service games."
 msgstr "——在短暫的對決中,守備服務至關重要. 瞄準你們的遊戲"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "— Infinite descent, ever-accelerating avalanche, last skier standing wins"
 msgstr "——無限降級,不斷加速雪崩,最後一名滑雪運動員站立勝利."
@@ -2624,7 +2555,7 @@ msgstr "以2×你的移動速度在你的正面方向發射Puck"
 msgid "— Match your vertical position to stay in the gap the stagecoach leaves behind as it moves."
 msgstr "與你的垂直位置相匹配 以保持在空隙中 舞臺車留下的移動。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "— More rocks, faster avalanche, medium gates"
 msgstr "- 更多的石頭,更快的雪崩,中門"
@@ -2714,12 +2645,12 @@ msgstr "——垂直移動並設定目標方向(最後按下確定角度)"
 msgid "— Neutral. Step on it to claim it (+1 igloo piece)"
 msgstr "- 中立。 踩上它來要求它(+1 igloo piece)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "— No avalanche, no items, pure time trial racing"
 msgstr "——沒有雪崩,沒有物品,純粹的時間試驗賽車."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:110
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:116
 #, elixir-autogen, elixir-format
 msgid "— No block stealing, pure construction race"
 msgstr "- 不偷東西,純粹的建築競賽"
@@ -2729,7 +2660,7 @@ msgstr "- 不偷東西,純粹的建築競賽"
 msgid "— No fuel means no reason to brake unless you're about to crash. Keep the pedal down."
 msgstr "沒有燃料就沒有理由剎車 除非你要墜毀 把踏板放下來"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "— No mines, pure skill competition"
 msgstr "——無礦,純技能競爭."
@@ -2754,12 +2685,12 @@ msgstr "——並非所有冰排都是平等的. 先注重具有可預見規律�
 msgid "— One bullet at a time. A wasted shot on the stagecoach gives your opponent a free window to reposition."
 msgstr "-一次一個子彈 在馬戲團上浪費的鏡頭給了你的對手一個可以重新定位的自由窗口."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "— Open/close on blocks. Open = dangerous, closed = safe (from round 4)"
 msgstr "- 在區塊上打開/close。 打開=危險,關閉=安全(從第4輪開始)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "— Patrols the shore. Dodge to reach your igloo!"
 msgstr "-巡邏岸邊 道奇到你的伊格盧!"
@@ -2774,12 +2705,7 @@ msgstr "完美地完成列之間的跳躍時間,以儘量減少區塊收藏之�
 msgid "— Puck reflects off top/bottom walls"
 msgstr "- Puck反射出頂部的/bottom牆壁"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "— Punch (alternates left/right arm automatically)"
-msgstr "- 拳擊(左轉/right臂自動)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "— Ride the ice blocks (from round 2)"
 msgstr "——乘坐冰塊(第2輪)."
@@ -2828,12 +2754,7 @@ msgstr "- 夏普轉彎慢下來。 計劃前進2 -3 障礙物,最平滑的線路
 msgid "— Shoot in your facing direction"
 msgstr "- 朝你面前的方向開槍"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:52
-#, elixir-autogen, elixir-format
-msgid "— Slow down for dense enemy clusters to maximize hits. Speed up in empty stretches to save fuel."
-msgstr "——對密集的敵方集羣減速以達到最大命中. 以空拉伸速度加速節省燃料."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "— Sparse obstacles, slow avalanche, wide gates"
 msgstr "- 板塊障礙物、緩慢雪崩、寬闊的大門"
@@ -2988,11 +2909,6 @@ msgstr "——通過一分制遊戲,A或不可返回的服務即爲即時遊戲�
 #, elixir-autogen, elixir-format
 msgid "— With only 3 games needed, losing even one game puts you at a serious disadvantage."
 msgstr "——由於只需要3場比賽,連一場比賽都輸掉都讓你處於嚴重劣勢."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:64
-#, elixir-autogen, elixir-format
-msgid "— With only 5 sections, maximizing points per section is key. Prioritize high-value targets."
-msgstr "——只有5節,每個節最大分數是關鍵. 優先確定高值目標."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:41
 #, elixir-autogen, elixir-format
@@ -3530,9 +3446,9 @@ msgstr "——使用導彈迫使對手向小行星集羣進發,小行星集羣�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:101
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:103
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:98
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:132
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:100
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:138
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:131
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:92
@@ -3540,10 +3456,10 @@ msgstr "——使用導彈迫使對手向小行星集羣進發,小行星集羣�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:95
@@ -3558,11 +3474,11 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:100
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:97
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:86
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:131
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:137
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:130
@@ -3576,10 +3492,10 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:75
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:94
@@ -3630,7 +3546,7 @@ msgstr "在復古遊戲單人模式中，你控制左側城堡護盾，AI 控制
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_blocks.html.heex:92
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:73
@@ -4885,3 +4801,93 @@ msgstr "利用箭頭移動."
 #, elixir-autogen, elixir-format
 msgid "When you play with somebody, the game does not pause."
 msgstr "當你和別人玩的時候 遊戲不會暫停"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "3 lives a round — lose them all and you sit out the rest of it. If both players are out, the bigger igloo takes the round"
+msgstr "3 lives a round — lose them all and you sit out the rest of it. If both players are out, the bigger igloo takes the round"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "3 lives per player — the match ends as soon as either jet is out of lives, and the higher score wins"
+msgstr "每名選手3條命——每架噴氣機一無所獲,比賽即告結束,得分最高者獲勝."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "An empty tank slows you to a crawl until you reach a fuel station"
+msgstr "An empty tank slows you to a crawl until you reach a fuel station"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Bridges take 3 hits and pay a big bonus — flying into one is a crash"
+msgstr "橋樑要3次命中並支付鉅額獎金——飛進1次是空難."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Intense River Raid action that starts deep in — the river is narrow from the first second, fuel is scarce, mines recharge faster. Quick and chaotic. Every second counts in this high-pressure variant where mistakes are immediately punished."
+msgstr "猛烈的河突襲行動從深處開始——河流從第一秒開始狹窄,燃料稀缺,地雷補給速度更快. 快速和混亂。 在這種高壓變體中,每一秒都計算出錯誤立即受到懲罰."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Mines drop ahead of your jet and drift slowly down your lane — a rival who flies into one loses a life and you score"
+msgstr "地雷落在你的飛機前,慢慢地從你的航道上漂下去——一個飛進一個人的對手會失去一條生命,你就會得分"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines in your rival's path. The further you fly, the narrower the river and the more enemies come."
+msgstr "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines in your rival's path. The further you fly, the narrower the river and the more enemies come."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "River Raid without sabotage — no mines allowed. Pure competition for points, fuel, and survival. Without mine drops, every point comes from skill alone — shooting accuracy, fuel management, and knowing when to push deeper into enemy territory."
+msgstr "不加破壞的河襲——不允許佈雷. 純競爭點數,燃料,和生存。 沒有地雷的下降,每個點都只來自技能——射擊精度,燃料管理,以及知道何時將更深地推向敵國領土."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Same rules as Hex Raid"
+msgstr "和Hex突擊一樣"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "The lowest time wins the round — gate bonuses included; a skier who doesn't finish loses to one who does"
+msgstr "最低時間贏得回合——包括門獎金;滑雪運動員不完成則輸給完成者"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "— Full rules: mines and fuel competition"
+msgstr "——全面規則:礦山與燃料競爭."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "— Matches are short and brutal, so every point counts. Prioritize high-value targets."
+msgstr "——火柴短而殘忍,所以每一點都算數. 優先確定高值目標."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "— Slow down for dense enemy clusters to maximize hits. Speed up in empty stretches to cover ground."
+msgstr "——對密集的敵方集羣減速以達到最大命中. 加快架空拉伸以覆蓋地面."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "— Starts deep in: narrow river, scarce fuel, faster mine recharge"
+msgstr "——從深處開始:河道狹窄,燃料稀缺,礦山補給速度更快."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Shot power depends on depth of contact (front of your reach = harder shot, back = softer)"
+msgstr "射擊功率取決於接觸深度(接觸前=更硬射擊,後=更軟)."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The avalanche creeps closer — if it catches you before the finish line, the round is lost"
+msgstr "雪崩越走越近——如果在終點線前抓住你,那輪就輸了"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Every punch winds up before it can land — the fist glows as the arm draws back, so step out of reach when you see it"
+msgstr "每次拳頭在降落前就響起 拳頭會隨着手臂的後退而發光 所以當你看到它時就別靠近它"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "— Punch: the arm winds up for a moment, then strikes (alternates left/right arm automatically)"
+msgstr "— Punch: the arm winds up for a moment, then strikes (alternates left/right arm automatically)"

@@ -8,6 +8,7 @@
  * @module games/hex_freecell
  */
 
+// ex_dna:disable-for-lines:7 this game's own modules, handed to the card table
 import { defineCardTable } from "../core/card_table/table.js";
 import * as effects from "./effects.js";
 import { interpret } from "./gestures.js";

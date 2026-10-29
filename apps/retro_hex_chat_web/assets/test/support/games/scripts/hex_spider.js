@@ -1,11 +1,4 @@
-/**
- * A tap at a point of the table, at `at` ms: a press and its release.
- * @returns {Array<{at: number, pointer: string, x: number, y: number}>}
- */
-const tapAt = (at, x, y) => [
-  { at, pointer: "down", x, y },
-  { at: at + 40, pointer: "up", x, y },
-];
+import { tapAt } from "./keys.js";
 
 // The stock's next deal, at the bottom right of the table lying down, and
 // each column's foot as dealt (six cards in the four on the left, five in

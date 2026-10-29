@@ -16,6 +16,7 @@ import {
   updateWeather,
   updateZOffsets,
   tickTimers,
+  stepTick,
   checkGameOver,
   determineWinner,
   clearEvents,
@@ -23,6 +24,7 @@ import {
   unpackState,
   SPEED_MAX,
   SPEED_TURBO_MAX,
+  FUEL_BURN_PER_UNIT,
   FUEL_MAX,
   FUEL_STATION_REFILL,
   TURBO_DURATION,
@@ -36,6 +38,12 @@ import {
   MAX_DAYS,
 } from "../../../../js/lib/games/hex_enduro/physics.js";
 import { PHASE, GAME_MODE, WEATHER, EVENT } from "../../../../js/lib/games/hex_enduro/protocol.js";
+
+/** A fresh race with the drivers and the road set as given. */
+function race({ p1 = {}, p2 = {}, mode = GAME_MODE.CLASSIC_DUEL, ...road } = {}) {
+  const state = createInitialState(mode, 1);
+  return { ...state, ...road, p1: { ...state.p1, ...p1 }, p2: { ...state.p2, ...p2 } };
+}
 
 describe("Hex Enduro Physics", () => {
   describe("createInitialState", () => {
@@ -315,64 +323,46 @@ describe("Hex Enduro Physics", () => {
   });
 
   describe("checkCollisions", () => {
+    const carAhead = (lane) => [{ lane, zPos: 10, speed: 30, type: 0 }];
+
     it("penalizes player colliding with AI car", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.speed = 600;
-      state.p1.lane = 1;
-      state.aiCars = [{ lane: 1, zPos: 10, speed: 30, type: 0 }];
-      const s = checkCollisions(state);
+      const s = checkCollisions(race({ p1: { speed: 600, lane: 1 }, aiCars: carAhead(1) }));
       expect(s.p1.speed).toBeLessThan(600);
       expect(s.p1.collisionTimer).toBe(COLLISION_TIMER_FRAMES);
       expect(s.events & EVENT.COLLISION).toBeTruthy();
     });
 
     it("no collision on different lanes", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.speed = 600;
-      state.p1.lane = 0;
-      // Move P2 to a different lane and far away to avoid P2P collision
-      state.p2.lane = 2;
-      state.p2.zOffset = 5000;
-      state.p1.zOffset = 0;
-      state.aiCars = [{ lane: 2, zPos: 10, speed: 30, type: 0 }];
-      const s = checkCollisions(state);
-      expect(s.p1.speed).toBe(600);
+      // P2 on another lane and far away, so the drivers do not touch either
+      const state = race({
+        p1: { speed: 600, lane: 0, zOffset: 0 },
+        p2: { lane: 2, zOffset: 5000 },
+        aiCars: carAhead(2),
+      });
+      expect(checkCollisions(state).p1.speed).toBe(600);
     });
 
     it("ignores collision during cooldown", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.speed = 600;
-      state.p1.lane = 1;
-      state.p1.collisionTimer = 30;
-      state.aiCars = [{ lane: 1, zPos: 10, speed: 30, type: 0 }];
-      const s = checkCollisions(state);
-      expect(s.p1.speed).toBe(600);
+      const state = race({ p1: { speed: 600, lane: 1, collisionTimer: 30 }, aiCars: carAhead(1) });
+      expect(checkCollisions(state).p1.speed).toBe(600);
     });
 
+    /** Both drivers on the middle lane, 10 apart. */
+    const bumping = (p1Speed, p2Speed) =>
+      race({
+        p1: { speed: p1Speed, lane: 1, zOffset: 100 },
+        p2: { speed: p2Speed, lane: 1, zOffset: 110 },
+        aiCars: [],
+      });
+
     it("handles player-vs-player collision", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.speed = 600;
-      state.p2.speed = 400;
-      state.p1.lane = 1;
-      state.p2.lane = 1;
-      state.p1.zOffset = 100;
-      state.p2.zOffset = 110;
-      state.aiCars = [];
-      const s = checkCollisions(state);
+      const s = checkCollisions(bumping(600, 400));
       expect(s.p1.collisionTimer).toBe(COLLISION_TIMER_FRAMES);
       expect(s.p2.collisionTimer).toBe(COLLISION_TIMER_FRAMES);
     });
 
     it("faster player loses more speed in P2P collision", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.speed = 700;
-      state.p2.speed = 300;
-      state.p1.lane = 1;
-      state.p2.lane = 1;
-      state.p1.zOffset = 100;
-      state.p2.zOffset = 110;
-      state.aiCars = [];
-      const s = checkCollisions(state);
+      const s = checkCollisions(bumping(700, 300));
       const p1Loss = 700 - s.p1.speed;
       const p2Loss = 300 - s.p2.speed;
       expect(p1Loss).toBeGreaterThan(p2Loss);
@@ -422,22 +412,45 @@ describe("Hex Enduro Physics", () => {
   });
 
   describe("updateFuel", () => {
-    it("drains fuel each frame", () => {
+    function driveFrames(state, frames) {
+      let s = state;
+      for (let i = 0; i < frames; i++) s = updateFuel(s, "p1");
+      return s;
+    }
+
+    it("drains fuel as the car drives", () => {
       const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
       state.p1.speed = 400;
-      const s = updateFuel(state, "p1");
+      const s = driveFrames(state, FUEL_BURN_PER_UNIT);
       expect(s.p1.fuel).toBeLessThan(FUEL_MAX);
+    });
+
+    it("burns a quarter unit a frame at top speed: a full tank lasts 4000 frames", () => {
+      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
+      state.p1.speed = SPEED_MAX;
+      expect(driveFrames(state, 400).p1.fuel).toBe(FUEL_MAX - 100);
+      expect(driveFrames(state, 3999).p1.fuel).toBe(1);
+      expect(driveFrames(state, 4000).p1.fuel).toBe(0);
+    });
+
+    it("keeps the part of a unit still burning between frames", () => {
+      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
+      state.p1.speed = SPEED_MAX;
+      const s = driveFrames(state, 3);
+      expect(s.p1.fuel).toBe(FUEL_MAX);
+      expect(s.p1.fuelBurn).toBe(12);
+      expect(updateFuel(s, "p1").p1).toMatchObject({ fuel: FUEL_MAX - 1, fuelBurn: 0 });
     });
 
     it("drains more fuel during turbo", () => {
       const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
       state.p1.speed = 400;
       state.p1.boost = 100;
-      const turboState = updateFuel(state, "p1");
+      const turboState = driveFrames(state, 80);
 
       const normalState = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
       normalState.p1.speed = 400;
-      const normalAfter = updateFuel(normalState, "p1");
+      const normalAfter = driveFrames(normalState, 80);
 
       expect(turboState.p1.fuel).toBeLessThan(normalAfter.p1.fuel);
     });
@@ -446,7 +459,7 @@ describe("Hex Enduro Physics", () => {
       const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
       state.p1.fuel = 1;
       state.p1.speed = 400;
-      const s = updateFuel(state, "p1");
+      const s = driveFrames(state, FUEL_BURN_PER_UNIT * 2);
       expect(s.p1.fuel).toBe(0);
     });
 
@@ -468,40 +481,27 @@ describe("Hex Enduro Physics", () => {
       expect(s.fuelStations[0].zPos).toBeLessThan(500);
     });
 
+    /** A station about to be reached on the middle lane, both drivers at 400. */
+    const atStation = (p1, p2 = {}) =>
+      race({
+        p1: { lane: 1, speed: 400, ...p1 },
+        p2: { speed: 400, ...p2 },
+        fuelStations: [{ lane: 1, zPos: 10 }],
+      });
+
     it("refuels player who reaches station in same lane", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.fuel = 500;
-      state.p1.lane = 1;
-      state.p1.speed = 400;
-      state.p2.speed = 400;
-      state.fuelStations = [{ lane: 1, zPos: 10 }];
-      const s = updateFuelStations(state);
+      const s = updateFuelStations(atStation({ fuel: 500 }));
       expect(s.p1.fuel).toBe(500 + FUEL_STATION_REFILL);
       expect(s.p1.score).toBe(SCORE_FUEL_PICKUP);
       expect(s.fuelStations).toHaveLength(0); // consumed
     });
 
     it("caps fuel at max", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.fuel = FUEL_MAX - 10;
-      state.p1.lane = 1;
-      state.p1.speed = 400;
-      state.p2.speed = 400;
-      state.fuelStations = [{ lane: 1, zPos: 10 }];
-      const s = updateFuelStations(state);
-      expect(s.p1.fuel).toBe(FUEL_MAX);
+      expect(updateFuelStations(atStation({ fuel: FUEL_MAX - 10 })).p1.fuel).toBe(FUEL_MAX);
     });
 
     it("first player captures, second doesn't", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.fuel = 500;
-      state.p2.fuel = 500;
-      state.p1.lane = 1;
-      state.p2.lane = 1;
-      state.p1.speed = 400;
-      state.p2.speed = 400;
-      state.fuelStations = [{ lane: 1, zPos: 10 }];
-      const s = updateFuelStations(state);
+      const s = updateFuelStations(atStation({ fuel: 500 }, { fuel: 500, lane: 1 }));
       // P1 captures first
       expect(s.p1.fuel).toBe(500 + FUEL_STATION_REFILL);
       expect(s.p2.fuel).toBe(500); // doesn't get it
@@ -509,25 +509,18 @@ describe("Hex Enduro Physics", () => {
   });
 
   describe("updateSlipstream", () => {
+    /** P1 100 behind P2, each on the lane given. */
+    const trailing = (p1Lane, p2Lane) =>
+      race({ p1: { lane: p1Lane, zOffset: 50 }, p2: { lane: p2Lane, zOffset: 150 } });
+
     it("builds slipstream when behind opponent in same lane", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.lane = 1;
-      state.p2.lane = 1;
-      state.p1.zOffset = 50;
-      state.p2.zOffset = 150;
-      const s = updateSlipstream(state);
+      const s = updateSlipstream(trailing(1, 1));
       expect(s.p1.slipstream).toBeGreaterThan(0);
       expect(s.p2.slipstream).toBe(0);
     });
 
     it("no slipstream on different lanes", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.lane = 0;
-      state.p2.lane = 2;
-      state.p1.zOffset = 50;
-      state.p2.zOffset = 150;
-      const s = updateSlipstream(state);
-      expect(s.p1.slipstream).toBe(0);
+      expect(updateSlipstream(trailing(0, 2)).p1.slipstream).toBe(0);
     });
 
     it("decays when not drafting", () => {
@@ -540,13 +533,7 @@ describe("Hex Enduro Physics", () => {
     });
 
     it("sets event flag", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.lane = 1;
-      state.p2.lane = 1;
-      state.p1.zOffset = 50;
-      state.p2.zOffset = 150;
-      const s = updateSlipstream(state);
-      expect(s.events & EVENT.SLIPSTREAM).toBeTruthy();
+      expect(updateSlipstream(trailing(1, 1)).events & EVENT.SLIPSTREAM).toBeTruthy();
     });
   });
 
@@ -686,19 +673,11 @@ describe("Hex Enduro Physics", () => {
       expect(s.phase).toBe(PHASE.RACING);
     });
 
-    it("finishes Night Race when timer expires", () => {
-      const state = createInitialState(GAME_MODE.NIGHT_RACE, 1);
-      state.phase = PHASE.RACING;
-      state.gameTimer = 0;
-      const s = checkGameOver(state);
-      expect(s.phase).toBe(PHASE.FINISHED);
-    });
-
-    it("finishes Sprint when timer expires", () => {
-      const state = createInitialState(GAME_MODE.SPRINT, 1);
-      state.phase = PHASE.RACING;
-      state.gameTimer = 0;
-      const s = checkGameOver(state);
+    it.each([
+      ["Night Race", GAME_MODE.NIGHT_RACE],
+      ["Sprint", GAME_MODE.SPRINT],
+    ])("finishes %s when timer expires", (_name, mode) => {
+      const s = checkGameOver(race({ mode, phase: PHASE.RACING, gameTimer: 0 }));
       expect(s.phase).toBe(PHASE.FINISHED);
     });
 
@@ -712,36 +691,18 @@ describe("Hex Enduro Physics", () => {
   });
 
   describe("determineWinner", () => {
-    it("P1 wins with higher score", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.score = 100;
-      state.p2.score = 80;
-      expect(determineWinner(state)).toBe(1);
-    });
-
-    it("P2 wins with higher score", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.score = 50;
-      state.p2.score = 75;
-      expect(determineWinner(state)).toBe(2);
-    });
-
-    it("uses overtakes as tiebreaker", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.score = 100;
-      state.p2.score = 100;
-      state.p1.overtakes = 200;
-      state.p2.overtakes = 180;
-      expect(determineWinner(state)).toBe(1);
-    });
-
-    it("returns 0 for draw", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.score = 100;
-      state.p2.score = 100;
-      state.p1.overtakes = 200;
-      state.p2.overtakes = 200;
-      expect(determineWinner(state)).toBe(0);
+    it.each([
+      ["P1 wins with higher score", { score: 100 }, { score: 80 }, 1],
+      ["P2 wins with higher score", { score: 50 }, { score: 75 }, 2],
+      [
+        "uses overtakes as tiebreaker",
+        { score: 100, overtakes: 200 },
+        { score: 100, overtakes: 180 },
+        1,
+      ],
+      ["returns 0 for draw", { score: 100, overtakes: 200 }, { score: 100, overtakes: 200 }, 0],
+    ])("%s", (_name, p1, p2, winner) => {
+      expect(determineWinner(race({ p1, p2 }))).toBe(winner);
     });
   });
 
@@ -764,39 +725,30 @@ describe("Hex Enduro Physics", () => {
   });
 
   describe("updateSlipstream — collision zone exclusion", () => {
+    /** Both drivers on the middle lane, P1 `gap` behind P2. */
+    const drafting = (gap) =>
+      updateSlipstream(
+        race({ p1: { lane: 1, zOffset: 100 }, p2: { lane: 1, zOffset: 100 + gap } }),
+      );
+
     it("no slipstream when within collision zone", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.lane = 1;
-      state.p2.lane = 1;
-      state.p1.zOffset = 100;
-      state.p2.zOffset = 120; // 20 apart, within collision zone (40)
-      const s = updateSlipstream(state);
-      expect(s.p1.slipstream).toBe(0);
+      // 20 apart, within collision zone (40)
+      expect(drafting(20).p1.slipstream).toBe(0);
     });
 
     it("slipstream activates outside collision zone", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.lane = 1;
-      state.p2.lane = 1;
-      state.p1.zOffset = 100;
-      state.p2.zOffset = 200; // 100 apart, outside collision zone
-      const s = updateSlipstream(state);
-      expect(s.p1.slipstream).toBeGreaterThan(0);
+      // 100 apart, outside collision zone
+      expect(drafting(100).p1.slipstream).toBeGreaterThan(0);
     });
   });
 
   describe("updateFuelStations — fair capture", () => {
     it("player ahead captures fuel station when both in same lane", () => {
-      const state = createInitialState(GAME_MODE.CLASSIC_DUEL, 1);
-      state.p1.fuel = 500;
-      state.p2.fuel = 500;
-      state.p1.lane = 1;
-      state.p2.lane = 1;
-      state.p1.speed = 400;
-      state.p2.speed = 400;
-      state.p1.zOffset = 50; // P1 behind
-      state.p2.zOffset = 200; // P2 ahead
-      state.fuelStations = [{ lane: 1, zPos: 10 }];
+      const state = race({
+        p1: { fuel: 500, lane: 1, speed: 400, zOffset: 50 }, // P1 behind
+        p2: { fuel: 500, lane: 1, speed: 400, zOffset: 200 }, // P2 ahead
+        fuelStations: [{ lane: 1, zPos: 10 }],
+      });
       const s = updateFuelStations(state);
       expect(s.p2.fuel).toBe(500 + FUEL_STATION_REFILL); // P2 gets it (ahead)
       expect(s.p1.fuel).toBe(500); // P1 doesn't
@@ -865,6 +817,36 @@ describe("Hex Enduro Physics", () => {
       const packed = packState(state);
       expect(packed.aiCarCount).toBe(2);
       expect(packed.aiCars).toHaveLength(2);
+    });
+  });
+
+  describe("stepTick", () => {
+    const idle = { left: false, right: false, accel: false, brake: false, turbo: false };
+
+    function racing() {
+      return { ...createInitialState(GAME_MODE.CLASSIC_DUEL, 7), phase: PHASE.RACING };
+    }
+
+    it("clears last step's events and moves both drivers on their own keys", () => {
+      const state = { ...racing(), events: EVENT.COLLISION };
+      const { state: next } = stepTick(state, { ...idle, accel: true, right: true }, idle);
+
+      expect(next.events & EVENT.COLLISION).toBe(0);
+      expect(next.p1).toMatchObject({ speed: 3, targetLane: 2 });
+      expect(next.p2).toMatchObject({ speed: 0, targetLane: 0 });
+    });
+
+    it("fires turbo on the press and not while the key stays down", () => {
+      const state = racing();
+      const turbo = { ...idle, turbo: true };
+
+      const pressed = stepTick(state, turbo, idle);
+      const held = stepTick(state, turbo, idle, pressed.turboHeld);
+
+      expect(pressed.state.p1.boost).toBe(TURBO_DURATION - 1);
+      expect(pressed.turboHeld).toEqual({ p1: true, p2: false });
+      expect(held.state.p1.boost).toBe(0);
+      expect(stepTick(state, idle, idle, pressed.turboHeld).turboHeld.p1).toBe(false);
     });
   });
 });

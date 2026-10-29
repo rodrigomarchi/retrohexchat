@@ -6,19 +6,12 @@
  */
 
 import { schema, bool, custom, list, u8, u16, u32 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+import { MSG_TYPE, missileFields, phases } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
-// Game phase enum
-export const PHASE = {
-  WAITING: 0,
-  COUNTDOWN: 1,
-  PLAYING: 2,
-  WAVE_CLEAR: 3,
-  WAVE_START: 4,
-  FINISHED: 5,
-};
+/** The match's phases, by their value on the wire. */
+export const PHASE = phases("PLAYING", "WAVE_CLEAR", "WAVE_START", "FINISHED");
 
 // Game mode enum
 export const GAME_MODE = {
@@ -40,15 +33,7 @@ export const ALIEN_TYPE = {
 // --- Entity limits ---
 export const MAX_ALIENS = 36; // 30 grid + 6 reinforcement buffer per side
 export const MAX_BOMBS = 8;
-// ex_dna:disable-for-lines:10 this game's own wire fields
 export const MAX_DROPS = 6;
-
-/** A missile: position and whether it is in flight. */
-const missile = (m) => [
-  u16(`${m}X`, { round: true }),
-  u16(`${m}Y`, { round: true }),
-  bool(`${m}Active`),
-];
 
 /** One side's formation: every slot is written, those past the count as zeros. */
 const aliens = (name, count) =>
@@ -88,8 +73,8 @@ export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
   u8("combo2Count"),
   u16("cannon1X", { round: true }),
   u16("cannon2X", { round: true }),
-  ...missile("m1"),
-  ...missile("m2"),
+  ...missileFields("m1"),
+  ...missileFields("m2"),
   aliens("aliens1", "alien1Count"),
   aliens("aliens2", "alien2Count"),
   u8("alien1Count", { clamp: [-Infinity, MAX_ALIENS] }),

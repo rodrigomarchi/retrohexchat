@@ -10,32 +10,24 @@
  * @module games/hex_enduro
  */
 
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import {
+  ARROWS_WASD_SPACE,
+  ARROW_KEYS,
+  defineGame,
+  freshOnHost,
+  seededInit,
+} from "../core/define_game.js";
+import { beepCountdownState } from "../core/rounds.js";
 import { drawOnDisconnect, playOutcome } from "../core/result.js";
 import { playFlags } from "../core/events.js";
 import { normalizeEnduroAIDifficulty } from "./difficulty.js";
 import {
-  activateTurbo,
-  changeLane,
-  checkCollisions,
-  checkGameOver,
-  checkOvertakes,
-  checkPlayerOvertake,
   clearEvents,
   createInitialState,
   determineWinner,
   packState,
-  spawnFuelStations,
-  tickTimers,
+  stepTick,
   unpackState,
-  updateAICars,
-  updateFuel,
-  updateFuelStations,
-  updateLaneTransition,
-  updateSlipstream,
-  updateSpeed,
-  updateWeather,
-  updateZOffsets,
 } from "./physics.js";
 import { EVENT, GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
@@ -47,10 +39,7 @@ const MODE_MAP = {
   hex_enduro_sprint: GAME_MODE.SPRINT,
 };
 
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
-
-const RELEASED = { left: false, right: false, accel: false, brake: false, turbo: false };
+const TURBO_RELEASED = Object.freeze({ p1: false, p2: false });
 
 /** The sound of each event bit, in the order they are heard; host and guest hear the same. */
 export const EVENT_SOUNDS = [
@@ -66,41 +55,9 @@ function race(game) {
   // The AI sees the step's state with last step's events already cleared.
   game.gameState = clearEvents(game.gameState);
   game.updateOpponent();
-  let s = game.gameState;
-  const local = game.localInputs;
-  const remote = game.remoteInputs;
-  const prevAiCars = s.aiCars.map((c) => ({ ...c }));
-  const prevP1Z = s.p1.zOffset;
-  const prevP2Z = s.p2.zOffset;
-
-  if (local.left) s = changeLane(s, "p1", -1);
-  if (local.right) s = changeLane(s, "p1", 1);
-  if (remote.left) s = changeLane(s, "p2", -1);
-  if (remote.right) s = changeLane(s, "p2", 1);
-
-  // Turbo fires on the press, not while the key is held.
-  if (local.turbo && !game.prevTurboLocal) s = activateTurbo(s, "p1");
-  game.prevTurboLocal = local.turbo;
-  if (remote.turbo && !game.prevTurboRemote) s = activateTurbo(s, "p2");
-  game.prevTurboRemote = remote.turbo;
-
-  s = updateLaneTransition(s, "p1");
-  s = updateLaneTransition(s, "p2");
-  s = updateSpeed(s, "p1", { accel: local.accel, brake: local.brake });
-  s = updateSpeed(s, "p2", { accel: remote.accel, brake: remote.brake });
-  s = updateZOffsets(s);
-  s = updateAICars(s);
-  s = updateFuel(s, "p1");
-  s = updateFuel(s, "p2");
-  s = spawnFuelStations(s);
-  s = updateFuelStations(s);
-  s = updateSlipstream(s);
-  s = checkCollisions(s);
-  s = checkOvertakes(s, prevAiCars);
-  s = checkPlayerOvertake(s, prevP1Z, prevP2Z);
-  s = updateWeather(s);
-  s = tickTimers(s);
-  s = checkGameOver(s);
+  const step = stepTick(game.gameState, game.localInputs, game.remoteInputs, game.turboHeld);
+  const s = step.state;
+  game.turboHeld = step.turboHeld;
   playFlags(game, EVENT_SOUNDS, s.events);
   game.audio.updateEnginePitch((s.p1.speed + s.p2.speed) / 2);
 
@@ -125,10 +82,10 @@ function applySnapshot(game, decoded) {
 
 export default defineGame({
   inputs: {
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
-    accel: ["ArrowUp", "w", "W"],
-    brake: ["ArrowDown", "s", "S"],
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
+    accel: ARROW_KEYS.up,
+    brake: ARROW_KEYS.down,
     turbo: [" ", "Shift"],
   },
   captureKeys: [...ARROWS_WASD_SPACE, "Shift"],
@@ -140,25 +97,14 @@ export default defineGame({
   audio: { sounds: SOUNDS, extend },
   theme: getColors,
   // The game id picks the race; only the host seeds the road.
-  init: (game) => {
-    game.gameMode = MODE_MAP[game.gameId] ?? GAME_MODE.CLASSIC_DUEL;
-    game.seed = game.isHost ? (game.random() * 0xffffffff) >>> 0 : 0;
-    return createInitialState(game.gameMode, game.seed);
-  },
+  init: seededInit(MODE_MAP, GAME_MODE.CLASSIC_DUEL, createInitialState),
   setup: (game) => {
-    game.prevTurboLocal = false;
-    game.prevTurboRemote = false;
+    game.turboHeld = TURBO_RELEASED;
   },
-  onStart: (game) => {
-    if (game.isHost) game.gameState = createInitialState(game.gameMode, game.seed);
-  },
+  onStart: freshOnHost(createInitialState),
   onStop: (game) => {
-    game.localInputs = { ...RELEASED };
-    game.remoteInputs = { ...RELEASED };
-    game.prevTurboLocal = false;
-    game.prevTurboRemote = false;
-    game.peerReady = false;
-    game.frameCount = 0;
+    game.forgetMatch();
+    game.turboHeld = TURBO_RELEASED;
     game.audio.stopEngineDrone();
   },
   onAbandon: (game) => {
@@ -172,31 +118,17 @@ export default defineGame({
     begin: "COUNTDOWN",
     states: {
       // The beep sounds on each second that passes; the last one starts the engines.
-      COUNTDOWN: {
-        enter: (game) => {
-          game.gameState.countdown = COUNTDOWN_FROM;
-          // ex_dna:disable-for-lines:9 this game's own defineGame definition
-          game.setKeyboardCaptured(true);
-          game.broadcast();
-          game.invalidate();
-        },
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          game.audio.playCountdown();
-          if (remaining === 0) {
-            game.gameState.phase = PHASE.RACING;
-            game.broadcast();
-            game.setKeyboardCaptured(true);
-            game.audio.startEngineDrone();
-            game.frameCount = 0;
-            return;
-          }
-          game.gameState.countdown = remaining;
-          game.broadcast();
-          game.invalidate();
-        },
+      COUNTDOWN: beepCountdownState({
         next: "RACING",
-      },
+        capture: true,
+        start: (game) => {
+          game.gameState.phase = PHASE.RACING;
+          game.broadcast();
+          game.setKeyboardCaptured(true);
+          game.audio.startEngineDrone();
+          game.frameCount = 0;
+        },
+      }),
       RACING: { tick: race },
       FINISHED: {
         final: true,

@@ -11,29 +11,20 @@
  * @module games/hex_hockey
  */
 
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, ARROW_KEYS, defineGame } from "../core/define_game.js";
 import { playFlags } from "../core/events.js";
 import { drawOnDisconnect, matchResult } from "../core/result.js";
 import { createHockeyAI, normalizeHockeyAIDifficulty } from "./ai.js";
 import {
   COUNTDOWN_FRAME_INTERVAL,
   GOAL_CELEBRATION_FRAMES,
-  advancePeriod,
-  checkCapture,
-  checkGoal,
-  checkGoalieBlock,
-  checkPuckStuck,
   checkShowdownWin,
   createInitialState,
   determineWinner,
-  handleShoot,
-  handleTackle,
   packState,
   resetForFaceoff,
+  stepTick,
   unpackState,
-  updateGoalie,
-  updatePlayer,
-  updatePuck,
 } from "./physics.js";
 import { EVENT, GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { generateIceParticles, readColors, render } from "./renderer.js";
@@ -171,68 +162,30 @@ function periodBreak(game, state) {
   game.audio.playCountdownTick();
 }
 
-/** A shot when holding the puck, a tackle when not. */
-function act(game, state, isP1) {
-  const player = isP1 ? state.p1 : state.p2;
-  return player.hasPuck ? handleShoot(state, isP1) : handleTackle(state, isP1, game.random);
-}
-
 function play(game, state) {
   game.updateOpponent();
-  updatePlayer(state, game.localInputs, true);
-  updatePlayer(state, game.remoteInputs, false);
   // A shot or tackle goes on the press, not while the key is held.
-  if (game.localInputs.action && !game.actionHandled) {
-    game.actionHandled = true;
-    state.eventFlags |= act(game, state, true);
-  }
-  if (game.remoteInputs.action && !game.remoteActionHandled) {
-    game.remoteActionHandled = true;
-    state.eventFlags |= act(game, state, false);
-  }
+  const handled = { local: game.actionHandled, remote: game.remoteActionHandled };
+  const tick = stepTick(state, game.localInputs, game.remoteInputs, handled, game.random);
+  game.actionHandled = tick.handled.local;
+  game.remoteActionHandled = tick.handled.remote;
 
-  updateGoalie(state, true);
-  updateGoalie(state, false);
-  state.eventFlags |= updatePuck(state);
-  state.eventFlags |= checkGoalieBlock(state);
-  state.eventFlags |= checkCapture(state);
-
-  const scored = checkGoal(state);
-  if (scored) {
-    if (scored === "p1") {
-      state.scoreP1++;
-      state.eventFlags |= EVENT.GOAL_P1;
-    } else {
-      state.scoreP2++;
-      state.eventFlags |= EVENT.GOAL_P2;
-    }
-    state.phase = PHASE.GOAL_CELEBRATION;
-    state.celebrationFrames = GOAL_CELEBRATION_FRAMES;
+  if (tick.scored) {
     game.goalFlash = GOAL_CELEBRATION_FRAMES;
     game.audio.playGoal();
   }
-
-  if (checkPuckStuck(state)) {
-    state.eventFlags |= EVENT.FACE_OFF;
+  if (tick.stuck) {
     toCountdown(game, state);
-    resetForFaceoff(state, null);
     game.audio.playFaceoffWhistle();
   }
-
-  // The period clock runs only in regular play; at zero the period ends.
-  if (state.phase === PHASE.PLAYING && state.timerFrames > 0) {
-    state.timerFrames--;
-    if (state.timerFrames <= 0) {
-      const periodEvents = advancePeriod(state);
-      state.eventFlags |= periodEvents;
-      if (state.phase === PHASE.PERIOD_BREAK) {
-        game.audio.playPeriodBuzzer();
-      } else if (periodEvents & EVENT.SUDDEN_DEATH) {
-        toCountdown(game, state);
-        game.audio.playPeriodBuzzer();
-      } else if (state.phase === PHASE.FINISHED) {
-        finishMatch(game, state);
-      }
+  if (tick.periodEnded) {
+    if (state.phase === PHASE.PERIOD_BREAK) {
+      game.audio.playPeriodBuzzer();
+    } else if (tick.periodEvents & EVENT.SUDDEN_DEATH) {
+      toCountdown(game, state);
+      game.audio.playPeriodBuzzer();
+    } else if (state.phase === PHASE.FINISHED) {
+      finishMatch(game, state);
     }
   }
 
@@ -264,16 +217,15 @@ function step(game) {
 /** Every step, whatever the phase, the goal flash fades. */
 function tick(game) {
   step(game);
-  // ex_dna:disable-for-lines:10 this game's own defineGame definition
   if (game.goalFlash > 0) game.goalFlash--;
 }
 
 export default defineGame({
   inputs: {
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
-    up: ["ArrowUp", "w", "W"],
-    down: ["ArrowDown", "s", "S"],
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
+    up: ARROW_KEYS.up,
+    down: ARROW_KEYS.down,
     action: [" ", "Spacebar", "Shift"],
   },
   captureKeys: [...ARROWS_WASD_SPACE, "Shift"],

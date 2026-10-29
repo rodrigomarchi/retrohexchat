@@ -724,6 +724,68 @@ export function resetForNewRound(state) {
 }
 
 /**
+ * One frame of the battle on the host: both tanks turn and drive, a shell
+ * goes on the press (not while the key is held), the shells fly, a hit sends
+ * both tanks back to their spawns, and the timers tick. While the tanks hold
+ * still after a hit only the timers run.
+ *
+ * `pressed` is whether each fire key was already down last frame; the next
+ * frame's comes back beside the state. `events` says what the frame did, for
+ * the sounds and sparks: the players whose shell went out, where shells
+ * bounced, and the tank hit and where it stood.
+ * @param {object} state
+ * @param {Uint8Array} walls
+ * @param {{ 1: object, 2: object }} inputs - each player's held inputs
+ * @param {{ 1: boolean, 2: boolean }} pressed
+ * @returns {{
+ *   state: object,
+ *   pressed: { 1: boolean, 2: boolean },
+ *   paused: boolean,
+ *   events: { fired: number[], bounces: { x: number, y: number }[], hit: { player: number, x: number, y: number } | null },
+ * }}
+ */
+export function stepTick(state, walls, inputs, pressed) {
+  const events = { fired: [], bounces: [], hit: null };
+  if (state.respawnPause > 0) {
+    return { state: tickTimers(state), pressed, paused: true, events };
+  }
+
+  let s = { ...state, tankHit: 0, missileExpired: 0, wallBounced: 0 };
+  for (const player of [1, 2]) {
+    const own = inputs[player];
+    if (own.rotateLeft) s = rotateTank(s, player, -1);
+    if (own.rotateRight) s = rotateTank(s, player, 1);
+    if (own.forward) s = moveTank(s, player, walls);
+  }
+
+  const nextPressed = { ...pressed };
+  for (const player of [1, 2]) {
+    const shell = player === 1 ? "m1Active" : "m2Active";
+    if (inputs[player].fire && !pressed[player]) {
+      const ready = !s[shell];
+      s = fireMissile(s, player, walls);
+      if (ready && s[shell]) events.fired.push(player);
+    }
+    nextPressed[player] = inputs[player].fire;
+  }
+
+  for (const player of [1, 2]) {
+    s = updateMissile(s, player, walls);
+    const shell = player === 1 ? "m1" : "m2";
+    if (s.wallBounced === player) events.bounces.push({ x: s[`${shell}X`], y: s[`${shell}Y`] });
+  }
+
+  s = checkMissileHit(checkMissileHit(s, 1), 2);
+  if (s.tankHit !== 0) {
+    const tank = s.tankHit === 1 ? "tank1" : "tank2";
+    events.hit = { player: s.tankHit, x: s[`${tank}X`], y: s[`${tank}Y`] };
+    s = respawnTanks(s);
+  }
+
+  return { state: tickTimers(s), pressed: nextPressed, paused: false, events };
+}
+
+/**
  * Create explosion particles at a position.
  * @param {number} x
  * @param {number} y

@@ -453,29 +453,29 @@ export function updatePuck(state) {
 export function checkCapture(state) {
   if (state.puck.possessedBy !== 0) return 0;
 
-  const players = [
-    { player: state.p1, id: 1 },
-    { player: state.p2, id: 2 },
-  ];
-
-  for (const { player, id } of players) {
+  // Both within reach: the nearer one takes it, the left-hand player on a tie.
+  let taker = null;
+  let takerDist = CAPTURE_DIST;
+  for (const [player, id] of [
+    [state.p1, 1],
+    [state.p2, 2],
+  ]) {
     if (player.stunTimer > 0) continue;
 
-    const dx = player.x - state.puck.x;
-    const dy = player.y - state.puck.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < CAPTURE_DIST) {
-      player.hasPuck = true;
-      state.puck.possessedBy = id;
-      state.puck.vx = 0;
-      state.puck.vy = 0;
-      state.puckStuckFrames = 0;
-      return EVENT.CAPTURE;
+    const dist = Math.hypot(player.x - state.puck.x, player.y - state.puck.y);
+    if (dist < takerDist) {
+      taker = { player, id };
+      takerDist = dist;
     }
   }
+  if (!taker) return 0;
 
-  return 0;
+  taker.player.hasPuck = true;
+  state.puck.possessedBy = taker.id;
+  state.puck.vx = 0;
+  state.puck.vy = 0;
+  state.puckStuckFrames = 0;
+  return EVENT.CAPTURE;
 }
 
 // ── Goalie block ───────────────────────────────────────────────
@@ -583,13 +583,15 @@ export function handleTackle(state, isP1, random = Math.random) {
   const chance = getTackleChance(state.mode);
 
   if (random() < chance) {
-    // Tackle success — free the puck
+    // Tackle success — free the puck and knock the carrier off it, so the
+    // tackler collects it
     defender.hasPuck = false;
+    defender.stunTimer = STUN_DURATION;
     state.puck.possessedBy = 0;
-    // Give puck a small velocity away from defender
+    // Give puck a small velocity away from defender, toward the tackler
     const angle = Math.atan2(dy, dx);
-    state.puck.vx = -Math.cos(angle) * 2;
-    state.puck.vy = -Math.sin(angle) * 2;
+    state.puck.vx = Math.cos(angle) * 2;
+    state.puck.vy = Math.sin(angle) * 2;
     state.puckStuckFrames = 0;
     return EVENT.TACKLE_SUCCESS;
   }
@@ -715,6 +717,82 @@ export function determineWinner(state) {
     periods: state.period,
     mode: state.mode,
   };
+}
+
+// ── One tick of play ───────────────────────────────────────────
+
+/**
+ * One tick of play as the host runs it, changing `state` in place like the
+ * rest of this file: both skaters move, a fresh press of action shoots or
+ * tackles, the goalies and the puck move, a goalie blocks and a skater
+ * captures, a goal is scored, a stuck puck goes back to a face-off, and in
+ * regular play the period clock runs down. `handled` is whether each side's
+ * current press of action has been acted on; a new press clears it.
+ * @param {object} state
+ * @param {{ left: boolean, right: boolean, up: boolean, down: boolean, action: boolean }} local
+ * @param {{ left: boolean, right: boolean, up: boolean, down: boolean, action: boolean }} remote
+ * @param {{ local: boolean, remote: boolean }} handled
+ * @param {() => number} [random=Math.random] - draws in [0, 1), for tackles
+ * @returns {{ handled: { local: boolean, remote: boolean }, scored: "p1"|"p2"|null, stuck: boolean, periodEnded: boolean, periodEvents: number }}
+ */
+export function stepTick(state, local, remote, handled, random = Math.random) {
+  const result = {
+    handled: { ...handled },
+    scored: null,
+    stuck: false,
+    periodEnded: false,
+    periodEvents: 0,
+  };
+  updatePlayer(state, local, true);
+  updatePlayer(state, remote, false);
+  for (const [inputs, side, isP1] of [
+    [local, "local", true],
+    [remote, "remote", false],
+  ]) {
+    if (!inputs.action || result.handled[side]) continue;
+    result.handled[side] = true;
+    const player = isP1 ? state.p1 : state.p2;
+    state.eventFlags |= player.hasPuck
+      ? handleShoot(state, isP1)
+      : handleTackle(state, isP1, random);
+  }
+
+  updateGoalie(state, true);
+  updateGoalie(state, false);
+  state.eventFlags |= updatePuck(state);
+  state.eventFlags |= checkGoalieBlock(state);
+  state.eventFlags |= checkCapture(state);
+
+  result.scored = checkGoal(state);
+  if (result.scored) {
+    if (result.scored === "p1") {
+      state.scoreP1++;
+      state.eventFlags |= EVENT.GOAL_P1;
+    } else {
+      state.scoreP2++;
+      state.eventFlags |= EVENT.GOAL_P2;
+    }
+    state.phase = PHASE.GOAL_CELEBRATION;
+    state.celebrationFrames = GOAL_CELEBRATION_FRAMES;
+  }
+
+  if (checkPuckStuck(state)) {
+    state.eventFlags |= EVENT.FACE_OFF;
+    resetForFaceoff(state, null);
+    result.stuck = true;
+    return result;
+  }
+
+  // The period clock runs only in regular play; at zero the period ends.
+  if (state.phase === PHASE.PLAYING && state.timerFrames > 0) {
+    state.timerFrames--;
+    if (state.timerFrames <= 0) {
+      result.periodEnded = true;
+      result.periodEvents = advancePeriod(state);
+      state.eventFlags |= result.periodEvents;
+    }
+  }
+  return result;
 }
 
 // ── Countdown ──────────────────────────────────────────────────

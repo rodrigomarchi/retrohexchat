@@ -8,6 +8,12 @@
 
 import { contains } from "../pointer.js";
 
+/**
+ * How a game reads the geometry a table is laid out on: the table's own, or
+ * its `geometry.LANDSCAPE` (lying down) when it names none.
+ */
+export const tableGeometry = (geometry) => (table) => table.geometry ?? geometry.LANDSCAPE;
+
 /** A card's place at `x`, `y`, the size of `card` (`{ width, height }`). */
 export const cardPlace = (x, y, card) => ({ x, y, w: card.width, h: card.height });
 

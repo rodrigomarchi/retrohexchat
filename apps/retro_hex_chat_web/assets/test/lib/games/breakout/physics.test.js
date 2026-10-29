@@ -1,12 +1,12 @@
 import { describe, it, expect } from "vitest";
 import { PHASE, TOTAL_BLOCKS, BLOCK_ROWS } from "../../../../js/lib/games/breakout/protocol.js";
+import * as physics from "../../../../js/lib/games/breakout/physics.js";
 import {
   CANVAS_W,
   CANVAS_H,
   PADDLE_W,
   PADDLE_H,
   PADDLE_MARGIN,
-  PADDLE_SPEED,
   BALL_SIZE,
   INITIAL_BALL_SPEED,
   MAX_BALL_SPEED,
@@ -15,17 +15,99 @@ import {
   ROW_POINTS,
   createBlockGrid,
   createInitialState,
-  updatePaddle,
-  updateBall,
-  checkWallBounce,
   checkPaddleCollision,
   checkBlockCollision,
   checkLifeLost,
   checkWin,
   serveBall,
   createBlockParticles,
-  updateParticles,
+  stepTick,
+  serveAfter,
 } from "../../../../js/lib/games/breakout/physics.js";
+import {
+  HORIZONTAL_AXIS,
+  initialStateTests,
+  particleBurstTests,
+  playingState,
+  serveBallTests,
+  stepTickMovesTest,
+  updateBallTests,
+  updateParticlesTests,
+  updatePaddleTests,
+  wallBounceTests,
+} from "../../../support/games/physics_tests.js";
+
+const game = { physics, PHASE, axis: HORIZONTAL_AXIS };
+
+/** Left edge of a paddle at its starting place. */
+const PADDLE_LEFT = (CANVAS_W - PADDLE_W) / 2;
+/** Centre of a paddle at its starting place. */
+const PADDLE_CENTER_X = PADDLE_LEFT + PADDLE_W / 2;
+/** Top face of the bottom paddle (P1). */
+const P1_TOP = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
+/** Ball y just inside the bottom paddle's face. */
+const P1_HIT_Y = P1_TOP - BALL_SIZE / 2 + 1;
+
+/**
+ * A playing ball over the centre of the starting paddles, just inside the
+ * bottom paddle's face and falling straight onto it at speed 5, with
+ * `overrides` applied.
+ * @param {object} [overrides]
+ */
+function paddleBallState(overrides = {}) {
+  return playingState(game, {
+    ballX: PADDLE_CENTER_X,
+    ballY: P1_HIT_Y,
+    ballVX: 0,
+    ballVY: 5,
+    ballSpeed: 5,
+    ...overrides,
+  });
+}
+
+/**
+ * A playing ball in the middle of the first block of `state`, rising at
+ * speed 4, with `overrides` applied.
+ * @param {object} state
+ * @param {object} [overrides]
+ */
+function inFirstBlock(state, overrides = {}) {
+  const block = state.blocks[0];
+  return {
+    ...state,
+    ballX: block.x + block.w / 2,
+    ballY: block.y + block.h / 2,
+    ballVX: 0,
+    ballVY: -4,
+    phase: PHASE.PLAYING,
+    ...overrides,
+  };
+}
+
+/**
+ * The block check on a fresh state with the ball in the middle of the first
+ * block (see `inFirstBlock`).
+ * @param {object} [overrides]
+ */
+function hitFirstBlock(overrides = {}) {
+  return checkBlockCollision(inFirstBlock(createInitialState(), overrides));
+}
+
+/**
+ * The life check on a fresh state with `overrides` applied.
+ * @param {object} overrides
+ */
+function lifeCheck(overrides) {
+  return checkLifeLost({ ...createInitialState(), ...overrides });
+}
+
+/**
+ * The win check on a fresh state with `overrides` applied.
+ * @param {object} overrides
+ */
+function winCheck(overrides) {
+  return checkWin({ ...createInitialState(), ...overrides });
+}
 
 describe("breakout_physics", () => {
   describe("createBlockGrid", () => {
@@ -64,24 +146,7 @@ describe("breakout_physics", () => {
   });
 
   describe("createInitialState", () => {
-    it("creates state with ball at center", () => {
-      const state = createInitialState();
-      expect(state.ballX).toBe(CANVAS_W / 2);
-      expect(state.ballY).toBe(CANVAS_H / 2);
-    });
-
-    it("creates state with zero ball velocity", () => {
-      const state = createInitialState();
-      expect(state.ballVX).toBe(0);
-      expect(state.ballVY).toBe(0);
-    });
-
-    it("creates state with paddles centered horizontally", () => {
-      const state = createInitialState();
-      const expectedX = (CANVAS_W - PADDLE_W) / 2;
-      expect(state.paddle1X).toBe(expectedX);
-      expect(state.paddle2X).toBe(expectedX);
-    });
+    initialStateTests(game);
 
     it("starts with 3 lives", () => {
       const state = createInitialState();
@@ -93,238 +158,51 @@ describe("breakout_physics", () => {
       expect(state.score).toBe(0);
     });
 
-    it("starts in WAITING phase", () => {
-      const state = createInitialState();
-      expect(state.phase).toBe(PHASE.WAITING);
-    });
-
     it("starts with all 50 blocks", () => {
       const state = createInitialState();
       expect(state.blocksRemaining).toBe(TOTAL_BLOCKS);
       expect(state.blocks).toHaveLength(TOTAL_BLOCKS);
     });
-
-    it("starts with countdown at 3", () => {
-      const state = createInitialState();
-      expect(state.countdown).toBe(3);
-    });
   });
 
-  describe("updatePaddle", () => {
-    it("moves paddle left", () => {
-      const state = createInitialState();
-      const result = updatePaddle(state, 1, { left: true, right: false });
-      expect(result.paddle1X).toBe(state.paddle1X - PADDLE_SPEED);
-    });
-
-    it("moves paddle right", () => {
-      const state = createInitialState();
-      const result = updatePaddle(state, 1, { left: false, right: true });
-      expect(result.paddle1X).toBe(state.paddle1X + PADDLE_SPEED);
-    });
-
-    it("does not move paddle with no input", () => {
-      const state = createInitialState();
-      const result = updatePaddle(state, 1, { left: false, right: false });
-      expect(result.paddle1X).toBe(state.paddle1X);
-    });
-
-    it("cancels out with both left and right", () => {
-      const state = createInitialState();
-      const result = updatePaddle(state, 1, { left: true, right: true });
-      expect(result.paddle1X).toBe(state.paddle1X);
-    });
-
-    it("clamps paddle to left edge", () => {
-      const state = { ...createInitialState(), paddle1X: 2 };
-      const result = updatePaddle(state, 1, { left: true, right: false });
-      expect(result.paddle1X).toBe(0);
-    });
-
-    it("clamps paddle to right edge", () => {
-      const state = { ...createInitialState(), paddle1X: CANVAS_W - PADDLE_W - 2 };
-      const result = updatePaddle(state, 1, { left: false, right: true });
-      expect(result.paddle1X).toBe(CANVAS_W - PADDLE_W);
-    });
-
-    it("updates paddle 2 independently", () => {
-      const state = createInitialState();
-      const result = updatePaddle(state, 2, { left: true, right: false });
-      expect(result.paddle2X).toBe(state.paddle2X - PADDLE_SPEED);
-      expect(result.paddle1X).toBe(state.paddle1X);
-    });
-  });
-
-  describe("updateBall", () => {
-    it("moves ball by velocity when playing", () => {
-      const state = {
-        ...createInitialState(),
-        ballVX: 3,
-        ballVY: -2,
-        phase: PHASE.PLAYING,
-      };
-      const result = updateBall(state);
-      expect(result.ballX).toBe(state.ballX + 3);
-      expect(result.ballY).toBe(state.ballY - 2);
-    });
-
-    it("does not move ball when not playing", () => {
-      const state = { ...createInitialState(), ballVX: 3, ballVY: 2 };
-      const result = updateBall(state);
-      expect(result.ballX).toBe(state.ballX);
-      expect(result.ballY).toBe(state.ballY);
-    });
-  });
-
-  describe("checkWallBounce", () => {
-    it("bounces ball off left wall", () => {
-      const state = {
-        ...createInitialState(),
-        ballX: 2,
-        ballVX: -5,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkWallBounce(state);
-      expect(result.ballVX).toBeGreaterThan(0);
-      expect(result.wallBounced).toBe(true);
-    });
-
-    it("bounces ball off right wall", () => {
-      const state = {
-        ...createInitialState(),
-        ballX: CANVAS_W - 2,
-        ballVX: 5,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkWallBounce(state);
-      expect(result.ballVX).toBeLessThan(0);
-      expect(result.wallBounced).toBe(true);
-    });
-
-    it("does not bounce when ball is in middle", () => {
-      const state = {
-        ...createInitialState(),
-        ballX: CANVAS_W / 2,
-        ballVX: 3,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkWallBounce(state);
-      expect(result.ballVX).toBe(3);
-      expect(result.wallBounced).toBeFalsy();
-    });
-
-    it("does nothing when not playing", () => {
-      const state = { ...createInitialState(), ballX: 0, ballVX: -5 };
-      const result = checkWallBounce(state);
-      expect(result.ballVX).toBe(-5);
-    });
-  });
+  updatePaddleTests(game);
+  updateBallTests(game);
+  wallBounceTests(game);
 
   describe("checkPaddleCollision", () => {
     it("bounces off bottom paddle (P1)", () => {
-      const paddleCenterX = (CANVAS_W - PADDLE_W) / 2 + PADDLE_W / 2;
-      const p1Top = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
-      const state = {
-        ...createInitialState(),
-        ballX: paddleCenterX,
-        ballY: p1Top - BALL_SIZE / 2 + 1,
-        ballVX: 0,
-        ballVY: 5,
-        ballSpeed: 5,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkPaddleCollision(state);
+      const result = checkPaddleCollision(paddleBallState());
       expect(result.ballVY).toBeLessThan(0);
       expect(result.paddleHit).toBe(true);
     });
 
     it("bounces off top paddle (P2)", () => {
-      const paddleCenterX = (CANVAS_W - PADDLE_W) / 2 + PADDLE_W / 2;
       const p2Bottom = PADDLE_MARGIN + PADDLE_H;
-      const state = {
-        ...createInitialState(),
-        ballX: paddleCenterX,
-        ballY: p2Bottom + BALL_SIZE / 2 - 1,
-        ballVX: 0,
-        ballVY: -5,
-        ballSpeed: 5,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkPaddleCollision(state);
+      const result = checkPaddleCollision(
+        paddleBallState({ ballY: p2Bottom + BALL_SIZE / 2 - 1, ballVY: -5 }),
+      );
       expect(result.ballVY).toBeGreaterThan(0);
       expect(result.paddleHit).toBe(true);
     });
 
     it("does not collide when ball moves away from paddle", () => {
-      const paddleCenterX = (CANVAS_W - PADDLE_W) / 2 + PADDLE_W / 2;
-      const p1Top = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
-      const state = {
-        ...createInitialState(),
-        ballX: paddleCenterX,
-        ballY: p1Top - 10,
-        ballVX: 0,
-        ballVY: -5,
-        ballSpeed: 5,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkPaddleCollision(state);
-      expect(result.paddleHit).toBeFalsy();
+      const away = paddleBallState({ ballY: P1_TOP - 10, ballVY: -5 });
+      expect(checkPaddleCollision(away).paddleHit).toBeFalsy();
     });
 
     it("increments ball speed on paddle hit", () => {
-      const paddleCenterX = (CANVAS_W - PADDLE_W) / 2 + PADDLE_W / 2;
-      const p1Top = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
-      const state = {
-        ...createInitialState(),
-        ballX: paddleCenterX,
-        ballY: p1Top - BALL_SIZE / 2 + 1,
-        ballVX: 0,
-        ballVY: 5,
-        ballSpeed: INITIAL_BALL_SPEED,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkPaddleCollision(state);
+      const result = checkPaddleCollision(paddleBallState({ ballSpeed: INITIAL_BALL_SPEED }));
       expect(result.ballSpeed).toBe(INITIAL_BALL_SPEED + SPEED_INCREMENT);
     });
 
     it("does not exceed MAX_BALL_SPEED on paddle hit", () => {
-      const paddleCenterX = (CANVAS_W - PADDLE_W) / 2 + PADDLE_W / 2;
-      const p1Top = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
-      const state = {
-        ...createInitialState(),
-        ballX: paddleCenterX,
-        ballY: p1Top - BALL_SIZE / 2 + 1,
-        ballVX: 0,
-        ballVY: MAX_BALL_SPEED,
-        ballSpeed: MAX_BALL_SPEED,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkPaddleCollision(state);
-      expect(result.ballSpeed).toBeLessThanOrEqual(MAX_BALL_SPEED);
+      const state = paddleBallState({ ballVY: MAX_BALL_SPEED, ballSpeed: MAX_BALL_SPEED });
+      expect(checkPaddleCollision(state).ballSpeed).toBeLessThanOrEqual(MAX_BALL_SPEED);
     });
 
     it("creates steeper angle on edge hit", () => {
-      const paddleLeft = (CANVAS_W - PADDLE_W) / 2;
-      const p1Top = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
-
-      // Edge hit
-      const stateEdge = {
-        ...createInitialState(),
-        ballX: paddleLeft,
-        ballY: p1Top - BALL_SIZE / 2 + 1,
-        ballVX: 0,
-        ballVY: 5,
-        ballSpeed: 5,
-        phase: PHASE.PLAYING,
-      };
-      const resultEdge = checkPaddleCollision(stateEdge);
-
-      // Center hit
-      const stateCenter = {
-        ...stateEdge,
-        ballX: paddleLeft + PADDLE_W / 2,
-      };
-      const resultCenter = checkPaddleCollision(stateCenter);
+      const resultEdge = checkPaddleCollision(paddleBallState({ ballX: PADDLE_LEFT }));
+      const resultCenter = checkPaddleCollision(paddleBallState({ ballX: PADDLE_CENTER_X }));
 
       expect(Math.abs(resultEdge.ballVX)).toBeGreaterThan(Math.abs(resultCenter.ballVX));
     });
@@ -332,364 +210,173 @@ describe("breakout_physics", () => {
 
   describe("checkBlockCollision", () => {
     it("destroys block on collision", () => {
-      const state = createInitialState();
-      const block = state.blocks[0];
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h / 2,
-        ballVX: 0,
-        ballVY: -4,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
+      const result = hitFirstBlock();
       expect(result.blocks[0].alive).toBe(false);
       expect(result.blocksRemaining).toBe(TOTAL_BLOCKS - 1);
       expect(result.blocksDestroyed).toBe(1);
     });
 
     it("adds score from destroyed block", () => {
-      const state = createInitialState();
-      const block = state.blocks[0]; // Row 0 = 50 pts
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h / 2,
-        ballVX: 0,
-        ballVY: -4,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
-      expect(result.score).toBe(ROW_POINTS[0]);
+      // Row 0 = 50 pts
+      expect(hitFirstBlock().score).toBe(ROW_POINTS[0]);
     });
 
     it("sets blockHit flag", () => {
-      const state = createInitialState();
-      const block = state.blocks[0];
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h / 2,
-        ballVX: 0,
-        ballVY: -4,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
+      const result = hitFirstBlock();
       expect(result.blockHit).toBe(true);
       expect(result.hitBlockRow).toBe(0);
     });
 
     it("reverses ball direction on collision", () => {
-      const state = createInitialState();
-      const block = state.blocks[0];
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h + BALL_SIZE / 2 - 1,
-        ballVX: 0,
-        ballVY: -4,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
+      const block = createInitialState().blocks[0];
+      const result = hitFirstBlock({ ballY: block.y + block.h + BALL_SIZE / 2 - 1 });
       expect(result.ballVY).toBe(4);
     });
 
     it("does not collide with dead blocks", () => {
       const state = createInitialState();
       state.blocks = state.blocks.map((b, i) => (i === 0 ? { ...b, alive: false } : b));
-      const block = state.blocks[0];
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h / 2,
-        ballVX: 0,
-        ballVY: -4,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
+      const result = checkBlockCollision(inFirstBlock(state));
       expect(result.blockHit).toBeFalsy();
     });
 
     it("does nothing when not playing", () => {
-      const state = createInitialState();
-      const block = state.blocks[0];
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h / 2,
-        ballVX: 0,
-        ballVY: -4,
-      };
-      const result = checkBlockCollision(collisionState);
+      const result = hitFirstBlock({ phase: createInitialState().phase });
       expect(result.blockHit).toBeFalsy();
     });
 
     it("speeds up ball every 5 blocks destroyed", () => {
-      const state = createInitialState();
-      const block = state.blocks[0];
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h / 2,
-        ballVX: 0,
+      const result = hitFirstBlock({
         ballVY: -INITIAL_BALL_SPEED,
         ballSpeed: INITIAL_BALL_SPEED,
         blocksDestroyed: 4, // This will be the 5th
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
+      });
       expect(result.ballSpeed).toBeGreaterThan(INITIAL_BALL_SPEED);
     });
 
     it("does not exceed MAX_BALL_SPEED from block speedup", () => {
-      const state = createInitialState();
-      const block = state.blocks[0];
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h / 2,
-        ballVX: 0,
+      const result = hitFirstBlock({
         ballVY: -MAX_BALL_SPEED,
         ballSpeed: MAX_BALL_SPEED,
         blocksDestroyed: 4,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
+      });
       expect(result.ballSpeed).toBeLessThanOrEqual(MAX_BALL_SPEED);
     });
 
     it("bounces ball horizontally on side collision", () => {
-      const state = createInitialState();
-      const block = state.blocks[0];
+      const block = createInitialState().blocks[0];
       // Hit from the left side of the block
-      const collisionState = {
-        ...state,
-        ballX: block.x - BALL_SIZE / 2 + 1,
-        ballY: block.y + block.h / 2,
-        ballVX: 3,
-        ballVY: -1,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
+      const result = hitFirstBlock({ ballX: block.x - BALL_SIZE / 2 + 1, ballVX: 3, ballVY: -1 });
       expect(result.blockHit).toBe(true);
       expect(result.ballVX).toBe(-3);
     });
 
     it("provides hit block color for particles", () => {
-      const state = createInitialState();
-      const block = state.blocks[0];
-      const collisionState = {
-        ...state,
-        ballX: block.x + block.w / 2,
-        ballY: block.y + block.h / 2,
-        ballVX: 0,
-        ballVY: -4,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkBlockCollision(collisionState);
-      expect(result.hitBlockColor).toBe(block.color);
+      const block = createInitialState().blocks[0];
+      expect(hitFirstBlock().hitBlockColor).toBe(block.color);
     });
   });
 
   describe("checkLifeLost", () => {
     it("loses life when ball exits bottom", () => {
-      const state = {
-        ...createInitialState(),
-        ballY: CANVAS_H - BALL_SIZE / 2 + 1,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkLifeLost(state);
+      const result = lifeCheck({ ballY: CANVAS_H - BALL_SIZE / 2 + 1, phase: PHASE.PLAYING });
       expect(result.lives).toBe(INITIAL_LIVES - 1);
       expect(result.phase).toBe(PHASE.LIFE_LOST);
       expect(result.lifeLost).toBe(true);
     });
 
     it("loses life when ball exits top", () => {
-      const state = {
-        ...createInitialState(),
-        ballY: BALL_SIZE / 2 - 1,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkLifeLost(state);
+      const result = lifeCheck({ ballY: BALL_SIZE / 2 - 1, phase: PHASE.PLAYING });
       expect(result.lives).toBe(INITIAL_LIVES - 1);
       expect(result.phase).toBe(PHASE.LIFE_LOST);
     });
 
     it("does not lose life when ball is in play area", () => {
-      const state = {
-        ...createInitialState(),
-        ballY: CANVAS_H / 2,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkLifeLost(state);
+      const result = lifeCheck({ ballY: CANVAS_H / 2, phase: PHASE.PLAYING });
       expect(result.lives).toBe(INITIAL_LIVES);
       expect(result.lifeLost).toBeFalsy();
     });
 
     it("does nothing when not playing", () => {
-      const state = {
-        ...createInitialState(),
-        ballY: CANVAS_H + 10,
-      };
-      const result = checkLifeLost(state);
-      expect(result.lives).toBe(INITIAL_LIVES);
+      expect(lifeCheck({ ballY: CANVAS_H + 10 }).lives).toBe(INITIAL_LIVES);
     });
   });
 
   describe("checkWin", () => {
     it("wins when all blocks destroyed", () => {
-      const state = {
-        ...createInitialState(),
-        blocksRemaining: 0,
-        phase: PHASE.PLAYING,
-      };
-      const result = checkWin(state);
+      const result = winCheck({ blocksRemaining: 0, phase: PHASE.PLAYING });
       expect(result.phase).toBe(PHASE.FINISHED);
       expect(result.won).toBe(true);
     });
 
     it("loses when no lives remain after LIFE_LOST", () => {
-      const state = {
-        ...createInitialState(),
-        lives: 0,
-        phase: PHASE.LIFE_LOST,
-      };
-      const result = checkWin(state);
+      const result = winCheck({ lives: 0, phase: PHASE.LIFE_LOST });
       expect(result.phase).toBe(PHASE.FINISHED);
       expect(result.won).toBe(false);
     });
 
     it("does not finish with lives remaining and blocks left", () => {
-      const state = {
-        ...createInitialState(),
-        lives: 2,
-        blocksRemaining: 10,
-        phase: PHASE.LIFE_LOST,
-      };
-      const result = checkWin(state);
+      const result = winCheck({ lives: 2, blocksRemaining: 10, phase: PHASE.LIFE_LOST });
       expect(result.phase).toBe(PHASE.LIFE_LOST);
     });
 
     it("does nothing when not in relevant phase", () => {
-      const state = {
-        ...createInitialState(),
-        lives: 0,
-        phase: PHASE.COUNTDOWN,
-      };
-      const result = checkWin(state);
+      const result = winCheck({ lives: 0, phase: PHASE.COUNTDOWN });
       expect(result.phase).toBe(PHASE.COUNTDOWN);
     });
   });
 
   describe("serveBall", () => {
-    it("places ball at center", () => {
-      const state = createInitialState();
-      const result = serveBall(state);
-      expect(result.ballX).toBe(CANVAS_W / 2);
-      expect(result.ballY).toBe(CANVAS_H / 2);
-    });
-
-    it("sets phase to PLAYING", () => {
-      const state = { ...createInitialState(), phase: PHASE.SERVING };
-      const result = serveBall(state);
-      expect(result.phase).toBe(PHASE.PLAYING);
-    });
-
-    it("resets ball speed to initial", () => {
-      const state = { ...createInitialState(), ballSpeed: 10 };
-      const result = serveBall(state);
-      expect(result.ballSpeed).toBe(INITIAL_BALL_SPEED);
-    });
-
-    it("has non-zero velocity", () => {
-      const state = createInitialState();
-      const result = serveBall(state);
-      const speed = Math.sqrt(result.ballVX ** 2 + result.ballVY ** 2);
-      expect(speed).toBeCloseTo(INITIAL_BALL_SPEED, 1);
-    });
+    serveBallTests(game, {});
 
     it("serves downward with direction 1", () => {
-      const state = createInitialState();
-      const result = serveBall(state, 1);
-      expect(result.ballVY).toBeGreaterThan(0);
+      expect(serveBall(createInitialState(), 1).ballVY).toBeGreaterThan(0);
     });
 
     it("serves upward with direction -1", () => {
-      const state = createInitialState();
-      const result = serveBall(state, -1);
-      expect(result.ballVY).toBeLessThan(0);
+      expect(serveBall(createInitialState(), -1).ballVY).toBeLessThan(0);
     });
 
     it("defaults to downward serve without direction", () => {
-      const state = createInitialState();
-      const result = serveBall(state);
-      expect(result.ballVY).toBeGreaterThan(0);
+      expect(serveBall(createInitialState()).ballVY).toBeGreaterThan(0);
     });
   });
 
   describe("createBlockParticles", () => {
-    it("creates 8 particles", () => {
-      const particles = createBlockParticles(320, 240);
-      expect(particles).toHaveLength(8);
-    });
-
-    it("particles start at given position", () => {
-      const particles = createBlockParticles(100, 200);
-      for (const p of particles) {
-        expect(p.x).toBe(100);
-        expect(p.y).toBe(200);
-      }
-    });
-
-    it("particles have velocity and life", () => {
-      const particles = createBlockParticles(0, 0);
-      for (const p of particles) {
-        expect(typeof p.vx).toBe("number");
-        expect(typeof p.vy).toBe("number");
-        expect(p.life).toBe(1.0);
-      }
-    });
+    particleBurstTests(createBlockParticles, 8);
 
     it("particles use provided color", () => {
-      const particles = createBlockParticles(100, 200, "#ff0066");
-      for (const p of particles) {
+      for (const p of createBlockParticles(100, 200, "#ff0066")) {
         expect(p.color).toBe("#ff0066");
       }
     });
 
     it("particles use default color when none provided", () => {
-      const particles = createBlockParticles(100, 200);
-      for (const p of particles) {
+      for (const p of createBlockParticles(100, 200)) {
         expect(p.color).toBe("#ffaa00");
       }
     });
   });
 
-  describe("updateParticles", () => {
-    it("moves particles by velocity", () => {
-      const particles = [{ x: 10, y: 20, vx: 2, vy: -1, life: 1.0 }];
-      const result = updateParticles(particles);
-      expect(result[0].x).toBeCloseTo(12);
-      expect(result[0].y).toBeCloseTo(19);
+  updateParticlesTests(game, 0.03);
+
+  describe("stepTick", () => {
+    stepTickMovesTest(game, {
+      ballVX: 2,
+      ballVY: 3,
+      events: { wallBounced: false, paddleHit: false, blockHit: false, exitSide: null },
     });
 
-    it("decays life", () => {
-      const particles = [{ x: 0, y: 0, vx: 0, vy: 0, life: 1.0 }];
-      const result = updateParticles(particles);
-      expect(result[0].life).toBeLessThan(1.0);
-    });
+    it("reports the side a lost ball went out by, and the serve goes back that way", () => {
+      const keys = { left: false, right: false };
+      const s = playingState(game, { ballX: 20, ballY: 3, ballVX: 0, ballVY: -3 });
+      const { state, events } = stepTick(s, keys, keys);
 
-    it("removes dead particles", () => {
-      const particles = [{ x: 0, y: 0, vx: 0, vy: 0, life: 0.03 }];
-      const result = updateParticles(particles);
-      expect(result).toHaveLength(0);
-    });
-
-    it("applies drag to velocity", () => {
-      const particles = [{ x: 0, y: 0, vx: 10, vy: 10, life: 1.0 }];
-      const result = updateParticles(particles);
-      expect(Math.abs(result[0].vx)).toBeLessThan(10);
-      expect(Math.abs(result[0].vy)).toBeLessThan(10);
+      expect(events.exitSide).toBe("top");
+      expect(state.phase).toBe(PHASE.LIFE_LOST);
+      expect(state.lifeLost).toBe(false);
+      expect(serveAfter(state, events.exitSide, () => 0.5).ballVY).toBeGreaterThan(0);
+      expect(serveAfter(state, "bottom", () => 0.5).ballVY).toBeLessThan(0);
     });
   });
 });

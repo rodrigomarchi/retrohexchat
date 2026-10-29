@@ -1,57 +1,34 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { PHASE } from "../../../../js/lib/games/core/card_table/table.js";
 import HexFreeCell from "../../../../js/lib/games/hex_freecell/index.js";
 import { layout } from "../../../../js/lib/games/hex_freecell/layout.js";
 import { GEOMETRY } from "../../../../js/lib/games/hex_freecell/protocol.js";
-import { playMatch } from "../../../support/games/harness.js";
+import {
+  itEndsEarly,
+  itReplays,
+  soloMatches,
+  underway,
+} from "../../../support/games/solo_tests.js";
+import { C, D, H, S, card, itStandsUpWithMinis } from "../../../support/games/card_tables.js";
+import { table as freeCell } from "./tables.js";
 
-const S = 0;
-const H = 1;
-const D = 2;
-const C = 3;
-const card = (rank, suit) => suit * 13 + rank - 1;
 const upTo = (rank, suit) => Array.from({ length: rank }, (_, r) => card(r + 1, suit));
-const rect = { left: 0, top: 0, width: 640, height: 480 };
-const solo = (options = {}) =>
-  playMatch({
-    EngineClass: HexFreeCell,
-    gameId: "hex_freecell",
-    mode: "solo",
-    matchSeed: 42,
-    rect,
-    ...options,
-  });
-const tapOn = (match, r) => {
-  match.pointer("down", r.x + 10, r.y + 10);
-  match.pointer("up", r.x + 10, r.y + 10);
-};
+/** A tap a little inside a place. */
+const tapOn = (match, r) => match.tap(r.x + 10, r.y + 10);
 /** The host's table replaced by the one given, the clock running. */
 function setTable(host, table) {
   host.gameState = {
     ...host.gameState,
-    table: {
-      ...host.gameState.table,
-      columns: Array.from({ length: 8 }, (_, i) => table.columns?.[i] ?? []),
-      cells: Array.from({ length: 4 }, (_, i) => table.cells?.[i] ?? null),
-      foundations: Array.from({ length: 4 }, (_, i) => table.foundations?.[i] ?? []),
-    },
+    table: { ...host.gameState.table, ...freeCell(table) },
     clock: { started: true, ticks: 0 },
   };
 }
 
 describe("a match of Hex FreeCell", () => {
-  let match;
-
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
+  const solo = soloMatches(HexFreeCell, "hex_freecell");
 
   it("begins with the whole deck face up, and a tap sends a card on and starts the clock", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     expect(host.gameState.phase).toBe(PHASE.PLAYING);
     expect(host.gameState.table.columns.flat()).toHaveLength(52);
 
@@ -63,9 +40,7 @@ describe("a match of Hex FreeCell", () => {
   });
 
   it("sends the cards no one can want up by themselves, one after another", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     setTable(host, {
       columns: [
         [card(13, S), card(2, H)],
@@ -79,9 +54,7 @@ describe("a match of Hex FreeCell", () => {
   });
 
   it("sends nothing up from under the player's hand while they hold it", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     setTable(host, {
       columns: [[card(13, S), card(1, H)], [card(13, H)], [card(12, D), card(9, C)]],
     });
@@ -98,9 +71,7 @@ describe("a match of Hex FreeCell", () => {
   });
 
   it("finishes by itself, celebrates and reports the score with its time bonus once", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     setTable(host, {
       columns: [[card(13, C)], [card(12, C)]],
       foundations: [upTo(13, S), upTo(13, H), upTo(13, D), upTo(11, C)],
@@ -115,9 +86,7 @@ describe("a match of Hex FreeCell", () => {
   });
 
   it("ends a table left with no move, with the points it holds", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     const tops = [5, 5, 5, 5, 9, 9, 9, 9].map((rank, i) => [card(rank, i % 4)]);
     setTable(host, {
       columns: [[card(13, S), card(6, H)], ...tops.slice(1)],
@@ -131,34 +100,12 @@ describe("a match of Hex FreeCell", () => {
     expect(match.results.host).toEqual([{ score: { p1: 40, p2: 0 }, winner: 0 }]);
   });
 
-  it("stands the table up with the minis in a box taller than wide", async () => {
-    match = await solo({ rect: { left: 0, top: 0, width: 360, height: 600 } });
-    match.advance(100);
-    const { host } = match.engines;
-    expect(host.view).toEqual(GEOMETRY.PORTRAIT.view);
-    expect(host.fx.card).toEqual({ width: 44, height: 62 });
-  });
+  itStandsUpWithMinis(solo, GEOMETRY);
 
-  it("ends early with the points it holds", async () => {
-    match = await solo();
-    match.advance(500);
-    match.engines.host.quit();
-    expect(match.results.host).toEqual([{ score: { p1: 0, p2: 0 }, ended_early: true }]);
-  });
+  itEndsEarly("ends early with the points it holds", solo, { points: 0 });
 
-  it("plays the same match for the same seed and the same presses", async () => {
-    const script = [300, 600, 900].flatMap((at, i) => [
-      { at, side: "host", pointer: "down", x: 29 + i * 74 + 10, y: 132 + 6 * 18 + 10 },
-      { at: at + 30, side: "host", pointer: "up", x: 29 + i * 74 + 10, y: 132 + 6 * 18 + 10 },
-    ]);
-    const finalState = async () => {
-      const m = await solo({ script });
-      m.advance(2000);
-      const state = JSON.stringify(m.engines.host.gameState);
-      m.stop();
-      m.restore();
-      return state;
-    };
-    expect(await finalState()).toBe(await finalState());
-  });
+  itReplays(
+    solo,
+    [300, 600, 900].map((at, i) => [at, 29 + i * 74 + 10, 132 + 6 * 18 + 10]),
+  );
 });

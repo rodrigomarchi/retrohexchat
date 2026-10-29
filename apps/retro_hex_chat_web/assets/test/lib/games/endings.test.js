@@ -79,6 +79,16 @@ const endOf = (limit = 60_000) => {
   return match.results;
 };
 
+/** A match of `gameId` in `phase`, brought to `fields`: it ends with the host's win, heard. */
+async function hostWinsFrom(gameId, phase, fields) {
+  await underway(gameId, phase);
+  const { playWin } = spy("host", "playWin");
+  set(typeof fields === "function" ? fields() : fields);
+  const results = endOf();
+  expect(playWin).toHaveBeenCalled();
+  expect(results.host[0].winner).toBe(1);
+}
+
 describe("Boxing", () => {
   it("counts down its last fifteen seconds aloud", async () => {
     await underway("hex_boxing", BOXING.FIGHTING);
@@ -218,12 +228,11 @@ describe("Outlaw", () => {
   });
 
   it("gives the match to the host who takes the deciding round", async () => {
-    await underway("hex_outlaw", OUTLAW.PLAYING);
-    const { playWin } = spy("host", "playWin");
-    set({ ...bulletOnGuest(), score1: SCORE_TO_WIN - 1, roundWins1: 1 });
-    const results = endOf();
-    expect(playWin).toHaveBeenCalled();
-    expect(results.host[0].winner).toBe(1);
+    await hostWinsFrom("hex_outlaw", OUTLAW.PLAYING, () => ({
+      ...bulletOnGuest(),
+      score1: SCORE_TO_WIN - 1,
+      roundWins1: 1,
+    }));
   });
 });
 
@@ -244,12 +253,12 @@ describe("Raid", () => {
   });
 
   it("gives the match to the host when the guest's last jet goes down", async () => {
-    await underway("hex_raid", RAID.FLYING);
-    const { playWin } = spy("host", "playWin");
-    set({ jet2Lives: 0, jet2Alive: false, score1: 50, score2: 10 });
-    const results = endOf();
-    expect(playWin).toHaveBeenCalled();
-    expect(results.host[0].winner).toBe(1);
+    await hostWinsFrom("hex_raid", RAID.FLYING, {
+      jet2Lives: 0,
+      jet2Alive: false,
+      score1: 50,
+      score2: 10,
+    });
   });
 });
 
@@ -268,12 +277,12 @@ describe("Tennis", () => {
 
 describe("Tanks", () => {
   it("gives the match to the host who leads when the deciding round's clock runs out", async () => {
-    await underway("pixel_tanks", TANKS.PLAYING);
-    const { playWin } = spy("host", "playWin");
-    set({ roundTimer: 1, score1: 3, score2: 1, roundWins1: 1 });
-    const results = endOf();
-    expect(playWin).toHaveBeenCalled();
-    expect(results.host[0].winner).toBe(1);
+    await hostWinsFrom("pixel_tanks", TANKS.PLAYING, {
+      roundTimer: 1,
+      score1: 3,
+      score2: 1,
+      roundWins1: 1,
+    });
   });
 });
 
@@ -382,11 +391,6 @@ describe("Warlords", () => {
   });
 
   it("gives the match to the host when the guest's last king falls", async () => {
-    await underway("hex_warlords", WARLORDS.PLAYING);
-    const { playWin } = spy("host", "playWin");
-    set({ p2Lives: 0, phase: WARLORDS.KING_HIT });
-    const results = endOf();
-    expect(playWin).toHaveBeenCalled();
-    expect(results.host[0].winner).toBe(1);
+    await hostWinsFrom("hex_warlords", WARLORDS.PLAYING, { p2Lives: 0, phase: WARLORDS.KING_HIT });
   });
 });

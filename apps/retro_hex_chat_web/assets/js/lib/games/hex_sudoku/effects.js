@@ -13,7 +13,7 @@
  */
 
 import { gameColor } from "../../game_colors.js";
-import { burst } from "../core/render.js";
+import { burstFrom } from "../core/solo/effects.js";
 import { UNITS } from "./grid.js";
 import { EVENT } from "./protocol.js";
 
@@ -62,14 +62,13 @@ export function playedEffects(fx, { before, after, laid, now, random }) {
   }
   if (events & EVENT.WIN) {
     if (!fx.reduced) light(fx, UNITS.slice(0, 9).flat(), 40, now, FX.ring);
-    const { grid } = laid;
-    const particles = burst(
-      grid.x + grid.w / 2,
-      grid.y + grid.h / 2,
-      fx.reduced ? 10 : 40,
-      { speed: [2, 4], extra: (k) => ({ life: 1, color: gameColor(SPARKS[k % SPARKS.length]) }) },
+    burstFrom(fx, laid.grid, {
+      count: fx.reduced ? 10 : 40,
+      speed: [2, 4],
+      color: (k) => gameColor(SPARKS[k % SPARKS.length]),
+      now,
+      ticks: FX.sparks,
       random,
-    );
-    fx.list.push({ kind: "sparks", particles, start: now, ticks: FX.sparks });
+    });
   }
 }

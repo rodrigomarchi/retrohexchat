@@ -10,6 +10,7 @@ import {
   BOXER_SPEED,
   PUNCH_RANGE,
   PUNCH_DURATION,
+  PUNCH_WINDUP,
   PUNCH_COOLDOWN,
   ROUND_DURATION,
   KO_SCORE,
@@ -27,6 +28,18 @@ import {
   resetForNewRound,
 } from "../../../../js/lib/games/hex_boxing/physics.js";
 import { PHASE, PUNCH_STATE } from "../../../../js/lib/games/hex_boxing/protocol.js";
+import { stepTick } from "../../../../js/lib/games/hex_boxing/physics.js";
+import { pressAndHold, released } from "../../../support/games/physics_tests.js";
+
+/** Player one mid-punch, `timer` frames from the end of it, facing `dir`. */
+function punching(timer, dir) {
+  return {
+    ...createInitialState(),
+    b1punchState: PUNCH_STATE.PUNCHING,
+    b1punchTimer: timer,
+    b1dir: dir,
+  };
+}
 
 describe("Hex Boxing Physics", () => {
   describe("createInitialState", () => {
@@ -147,11 +160,11 @@ describe("Hex Boxing Physics", () => {
   });
 
   describe("startPunch", () => {
-    it("starts punch when idle", () => {
+    it("starts a punch's wind-up when idle", () => {
       const s = createInitialState();
       const s2 = startPunch(s, 1);
-      expect(s2.b1punchState).toBe(PUNCH_STATE.PUNCHING);
-      expect(s2.b1punchTimer).toBe(PUNCH_DURATION);
+      expect(s2.b1punchState).toBe(PUNCH_STATE.WINDUP);
+      expect(s2.b1punchTimer).toBe(PUNCH_WINDUP);
     });
 
     it("does nothing when already punching", () => {
@@ -189,6 +202,19 @@ describe("Hex Boxing Physics", () => {
   });
 
   describe("tickPunchTimers", () => {
+    it("counts the wind-up down, then lets the punch fly", () => {
+      const winding = { ...createInitialState(), b1punchState: PUNCH_STATE.WINDUP };
+
+      expect(tickPunchTimers({ ...winding, b1punchTimer: 5 })).toMatchObject({
+        b1punchState: PUNCH_STATE.WINDUP,
+        b1punchTimer: 4,
+      });
+      expect(tickPunchTimers({ ...winding, b1punchTimer: 1 })).toMatchObject({
+        b1punchState: PUNCH_STATE.PUNCHING,
+        b1punchTimer: PUNCH_DURATION,
+      });
+    });
+
     it("decrements punch timer during PUNCHING", () => {
       const s = {
         ...createInitialState(),
@@ -260,12 +286,7 @@ describe("Hex Boxing Physics", () => {
     });
 
     it("returns fist position when punching", () => {
-      const s = {
-        ...createInitialState(),
-        b1punchState: PUNCH_STATE.PUNCHING,
-        b1punchTimer: Math.ceil(PUNCH_DURATION / 2),
-        b1dir: 0,
-      };
+      const s = punching(Math.ceil(PUNCH_DURATION / 2), 0);
       const fist = getFistPosition(s, 1);
       expect(fist).not.toBeNull();
       // Fist should be to the right of the body (dir=0 = right)
@@ -274,47 +295,27 @@ describe("Hex Boxing Physics", () => {
 
     it("fist extends in facing direction", () => {
       // Facing left (dir=4)
-      const s = {
-        ...createInitialState(),
-        b1punchState: PUNCH_STATE.PUNCHING,
-        b1punchTimer: Math.ceil(PUNCH_DURATION / 2),
-        b1dir: 4,
-      };
+      const s = punching(Math.ceil(PUNCH_DURATION / 2), 4);
       const fist = getFistPosition(s, 1);
       expect(fist.x).toBeLessThan(s.b1x);
     });
 
     it("fist at punch start (timer=PUNCH_DURATION) is near body", () => {
-      const s = {
-        ...createInitialState(),
-        b1punchState: PUNCH_STATE.PUNCHING,
-        b1punchTimer: PUNCH_DURATION,
-        b1dir: 0,
-      };
+      const s = punching(PUNCH_DURATION, 0);
       const fist = getFistPosition(s, 1);
       // At start, progress=0, extension=0, reach=BOXER_BODY_RADIUS
       expect(fist.x).toBeCloseTo(s.b1x + BOXER_BODY_RADIUS, 1);
     });
 
     it("fist at punch end (timer=1) is near body", () => {
-      const s = {
-        ...createInitialState(),
-        b1punchState: PUNCH_STATE.PUNCHING,
-        b1punchTimer: 1,
-        b1dir: 0,
-      };
+      const s = punching(1, 0);
       const fist = getFistPosition(s, 1);
       // At end, progress=1, extension=0, reach=BOXER_BODY_RADIUS
       expect(fist.x).toBeCloseTo(s.b1x + BOXER_BODY_RADIUS, 1);
     });
 
     it("fist at max extension (mid-punch) reaches full range", () => {
-      const s = {
-        ...createInitialState(),
-        b1punchState: PUNCH_STATE.PUNCHING,
-        b1punchTimer: Math.ceil(PUNCH_DURATION / 2),
-        b1dir: 0,
-      };
+      const s = punching(Math.ceil(PUNCH_DURATION / 2), 0);
       const fist = getFistPosition(s, 1);
       // At mid-punch, extension=1.0, reach=BOXER_BODY_RADIUS + PUNCH_RANGE
       expect(fist.x).toBeCloseTo(s.b1x + BOXER_BODY_RADIUS + PUNCH_RANGE, 1);
@@ -331,12 +332,7 @@ describe("Hex Boxing Physics", () => {
 
     it("works for diagonal directions", () => {
       // dir=1 = down-right
-      const s = {
-        ...createInitialState(),
-        b1punchState: PUNCH_STATE.PUNCHING,
-        b1punchTimer: Math.ceil(PUNCH_DURATION / 2),
-        b1dir: 1,
-      };
+      const s = punching(Math.ceil(PUNCH_DURATION / 2), 1);
       const fist = getFistPosition(s, 1);
       expect(fist.x).toBeGreaterThan(s.b1x);
       expect(fist.y).toBeGreaterThan(s.b1y);
@@ -492,65 +488,24 @@ describe("Hex Boxing Physics", () => {
   });
 
   describe("checkRoundEnd", () => {
-    it("detects KO for P1 (score >= 100)", () => {
-      const s = { ...createInitialState(), score1: KO_SCORE };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(true);
-      expect(result.roundWinner).toBe(1);
-    });
-
-    it("detects KO for P2", () => {
-      const s = { ...createInitialState(), score2: KO_SCORE };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(true);
-      expect(result.roundWinner).toBe(2);
-    });
-
-    it("detects time up with P1 leading", () => {
-      const s = { ...createInitialState(), roundTimer: 0, score1: 50, score2: 30 };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(true);
-      expect(result.roundWinner).toBe(1);
-    });
-
-    it("detects time up with P2 leading", () => {
-      const s = { ...createInitialState(), roundTimer: 0, score1: 30, score2: 50 };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(true);
-      expect(result.roundWinner).toBe(2);
-    });
-
-    it("tie goes to P1", () => {
-      const s = { ...createInitialState(), roundTimer: 0, score1: 50, score2: 50 };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(true);
-      expect(result.roundWinner).toBe(1);
+    it.each([
+      ["a KO for P1 (score >= 100)", { score1: KO_SCORE }, 1],
+      ["a KO for P2", { score2: KO_SCORE }, 2],
+      ["a KO above 100 points (overflow from multi-point hit)", { score1: KO_SCORE + 3 }, 1],
+      ["both at KO — P1 checked first wins", { score1: KO_SCORE, score2: KO_SCORE }, 1],
+      ["time up with P1 leading", { roundTimer: 0, score1: 50, score2: 30 }, 1],
+      ["time up with P2 leading", { roundTimer: 0, score1: 30, score2: 50 }, 2],
+      ["time up on a tie, which goes to P1", { roundTimer: 0, score1: 50, score2: 50 }, 1],
+    ])("ends on %s", (_case, fields, roundWinner) => {
+      expect(checkRoundEnd({ ...createInitialState(), ...fields })).toEqual({
+        ended: true,
+        roundWinner,
+      });
     });
 
     it("returns not ended during active play", () => {
       const s = { ...createInitialState(), roundTimer: 3600, score1: 50, score2: 50 };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(false);
-    });
-
-    it("KO at exactly 100 points", () => {
-      const s = { ...createInitialState(), score1: KO_SCORE };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(true);
-    });
-
-    it("KO above 100 points (overflow from multi-point hit)", () => {
-      const s = { ...createInitialState(), score1: KO_SCORE + 3 };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(true);
-      expect(result.roundWinner).toBe(1);
-    });
-
-    it("both at KO — P1 checked first wins", () => {
-      const s = { ...createInitialState(), score1: KO_SCORE, score2: KO_SCORE };
-      const result = checkRoundEnd(s);
-      expect(result.ended).toBe(true);
-      expect(result.roundWinner).toBe(1);
+      expect(checkRoundEnd(s).ended).toBe(false);
     });
   });
 
@@ -629,5 +584,63 @@ describe("Hex Boxing Physics", () => {
       const s2 = resetForNewRound(s);
       expect(s2.roundTimer).toBe(ROUND_DURATION);
     });
+  });
+});
+
+describe("stepTick", () => {
+  const idle = released("up", "down", "left", "right", "punch");
+  const fighting = () => ({ ...createInitialState(), phase: PHASE.FIGHTING });
+
+  it("starts a punch on the press, not while the key is held", () => {
+    const punch = { ...idle, punch: true };
+    const { first, held } = pressAndHold(
+      (state, pressed) => stepTick(state, { 1: punch, 2: idle }, pressed),
+      fighting(),
+      { 1: false, 2: false },
+      (state) => ({ ...state, b1punchState: PUNCH_STATE.IDLE }),
+    );
+
+    expect(first.state.b1punchState).toBe(PUNCH_STATE.WINDUP);
+    expect(held.state.b1punchState).toBe(PUNCH_STATE.IDLE);
+  });
+
+  // Player one throws at player two standing 28 px away, the distance a
+  // punch lands from on its second frame in flight.
+  const throwAt = (rival) => {
+    let state = { ...fighting(), b1x: 300, b1y: 240, b1dir: 0, b2x: 328, b2y: 240 };
+    let pressed = { 1: false, 2: false };
+    const landed = [];
+    for (let frame = 0; frame < PUNCH_WINDUP + PUNCH_DURATION; frame++) {
+      const own = { ...idle, punch: frame === 0 };
+      const step = stepTick(state, { 1: own, 2: rival(frame) }, pressed);
+      ({ state, pressed } = step);
+      if (step.events.hits.length > 0) landed.push(frame);
+    }
+    return landed;
+  };
+
+  it("lands nothing during the wind-up", () => {
+    const landed = throwAt(() => idle);
+
+    expect(landed).toHaveLength(1);
+    expect(landed[0]).toBeGreaterThanOrEqual(PUNCH_WINDUP);
+  });
+
+  it("misses a rival who steps back out of reach during the wind-up", () => {
+    const backs = (frame) => ({ ...idle, right: frame >= 4 });
+
+    expect(throwAt(backs)).toEqual([]);
+  });
+
+  it("reports a landed punch with its points, and ticks the round's clock", () => {
+    const state = { ...punching(Math.ceil(PUNCH_DURATION / 2) + 1, 0), phase: PHASE.FIGHTING };
+    state.b2x = state.b1x + BOXER_BODY_RADIUS + PUNCH_RANGE;
+    state.b2y = state.b1y;
+
+    const step = stepTick(state, { 1: idle, 2: idle }, { 1: false, 2: false });
+
+    expect(step.events.hits).toEqual([{ attacker: 1, points: step.state.lastHitPoints }]);
+    expect(step.state.score1).toBe(step.state.lastHitPoints);
+    expect(step.state.roundTimer).toBe(state.roundTimer - 1);
   });
 });

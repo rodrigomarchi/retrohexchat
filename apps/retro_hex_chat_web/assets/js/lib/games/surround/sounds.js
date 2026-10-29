@@ -3,7 +3,7 @@
  * @module games/surround/sounds
  */
 
-import { blip, notes, sweep } from "../core/synth.js";
+import { LOSE_SWEEP, WIN_FANFARE, blip, notes, sweep } from "../core/synth.js";
 
 export const SOUNDS = {
   /** A turn: 200 Hz square, 15 ms, very quiet. */
@@ -15,7 +15,7 @@ export const SOUNDS = {
   /** Rising C5-G5. */
   roundWin: notes([523, 784], { wave: "square", note: 0.1, vol: 0.12 }),
   /** Rising C5-E5-G5-C6-E6. */
-  matchWin: notes([523, 659, 784, 1047, 1319], { wave: "square", note: 0.12, vol: 0.12 }),
+  matchWin: WIN_FANFARE,
   /** Falling 500 → 150 Hz sawtooth, 700 ms. */
-  matchLose: sweep("sawtooth", 500, 150, 0.7, 0.1),
+  matchLose: LOSE_SWEEP,
 };

@@ -9,48 +9,20 @@
  */
 
 import { settleParticles } from "../core/render.js";
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
-import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
+import { ARROWS_WASD_SPACE, ARROW_KEYS, defineGame } from "../core/define_game.js";
 import { createBoxingAI, normalizeBoxingAIDifficulty } from "./ai.js";
 import {
   ROUND_DURATION,
   advanceRound,
-  checkPunchHit,
   checkRoundEnd,
   createInitialState,
-  moveBoxer,
   resetForNewRound,
-  startPunch,
-  tickPunchTimers,
-  tickRoundTimer,
+  stepTick,
 } from "./physics.js";
-// ex_dna:disable-for-lines:11 this game's own defineGame definition
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { createHitParticles, getColors, render, updateParticles } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
-import { roundsFlow } from "../core/rounds.js";
-
-const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
-const SPAWNING_DELAY_TICKS = 60; // 1 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
-
-/** The eight directions as the ring's numbering, or -1 for none. */
-export function direction({ up, down, left, right }) {
-  if (right && !left) {
-    if (up && !down) return 7;
-    if (down && !up) return 1;
-    return 0;
-  }
-  if (left && !right) {
-    if (up && !down) return 5;
-    if (down && !up) return 3;
-    return 4;
-  }
-  if (up && !down) return 6;
-  if (down && !up) return 2;
-  return -1;
-}
+import { closeRoundStep, publishStep, roundsEnding, roundsFlow } from "../core/rounds.js";
 
 function addHitParticles(game, x, y, points) {
   game.particles = [...game.particles, ...createHitParticles(x, y, points, game.fxRandom)];
@@ -59,60 +31,30 @@ function addHitParticles(game, x, y, points) {
 /** One step of the fight on the host. */
 function fight(game) {
   game.updateOpponent();
-  let s = { ...game.gameState, lastHitPlayer: 0, lastHitPoints: 0 };
+  const step = stepTick(
+    game.gameState,
+    { 1: game.localInputs, 2: game.remoteInputs },
+    { 1: game.localPunchPressed, 2: game.remotePunchPressed },
+  );
+  game.localPunchPressed = step.pressed[1];
+  game.remotePunchPressed = step.pressed[2];
+  const s = step.state;
 
-  const p1Dir = direction(game.localInputs);
-  if (p1Dir >= 0) s = moveBoxer(s, 1, p1Dir);
-  const p2Dir = direction(game.remoteInputs);
-  if (p2Dir >= 0) s = moveBoxer(s, 2, p2Dir);
-
-  // A punch starts on the press, not while the key is held.
-  if (game.localInputs.punch && !game.localPunchPressed) s = startPunch(s, 1);
-  game.localPunchPressed = game.localInputs.punch;
-  if (game.remoteInputs.punch && !game.remotePunchPressed) s = startPunch(s, 2);
-  game.remotePunchPressed = game.remoteInputs.punch;
-
-  s = tickPunchTimers(s);
-
-  const prevScore1 = s.score1;
-  s = checkPunchHit(s, 1);
-  const p1HitPoints = s.score1 > prevScore1 ? s.lastHitPoints : 0;
-  const prevScore2 = s.score2;
-  s = checkPunchHit(s, 2);
-  const p2HitPoints = s.score2 > prevScore2 ? s.lastHitPoints : 0;
-
-  if (p1HitPoints) {
-    game.audio.playHit(p1HitPoints);
-    addHitParticles(game, s.b2x, s.b2y, p1HitPoints);
-  }
-  if (p2HitPoints) {
-    game.audio.playHit(p2HitPoints);
-    addHitParticles(game, s.b1x, s.b1y, p2HitPoints);
+  for (const { attacker, points } of step.events.hits) {
+    const defender = attacker === 1 ? "b2" : "b1";
+    game.audio.playHit(points);
+    addHitParticles(game, s[`${defender}x`], s[`${defender}y`], points);
   }
 
-  // ex_dna:disable-for-lines:9 this game's own defineGame definition
-  s = tickRoundTimer(s);
-  if (s.roundTimer <= 900 && s.roundTimer > 0 && s.roundTimer % 60 === 0) {
-    game.audio.playTimerTick();
-  }
+  // A round's end shows the round over until the next countdown.
+  const ended = closeRoundStep(game, s, {
+    checkRoundEnd,
+    advanceRound,
+    sound: (next) => (next.koPlayer > 0 ? game.audio.playKO() : game.audio.playBellEnd()),
+  });
+  if (ended) return;
 
-  const { ended, roundWinner } = checkRoundEnd(s);
-  if (ended) {
-    s = advanceRound(s, roundWinner);
-    if (s.koPlayer > 0) game.audio.playKO();
-    else game.audio.playBellEnd();
-    game.gameState = s;
-    // The match's end reports itself on entering MATCH_OVER; a round's end
-    // shows the round over until the next countdown.
-    if (s.phase !== PHASE.MATCH_OVER) game.broadcast();
-    return;
-  }
-
-  game.particles = updateParticles(game.particles);
-  game.gameState = s;
-  game.invalidate();
-  game.frameCount++;
-  game.broadcast();
+  publishStep(game, s, updateParticles);
 }
 
 /** The guest takes the snapshot field by field, and hears and sees every hit. */
@@ -128,10 +70,10 @@ function applySnapshot(game, decoded) {
 
 export default defineGame({
   inputs: {
-    up: ["ArrowUp", "w", "W"],
-    down: ["ArrowDown", "s", "S"],
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
+    up: ARROW_KEYS.up,
+    down: ARROW_KEYS.down,
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
     punch: [" ", "Shift"],
   },
   captureKeys: [...ARROWS_WASD_SPACE, "Shift"],
@@ -155,9 +97,6 @@ export default defineGame({
   flow: roundsFlow({
     phases: PHASE,
     play: "FIGHTING",
-    countdown: { from: COUNTDOWN_FROM, every: COUNTDOWN_EVERY_TICKS },
-    spawnTicks: SPAWNING_DELAY_TICKS,
-    roundOverTicks: ROUND_OVER_DELAY_TICKS,
     bell: (game) => game.audio.playBellStart(),
     startRound: (game) => {
       game.gameState.roundTimer = ROUND_DURATION;
@@ -180,14 +119,8 @@ export default defineGame({
   cues: [
     { phase: PHASE.COUNTDOWN, play: "countdown" },
     { phase: PHASE.SPAWNING, play: "bellStart" },
-    // ex_dna:disable-for-lines:10 this game's own defineGame definition
     { phase: PHASE.ROUND_OVER, play: "bellEnd" },
   ],
-  onEnd: guestEnd({
-    phase: PHASE.MATCH_OVER,
-    fields: ["roundWins1", "roundWins2"],
-    sound: (game, result) => playOutcome(game, result.winner),
-  }),
+  ...roundsEnding(PHASE),
   render: (game) => render(game.ctx, game.gameState, game.colors, game.frameCount, game.particles),
-  disconnectResult: drawOnDisconnect((s) => [s.roundWins1, s.roundWins2]),
 });

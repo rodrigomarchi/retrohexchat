@@ -5,20 +5,14 @@
  * @module games/pong_protocol
  */
 
+// ex_dna:disable-for-lines:7 this game's own protocol header: its imports and phases
 import { schema, f32, u8, u16 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+import { MSG_TYPE, phases } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
-// Game phase enum
-export const PHASE = {
-  WAITING: 0,
-  COUNTDOWN: 1,
-  SERVING: 2,
-  PLAYING: 3,
-  SCORED: 4,
-  FINISHED: 5,
-};
+/** The match's phases, by their value on the wire. */
+export const PHASE = phases("SERVING", "PLAYING", "SCORED", "FINISHED");
 
 /** The host's snapshot of the match, sent every step. */
 export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { PHASE } from "../../../../js/lib/games/surround/protocol.js";
 import {
   CANVAS_W,
@@ -16,34 +16,12 @@ import {
   drawRoundOver,
   drawMatchOver,
 } from "../../../../js/lib/games/surround/renderer.js";
-
-function createMockCtx() {
-  return {
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 0,
-    globalAlpha: 1.0,
-    font: "",
-    textAlign: "",
-    textBaseline: "",
-    shadowColor: "transparent",
-    shadowBlur: 0,
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-    fillText: vi.fn(),
-    beginPath: vi.fn(),
-    moveTo: vi.fn(),
-    lineTo: vi.fn(),
-    stroke: vi.fn(),
-    fill: vi.fn(),
-    setLineDash: vi.fn(),
-    createRadialGradient: vi.fn(() => ({
-      addColorStop: vi.fn(),
-    })),
-    save: vi.fn(),
-    restore: vi.fn(),
-  };
-}
+import {
+  createMockCtx,
+  describeFullFrames,
+  drawnTexts,
+  itReadsColors,
+} from "../../../support/games/renderer_tests.js";
 
 function createDefaultColors() {
   return {
@@ -56,6 +34,7 @@ function createDefaultColors() {
   };
 }
 
+// ex_dna:disable-for-lines:11 this test file's own context and palette, made fresh per test
 describe("surround_renderer", () => {
   let ctx;
   let colors;
@@ -66,28 +45,7 @@ describe("surround_renderer", () => {
   });
 
   describe("getColors", () => {
-    it("reads CSS custom properties from canvas", () => {
-      const canvas = document.createElement("canvas");
-      canvas.style.setProperty("--game-bg-color", "#111111");
-      document.body.appendChild(canvas);
-
-      const result = getColors(canvas);
-      expect(result.bg).toBeDefined();
-
-      document.body.removeChild(canvas);
-    });
-
-    it("returns fallback colors when properties not set", () => {
-      const canvas = document.createElement("canvas");
-      document.body.appendChild(canvas);
-
-      const result = getColors(canvas);
-      expect(result.bg).toBe("#050510");
-      expect(result.fg).toBe("#00ff41");
-      expect(result.accent).toBe("#00d4ff");
-
-      document.body.removeChild(canvas);
-    });
+    itReadsColors(getColors, { bg: "#050510", fg: "#00ff41", accent: "#00d4ff" });
   });
 
   describe("drawArena", () => {
@@ -161,8 +119,7 @@ describe("surround_renderer", () => {
       // Bitmap digits + round text
       expect(ctx.fillRect).toHaveBeenCalled();
       expect(ctx.fillText).toHaveBeenCalled();
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("ROUND 1");
+      expect(drawnTexts(ctx)).toContain("ROUND 1");
     });
   });
 
@@ -170,15 +127,13 @@ describe("surround_renderer", () => {
     it("draws round over text for P1 win", () => {
       const state = { p1Dead: false, p2Dead: true, score1: 1, score2: 0 };
       drawRoundOver(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("P1 WINS ROUND");
+      expect(drawnTexts(ctx)).toContain("P1 WINS ROUND");
     });
 
     it("draws DRAW when both die", () => {
       const state = { p1Dead: true, p2Dead: true, score1: 0, score2: 0 };
       drawRoundOver(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("DRAW");
+      expect(drawnTexts(ctx)).toContain("DRAW");
     });
   });
 
@@ -186,47 +141,30 @@ describe("surround_renderer", () => {
     it("draws P1 VICTORY when P1 has more wins", () => {
       const state = { score1: 3, score2: 1 };
       drawMatchOver(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("P1 VICTORY!");
+      expect(drawnTexts(ctx)).toContain("P1 VICTORY!");
     });
 
     it("draws P2 VICTORY when P2 has more wins", () => {
       const state = { score1: 1, score2: 3 };
       drawMatchOver(ctx, state, colors, 0);
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("P2 VICTORY!");
+      expect(drawnTexts(ctx)).toContain("P2 VICTORY!");
     });
   });
 
-  describe("the vignette", () => {
-    it("frames every rendered frame with a radial gradient across the canvas", () => {
-      render(ctx, { ...createInitialState(0), phase: PHASE.PLAYING }, colors, 0);
-      expect(ctx.createRadialGradient).toHaveBeenCalled();
-      expect(ctx.fillRect).toHaveBeenLastCalledWith(0, 0, CANVAS_W, CANVAS_H);
-    });
-  });
+  describeFullFrames(
+    {
+      render,
+      start: () => createInitialState(0),
+      playing: PHASE.PLAYING,
+      phases: [PHASE.WAITING, PHASE.COUNTDOWN, PHASE.PLAYING, PHASE.ROUND_OVER, PHASE.MATCH_OVER],
+      ended: { p1Dead: false, p2Dead: true },
+      width: CANVAS_W,
+      height: CANVAS_H,
+    },
+    () => ({ ctx, colors }),
+  );
 
-  describe("render (full frame)", () => {
-    it("renders all phases without throwing", () => {
-      const phases = [
-        PHASE.WAITING,
-        PHASE.COUNTDOWN,
-        PHASE.PLAYING,
-        PHASE.ROUND_OVER,
-        PHASE.MATCH_OVER,
-      ];
-
-      for (const phase of phases) {
-        const state = {
-          ...createInitialState(0),
-          phase,
-          p1Dead: false,
-          p2Dead: true,
-        };
-        expect(() => render(createMockCtx(), state, colors, 0)).not.toThrow();
-      }
-    });
-
+  describe("render (particles)", () => {
     it("renders particles when present", () => {
       const state = {
         ...createInitialState(0),

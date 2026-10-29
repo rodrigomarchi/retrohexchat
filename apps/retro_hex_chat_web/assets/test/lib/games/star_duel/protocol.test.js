@@ -10,6 +10,11 @@ import {
   SNAPSHOT,
   GAME_END,
 } from "../../../../js/lib/games/star_duel/protocol.js";
+import {
+  describeMatchMessages,
+  expectNumbered,
+  itFramesMessages,
+} from "../../../support/games/protocol_tests.js";
 
 const MISSILE_SIZE = 18;
 const GAME_STATE_HEADER_SIZE = 51;
@@ -157,17 +162,7 @@ describe("star_duel_protocol", () => {
       expect(decoded.ship1.vy).toBeCloseTo(-12.25, 1);
     });
 
-    it("returns null for buffer too small (< 51)", () => {
-      expect(SNAPSHOT.decode(new ArrayBuffer(50))).toBeNull();
-      expect(SNAPSHOT.decode(new ArrayBuffer(0))).toBeNull();
-      expect(SNAPSHOT.decode(new ArrayBuffer(1))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(51);
-      new DataView(buf).setUint8(0, 0x81);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
+    itFramesMessages(SNAPSHOT, { short: [50, 0, 1], length: 51, wrongType: 0x81 });
 
     it("roundtrips invulnerability timers and warp cooldowns", () => {
       const state = makeState({
@@ -312,40 +307,15 @@ describe("star_duel_protocol", () => {
   });
 
   describe("rotation clamping", () => {
-    it("normalizes rotation > 2*PI", () => {
-      const ship = makeShip({ rotation: Math.PI * 2 + 1.0 });
-      const state = makeState({ ship1: ship });
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-      expect(decoded.ship1.rotation).toBeCloseTo(1.0, 3);
-    });
-
-    it("normalizes negative rotation", () => {
-      const ship = makeShip({ rotation: -1.0 });
-      const state = makeState({ ship1: ship });
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-      // -1.0 normalized to 2*PI - 1.0
-      expect(decoded.ship1.rotation).toBeCloseTo(Math.PI * 2 - 1.0, 3);
-    });
-
-    it("normalizes very large rotation (> 4*PI)", () => {
-      const ship = makeShip({ rotation: Math.PI * 6 + 0.5 });
-      const state = makeState({ ship1: ship });
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-      expect(decoded.ship1.rotation).toBeCloseTo(0.5, 3);
-    });
-
-    it("rotation of 0 stays 0", () => {
-      const ship = makeShip({ rotation: 0 });
-      const state = makeState({ ship1: ship });
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-      expect(decoded.ship1.rotation).toBeCloseTo(0, 3);
-    });
-
-    it("rotation of exactly 2*PI normalizes to 0", () => {
-      const ship = makeShip({ rotation: Math.PI * 2 });
-      const state = makeState({ ship1: ship });
-      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
-      expect(decoded.ship1.rotation).toBeCloseTo(0, 3);
+    it.each([
+      ["normalizes rotation > 2*PI", Math.PI * 2 + 1.0, 1.0],
+      ["normalizes negative rotation to 2*PI less it", -1.0, Math.PI * 2 - 1.0],
+      ["normalizes very large rotation (> 4*PI)", Math.PI * 6 + 0.5, 0.5],
+      ["keeps a rotation of 0 at 0", 0, 0],
+      ["normalizes exactly 2*PI to 0", Math.PI * 2, 0],
+    ])("%s", (_case, rotation, expected) => {
+      const state = makeState({ ship1: makeShip({ rotation }) });
+      expect(SNAPSHOT.decode(SNAPSHOT.encode(state)).ship1.rotation).toBeCloseTo(expected, 3);
     });
   });
 
@@ -415,76 +385,14 @@ describe("star_duel_protocol", () => {
     });
   });
 
-  describe("GAME_END encode/decode", () => {
-    it("roundtrips player 1 win", () => {
-      const buf = GAME_END.encode({ score1: 5, score2: 3, winner: 1 });
-      expect(buf.byteLength).toBe(4);
-      const decoded = GAME_END.decode(buf);
-      expect(decoded.score1).toBe(5);
-      expect(decoded.score2).toBe(3);
-      expect(decoded.winner).toBe(1);
-    });
-
-    it("roundtrips player 2 win", () => {
-      const decoded = GAME_END.decode(GAME_END.encode({ score1: 2, score2: 5, winner: 2 }));
-      expect(decoded.score1).toBe(2);
-      expect(decoded.score2).toBe(5);
-      expect(decoded.winner).toBe(2);
-    });
-
-    it("sets type byte to GAME_END (0x83)", () => {
-      const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 1 });
-      expect(new DataView(buf).getUint8(0)).toBe(0x83);
-    });
-
-    it("returns null for buffer too small", () => {
-      expect(GAME_END.decode(new ArrayBuffer(3))).toBeNull();
-      expect(GAME_END.decode(new ArrayBuffer(0))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(4);
-      new DataView(buf).setUint8(0, 0x80);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
-  });
-
-  describe("GAME_READY encode", () => {
-    it("produces 1 byte with type GAME_READY", () => {
-      const buf = encodeGameReady();
-      expect(buf.byteLength).toBe(1);
-      expect(new DataView(buf).getUint8(0)).toBe(0x84);
-    });
-  });
-
-  describe("getMessageType", () => {
-    it("returns null for empty buffer", () => {
-      expect(getMessageType(new ArrayBuffer(0))).toBeNull();
-    });
-
-    it("reads type from single byte buffer", () => {
-      const buf = new ArrayBuffer(1);
-      new DataView(buf).setUint8(0, 0x99);
-      expect(getMessageType(buf)).toBe(0x99);
-    });
-
-    it("reads first byte only regardless of buffer size", () => {
-      const buf = new ArrayBuffer(100);
-      new DataView(buf).setUint8(0, 0x42);
-      expect(getMessageType(buf)).toBe(0x42);
-    });
-  });
+  describeMatchMessages(
+    { GAME_END, MSG_TYPE, encodeGameReady, getMessageType },
+    { score1: 5, score2: 3, winner: 1 },
+  );
 
   describe("protocol constants", () => {
-    it("all message types are >= 0x80 (game message range)", () => {
-      for (const type of Object.values(MSG_TYPE)) {
-        expect(type).toBeGreaterThanOrEqual(0x80);
-      }
-    });
-
     it("PHASE enum has 6 values (0-5)", () => {
-      expect(Object.keys(PHASE)).toHaveLength(6);
-      expect(PHASE.WAITING).toBe(0);
+      expectNumbered(PHASE, 6);
       expect(PHASE.FINISHED).toBe(5);
     });
 

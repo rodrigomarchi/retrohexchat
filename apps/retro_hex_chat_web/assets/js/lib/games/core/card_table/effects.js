@@ -318,3 +318,17 @@ export const cascadeFrom = (fx, places, piles, view, now, random) =>
     now,
     random,
   );
+
+/**
+ * A game's win, as its `cascadeEffects(fx, table, now, random)`: the piles
+ * `piles` reads off the table (its foundations, each bottom card first) leave
+ * from the foundations' places `layout` gives, across the view of the
+ * table's geometry.
+ * @param {{ layout: (table: object) => { foundations: object[] },
+ *   geometryOf: (table: object) => { view: object },
+ *   piles?: (table: object) => number[][] }} table
+ */
+export const foundationCascade =
+  ({ layout, geometryOf, piles = (table) => table.foundations }) =>
+  (fx, table, now, random) =>
+    cascadeFrom(fx, layout(table).foundations, piles(table), geometryOf(table).view, now, random);

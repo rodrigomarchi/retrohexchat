@@ -102,6 +102,7 @@ describe("a screen's byte", () => {
   });
 
   it("the object: logs, fire or a snake — none beside crocodiles or a treasure", () => {
+    // ex_dna:disable-for-lines:10 the expected table written out, apart from the code
     expect([0, 1, 2, 3, 4, 5, 6, 7].map((o) => decodeScene(byte(2, o)).hazard)).toEqual([
       { kind: "log", count: 1, rolling: true, spread: "close" },
       { kind: "log", count: 2, rolling: true, spread: "close" },

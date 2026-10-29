@@ -1,57 +1,60 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import HexSolitaire from "../../../../js/lib/games/hex_solitaire/index.js";
 import { layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
 import { GEOMETRY, MODE, PHASE } from "../../../../js/lib/games/hex_solitaire/protocol.js";
-import { playMatch } from "../../../support/games/harness.js";
+import { card } from "../../../support/games/card_tables.js";
+import {
+  itEndsEarly,
+  itReplays,
+  soloMatches,
+  underway,
+} from "../../../support/games/solo_tests.js";
 
-const card = (rank, suit) => suit * 13 + rank - 1;
 const full = (suit, upTo = 13) => Array.from({ length: upTo }, (_, r) => card(r + 1, suit));
-// The canvas has twice the game's pixels; the page lays it out at the game's size.
-const rect = { left: 0, top: 0, width: 640, height: 480 };
-const solo = (options = {}) =>
-  playMatch({
-    EngineClass: HexSolitaire,
-    gameId: "hex_solitaire",
-    mode: "solo",
-    matchSeed: 42,
-    rect,
-    ...options,
-  });
 const centre = (r) => [r.x + 20, r.y + 20];
+/** A tap on the stock, and a tenth of a second for it to play. */
+function tapStock(match, host) {
+  match.tap(...centre(layout(host.gameState.table).stock));
+  match.advance(100);
+}
+
+/** The host's table one move from a win: the king of clubs alone in the first column. */
+function oneMoveFromWin(host) {
+  const tableau = Array.from({ length: 7 }, (_, i) => ({
+    down: [],
+    up: i === 0 ? [card(13, 3)] : [],
+  }));
+  return {
+    ...host.gameState,
+    table: {
+      ...host.gameState.table,
+      stock: [],
+      waste: [],
+      fan: 0,
+      tableau,
+      foundations: [full(0), full(1), full(2), full(3, 12)],
+    },
+  };
+}
 
 describe("a match of Hex Solitaire", () => {
-  let match;
-
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
+  // The canvas has twice the game's pixels; the page lays it out at the game's size.
+  const solo = soloMatches(HexSolitaire, "hex_solitaire");
 
   it("begins dealt, and a tap on the stock turns a card and starts the clock", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     expect(host.gameState.phase).toBe(PHASE.PLAYING);
     expect(host.gameState.table.mode).toBe(MODE.DRAW1);
 
-    const [x, y] = centre(layout(host.gameState.table).stock);
-    match.pointer("down", x, y);
-    match.pointer("up", x, y);
-    match.advance(100);
+    tapStock(match, host);
     expect(host.gameState.table.waste).toHaveLength(1);
     expect(host.gameState.clock.started).toBe(true);
   });
 
   it("turns the back of the cards with a tap on the stock before the match begins", async () => {
-    match = await solo({ begin: false });
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo, { begin: false });
     const back = host.back;
-    const [x, y] = centre(layout(host.gameState.table).stock);
-    match.pointer("down", x, y);
-    match.pointer("up", x, y);
-    match.advance(100);
+    tapStock(match, host);
 
     expect(host.back).toBe((back + 1) % 4);
     expect(host.gameState.phase).toBe(PHASE.WAITING);
@@ -59,7 +62,7 @@ describe("a match of Hex Solitaire", () => {
   });
 
   it("draws the table at rest once the deal has landed, not its last moment in the air", async () => {
-    match = await solo();
+    const match = await solo();
     const { canvas } = match.engines.host;
     match.advance(1000);
     canvas.recording = true;
@@ -79,9 +82,9 @@ describe("a match of Hex Solitaire", () => {
   });
 
   it("stands the table up in a box taller than wide, as on a phone held upright", async () => {
-    match = await solo({ rect: { left: 0, top: 0, width: 360, height: 560 } });
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo, {
+      rect: { left: 0, top: 0, width: 360, height: 560 },
+    });
     expect(host.view).toEqual(GEOMETRY.PORTRAIT.view);
     expect(host.gameState.table.geometry).toBe(GEOMETRY.PORTRAIT);
 
@@ -91,47 +94,27 @@ describe("a match of Hex Solitaire", () => {
     const top = (560 - GEOMETRY.PORTRAIT.view.height * scale) / 2;
     const x = (stock.x + 20) * scale;
     const y = top + (stock.y + 20) * scale;
-    match.pointer("down", x, y);
-    match.pointer("up", x, y);
+    match.tap(x, y);
     match.advance(100);
     expect(host.gameState.table.waste).toHaveLength(1);
   });
 
   it("lies the table down in a box wider than tall", async () => {
-    match = await solo();
+    const match = await solo();
     expect(match.engines.host.view).toEqual(GEOMETRY.LANDSCAPE.view);
     expect(match.engines.host.gameState.table.geometry).toBe(GEOMETRY.LANDSCAPE);
   });
 
   it("plays draw three for its mode", async () => {
-    match = await solo({ gameId: "hex_solitaire_draw3" });
+    const match = await solo({ gameId: "hex_solitaire_draw3" });
     expect(match.engines.host.gameState.table.mode).toBe(MODE.DRAW3);
   });
 
   it("wins a table one move from the end, reporting the score with its time bonus once", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
-    const tableau = Array.from({ length: 7 }, (_, i) => ({
-      down: [],
-      up: i === 0 ? [card(13, 3)] : [],
-    }));
-    host.gameState = {
-      ...host.gameState,
-      table: {
-        ...host.gameState.table,
-        stock: [],
-        waste: [],
-        fan: 0,
-        tableau,
-        foundations: [full(0), full(1), full(2), full(3, 12)],
-      },
-      score: 100,
-      clock: { started: true, ticks: 0 },
-    };
+    const { match, host } = await underway(solo);
+    host.gameState = { ...oneMoveFromWin(host), score: 100, clock: { started: true, ticks: 0 } };
     const [x, y] = centre(layout(host.gameState.table).columns[0].cards[0]);
-    match.pointer("down", x, y);
-    match.pointer("up", x, y);
+    match.tap(x, y);
     match.advance(200);
 
     // The cascade plays before the result is told, so the page still shows it.
@@ -144,30 +127,12 @@ describe("a match of Hex Solitaire", () => {
   });
 
   it("ends the celebration at a tap", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
-    const tableau = Array.from({ length: 7 }, (_, i) => ({
-      down: [],
-      up: i === 0 ? [card(13, 3)] : [],
-    }));
-    host.gameState = {
-      ...host.gameState,
-      table: {
-        ...host.gameState.table,
-        stock: [],
-        waste: [],
-        fan: 0,
-        tableau,
-        foundations: [full(0), full(1), full(2), full(3, 12)],
-      },
-    };
+    const { match, host } = await underway(solo);
+    host.gameState = oneMoveFromWin(host);
     const [x, y] = centre(layout(host.gameState.table).columns[0].cards[0]);
-    match.pointer("down", x, y);
-    match.pointer("up", x, y);
+    match.tap(x, y);
     match.advance(300);
-    match.pointer("down", 300, 300);
-    match.pointer("up", 300, 300);
+    match.tap(300, 300);
     match.advance(100);
 
     expect(host.gameState.phase).toBe(PHASE.FINISHED);
@@ -175,9 +140,7 @@ describe("a match of Hex Solitaire", () => {
   });
 
   it("drags a card onto a column that takes it", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     const tableau = Array.from({ length: 7 }, (_, i) => ({
       down: [],
       up: i === 0 ? [card(7, 0)] : i === 1 ? [card(6, 1)] : [],
@@ -196,28 +159,10 @@ describe("a match of Hex Solitaire", () => {
     expect(host.drag).toBeNull();
   });
 
-  it("ends early with the points it holds", async () => {
-    match = await solo();
-    match.advance(500);
-    match.engines.host.quit();
-    expect(match.results.host).toEqual([{ score: { p1: 0, p2: 0 }, ended_early: true }]);
-  });
+  itEndsEarly("ends early with the points it holds", solo);
 
-  it("plays the same match for the same seed and the same presses", async () => {
-    const script = [
-      { at: 300, side: "host", pointer: "down", x: 70, y: 70 },
-      { at: 330, side: "host", pointer: "up", x: 70, y: 70 },
-      { at: 600, side: "host", pointer: "down", x: 70, y: 70 },
-      { at: 630, side: "host", pointer: "up", x: 70, y: 70 },
-    ];
-    const finalState = async () => {
-      const m = await solo({ script });
-      m.advance(2000);
-      const state = JSON.stringify(m.engines.host.gameState);
-      m.stop();
-      m.restore();
-      return state;
-    };
-    expect(await finalState()).toBe(await finalState());
-  });
+  itReplays(solo, [
+    [300, 70, 70],
+    [600, 70, 70],
+  ]);
 });

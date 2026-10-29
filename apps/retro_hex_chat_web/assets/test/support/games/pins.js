@@ -1,8 +1,8 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { digest } from "./digest.js";
-import { playMatch } from "./harness.js";
+import { matchPerTest, recordedMatch } from "./harness.js";
 import { voices } from "./voices.js";
 
 /**
@@ -62,53 +62,27 @@ export function pinGame(
   ];
 
   describe(`${gameId} pins`, { timeout: PIN_TIMEOUT_MS }, () => {
-    let match;
-
-    afterEach(() => {
-      match?.stop();
-      match?.restore();
-      match = null;
-    });
+    const play = matchPerTest();
 
     it("solo against the AI", async () => {
-      match = await playMatch({ gameId, mode: "solo", seed: 1 });
-      const ended = match.runUntil(() => match.over(), soloMs);
-      const record = match.record();
-      dump(gameId, "solo", record);
-
-      expect({ ended, ...summarize(record) }).toMatchSnapshot();
+      await pinPlayedOut(play, { gameId, mode: "solo", seed: 1 }, soloMs, "solo");
     });
 
     for (const variant of variants) {
       it(`solo against the AI: ${variant}`, async () => {
-        match = await playMatch({ gameId: variant, mode: "solo", seed: 1 });
-        const ended = match.runUntil(() => match.over(), soloMs);
-        const record = match.record();
-        dump(variant, "solo", record);
-
-        expect({ ended, ...summarize(record) }).toMatchSnapshot();
+        await pinPlayedOut(play, { gameId: variant, mode: "solo", seed: 1 }, soloMs, "solo");
       });
     }
 
     for (const id of [gameId, ...variants]) {
       it(`solo to the end: ${id}`, async () => {
-        match = await playMatch({
-          gameId: id,
-          mode: "solo",
-          seed: 1,
-          matchSeed: 3,
-          difficulty: "hard",
-        });
-        const ended = match.runUntil(() => match.over(), endMs);
-        const record = match.record();
-        dump(id, "end", record);
-
-        expect({ ended, ...summarize(record) }).toMatchSnapshot();
+        const options = { gameId: id, mode: "solo", seed: 1, matchSeed: 3, difficulty: "hard" };
+        await pinPlayedOut(play, options, endMs, "end");
       });
     }
 
     it("P2P following the key script", async () => {
-      match = await playMatch({ gameId, mode: "p2p", seed: 2, script: both() });
+      const match = await play({ gameId, mode: "p2p", seed: 2, script: both() });
       match.advance(p2pMs);
       const record = match.record();
       dump(gameId, "p2p", record);
@@ -117,7 +91,7 @@ export function pinGame(
     });
 
     it("P2P over a channel that loses datagrams", async () => {
-      match = await playMatch({ gameId, mode: "p2p", seed: 2, script: both(), drop: lossy() });
+      const match = await play({ gameId, mode: "p2p", seed: 2, script: both(), drop: lossy() });
       match.advance(p2pMs);
       const record = match.record();
       dump(gameId, "lossy", record);
@@ -126,7 +100,7 @@ export function pinGame(
     });
 
     it("the channel drops mid-match", async () => {
-      match = await playMatch({ gameId, mode: "p2p", seed: 2, script: both() });
+      const match = await play({ gameId, mode: "p2p", seed: 2, script: both() });
       match.advance(disconnectAtMs);
       match.close();
       match.advance(1000);
@@ -142,18 +116,7 @@ export function pinGame(
       }).toMatchSnapshot();
     });
 
-    it("records the same match the same way twice", async () => {
-      const play = async () => {
-        const run = await playMatch({ gameId, mode: "p2p", seed: 3, script: both() });
-        run.advance(10_000);
-        const record = run.record();
-        run.stop();
-        run.restore();
-        return record;
-      };
-
-      expect(digest(await play())).toBe(digest(await play()));
-    });
+    itRecordsTheSameTwice({ gameId, mode: "p2p", seed: 3, script: both() });
   });
 }
 
@@ -162,50 +125,42 @@ function pinOnePlayer(gameId, { script, soloMs, endMs, endScript }) {
   const host = (presses) => presses.map((press) => ({ ...press, side: "host" }));
 
   describe(`${gameId} pins`, { timeout: PIN_TIMEOUT_MS }, () => {
-    let match;
-
-    afterEach(() => {
-      match?.stop();
-      match?.restore();
-      match = null;
-    });
+    const play = matchPerTest();
 
     it("solo following the key script", async () => {
-      match = await playMatch({ gameId, mode: "solo", seed: 1, script: host(script("host")) });
-      const ended = match.runUntil(() => match.over(), soloMs);
-      const record = match.record();
-      dump(gameId, "solo", record);
-
-      expect({ ended, ...summarize(record) }).toMatchSnapshot();
+      const options = { gameId, mode: "solo", seed: 1, script: host(script("host")) };
+      await pinPlayedOut(play, options, soloMs, "solo");
     });
 
     it(`solo to the end: ${gameId}`, async () => {
-      match = await playMatch({ gameId, mode: "solo", seed: 1, script: host(endScript("host")) });
-      const ended = match.runUntil(() => match.over(), endMs);
-      const record = match.record();
-      dump(gameId, "end", record);
-
-      expect({ ended, ...summarize(record) }).toMatchSnapshot();
+      const options = { gameId, mode: "solo", seed: 1, script: host(endScript("host")) };
+      await pinPlayedOut(play, options, endMs, "end");
     });
 
-    it("records the same match the same way twice", async () => {
-      const play = async () => {
-        const run = await playMatch({
-          gameId,
-          mode: "solo",
-          seed: 3,
-          script: host(script("host")),
-        });
-        run.advance(10_000);
-        const record = run.record();
-        run.stop();
-        run.restore();
-        return record;
-      };
-
-      expect(digest(await play())).toBe(digest(await play()));
-    });
+    itRecordsTheSameTwice({ gameId, mode: "solo", seed: 3, script: host(script("host")) });
   });
+}
+
+/** The same match, played twice for ten seconds, recorded the same way. */
+function itRecordsTheSameTwice(options) {
+  it("records the same match the same way twice", async () => {
+    const record = () => recordedMatch(options, 10_000);
+
+    expect(digest(await record())).toBe(digest(await record()));
+  });
+}
+
+/**
+ * A match played until it is over or `limit` ms pass, its summary pinned and
+ * its full record dumped as `scenario`.
+ */
+async function pinPlayedOut(play, options, limit, scenario) {
+  const match = await play(options);
+  const ended = match.runUntil(() => match.over(), limit);
+  const record = match.record();
+  dump(options.gameId, scenario, record);
+
+  expect({ ended, ...summarize(record) }).toMatchSnapshot();
 }
 
 /**

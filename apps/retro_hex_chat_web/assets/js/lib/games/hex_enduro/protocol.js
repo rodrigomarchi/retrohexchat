@@ -6,18 +6,12 @@
  */
 
 import { schema, bits, list, u8, u16, u32 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+import { MSG_TYPE, phases } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
-// Game phase enum
-export const PHASE = {
-  WAITING: 0,
-  COUNTDOWN: 1,
-  RACING: 2,
-  DAY_END: 3,
-  FINISHED: 4,
-};
+/** The match's phases, by their value on the wire. */
+export const PHASE = phases("RACING", "DAY_END", "FINISHED");
 
 // Game mode enum
 export const GAME_MODE = {

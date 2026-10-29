@@ -7,33 +7,7 @@ import {
 } from "../../../../js/lib/games/hex_outlaw/renderer.js";
 import { createInitialState } from "../../../../js/lib/games/hex_outlaw/physics.js";
 import { PHASE, GAME_MODE } from "../../../../js/lib/games/hex_outlaw/protocol.js";
-
-function createMockCtx() {
-  return {
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-    fillText: vi.fn(),
-    beginPath: vi.fn(),
-    arc: vi.fn(),
-    fill: vi.fn(),
-    stroke: vi.fn(),
-    moveTo: vi.fn(),
-    lineTo: vi.fn(),
-    clearRect: vi.fn(),
-    save: vi.fn(),
-    restore: vi.fn(),
-    createLinearGradient: vi.fn(() => ({
-      addColorStop: vi.fn(),
-    })),
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 1,
-    lineCap: "butt",
-    font: "",
-    textAlign: "start",
-    textBaseline: "alphabetic",
-  };
-}
+import { itRendersEach } from "../../../support/games/renderer_tests.js";
 
 function createMockCanvas() {
   vi.spyOn(window, "getComputedStyle").mockReturnValue({
@@ -55,6 +29,19 @@ function createMockCanvas() {
   return { width: 640, height: 480 };
 }
 
+/** The palette the renders draw with. */
+const COLORS = Object.freeze({
+  bg: "#1a0a1e",
+  fg: "#39ff14",
+  accent: "#00e5ff",
+  muted: "#3d1f0a",
+  glow: "rgba(255,140,0,0.15)",
+  warning: "#ff4444",
+  rope: "#c4956a",
+  ring: "#2a1508",
+  hit: "#ffffff",
+});
+
 describe("Hex Outlaw Renderer", () => {
   describe("getColors", () => {
     it("extracts CSS custom properties", () => {
@@ -72,128 +59,40 @@ describe("Hex Outlaw Renderer", () => {
   });
 
   describe("render", () => {
-    it("renders WAITING phase without error", () => {
-      const ctx = createMockCtx();
-      const state = createInitialState(GAME_MODE.QUICK_DRAW);
-      const colors = {
-        bg: "#1a0a1e",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#3d1f0a",
-        glow: "rgba(255,140,0,0.15)",
-        warning: "#ff4444",
-        rope: "#c4956a",
-        ring: "#2a1508",
-        hit: "#ffffff",
-      };
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
+    const at = (fields, mode = GAME_MODE.QUICK_DRAW) => ({
+      ...createInitialState(mode),
+      ...fields,
     });
+    const bullet = { b1active: true, b1x: 200, b1y: 200, b1vx: 8, b1vy: 0 };
 
-    it("renders PLAYING phase without error", () => {
-      const ctx = createMockCtx();
-      const state = { ...createInitialState(GAME_MODE.QUICK_DRAW), phase: PHASE.PLAYING };
-      const colors = {
-        bg: "#1a0a1e",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#3d1f0a",
-        glow: "rgba(255,140,0,0.15)",
-        warning: "#ff4444",
-        rope: "#c4956a",
-        ring: "#2a1508",
-        hit: "#ffffff",
-      };
-      expect(() => render(ctx, state, colors, 30, [])).not.toThrow();
-    });
-
-    it("renders with active bullets without error", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(GAME_MODE.QUICK_DRAW),
-        phase: PHASE.PLAYING,
-        b1active: true,
-        b1x: 200,
-        b1y: 200,
-        b1vx: 8,
-        b1vy: 0,
-      };
-      const colors = {
-        bg: "#1a0a1e",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#3d1f0a",
-        glow: "rgba(255,140,0,0.15)",
-        warning: "#ff4444",
-        rope: "#c4956a",
-        ring: "#2a1508",
-        hit: "#ffffff",
-      };
-      expect(() => render(ctx, state, colors, 10, [])).not.toThrow();
-    });
-
-    it("renders MATCH_OVER phase without error", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(GAME_MODE.QUICK_DRAW),
-        phase: PHASE.MATCH_OVER,
-        roundWins1: 2,
-        roundWins2: 1,
-      };
-      const colors = {
-        bg: "#1a0a1e",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#3d1f0a",
-        glow: "rgba(255,140,0,0.15)",
-        warning: "#ff4444",
-        rope: "#c4956a",
-        ring: "#2a1508",
-        hit: "#ffffff",
-      };
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders with particles without error", () => {
-      const ctx = createMockCtx();
-      const state = createInitialState(GAME_MODE.QUICK_DRAW);
-      const colors = {
-        bg: "#1a0a1e",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#3d1f0a",
-        glow: "rgba(255,140,0,0.15)",
-        warning: "#ff4444",
-        rope: "#c4956a",
-        ring: "#2a1508",
-        hit: "#ffffff",
-      };
-      const particles = createHitParticles(200, 200);
-      expect(() => render(ctx, state, colors, 0, particles)).not.toThrow();
-    });
-
-    it("renders all game modes without error", () => {
-      const ctx = createMockCtx();
-      const colors = {
-        bg: "#1a0a1e",
-        fg: "#39ff14",
-        accent: "#00e5ff",
-        muted: "#3d1f0a",
-        glow: "rgba(255,140,0,0.15)",
-        warning: "#ff4444",
-        rope: "#c4956a",
-        ring: "#2a1508",
-        hit: "#ffffff",
-      };
-      for (const mode of [
-        GAME_MODE.QUICK_DRAW,
-        GAME_MODE.RICOCHET,
-        GAME_MODE.STAGECOACH,
-        GAME_MODE.NO_MANS_LAND,
-      ]) {
-        const state = { ...createInitialState(mode), phase: PHASE.PLAYING };
-        expect(() => render(ctx, state, colors, 10, [])).not.toThrow();
-      }
-    });
+    itRendersEach(render, COLORS, [
+      { name: "the waiting street", state: at() },
+      { name: "the duel", state: at({ phase: PHASE.PLAYING }), frame: 30 },
+      { name: "a bullet in flight", state: at({ phase: PHASE.PLAYING, ...bullet }), frame: 10 },
+      {
+        name: "the match over",
+        state: at({ phase: PHASE.MATCH_OVER, roundWins1: 2, roundWins2: 1 }),
+      },
+      { name: "hit particles", state: at(), particles: createHitParticles(200, 200) },
+      ...Object.entries(GAME_MODE).map(([mode, value]) => ({
+        name: `the ${mode} street`,
+        state: at({ phase: PHASE.PLAYING }, value),
+        frame: 10,
+      })),
+      { name: "the countdown", state: at({ phase: PHASE.COUNTDOWN, countdown: 3 }) },
+      { name: "the spawn", state: at({ phase: PHASE.SPAWNING }) },
+      {
+        name: "the freeze after a hit",
+        state: at({ phase: PHASE.HIT_PAUSE, hitPauseTimer: 45, lastHitPlayer: 1 }),
+      },
+      { name: "a round over", state: at({ phase: PHASE.ROUND_OVER, roundWins1: 1 }) },
+      { name: "a hit flash", state: at({ phase: PHASE.HIT_PAUSE, lastHitPlayer: 2 }) },
+      {
+        name: "the stagecoach on the move",
+        state: at({ phase: PHASE.PLAYING, obsY: 100 }, GAME_MODE.STAGECOACH),
+        frame: 20,
+      },
+    ]);
   });
 
   describe("particles", () => {
@@ -235,81 +134,6 @@ describe("Hex Outlaw Renderer", () => {
       const updated = updateParticles(particles);
       expect(updated[0].x).toBe(13);
       expect(updated[0].y).toBe(18);
-    });
-  });
-
-  describe("render edge cases", () => {
-    const colors = {
-      bg: "#1a0a1e",
-      fg: "#39ff14",
-      accent: "#00e5ff",
-      muted: "#3d1f0a",
-      glow: "rgba(255,140,0,0.15)",
-      warning: "#ff4444",
-      rope: "#c4956a",
-      ring: "#2a1508",
-      hit: "#ffffff",
-    };
-
-    it("renders COUNTDOWN phase without error", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(GAME_MODE.QUICK_DRAW),
-        phase: PHASE.COUNTDOWN,
-        countdown: 3,
-      };
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders SPAWNING phase without error", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(GAME_MODE.QUICK_DRAW),
-        phase: PHASE.SPAWNING,
-      };
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders HIT_PAUSE phase without error", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(GAME_MODE.QUICK_DRAW),
-        phase: PHASE.HIT_PAUSE,
-        hitPauseTimer: 45,
-        lastHitPlayer: 1,
-      };
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders ROUND_OVER phase without error", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(GAME_MODE.QUICK_DRAW),
-        phase: PHASE.ROUND_OVER,
-        roundWins1: 1,
-        roundWins2: 0,
-      };
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders with lastHitPlayer flag for hit flash", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(GAME_MODE.QUICK_DRAW),
-        phase: PHASE.HIT_PAUSE,
-        lastHitPlayer: 2,
-      };
-      expect(() => render(ctx, state, colors, 0, [])).not.toThrow();
-    });
-
-    it("renders stagecoach mode with moving obstacle", () => {
-      const ctx = createMockCtx();
-      const state = {
-        ...createInitialState(GAME_MODE.STAGECOACH),
-        phase: PHASE.PLAYING,
-        obsY: 100,
-      };
-      expect(() => render(ctx, state, colors, 20, [])).not.toThrow();
     });
   });
 });

@@ -8,6 +8,7 @@ import {
   SNAPSHOT,
   GAME_END,
 } from "../../../../js/lib/games/breakout/protocol.js";
+import { describeHandshake, itFramesMessages } from "../../../support/games/protocol_tests.js";
 
 describe("breakout_protocol", () => {
   describe("encodeGameState / decodeGameState", () => {
@@ -64,17 +65,7 @@ describe("breakout_protocol", () => {
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
     });
 
-    it("returns null for buffer too small", () => {
-      const buf = new ArrayBuffer(5);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(34);
-      const view = new DataView(buf);
-      view.setUint8(0, 0x81);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
+    itFramesMessages(SNAPSHOT, { short: [5], length: 34, wrongType: 0x81 });
 
     it("round-trips zero score and max lives accurately", () => {
       const state = {
@@ -121,39 +112,10 @@ describe("breakout_protocol", () => {
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_END);
     });
 
-    it("returns null for buffer too small", () => {
-      const buf = new ArrayBuffer(2);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(4);
-      const view = new DataView(buf);
-      view.setUint8(0, 0x81);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
+    itFramesMessages(GAME_END, { short: [2], length: 4, wrongType: 0x81 });
   });
 
-  describe("encodeGameReady", () => {
-    it("encodes single byte with correct type", () => {
-      const buf = encodeGameReady();
-      expect(buf.byteLength).toBe(1);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_READY);
-    });
-  });
-
-  describe("getMessageType", () => {
-    it("returns null for empty buffer", () => {
-      const buf = new ArrayBuffer(0);
-      expect(getMessageType(buf)).toBeNull();
-    });
-
-    it("returns type byte from buffer", () => {
-      const buf = new ArrayBuffer(1);
-      new DataView(buf).setUint8(0, 0x83);
-      expect(getMessageType(buf)).toBe(0x83);
-    });
-  });
+  describeHandshake({ encodeGameReady, getMessageType, MSG_TYPE });
 
   describe("constants", () => {
     it("has 50 total blocks", () => {

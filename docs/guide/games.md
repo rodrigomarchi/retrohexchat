@@ -17,16 +17,16 @@ another copy of the core (§G.5).
 
 | Need | Module |
 |---|---|
-| The engine class from a definition | `core/define_game.js` — `defineGame(def)`; its header lists every field and hook. `ARROWS_WASD_SPACE` is the usual `captureKeys`; nothing is rendered before `theme` has given the colours |
+| The engine class from a definition | `core/define_game.js` — `defineGame(def)`; its header lists every field and hook. `ARROWS_WASD_SPACE` is the usual `captureKeys` and `ARROW_KEYS.up`/`down`/`left`/`right` the keys an input names; nothing is rendered before `theme` has given the colours. For a game whose id picks its mode and whose host seeds its world: `seededInit(modes, fallback, create)` (`init`), `drawSeed(game)`, `freshOnHost(create)` (`onStart`); `packedSnapshot(pack, unpack)` for a state sent packed flat; `game.forgetMatch()` lets go of every input and the peer between matches |
 | Phases and their timing | `core/flow.js` — states with `tick`, `enter`, `after: { ticks }`, `every`, `next`, `final` |
-| A match played in rounds | `core/rounds.js` — `roundsFlow({ … })`: countdown, bell, round, round-over pause, match end; `countdownState({ from, every, next, capture })` for the spoken countdown alone; `tallyRound` counts a round's win |
+| A match played in rounds | `core/rounds.js` — `roundsFlow({ … })`: countdown, bell, round, round-over pause, match end; `countdownState({ next, capture })` for the spoken countdown alone and `beepCountdownState({ next, start, capture })` for one that beeps as each second passes (both from `COUNTDOWN`, three a second, unless told); `tallyRound` counts a round's win, `closeRound` leaves ROUND_OVER or MATCH_OVER, `pointsReached` ends a round on points; a round's step ends with `publishStep`, `endRoundStep` or — timed — `closeRoundStep`; `roundsEnding(PHASE)` is the guest's end and the disconnect's result |
 | The wire | `core/codec.js` — `schema(type, fields)` with `u8`, `i16`, `flags`, `struct`, `list`, … |
-| Message types and dispatch | `core/messages.js`; a `protocol.js` re-exports `core/protocol_base.js` (`MSG_TYPE`, `encodeGameReady`, `getMessageType`) |
+| Message types and dispatch | `core/messages.js`; a `protocol.js` re-exports `core/protocol_base.js` (`MSG_TYPE`, `encodeGameReady`, `getMessageType`), which also has `phases(...names)` (WAITING 0, COUNTDOWN 1, then the game's own) and the wire pieces games share: `ROUNDS_GAME_END`, `ROUND_STANDING_FIELDS`, `missileFields(prefix)`, `SEEDED_MATCH_HEADER` |
 | Randomness | `core/rng.js` — `createRng(seed)`; a game gets `game.random` (simulation), `game.fxRandom` (effects) and its AI a stream of its own |
-| Sounds | `core/synth.js` — a sound is data (`blip`, `sweep`, `notes`, voices); `createGameAudio` turns a table into `playX()` methods |
+| Sounds | `core/synth.js` — a sound is data (`blip`, `ring`, `sweep`, `notes`, voices); `FANFARE`, `WIN_FANFARE` and `LOSE_SWEEP` are the ends of a match most games share; `createGameAudio` turns a table into `playX()` methods |
 | What the guest hears | `core/events.js` — `cues` (phase, change, rise, flags, when) and `playFlags` for the host |
-| The result the server is told, and the end | `core/result.js` — `matchResult(p1, p2, winner)`; `drawOnDisconnect((s) => [p1, p2])` for `disconnectResult`; `guestEnd({ phase, fields, sound })` for `onEnd`; `playOutcome(game, winner, win, lose)` for the ending sound |
-| Drawing chrome | `core/render.js` — background, scanlines, vignette, grid, digits, centred and glitched text, the closing banner, countdown, waiting, particles |
+| The result the server is told, and the end | `core/result.js` — `matchResult(p1, p2, winner)`; `drawOnDisconnect((s) => [p1, p2])` for `disconnectResult`; `guestEnd({ phase, fields, sound })` for `onEnd`, `raceEnd(phase, quiet)` for a race's; `playOutcome(game, winner, win, lose)` for the ending sound; `finishScored(game, score1, score2, winner)` ends a match scored in two numbers |
+| Drawing chrome | `core/render.js` — background, scanlines, vignette, grid, digits, centred and glitched text, the closing banner, countdown, waiting, particles (`stepParticles` with a game's own `velocity`, `drawSquareParticles`), shots (`drawShotTrail`, `drawShotDot`), a duel's `drawScoreLabels` and `drawRoundDots`, `drawTopLabel`, and the `GREEN_ON_BLACK` colours to read |
 | A ball off a paddle | `core/paddle.js` — `paddleBounce`: the angle from where it hit, the speed up to a ceiling; `moveBall` |
 | The neon bat-and-ball look | `core/neon.js` — `neonColors`, `drawNeonPaddle`, `drawNeonBall` (Pong and Block Breakers); a module of its own, so the other games do not load it |
 | A person on platforms | `core/platform.js` — `jumpStep` (a jump read from a table of lines a tick), `fall`, `ladderGrab`, `climbStep`, `overlaps`, `edgeExit`, `cadence`; a module of its own, so the other games do not load it |
@@ -38,7 +38,7 @@ another copy of the core (§G.5).
 | A board that hardly changes | `core/layers.js` — `createLayer(width, height, resolution)`: a canvas off the screen drawn once and copied each frame; one never cleared keeps a trail |
 | Crisp pixel art, more pixels | `pixelArt: true` (unsmoothed, `game-canvas--pixel-art`) and `resolution: 2` (the canvas has twice the pixels, the game still draws and reads presses in `game.view`) in the definition |
 | Pixel-art sprites | `core/render.js` — `drawPixelSprite(ctx, rows, palette, x, y, sx, sy, { flip })`: a sprite as rows of characters, coloured by a palette |
-| AI pieces | `core/ai.js` — `aiRequest`, `normalizeDifficulty`, `interceptAt`/`reflect`, `toward`, `dutyFrame`, `createReaction`, `aiRng`, `rotationDelta`, `finiteMotion`, `edgeAware` |
+| AI pieces | `core/ai.js` — `TableAI` (the base every game's AI extends: its difficulty row by `rowFor(request)`, `startTurn`, its random draws), `aiRequest`, `normalizeDifficulty`, `interceptAt`/`reflect`, `toward`, `dutyFrame`, `createReaction`, `createDelayedView` (reaction time), `createCommitment` (one error per approach or shot), `createPerThing` (one decision per bomb or bullet), `aiRng`, `rotationDelta`, `finiteMotion`, `edgeAware` |
 
 The engine underneath is `js/lib/game_engine.js`; a game never imports it.
 
@@ -141,6 +141,16 @@ each rule fires.
   deliberate change re-records them in its own commit.
 - **Pure tests** for `physics.js`, the schemas (with fixtures), `ai.js` and the sounds
   (`sounds.test.js` against a fixture of voices).
+  The checks several games share are in `test/support/games/`: `ai_tests.js`,
+  `physics_tests.js`, `protocol_tests.js`, `renderer_tests.js` (a spy context with
+  `createMockCtx`) and `wire_schema.js` (`describeWireSchema`); the scripted players of the
+  calibration in `calibration_players/`.
+- **AI calibration** (`test/lib/games/calibration/<dir>.calibration.test.js`, through
+  `calibrate()` in `test/support/games/calibration.js`) plays hundreds of seeded matches per
+  difficulty against a scripted player and checks the AI wins about 30% / 50% / 75% on
+  easy / normal / hard, in that order. An AI that cannot miss — an error smaller than the
+  target, re-drawn every look, or a dodge it always sees coming — fails it. It runs by hand
+  while tuning an AI: `make games.ai.calibrate` (`GAME=pong` for one); never in `make ci`.
 - **Moments the pins rarely reach** — a round on points, the player winning, a goal for the
   guest — are scenarios in `test/lib/games/endings.test.js`: a match through the harness
   (`test/support/games/harness.js`), the host's state brought to the moment, both sides watched.

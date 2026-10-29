@@ -2550,9 +2550,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           ) <>
             dgettext(
               "help",
-              "destroy enemies for points, steal fuel, and drop mines on your rival. "
+              "destroy enemies for points, steal fuel, and drop mines into your rival's path. "
             ) <>
-            dgettext("help", "10 sections of increasing difficulty. Destroy bridges to advance. ") <>
+            dgettext(
+              "help",
+              "The river narrows the farther you fly; the match ends when a jet loses its last life, and the top score wins. "
+            ) <>
             dgettext(
               "help",
               "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine."
@@ -2580,7 +2583,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "River Raid without sabotage — no mines allowed. ") <>
             dgettext(
               "help",
-              "Pure competition for points, fuel, and survival across 10 sections. "
+              "Pure competition for points, fuel, and survival. "
             ) <>
             dgettext("help", "Controls: Arrow keys to move/speed, Space to fire."),
         see_also: ["feature-hex-raid", "feature-hex-raid-blitz"]
@@ -2600,7 +2603,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_raid,
         description:
-          dgettext("help", "5 sections of intense River Raid action — river starts narrow, ") <>
+          dgettext("help", "Intense River Raid action — the river starts narrow, ") <>
             dgettext("help", "fuel is scarce, mines recharge faster. Quick and chaotic. ") <>
             dgettext(
               "help",

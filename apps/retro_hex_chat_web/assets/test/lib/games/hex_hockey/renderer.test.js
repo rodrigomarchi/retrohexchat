@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
+import { createMockCtx, drawnTexts } from "../../../support/games/renderer_tests.js";
 import { PHASE, GAME_MODE } from "../../../../js/lib/games/hex_hockey/protocol.js";
 import {
   createInitialState,
@@ -9,34 +10,6 @@ import {
   readColors,
   generateIceParticles,
 } from "../../../../js/lib/games/hex_hockey/renderer.js";
-
-function createMockCtx() {
-  return {
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 0,
-    globalAlpha: 1.0,
-    font: "",
-    textAlign: "",
-    textBaseline: "",
-    shadowColor: "transparent",
-    shadowBlur: 0,
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-    fillText: vi.fn(),
-    beginPath: vi.fn(),
-    moveTo: vi.fn(),
-    lineTo: vi.fn(),
-    stroke: vi.fn(),
-    fill: vi.fn(),
-    arc: vi.fn(),
-    arcTo: vi.fn(),
-    setLineDash: vi.fn(),
-    createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
-    save: vi.fn(),
-    restore: vi.fn(),
-  };
-}
 
 function createMockCanvas() {
   return {
@@ -67,39 +40,72 @@ function defaultColors() {
   };
 }
 
+/**
+ * Runs `check` with getComputedStyle answering `value(name)` for every CSS
+ * property, and puts the real one back after.
+ * @param {(name: string) => string} value
+ * @param {() => void} check
+ */
+function withComputedStyle(value, check) {
+  const original = globalThis.getComputedStyle;
+  globalThis.getComputedStyle = vi.fn(() => ({ getPropertyValue: vi.fn(value) }));
+  try {
+    check();
+  } finally {
+    globalThis.getComputedStyle = original;
+  }
+}
+
+/**
+ * Draws one frame of a fresh match in `mode` at `phase`, with `fields` set on
+ * the state and `extras` over the renderer's defaults.
+ * @param {number} mode
+ * @param {number} phase
+ * @param {object} [fields]
+ * @param {object} [extras] - iceParticles, puckTrail, goalFlash or the time
+ * @returns {object} the context drawn on
+ */
+function drawHockey(mode, phase, fields = {}, extras = {}) {
+  const ctx = createMockCtx();
+  const state = Object.assign(createInitialState(mode), { phase }, fields);
+  const { time = 0, ...view } = extras;
+  render(ctx, state, defaultColors(), time, {
+    iceParticles: [],
+    puckTrail: [],
+    goalFlash: 0,
+    ...view,
+  });
+  return ctx;
+}
+
+/**
+ * The text one frame draws, as drawHockey draws it.
+ * @returns {string[]}
+ */
+function hockeyTexts(mode, phase, fields, extras) {
+  return drawnTexts(drawHockey(mode, phase, fields, extras));
+}
+
 describe("hex_hockey_renderer", () => {
   describe("readColors", () => {
     it("returns default colors when CSS vars not set", () => {
-      // Mock getComputedStyle
-      const canvas = createMockCanvas();
-      const original = globalThis.getComputedStyle;
-      globalThis.getComputedStyle = vi.fn(() => ({
-        getPropertyValue: vi.fn(() => ""),
-      }));
-
-      const colors = readColors(canvas);
-      expect(colors.bg).toBe("#060812");
-      expect(colors.fg).toBe("#39ff14");
-      expect(colors.accent).toBe("#00e5ff");
-      expect(colors.puck).toBe("#ffffff");
-
-      globalThis.getComputedStyle = original;
+      withComputedStyle(
+        () => "",
+        () => {
+          const colors = readColors(createMockCanvas());
+          expect(colors.bg).toBe("#060812");
+          expect(colors.fg).toBe("#39ff14");
+          expect(colors.accent).toBe("#00e5ff");
+          expect(colors.puck).toBe("#ffffff");
+        },
+      );
     });
 
     it("uses CSS vars when available", () => {
-      const canvas = createMockCanvas();
-      const original = globalThis.getComputedStyle;
-      globalThis.getComputedStyle = vi.fn(() => ({
-        getPropertyValue: vi.fn((name) => {
-          if (name === "--game-bg-color") return "#111111";
-          return "";
-        }),
-      }));
-
-      const colors = readColors(canvas);
-      expect(colors.bg).toBe("#111111");
-
-      globalThis.getComputedStyle = original;
+      withComputedStyle(
+        (name) => (name === "--game-bg-color" ? "#111111" : ""),
+        () => expect(readColors(createMockCanvas()).bg).toBe("#111111"),
+      );
     });
   });
 
@@ -121,22 +127,18 @@ describe("hex_hockey_renderer", () => {
   });
 
   describe("render", () => {
+    const { CLASSIC, BLITZ, SHOWDOWN } = GAME_MODE;
+
     it("draws waiting screen when state is null", () => {
       const ctx = createMockCtx();
-      const colors = defaultColors();
-      render(ctx, null, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
+      render(ctx, null, defaultColors(), 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
       // Should draw "Waiting for opponent..."
       expect(ctx.fillText).toHaveBeenCalled();
     });
 
     it("draws all game layers in PLAYING phase", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.PLAYING;
       const iceParticles = generateIceParticles(5);
-
-      render(ctx, state, colors, 10, { iceParticles, puckTrail: [], goalFlash: 0 });
+      const ctx = drawHockey(CLASSIC, PHASE.PLAYING, {}, { iceParticles, time: 10 });
 
       // Should draw rink background, HUD text, etc
       expect(ctx.fillRect).toHaveBeenCalled();
@@ -145,204 +147,80 @@ describe("hex_hockey_renderer", () => {
     });
 
     it("draws countdown overlay", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.COUNTDOWN;
-      state.countdownValue = 3;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
       // Should show "3"
-      const textCalls = ctx.fillText.mock.calls;
-      const countdownCall = textCalls.find((c) => c[0] === "3");
-      expect(countdownCall).toBeDefined();
+      expect(hockeyTexts(CLASSIC, PHASE.COUNTDOWN, { countdownValue: 3 })).toContain("3");
     });
 
     it("draws GO! in FACE_OFF phase", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.FACE_OFF;
-      state.countdownValue = 0;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const goCall = textCalls.find((c) => c[0] === "GO!");
-      expect(goCall).toBeDefined();
+      expect(hockeyTexts(CLASSIC, PHASE.FACE_OFF, { countdownValue: 0 })).toContain("GO!");
     });
 
     it("draws GOAL! celebration", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.GOAL_CELEBRATION;
-      state.celebrationFrames = 60;
-      state.scoreP1 = 1;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 60 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const goalCall = textCalls.find((c) => c[0] === "GOAL!");
-      expect(goalCall).toBeDefined();
+      const fields = { celebrationFrames: 60, scoreP1: 1 };
+      const texts = hockeyTexts(CLASSIC, PHASE.GOAL_CELEBRATION, fields, { goalFlash: 60 });
+      expect(texts).toContain("GOAL!");
     });
 
     it("draws period break overlay", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.PERIOD_BREAK;
-      state.period = 2;
-      state.periodBreakFrames = 90;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const periodCall = textCalls.find((c) => c[0].includes("END OF PERIOD"));
-      expect(periodCall).toBeDefined();
+      const fields = { period: 2, periodBreakFrames: 90 };
+      const texts = hockeyTexts(CLASSIC, PHASE.PERIOD_BREAK, fields);
+      expect(texts.some((text) => text.includes("END OF PERIOD"))).toBe(true);
     });
 
     it("draws sudden death overlay for CLASSIC mode", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.SUDDEN_DEATH;
-      state.period = 4;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const sdCall = textCalls.find((c) => c[0] === "SUDDEN DEATH");
-      expect(sdCall).toBeDefined();
+      expect(hockeyTexts(CLASSIC, PHASE.SUDDEN_DEATH, { period: 4 })).toContain("SUDDEN DEATH");
     });
 
     it("draws sudden death overlay for BLITZ mode (period 2)", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.BLITZ);
-      state.phase = PHASE.SUDDEN_DEATH;
-      state.period = 2;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const sdCall = textCalls.find((c) => c[0] === "SUDDEN DEATH");
-      expect(sdCall).toBeDefined();
+      expect(hockeyTexts(BLITZ, PHASE.SUDDEN_DEATH, { period: 2 })).toContain("SUDDEN DEATH");
     });
 
     it("draws game over screen", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.FINISHED;
-      state.scoreP1 = 3;
-      state.scoreP2 = 1;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const winCall = textCalls.find((c) => c[0] === "PLAYER 1 WINS!");
-      expect(winCall).toBeDefined();
+      const texts = hockeyTexts(CLASSIC, PHASE.FINISHED, { scoreP1: 3, scoreP2: 1 });
+      expect(texts).toContain("PLAYER 1 WINS!");
     });
 
     it("draws P2 wins when P2 has more goals", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.FINISHED;
-      state.scoreP1 = 0;
-      state.scoreP2 = 2;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const winCall = textCalls.find((c) => c[0] === "PLAYER 2 WINS!");
-      expect(winCall).toBeDefined();
+      const texts = hockeyTexts(CLASSIC, PHASE.FINISHED, { scoreP1: 0, scoreP2: 2 });
+      expect(texts).toContain("PLAYER 2 WINS!");
     });
 
     it("draws DRAW! when scores are equal", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.FINISHED;
-      state.scoreP1 = 1;
-      state.scoreP2 = 1;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const drawCall = textCalls.find((c) => c[0] === "DRAW!");
-      expect(drawCall).toBeDefined();
+      expect(hockeyTexts(CLASSIC, PHASE.FINISHED, { scoreP1: 1, scoreP2: 1 })).toContain("DRAW!");
     });
 
     it("shows 'First to 5' for SHOWDOWN mode", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.SHOWDOWN);
-      state.phase = PHASE.PLAYING;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const ftCall = textCalls.find((c) => c[0] === `First to ${SHOWDOWN_TARGET}`);
-      expect(ftCall).toBeDefined();
+      expect(hockeyTexts(SHOWDOWN, PHASE.PLAYING)).toContain(`First to ${SHOWDOWN_TARGET}`);
     });
 
     it("shows SD in HUD during BLITZ sudden death", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.BLITZ);
-      state.phase = PHASE.SUDDEN_DEATH;
-      state.period = 2;
-      state.timerFrames = 0;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
-
-      const textCalls = ctx.fillText.mock.calls;
-      const sdCall = textCalls.find((c) => typeof c[0] === "string" && c[0].includes("SD"));
-      expect(sdCall).toBeDefined();
+      const texts = hockeyTexts(BLITZ, PHASE.SUDDEN_DEATH, { period: 2, timerFrames: 0 });
+      expect(texts.some((text) => typeof text === "string" && text.includes("SD"))).toBe(true);
     });
 
     it("draws puck trail when puck is fast", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.PLAYING;
-      state.puck.vx = 5;
-      state.puck.vy = 0;
-
-      const trail = [
+      const state = createInitialState(CLASSIC);
+      const puck = { ...state.puck, vx: 5, vy: 0 };
+      const puckTrail = [
         { x: 300, y: 265 },
         { x: 305, y: 265 },
         { x: 310, y: 265 },
       ];
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: trail, goalFlash: 0 });
+      const ctx = drawHockey(CLASSIC, PHASE.PLAYING, { puck }, { puckTrail });
 
       // Should draw trail arcs
       expect(ctx.arc).toHaveBeenCalled();
     });
 
     it("applies goal flash effect", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.PLAYING;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 60 });
+      const ctx = drawHockey(CLASSIC, PHASE.PLAYING, {}, { goalFlash: 60 });
 
       // Goal flash draws extra fillRects for goal areas
       expect(ctx.fillRect).toHaveBeenCalled();
     });
 
     it("resets globalAlpha at end of render", () => {
-      const ctx = createMockCtx();
-      const colors = defaultColors();
-      const state = createInitialState(GAME_MODE.CLASSIC);
-      state.phase = PHASE.PLAYING;
-
-      render(ctx, state, colors, 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
+      const ctx = drawHockey(CLASSIC, PHASE.PLAYING);
 
       // The last globalAlpha set should not leave the context in a dirty state
       // (CRT function restores it indirectly via fillRect)

@@ -26,10 +26,18 @@
   </li>
   <li>{dgettext("help_games", "Collisions stun you for 1-1.5 seconds (timer keeps running)")}</li>
   <li>
-    {dgettext("help_games", "The avalanche creeps closer — if it catches you, the round is lost")}
+    {dgettext(
+      "help_games",
+      "The avalanche creeps closer — if it catches you before the finish line, the round is lost"
+    )}
   </li>
   <li>{dgettext("help_games", "Blizzard events reduce visibility periodically")}</li>
-  <li>{dgettext("help_games", "First to reach the finish line wins the round")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "The lowest time wins the round — gate bonuses included; a skier who doesn't finish loses to one who does"
+    )}
+  </li>
   <li>{dgettext("help_games", "If both are engulfed, the skier who descended further wins")}</li>
 </ul>
 <.help_h4 icon={:icon_tab_modes}>{dgettext("help_games", "Modes")}</.help_h4>

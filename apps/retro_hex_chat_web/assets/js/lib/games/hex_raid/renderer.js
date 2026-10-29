@@ -17,7 +17,16 @@ import {
 } from "./physics.js";
 import { jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawBackground, drawScanlines, drawVignette, waitingText } from "../core/render.js";
+import {
+  // ex_dna:disable-for-lines:17 this game's own imports and palette
+  drawBackground,
+  drawScanlines,
+  drawShotDot,
+  drawShotTrail,
+  drawSquareParticles,
+  drawVignette,
+  waitingText,
+} from "../core/render.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -62,14 +71,13 @@ export function render(ctx, state, colors, time, particles) {
     drawParticles(ctx, particles, colors);
   }
 
-  // ex_dna:disable-for-lines:8 this game's own drawing
+  // ex_dna:disable-for-lines:13 this game's own drawing
   drawHUD(ctx, state, colors, time);
 
   // Phase overlays
   if (state.phase === PHASE.WAITING) {
     drawOverlayText(ctx, colors, waitingText(), colors.p1);
   } else if (state.phase === PHASE.COUNTDOWN) {
-    // ex_dna:disable-for-lines:7 this game's own drawing
     drawOverlayText(ctx, colors, String(state.countdown), colors.warning, 64);
   } else if (state.phase === PHASE.FINISHED) {
     drawGameOver(ctx, state, colors);
@@ -81,26 +89,46 @@ export function render(ctx, state, colors, time, particles) {
 
 // --- Background layers ---
 
+/**
+ * The river's banks down the screen, every 4 px from the top: the screen y
+ * and the left and right bank x there.
+ * @param {object} state
+ * @returns {{y: number, leftX: number, rightX: number}[]}
+ */
+function bankLine(state) {
+  const points = [];
+  for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
+    const worldY = state.scrollY + (CANVAS_H - screenY);
+    const bank = getBankAtWorld(worldY, state.seed, state.mode);
+    points.push({ y: screenY, leftX: bank.leftX, rightX: bank.rightX });
+  }
+  return points;
+}
+
+/**
+ * Adds one bank's edge to the current path through `points`, starting a new
+ * subpath at the first point when `start` is set.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{y: number, leftX: number, rightX: number}[]} points
+ * @param {"leftX"|"rightX"} side
+ * @param {boolean} start
+ */
+function traceBank(ctx, points, side, start) {
+  points.forEach((point, i) => {
+    if (start && i === 0) ctx.moveTo(point[side], point.y);
+    else ctx.lineTo(point[side], point.y);
+  });
+}
+
 function drawWater(ctx, state, colors, time) {
   // Toxic water with subtle animated wave lines
   ctx.fillStyle = colors.water;
 
   // Draw water as the area between banks (computed on-the-fly)
+  const points = bankLine(state);
   ctx.beginPath();
-  for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const worldY = state.scrollY + (CANVAS_H - screenY);
-    const bank = getBankAtWorld(worldY, state.seed, state.mode);
-    if (screenY === 0) {
-      ctx.moveTo(bank.leftX, screenY);
-    } else {
-      ctx.lineTo(bank.leftX, screenY);
-    }
-  }
-  for (let screenY = CANVAS_H; screenY >= 0; screenY -= 4) {
-    const worldY = state.scrollY + (CANVAS_H - screenY);
-    const bank = getBankAtWorld(worldY, state.seed, state.mode);
-    ctx.lineTo(bank.rightX, screenY);
-  }
+  traceBank(ctx, points, "leftX", true);
+  traceBank(ctx, [...points].reverse(), "rightX", false);
   ctx.closePath();
   ctx.fill();
 
@@ -120,15 +148,13 @@ function drawWater(ctx, state, colors, time) {
 }
 
 function drawBanks(ctx, state, colors) {
+  const points = bankLine(state);
+
   // Left bank (fills from 0 to leftX) — computed on-the-fly
   ctx.fillStyle = colors.bank;
   ctx.beginPath();
   ctx.moveTo(0, 0);
-  for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const worldY = state.scrollY + (CANVAS_H - screenY);
-    const bank = getBankAtWorld(worldY, state.seed, state.mode);
-    ctx.lineTo(bank.leftX, screenY);
-  }
+  traceBank(ctx, points, "leftX", false);
   ctx.lineTo(0, CANVAS_H);
   ctx.closePath();
   ctx.fill();
@@ -136,11 +162,7 @@ function drawBanks(ctx, state, colors) {
   // Right bank (fills from rightX to CANVAS_W)
   ctx.beginPath();
   ctx.moveTo(CANVAS_W, 0);
-  for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const worldY = state.scrollY + (CANVAS_H - screenY);
-    const bank = getBankAtWorld(worldY, state.seed, state.mode);
-    ctx.lineTo(bank.rightX, screenY);
-  }
+  traceBank(ctx, points, "rightX", false);
   ctx.lineTo(CANVAS_W, CANVAS_H);
   ctx.closePath();
   ctx.fill();
@@ -148,26 +170,11 @@ function drawBanks(ctx, state, colors) {
   // Bank edge highlights
   ctx.strokeStyle = colors.bankHi;
   ctx.lineWidth = 2;
-
-  // Left edge
-  ctx.beginPath();
-  for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const worldY = state.scrollY + (CANVAS_H - screenY);
-    const bank = getBankAtWorld(worldY, state.seed, state.mode);
-    if (screenY === 0) ctx.moveTo(bank.leftX, screenY);
-    else ctx.lineTo(bank.leftX, screenY);
+  for (const side of ["leftX", "rightX"]) {
+    ctx.beginPath();
+    traceBank(ctx, points, side, true);
+    ctx.stroke();
   }
-  ctx.stroke();
-
-  // Right edge
-  ctx.beginPath();
-  for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const worldY = state.scrollY + (CANVAS_H - screenY);
-    const bank = getBankAtWorld(worldY, state.seed, state.mode);
-    if (screenY === 0) ctx.moveTo(bank.rightX, screenY);
-    else ctx.lineTo(bank.rightX, screenY);
-  }
-  ctx.stroke();
 }
 
 // --- Entities ---
@@ -298,27 +305,9 @@ function drawMissile(ctx, x, y, color) {
   ctx.shadowColor = color;
   ctx.shadowBlur = 6;
 
-  // Trail
-  ctx.globalAlpha = 0.2;
-  ctx.fillStyle = color;
-  for (let i = 1; i <= 3; i++) {
-    ctx.beginPath();
-    ctx.arc(x, y + i * 4, MISSILE_RADIUS * (1 - i * 0.2), 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-
-  // Main dot
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.arc(x, y, MISSILE_RADIUS, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Bright core
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.arc(x, y, MISSILE_RADIUS * 0.5, 0, Math.PI * 2);
-  ctx.fill();
+  // A missile flies up, its trail below it.
+  drawShotTrail(ctx, x, y, 0, -1, MISSILE_RADIUS, color);
+  drawShotDot(ctx, x, y, MISSILE_RADIUS, color, color);
 
   ctx.restore();
 }
@@ -560,14 +549,10 @@ function drawMines(ctx, state, colors, time) {
 }
 
 function drawParticles(ctx, particles, colors) {
-  for (const p of particles) {
+  drawSquareParticles(ctx, particles, (p) => {
     const alpha = p.life / p.maxLife;
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle = colors.explosion;
-    const size = 2 + alpha * 2;
-    ctx.fillRect(p.x - size / 2, p.y - size / 2, size, size);
-  }
-  ctx.globalAlpha = 1;
+    return { alpha, color: colors.explosion, size: 2 + alpha * 2 };
+  });
 }
 
 // --- HUD ---
@@ -679,6 +664,7 @@ function drawOverlayText(ctx, colors, text, color, fontSize) {
   ctx.fillStyle = color;
   ctx.shadowColor = color;
   ctx.shadowBlur = 10;
+  // ex_dna:disable-for-lines:8 this game's own overlay: its draw order is pinned
   ctx.font = `bold ${fontSize || 20}px monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

@@ -6,13 +6,15 @@
  */
 
 import { normalizeEnduroAIDifficulty } from "./difficulty.js";
-import { GAME_MODE, PHASE } from "./protocol.js";
-import { LANE_COUNT, SPEED_MAX, TURBO_FUEL_COST } from "./physics.js";
-import { aiRequest, aiRng } from "../core/ai.js";
+import { GAME_MODE, PHASE, WEATHER } from "./protocol.js";
+import { LANE_COUNT, MAX_Z, SPEED_MAX, TURBO_FUEL_COST } from "./physics.js";
+import { TableAI, createCommitment, createDelayedView } from "../core/ai.js";
 
 const COLLISION_ZONE_Z = 40;
 const PLAYER_COLLISION_BUFFER_Z = 135;
 const CRUISE_LANE = 1;
+// The renderer hides cars and fuel stations past this share of the road in fog.
+const FOG_VISIBLE_Z = MAX_Z * 0.4;
 
 const NEUTRAL_INPUTS = Object.freeze({
   left: false,
@@ -22,44 +24,88 @@ const NEUTRAL_INPUTS = Object.freeze({
   turbo: false,
 });
 
+// interval: frames between looks at the road; reaction: how many frames old the road it
+// looks at is; laneMistake: the odds it drives the lane beside each lane it picks.
 export const ENDURO_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
-    interval: 12,
-    laneMistake: 0.28,
-    threatZ: 260,
-    fuelAt: 260,
+    interval: 10,
+    reaction: 16,
+    laneMistake: 0.7,
+    threatZ: 330,
+    fuelAt: 300,
     fuelZ: 900,
-    targetSpeed: 610,
-    brakeSpeed: 360,
-    turboOdds: 0.22,
-    turboCd: 520,
-    slipstreamBias: 0.25,
+    targetSpeed: 690,
+    brakeSpeed: 400,
+    turboOdds: 0.3,
+    turboCd: 480,
+    slipstreamBias: 0.3,
   }),
   normal: Object.freeze({
-    interval: 6,
-    laneMistake: 0.12,
+    interval: 7,
+    reaction: 14,
+    laneMistake: 0.6,
     threatZ: 360,
-    fuelAt: 390,
+    fuelAt: 380,
     fuelZ: 1150,
-    targetSpeed: 720,
+    targetSpeed: 770,
     brakeSpeed: 430,
     turboOdds: 0.5,
     turboCd: 360,
     slipstreamBias: 0.45,
   }),
   hard: Object.freeze({
-    interval: 2,
-    laneMistake: 0.02,
-    threatZ: 520,
-    fuelAt: 520,
-    fuelZ: 1450,
-    targetSpeed: 820,
-    brakeSpeed: 520,
-    turboOdds: 0.85,
-    turboCd: 240,
-    slipstreamBias: 0.65,
+    interval: 5,
+    reaction: 10,
+    laneMistake: 0.4,
+    threatZ: 420,
+    fuelAt: 450,
+    fuelZ: 1400,
+    targetSpeed: 800,
+    brakeSpeed: 480,
+    turboOdds: 0.8,
+    turboCd: 280,
+    slipstreamBias: 0.6,
   }),
 });
+
+// A small edge decides nearly every ten-minute duel and few ninety-second sprints:
+// the AI reacts later and slips more in the duel, and sooner in the sprint, so
+// each difficulty wins about as often in every race.
+const MODE_TUNING = Object.freeze({
+  [GAME_MODE.CLASSIC_DUEL]: {
+    easy: { reaction: 18, laneMistake: 0.8, threatZ: 300, targetSpeed: 655 },
+    normal: { reaction: 16, laneMistake: 0.65, targetSpeed: 740 },
+    hard: { reaction: 12, laneMistake: 0.45, threatZ: 390, targetSpeed: 780 },
+  },
+  [GAME_MODE.SPRINT]: {
+    normal: { reaction: 11, laneMistake: 0.5, threatZ: 390 },
+    hard: { reaction: 7, laneMistake: 0.3, threatZ: 450 },
+  },
+});
+
+const TUNED = Object.freeze(
+  Object.fromEntries(
+    Object.entries(MODE_TUNING).map(([mode, byDifficulty]) => [
+      mode,
+      Object.fromEntries(
+        Object.entries(byDifficulty).map(([difficulty, tuning]) => [
+          difficulty,
+          Object.freeze({ ...ENDURO_AI_DIFFICULTIES[difficulty], ...tuning }),
+        ]),
+      ),
+    ]),
+  ),
+);
+
+/**
+ * The AI's settings for a difficulty in a race mode.
+ * @param {"easy"|"normal"|"hard"} difficulty
+ * @param {number} mode - GAME_MODE
+ * @returns {object}
+ */
+export function enduroAIConfig(difficulty, mode) {
+  return TUNED[mode]?.[difficulty] ?? ENDURO_AI_DIFFICULTIES[difficulty];
+}
 
 export { normalizeEnduroAIDifficulty };
 
@@ -74,7 +120,7 @@ export function createHexEnduroAI(options = {}) {
   return new HexEnduroAI(options);
 }
 
-export class HexEnduroAI {
+export class HexEnduroAI extends TableAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
@@ -82,19 +128,16 @@ export class HexEnduroAI {
    * @param {number} [options.seed]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeEnduroAIDifficulty(options.difficulty);
-    this.rng = aiRng(options, 0x656e6475);
-    this.frame = 0;
+    super(options, normalizeEnduroAIDifficulty, ENDURO_AI_DIFFICULTIES, 0x656e6475);
     this.turboCooldown = 0;
     this._target = null;
-  }
-
-  /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
-   * @returns {void}
-   */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizeEnduroAIDifficulty(difficulty);
+    this._view = createDelayedView();
+    // A wrong lane is drawn once per lane it means to drive, and whether to
+    // draft once per time the opponent pulls just ahead.
+    this._slip = createCommitment();
+    this._draft = createCommitment();
+    this._draftChance = 0;
+    this._draftOpen = false;
   }
 
   /**
@@ -105,30 +148,28 @@ export class HexEnduroAI {
    * @returns {{left: boolean, right: boolean, accel: boolean, brake: boolean, turbo: boolean}}
    */
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
-
-    this.frame++;
+    const { state, player } = this.startTurn(request);
     if (this.turboCooldown > 0) this.turboCooldown--;
 
     if (!state || state.phase !== PHASE.RACING) {
-      this._target = null;
+      this.forget();
       return NEUTRAL_INPUTS;
     }
 
     const actor = playerState(state, player);
     if (!actor) return NEUTRAL_INPUTS;
 
-    const difficulty = normalizeEnduroAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-    const config = ENDURO_AI_DIFFICULTIES[difficulty];
+    const difficulty = this.difficultyFor(request);
+    const config = enduroAIConfig(difficulty, state.mode);
+    // It plans from the road as it was `reaction` frames ago and drives the car it has now.
+    const seen = this._view.see(state, config.reaction);
 
     if (this.frame % config.interval === 0 || !this._target) {
-      const target = chooseEnduroTarget(state, player, config, this.rng);
-      this._target = maybeApplyLaneMistake(target, state, player, config, this.rng);
+      this._target = this._choose(seen, player, config);
     }
 
     const movement = movementInputs(state, player, this._target);
-    const turbo = this._turboPressed(state, player, this._target, config);
+    const turbo = this._turboPressed(seen, player, this._target, config);
     return { ...movement, turbo };
   }
 
@@ -142,10 +183,42 @@ export class HexEnduroAI {
   _turboPressed(state, player, target, config) {
     if (this.turboCooldown > 0) return false;
     if (!shouldUseTurbo(state, player, target, config)) return false;
-    if (this.rng() > config.turboOdds) return false;
 
+    // Each chance is one draw; taken or not, the next waits out the cooldown.
     this.turboCooldown = config.turboCd;
-    return true;
+    return this.rng() <= config.turboOdds;
+  }
+
+  /**
+   * The lane and speed to drive, from the road it sees.
+   * @param {object} seen
+   * @param {1|2} player
+   * @param {object} config
+   * @returns {{lane: number, targetSpeed: number, reason: string}}
+   */
+  _choose(seen, player, config) {
+    const open = draftChance(playerState(seen, player), playerState(seen, player === 1 ? 2 : 1));
+    if (open && !this._draftOpen) this._draftChance++;
+    this._draftOpen = open;
+
+    const target = chooseEnduroTarget(seen, player, config, () =>
+      this._draft.hold(this._draftChance, this.rng),
+    );
+    const slip = this._slip.hold(
+      `${target.reason}:${target.lane}`,
+      () => maybeApplyLaneMistake(target, seen, player, config, this.rng).lane - target.lane,
+    );
+    return { ...target, lane: target.lane + slip };
+  }
+
+  /** Drop what it remembers of the race before. */
+  forget() {
+    this._target = null;
+    this._view.reset();
+    this._slip.reset();
+    this._draft.reset();
+    this._draftOpen = false;
+    this.turboCooldown = 0;
   }
 }
 
@@ -227,14 +300,15 @@ export function laneRisk(state, lane, player = 2, config = ENDURO_AI_DIFFICULTIE
 
   let risk = Math.abs(lane - actor.lane) * 0.55;
   const cars = Array.isArray(state.aiCars) ? state.aiCars : [];
+  const threatZ = Math.min(config.threatZ, visibleZ(state));
   for (const car of cars) {
     if (car.lane !== lane) continue;
-    if (car.zPos < -COLLISION_ZONE_Z || car.zPos > config.threatZ) continue;
+    if (car.zPos < -COLLISION_ZONE_Z || car.zPos > threatZ) continue;
 
     if (Math.abs(car.zPos) < COLLISION_ZONE_Z) {
       risk += 30;
     } else {
-      risk += 9 * (1 - car.zPos / config.threatZ);
+      risk += 9 * (1 - car.zPos / threatZ);
     }
   }
 
@@ -262,11 +336,12 @@ export function nearestFuelStation(state, player = 2, config = ENDURO_AI_DIFFICU
   if (!actor || actor.fuel > config.fuelAt) return null;
 
   const stations = Array.isArray(state.fuelStations) ? state.fuelStations : [];
+  const reach = Math.min(config.fuelZ, visibleZ(state));
   let best = null;
   let bestScore = Infinity;
 
   for (const station of stations) {
-    if (station.zPos < -20 || station.zPos > config.fuelZ) continue;
+    if (station.zPos < -20 || station.zPos > reach) continue;
     const score = station.zPos + Math.abs(station.lane - actor.lane) * 180;
     if (score < bestScore) {
       best = station;
@@ -317,18 +392,35 @@ function safestLane(state, player, config) {
   return bestLane;
 }
 
-function slipstreamLane(actor, opponent, config, rng) {
-  if (!opponent) return null;
+/**
+ * Whether the opponent is just far enough ahead to draft behind.
+ * @param {object} actor
+ * @param {object} [opponent]
+ * @returns {boolean}
+ */
+export function draftChance(actor, opponent) {
+  if (!actor || !opponent) return false;
+  const gap = opponent.zOffset - actor.zOffset;
+  return gap > 45 && gap < 260;
+}
 
-  const opponentAhead = opponent.zOffset > actor.zOffset + 45;
-  const closeEnough = opponent.zOffset - actor.zOffset < 260;
-  if (!opponentAhead || !closeEnough) return null;
+function slipstreamLane(actor, opponent, config, rng) {
+  if (!draftChance(actor, opponent)) return null;
   if (rng() > config.slipstreamBias) return null;
 
   return opponent.lane;
 }
 
-function maybeApplyLaneMistake(target, state, player, config, rng) {
+/**
+ * The lane beside the one picked, `config.laneMistake` of the time.
+ * @param {{lane: number}} target
+ * @param {object} state
+ * @param {1|2} player
+ * @param {{laneMistake: number}} config
+ * @param {() => number} rng
+ * @returns {{lane: number}}
+ */
+export function maybeApplyLaneMistake(target, state, player, config, rng) {
   if (rng() >= config.laneMistake) return target;
 
   const actor = playerState(state, player);
@@ -337,6 +429,11 @@ function maybeApplyLaneMistake(target, state, player, config, rng) {
   const drift = rng() < 0.5 ? -1 : 1;
   const lane = clampLane(target.lane + drift);
   return { ...target, lane };
+}
+
+/** How far up the road the player can see: the whole road, or what the fog leaves. */
+function visibleZ(state) {
+  return state.weather === WEATHER.FOG ? FOG_VISIBLE_Z : MAX_Z;
 }
 
 function playerState(state, player) {

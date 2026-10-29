@@ -9,126 +9,66 @@
  */
 
 import { settleParticles } from "../core/render.js";
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
-import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
+import { ARROWS_WASD_SPACE, ARROW_KEYS, defineGame } from "../core/define_game.js";
 import { createPixelTanksAI, normalizePixelTanksAIDifficulty } from "./ai.js";
 import {
   ROUND_DURATION,
   advanceRound,
-  checkMissileHit,
   checkRoundEnd,
   createExplosion,
   createInitialState,
   createSparks,
   decodeMaze,
-  fireMissile,
   getMatchWinner,
-  moveTank,
   resetForNewRound,
-  respawnTanks,
-  rotateTank,
   selectMaze,
-  tickTimers,
-  updateMissile,
+  stepTick,
   updateParticles,
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
-import { roundsFlow } from "../core/rounds.js";
-
-const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
-const SPAWNING_DELAY_TICKS = 60; // 1 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
+import { closeRoundStep, publishStep, roundsEnding, roundsFlow } from "../core/rounds.js";
 
 const RELEASED = { rotateLeft: false, rotateRight: false, forward: false, fire: false };
 
-/** Publish a step's state: particles settle, the frame repaints, the guest hears of it. */
-function publish(game, s) {
-  game.particles = updateParticles(game.particles);
-  game.gameState = s;
-  game.invalidate();
-  game.frameCount++;
-  game.broadcast();
-}
-
-/** A shell is fired on the press, not while the key is held. */
-function fire(game, s, player, inputs, pressedKey, missileKey) {
-  let next = s;
-  if (inputs.fire && !game[pressedKey]) {
-    next = fireMissile(next, player, game.walls);
-    if (next[missileKey] && game.gameState[missileKey] !== next[missileKey]) game.audio.playFire();
-  }
-  game[pressedKey] = inputs.fire;
-  return next;
-}
-
 function battle(game) {
   game.updateOpponent();
-  let s = game.gameState;
+  const step = stepTick(
+    game.gameState,
+    game.walls,
+    { 1: game.localInputs, 2: game.remoteInputs },
+    { 1: game.localFirePressed, 2: game.remoteFirePressed },
+  );
+  game.localFirePressed = step.pressed[1];
+  game.remoteFirePressed = step.pressed[2];
+  const s = step.state;
 
   // After a hit both tanks hold still until they respawn.
-  if (s.respawnPause > 0) {
-    publish(game, tickTimers(s));
+  if (step.paused) {
+    publishStep(game, s, updateParticles);
     return;
   }
 
-  s = { ...s, tankHit: 0, missileExpired: 0, wallBounced: 0 };
-  const local = game.localInputs;
-  const remote = game.remoteInputs;
-  if (local.rotateLeft) s = rotateTank(s, 1, -1);
-  if (local.rotateRight) s = rotateTank(s, 1, 1);
-  if (local.forward) s = moveTank(s, 1, game.walls);
-  if (remote.rotateLeft) s = rotateTank(s, 2, -1);
-  if (remote.rotateRight) s = rotateTank(s, 2, 1);
-  if (remote.forward) s = moveTank(s, 2, game.walls);
-
-  s = fire(game, s, 1, local, "localFirePressed", "m1Active");
-  s = fire(game, s, 2, remote, "remoteFirePressed", "m2Active");
-
-  let bounced = false;
-  for (const [player, shell] of [
-    [1, "m1"],
-    [2, "m2"],
-  ]) {
-    s = updateMissile(s, player, game.walls);
-    if (s.wallBounced !== player) continue;
-    bounced = true;
-    game.particles = [
-      ...game.particles,
-      ...createSparks(s[`${shell}X`], s[`${shell}Y`], game.fxRandom),
-    ];
+  const { fired, bounces, hit } = step.events;
+  for (let i = 0; i < fired.length; i++) game.audio.playFire();
+  for (const spark of bounces) {
+    game.particles = [...game.particles, ...createSparks(spark.x, spark.y, game.fxRandom)];
   }
-  if (bounced) game.audio.playRicochet();
-
-  s = checkMissileHit(s, 1);
-  s = checkMissileHit(s, 2);
-  if (s.tankHit !== 0) {
+  if (bounces.length > 0) game.audio.playRicochet();
+  if (hit) {
     game.audio.playHit();
-    const hitX = s.tankHit === 1 ? s.tank1X : s.tank2X;
-    const hitY = s.tankHit === 1 ? s.tank1Y : s.tank2Y;
-    game.particles = [...game.particles, ...createExplosion(hitX, hitY, game.fxRandom)];
-    s = respawnTanks(s);
+    game.particles = [...game.particles, ...createExplosion(hit.x, hit.y, game.fxRandom)];
   }
 
-  // ex_dna:disable-for-lines:9 this game's own defineGame definition
-  s = tickTimers(s);
-  if (s.roundTimer <= 900 && s.roundTimer > 0 && s.roundTimer % 60 === 0) {
-    game.audio.playTimerTick();
-  }
+  const ended = closeRoundStep(game, s, {
+    checkRoundEnd,
+    advanceRound,
+    sound: () => game.audio.playRoundEnd(),
+  });
+  if (ended) return;
 
-  const { ended, roundWinner } = checkRoundEnd(s);
-  if (ended) {
-    s = advanceRound(s, roundWinner);
-    game.audio.playRoundEnd();
-    game.gameState = s;
-    // The match's end reports itself on entering MATCH_OVER.
-    if (s.phase !== PHASE.MATCH_OVER) game.broadcast();
-    return;
-  }
-
-  publish(game, s);
+  publishStep(game, s, updateParticles);
 }
 
 /** The guest follows the host's maze and mode, then takes the snapshot field by field. */
@@ -144,9 +84,9 @@ function applySnapshot(game, decoded) {
 
 export default defineGame({
   inputs: {
-    rotateLeft: ["ArrowLeft", "a", "A"],
-    rotateRight: ["ArrowRight", "d", "D"],
-    forward: ["ArrowUp", "w", "W"],
+    rotateLeft: ARROW_KEYS.left,
+    rotateRight: ARROW_KEYS.right,
+    forward: ARROW_KEYS.up,
     fire: [" ", "Shift"],
   },
   captureKeys: [...ARROWS_WASD_SPACE, "Shift"],
@@ -183,7 +123,7 @@ export default defineGame({
   },
   onStop: (game) => {
     game.localFirePressed = false;
-    // ex_dna:disable-for-lines:11 this game's own defineGame definition
+    // ex_dna:disable-for-lines:8 this game's own defineGame definition
     game.remoteFirePressed = false;
   },
   idle: settleParticles(updateParticles),
@@ -191,9 +131,6 @@ export default defineGame({
   flow: roundsFlow({
     phases: PHASE,
     play: "PLAYING",
-    countdown: { from: COUNTDOWN_FROM, every: COUNTDOWN_EVERY_TICKS },
-    spawnTicks: SPAWNING_DELAY_TICKS,
-    roundOverTicks: ROUND_OVER_DELAY_TICKS,
     bell: (game) => game.audio.playSpawn(),
     startRound: (game) => {
       game.gameState.roundTimer = ROUND_DURATION;
@@ -216,16 +153,9 @@ export default defineGame({
   cues: [
     { phase: PHASE.COUNTDOWN, play: "countdown" },
     { phase: PHASE.SPAWNING, play: "spawn" },
-    // ex_dna:disable-for-lines:-2 this game's own defineGame definition
     { phase: PHASE.ROUND_OVER, play: "roundEnd" },
-    // ex_dna:disable-for-lines:8 this game's own defineGame definition
   ],
-  onEnd: guestEnd({
-    phase: PHASE.MATCH_OVER,
-    fields: ["roundWins1", "roundWins2"],
-    sound: (game, result) => playOutcome(game, result.winner),
-  }),
+  ...roundsEnding(PHASE),
   render: (game) =>
     render(game.ctx, game.gameState, game.colors, game.walls, performance.now(), game.particles),
-  disconnectResult: drawOnDisconnect((s) => [s.roundWins1, s.roundWins2]),
 });

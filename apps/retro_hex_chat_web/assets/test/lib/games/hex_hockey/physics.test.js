@@ -35,7 +35,21 @@ import {
   GOAL_CELEBRATION_FRAMES,
   STUN_DURATION,
   SHOWDOWN_TARGET,
+  stepTick,
 } from "../../../../js/lib/games/hex_hockey/physics.js";
+
+/**
+ * Player two carries the puck with player one 10 px away, in tackle reach.
+ * @param {number} mode
+ */
+function carrierInTackleReach(mode) {
+  const s = createInitialState(mode);
+  s.p2.hasPuck = true;
+  s.puck.possessedBy = 2;
+  s.p1.x = s.p2.x + 10;
+  s.p1.y = s.p2.y;
+  return s;
+}
 
 describe("hex_hockey_physics", () => {
   // ── createInitialState ──────────────────────────────────────
@@ -416,6 +430,20 @@ describe("hex_hockey_physics", () => {
       expect(s.puck.possessedBy).toBe(1);
     });
 
+    it("gives a puck both players can reach to the nearer one", () => {
+      const s = createInitialState(GAME_MODE.CLASSIC);
+      s.p1.x = 300;
+      s.p1.y = 200;
+      s.p2.x = 312;
+      s.p2.y = 200;
+      s.puck.x = 309;
+      s.puck.y = 200;
+      checkCapture(s);
+      expect(s.p2.hasPuck).toBe(true);
+      expect(s.p1.hasPuck).toBe(false);
+      expect(s.puck.possessedBy).toBe(2);
+    });
+
     it("does not capture when too far", () => {
       const s = createInitialState(GAME_MODE.CLASSIC);
       s.puck.x = s.p1.x + 50;
@@ -619,11 +647,7 @@ describe("hex_hockey_physics", () => {
       let failures = 0;
 
       for (let i = 0; i < 100; i++) {
-        const s = createInitialState(GAME_MODE.CLASSIC);
-        s.p2.hasPuck = true;
-        s.puck.possessedBy = 2;
-        s.p1.x = s.p2.x + 10;
-        s.p1.y = s.p2.y;
+        const s = carrierInTackleReach(GAME_MODE.CLASSIC);
 
         const events = handleTackle(s, true);
         if (events & EVENT.TACKLE_SUCCESS) {
@@ -642,23 +666,27 @@ describe("hex_hockey_physics", () => {
       expect(failures).toBeGreaterThan(0);
     });
 
+    it("a successful tackle knocks the carrier off and sends the puck to the tackler", () => {
+      const s = carrierInTackleReach(GAME_MODE.CLASSIC);
+
+      const events = handleTackle(s, true, () => 0);
+
+      expect(events & EVENT.TACKLE_SUCCESS).toBeTruthy();
+      expect(s.p2.stunTimer).toBe(STUN_DURATION);
+      expect(s.puck.vx).toBeGreaterThan(0);
+      checkCapture(s);
+      expect(s.p2.hasPuck).toBe(false);
+    });
+
     it("BLITZ mode has higher tackle success rate", () => {
       let blitzSuccesses = 0;
       let classicSuccesses = 0;
 
       for (let i = 0; i < 200; i++) {
-        const sBlitz = createInitialState(GAME_MODE.BLITZ);
-        sBlitz.p2.hasPuck = true;
-        sBlitz.puck.possessedBy = 2;
-        sBlitz.p1.x = sBlitz.p2.x + 10;
-        sBlitz.p1.y = sBlitz.p2.y;
+        const sBlitz = carrierInTackleReach(GAME_MODE.BLITZ);
         if (handleTackle(sBlitz, true) & EVENT.TACKLE_SUCCESS) blitzSuccesses++;
 
-        const sClassic = createInitialState(GAME_MODE.CLASSIC);
-        sClassic.p2.hasPuck = true;
-        sClassic.puck.possessedBy = 2;
-        sClassic.p1.x = sClassic.p2.x + 10;
-        sClassic.p1.y = sClassic.p2.y;
+        const sClassic = carrierInTackleReach(GAME_MODE.CLASSIC);
         if (handleTackle(sClassic, true) & EVENT.TACKLE_SUCCESS) classicSuccesses++;
       }
 
@@ -931,6 +959,53 @@ describe("hex_hockey_physics", () => {
     it("goal opening is within rink height", () => {
       expect(GOAL_TOP).toBeGreaterThan(RINK_TOP);
       expect(GOAL_BOTTOM).toBeLessThan(RINK_BOTTOM);
+    });
+  });
+
+  describe("stepTick", () => {
+    const still = { left: false, right: false, up: false, down: false, action: false };
+
+    it("moves both skaters and acts once on a fresh press of action", () => {
+      const s = createInitialState(GAME_MODE.CLASSIC);
+      s.phase = PHASE.PLAYING;
+      s.p1.hasPuck = true;
+      s.puck.possessedBy = 1;
+      const x1 = s.p1.x;
+      const x2 = s.p2.x;
+
+      const first = stepTick(
+        s,
+        { ...still, right: true, action: true },
+        { ...still, left: true },
+        {
+          local: false,
+          remote: false,
+        },
+      );
+
+      expect(s.p1.x).toBeGreaterThan(x1);
+      expect(s.p2.x).toBeLessThan(x2);
+      expect(s.eventFlags & EVENT.SHOT).toBeTruthy();
+      expect(s.p1.hasPuck).toBe(false);
+      expect(first.handled).toEqual({ local: true, remote: false });
+
+      s.eventFlags = 0;
+      s.p1.hasPuck = true;
+      s.puck.possessedBy = 1;
+      stepTick(s, { ...still, action: true }, still, first.handled);
+      expect(s.eventFlags & EVENT.SHOT).toBeFalsy();
+    });
+
+    it("scores a puck in the goal and starts the celebration", () => {
+      const s = createInitialState(GAME_MODE.CLASSIC);
+      s.phase = PHASE.PLAYING;
+      Object.assign(s.puck, { x: RINK_RIGHT + PUCK_R + 2, y: RINK_CY, vx: 2, vy: 0 });
+
+      const tick = stepTick(s, still, still, { local: false, remote: false });
+
+      expect(tick.scored).toBe("p1");
+      expect(s.scoreP1).toBe(1);
+      expect(s.phase).toBe(PHASE.GOAL_CELEBRATION);
     });
   });
 });

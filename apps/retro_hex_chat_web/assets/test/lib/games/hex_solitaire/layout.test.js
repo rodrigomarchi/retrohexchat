@@ -1,43 +1,29 @@
 import { describe, expect, it } from "vitest";
 import { CARD, GEOMETRY, MODE, VIEW } from "../../../../js/lib/games/hex_solitaire/protocol.js";
 import { hitTest, layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
+import { expectLaidApart, within } from "../../../support/games/places.js";
+import { card } from "../../../support/games/card_tables.js";
+import { table as klondike } from "./tables.js";
 
-const card = (rank, suit) => suit * 13 + rank - 1;
+/** A Klondike table drawing three, built by hand. */
+const table = (piles) => klondike({ mode: MODE.DRAW3, ...piles });
 
-function table({ stock = [], waste = [], fan, foundations = [[], [], [], []], columns = [] } = {}) {
-  const tableau = Array.from({ length: 7 }, (_, i) => ({
-    down: columns[i]?.down ?? [],
-    up: columns[i]?.up ?? [],
-  }));
-  return {
-    mode: MODE.DRAW3,
-    stock,
-    waste,
-    fan: fan ?? Math.min(1, waste.length),
-    foundations,
-    tableau,
-  };
-}
-
-const overlaps = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
-const inside = (r) => r.x >= 0 && r.y >= 0 && r.x + r.w <= VIEW.width && r.y + r.h <= VIEW.height;
+/** Every pile's own place: the stock, the waste's, the foundations and the columns'. */
+const pilesOf = (places) => [
+  places.stock,
+  places.wasteSlot,
+  ...places.foundations,
+  ...places.columns.map((c) => c.slot),
+];
 
 describe("layout", () => {
   it("places the stock, the waste, four foundations and seven columns inside the canvas, apart", () => {
     const places = layout(table());
-    const piles = [
-      places.stock,
-      places.wasteSlot,
-      ...places.foundations,
-      ...places.columns.map((c) => c.slot),
-    ];
+    const piles = pilesOf(places);
 
     expect(places.foundations).toHaveLength(4);
     expect(places.columns).toHaveLength(7);
-    expect(piles.every(inside)).toBe(true);
-    for (const [i, a] of piles.entries()) {
-      for (const b of piles.slice(i + 1)) expect(overlaps(a, b)).toBe(false);
-    }
+    expectLaidApart(piles, VIEW);
     expect([places.stock.w, places.stock.h]).toEqual([CARD.width, CARD.height]);
   });
 
@@ -55,7 +41,7 @@ describe("layout", () => {
     const cards = places.columns[6].cards;
 
     expect(cards).toHaveLength(19);
-    expect(inside(cards.at(-1))).toBe(true);
+    expect(within(cards.at(-1), VIEW)).toBe(true);
     // Each card under another still shows a strip one can press.
     for (const [i, c] of cards.slice(0, -1).entries()) {
       expect(cards[i + 1].y - c.y).toBeGreaterThanOrEqual(4);
@@ -66,7 +52,7 @@ describe("layout", () => {
     const up = Array.from({ length: 13 }, (_, i) => card(13 - i, i % 2 ? 1 : 0));
     const down = Array.from({ length: 12 }, (_, i) => card(1, i % 4));
     const places = layout(table({ columns: [{ down, up }] }));
-    expect(inside(places.columns[0].cards.at(-1))).toBe(true);
+    expect(within(places.columns[0].cards.at(-1), VIEW)).toBe(true);
   });
 });
 
@@ -110,20 +96,11 @@ describe("hitTest", () => {
 describe("the table standing up, for a phone", () => {
   const standing = (extra = {}) => ({ ...table(extra), geometry: GEOMETRY.PORTRAIT });
   const { view } = GEOMETRY.PORTRAIT;
-  const within = (r) => r.x >= 0 && r.y >= 0 && r.x + r.w <= view.width && r.y + r.h <= view.height;
 
   it("lays the seven columns across the whole width, every pile apart and inside it", () => {
     const places = layout(standing());
-    const piles = [
-      places.stock,
-      places.wasteSlot,
-      ...places.foundations,
-      ...places.columns.map((c) => c.slot),
-    ];
-    expect(piles.every(within)).toBe(true);
-    for (const [i, a] of piles.entries()) {
-      for (const b of piles.slice(i + 1)) expect(overlaps(a, b)).toBe(false);
-    }
+    const piles = pilesOf(places);
+    expectLaidApart(piles, view);
     const last = places.columns[6].slot;
     expect(view.width - (last.x + last.w)).toBeLessThanOrEqual(4);
   });
@@ -133,7 +110,7 @@ describe("the table standing up, for a phone", () => {
     const up = Array.from({ length: 13 }, (_, i) => card(13 - i, i % 2 ? 1 : 0));
     const cards = layout(standing({ columns: [{}, {}, {}, {}, {}, {}, { down, up }] })).columns[6]
       .cards;
-    expect(within(cards.at(-1))).toBe(true);
+    expect(within(cards.at(-1), view)).toBe(true);
     expect(cards.at(-1).y - cards.at(-2).y).toBe(GEOMETRY.PORTRAIT.upOffset);
     expect(GEOMETRY.PORTRAIT.upOffset).toBeGreaterThan(18);
   });

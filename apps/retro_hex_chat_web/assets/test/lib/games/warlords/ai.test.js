@@ -1,11 +1,20 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  expectFreshLookAfterForget,
+  expectNeutralOutsidePlay,
+  expectOneAimPerApproach,
+  itSetsDifficulty,
+} from "../../../support/games/ai_tests.js";
+
+import {
   CANVAS_H,
   FIREBALL_SIZE,
   P2_SHIELD_X,
   SHIELD_H,
   createInitialState,
+  P1_SHIELD_X,
+  SHIELD_W,
 } from "../../../../js/lib/games/warlords/physics.js";
 import { PHASE } from "../../../../js/lib/games/warlords/protocol.js";
 import {
@@ -34,13 +43,7 @@ describe("WarlordAI", () => {
     expect(normalizeWarlordAIDifficulty(null)).toBe("normal");
   });
 
-  it("updates difficulty through the public setter", () => {
-    const ai = createWarlordAI({ difficulty: "easy" });
-
-    ai.setDifficulty("hard");
-
-    expect(ai.difficulty).toBe("hard");
-  });
+  itSetsDifficulty(createWarlordAI);
 
   it("predicts a straight intercept for the right-side shield", () => {
     const state = playingState({
@@ -101,8 +104,9 @@ describe("WarlordAI", () => {
     });
   });
 
-  it("holds catch when an aligned fireball is about to touch the shield", () => {
-    const state = playingState({
+  /** A fireball lined up with player two's shield, a frame or two from touching it. */
+  const aboutToTouch = () =>
+    playingState({
       fireballX: P2_SHIELD_X - FIREBALL_SIZE - 12,
       fireballY: 150,
       fireballVX: 4,
@@ -110,7 +114,11 @@ describe("WarlordAI", () => {
       shield2Y: 150 - SHIELD_H / 2,
     });
 
-    expect(shouldHoldCatch(state, 2, WARLORD_AI_DIFFICULTIES.normal, () => 0.5)).toBe(true);
+  it("holds catch when an aligned fireball is about to touch the shield", () => {
+    const state = aboutToTouch();
+
+    expect(shouldHoldCatch(state, 2, WARLORD_AI_DIFFICULTIES.normal, () => true)).toBe(true);
+    expect(shouldHoldCatch(state, 2, WARLORD_AI_DIFFICULTIES.normal, () => false)).toBe(false);
   });
 
   it("releases a caught fireball after the configured delay", () => {
@@ -126,12 +134,7 @@ describe("WarlordAI", () => {
 
   it("stays neutral outside active play", () => {
     const ai = createWarlordAI({ difficulty: "hard", rng: () => 0.5 });
-
-    expect(ai.nextInputs({ state: createInitialState(), player: 2 })).toEqual({
-      up: false,
-      down: false,
-      space: false,
-    });
+    expectNeutralOutsidePlay(ai, createInitialState(), { up: false, down: false, space: false });
   });
 
   it("keeps harder difficulties more precise than easier ones", () => {
@@ -142,5 +145,48 @@ describe("WarlordAI", () => {
     expect(WARLORD_AI_DIFFICULTIES.hard.releaseFrames).toBeLessThan(
       WARLORD_AI_DIFFICULTIES.easy.releaseFrames,
     );
+  });
+
+  it("keeps one aim error for a whole approach and draws a new one for the next", () => {
+    const fireball = { fireballX: 320, fireballY: 240, fireballVY: 0, shield2Y: 210 };
+    const incoming = playingState({ ...fireball, fireballVX: 4 });
+    expectOneAimPerApproach({
+      create: (rng) => createWarlordAI({ difficulty: "hard", rng }),
+      incoming,
+      away: playingState({ ...fireball, fireballVX: -4 }),
+      every: WARLORD_AI_DIFFICULTIES.hard.decisionFrames,
+      aim: (ai) => ai.sampledTargetY,
+      intercept: predictWarlordInterceptY(incoming, 2),
+      errorPx: WARLORD_AI_DIFFICULTIES.hard.errorPx,
+    });
+  });
+
+  it("aims shield one at its face, where the fireball meets it", () => {
+    const state = playingState({ fireballX: 300, fireballY: 150, fireballVX: -4, fireballVY: 1 });
+    const faceX = P1_SHIELD_X + SHIELD_W + FIREBALL_SIZE / 2;
+
+    expect(predictWarlordInterceptY(state, 1)).toBeCloseTo(150 + (300 - faceX) / 4);
+  });
+
+  it("decides once per approach whether to catch", () => {
+    let draw = 0;
+    const ai = createWarlordAI({ difficulty: "normal", rng: () => draw });
+    const state = aboutToTouch();
+
+    expect(ai.nextInputs({ state, player: 2 }).space).toBe(true);
+    // Later draws would say no, but this approach's catch was already decided
+    draw = 0.99;
+    for (let frame = 0; frame < 10; frame++) {
+      expect(ai.nextInputs({ state, player: 2 }).space).toBe(true);
+    }
+  });
+
+  it("looks again at once after forgetting the last round", () => {
+    expectFreshLookAfterForget({
+      create: (rng) => createWarlordAI({ difficulty: "easy", rng }),
+      before: playingState({ fireballX: 320, fireballY: 150, fireballVX: 4, fireballVY: 0 }),
+      after: playingState({ fireballX: 320, fireballY: 320, fireballVX: 4, fireballVY: 0 }),
+      aim: (ai) => ai.sampledTargetY,
+    });
   });
 });

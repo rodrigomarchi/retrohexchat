@@ -1,28 +1,16 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { PHASE } from "../../../../js/lib/games/core/solo/phases.js";
 import HexMines from "../../../../js/lib/games/hex_mines/index.js";
 import { boardPlace } from "../../../../js/lib/games/hex_mines/layout.js";
 import { CELL } from "../../../../js/lib/games/hex_mines/rules.js";
-import { playMatch } from "../../../support/games/harness.js";
+import { itEndsEarly, soloMatches, underway } from "../../../support/games/solo_tests.js";
 
-const rect = { left: 0, top: 0, width: 640, height: 480 };
-const solo = (options = {}) =>
-  playMatch({
-    EngineClass: HexMines,
-    gameId: "hex_mines",
-    mode: "solo",
-    matchSeed: 42,
-    rect,
-    ...options,
-  });
+const solo = soloMatches(HexMines, "hex_mines");
 const centre = (host, i) => {
   const at = boardPlace(host.laid, i);
   return [at.x + at.w / 2, at.y + at.h / 2];
 };
-const click = (match, [x, y], button) => {
-  match.pointer("down", x, y, button === undefined ? undefined : { button });
-  match.pointer("up", x, y, button === undefined ? undefined : { button });
-};
+const click = (match, [x, y], button) => match.tap(x, y, { button });
 /** The host's board replaced: mines where `rows` has `*`, nothing open, the clock running. */
 function setBoard(host, rows) {
   const mine = rows
@@ -42,18 +30,8 @@ function setBoard(host, rows) {
 }
 
 describe("a match of Hex Mines", () => {
-  let match;
-
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
-
   it("lays the mines at the first click, away from it, opens it and starts the clock", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     expect(host.gameState.phase).toBe(PHASE.PLAYING);
     click(match, centre(host, 40));
     match.advance(100);
@@ -65,9 +43,7 @@ describe("a match of Hex Mines", () => {
   });
 
   it("flags with a right click, and with a long press", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     click(match, centre(host, 0), 2);
     match.advance(50);
     expect(host.gameState.board.cell[0]).toBe(CELL.FLAG);
@@ -83,9 +59,7 @@ describe("a match of Hex Mines", () => {
   });
 
   it("opens, never flags, a square a mouse holds down", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     const [x, y] = centre(host, 40);
     match.pointer("down", x, y, { pointerType: "mouse" });
     match.advance(600);
@@ -95,9 +69,9 @@ describe("a match of Hex Mines", () => {
   });
 
   it("flags with a tap once a phone is switched to flags", async () => {
-    match = await solo({ rect: { left: 0, top: 0, width: 360, height: 600 } });
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo, {
+      rect: { left: 0, top: 0, width: 360, height: 600 },
+    });
     const scale = 360 / host.view.width;
     const top = (600 - host.view.height * scale) / 2;
     const page = ([x, y]) => [x * scale, top + y * scale];
@@ -111,9 +85,7 @@ describe("a match of Hex Mines", () => {
   });
 
   it("ends on a mine with nothing scored, once the board has shown it", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     setBoard(host, ["*........", ...Array.from({ length: 8 }, () => ".........")]);
     click(match, centre(host, 0));
     match.advance(100);
@@ -124,9 +96,7 @@ describe("a match of Hex Mines", () => {
   });
 
   it("wins with the last square, scoring its time", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     setBoard(host, ["*........", ...Array.from({ length: 8 }, () => ".........")]);
     host.gameState = { ...host.gameState, clock: { started: true, ticks: 600 } };
     // One click floods every square but the mine's.
@@ -138,20 +108,14 @@ describe("a match of Hex Mines", () => {
     expect(match.results.host[0].score.p1).toBeLessThanOrEqual(1000);
   });
 
-  it("ends early with nothing scored", async () => {
-    match = await solo();
-    match.advance(500);
-    match.engines.host.quit();
-    expect(match.results.host).toEqual([{ score: { p1: 0, p2: 0 }, ended_early: true }]);
-  });
+  itEndsEarly("ends early with nothing scored", solo);
 
   it("plays the same match for the same seed and the same presses", async () => {
     const final = async () => {
       const m = await solo();
       m.advance(100);
       const [x, y] = centre(m.engines.host, 40);
-      m.pointer("down", x, y);
-      m.pointer("up", x, y);
+      m.tap(x, y);
       m.advance(500);
       const state = JSON.stringify(m.engines.host.gameState);
       m.stop();

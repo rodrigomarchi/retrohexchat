@@ -6,19 +6,12 @@
  */
 
 import { schema, f32, flags, u8, u16 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+import { MSG_TYPE, ROUNDS_GAME_END, phases } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
-// Game phase enum
-export const PHASE = {
-  WAITING: 0,
-  COUNTDOWN: 1,
-  SPAWNING: 2,
-  PLAYING: 3,
-  ROUND_OVER: 4,
-  MATCH_OVER: 5,
-};
+/** The match's phases, by their value on the wire. */
+export const PHASE = phases("SPAWNING", "PLAYING", "ROUND_OVER", "MATCH_OVER");
 
 // Game mode enum (protocol-ready for future modes)
 export const GAME_MODE = {
@@ -63,11 +56,5 @@ export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
   u16("roundTimer"),
 ]);
 
-/** How the match ended. */
-export const GAME_END = schema(MSG_TYPE.GAME_END, [
-  u8("score1"),
-  u8("score2"),
-  u8("winner"),
-  u8("roundWins1"),
-  u8("roundWins2"),
-]);
+/** How the match ended: the rounds' end of every match played in rounds. */
+export const GAME_END = ROUNDS_GAME_END;

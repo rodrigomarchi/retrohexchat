@@ -14,7 +14,7 @@ import { log } from "../../../logger.js";
 import { browserAtlasIO, createAtlasLoader } from "../atlas.js";
 import { playFlags } from "../events.js";
 import { soloResult } from "../result.js";
-import { active, stepEffects } from "./effects.js";
+import { active, createEffects, stepEffects } from "./effects.js";
 import { PHASE } from "./phases.js";
 
 /** The sound of each event bit, by the event's name: `EVENT.BOOM` plays `boom`. */
@@ -23,11 +23,22 @@ export const eventSounds = (EVENT) =>
 
 /**
  * The parts of a definition every board game has the same: spread into
- * `defineGame({ ... })`.
- * @param {{ sounds: object, masterVolume: number, theme: Function,
- *   finalScore: (state: object) => number }} game
+ * `defineGame({ ... })`. Its setup counts frames from 0, makes the effects
+ * (fewer with motion reduced), runs the game's own `setup`, and loads the
+ * atlas at `tilesUrl` (`name` in a warning when it fails).
+ * @param {{ name: string, tilesUrl: string, sounds: object, masterVolume: number,
+ *   theme: Function, finalScore: (state: object) => number,
+ *   setup?: (game: object) => void }} game
  */
-export const boardDefinition = ({ sounds, masterVolume, theme, finalScore }) => ({
+export const boardDefinition = ({
+  name,
+  tilesUrl,
+  sounds,
+  masterVolume,
+  theme,
+  finalScore,
+  setup = () => {},
+}) => ({
   players: 1,
   pointer: true,
   pixelArt: true,
@@ -36,7 +47,28 @@ export const boardDefinition = ({ sounds, masterVolume, theme, finalScore }) => 
   audio: { sounds, masterVolume },
   theme,
   standing: (game) => soloResult(finalScore(game.gameState)),
+  setup: (game) => {
+    game.frameCount = 0;
+    game.fx = createEffects({ reduced: reducedMotion() });
+    setup(game);
+    loadAtlas(game, tilesUrl, name);
+  },
 });
+
+/**
+ * A key's action, kept for the next tick while the match is in play: played
+ * there in order with everything else, a match replays the same.
+ */
+export function queueKey(game, action) {
+  if (action && game.gameState?.phase === PHASE.PLAYING) game.keys.push(action);
+}
+
+/** Each key's action kept since the last tick, played in order by `play`. */
+export function playKeys(game, play) {
+  const keys = game.keys;
+  game.keys = [];
+  for (const action of keys) play(game, action);
+}
 
 /**
  * The game's atlas, fetched in the background with `loader` (a card table's

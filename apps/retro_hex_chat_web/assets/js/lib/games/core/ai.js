@@ -1,7 +1,8 @@
 /**
  * The pieces the games' AIs share: difficulty names, where a bouncing ball
  * will cross a line, steering toward a target, moving on part of the frames,
- * reacting only every few frames, and their random draws.
+ * reacting only every few frames, seeing the game a few frames late,
+ * mistakes committed to rather than re-drawn, and their random draws.
  * @module games/core/ai
  */
 
@@ -179,6 +180,179 @@ export function createReaction() {
       age = Number.POSITIVE_INFINITY;
     },
   };
+}
+
+/**
+ * An AI's commitment to one read: a draw kept for as long as `key` stays the
+ * same — one aim error for the whole approach of a ball, say — so a mistake
+ * carries through to the shot instead of averaging out over fresh draws.
+ * @returns {{ hold: <T>(key: unknown, draw: () => T) => T, reset: () => void }}
+ */
+export function createCommitment() {
+  let heldKey;
+  let held = false;
+  let value;
+  return {
+    hold(key, draw) {
+      if (!held || key !== heldKey) {
+        value = draw();
+        heldKey = key;
+        held = true;
+      }
+      return value;
+    },
+    /** Draw again on the next hold. */
+    reset() {
+      held = false;
+    },
+  };
+}
+
+/**
+ * A commitment kept per approach of a ball: `track` is told every frame
+ * whether the ball is coming at the AI, and each time it turns toward it
+ * starts a new approach; `hold` keeps one draw for the approach under way.
+ * @returns {{ track: (incoming: boolean) => void, readonly incoming: boolean, hold: <T>(draw: () => T) => T, reset: () => void }}
+ */
+export function createApproachAim() {
+  const aim = createCommitment();
+  let approach = 0;
+  let incoming = false;
+  return {
+    track(isIncoming) {
+      if (isIncoming && !incoming) approach++;
+      incoming = isIncoming;
+    },
+    get incoming() {
+      return incoming;
+    },
+    hold(draw) {
+      return aim.hold(approach, draw);
+    },
+    reset() {
+      incoming = false;
+      aim.reset();
+    },
+  };
+}
+
+/**
+ * Decisions taken once per thing an AI watches — whether it notices a bomb,
+ * whether it tries to dodge a bullet — and kept for as long as that thing is
+ * in play, so a thing it missed stays missed.
+ * @returns {{ decide: <T>(id: unknown, draw: () => T) => T, keep: (ids: Iterable<unknown>) => void, reset: () => void }}
+ */
+export function createPerThing() {
+  const decisions = new Map();
+  return {
+    decide(id, draw) {
+      if (!decisions.has(id)) decisions.set(id, draw());
+      return decisions.get(id);
+    },
+    /** Forget every thing not among `ids`, the ones still in play. */
+    keep(ids) {
+      const live = new Set(ids);
+      for (const id of decisions.keys()) {
+        if (!live.has(id)) decisions.delete(id);
+      }
+    },
+    reset() {
+      decisions.clear();
+    },
+  };
+}
+
+/**
+ * An AI's reaction time: what it sees is the state from `frames` frames ago,
+ * so it answers a change only once that change is that old.
+ * @returns {{ see: <T>(state: T, frames: number) => T, reset: () => void }}
+ */
+export function createDelayedView() {
+  const seen = [];
+  return {
+    see(state, frames) {
+      seen.push(state);
+      const keep = Math.max(0, Math.floor(frames)) + 1;
+      if (seen.length > keep) seen.splice(0, seen.length - keep);
+      return seen[0];
+    },
+    reset() {
+      seen.length = 0;
+    },
+  };
+}
+
+/**
+ * What every game's AI keeps the same way: its difficulty — a row of its
+ * table, which a request may switch — its random draws, and the frame it is
+ * on. A game's AI extends it and plays a turn by the row `rowFor` gives.
+ */
+export class TableAI {
+  /**
+   * @param {object} options
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
+   * @param {() => number} [options.rng]
+   * @param {number} [options.seed]
+   * @param {(difficulty: unknown) => string} normalize - the game's difficulty names
+   * @param {Record<string, object>} table - the game's difficulty rows
+   * @param {number} [seed] - for an AI with a seed of its own (see `aiRng`)
+   */
+  constructor(options, normalize, table, seed) {
+    this.normalize = normalize;
+    this.table = table;
+    this.difficulty = normalize(options.difficulty);
+    this.rng = aiRng(options, seed);
+    this.frame = 0;
+  }
+
+  /**
+   * @param {"easy"|"normal"|"hard"|string} difficulty
+   * @returns {void}
+   */
+  setDifficulty(difficulty) {
+    this.difficulty = this.normalize(difficulty);
+  }
+
+  /**
+   * Drop every memory that belongs to one round, serve or match — a view
+   * delayed, a decision taken per thing, a commitment, a held target. The
+   * engine calls it whenever the phase changes; an AI with such memories
+   * overrides it.
+   * @returns {void}
+   */
+  forget() {}
+
+  /**
+   * The start of a turn: the frame counted, and what the AI is asked to
+   * decide on (`aiRequest`).
+   * @param {{ state?: object, player?: number }} request
+   * @returns {{ state: object | undefined, player: 1 | 2 }}
+   */
+  startTurn(request) {
+    this.frame++;
+    return aiRequest(request);
+  }
+
+  /**
+   * The difficulty to play this turn by: the request's when it names one,
+   * switching to it, else the AI's own.
+   * @param {{ difficulty?: string }} request
+   * @returns {string}
+   */
+  difficultyFor(request) {
+    const difficulty = this.normalize(request.difficulty || this.difficulty);
+    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
+    return difficulty;
+  }
+
+  /**
+   * The difficulty row to play this turn by (`difficultyFor`).
+   * @param {{ difficulty?: string }} request
+   * @returns {object}
+   */
+  rowFor(request) {
+    return this.table[this.difficultyFor(request)];
+  }
 }
 
 /**

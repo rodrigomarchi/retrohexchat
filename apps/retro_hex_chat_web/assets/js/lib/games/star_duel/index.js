@@ -10,35 +10,20 @@
  * @module games/star_duel
  */
 
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
-import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
+import { ARROWS_WASD_SPACE, ARROW_KEYS, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, finishScored, guestEnd, playOutcome } from "../core/result.js";
 import { countdownState } from "../core/rounds.js";
 import { createStarDuelAI, normalizeStarDuelAIDifficulty } from "./ai.js";
 import {
   STAR_X,
   STAR_Y,
   WIN_SCORE,
-  applyDrag,
-  applyGravity,
-  applyGravityToMissile,
-  applyThrust,
-  attemptWarp,
-  capSpeed,
-  checkAsteroidMissileCollision,
-  checkAsteroidShipCollision,
-  checkMissileShipCollision,
-  checkShipShipCollision,
-  checkStarCollision,
   createExplosionParticles,
   createInitialState,
-  fireMissile,
   generateAsteroids,
   spawnShips,
-  tickCooldowns,
-  updateMissiles,
+  stepTick,
   updateParticles,
-  updateShipPosition,
-  updateShipRotation,
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT, encodeShipFlags } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
@@ -46,8 +31,6 @@ import { SOUNDS, extend } from "./sounds.js";
 
 const SPAWN_DELAY_TICKS = 90; // 1.5 s
 const ROUND_OVER_DELAY_TICKS = 120; // 2 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const MODE_MAP = {
   star_duel: GAME_MODE.OPEN_SPACE,
@@ -61,23 +44,6 @@ const starDistance = (ship) => {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const wreck = (ship) => ({ ...ship, alive: false, exploding: true });
-
-/** Rotate, thrust and coast a living ship by its pilot's inputs. */
-function fly(ship, inputs) {
-  if (!ship.alive) return ship;
-  let s = updateShipRotation(ship, inputs.rotateLeft, inputs.rotateRight);
-  s = { ...s, thrustActive: inputs.thrust };
-  return updateShipPosition(capSpeed(applyDrag(applyThrust(s))));
-}
-
-/** Missiles and warps go on the press, not while the key is held. */
-function pressed(game, key, now) {
-  const fresh = now && !game[key];
-  game[key] = now;
-  return fresh;
-}
-
 function silenceThrust(game) {
   game.audio.stopThrust();
   game.thrustAudioPlaying = false;
@@ -86,109 +52,37 @@ function silenceThrust(game) {
 function battle(game) {
   const state = game.gameState;
   game.updateOpponent();
-  const local = game.localInputs;
-  const remote = game.remoteInputs;
+  const step = stepTick(
+    state,
+    { 1: game.localInputs, 2: game.remoteInputs },
+    {
+      fire1: game.p1FirePrev,
+      fire2: game.p2FirePrev,
+      warp1: game.p1WarpPrev,
+      warp2: game.p2WarpPrev,
+    },
+    game.random,
+  );
+  game.p1FirePrev = step.pressed.fire1;
+  game.p2FirePrev = step.pressed.fire2;
+  game.p1WarpPrev = step.pressed.warp1;
+  game.p2WarpPrev = step.pressed.warp2;
+  const { ship1, ship2, score1, score2 } = step.state;
+  const { fired, warped, hits, died, scored } = step.events;
 
-  let ship1 = fly(state.ship1, local);
-  let ship2 = fly(state.ship2, remote);
-  let { missiles } = state;
-
-  if (pressed(game, "p1FirePrev", local.fire) && ship1.alive) {
-    const shot = fireMissile(ship1, 1, missiles);
-    if (shot) {
-      ship1 = shot.ship;
-      missiles = [...missiles, shot.missile];
-      game.audio.playFire();
-    }
-  }
-  if (pressed(game, "p2FirePrev", remote.fire) && ship2.alive) {
-    const shot = fireMissile(ship2, 2, missiles);
-    if (shot) {
-      ship2 = shot.ship;
-      missiles = [...missiles, shot.missile];
-      game.audio.playFire();
-    }
-  }
-  if (pressed(game, "p1WarpPrev", local.warp)) {
-    const warp = attemptWarp(ship1, game.random);
-    if (warp) {
-      ship1 = warp.ship;
-      game.audio.playWarp();
-    }
-  }
-  if (pressed(game, "p2WarpPrev", remote.warp)) {
-    const warp = attemptWarp(ship2, game.random);
-    if (warp) {
-      ship2 = warp.ship;
-      game.audio.playWarp();
-    }
-  }
-
-  missiles = updateMissiles(missiles);
-
+  for (let i = 0; i < fired.length; i++) game.audio.playFire();
+  for (let i = 0; i < warped.length; i++) game.audio.playWarp();
   if (state.mode === GAME_MODE.GRAVITY_WELL) {
-    const pull = (ship) => {
-      if (!ship.alive) return ship;
-      const s = capSpeed(applyGravity(ship, STAR_X, STAR_Y));
-      return checkStarCollision(s) ? wreck(s) : s;
-    };
-    ship1 = pull(ship1);
-    ship2 = pull(ship2);
-    missiles = missiles.map((m) => applyGravityToMissile(m, STAR_X, STAR_Y));
     game.audio.playStarProximity(Math.min(starDistance(ship1), starDistance(ship2)));
   }
+  for (let i = 0; i < hits; i++) game.audio.playHit();
 
-  if (state.mode === GAME_MODE.DEBRIS_FIELD) {
-    if (ship1.alive && checkAsteroidShipCollision(ship1, state.asteroids)) ship1 = wreck(ship1);
-    if (ship2.alive && checkAsteroidShipCollision(ship2, state.asteroids)) ship2 = wreck(ship2);
-    missiles = checkAsteroidMissileCollision(missiles, state.asteroids);
+  let { particles } = state;
+  for (const player of died) {
+    const ship = player === 1 ? ship1 : ship2;
+    particles = [...particles, ...createExplosionParticles(ship.x, ship.y, 15, game.fxRandom)];
   }
-
-  const check1 = checkMissileShipCollision(missiles, ship1, 1);
-  missiles = check1.missiles;
-  if (check1.hit) {
-    ship1 = wreck(ship1);
-    game.audio.playHit();
-  }
-  const check2 = checkMissileShipCollision(missiles, ship2, 2);
-  missiles = check2.missiles;
-  if (check2.hit) {
-    ship2 = wreck(ship2);
-    game.audio.playHit();
-  }
-  if (checkShipShipCollision(ship1, ship2)) {
-    ship1 = wreck(ship1);
-    ship2 = wreck(ship2);
-    game.audio.playHit();
-  }
-
-  if (ship1.alive) ship1 = tickCooldowns(ship1);
-  if (ship2.alive) ship2 = tickCooldowns(ship2);
-
-  // A kill scores for the other pilot; both dying at once is a drawn round.
-  let { particles, score1, score2 } = state;
-  let lastScorer = state.lastScorer || 0;
-  let scoreChanged = false;
-  const p1Died = ship1.exploding && ship1.alive === false && !state.ship1.exploding;
-  const p2Died = ship2.exploding && ship2.alive === false && !state.ship2.exploding;
-  if (p1Died) {
-    particles = [...particles, ...createExplosionParticles(ship1.x, ship1.y, 15, game.fxRandom)];
-  }
-  if (p2Died) {
-    particles = [...particles, ...createExplosionParticles(ship2.x, ship2.y, 15, game.fxRandom)];
-  }
-  if (p1Died || p2Died) {
-    game.audio.playDeath();
-    scoreChanged = true;
-    if (p1Died && p2Died) lastScorer = 0;
-    else if (p1Died) {
-      score2++;
-      lastScorer = 2;
-    } else {
-      score1++;
-      lastScorer = 1;
-    }
-  }
+  if (died.length > 0) game.audio.playDeath();
   if (particles.length > 0) particles = updateParticles(particles);
 
   if (ship1.thrustActive && ship1.alive && !game.thrustAudioPlaying) {
@@ -198,12 +92,12 @@ function battle(game) {
     silenceThrust(game);
   }
 
-  game.gameState = { ...state, ship1, ship2, missiles, particles, score1, score2, lastScorer };
+  game.gameState = { ...step.state, particles };
   game.invalidate();
   game.frameCount++;
   game.broadcast();
 
-  if (scoreChanged) {
+  if (scored) {
     game.gameState.phase =
       score1 >= WIN_SCORE || score2 >= WIN_SCORE ? PHASE.FINISHED : PHASE.ROUND_OVER;
   }
@@ -313,11 +207,11 @@ function silencePeerThrust(game) {
 
 export default defineGame({
   inputs: {
-    rotateLeft: ["ArrowLeft", "a", "A"],
-    rotateRight: ["ArrowRight", "d", "D"],
-    thrust: ["ArrowUp", "w", "W"],
+    rotateLeft: ARROW_KEYS.left,
+    rotateRight: ARROW_KEYS.right,
+    thrust: ARROW_KEYS.up,
     fire: [" "],
-    warp: ["ArrowDown", "s", "S"],
+    warp: ARROW_KEYS.down,
   },
   captureKeys: ARROWS_WASD_SPACE,
   schema: { snapshot: SNAPSHOT, end: GAME_END },
@@ -352,11 +246,7 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: countdownState({
-        from: COUNTDOWN_FROM,
-        every: COUNTDOWN_EVERY_TICKS,
-        next: "SPAWNING",
-      }),
+      COUNTDOWN: countdownState({ next: "SPAWNING" }),
       SPAWNING: {
         enter: spawning,
         after: { ticks: SPAWN_DELAY_TICKS },
@@ -403,10 +293,7 @@ export default defineGame({
           playOutcome(game, winner);
           silenceThrust(game);
           if (s.mode === GAME_MODE.GRAVITY_WELL) game.audio.stopStarProximity();
-          game.finish({
-            end: { score1: s.score1, score2: s.score2, winner },
-            result: { score: { p1: s.score1, p2: s.score2 }, winner },
-          });
+          finishScored(game, s.score1, s.score2, winner);
         },
       },
     },

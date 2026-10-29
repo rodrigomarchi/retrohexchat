@@ -1,12 +1,4 @@
-/**
- * A tap at a point of the board, at `at` ms: a press and its release; a
- * right click when `button` is 2.
- * @returns {Array<{at: number, pointer: string, x: number, y: number}>}
- */
-const tapAt = (at, x, y, button) => [
-  { at, pointer: "down", x, y, ...(button ? { button } : {}) },
-  { at: at + 40, pointer: "up", x, y, ...(button ? { button } : {}) },
-];
+import { tapAt } from "./keys.js";
 
 // The beginner board lying down: 9 squares of 40 pixels from (140, 82).
 const SQUARE = (col, row) => [140 + col * 40 + 20, 82 + row * 40 + 20];

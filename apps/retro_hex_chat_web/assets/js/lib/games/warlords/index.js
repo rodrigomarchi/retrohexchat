@@ -8,7 +8,7 @@
  * @module games/warlords
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROW_KEYS, defineGame } from "../core/define_game.js";
 import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { createWarlordAI, normalizeWarlordAIDifficulty } from "./ai.js";
 import {
@@ -18,32 +18,30 @@ import {
   P1_KING_Y,
   P2_KING_X,
   P2_KING_Y,
-  checkBrickCollision,
-  checkCatch,
   checkGameOver,
-  checkKingHit,
-  checkShieldCollision,
-  checkWallBounce,
   createBrickParticles,
   createInitialState,
   createKingParticles,
   rebuildCastles,
   releaseBall,
+  // ex_dna:disable-for-lines:17 this game's own imports
   serveFireball,
-  updateCaughtFireball,
-  updateFireball,
+  stepTick,
   updateParticles,
-  updateShield,
 } from "./physics.js";
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
-import { countdownState } from "../core/rounds.js";
+import {
+  countdownToServe,
+  endTick,
+  playTick,
+  playingState,
+  releaseOnStop,
+  servingState,
+} from "../core/paddle_flow.js";
 
-const SERVE_DELAY_TICKS = 48; // 0.8 s
 const KING_HIT_PAUSE_TICKS = 120; // 2 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 /** Let go of a caught fireball, with the launch sound. */
 function release(game, player) {
@@ -55,58 +53,26 @@ function release(game, player) {
 }
 
 function step(game) {
-  game.updateOpponent();
-  let s = game.gameState;
-
-  s = updateShield(s, 1, game.localInputs);
-  s = updateShield(s, 2, game.remoteInputs);
-  s = updateCaughtFireball(s);
-  s = updateFireball(s);
-  s = checkWallBounce(s);
-  if (s.wallBounced) {
-    game.audio.playWallBounce();
-    s.wallBounced = false;
-  }
-
-  s = checkShieldCollision(s);
-  if (s.shieldHit) {
-    s = checkCatch(s, game.localInputs, game.remoteInputs);
-    if (s.caught) {
-      game.audio.playCatch();
-      s.caught = false;
-    } else {
-      game.audio.playShieldDeflect();
-    }
-    s.shieldHit = false;
-    s.shieldHitPlayer = 0;
-  }
-
-  s = checkBrickCollision(s);
-  if (s.brickHit) {
+  const { state: s, events } = playTick(game, stepTick);
+  game.gameState = s;
+  if (events.caught) game.audio.playCatch();
+  else if (events.shieldHit) game.audio.playShieldDeflect();
+  if (events.brickHit) {
     game.audio.playBrickHit();
     s.particles = [
       ...(s.particles || []),
       ...createBrickParticles(s.hitBrickX, s.hitBrickY, s.hitBrickColor, game.fxRandom),
     ];
-    s.brickHit = false;
   }
-
-  s = checkKingHit(s);
-  game.gameState = s;
-  if (s.kingHit) {
+  if (events.kingHit) {
     game.audio.playKingHit();
     const kingX = s.kingHitPlayer === 1 ? P1_KING_X : P2_KING_X;
     const kingY = s.kingHitPlayer === 1 ? P1_KING_Y : P2_KING_Y;
     s.particles = [...(s.particles || []), ...createKingParticles(kingX, kingY, game.fxRandom)];
-    s.kingHit = false;
-    s.phase = PHASE.KING_HIT;
     return;
   }
 
-  if (s.particles && s.particles.length > 0) s.particles = updateParticles(s.particles);
-  game.invalidate();
-  game.frameCount++;
-  game.broadcast();
+  endTick(game, s, updateParticles);
 }
 
 /** The guest rebuilds the kings and walls, and tells which king was hit. */
@@ -155,8 +121,8 @@ function applySnapshot(game, decoded) {
 
 export default defineGame({
   inputs: {
-    up: ["ArrowUp", "w", "W"],
-    down: ["ArrowDown", "s", "S"],
+    up: ARROW_KEYS.up,
+    down: ARROW_KEYS.down,
     space: [" "],
   },
   captureKeys: [
@@ -175,9 +141,7 @@ export default defineGame({
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
     create: createWarlordAI,
-    // ex_dna:disable-for-lines:7 this game's own defineGame definition
     difficulty: normalizeWarlordAIDifficulty,
-    observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },
   audio: { sounds: SOUNDS },
   theme: getColors,
@@ -185,11 +149,7 @@ export default defineGame({
   onStart: (game) => {
     game.localInputs = { up: false, down: false, space: false };
   },
-  onStop: (game) => {
-    game.localInputs = { up: false, down: false, space: false };
-    game.remoteInputs = { up: false, down: false, space: false };
-    game.peerReady = false;
-  },
+  onStop: releaseOnStop({ up: false, down: false, space: false }),
   idle: (game) => {
     const s = game.gameState;
     if (s.phase !== PHASE.KING_HIT || !s.particles || !s.particles.length) return;
@@ -218,16 +178,11 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: countdownState({
-        from: COUNTDOWN_FROM,
-        every: COUNTDOWN_EVERY_TICKS,
-        next: "SERVING",
-        capture: true,
-      }),
+      COUNTDOWN: countdownToServe({ capture: true }),
       // The fireball waits at the centre while the countdown still shows.
-      SERVING: {
+      SERVING: servingState({
         as: "COUNTDOWN",
-        enter: (game) => {
+        prepare: (game) => {
           Object.assign(game.gameState, {
             fireballX: CANVAS_W / 2,
             fireballY: CANVAS_H / 2,
@@ -236,22 +191,10 @@ export default defineGame({
             caughtBy: 0,
           });
           game.setKeyboardCaptured(true);
-          game.broadcast();
-          game.invalidate();
         },
-        after: { ticks: SERVE_DELAY_TICKS },
-        then: (game) => {
-          game.gameState = serveFireball(game.gameState, game.random);
-          game.broadcast();
-        },
-        next: "PLAYING",
-      },
-      PLAYING: {
-        enter: (game) => {
-          game.frameCount = 0;
-        },
-        tick: step,
-      },
+        serve: (game) => serveFireball(game.gameState, game.random),
+      }),
+      PLAYING: playingState(step),
       KING_HIT: {
         enter: (game) => {
           game.broadcast();

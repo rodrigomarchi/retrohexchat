@@ -18,12 +18,12 @@ import {
   drawMoved,
   endTick,
   eventSounds,
-  loadAtlas,
-  reducedMotion,
+  playKeys,
+  queueKey,
 } from "../core/solo/board_game.js";
 import { PHASE } from "../core/solo/phases.js";
 import { laidFor, tableView } from "../core/solo/view.js";
-import { FX, createEffects, playedEffects } from "./effects.js";
+import { FX, playedEffects } from "./effects.js";
 import { KEYS, keyDown, keyUp } from "./gestures.js";
 import { GEOMETRY, layout } from "./layout.js";
 import { act, createInitialState, finalScore, step } from "./physics.js";
@@ -52,9 +52,7 @@ function play(game, action) {
 /** One tick of a match in play: the keys pressed, then the count, the moves held, gravity and the clock. */
 function tick(game) {
   game.frameCount++;
-  const keys = game.keys;
-  game.keys = [];
-  for (const action of keys) play(game, action);
+  playKeys(game, play);
   const before = { ...game.gameState, events: 0 };
   endTick(game, { step: (state) => step(state, game.bag), sounds: EVENT_SOUNDS });
   drawn(game, before);
@@ -65,20 +63,19 @@ const RELEASE_ALL = ["left", "right", "down"].map((input) => ({ type: "release",
 
 export default defineGame({
   ...boardDefinition({
+    name: "HexBlocks",
+    tilesUrl: TILES_URL,
     sounds: SOUNDS,
     masterVolume: MASTER_VOLUME,
     theme: readColors,
     finalScore,
+    setup: (game) => {
+      game.keys = [];
+    },
   }),
   // Played with keys only: nothing on the canvas takes a press.
   pointer: false,
   captureKeys: KEYS,
-  setup: (game) => {
-    game.frameCount = 0;
-    game.fx = createEffects({ reduced: reducedMotion() });
-    game.keys = [];
-    loadAtlas(game, TILES_URL, "HexBlocks");
-  },
   // A phone held upright stands the table up.
   view: tableView(GEOMETRY),
   init: (game) => {
@@ -88,14 +85,8 @@ export default defineGame({
     return createInitialState(MODE[game.gameId] ?? MODE.hex_blocks, game.bag);
   },
   // A key is played in the tick, in order, so a match replays the same.
-  onKeyDown: (game, event) => {
-    const action = keyDown(event);
-    if (action && game.gameState?.phase === PHASE.PLAYING) game.keys.push(action);
-  },
-  onKeyUp: (game, event) => {
-    const action = keyUp(event);
-    if (action && game.gameState?.phase === PHASE.PLAYING) game.keys.push(action);
-  },
+  onKeyDown: (game, event) => queueKey(game, keyDown(event)),
+  onKeyUp: (game, event) => queueKey(game, keyUp(event)),
   onBlur: (game) => {
     if (game.gameState?.phase === PHASE.PLAYING) game.keys.push(...RELEASE_ALL);
   },

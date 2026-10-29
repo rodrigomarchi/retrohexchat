@@ -1,11 +1,4 @@
-/**
- * A tap at a point of the table, at `at` ms: a press and its release.
- * @returns {Array<{at: number, pointer: string, x: number, y: number}>}
- */
-const tapAt = (at, x, y) => [
-  { at, pointer: "down", x, y },
-  { at: at + 40, pointer: "up", x, y },
-];
+import { tapAt } from "./keys.js";
 
 // The foot of each column as dealt (seven cards in the four on the left, six
 // in the others, 18 pixels apart), and the cells along the top.

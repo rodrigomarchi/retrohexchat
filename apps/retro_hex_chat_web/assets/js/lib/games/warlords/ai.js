@@ -15,12 +15,11 @@ import {
   P2_SHIELD_X,
   SHIELD_H,
   SHIELD_SPEED,
+  SHIELD_W,
 } from "./physics.js";
 import {
-  aiRequest,
-  aiRng,
   clamp,
-  createReaction,
+  createApproachAim,
   dutyFrame,
   finiteMotion,
   interceptAt,
@@ -29,6 +28,7 @@ import {
   reflect,
   toward,
 } from "../core/ai.js";
+import { PaddleAI } from "../core/paddle_ai.js";
 
 const FIREBALL_MIN_Y = FIREBALL_SIZE / 2;
 const FIREBALL_MAX_Y = CANVAS_H - FIREBALL_SIZE / 2;
@@ -37,10 +37,15 @@ const SHIELD_MAX_CENTER_Y = CANVAS_H - SHIELD_H / 2;
 const TABLE_CENTER_Y = CANVAS_H / 2;
 const NEUTRAL_INPUTS = Object.freeze({ up: false, down: false, space: false });
 
+/**
+ * How each difficulty plays. `errorPx` is the aim error drawn once for each
+ * approach of the fireball: past SHIELD_H / 2 + FIREBALL_SIZE / 2 (34 px) the
+ * shield misses it.
+ */
 export const WARLORD_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
     decisionFrames: 14,
-    errorPx: 48,
+    errorPx: 64,
     deadzonePx: 18,
     movementDuty: 0.55,
     defensiveBias: 0.35,
@@ -50,7 +55,7 @@ export const WARLORD_AI_DIFFICULTIES = Object.freeze({
   }),
   normal: Object.freeze({
     decisionFrames: 7,
-    errorPx: 24,
+    errorPx: 48,
     deadzonePx: 11,
     movementDuty: 0.82,
     defensiveBias: 0.55,
@@ -60,7 +65,7 @@ export const WARLORD_AI_DIFFICULTIES = Object.freeze({
   }),
   hard: Object.freeze({
     decisionFrames: 3,
-    errorPx: 8,
+    errorPx: 42,
     deadzonePx: 7,
     movementDuty: 1,
     defensiveBias: 0.75,
@@ -99,11 +104,10 @@ export function predictWarlordInterceptY(state, player = 2) {
   const movingTowardShield = player === 1 ? state.fireballVX < 0 : state.fireballVX > 0;
   if (!movingTowardShield) return null;
 
-  const targetX = player === 1 ? P1_SHIELD_X + FIREBALL_SIZE / 2 : P2_SHIELD_X - FIREBALL_SIZE / 2;
   return interceptAt(
     state.fireballX,
     state.fireballVX,
-    targetX,
+    shieldFaceX(player),
     state.fireballY,
     state.fireballVY,
     FIREBALL_MIN_Y,
@@ -151,13 +155,16 @@ export function warlordMovementInputs(state, player, targetY, deadzonePx) {
 }
 
 /**
+ * Whether to hold Space for a catch: the fireball is about to reach the
+ * shield, near enough its middle, and `decide` — drawn once per approach
+ * by the AI — says to.
  * @param {object} state
  * @param {1|2} player
  * @param {object} config
- * @param {() => number} rng
+ * @param {() => boolean} decide
  * @returns {boolean}
  */
-export function shouldHoldCatch(state, player, config, rng = Math.random) {
+export function shouldHoldCatch(state, player, config, decide) {
   const interceptY = predictWarlordInterceptY(state, player);
   const shieldCenterY = shieldCenterFor(state, player);
   if (interceptY === null || shieldCenterY === null) return false;
@@ -166,7 +173,7 @@ export function shouldHoldCatch(state, player, config, rng = Math.random) {
   if (frames === null || frames > config.catchFrames) return false;
   if (Math.abs(interceptY - shieldCenterY) > SHIELD_H * 0.65) return false;
 
-  return randomUnit(rng) <= config.catchChance;
+  return decide();
 }
 
 /**
@@ -179,19 +186,17 @@ export function createWarlordAI(options = {}) {
   return new WarlordAI(options);
 }
 
-export class WarlordAI {
+export class WarlordAI extends PaddleAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeWarlordAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
-    this.reaction = createReaction();
+    super(options, normalizeWarlordAIDifficulty, WARLORD_AI_DIFFICULTIES);
     this.sampledTargetY = TABLE_CENTER_Y;
     this.caughtFrames = 0;
+    this.catchPlan = createApproachAim();
   }
 
   /**
@@ -199,9 +204,18 @@ export class WarlordAI {
    * @returns {void}
    */
   setDifficulty(difficulty) {
-    this.difficulty = normalizeWarlordAIDifficulty(difficulty);
-    this.reaction.reset();
+    super.setDifficulty(difficulty);
     this.caughtFrames = 0;
+  }
+
+  /**
+   * A new round: also no catch held, and the next approach decides afresh.
+   * @returns {void}
+   */
+  forget() {
+    super.forget();
+    this.caughtFrames = 0;
+    this.catchPlan.reset();
   }
 
   /**
@@ -212,21 +226,18 @@ export class WarlordAI {
    * @returns {{up: boolean, down: boolean, space: boolean}}
    */
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
-
-    if (!state || state.phase !== PHASE.PLAYING) {
-      this.frame++;
+    const turn = this.playFrame(request, PHASE.PLAYING, {
+      incoming: (state, player) => predictWarlordInterceptY(state, player) !== null,
+      every: "decisionFrames",
+      look: (state, player, config) => this._sampleTargetY(state, player, config),
+    });
+    if (!turn) {
       this.caughtFrames = 0;
       return NEUTRAL_INPUTS;
     }
 
-    const difficulty = normalizeWarlordAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-
-    const config = WARLORD_AI_DIFFICULTIES[difficulty];
-    this.sampledTargetY = this.reaction.sample(config.decisionFrames, () =>
-      this._sampleTargetY(state, player, config),
-    );
+    const { state, player, config } = turn;
+    this.sampledTargetY = turn.target;
 
     const movement = dutyFrame(this.frame, config.movementDuty)
       ? warlordMovementInputs(state, player, this.sampledTargetY, config.deadzonePx)
@@ -239,7 +250,9 @@ export class WarlordAI {
 
   _sampleTargetY(state, player, config) {
     const targetY = warlordTargetY(state, player, config);
-    const error = (randomUnit(this.rng) * 2 - 1) * config.errorPx || 0;
+    if (!this.aim.incoming) return targetY;
+
+    const error = this.aimError(config.errorPx);
     return clamp(targetY + error, SHIELD_MIN_CENTER_Y, SHIELD_MAX_CENTER_Y);
   }
 
@@ -250,10 +263,25 @@ export class WarlordAI {
     }
 
     this.caughtFrames = 0;
+    this.catchPlan.track(predictWarlordInterceptY(state, player) !== null);
     if (state.caughtBy !== 0) return false;
 
-    return shouldHoldCatch(state, player, config, this.rng);
+    return shouldHoldCatch(state, player, config, () =>
+      this.catchPlan.hold(() => randomUnit(this.rng) <= config.catchChance),
+    );
   }
+}
+
+/**
+ * Where the fireball's centre is when it touches a shield's face: the right
+ * edge of shield one, the left edge of shield two.
+ * @param {1|2} player
+ * @returns {number}
+ */
+function shieldFaceX(player) {
+  return player === 1
+    ? P1_SHIELD_X + SHIELD_W + FIREBALL_SIZE / 2
+    : P2_SHIELD_X - FIREBALL_SIZE / 2;
 }
 
 function shieldCenterFor(state, player) {
@@ -264,7 +292,6 @@ function shieldCenterFor(state, player) {
 
 function framesUntilShield(state, player) {
   if (!finiteMotion(state, "fireball")) return null;
-  const targetX = player === 1 ? P1_SHIELD_X + FIREBALL_SIZE / 2 : P2_SHIELD_X - FIREBALL_SIZE / 2;
-  const frames = (targetX - state.fireballX) / state.fireballVX;
+  const frames = (shieldFaceX(player) - state.fireballX) / state.fireballVX;
   return Number.isFinite(frames) && frames >= 0 ? frames : null;
 }

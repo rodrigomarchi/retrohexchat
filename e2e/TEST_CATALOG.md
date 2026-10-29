@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **272 spec files** under `e2e/tests/`.
-- **686 Playwright `test()` cases**.
-- **630 documented flows**, 629 done, 1 not done.
+- **273 spec files** under `e2e/tests/`.
+- **687 Playwright `test()` cases**.
+- **631 documented flows**, 630 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -501,6 +501,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N90 | Hex Blocks on a phone: the pad every keyboard game shares lies over the game and fits the screen, a tap on its drop button drops a piece, two fingers hold the cross and a button at once, and the page does not scroll | `tests/game-hex-blocks.spec.ts` | done |
 | N91 | A Retro Game on its stage, on the desktop: Hex Pong fills the window with its menu over it (what it plays to, its keys, the difficulty, Play vs AI) and no pad; once the match runs nothing is over the game but the corner key; Esc holds it under the Paused menu and Continue goes on; End shows the result in the menu, and Again brings the ready menu back | `tests/game-stage.spec.ts` | done |
 | N92 | A Retro Game on its stage, on a phone: Hex Pong and its pad fit the screen, the pad lies over the game, a finger on the cross holds the arrow key down and lifting it lets go, the page does not scroll, and the corner key opens the Paused menu | `tests/game-stage.spec.ts` | done |
+| N93 | Hex Boxing against the AI: the menu names the match (best of 3 rounds); once the bell rings, Space throws a punch that winds up first — the arm draws back and the fist glows — and then strikes, while the match goes on with nothing over the ring but the corner key | `tests/game-hex-boxing.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

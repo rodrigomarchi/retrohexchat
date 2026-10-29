@@ -4,6 +4,10 @@ import {
   aiRequest,
   aiRng,
   clamp,
+  createApproachAim,
+  createCommitment,
+  createDelayedView,
+  createPerThing,
   createReaction,
   edgeAware,
   finiteMotion,
@@ -235,5 +239,88 @@ describe("aiRequest", () => {
     expect(aiRequest({ state, player: 1 })).toEqual({ state, player: 1 });
     expect(aiRequest({ state, player: 2 })).toEqual({ state, player: 2 });
     expect(aiRequest({})).toEqual({ state: undefined, player: 2 });
+  });
+});
+
+describe("createCommitment", () => {
+  it("keeps one draw while the key stays the same", () => {
+    const commitment = createCommitment();
+    let draws = 0;
+    const draw = () => ++draws;
+    expect(commitment.hold("approach-1", draw)).toBe(1);
+    expect(commitment.hold("approach-1", draw)).toBe(1);
+    expect(commitment.hold("approach-2", draw)).toBe(2);
+    expect(commitment.hold("approach-2", draw)).toBe(2);
+  });
+
+  it("draws again after a reset, even for the same key", () => {
+    const commitment = createCommitment();
+    let draws = 0;
+    commitment.hold(undefined, () => ++draws);
+    commitment.reset();
+    expect(commitment.hold(undefined, () => ++draws)).toBe(2);
+  });
+});
+
+describe("createApproachAim", () => {
+  it("keeps one draw for each approach of the ball", () => {
+    const aim = createApproachAim();
+    let draws = 0;
+    const draw = () => ++draws;
+    aim.track(true);
+    expect(aim.incoming).toBe(true);
+    expect(aim.hold(draw)).toBe(1);
+    aim.track(true);
+    expect(aim.hold(draw)).toBe(1);
+    aim.track(false);
+    expect(aim.incoming).toBe(false);
+    aim.track(true);
+    expect(aim.hold(draw)).toBe(2);
+  });
+
+  it("draws again after a reset", () => {
+    const aim = createApproachAim();
+    let draws = 0;
+    aim.track(true);
+    aim.hold(() => ++draws);
+    aim.reset();
+    expect(aim.incoming).toBe(false);
+    expect(aim.hold(() => ++draws)).toBe(2);
+  });
+});
+
+describe("createPerThing", () => {
+  it("decides once per thing and keeps the decision", () => {
+    const perThing = createPerThing();
+    expect(perThing.decide("bomb-1", () => false)).toBe(false);
+    expect(perThing.decide("bomb-1", () => true)).toBe(false);
+    expect(perThing.decide("bomb-2", () => true)).toBe(true);
+  });
+
+  it("forgets the things no longer in play", () => {
+    const perThing = createPerThing();
+    perThing.decide("bomb-1", () => false);
+    perThing.decide("bomb-2", () => false);
+    perThing.keep(["bomb-2"]);
+    expect(perThing.decide("bomb-1", () => true)).toBe(true);
+    expect(perThing.decide("bomb-2", () => true)).toBe(false);
+  });
+});
+
+describe("createDelayedView", () => {
+  it("shows the state from the given number of frames ago", () => {
+    const view = createDelayedView();
+    expect(view.see("f0", 2)).toBe("f0");
+    expect(view.see("f1", 2)).toBe("f0");
+    expect(view.see("f2", 2)).toBe("f0");
+    expect(view.see("f3", 2)).toBe("f1");
+    expect(view.see("f4", 0)).toBe("f4");
+  });
+
+  it("starts over after a reset", () => {
+    const view = createDelayedView();
+    view.see("old", 3);
+    view.reset();
+    expect(view.see("new", 3)).toBe("new");
   });
 });

@@ -17,6 +17,70 @@ function createCanvas() {
   return canvas;
 }
 
+/**
+ * A solo engine of each family, made through the factory: an opponent given
+ * is kept, otherwise the game makes its own AI; `plays` is the difficulty the
+ * engine ends up with.
+ */
+const SOLO_ENGINES = [
+  {
+    name: "Hex Pong",
+    gameId: "hex_pong",
+    opponentController: { nextInputs: () => ({ up: false, down: false }) },
+  },
+  {
+    name: "Light Trails",
+    gameId: "light_trails",
+    difficulty: "easy",
+    opponentController: { nextDirection: () => 2 },
+  },
+  {
+    name: "Hex Outlaw",
+    gameId: "hex_outlaw_ricochet",
+    opponentController: {
+      nextInputs: () => ({ up: false, down: false, left: false, right: false, fire: false }),
+    },
+  },
+  {
+    name: "Star Duel family",
+    gameId: "gravity_well",
+    gameMode: 1,
+    opponentController: {
+      nextInputs: () => ({
+        rotateLeft: false,
+        rotateRight: false,
+        thrust: false,
+        fire: false,
+        warp: false,
+      }),
+    },
+  },
+  { name: "Hex Raid family", gameId: "hex_raid_blitz", gameMode: 2 },
+  { name: "Hex Boxing", gameId: "hex_boxing" },
+  { name: "Pixel Tanks", gameId: "pixel_tanks", gameMode: GAME_MODE.RICOCHET },
+  // The AI is the player's partner: a hard game gets the weakest one
+  { name: "Block Breakers", gameId: "block_breakers", plays: "easy" },
+  { name: "Hex Warlords", gameId: "hex_warlords" },
+  {
+    name: "Hex Tennis family",
+    gameId: "hex_tennis_sudden",
+    gameMode: 2,
+    opponentController: {
+      nextInputs: () => ({ up: false, down: false, left: false, right: false, serve: false }),
+    },
+  },
+  {
+    name: "Hex Invaders family",
+    gameId: "hex_invaders_blitz",
+    gameMode: 2,
+    opponentController: { nextInputs: () => ({ left: false, right: false, fire: false }) },
+  },
+  { name: "Hex Enduro family", gameId: "hex_enduro_sprint", gameMode: 2 },
+  { name: "Hex Skiing family", gameId: "hex_skiing_clean", gameMode: 2 },
+  { name: "Hex Frost family", gameId: "hex_frost_peaceful", gameMode: 2 },
+  { name: "Hex Hockey family", gameId: "hex_hockey_showdown", gameMode: 2 },
+];
+
 describe("engine loader", () => {
   it("loads the P2P Hex Pong engine by catalog id", async () => {
     const EngineClass = await loadP2PEngineClass("hex_pong");
@@ -66,344 +130,32 @@ describe("engine loader", () => {
     await expect(loadSoloEngineClass("unknown_game")).rejects.toThrow(/solo/i);
   });
 
-  it("creates engines through a mode-aware factory", async () => {
-    const opponentController = { nextInputs: () => ({ up: false, down: false }) };
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_pong",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      opponentController,
-      onGameEnd: null,
-    });
+  it.each(SOLO_ENGINES)(
+    "creates a $name solo engine through the shared factory",
+    async ({ gameId, opponentController, gameMode, difficulty = "hard", plays = difficulty }) => {
+      const engine = await createGameEngine({
+        canvas: createCanvas(),
+        gameId,
+        mode: "solo",
+        transport: createLocalTransport(),
+        difficulty,
+        ...(opponentController ? { opponentController } : {}),
+        onGameEnd: null,
+      });
 
-    expect(engine.gameId).toBe("hex_pong");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController).toBe(opponentController);
+      expect(engine.gameId).toBe(gameId);
+      expect(engine.isHost).toBe(true);
+      expect(engine.mode).toBe("solo");
+      if (gameMode !== undefined) expect(engine.gameMode).toBe(gameMode);
+      expect(engine.transport.kind).toBe("local");
+      expect(engine.difficulty).toBe(plays);
+      if (opponentController) {
+        expect(engine.opponentController).toBe(opponentController);
+      } else {
+        expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+      }
 
-    engine.stop();
-  });
-
-  it("creates a Light Trails solo engine through the shared factory", async () => {
-    const opponentController = { nextDirection: () => 2 };
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "light_trails",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "easy",
-      opponentController,
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("light_trails");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("easy");
-    expect(engine.opponentController).toBe(opponentController);
-
-    engine.stop();
-  });
-
-  it("creates a Hex Outlaw solo engine through the shared factory", async () => {
-    const opponentController = {
-      nextInputs: () => ({ up: false, down: false, left: false, right: false, fire: false }),
-    };
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_outlaw_ricochet",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      opponentController,
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_outlaw_ricochet");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController).toBe(opponentController);
-
-    engine.stop();
-  });
-
-  it("creates a Star Duel family solo engine through the shared factory", async () => {
-    const opponentController = {
-      nextInputs: () => ({
-        rotateLeft: false,
-        rotateRight: false,
-        thrust: false,
-        fire: false,
-        warp: false,
-      }),
-    };
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "gravity_well",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      opponentController,
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("gravity_well");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(1);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController).toBe(opponentController);
-
-    engine.stop();
-  });
-
-  it("creates a Hex Raid family solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_raid_blitz",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_raid_blitz");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(2);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
-
-  it("creates a Hex Boxing solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_boxing",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_boxing");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
-
-  it("creates a Pixel Tanks solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "pixel_tanks",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("pixel_tanks");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(GAME_MODE.RICOCHET);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
-
-  it("creates a Block Breakers solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "block_breakers",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("block_breakers");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
-
-  it("creates a Hex Warlords solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_warlords",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_warlords");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
-
-  it("creates a Hex Tennis family solo engine through the shared factory", async () => {
-    const opponentController = {
-      nextInputs: () => ({
-        up: false,
-        down: false,
-        left: false,
-        right: false,
-        serve: false,
-      }),
-    };
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_tennis_sudden",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      opponentController,
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_tennis_sudden");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(2);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController).toBe(opponentController);
-
-    engine.stop();
-  });
-
-  it("creates a Hex Invaders family solo engine through the shared factory", async () => {
-    const opponentController = {
-      nextInputs: () => ({ left: false, right: false, fire: false }),
-    };
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_invaders_blitz",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      opponentController,
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_invaders_blitz");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(2);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController).toBe(opponentController);
-
-    engine.stop();
-  });
-
-  it("creates a Hex Enduro family solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_enduro_sprint",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_enduro_sprint");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(2);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
-
-  it("creates a Hex Skiing family solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_skiing_clean",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_skiing_clean");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(2);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
-
-  it("creates a Hex Frost family solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_frost_peaceful",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_frost_peaceful");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(2);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
-
-  it("creates a Hex Hockey family solo engine through the shared factory", async () => {
-    const engine = await createGameEngine({
-      canvas: createCanvas(),
-      gameId: "hex_hockey_showdown",
-      mode: "solo",
-      transport: createLocalTransport(),
-      difficulty: "hard",
-      onGameEnd: null,
-    });
-
-    expect(engine.gameId).toBe("hex_hockey_showdown");
-    expect(engine.isHost).toBe(true);
-    expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(2);
-    expect(engine.transport.kind).toBe("local");
-    expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
-
-    engine.stop();
-  });
+      engine.stop();
+    },
+  );
 });

@@ -4,8 +4,8 @@
  * @module games/hex_outlaw_physics
  */
 
-import { PHASE, GAME_MODE } from "./protocol.js";
-import { tallyRound } from "../core/rounds.js";
+import { BULLET_SPEED_X, PHASE, GAME_MODE } from "./protocol.js";
+import { closeRound, pointsReached } from "../core/rounds.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -37,7 +37,8 @@ export const NML_P1_MAX_X = ARENA_LEFT + Math.round(ARENA_W * 0.3);
 export const NML_P2_MIN_X = ARENA_RIGHT - Math.round(ARENA_W * 0.3);
 
 // --- Bullet ---
-export const BULLET_SPEED_X = 8; // px/frame (~480px/s at 60fps, crosses in ~75 frames ≈ 1.25s)
+// The bullet speed is part of the wire format, so the protocol owns it.
+export { BULLET_SPEED_X };
 export const BULLET_RADIUS = 3;
 export const RICOCHET_ANGLE = Math.PI / 6; // 30 degrees
 
@@ -237,6 +238,19 @@ export function ricochet(y, vy, bounced) {
   return { y, vy, bounced };
 }
 
+/**
+ * Whether a bullet at (x, y) has left the street: past either side, or —
+ * once it has used its one bounce — past the ceiling or the floor.
+ * @param {number} x
+ * @param {number} y
+ * @param {boolean} bounced
+ * @returns {boolean}
+ */
+export function bulletLeftArena(x, y, bounced) {
+  if (x < ARENA_LEFT - BULLET_RADIUS || x > ARENA_RIGHT + BULLET_RADIUS) return true;
+  return bounced && (y - BULLET_RADIUS < ARENA_TOP || y + BULLET_RADIUS > ARENA_BOTTOM);
+}
+
 function _tickBullet(state, prefix) {
   if (!state[`${prefix}active`]) return state;
 
@@ -247,18 +261,7 @@ function _tickBullet(state, prefix) {
     state[`${prefix}bounced`],
   );
 
-  // Deactivate if out of horizontal bounds
-  if (x < ARENA_LEFT - BULLET_RADIUS || x > ARENA_RIGHT + BULLET_RADIUS) {
-    return {
-      ...state,
-      [`${prefix}x`]: x,
-      [`${prefix}y`]: y,
-      [`${prefix}active`]: false,
-    };
-  }
-
-  // Deactivate if out of vertical bounds (after max bounces in ricochet)
-  if (bounced && (y - BULLET_RADIUS < ARENA_TOP || y + BULLET_RADIUS > ARENA_BOTTOM)) {
+  if (bulletLeftArena(x, y, bounced)) {
     return {
       ...state,
       [`${prefix}x`]: x,
@@ -278,19 +281,11 @@ function _tickBullet(state, prefix) {
 
 function _tickShootTimers(state) {
   let s = state;
-  if (s.p1shootTimer > 0) {
-    s = {
-      ...s,
-      p1shootTimer: s.p1shootTimer - 1,
-      p1shooting: s.p1shootTimer - 1 > 0,
-    };
-  }
-  if (s.p2shootTimer > 0) {
-    s = {
-      ...s,
-      p2shootTimer: s.p2shootTimer - 1,
-      p2shooting: s.p2shootTimer - 1 > 0,
-    };
+  for (const prefix of ["p1", "p2"]) {
+    const timer = s[`${prefix}shootTimer`];
+    if (timer > 0) {
+      s = { ...s, [`${prefix}shootTimer`]: timer - 1, [`${prefix}shooting`]: timer - 1 > 0 };
+    }
   }
   return s;
 }
@@ -384,37 +379,32 @@ export function checkBulletCollisions(state) {
 }
 
 /**
- * Check if a bullet (circle) hits a gunslinger (rect hitbox).
- * @param {number} bx - bullet x
- * @param {number} by - bullet y
- * @param {number} gx - gunslinger center x
- * @param {number} gy - gunslinger center y
+ * Whether a bullet (a circle) at (bx, by) touches a rectangle.
+ * @param {number} bx
+ * @param {number} by
+ * @param {{ x: number, y: number, w: number, h: number }} rect
  * @returns {boolean}
  */
-function bulletHitsGunslinger(bx, by, gx, gy) {
-  const halfW = GUNSLINGER_HIT_W / 2;
-  const halfH = GUNSLINGER_HIT_H / 2;
-  // Closest point on rect to circle center
-  const closestX = Math.max(gx - halfW, Math.min(gx + halfW, bx));
-  const closestY = Math.max(gy - halfH, Math.min(gy + halfH, by));
+export function bulletHitsRect(bx, by, rect) {
+  const closestX = Math.max(rect.x, Math.min(rect.x + rect.w, bx));
+  const closestY = Math.max(rect.y, Math.min(rect.y + rect.h, by));
   const dx = bx - closestX;
   const dy = by - closestY;
   return dx * dx + dy * dy <= BULLET_RADIUS * BULLET_RADIUS;
 }
 
 /**
- * Check if a bullet hits a rectangular obstacle.
- * @param {number} bx - bullet x
- * @param {number} by - bullet y
- * @param {{ x: number, y: number, w: number, h: number }} rect
+ * Whether a bullet at (bx, by) hits the gunslinger standing at (gx, gy).
+ * @param {number} bx
+ * @param {number} by
+ * @param {number} gx
+ * @param {number} gy
  * @returns {boolean}
  */
-function bulletHitsRect(bx, by, rect) {
-  const closestX = Math.max(rect.x, Math.min(rect.x + rect.w, bx));
-  const closestY = Math.max(rect.y, Math.min(rect.y + rect.h, by));
-  const dx = bx - closestX;
-  const dy = by - closestY;
-  return dx * dx + dy * dy <= BULLET_RADIUS * BULLET_RADIUS;
+export function bulletHitsGunslinger(bx, by, gx, gy) {
+  const w = GUNSLINGER_HIT_W;
+  const h = GUNSLINGER_HIT_H;
+  return bulletHitsRect(bx, by, { x: gx - w / 2, y: gy - h / 2, w, h });
 }
 
 /**
@@ -493,14 +483,7 @@ export function tickHitPause(state) {
  * @returns {{ ended: boolean, roundWinner: number }}
  */
 export function checkRoundEnd(state) {
-  if (state.score1 >= SCORE_TO_WIN) {
-    return { ended: true, roundWinner: 1 };
-  }
-  if (state.score2 >= SCORE_TO_WIN) {
-    // ex_dna:disable-for-lines:19 this game's own rule on the shared core helper
-    return { ended: true, roundWinner: 2 };
-  }
-  return { ended: false, roundWinner: 0 };
+  return pointsReached(state, SCORE_TO_WIN);
 }
 
 /**
@@ -510,13 +493,82 @@ export function checkRoundEnd(state) {
  * @returns {object}
  */
 export function advanceRound(state, roundWinner) {
-  const { matchOver, ...roundWins } = tallyRound(state, roundWinner, ROUNDS_TO_WIN);
+  return closeRound(state, roundWinner, ROUNDS_TO_WIN, PHASE);
+}
 
-  return {
-    ...state,
-    ...roundWins,
-    phase: matchOver ? PHASE.MATCH_OVER : PHASE.ROUND_OVER,
-  };
+/**
+ * One frame of the duel on the host. While the street is frozen after a hit
+ * only the freeze and the stagecoach move. Otherwise both gunslingers move,
+ * a shot goes on the press (not while the key is held) at the shooter's aim,
+ * the stagecoach and the bullets move, and a hit either ends the round or
+ * freezes the street.
+ *
+ * `pressed` is whether each fire key was already down last frame; the next
+ * frame's comes back beside the state. `aimUp` is each shooter's ricochet aim
+ * for this frame's shot. `events` says what the frame did, for the sounds and
+ * sparks: the players who fired, the bullets that ricocheted, the gunslinger
+ * hit and where, whether a bullet struck the obstacle, and whether the round
+ * is over.
+ * @param {object} state
+ * @param {{ 1: object, 2: object }} inputs - each player's held inputs
+ * @param {{ 1: boolean, 2: boolean }} pressed
+ * @param {{ 1: boolean, 2: boolean }} aimUp
+ * @returns {{
+ *   state: object,
+ *   pressed: { 1: boolean, 2: boolean },
+ *   paused: boolean,
+ *   events: {
+ *     fired: number[],
+ *     ricochets: number,
+ *     hit: { player: number, x: number, y: number } | null,
+ *     obstacleHit: boolean,
+ *     roundOver: boolean,
+ *   },
+ * }}
+ */
+export function stepTick(state, inputs, pressed, aimUp) {
+  const events = { fired: [], ricochets: 0, hit: null, obstacleHit: false, roundOver: false };
+  let s = { ...state, lastHitPlayer: 0 };
+  if (s.phase === PHASE.HIT_PAUSE) {
+    return { state: tickObstacle(tickHitPause(s)), pressed, paused: true, events };
+  }
+
+  for (const player of [1, 2]) {
+    const own = inputs[player];
+    const dy = (own.down ? 1 : 0) - (own.up ? 1 : 0);
+    const dx = (own.right ? 1 : 0) - (own.left ? 1 : 0);
+    if (dy !== 0 || dx !== 0) s = moveGunslinger(s, player, dy, dx);
+  }
+
+  const nextPressed = { ...pressed };
+  for (const player of [1, 2]) {
+    if (inputs[player].fire && !pressed[player]) {
+      const before = s;
+      s = fireBullet(s, player, aimUp[player]);
+      if (s !== before) events.fired.push(player);
+    }
+    nextPressed[player] = inputs[player].fire;
+  }
+
+  s = tickObstacle(s);
+  const bounced = { b1: s.b1bounced, b2: s.b2bounced };
+  s = tickBullets(s);
+  for (const bullet of ["b1", "b2"]) {
+    if (!bounced[bullet] && s[`${bullet}bounced`]) events.ricochets++;
+  }
+
+  const collisions = checkBulletCollisions(s);
+  s = collisions.state;
+  events.obstacleHit = collisions.obsHit;
+  if (collisions.p1Hit || collisions.p2Hit) {
+    const player = collisions.p2Hit ? 2 : 1;
+    events.hit = { player, x: s[`p${player}x`], y: s[`p${player}y`] };
+    const { ended, roundWinner } = checkRoundEnd(s);
+    events.roundOver = ended;
+    s = ended ? advanceRound(s, roundWinner) : enterHitPause(s);
+  }
+
+  return { state: s, pressed: nextPressed, paused: false, events };
 }
 
 /**

@@ -1,10 +1,9 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import HexJungle from "../../../../js/lib/games/hex_jungle/index.js";
 import { PHASE } from "../../../../js/lib/games/hex_jungle/protocol.js";
-import { playMatch } from "../../../support/games/harness.js";
+import { matchPerTest } from "../../../support/games/harness.js";
 
-const play = (options) =>
-  playMatch({ EngineClass: HexJungle, gameId: "hex_jungle", mode: "solo", ...options });
+const play = matchPerTest({ EngineClass: HexJungle, gameId: "hex_jungle", mode: "solo" });
 const hold = (key, at = 0) => [{ at, side: "host", key, down: true }];
 const phases = (match) => match.record().phases.map((p) => p.phase);
 
@@ -24,16 +23,8 @@ function besideTheFire(match, rest = {}) {
 }
 
 describe("Hex Jungle, played through the engine", () => {
-  let match;
-
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
-
   it("dies, waits out the tune, drops back in and plays on", async () => {
-    match = await play({ script: hold("ArrowRight", 100) });
+    const match = await play({ script: hold("ArrowRight", 100) });
     besideTheFire(match);
     match.advance(6000);
 
@@ -49,7 +40,7 @@ describe("Hex Jungle, played through the engine", () => {
   });
 
   it("ends on the last life lost, and reports the points once", async () => {
-    match = await play({ script: hold("ArrowRight", 100) });
+    const match = await play({ script: hold("ArrowRight", 100) });
     besideTheFire(match, { lives: 1, score: 4321 });
     match.advance(6000);
 
@@ -58,7 +49,7 @@ describe("Hex Jungle, played through the engine", () => {
   });
 
   it("ended early, reports the points the player holds then", async () => {
-    match = await play();
+    const match = await play();
     match.advance(500);
     match.engines.host.gameState = { ...match.engines.host.gameState, score: 2500 };
 

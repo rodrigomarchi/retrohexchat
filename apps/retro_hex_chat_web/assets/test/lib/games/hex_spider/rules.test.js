@@ -10,11 +10,8 @@ import {
   hasMove,
   won,
 } from "../../../../js/lib/games/hex_spider/rules.js";
+import { H, S, card } from "../../../support/games/card_tables.js";
 
-const S = 0;
-const H = 1;
-// A card of the two decks: `copy` tells apart two that look alike.
-const card = (rank, suit, copy = 0) => copy * 52 + suit * 13 + rank - 1;
 const at = (col, index) => ({ pile: "column", col, index });
 const to = (col) => ({ pile: "column", col });
 /** A table with the columns given (face-up runs over face-down cards), the rest empty. */

@@ -13,10 +13,8 @@ import {
   finalScore,
   step,
 } from "../../../../js/lib/games/hex_solitaire/physics.js";
+import { H, S, card } from "../../../support/games/card_tables.js";
 
-const S = 0;
-const H = 1;
-const card = (rank, suit) => suit * 13 + rank - 1;
 const full = (suit, upTo = 13) => Array.from({ length: upTo }, (_, r) => card(r + 1, suit));
 
 function playing(table, extra = {}) {

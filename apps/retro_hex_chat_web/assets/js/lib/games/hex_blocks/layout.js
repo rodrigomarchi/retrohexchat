@@ -15,6 +15,7 @@
 import { COLS, HIDDEN, PREVIEW, ROWS } from "./protocol.js";
 
 /** The hexagon's art: its box and the step from one column to the next. */
+// ex_dna:disable-for-lines:17 this game's own table sizes
 const HEX = Object.freeze({ w: 24, h: 20, step: 18 });
 
 /** The two tables: the view each draws, and the sizes on it. */

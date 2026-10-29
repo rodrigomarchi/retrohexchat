@@ -9,6 +9,7 @@ import {
   SNAPSHOT,
   GAME_END,
 } from "../../../../js/lib/games/hex_hockey/protocol.js";
+import { describeHandshake } from "../../../support/games/protocol_tests.js";
 
 function makeState(overrides = {}) {
   return {
@@ -45,17 +46,9 @@ function makeState(overrides = {}) {
 }
 
 describe("hex_hockey_protocol", () => {
+  describeHandshake({ encodeGameReady, getMessageType, MSG_TYPE });
+
   describe("getMessageType", () => {
-    it("reads type byte from ArrayBuffer", () => {
-      const buf = new ArrayBuffer(2);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
-    });
-
-    it("returns null for empty buffer", () => {
-      expect(getMessageType(new ArrayBuffer(0))).toBeNull();
-    });
-
     it("returns null for null/undefined", () => {
       expect(getMessageType(null)).toBeNull();
       expect(getMessageType(undefined)).toBeNull();
@@ -229,14 +222,6 @@ describe("hex_hockey_protocol", () => {
     it("returns null for undersized buffer", () => {
       expect(GAME_END.decode(new ArrayBuffer(2))).toBeNull();
       expect(GAME_END.decode(null)).toBeNull();
-    });
-  });
-
-  describe("GAME_READY", () => {
-    it("encodes a 1-byte ready message", () => {
-      const buf = encodeGameReady();
-      expect(buf.byteLength).toBe(1);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_READY);
     });
   });
 

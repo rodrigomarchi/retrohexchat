@@ -14,7 +14,7 @@
  */
 
 import { gameColor } from "../../game_colors.js";
-import { burst } from "../core/render.js";
+import { burstFrom } from "../core/solo/effects.js";
 import { progress } from "../core/tween.js";
 import { cellPlace } from "./layout.js";
 import { PIECES } from "./pieces.js";
@@ -49,8 +49,6 @@ const SPARK = Object.freeze({
 });
 const sparkOf = (cell) => gameColor(SPARK[PIECES[cell - 1].colour]);
 
-const centre = (r) => [r.x + r.w / 2, r.y + r.h / 2];
-
 /** Rows cleared: their flash, the stack above settling, and their gems bursting. */
 function cleared(fx, { landed, rows, laid, now, random }) {
   fx.list.push({ kind: "flash", rows, start: now, ticks: FX.flash });
@@ -60,15 +58,14 @@ function cleared(fx, { landed, rows, laid, now, random }) {
     for (let c = 0; c < COLS; c++) {
       const cell = landed.well.cells[r * COLS + c];
       if (!cell) continue;
-      const [x, y] = centre(cellPlace(laid, c, r));
-      const particles = burst(
-        x,
-        y,
-        3,
-        { speed: [1, 3], extra: () => ({ life: 1, color: sparkOf(cell) }) },
+      burstFrom(fx, cellPlace(laid, c, r), {
+        count: 3,
+        speed: [1, 3],
+        color: () => sparkOf(cell),
+        now,
+        ticks: FX.sparks,
         random,
-      );
-      fx.list.push({ kind: "sparks", particles, start: now, ticks: FX.sparks });
+      });
     }
   }
 }
@@ -103,18 +100,14 @@ export function playedEffects(fx, played) {
     fx.list.push({ kind: "fade", start: now, ticks: FX.fade });
   }
   if (after.won && !before.won) {
-    const [x, y] = centre(laid.well);
-    const particles = burst(
-      x,
-      y,
-      fx.reduced ? 10 : 40,
-      {
-        speed: [2, 4],
-        extra: (k) => ({ life: 1, color: gameColor(Object.values(SPARK)[k % 10]) }),
-      },
+    burstFrom(fx, laid.well, {
+      count: fx.reduced ? 10 : 40,
+      speed: [2, 4],
+      color: (k) => gameColor(Object.values(SPARK)[k % 10]),
+      now,
+      ticks: FX.sparks,
       random,
-    );
-    fx.list.push({ kind: "sparks", particles, start: now, ticks: FX.sparks });
+    });
   }
 }
 

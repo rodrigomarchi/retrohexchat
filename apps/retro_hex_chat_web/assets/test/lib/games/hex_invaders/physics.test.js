@@ -33,8 +33,10 @@ import {
   updateCombos,
   checkWaveClear,
   checkGameOver,
+  coopSurvived,
   tickTimers,
   clearEvents,
+  stepTick,
 } from "../../../../js/lib/games/hex_invaders/physics.js";
 import { PHASE, GAME_MODE, ALIEN_TYPE } from "../../../../js/lib/games/hex_invaders/protocol.js";
 
@@ -333,6 +335,17 @@ describe("Hex Invaders Physics", () => {
       s.bombTimer = 0;
       s = spawnBombs(s);
       expect(s.bombs.length).toBeGreaterThan(0);
+    });
+
+    it("numbers every bomb, never twice", () => {
+      let s = createWave(createInitialState(GAME_MODE.INVASION_WAR, 1), 1);
+      s.phase = PHASE.PLAYING;
+      s.bombTimer = 0;
+      s = spawnBombs(s);
+      s.bombTimer = 0;
+      s = spawnBombs(s);
+      expect(s.bombs.map((bomb) => bomb.id)).toEqual([1, 2, 3, 4]);
+      expect(s.bombSerial).toBe(4);
     });
   });
 
@@ -775,6 +788,41 @@ describe("Hex Invaders Physics", () => {
       expect(result.ended).toBe(false);
     });
 
+    it("COOP ends survived when the last wave is cleared with someone standing", () => {
+      const s = createInitialState(GAME_MODE.COOP, 1);
+      s.wave = 10;
+      s.lives1 = 0;
+      s.lives2 = 1;
+      s.aliens1 = [{ type: ALIEN_TYPE.NONE, x: 0, y: 0, hp: 0 }];
+      s.alien1Count = 1;
+      expect(checkGameOver(s)).toEqual({ ended: true, winner: 0 });
+      expect(coopSurvived(s)).toBe(true);
+    });
+
+    it("COOP is not survived when the aliens land, lives left or not", () => {
+      let s = createInitialState(GAME_MODE.COOP, 1);
+      s = createWave(s, 3);
+      s.events = { ...clearEvents(s).events, invaded: 1 };
+      expect(checkGameOver(s).ended).toBe(true);
+      expect(s.lives1).toBeGreaterThan(0);
+      expect(coopSurvived(s)).toBe(false);
+    });
+
+    it("COOP is not survived when both cannons are lost", () => {
+      const s = createInitialState(GAME_MODE.COOP, 1);
+      s.lives1 = 0;
+      s.lives2 = 0;
+      expect(coopSurvived(s)).toBe(false);
+    });
+
+    it("never calls a versus match survived", () => {
+      const s = createInitialState(GAME_MODE.INVASION_WAR, 1);
+      s.wave = 10;
+      s.aliens1 = [{ type: ALIEN_TYPE.NONE, x: 0, y: 0, hp: 0 }];
+      s.aliens2 = [{ type: ALIEN_TYPE.NONE, x: 0, y: 0, hp: 0 }];
+      expect(coopSurvived(s)).toBe(false);
+    });
+
     it("returns ended=false during normal play", () => {
       let s = createInitialState(GAME_MODE.INVASION_WAR, 1);
       s = createWave(s, 1);
@@ -1088,6 +1136,72 @@ describe("Hex Invaders Physics", () => {
       expect(s.events.combo).toBe(0);
       expect(s.events.waveCleared).toBe(false);
       expect(s.events.invaded).toBe(0);
+    });
+  });
+
+  // ── One Frame ──
+
+  describe("stepTick", () => {
+    const IDLE = { left: false, right: false, fire: false };
+    const FIRE = { left: false, right: false, fire: true };
+
+    function playing(mode = GAME_MODE.INVASION_WAR) {
+      return { ...createWave(createInitialState(mode, 1), 1), phase: PHASE.PLAYING };
+    }
+
+    it("fires on the press, not while the key is held", () => {
+      const first = stepTick(playing(), FIRE, IDLE);
+      expect(first.fired).toEqual({ local: true, remote: false });
+      expect(first.state.m1Active).toBe(true);
+      expect(first.held).toEqual({ local: true, remote: false });
+
+      const missile = { ...first.state, m1Active: false };
+      const held = stepTick(missile, FIRE, IDLE, first.held);
+      expect(held.fired.local).toBe(false);
+      expect(held.state.m1Active).toBe(false);
+    });
+
+    it("moves each cannon by its own inputs", () => {
+      const s = playing();
+      const { state } = stepTick(s, { ...IDLE, left: true }, { ...IDLE, right: true });
+      expect(state.cannon1X).toBe(s.cannon1X - CANNON_SPEED);
+      expect(state.cannon2X).toBe(s.cannon2X + CANNON_SPEED);
+    });
+
+    it("counts the timers down on a frame that neither ends the match nor the wave", () => {
+      const s = { ...playing(), bombTimer: 50 };
+      const step = stepTick(s, IDLE, IDLE);
+      expect(step.over.ended).toBe(false);
+      expect(step.state.phase).toBe(PHASE.PLAYING);
+      expect(step.state.bombTimer).toBe(49);
+    });
+
+    it("leaves a cleared wave WAVE_CLEAR, its timers where they were", () => {
+      const s = { ...playing(), aliens1: [], aliens2: [], bombTimer: 50 };
+      const step = stepTick(s, IDLE, IDLE);
+      expect(step.state.phase).toBe(PHASE.WAVE_CLEAR);
+      expect(step.state.events.waveCleared).toBe(true);
+      expect(step.state.bombTimer).toBe(50);
+    });
+
+    it("leaves a lost match FINISHED and says who won", () => {
+      const s = { ...playing(), lives2: 0 };
+      const step = stepTick(s, IDLE, IDLE);
+      expect(step.over).toEqual({ ended: true, winner: 1 });
+      expect(step.state.phase).toBe(PHASE.FINISHED);
+    });
+
+    it("says when player one's aliens step", () => {
+      const s = { ...playing(), alien1MoveTimer: 1 };
+      expect(stepTick(s, IDLE, IDLE).marched).toBe(true);
+      expect(stepTick({ ...s, alien1MoveTimer: 20 }, IDLE, IDLE).marched).toBe(false);
+    });
+
+    it("leaves the state it was handed as it was", () => {
+      const s = playing();
+      const before = JSON.stringify(s);
+      stepTick(s, FIRE, FIRE);
+      expect(JSON.stringify(s)).toBe(before);
     });
   });
 });

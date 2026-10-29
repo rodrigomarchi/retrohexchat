@@ -38,6 +38,7 @@ export const AUTO_TICKS = 6;
  * with the full cards, and standing up for a phone held upright, with the
  * minis, so the eight columns read on a phone's width.
  */
+// ex_dna:disable-for-lines:27 this game's own table sizes
 export const GEOMETRY = Object.freeze({
   LANDSCAPE: Object.freeze({
     view: Object.freeze({ width: 640, height: 480 }),

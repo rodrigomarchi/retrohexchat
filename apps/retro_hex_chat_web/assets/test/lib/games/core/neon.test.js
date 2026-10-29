@@ -1,18 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { drawNeonBall, drawNeonPaddle, neonColors } from "../../../../js/lib/games/core/neon.js";
-
-function createMockCtx() {
-  return {
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 0,
-    globalAlpha: 1.0,
-    shadowColor: "transparent",
-    shadowBlur: 0,
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-  };
-}
+import { createMockCtx } from "../../../support/games/renderer_tests.js";
 
 describe("neonColors", () => {
   it("falls back to the neon palette when the canvas sets nothing", () => {

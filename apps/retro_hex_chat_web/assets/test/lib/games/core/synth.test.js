@@ -23,6 +23,18 @@ afterEach(() => {
 });
 
 const heard = () => voices(audio.log);
+
+/** Every audio buffer made from now on, as it is made. */
+function capturedBuffers() {
+  const buffers = [];
+  const real = AudioContext.prototype.createBuffer;
+  vi.spyOn(AudioContext.prototype, "createBuffer").mockImplementation(function (...args) {
+    const buffer = real.apply(this, args);
+    buffers.push(buffer);
+    return buffer;
+  });
+  return buffers;
+}
 const at1 = (curve) => curve.map(([op, value, t, ...rest]) => [op, value, t + 1, ...rest]);
 
 describe("createSynth", () => {
@@ -125,13 +137,7 @@ describe("createSynth", () => {
   });
 
   it("lets noise die away across its buffer, and stop at its length when asked", () => {
-    const buffers = [];
-    const real = AudioContext.prototype.createBuffer;
-    vi.spyOn(AudioContext.prototype, "createBuffer").mockImplementation(function (...args) {
-      const buffer = real.apply(this, args);
-      buffers.push(buffer);
-      return buffer;
-    });
+    const buffers = capturedBuffers();
     createSynth().play({
       wave: "noise",
       vol: fade(0.15, 0.08),
@@ -147,13 +153,7 @@ describe("createSynth", () => {
   });
 
   it("scales noise's samples by its amplitude", () => {
-    const buffers = [];
-    const real = AudioContext.prototype.createBuffer;
-    vi.spyOn(AudioContext.prototype, "createBuffer").mockImplementation(function (...args) {
-      const buffer = real.apply(this, args);
-      buffers.push(buffer);
-      return buffer;
-    });
+    const buffers = capturedBuffers();
     createSynth().play({ wave: "noise", vol: fade(0.4, 0.06, "exp"), dur: 0.06, amplitude: 0.4 });
     const data = buffers[0].getChannelData(0);
     expect(data.every((v) => Math.abs(v) <= 0.4)).toBe(true);

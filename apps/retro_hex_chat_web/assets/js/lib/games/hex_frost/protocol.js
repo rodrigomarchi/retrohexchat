@@ -6,19 +6,15 @@
  * Message types share the 0x80+ range with the base GameEngine.
  */
 
-import { schema, bool, i8, i16, list, u8, u16, u32 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+// ex_dna:disable-for-lines:8 this game's own protocol header: its imports and phases
+import { schema, bool, i8, i16, list, u8, u16 } from "../core/codec.js";
+import { MSG_TYPE, SEEDED_MATCH_HEADER, phases } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
 // ── Enums ──────────────────────────────────────────────────────
-export const PHASE = {
-  WAITING: 0,
-  COUNTDOWN: 1,
-  BUILDING: 2,
-  ROUND_END: 3,
-  FINISHED: 4,
-};
+/** The match's phases, by their value on the wire. */
+export const PHASE = phases("BUILDING", "ROUND_END", "FINISHED");
 
 export const GAME_MODE = {
   ARCTIC_RACE: 0,
@@ -104,11 +100,7 @@ const row = (r) => [
 
 /** The host's snapshot, flat as `packState` lays it out. */
 export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
-  u8("phase"),
-  u8("mode"),
-  u8("round"),
-  u8("countdown"),
-  u32("seed"),
+  ...SEEDED_MATCH_HEADER,
   u16("temperature", { scale: 100 }),
   ...player("p1"),
   ...player("p2"),

@@ -9,8 +9,9 @@ import {
 } from "../../../../js/lib/games/hex_blocks/effects.js";
 import { GEOMETRY, layout } from "../../../../js/lib/games/hex_blocks/layout.js";
 import { act, createInitialState, step } from "../../../../js/lib/games/hex_blocks/physics.js";
-import { COLS, COUNTDOWN_TICKS, LOCK, ROWS } from "../../../../js/lib/games/hex_blocks/protocol.js";
+import { COUNTDOWN_TICKS, LOCK, ROWS } from "../../../../js/lib/games/hex_blocks/protocol.js";
 import { cellsOf, landing } from "../../../../js/lib/games/hex_blocks/rules.js";
+import { bottomRowForPiece } from "./wells.js";
 
 const laid = layout(GEOMETRY.LANDSCAPE);
 const random = () => createRng(9).fork("bag").next;
@@ -24,20 +25,12 @@ function playing() {
 const played = (fx, before, after, now = 0) =>
   playedEffects(fx, { before, after, laid, now, random: () => 0.5 });
 const kinds = (fx, kind) => fx.list.filter((e) => e.kind === kind).length;
-function fillRow(well, r, gaps) {
-  const cells = [...well.cells];
-  for (let c = 0; c < COLS; c++) if (!gaps.includes(c)) cells[r * COLS + c] = 1;
-  return { ...well, cells };
-}
 
 describe("Hex Blocks' effects", () => {
   it("flashes a row cleared by gravity once, not again at the next press", () => {
     const { state, r } = playing();
     const resting = { ...state, piece: landing(state.well, state.piece) };
-    const bottom = cellsOf(resting.piece)
-      .filter(([, row]) => row === ROWS - 1)
-      .map(([c]) => c);
-    let s = { ...resting, well: fillRow(resting.well, ROWS - 1, bottom) };
+    let s = { ...resting, well: bottomRowForPiece(resting) };
     const fx = createEffects();
     for (let i = 0; i < LOCK.TICKS; i++) {
       const before = s;

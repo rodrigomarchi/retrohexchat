@@ -16,12 +16,10 @@ import {
   drawMoved,
   endTick,
   eventSounds,
-  loadAtlas,
-  reducedMotion,
 } from "../core/solo/board_game.js";
 import { PHASE, TAP_SLOP } from "../core/solo/phases.js";
 import { laidFor, tableView } from "../core/solo/view.js";
-import { boardEffects, createEffects } from "./effects.js";
+import { boardEffects } from "./effects.js";
 import { interpret } from "./gestures.js";
 import { cellAt, geometryFor, layout } from "./layout.js";
 import { act, createInitialState, finalScore, step } from "./physics.js";
@@ -81,20 +79,20 @@ function tick(game) {
 }
 
 export default defineGame({
+  // ex_dna:disable-for-lines:12 this game's own defineGame definition
   ...boardDefinition({
+    name: "HexMines",
+    tilesUrl: TILES_URL,
     sounds: SOUNDS,
     masterVolume: MASTER_VOLUME,
     theme: readColors,
     finalScore,
+    setup: (game) => {
+      game.gesture = createGesture({ slop: TAP_SLOP, holdTicks: HOLD_TICKS });
+      game.pressed = null;
+    },
   }),
   pointerButtons: ["main", "secondary"],
-  setup: (game) => {
-    game.frameCount = 0;
-    game.fx = createEffects({ reduced: reducedMotion() });
-    game.gesture = createGesture({ slop: TAP_SLOP, holdTicks: HOLD_TICKS });
-    game.pressed = null;
-    loadAtlas(game, TILES_URL, "HexMines");
-  },
   // A phone held upright stands the board up; the expert board turns.
   view: tableView(geometryFor),
   init: (game) => {

@@ -22,7 +22,7 @@ export {
 } from "../core/solo/effects.js";
 
 import { gameColor } from "../../game_colors.js";
-import { burst } from "../core/render.js";
+import { burstFrom } from "../core/solo/effects.js";
 import { boardPlace } from "./layout.js";
 import { EVENT } from "./protocol.js";
 import { CELL } from "./rules.js";
@@ -61,15 +61,15 @@ export function boardEffects(fx, { before, after, laid, now, random }) {
     if (i >= 0) fx.list.push({ kind: "hop", i, start: now, ticks: FX.hop });
   }
   if (events & EVENT.BOOM) {
-    const at = boardPlace(laid, after.board.boom);
-    const particles = burst(
-      at.x + at.w / 2,
-      at.y + at.h / 2,
-      fx.reduced ? 8 : 28,
-      { speed: [2, 3], extra: (k) => ({ life: 1, color: gameColor(FIRE[k % FIRE.length]) }) },
+    burstFrom(fx, boardPlace(laid, after.board.boom), {
+      count: fx.reduced ? 8 : 28,
+      speed: [2, 3],
+      color: (k) => gameColor(FIRE[k % FIRE.length]),
+      now,
+      ticks: FX.fire,
       random,
-    );
-    fx.list.push({ kind: "fire", particles, start: now, ticks: FX.fire });
+      kind: "fire",
+    });
     if (!fx.reduced) fx.list.push({ kind: "shake", start: now, ticks: FX.shake });
   }
   if (events & EVENT.WIN && !fx.reduced) {

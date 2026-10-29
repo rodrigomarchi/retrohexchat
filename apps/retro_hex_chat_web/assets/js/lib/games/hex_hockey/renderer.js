@@ -34,7 +34,7 @@ import {
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { waitingText } from "../core/render.js";
+import { drawScanlines, waitingText } from "../core/render.js";
 
 // ── Direction vectors for stick drawing ────────────────────────
 const SQRT2 = Math.SQRT1_2;
@@ -617,10 +617,7 @@ function drawWaitingScreen(ctx, colors, frameCount) {
 // ── CRT scanlines ──────────────────────────────────────────────
 
 function drawCRT(ctx, _frameCount) {
-  ctx.fillStyle = "rgba(0,0,0,0.06)";
-  for (let y = 0; y < CANVAS_H; y += 3) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
+  drawScanlines(ctx, CANVAS_W, CANVAS_H, { alpha: 0.06, step: 3 });
 
   // Subtle vignette
   const grd = ctx.createRadialGradient(RINK_CX, RINK_CY, 100, RINK_CX, RINK_CY, 400);

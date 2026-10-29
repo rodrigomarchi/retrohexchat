@@ -8,21 +8,20 @@
 
 // ── Message types ──────────────────────────────────────────────
 import { schema, bool, flags, i16, u8, u16 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+import { MSG_TYPE, phases } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
 // ── Enums ──────────────────────────────────────────────────────
-export const PHASE = {
-  WAITING: 0,
-  COUNTDOWN: 1,
-  FACE_OFF: 2,
-  PLAYING: 3,
-  GOAL_CELEBRATION: 4,
-  PERIOD_BREAK: 5,
-  SUDDEN_DEATH: 6,
-  FINISHED: 7,
-};
+/** The match's phases, by their value on the wire. */
+export const PHASE = phases(
+  "FACE_OFF",
+  "PLAYING",
+  "GOAL_CELEBRATION",
+  "PERIOD_BREAK",
+  "SUDDEN_DEATH",
+  "FINISHED",
+);
 
 export const GAME_MODE = {
   CLASSIC: 0,

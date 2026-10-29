@@ -3,7 +3,7 @@
  * @module games/hex_invaders/sounds
  */
 
-import { blip, fade, notes, sweep } from "../core/synth.js";
+import { FANFARE, blip, fade, notes, sweep } from "../core/synth.js";
 
 export const SOUNDS = {
   /** The march: four falling square notes. */
@@ -57,7 +57,7 @@ export const SOUNDS = {
   /** Invaded: a grave collapse, falling 200 → 30 Hz sawtooth, 800 ms. */
   invaded: sweep("sawtooth", 200, 30, 0.8, 0.2),
   /** Victory: rising C5-E5-G5-C6-E6. */
-  victory: notes([523, 659, 784, 1047, 1319], { wave: "square", note: 0.1, gap: 0.02, vol: 0.12 }),
+  victory: notes(FANFARE, { wave: "square", note: 0.1, gap: 0.02, vol: 0.12 }),
   /** 600 Hz square blip, 80 ms. */
   countdown: blip("square", 600, 0.08, 0.12),
 };

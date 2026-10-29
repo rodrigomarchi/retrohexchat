@@ -3,9 +3,16 @@ import {
   GRID_COLS,
   GRID_ROWS,
   MISSILE_LIFETIME,
+  RESPAWN_PAUSE,
+  TANK_RADIUS,
   WALL_SIZE,
+  createInitialState,
+  decodeMaze,
+  stepTick,
   updateMissile,
 } from "../../../../js/lib/games/pixel_tanks/physics.js";
+import { pressAndHold, released } from "../../../support/games/physics_tests.js";
+import { PHASE } from "../../../../js/lib/games/pixel_tanks/protocol.js";
 
 const open = () => new Uint8Array(GRID_COLS * GRID_ROWS);
 const shell = (fields) => ({
@@ -60,5 +67,58 @@ describe("a ricocheting shell", () => {
       m1VX: -3,
       m1Bounced: true,
     });
+  });
+});
+
+describe("stepTick", () => {
+  const walls = decodeMaze(0);
+  const idle = released("rotateLeft", "rotateRight", "forward", "fire");
+  const fire = { ...idle, fire: true };
+  const playing = () => ({ ...createInitialState(0, 0), phase: PHASE.PLAYING });
+
+  it("fires a shell on the press, not while the key is held", () => {
+    const { first, held } = pressAndHold(
+      (state, pressed) => stepTick(state, walls, { 1: fire, 2: idle }, pressed),
+      playing(),
+      { 1: false, 2: false },
+      (state) => ({ ...state, m1Active: false }),
+    );
+
+    expect(first.events.fired).toEqual([1]);
+    expect(first.state.m1Active).toBe(true);
+    expect(first.pressed).toEqual({ 1: true, 2: false });
+    expect(held.events.fired).toEqual([]);
+  });
+
+  it("sends both tanks home after a hit, and says where the tank stood", () => {
+    const start = playing();
+    const state = {
+      ...start,
+      tank2X: 300,
+      tank2Y: 200,
+      m1Active: true,
+      m1X: 300 - TANK_RADIUS - 6,
+      m1Y: 200,
+      m1VX: 5,
+      m1VY: 0,
+    };
+
+    const step = stepTick(state, walls, { 1: idle, 2: idle }, { 1: false, 2: false });
+
+    expect(step.events.hit).toEqual({ player: 2, x: 300, y: 200 });
+    expect(step.state.score1).toBe(1);
+    expect(step.state.tank2X).toBe(start.tank2X);
+    expect(step.state.respawnPause).toBe(RESPAWN_PAUSE - 1);
+  });
+
+  it("only runs the timers while the tanks hold still after a hit", () => {
+    const state = { ...playing(), respawnPause: 10 };
+
+    const step = stepTick(state, walls, { 1: fire, 2: fire }, { 1: false, 2: false });
+
+    expect(step.paused).toBe(true);
+    expect(step.state.respawnPause).toBe(9);
+    expect(step.state.m1Active).toBe(false);
+    expect(step.pressed).toEqual({ 1: false, 2: false });
   });
 });

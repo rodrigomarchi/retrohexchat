@@ -120,6 +120,13 @@ describe("surround_physics", () => {
       return state;
     }
 
+    /** One move of player one heading left from the left edge, into the wall. */
+    function p1IntoLeftWall() {
+      const state = playingState();
+      state.p1 = { x: 0, y: 20, dir: DIR.LEFT };
+      return moveAndCheck(state, DIR.LEFT, DIR.LEFT);
+    }
+
     it("returns unchanged state when not PLAYING", () => {
       const state = createInitialState(0);
       state.phase = PHASE.WAITING;
@@ -220,22 +227,14 @@ describe("surround_physics", () => {
     });
 
     it("dead player head does not update position", () => {
-      const state = playingState();
-      state.p1.x = 0;
-      state.p1.y = 20;
-      state.p1.dir = DIR.LEFT;
-      const result = moveAndCheck(state, DIR.LEFT, DIR.LEFT);
+      const result = p1IntoLeftWall();
       expect(result.p1Dead).toBe(true);
       // Head stays at original position
       expect(result.p1.x).toBe(0);
     });
 
     it("does not place trail for dead players", () => {
-      const state = playingState();
-      state.p1.x = 0;
-      state.p1.y = 20;
-      state.p1.dir = DIR.LEFT;
-      const result = moveAndCheck(state, DIR.LEFT, DIR.LEFT);
+      const result = p1IntoLeftWall();
       // The cell at (-1, 20) is OOB, so no trail placed
       // Verify P2 trail IS placed though
       expect(result.grid[result.p2.y][result.p2.x]).toBe(CELL.P2_TRAIL);

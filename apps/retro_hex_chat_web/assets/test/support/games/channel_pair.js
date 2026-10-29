@@ -1,3 +1,5 @@
+import { channelEvents } from "./fake_channel.js";
+
 /**
  * Two ends of a game DataChannel, joined in one process.
  *
@@ -17,21 +19,11 @@ export function channelPair({ drop = () => false } = {}) {
   guest.peer = host;
 
   function makeEnd(dir) {
-    const listeners = { message: new Set(), close: new Set() };
-
     return {
       readyState: "open",
       bufferedAmount: 0,
       peer: null,
-      listeners,
-
-      addEventListener(type, listener) {
-        listeners[type]?.add(listener);
-      },
-
-      removeEventListener(type, listener) {
-        listeners[type]?.delete(listener);
-      },
+      ...channelEvents(),
 
       send(data) {
         if (this.readyState !== "open") throw new Error("channel is not open");

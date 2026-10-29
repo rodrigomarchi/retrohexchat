@@ -1,21 +1,23 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { FakePointerGame } from "./fake_game.js";
-import { playMatch } from "./harness.js";
+import { matchPerTest, recordedMatch } from "./harness.js";
 
 const READY = "84";
 const INPUT_STATE = "8e";
 
 describe("playMatch", () => {
-  let match;
+  const play = matchPerTest();
 
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
+  /** The timers left once a match played for six seconds is stopped. */
+  const leftAfterStop = async (options) => {
+    const match = await play({ gameId: "hex_pong", mode: "p2p", ...options });
+    match.advance(6000);
+    match.stop();
+    return match.pendingTimers();
+  };
 
   it("plays both sides of a P2P match over the channel", async () => {
-    match = await playMatch({ gameId: "hex_pong", mode: "p2p" });
+    const match = await play({ gameId: "hex_pong", mode: "p2p" });
     match.advance(5000);
     const record = match.record();
 
@@ -25,7 +27,7 @@ describe("playMatch", () => {
   });
 
   it("delivers each side's keys to that side only", async () => {
-    match = await playMatch({
+    const match = await play({
       gameId: "hex_pong",
       mode: "p2p",
       script: [{ at: 4500, side: "guest", key: "ArrowUp", down: true }],
@@ -40,7 +42,7 @@ describe("playMatch", () => {
   });
 
   it("plays a solo match against the AI to its end", async () => {
-    match = await playMatch({ gameId: "hex_pong", mode: "solo" });
+    const match = await play({ gameId: "hex_pong", mode: "solo" });
     match.runUntil(() => match.results.host.length > 0, 600_000);
 
     expect(match.results.host).toHaveLength(1);
@@ -48,7 +50,7 @@ describe("playMatch", () => {
   });
 
   it("records a frame drawn in each phase", async () => {
-    match = await playMatch({ gameId: "hex_pong", mode: "solo" });
+    const match = await play({ gameId: "hex_pong", mode: "solo" });
     match.advance(5000);
     const draws = match.record().draws.filter((d) => d.side === "host");
 
@@ -57,61 +59,38 @@ describe("playMatch", () => {
   });
 
   it("records the sounds a side plays", async () => {
-    match = await playMatch({ gameId: "hex_pong", mode: "solo" });
+    const match = await play({ gameId: "hex_pong", mode: "solo" });
     match.advance(5000);
 
     expect(match.record().sounds.host.some(([, op]) => op === "createOscillator")).toBe(true);
   });
 
   it("records the same match the same way twice", async () => {
-    const play = async () => {
-      const run = await playMatch({ gameId: "hex_pong", mode: "solo", seed: 9 });
-      run.advance(20_000);
-      const record = run.record();
-      run.stop();
-      return record;
-    };
+    const record = () => recordedMatch({ gameId: "hex_pong", mode: "solo", seed: 9 }, 20_000);
 
-    expect(await play()).toEqual(await play());
+    expect(await record()).toEqual(await record());
   });
 
   // The check above means nothing unless the recording sees the dice: two
   // seeds must give two different matches.
   it("records a different match for a different seed", async () => {
-    const play = async (seed) => {
-      const run = await playMatch({ gameId: "hex_pong", mode: "solo", seed });
-      run.advance(20_000);
-      const record = run.record();
-      run.stop();
-      run.restore();
-      return record;
-    };
+    const record = (seed) => recordedMatch({ gameId: "hex_pong", mode: "solo", seed }, 20_000);
 
-    expect(await play(9)).not.toEqual(await play(10));
+    expect(await record(9)).not.toEqual(await record(10));
   });
 
   it("leaves no timer behind once stopped", async () => {
-    match = await playMatch({ gameId: "hex_pong", mode: "p2p" });
-    match.advance(6000);
-    match.stop();
-
-    expect(match.pendingTimers()).toBe(0);
+    expect(await leftAfterStop()).toBe(0);
   });
 
   it("counts only the engines' timers as left behind, not the script's", async () => {
-    match = await playMatch({
-      gameId: "hex_pong",
-      mode: "p2p",
-      script: [{ at: 60_000, side: "host", key: "ArrowUp", down: true }],
-    });
-    match.advance(6000);
-    match.stop();
-
-    expect(match.pendingTimers()).toBe(0);
+    expect(
+      await leftAfterStop({ script: [{ at: 60_000, side: "host", key: "ArrowUp", down: true }] }),
+    ).toBe(0);
   });
 
   it("closing the channel ends a P2P match as disconnected", async () => {
-    match = await playMatch({ gameId: "hex_pong", mode: "p2p" });
+    const match = await play({ gameId: "hex_pong", mode: "p2p" });
     match.advance(8000);
     match.close();
     match.advance(100);
@@ -120,7 +99,7 @@ describe("playMatch", () => {
   });
 
   it("plays a pointer script on the canvas, the way a finger would", async () => {
-    match = await playMatch({
+    const match = await play({
       EngineClass: FakePointerGame,
       gameId: "fake_pointer",
       mode: "solo",

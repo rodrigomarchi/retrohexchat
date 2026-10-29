@@ -36,6 +36,8 @@ import {
   shouldChangeover,
   resetForNextPoint,
   clearEventFlags,
+  stepServing,
+  stepRally,
 } from "../../../../js/lib/games/hex_tennis/physics.js";
 
 describe("tennis_physics", () => {
@@ -407,10 +409,20 @@ describe("tennis_physics", () => {
       expect(r.pointWinner).toBe(1);
     });
 
-    it("ball past P2 baseline (top) → LONG if hitter was P1", () => {
+    it("ball first landing past P2 baseline (top) → LONG if hitter was P1", () => {
       const s = createInitialState(GAME_MODE.CLASSIC);
       s.phase = PHASE.RALLY;
-      s.ball = { x: 320, y: COURT_TOP - 25, vx: 0, vy: -3, speed: 3, height: 0, heightVel: 0 };
+      s.ball = {
+        x: 320,
+        y: COURT_TOP - 25,
+        vx: 0,
+        vy: -3,
+        speed: 3,
+        height: 0,
+        heightVel: 0,
+        landX: 320,
+        landY: COURT_TOP - 10,
+      };
       s.lastHitter = 1;
       s.rallyCount = 2; // not a serve
       const r = checkOutOfBounds(s);
@@ -419,15 +431,109 @@ describe("tennis_physics", () => {
       expect(r.pointWinner).toBe(2);
     });
 
-    it("ball past P1 baseline (bottom) → LONG if hitter was P2", () => {
+    it("ball first landing past P1 baseline (bottom) → LONG if hitter was P2", () => {
       const s = createInitialState(GAME_MODE.CLASSIC);
       s.phase = PHASE.RALLY;
-      s.ball = { x: 320, y: COURT_BOTTOM + 25, vx: 0, vy: 3, speed: 3, height: 0, heightVel: 0 };
+      s.ball = {
+        x: 320,
+        y: COURT_BOTTOM + 25,
+        vx: 0,
+        vy: 3,
+        speed: 3,
+        height: 0,
+        heightVel: 0,
+        landX: 320,
+        landY: COURT_BOTTOM + 10,
+      };
       s.lastHitter = 2;
       s.rallyCount = 2;
       const r = checkOutOfBounds(s);
       expect(r.outOfBounds).toBe(true);
       expect(r.outType).toBe(OUT_TYPE.LONG);
+      expect(r.pointWinner).toBe(1);
+    });
+
+    it("ball that landed in P2's half and got past P2 → point to P1, not out", () => {
+      const s = createInitialState(GAME_MODE.CLASSIC);
+      s.phase = PHASE.RALLY;
+      s.ball = {
+        x: 320,
+        y: COURT_TOP - 25,
+        vx: 0,
+        vy: -3,
+        speed: 3,
+        height: 0,
+        heightVel: 0,
+        landX: 300,
+        landY: NET_Y - 60,
+      };
+      s.lastHitter = 1;
+      s.rallyCount = 2;
+      const r = checkOutOfBounds(s);
+      expect(r.pointWinner).toBe(1);
+      expect(r.outOfBounds).toBe(false);
+    });
+
+    it("ball that landed in P1's half and then went wide → point to P2", () => {
+      const s = createInitialState(GAME_MODE.CLASSIC);
+      s.phase = PHASE.RALLY;
+      s.ball = {
+        x: COURT_RIGHT + 15,
+        y: 380,
+        vx: 3,
+        vy: 3,
+        speed: 4,
+        height: 0,
+        heightVel: 0,
+        landX: 500,
+        landY: NET_Y + 60,
+      };
+      s.lastHitter = 2;
+      s.rallyCount = 3;
+      const r = checkOutOfBounds(s);
+      expect(r.pointWinner).toBe(2);
+      expect(r.outOfBounds).toBe(false);
+    });
+
+    it("ball wide before it lands → WIDE, point to the receiver", () => {
+      const s = createInitialState(GAME_MODE.CLASSIC);
+      s.phase = PHASE.RALLY;
+      s.ball = {
+        x: COURT_LEFT - 15,
+        y: 200,
+        vx: -3,
+        vy: -3,
+        speed: 4,
+        height: 0.2,
+        heightVel: 0,
+        landX: null,
+        landY: null,
+      };
+      s.lastHitter = 1;
+      s.rallyCount = 2;
+      const r = checkOutOfBounds(s);
+      expect(r.outType).toBe(OUT_TYPE.WIDE);
+      expect(r.pointWinner).toBe(2);
+    });
+
+    it("unreturned serve that landed in, then went wide → ACE", () => {
+      const s = createInitialState(GAME_MODE.CLASSIC);
+      s.phase = PHASE.RALLY;
+      s.ball = {
+        x: COURT_RIGHT + 15,
+        y: 120,
+        vx: 3,
+        vy: -3,
+        speed: 4,
+        height: 0,
+        heightVel: 0,
+        landX: 400,
+        landY: SERVICE_LINE_TOP + 40,
+      };
+      s.lastHitter = 1;
+      s.rallyCount = 0;
+      const r = checkOutOfBounds(s);
+      expect(r.outType).toBe(OUT_TYPE.ACE);
       expect(r.pointWinner).toBe(1);
     });
 
@@ -973,15 +1079,31 @@ describe("tennis_physics", () => {
       s.rallyCount = 0; // serve not yet returned
       s.totalPointsInGame = totalPoints || 0;
       s.isSecondServe = isSecondServe || false;
-      s.ball = { x: ballX, y: ballY, vx: 0, vy: 0, speed: 0, height: 0, heightVel: 0 };
+      s.ball = {
+        x: ballX,
+        y: ballY,
+        vx: 0,
+        vy: 0,
+        speed: 0,
+        height: 0,
+        heightVel: 0,
+        landX: ballX,
+        landY: ballY,
+      };
       return s;
     }
 
     it("ball in correct service box → no fault", () => {
-      // P1 serves, deuce court (totalPoints=0), target box = P2 side right half
-      const s = makeServeState(1, CENTER_LINE_X + 30, COURT_TOP + 40, 0);
+      // P1 serves, deuce court (totalPoints=0), target box = P2 side right half, net to service line
+      const s = makeServeState(1, CENTER_LINE_X + 30, SERVICE_LINE_TOP + 40, 0);
       const r = checkServeLanding(s);
       expect(r.faultEvent).toBeFalsy();
+    });
+
+    it("ball behind the service line → fault", () => {
+      const s = makeServeState(1, CENTER_LINE_X + 30, SERVICE_LINE_TOP - 20, 0);
+      const r = checkServeLanding(s);
+      expect(r.faultEvent).toBe(true);
     });
 
     it("ball outside service box → first serve fault → second serve", () => {
@@ -1008,6 +1130,13 @@ describe("tennis_physics", () => {
       expect(r.faultEvent).toBeFalsy();
     });
 
+    it("judges where the serve landed, not where it rolled to", () => {
+      const s = makeServeState(1, CENTER_LINE_X + 30, SERVICE_LINE_TOP - 30, 0);
+      s.ball.landY = SERVICE_LINE_TOP + 40;
+      const r = checkServeLanding(s);
+      expect(r.faultEvent).toBeFalsy();
+    });
+
     it("does not check if ball is still in the air", () => {
       const s = makeServeState(1, COURT_LEFT - 50, COURT_TOP + 40, 0);
       s.ball.height = 0.5;
@@ -1016,8 +1145,8 @@ describe("tennis_physics", () => {
     });
 
     it("P2 serve: correct box on deuce court", () => {
-      // P2 serves to P1's side (bottom), deuce court = left half
-      const s = makeServeState(2, COURT_LEFT + 30, SERVICE_LINE_BOTTOM + 30, 0);
+      // P2 serves to P1's side (bottom), deuce court = right half, where performServe aims
+      const s = makeServeState(2, CENTER_LINE_X + 30, SERVICE_LINE_BOTTOM - 30, 0);
       const r = checkServeLanding(s);
       expect(r.faultEvent).toBeFalsy();
     });
@@ -1031,7 +1160,7 @@ describe("tennis_physics", () => {
 
     it("ad court (totalPoints=1) uses opposite half", () => {
       // P1 serves, ad court → left half of P2 side
-      const s = makeServeState(1, CENTER_LINE_X - 30, COURT_TOP + 40, 1);
+      const s = makeServeState(1, CENTER_LINE_X - 30, SERVICE_LINE_TOP + 40, 1);
       const r = checkServeLanding(s);
       expect(r.faultEvent).toBeFalsy();
     });
@@ -1042,6 +1171,87 @@ describe("tennis_physics", () => {
       expect(r.ball.vx).toBe(0);
       expect(r.ball.vy).toBe(0);
       expect(r.serveTimer).toBe(SERVE_TIMEOUT_FRAMES);
+    });
+  });
+
+  describe("where a shot lands", () => {
+    it("updateBall keeps the first spot the ball touches down", () => {
+      let s = createInitialState(GAME_MODE.CLASSIC);
+      s.phase = PHASE.RALLY;
+      s.ball = {
+        ...s.ball,
+        x: 300,
+        y: 300,
+        vx: 0,
+        vy: -5,
+        speed: 5,
+        height: 0.01,
+        heightVel: -0.02,
+      };
+      s = updateBall(s);
+      expect(s.ball.landY).toBeCloseTo(295);
+      s = updateBall(updateBall(s));
+      expect(s.ball.landY).toBeCloseTo(295);
+    });
+
+    it("a hit clears where the last shot landed", () => {
+      const s = createInitialState(GAME_MODE.CLASSIC);
+      s.phase = PHASE.RALLY;
+      s.p2x = 320;
+      s.p2y = 100;
+      s.ball = { ...s.ball, x: 320, y: 100, vx: 0, vy: -5, speed: 5, landX: 320, landY: 180 };
+      const r = checkHitZone(s, 2);
+      expect(r.hitEvent).toBe(true);
+      expect(r.ball.landY).toBeNull();
+    });
+  });
+
+  describe("performServe — where the serve lands", () => {
+    for (const server of [1, 2]) {
+      for (const totalPointsInGame of [0, 1]) {
+        it(`player ${server}'s serve lands in the box (points ${totalPointsInGame})`, () => {
+          let s = createInitialState(GAME_MODE.CLASSIC);
+          s = { ...s, phase: PHASE.SERVING, server, totalPointsInGame };
+          s = performServe(s, () => 0.5);
+          for (let frame = 0; frame < 200 && s.ball.height > 0; frame++) {
+            s = checkNetCollision(updateBall(s));
+            expect(s.netFault).toBeFalsy();
+          }
+          const r = checkServeLanding(s);
+          expect(r.faultEvent).toBeFalsy();
+        });
+      }
+    }
+
+    it("clears the net from anywhere the server may stand, and lands in the box", () => {
+      const rows = [
+        [1, [253, 260, 270, 300, 360, 428]],
+        [2, [52, 120, 200, 210, 220, 227]],
+      ];
+      for (const [server, ys] of rows) {
+        for (const y of ys) {
+          for (const x of [62, 200, 320, 440, 578]) {
+            for (const totalPointsInGame of [0, 1]) {
+              for (const isSecondServe of [false, true]) {
+                for (const draw of [0, 0.5, 0.99]) {
+                  const at = server === 1 ? { p1x: x, p1y: y } : { p2x: x, p2y: y };
+                  let s = createInitialState(GAME_MODE.CLASSIC);
+                  s = { ...s, ...at, phase: PHASE.SERVING, server, totalPointsInGame };
+                  s = performServe({ ...s, isSecondServe }, () => draw);
+                  for (let frame = 0; frame < 200 && s.ball.height > 0; frame++) {
+                    s = checkNetCollision(updateBall(s));
+                    expect(s.netFault, `server ${server} at ${x},${y}`).toBeFalsy();
+                  }
+                  expect(
+                    checkServeLanding(s).faultEvent,
+                    `server ${server} at ${x},${y}`,
+                  ).toBeFalsy();
+                }
+              }
+            }
+          }
+        }
+      }
     });
   });
 
@@ -1333,6 +1543,42 @@ describe("tennis_physics", () => {
       expect(Number.isNaN(r.ball.vy)).toBe(false);
       expect(r.ball.vx).toBe(0);
       expect(r.ball.vy).toBe(0);
+    });
+  });
+
+  describe("stepServing and stepRally", () => {
+    const still = { up: false, down: false, left: false, right: false, serve: false };
+
+    it("serves on a fresh press of serve, not on one held from before", () => {
+      const s = { ...createInitialState(GAME_MODE.CLASSIC), phase: PHASE.SERVING, server: 1 };
+      const serve = { ...still, serve: true };
+
+      const held = stepServing(s, serve, still, { local: true, remote: false }, () => 0.5);
+      expect(held.served).toBe(false);
+      expect(held.state.phase).toBe(PHASE.SERVING);
+
+      const fresh = stepServing(s, serve, still, { local: false, remote: false }, () => 0.5);
+      expect(fresh.served).toBe(true);
+      expect(fresh.state.phase).toBe(PHASE.RALLY);
+      expect(fresh.pressed).toEqual({ local: true, remote: false });
+    });
+
+    it("moves the players and the ball, and scores a point it decides", () => {
+      const s = { ...createInitialState(GAME_MODE.CLASSIC), phase: PHASE.RALLY, rallyCount: 2 };
+      s.ball = { ...s.ball, x: 320, y: 150, vx: 0, vy: -4, speed: 4, height: 0.5, heightVel: 0 };
+      const moved = stepRally(s, { ...still, left: true }, { ...still, right: true });
+
+      expect(moved.point).toBe(false);
+      expect(moved.state.p1x).toBe(s.p1x - PLAYER_SPEED);
+      expect(moved.state.p2x).toBe(s.p2x + PLAYER_SPEED);
+      expect(moved.state.ball.y).toBe(146);
+
+      const passed = { ...s, lastHitter: 1, p2x: COURT_LEFT + 20 };
+      passed.ball = { ...s.ball, y: COURT_TOP - 19, height: 0, landX: 320, landY: 150 };
+      const point = stepRally(passed, still, still);
+      expect(point.point).toBe(true);
+      expect(point.state.p1Points).toBe(1);
+      expect(point.state.phase).toBe(PHASE.POINT);
     });
   });
 });

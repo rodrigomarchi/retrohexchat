@@ -17,6 +17,7 @@ import {
   checkGameOver,
   startNextRound,
   determineWinner,
+  stepTick,
   CANVAS_W,
   CANVAS_H,
   SCROLL_SPEED_BASE,
@@ -34,6 +35,41 @@ import {
 } from "../../../../js/lib/games/hex_skiing/physics.js";
 import { createRng } from "../../../../js/lib/games/core/rng.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "../../../../js/lib/games/hex_skiing/protocol.js";
+
+/** A skier mid-slope with a clean run behind it, changed by `overrides`. */
+function makeSkier(overrides = {}) {
+  return {
+    x: CANVAS_W / 2,
+    velX: 0,
+    state: SKIER_STATE.SKIING,
+    timer: 0,
+    boostTimer: 0,
+    iceTimer: 0,
+    stunTimer: 0,
+    distance: 0,
+    ...overrides,
+  };
+}
+
+/** A round under way in `mode`, on seed 42. */
+function racingState(mode = GAME_MODE.ALPINE_RACE) {
+  return { ...createInitialState(mode, 42), phase: PHASE.RACING };
+}
+
+/** `thing` placed where skier one is now: on its line, at its height. */
+function atSkierOne(state, thing) {
+  return { x: state.p1.x, y: state.scrollY + SKIER_SCREEN_Y, ...thing };
+}
+
+/** A slalom gate `width` wide at skier one's height, its left post `dx` from the skier. */
+function gateAtSkierOne(state, dx, width) {
+  return atSkierOne(state, {
+    x: state.p1.x + dx,
+    width,
+    clearedP1: false,
+    clearedP2: false,
+  });
+}
 
 describe("Hex Skiing Physics", () => {
   describe("createInitialState", () => {
@@ -62,20 +98,6 @@ describe("Hex Skiing Physics", () => {
   });
 
   describe("updateSkier", () => {
-    function makeSkier(overrides = {}) {
-      return {
-        x: CANVAS_W / 2,
-        velX: 0,
-        state: SKIER_STATE.SKIING,
-        timer: 0,
-        boostTimer: 0,
-        iceTimer: 0,
-        stunTimer: 0,
-        distance: 0,
-        ...overrides,
-      };
-    }
-
     it("moves left when left input is held", () => {
       const skier = makeSkier();
       const result = updateSkier(skier, { left: true, right: false });
@@ -129,10 +151,25 @@ describe("Hex Skiing Physics", () => {
       expect(result.timer).toBeGreaterThan(0);
     });
 
-    it("does not advance timer when stunned", () => {
+    it("keeps the timer running while stunned", () => {
       const skier = makeSkier({ stunTimer: 5, state: SKIER_STATE.CRASHED });
       const result = updateSkier(skier, { left: false, right: false });
-      expect(result.timer).toBe(0);
+      expect(result.timer).toBeCloseTo(1 / 60);
+      expect(result.distance).toBe(skier.distance);
+    });
+
+    it("stops a skier's clock on the frame they cross the finish line", () => {
+      /** The time on a skier's clock once past the line, stunned first for `stun` frames. */
+      function finishTime(stun) {
+        let skier = makeSkier({ distance: COURSE_LENGTH - 30, stunTimer: stun });
+        while (skier.distance < COURSE_LENGTH) skier = updateSkier(skier, {});
+        const atLine = skier.timer;
+        for (let i = 0; i < 60; i++) skier = updateSkier(skier, {});
+        expect(skier.timer).toBe(atLine);
+        return atLine;
+      }
+
+      expect(finishTime(120) - finishTime(0)).toBeCloseTo(2);
     });
 
     it("decrements boost timer", () => {
@@ -235,39 +272,31 @@ describe("Hex Skiing Physics", () => {
 
   describe("checkCollisions", () => {
     it("stuns player on tree collision", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
+      let state = racingState();
       // Place a tree right at p1's position
-      const treeY = state.scrollY + SKIER_SCREEN_Y;
-      state.obstacles = [{ type: "tree", x: state.p1.x, y: treeY, w: 10, h: 14 }];
+      state.obstacles = [atSkierOne(state, { type: "tree", w: 10, h: 14 })];
       state = checkCollisions(state);
       expect(state.p1.stunTimer).toBe(STUN_TREE);
       expect(state.p1.state).toBe(SKIER_STATE.CRASHED);
     });
 
     it("stuns player on rock collision (shorter stun)", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
-      const rockY = state.scrollY + SKIER_SCREEN_Y;
-      state.obstacles = [{ type: "rock", x: state.p1.x, y: rockY, w: 8, h: 8 }];
+      let state = racingState();
+      state.obstacles = [atSkierOne(state, { type: "rock", w: 8, h: 8 })];
       state = checkCollisions(state);
       expect(state.p1.stunTimer).toBe(STUN_ROCK);
     });
 
     it("applies ice effect on ice collision", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
-      const iceY = state.scrollY + SKIER_SCREEN_Y;
-      state.obstacles = [{ type: "ice", x: state.p1.x, y: iceY, w: 24, h: 16 }];
+      let state = racingState();
+      state.obstacles = [atSkierOne(state, { type: "ice", w: 24, h: 16 })];
       state = checkCollisions(state);
       expect(state.p1.iceTimer).toBe(ICE_DURATION);
     });
 
     it("collects boost item", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
-      const itemY = state.scrollY + SKIER_SCREEN_Y;
-      state.items = [{ type: 0, x: state.p1.x, y: itemY, collected: 0 }];
+      let state = racingState();
+      state.items = [atSkierOne(state, { type: 0, collected: 0 })];
       state = checkCollisions(state);
       expect(state.p1.boostTimer).toBe(BOOST_DURATION);
       expect(state.p1.state).toBe(SKIER_STATE.BOOSTED);
@@ -276,37 +305,26 @@ describe("Hex Skiing Physics", () => {
   });
 
   describe("checkGates", () => {
+    it("gives a skier past the finish line no gate bonus", () => {
+      let state = racingState();
+      state.p1 = { ...state.p1, distance: COURSE_LENGTH, timer: 70 };
+      state.gates = [gateAtSkierOne(state, -20, 80)];
+      state = checkGates(state);
+      expect(state.gates[0].clearedP1).toBe(false);
+      expect(state.p1.timer).toBe(70);
+    });
+
     it("clears gate when skier passes through", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
-      const gateY = state.scrollY + SKIER_SCREEN_Y;
-      state.gates = [
-        {
-          x: state.p1.x - 20,
-          y: gateY,
-          width: 80,
-          clearedP1: false,
-          clearedP2: false,
-        },
-      ];
+      let state = racingState();
+      state.gates = [gateAtSkierOne(state, -20, 80)];
       state = checkGates(state);
       expect(state.gates[0].clearedP1).toBe(true);
       expect(state.p1.timer).toBeLessThan(0 + 0.01); // Timer was 0, bonus -2 = max(0, -2) = 0
     });
 
     it("does not clear gate when skier is outside", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
-      const gateY = state.scrollY + SKIER_SCREEN_Y;
-      state.gates = [
-        {
-          x: state.p1.x + 200,
-          y: gateY,
-          width: 40,
-          clearedP1: false,
-          clearedP2: false,
-        },
-      ];
+      let state = racingState();
+      state.gates = [gateAtSkierOne(state, 200, 40)];
       state = checkGates(state);
       expect(state.gates[0].clearedP1).toBe(false);
     });
@@ -314,16 +332,14 @@ describe("Hex Skiing Physics", () => {
 
   describe("updateAvalanche", () => {
     it("advances avalanche position", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
+      let state = racingState();
       const initialY = state.avalancheY;
       state = updateAvalanche(state);
       expect(state.avalancheY).toBeGreaterThan(initialY);
     });
 
     it("does nothing in clean run mode", () => {
-      let state = createInitialState(GAME_MODE.CLEAN_RUN, 42);
-      state.phase = PHASE.RACING;
+      let state = racingState(GAME_MODE.CLEAN_RUN);
       const initialY = state.avalancheY;
       state = updateAvalanche(state);
       expect(state.avalancheY).toBe(initialY);
@@ -372,25 +388,9 @@ describe("Hex Skiing Physics", () => {
     });
   });
 
-  describe("startNextRound", () => {
-    it("advances to next round", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.round = 0;
-      state.p1RoundWins = 1;
-      state.scrollY = 5000;
-      state = startNextRound(state);
-      expect(state.round).toBe(1);
-      expect(state.scrollY).toBe(0);
-      expect(state.p1.x).toBeLessThan(CANVAS_W / 2);
-      expect(state.phase).toBe(PHASE.COUNTDOWN);
-      expect(state.p1RoundWins).toBe(1); // Preserved
-    });
-  });
-
   describe("updateScroll", () => {
     it("advances scroll by faster skier's speed", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
+      let state = racingState();
       const initial = state.scrollY;
       state = updateScroll(state);
       expect(state.scrollY).toBeGreaterThan(initial);
@@ -432,38 +432,108 @@ describe("Hex Skiing Physics", () => {
   });
 
   describe("checkGameOver", () => {
+    /** A round in `mode` checked once the avalanche has run past the skiers. */
+    function afterAvalanche(mode) {
+      const state = racingState(mode);
+      state.avalancheY = state.scrollY + SKIER_SCREEN_Y + SKIER_H + 10;
+      return checkGameOver(state);
+    }
+
     it("ends round when both players finish the course", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
+      let state = racingState();
       state.p1 = { ...state.p1, distance: COURSE_LENGTH + 1 };
       state.p2 = { ...state.p2, distance: COURSE_LENGTH + 1 };
       state = checkGameOver(state);
       expect(state.phase === PHASE.ROUND_END || state.phase === PHASE.FINISHED).toBe(true);
     });
 
-    it("ends round when avalanche engulfs (past skier screen Y)", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
-      state.avalancheY = state.scrollY + SKIER_SCREEN_Y + SKIER_H + 10;
+    it("gives the round to the finisher over a skier still on the course", () => {
+      let state = racingState();
+      state.p1 = { ...state.p1, distance: COURSE_LENGTH + CANVAS_H * 2, timer: 80 };
+      state.p2 = { ...state.p2, distance: COURSE_LENGTH - 500, timer: 60 };
       state = checkGameOver(state);
+      expect(state.phase).toBe(PHASE.ROUND_END);
+      expect(state.p1RoundWins).toBe(1);
+      expect(state.p2RoundWins).toBe(0);
+    });
+
+    it("never lets the avalanche catch a skier who has finished", () => {
+      const state = racingState();
+      state.p1 = { ...state.p1, distance: COURSE_LENGTH + 10, stunTimer: 30 };
+      state.p2 = { ...state.p2, distance: COURSE_LENGTH - 500 };
+      state.avalancheY = state.scrollY + SKIER_SCREEN_Y + SKIER_H + 10;
+      const over = checkGameOver(state);
+
+      expect(over.phase).toBe(PHASE.ROUND_END);
+      expect(over.p1RoundWins).toBe(1);
+      expect(over.p2RoundWins).toBe(0);
+    });
+
+    it("keeps the round going while only the finisher sits under the avalanche", () => {
+      const state = racingState();
+      state.p1 = { ...state.p1, distance: COURSE_LENGTH + 10, stunTimer: 30 };
+      state.p2 = { ...state.p2, distance: COURSE_LENGTH - 500 };
+      state.avalancheY = state.scrollY + SKIER_SCREEN_Y;
+
+      expect(checkGameOver(state).phase).toBe(PHASE.RACING);
+    });
+
+    it("ends round when avalanche engulfs (past skier screen Y)", () => {
+      const state = afterAvalanche(GAME_MODE.ALPINE_RACE);
       expect(state.phase === PHASE.ROUND_END || state.phase === PHASE.FINISHED).toBe(true);
     });
 
     it("escape mode ends when both are engulfed", () => {
-      let state = createInitialState(GAME_MODE.AVALANCHE_ESCAPE, 42);
-      state.phase = PHASE.RACING;
-      state.avalancheY = state.scrollY + SKIER_SCREEN_Y + SKIER_H + 10;
-      state = checkGameOver(state);
-      expect(state.phase).toBe(PHASE.FINISHED);
+      expect(afterAvalanche(GAME_MODE.AVALANCHE_ESCAPE).phase).toBe(PHASE.FINISHED);
     });
 
     it("does not end round in clean run when no avalanche", () => {
-      let state = createInitialState(GAME_MODE.CLEAN_RUN, 42);
-      state.phase = PHASE.RACING;
+      let state = racingState(GAME_MODE.CLEAN_RUN);
       state.p1 = { ...state.p1, distance: 100 };
       state.p2 = { ...state.p2, distance: 100 };
       state = checkGameOver(state);
       expect(state.phase).toBe(PHASE.RACING);
+    });
+  });
+
+  describe("stepTick", () => {
+    function racing() {
+      return { ...racingState(), obstacles: [], gates: [], nextChunkY: 10_000 };
+    }
+
+    it("moves both skiers on their own inputs and scrolls the slope", () => {
+      const state = racing();
+      const next = stepTick(state, {
+        p1: { left: true, right: false },
+        p2: { left: false, right: true },
+      });
+
+      expect(next.p1.x).toBeLessThan(state.p1.x);
+      expect(next.p2.x).toBeGreaterThan(state.p2.x);
+      expect(next.scrollY).toBeGreaterThan(state.scrollY);
+      expect(next.p1.timer).toBeCloseTo(1 / 60);
+    });
+
+    it("leaves the state it was given untouched", () => {
+      const state = racing();
+      const p1 = state.p1;
+      stepTick(state, { p1: { left: true, right: false }, p2: { left: false, right: false } });
+
+      expect(state.p1).toBe(p1);
+      expect(state.scrollY).toBe(0);
+    });
+
+    it("settles a crash and the round's end within the tick", () => {
+      const crash = racing();
+      crash.obstacles = [
+        { type: "tree", x: crash.p2.x, y: SKIER_SCREEN_Y + SCROLL_SPEED_BASE, w: 10, h: 14 },
+      ];
+      expect(stepTick(crash, { p1: {}, p2: {} }).p2.stunTimer).toBe(STUN_TREE);
+
+      const done = racing();
+      done.p1 = { ...done.p1, distance: COURSE_LENGTH };
+      done.p2 = { ...done.p2, distance: COURSE_LENGTH };
+      expect(stepTick(done, { p1: {}, p2: {} }).phase).toBe(PHASE.ROUND_END);
     });
   });
 
@@ -498,20 +568,6 @@ describe("Hex Skiing Physics", () => {
   });
 
   describe("updateSkier edge cases", () => {
-    function makeSkier(overrides = {}) {
-      return {
-        x: CANVAS_W / 2,
-        velX: 0,
-        state: SKIER_STATE.SKIING,
-        timer: 0,
-        boostTimer: 0,
-        iceTimer: 0,
-        stunTimer: 0,
-        distance: 0,
-        ...overrides,
-      };
-    }
-
     it("clamps to right canvas boundary", () => {
       const skier = makeSkier({ x: CANVAS_W - 1, velX: 5 });
       const result = updateSkier(skier, { left: false, right: true });
@@ -534,23 +590,27 @@ describe("Hex Skiing Physics", () => {
   });
 
   describe("checkCollisions edge cases", () => {
+    it("leaves a skier past the finish line standing", () => {
+      const state = racingState();
+      state.p1 = { ...state.p1, distance: COURSE_LENGTH };
+      state.obstacles = [atSkierOne(state, { type: "tree", w: 10, h: 14 })];
+
+      expect(checkCollisions(state).p1.stunTimer).toBe(0);
+    });
+
     it("skips stunned players", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
+      let state = racingState();
       state.p1 = { ...state.p1, stunTimer: 10, state: SKIER_STATE.CRASHED };
-      const treeY = state.scrollY + SKIER_SCREEN_Y;
-      state.obstacles = [{ type: "tree", x: state.p1.x, y: treeY, w: 10, h: 14 }];
+      state.obstacles = [atSkierOne(state, { type: "tree", w: 10, h: 14 })];
       state = checkCollisions(state);
       // Stun timer should not be reset (still 10, not STUN_TREE)
       expect(state.p1.stunTimer).toBe(10);
     });
 
     it("does not re-apply ice when already on ice", () => {
-      let state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
-      state.phase = PHASE.RACING;
+      let state = racingState();
       state.p1 = { ...state.p1, iceTimer: 50 };
-      const iceY = state.scrollY + SKIER_SCREEN_Y;
-      state.obstacles = [{ type: "ice", x: state.p1.x, y: iceY, w: 24, h: 16 }];
+      state.obstacles = [atSkierOne(state, { type: "ice", w: 24, h: 16 })];
       state = checkCollisions(state);
       expect(state.p1.iceTimer).toBe(50); // Not reset to ICE_DURATION
     });

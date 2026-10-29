@@ -46,6 +46,9 @@ const LANE_TRANSITION_MAX = 255;
 export const FUEL_MAX = 1000;
 const FUEL_DRAIN_BASE = 1;
 const FUEL_DRAIN_TURBO = 3;
+// The drain rates are in sixteenths of a fuel unit a frame: at top speed a full
+// tank lasts about 67 s and a station's refill about 20 s.
+export const FUEL_BURN_PER_UNIT = 16;
 export const FUEL_STATION_REFILL = 300;
 const FUEL_SPAWN_INTERVAL_MIN = 500;
 const FUEL_SPAWN_INTERVAL_MAX = 900;
@@ -155,6 +158,7 @@ function createPlayerState(lane) {
     targetLane: lane,
     speed: 0,
     fuel: FUEL_MAX,
+    fuelBurn: 0,
     overtakes: 0,
     score: 0,
     boost: 0,
@@ -585,7 +589,7 @@ export function checkPlayerOvertake(state, prevP1Z, prevP2Z) {
 // ── Fuel System ──
 
 /**
- * Drain fuel based on speed and boost state.
+ * Drain fuel based on speed and boost state, in sixteenths of a unit a frame.
  * @param {object} state
  * @param {string} playerKey
  * @returns {object}
@@ -597,9 +601,14 @@ export function updateFuel(state, playerKey) {
   if (p.speed <= 0) return state; // no drain when stationary
   const drainRate =
     p.boost > 0 ? FUEL_DRAIN_TURBO : Math.max(FUEL_DRAIN_BASE, Math.floor(p.speed / 200));
-  const newFuel = Math.max(0, p.fuel - drainRate);
+  // Whole units leave the tank; the part of one still burning is kept for the next frame.
+  const burned = (p.fuelBurn || 0) + drainRate;
+  const newFuel = Math.max(0, p.fuel - Math.floor(burned / FUEL_BURN_PER_UNIT));
 
-  return { ...state, [playerKey]: { ...p, fuel: newFuel } };
+  return {
+    ...state,
+    [playerKey]: { ...p, fuel: newFuel, fuelBurn: burned % FUEL_BURN_PER_UNIT },
+  };
 }
 
 /**
@@ -836,6 +845,54 @@ export function determineWinner(state) {
   if (state.p1.overtakes > state.p2.overtakes) return 1;
   if (state.p2.overtakes > state.p1.overtakes) return 2;
   return 0; // draw
+}
+
+// ── Racing Step ──
+
+/**
+ * One racing step: each driver's held keys steer, turbo and drive the car, then
+ * the road, fuel, traffic, scores, weather and clocks move on. Turbo fires on
+ * the press, so the step takes whether each turbo key was already down and
+ * hands back whether it is now.
+ * @param {object} state
+ * @param {object} p1Inputs - {left, right, accel, brake, turbo}
+ * @param {object} p2Inputs
+ * @param {{p1: boolean, p2: boolean}} [turboHeld]
+ * @returns {{state: object, turboHeld: {p1: boolean, p2: boolean}}}
+ */
+export function stepTick(state, p1Inputs, p2Inputs, turboHeld = { p1: false, p2: false }) {
+  let s = clearEvents(state);
+  const prevAiCars = s.aiCars.map((c) => ({ ...c }));
+  const prevP1Z = s.p1.zOffset;
+  const prevP2Z = s.p2.zOffset;
+
+  if (p1Inputs.left) s = changeLane(s, "p1", -1);
+  if (p1Inputs.right) s = changeLane(s, "p1", 1);
+  if (p2Inputs.left) s = changeLane(s, "p2", -1);
+  if (p2Inputs.right) s = changeLane(s, "p2", 1);
+
+  if (p1Inputs.turbo && !turboHeld.p1) s = activateTurbo(s, "p1");
+  if (p2Inputs.turbo && !turboHeld.p2) s = activateTurbo(s, "p2");
+
+  s = updateLaneTransition(s, "p1");
+  s = updateLaneTransition(s, "p2");
+  s = updateSpeed(s, "p1", { accel: p1Inputs.accel, brake: p1Inputs.brake });
+  s = updateSpeed(s, "p2", { accel: p2Inputs.accel, brake: p2Inputs.brake });
+  s = updateZOffsets(s);
+  s = updateAICars(s);
+  s = updateFuel(s, "p1");
+  s = updateFuel(s, "p2");
+  s = spawnFuelStations(s);
+  s = updateFuelStations(s);
+  s = updateSlipstream(s);
+  s = checkCollisions(s);
+  s = checkOvertakes(s, prevAiCars);
+  s = checkPlayerOvertake(s, prevP1Z, prevP2Z);
+  s = updateWeather(s);
+  s = tickTimers(s);
+  s = checkGameOver(s);
+
+  return { state: s, turboHeld: { p1: Boolean(p1Inputs.turbo), p2: Boolean(p2Inputs.turbo) } };
 }
 
 // ── Event Management ──

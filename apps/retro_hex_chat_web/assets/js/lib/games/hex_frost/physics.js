@@ -172,10 +172,16 @@ function createBailey(x, playerNum) {
   };
 }
 
+/**
+ * The rows of a round. They drift in alternating directions; which way the
+ * top row goes is drawn per round, since the side the rows drift toward
+ * plays differently and neither player should always get the better one.
+ */
 function createBlockRows(rng, _roundIdx) {
   const rows = [];
+  const topDirection = rng() < 0.5 ? 1 : -1;
   for (let r = 0; r < NUM_ROWS; r++) {
-    const direction = r % 2 === 0 ? 1 : -1;
+    const direction = r % 2 === 0 ? topDirection : -topDirection;
     const blocks = [];
     const totalWidth = BLOCKS_PER_ROW * (BLOCK_W + BLOCK_GAP);
     for (let b = 0; b < BLOCKS_PER_ROW; b++) {
@@ -189,28 +195,40 @@ function createBlockRows(rng, _roundIdx) {
   return rows;
 }
 
+/**
+ * A round's settings: Blizzard plays the last round's, with every enemy.
+ * @param {number} mode
+ * @param {number} round
+ * @returns {object}
+ */
+function roundPreset(mode, round) {
+  if (mode === GAME_MODE.BLIZZARD) return ROUND_PRESETS[4];
+  return ROUND_PRESETS[Math.min(round - 1, ROUND_PRESETS.length - 1)];
+}
+
 function createEnemiesForRound(rng, round, mode) {
   const enemies = [];
-  const preset =
-    mode === GAME_MODE.BLIZZARD
-      ? ROUND_PRESETS[4] // all enemies for blizzard
-      : ROUND_PRESETS[Math.min(round - 1, ROUND_PRESETS.length - 1)];
+  const preset = roundPreset(mode, round);
 
-  // Bears always on shore
+  // Bears always on shore. Which way the first walks, and which igloo the
+  // second starts by, is drawn: neither player always meets them first.
   if (preset.enemies.includes(ENEMY_TYPE.BEAR)) {
+    const side = rng() < 0.5 ? 1 : -1;
+    const middleX = 200 + rng() * 200;
     enemies.push({
       type: ENEMY_TYPE.BEAR,
-      x: 200 + rng() * 200,
+      x: side === 1 ? middleX : CANVAS_W - BEAR_W - middleX,
       row: -1,
-      state: 1, // direction: 1=right
+      state: side, // direction: 1=right
       timer: 0,
     });
     if (round >= 3 || mode === GAME_MODE.BLIZZARD) {
+      const edgeX = 50 + rng() * 100;
       enemies.push({
         type: ENEMY_TYPE.BEAR,
-        x: 50 + rng() * 100,
+        x: side === 1 ? edgeX : CANVAS_W - BEAR_W - edgeX,
         row: -1,
-        state: -1,
+        state: -side,
         timer: 0,
       });
     }
@@ -267,11 +285,7 @@ function createEnemiesForRound(rng, round, mode) {
  * Update all block rows — move blocks horizontally.
  */
 export function updateBlocks(state) {
-  const preset =
-    state.mode === GAME_MODE.BLIZZARD
-      ? ROUND_PRESETS[4]
-      : ROUND_PRESETS[Math.min(state.round - 1, ROUND_PRESETS.length - 1)];
-  const speed = preset.blockSpeed;
+  const speed = getBlockSpeed(state);
 
   const rows = state.blockRows.map((row) => {
     const newOffset = row.offset + row.direction * speed;
@@ -279,6 +293,15 @@ export function updateBlocks(state) {
   });
 
   return { ...state, blockRows: rows };
+}
+
+/**
+ * How far the blocks drift each frame in this round, in pixels.
+ * @param {{ mode: number, round: number }} state
+ * @returns {number}
+ */
+export function getBlockSpeed(state) {
+  return roundPreset(state.mode, state.round).blockSpeed;
 }
 
 /**
@@ -335,42 +358,38 @@ export function updateBailey(state, playerKey, inputs) {
   if (newPlayer.row >= 0 && newPlayer.row < NUM_ROWS) {
     const row = state.blockRows[newPlayer.row];
     const onBlock = findBlockUnder(newPlayer.x, row);
-    if (!onBlock) {
-      // Fell off block — fall in water
-      newPlayer.state = BAILEY_STATE.FALLING;
-      events |= EVENT.SPLASH;
-    }
+    // Walked or drifted off the block: into the water.
+    if (!onBlock) return fallInWater(state, playerKey, newPlayer, events);
   }
 
   // Initiate jump
-  if (inputs.up && newPlayer.state !== BAILEY_STATE.JUMPING) {
-    const targetRow = newPlayer.row === -1 ? 0 : newPlayer.row - 1;
-    if (targetRow >= -1) {
-      newPlayer.state = BAILEY_STATE.JUMPING;
-      newPlayer.jumpFromRow = newPlayer.row;
-      newPlayer.jumpToRow = targetRow;
-      newPlayer.jumpProgress = 0;
-      events |= EVENT.JUMP;
-    }
-  } else if (inputs.down && newPlayer.state !== BAILEY_STATE.JUMPING) {
-    const targetRow = newPlayer.row + 1;
-    if (targetRow < NUM_ROWS) {
-      newPlayer.state = BAILEY_STATE.JUMPING;
-      newPlayer.jumpFromRow = newPlayer.row;
-      newPlayer.jumpToRow = targetRow;
-      newPlayer.jumpProgress = 0;
-      events |= EVENT.JUMP;
-    } else if (newPlayer.row === -1) {
-      // From shore, jump down to row 0
-      newPlayer.state = BAILEY_STATE.JUMPING;
-      newPlayer.jumpFromRow = -1;
-      newPlayer.jumpToRow = 0;
-      newPlayer.jumpProgress = 0;
-      events |= EVENT.JUMP;
-    }
+  const targetRow =
+    newPlayer.state === BAILEY_STATE.JUMPING ? null : jumpTarget(newPlayer.row, inputs);
+  if (targetRow !== null) {
+    newPlayer.state = BAILEY_STATE.JUMPING;
+    newPlayer.jumpFromRow = newPlayer.row;
+    newPlayer.jumpToRow = targetRow;
+    newPlayer.jumpProgress = 0;
+    events |= EVENT.JUMP;
   }
 
   return { ...state, [playerKey]: newPlayer, events };
+}
+
+/**
+ * The row a jump from `row` lands on: up a row (from the shore, onto row 0),
+ * or down one while there is a row below; null for no jump.
+ * @param {number} row
+ * @param {{ up?: boolean, down?: boolean }} inputs
+ * @returns {number|null}
+ */
+function jumpTarget(row, inputs) {
+  if (inputs.up) {
+    const up = row === -1 ? 0 : row - 1;
+    return up >= -1 ? up : null;
+  }
+  if (inputs.down) return row + 1 < NUM_ROWS ? row + 1 : null;
+  return null;
 }
 
 function updateJump(state, playerKey) {
@@ -407,16 +426,28 @@ function updateJump(state, playerKey) {
         block.index,
       );
     } else {
-      // Missed the block — fall in water!
-      newPlayer.state = BAILEY_STATE.FALLING;
-      events |= EVENT.SPLASH;
-      return { ...state, [playerKey]: newPlayer, events };
+      // Missed the block: into the water.
+      return fallInWater(state, playerKey, newPlayer, events);
     }
   }
 
   return {
     ...state,
     [playerKey]: { ...player, jumpProgress: progress },
+  };
+}
+
+/**
+ * A bailey in the water: it costs a life and the bailey comes back on the
+ * shore after the respawn delay, as when an enemy catches it.
+ */
+function fallInWater(state, playerKey, player, events) {
+  const respawnKey = playerKey === "p1" ? "p1RespawnTimer" : "p2RespawnTimer";
+  return {
+    ...state,
+    [playerKey]: { ...player, state: BAILEY_STATE.FALLING, lives: player.lives - 1 },
+    [respawnKey]: RESPAWN_DELAY,
+    events: events | EVENT.SPLASH,
   };
 }
 
@@ -578,11 +609,7 @@ function updateBear(bear) {
 function updateCrab(crab, state) {
   // Crabs move with the block row
   const row = state.blockRows[crab.row];
-  const preset =
-    state.mode === GAME_MODE.BLIZZARD
-      ? ROUND_PRESETS[4]
-      : ROUND_PRESETS[Math.min(state.round - 1, ROUND_PRESETS.length - 1)];
-  let x = crab.x + row.direction * preset.blockSpeed + crab.state * 0.3;
+  let x = crab.x + row.direction * getBlockSpeed(state) + crab.state * 0.3;
   // Wrap
   if (x < -CRAB_W) x = CANVAS_W + CRAB_W;
   if (x > CANVAS_W + CRAB_W) x = -CRAB_W;
@@ -715,10 +742,7 @@ export function checkEnemyCollisions(state, playerKey) {
  * Spawn fish periodically.
  */
 export function spawnFish(state) {
-  const preset =
-    state.mode === GAME_MODE.BLIZZARD
-      ? ROUND_PRESETS[4]
-      : ROUND_PRESETS[Math.min(state.round - 1, ROUND_PRESETS.length - 1)];
+  const preset = roundPreset(state.mode, state.round);
 
   const timer = state.fishSpawnTimer + 1;
   if (timer < preset.fishRate || state.fish.length >= 4) {
@@ -830,7 +854,14 @@ export function handleRespawns(state) {
       newState[timerKey] > 0
     ) {
       const timer = newState[timerKey] - 1;
-      if (timer <= 0) {
+      if (timer <= 0 && player.lives <= 0) {
+        // Out of lives: out of the round.
+        newState = {
+          ...newState,
+          [key]: { ...player, state: BAILEY_STATE.DEAD },
+          [timerKey]: 0,
+        };
+      } else if (timer <= 0) {
         // Respawn on shore
         newState = {
           ...newState,
@@ -907,8 +938,8 @@ export function checkRoundEnd(state) {
     };
   }
 
-  // Temperature reached 0
-  if (state.temperature <= 0) {
+  // Temperature reached 0, or both players are out of lives
+  if (state.temperature <= 0 || (state.p1.lives <= 0 && state.p2.lives <= 0)) {
     // Player with more igloo pieces wins the round
     let winner = 0;
     if (state.p1.iglooPieces > state.p2.iglooPieces) winner = 1;
@@ -924,11 +955,6 @@ export function checkRoundEnd(state) {
       };
     }
     return result;
-  }
-
-  // Both players out of lives
-  if (state.p1.lives <= 0 && state.p2.lives <= 0) {
-    return { ...state, phase: PHASE.ROUND_END, roundWinner: 0 };
   }
 
   return state;
@@ -1016,6 +1042,35 @@ export function updateFlashTimers(state) {
     p1IglooFlash: Math.max(0, state.p1IglooFlash - 1),
     p2IglooFlash: Math.max(0, state.p2IglooFlash - 1),
   };
+}
+
+// ── One building frame ─────────────────────────────────────────
+
+/**
+ * One frame of the building phase: the ice drifts, both baileys move on
+ * their inputs, enemies and fish move, hits, respawns, the cold and the
+ * igloos are settled, and the round ends if it is over. The returned
+ * state's events say what happened; its phase says whether the round or the
+ * match ended.
+ * @param {object} state
+ * @param {{left?: boolean, right?: boolean, up?: boolean, down?: boolean}} p1Inputs
+ * @param {{left?: boolean, right?: boolean, up?: boolean, down?: boolean}} p2Inputs
+ * @returns {object}
+ */
+export function stepTick(state, p1Inputs, p2Inputs) {
+  let next = updateBlocks({ ...state, events: 0 });
+  next = updateBailey(next, "p1", p1Inputs);
+  next = updateBailey(next, "p2", p2Inputs);
+  next = updateEnemies(next);
+  next = spawnFish(next);
+  next = updateFish(next);
+  next = checkEnemyCollisions(next, "p1");
+  next = checkEnemyCollisions(next, "p2");
+  next = handleRespawns(next);
+  next = updateTemperature(next);
+  next = checkIglooEntry(next);
+  next = checkRoundEnd(next);
+  return updateFlashTimers(next);
 }
 
 // ── Pack / unpack (nested ↔ flat for protocol) ─────────────────

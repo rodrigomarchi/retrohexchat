@@ -8,89 +8,46 @@
  * @module games/breakout
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROW_KEYS, defineGame } from "../core/define_game.js";
 import { guestEnd } from "../core/result.js";
 import { createBreakoutAI, normalizeBreakoutAIDifficulty } from "./ai.js";
 import {
-  BALL_SIZE,
-  checkBlockCollision,
-  checkLifeLost,
-  checkPaddleCollision,
-  checkWallBounce,
-  checkWin,
   createBlockParticles,
   createInitialState,
-  serveBall,
-  updateBall,
-  updatePaddle,
+  // ex_dna:disable-for-lines:17 this game's own imports
+  serveAfter,
+  stepTick,
   updateParticles,
 } from "./physics.js";
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
-import { countdownState } from "../core/rounds.js";
+import {
+  countdownToServe,
+  endTick,
+  playTick,
+  playingState,
+  releaseOnStop,
+  servingState,
+} from "../core/paddle_flow.js";
 
-const SERVE_DELAY_TICKS = 48; // 0.8 s
-// ex_dna:disable-for-lines:25 this game's own defineGame definition
 const LIFE_LOST_PAUSE_TICKS = 90; // 1.5 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 /** One simulation step on the host. */
 function step(game) {
-  game.updateOpponent();
-  let s = game.gameState;
-
-  s = updatePaddle(s, 1, game.localInputs);
-  s = updatePaddle(s, 2, game.remoteInputs);
-  s = updateBall(s);
-  s = checkWallBounce(s);
-  if (s.wallBounced) {
-    game.audio.playWallBounce();
-    s.wallBounced = false;
-  }
-
-  s = checkPaddleCollision(s);
-  if (s.paddleHit) {
-    game.audio.playPaddleHit();
-    s.paddleHit = false;
-  }
-
-  s = checkBlockCollision(s);
-  if (s.blockHit) {
+  const { state: s, events } = playTick(game, stepTick);
+  if (events.blockHit) {
     game.audio.playBlockHit(s.hitBlockRow);
     s.particles = [
       ...(s.particles || []),
       ...createBlockParticles(s.hitBlockX, s.hitBlockY, s.hitBlockColor, game.fxRandom),
     ];
-    s.blockHit = false;
   }
-
-  s = checkLifeLost(s);
-  if (s.lifeLost) {
+  if (events.exitSide) {
     game.audio.playLifeLost();
-    game.lastExitSide = s.ballY <= 0 + BALL_SIZE / 2 ? "top" : "bottom";
-    // ex_dna:disable-for-lines:13 this game's own defineGame definition
-    s.lifeLost = false;
+    game.lastExitSide = events.exitSide;
   }
-
-  s = checkWin(s);
-  if (s.particles && s.particles.length > 0) s.particles = updateParticles(s.particles);
-
-  game.gameState = s;
-  game.invalidate();
-  game.frameCount++;
-  game.broadcast();
-}
-
-/** The ball goes back toward the side it left by, or either way the first time. */
-function serve(game) {
-  let direction;
-  if (game.lastExitSide === "bottom") direction = -1;
-  else if (game.lastExitSide === "top") direction = 1;
-  else direction = game.random() < 0.5 ? 1 : -1;
-  game.gameState = serveBall(game.gameState, direction, game.random);
-  game.broadcast();
+  endTick(game, s, updateParticles);
 }
 
 function applySnapshot(game, decoded) {
@@ -115,10 +72,24 @@ function applySnapshot(game, decoded) {
   }
 }
 
+/** Each difficulty the player picks, and the partner that gives it. */
+const PARTNER_FOR = Object.freeze({ easy: "hard", normal: "normal", hard: "easy" });
+
+/**
+ * The AI here plays beside the player, not against them, so the difficulty
+ * the player picks names how hard their game is: an easy game gets the
+ * strongest partner, a hard game the weakest.
+ * @param {unknown} chosen - the difficulty the player picked
+ * @returns {"easy"|"normal"|"hard"} the AI's own difficulty
+ */
+export function partnerDifficulty(chosen) {
+  return PARTNER_FOR[normalizeBreakoutAIDifficulty(chosen)];
+}
+
 export default defineGame({
   inputs: {
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
   },
   captureKeys: [
     "ArrowLeft",
@@ -136,9 +107,7 @@ export default defineGame({
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
     create: createBreakoutAI,
-    // ex_dna:disable-for-lines:7 this game's own defineGame definition
-    difficulty: normalizeBreakoutAIDifficulty,
-    observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
+    difficulty: partnerDifficulty,
   },
   audio: { sounds: SOUNDS },
   theme: getColors,
@@ -146,40 +115,23 @@ export default defineGame({
   setup: (game) => {
     game.lastExitSide = null;
   },
-  onStop: (game) => {
-    game.localInputs = { left: false, right: false };
-    game.remoteInputs = { left: false, right: false };
-    game.peerReady = false;
-  },
+  onStop: releaseOnStop({ left: false, right: false }),
 
   flow: {
     phases: PHASE,
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: countdownState({
-        from: COUNTDOWN_FROM,
-        every: COUNTDOWN_EVERY_TICKS,
-        next: "SERVING",
-        capture: true,
-      }),
-      SERVING: {
-        enter: (game) => {
+      COUNTDOWN: countdownToServe({ capture: true }),
+      SERVING: servingState({
+        prepare: (game) => {
           game.gameState.countdown = 0;
           game.setKeyboardCaptured(true);
-          game.broadcast();
-          game.invalidate();
         },
-        after: { ticks: SERVE_DELAY_TICKS },
-        then: serve,
-        next: "PLAYING",
-      },
-      PLAYING: {
-        enter: (game) => {
-          game.frameCount = 0;
-        },
-        tick: step,
-      },
+        // The ball goes back toward the side it left by, or either way the first time.
+        serve: (game) => serveAfter(game.gameState, game.lastExitSide, game.random),
+      }),
+      PLAYING: playingState(step),
       // A lost life holds the board still a moment, then serves as at the start.
       LIFE_LOST: { after: { ticks: LIFE_LOST_PAUSE_TICKS }, next: "SERVING" },
       FINISHED: {

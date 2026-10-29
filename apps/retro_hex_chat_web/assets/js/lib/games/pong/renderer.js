@@ -7,17 +7,8 @@
 import { PHASE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, PADDLE_W, PADDLE_H, PADDLE_MARGIN, BALL_SIZE } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import {
-  drawBackground,
-  drawCountdown,
-  drawDigit,
-  drawGetReady,
-  drawGlitchBanner,
-  drawGrid,
-  drawScanlines,
-  drawVignette,
-  drawWaiting,
-} from "../core/render.js";
+import { drawDigit, drawGlitchBanner, drawSquareParticles } from "../core/render.js";
+import { drawArena, drawGlass, drawStartOverlay } from "../core/paddle_render.js";
 import { drawNeonBall, drawNeonPaddle } from "../core/neon.js";
 
 export { neonColors as getColors } from "../core/neon.js";
@@ -32,8 +23,7 @@ export { neonColors as getColors } from "../core/neon.js";
  * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
  */
 export function render(ctx, state, colors, time, options = {}) {
-  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
-  drawGrid(ctx, colors, CANVAS_W, CANVAS_H, { alpha: 0.3 });
+  drawArena(ctx, colors, CANVAS_W, CANVAS_H, 0.3);
   drawCenterLine(ctx, colors, time);
 
   if (state.particles && state.particles.length > 0) {
@@ -54,21 +44,17 @@ export function render(ctx, state, colors, time, options = {}) {
     drawNeonBall(ctx, state, BALL_SIZE, colors.fg, time);
   }
 
-  // ex_dna:disable-for-lines:8 this game's own drawing
   drawScore(ctx, state.score1, state.score2, colors);
 
-  if (state.phase === PHASE.COUNTDOWN) {
-    drawCountdown(ctx, state.countdown, colors, time, CANVAS_W, CANVAS_H);
-  } else if (state.phase === PHASE.SERVING) {
-    drawGetReady(ctx, colors, time, CANVAS_W, CANVAS_H);
-  } else if (state.phase === PHASE.WAITING) {
-    drawWaiting(ctx, colors, time, CANVAS_W, CANVAS_H, { solo: options.mode === "solo" });
-  } else if (state.phase === PHASE.FINISHED) {
+  const screen = { width: CANVAS_W, height: CANVAS_H, waiting: { solo: options.mode === "solo" } };
+  if (
+    !drawStartOverlay(ctx, state, colors, time, PHASE, screen) &&
+    state.phase === PHASE.FINISHED
+  ) {
     drawWinner(ctx, state.winner, colors, time);
   }
 
-  drawScanlines(ctx, CANVAS_W, CANVAS_H);
-  drawVignette(ctx, CANVAS_W, CANVAS_H);
+  drawGlass(ctx, CANVAS_W, CANVAS_H);
 }
 
 /**
@@ -159,10 +145,9 @@ export function drawWinner(ctx, winner, colors, time) {
  * Draw score celebration particles.
  */
 export function drawParticles(ctx, particles, colors) {
-  for (const p of particles) {
-    ctx.globalAlpha = p.life;
-    ctx.fillStyle = p.life > 0.5 ? colors.warning : colors.fg;
-    ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
-  }
-  ctx.globalAlpha = 1.0;
+  drawSquareParticles(ctx, particles, (p) => ({
+    alpha: p.life,
+    color: p.life > 0.5 ? colors.warning : colors.fg,
+    size: 4,
+  }));
 }

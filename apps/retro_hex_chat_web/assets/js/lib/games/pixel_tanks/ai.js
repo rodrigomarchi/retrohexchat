@@ -15,9 +15,10 @@ import {
   WALL_SIZE,
 } from "./physics.js";
 import {
-  aiRequest,
-  aiRng,
+  TableAI,
   clamp,
+  createCommitment,
+  createPerThing,
   normalizeAngle,
   normalizeDifficulty,
   rotationDelta,
@@ -32,45 +33,56 @@ const NEUTRAL_INPUTS = Object.freeze({
   fire: false,
 });
 
+// aimErrorAngle: the most a shot is off, drawn once per shot and kept until
+// it is fired. aimTolerance and turnDeadzone never loosen with difficulty.
+// fireChance: the odds an opening is taken; a passed one waits out the
+// cooldown. dodgeChance: the odds a shell is dodged at all, decided once per
+// shell, and only once the shell is reactionFrames old.
 export const PIXEL_TANKS_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
     decisionInterval: 10,
-    targetErrorAngle: 0.22,
-    turnDeadzone: 0.16,
+    aimErrorAngle: 0.12,
+    turnDeadzone: 0.03,
     moveAngle: 0.72,
-    aimTolerance: 0.09,
+    aimTolerance: 0.04,
     standoffDistance: 190,
     fireMaxDistance: 560,
-    fireCooldownFrames: 54,
-    fireChance: 0.45,
+    fireCooldownFrames: 50,
+    fireChance: 0.85,
+    dodgeChance: 0.2,
+    reactionFrames: 24,
     threatFrames: 24,
     threatRadius: 140,
     threatMargin: 18,
   }),
   normal: Object.freeze({
     decisionInterval: 5,
-    targetErrorAngle: 0.1,
-    turnDeadzone: 0.1,
+    aimErrorAngle: 0.115,
+    turnDeadzone: 0.03,
     moveAngle: 0.94,
-    aimTolerance: 0.14,
+    aimTolerance: 0.035,
     standoffDistance: 150,
     fireMaxDistance: 610,
-    fireCooldownFrames: 34,
-    fireChance: 0.74,
+    fireCooldownFrames: 50,
+    fireChance: 0.85,
+    dodgeChance: 0.2,
+    reactionFrames: 18,
     threatFrames: 38,
     threatRadius: 185,
     threatMargin: 28,
   }),
   hard: Object.freeze({
     decisionInterval: 2,
-    targetErrorAngle: 0.035,
-    turnDeadzone: 0.06,
+    aimErrorAngle: 0.09,
+    turnDeadzone: 0.03,
     moveAngle: 1.15,
-    aimTolerance: 0.21,
+    aimTolerance: 0.03,
     standoffDistance: 120,
     fireMaxDistance: 680,
-    fireCooldownFrames: 18,
+    fireCooldownFrames: 46,
     fireChance: 1,
+    dodgeChance: 0.3,
+    reactionFrames: 12,
     threatFrames: 58,
     threatRadius: 230,
     threatMargin: 38,
@@ -95,26 +107,30 @@ export function createPixelTanksAI(options = {}) {
   return new PixelTanksAI(options);
 }
 
-export class PixelTanksAI {
+export class PixelTanksAI extends TableAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizePixelTanksAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
+    super(options, normalizePixelTanksAIDifficulty, PIXEL_TANKS_AI_DIFFICULTIES);
     this.fireCooldown = 0;
+    this.shot = 0;
     this._target = null;
+    this._aim = createCommitment();
+    this._shells = createPerThing();
   }
 
   /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
+   * A new round or match: no target held, no shell under watch, and the next
+   * shot draws a fresh aim.
    * @returns {void}
    */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizePixelTanksAIDifficulty(difficulty);
+  forget() {
+    this._target = null;
+    this._shells.reset();
+    this._aim.reset();
   }
 
   /**
@@ -125,15 +141,15 @@ export class PixelTanksAI {
    * @param {1|2} [request.player]
    * @returns {{rotateLeft: boolean, rotateRight: boolean, forward: boolean, fire: boolean}}
    */
-  // ex_dna:disable-for-lines:7 this AI's own turn: its cooldowns and the phase it plays in
+  // ex_dna:disable-for-lines:6 this AI's own turn: its cooldowns and the phase it plays in
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
-
-    this.frame++;
+    const { state, player } = this.startTurn(request);
     if (this.fireCooldown > 0) this.fireCooldown--;
 
-    if (!state || state.phase !== PHASE.PLAYING || state.respawnPause > 0) {
-      this._target = null;
+    if (!state || state.phase !== PHASE.PLAYING) return NEUTRAL_INPUTS;
+    // The tanks hold still after a hit and start over from their spawns.
+    if (state.respawnPause > 0) {
+      this.forget();
       return NEUTRAL_INPUTS;
     }
 
@@ -141,22 +157,47 @@ export class PixelTanksAI {
     const opponent = tankState(state, player === 1 ? 2 : 1);
     if (!isLiveTank(actor) || !isLiveTank(opponent)) return NEUTRAL_INPUTS;
 
-    const difficulty = normalizePixelTanksAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-    const config = PIXEL_TANKS_AI_DIFFICULTIES[difficulty];
+    const config = this.rowFor(request);
 
     if (this.frame % config.decisionInterval === 0 || !this._target) {
-      const target = chooseTankTarget(state, player, request.walls, config);
-      this._target = applyAngleError(target, config.targetErrorAngle, this.rng);
+      const seen = this._noticedShells(state, player, config);
+      const target = chooseTankTarget(seen, player, request.walls, config);
+      const error = this._aim.hold(this.shot, () => (this.rng() * 2 - 1) * config.aimErrorAngle);
+      this._target = target.kind === "attack" ? applyAngleError(target, error) : target;
     }
 
     const movement = tankMovementInputs(actor.rotation, this._target, config);
-    const fire = shouldFire(state, player, this._target, config, this.fireCooldown, this.rng, {
+    const open = shouldFire(state, player, this._target, config, this.fireCooldown, null, {
       walls: request.walls,
     });
-    if (fire) this.fireCooldown = config.fireCooldownFrames;
+    if (!open) return { ...movement, fire: false };
 
-    return { ...movement, fire };
+    // One roll per opening; a passed one waits out the cooldown like a shot.
+    this.fireCooldown = config.fireCooldownFrames;
+    this.shot++;
+    this._target = null;
+    return { ...movement, fire: this.rng() < config.fireChance };
+  }
+
+  /**
+   * The state as this AI sees it: the rival's shell is there only once it is
+   * reactionFrames old, and only if this AI is to dodge it — decided once
+   * per shell.
+   */
+  _noticedShells(state, player, config) {
+    const prefix = player === 1 ? "m2" : "m1";
+    if (!state[`${prefix}Active`]) {
+      this._shells.keep([]);
+      return state;
+    }
+
+    const age = state[`${prefix}Age`] || 0;
+    const shell = this.frame - age;
+    this._shells.keep([shell]);
+    const dodges = this._shells.decide(shell, () => this.rng() < config.dodgeChance);
+    return dodges && age >= config.reactionFrames
+      ? state
+      : { ...state, [`${prefix}Active`]: false };
   }
 }
 
@@ -434,12 +475,9 @@ function movementRayClear(actor, angle, walls) {
   return !cellBlocked(row, col, walls);
 }
 
-function applyAngleError(target, amount, rng) {
-  if (!target || !amount) return target;
-  return {
-    ...target,
-    angle: normalizeAngle(target.angle + (rng() * 2 - 1) * amount),
-  };
+function applyAngleError(target, error) {
+  if (!target || !error) return target;
+  return { ...target, angle: normalizeAngle(target.angle + error) };
 }
 
 function tankState(state, player) {

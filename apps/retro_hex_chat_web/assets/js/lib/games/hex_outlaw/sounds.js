@@ -3,7 +3,7 @@
  * @module games/hex_outlaw/sounds
  */
 
-import { blip, fade, notes, sweep } from "../core/synth.js";
+import { LOSE_SWEEP, blip, fade, notes, sweep } from "../core/synth.js";
 
 export const SOUNDS = {
   /** A bang: a burst of noise that dies away, over a low thud. */
@@ -27,5 +27,5 @@ export const SOUNDS = {
   /** A harmonica arpeggio: D4-F♯4-A4-D5. */
   win: notes([294, 370, 440, 587], { wave: "triangle", note: 0.15, vol: 0.1 }),
   /** Falling 500 → 150 Hz sawtooth, 700 ms. */
-  lose: sweep("sawtooth", 500, 150, 0.7, 0.1),
+  lose: LOSE_SWEEP,
 };

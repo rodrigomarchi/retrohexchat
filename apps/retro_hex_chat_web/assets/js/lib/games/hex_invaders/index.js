@@ -11,31 +11,12 @@
  * @module games/hex_invaders
  */
 
-import { defineGame } from "../core/define_game.js";
-import { drawOnDisconnect } from "../core/result.js";
+import { ARROW_KEYS, defineGame, seededInit } from "../core/define_game.js";
+import { beepCountdownState } from "../core/rounds.js";
+import { drawOnDisconnect, finishScored } from "../core/result.js";
 import { createHexInvadersAI, normalizeInvadersAIDifficulty } from "./ai.js";
-import {
-  checkAlienReachedGround,
-  checkBombCannonHits,
-  checkBombShieldHits,
-  checkGameOver,
-  checkMissileAlienHits,
-  checkMissileUFOHit,
-  checkWaveClear,
-  clearEvents,
-  createInitialState,
-  createWave,
-  fireMissile,
-  moveAliens,
-  moveCannon,
-  processDropQueue,
-  spawnBombs,
-  tickTimers,
-  updateBombs,
-  updateCombos,
-  updateMissiles,
-  updateUFO,
-} from "./physics.js";
+// ex_dna:disable-for-lines:7 this game's own imports
+import { coopSurvived, createInitialState, createWave, stepTick } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
@@ -48,8 +29,6 @@ const MODE_MAP = {
 
 const WAVE_CLEAR_TICKS = 120; // 2 s
 const WAVE_START_TICKS = 60; // 1 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 /** The sounds of a step's events, in the order they are heard. */
 export function playEvents(audio, events) {
@@ -65,66 +44,33 @@ export function playEvents(audio, events) {
 }
 
 /**
- * The wave in play. Returns `false` when the step ends here: the match's
- * end reports itself on entering FINISHED, and a cleared wave announces
- * itself at once.
+ * The wave in play: the frame's simulation, then what the engine makes of
+ * it. Returns `false` when the step ends here: the match's end reports itself
+ * on entering FINISHED, and a cleared wave announces itself at once.
  */
 function battle(game) {
-  const prev = game.gameState;
-  let s = clearEvents(prev);
-  const local = game.localInputs;
-  const remote = game.remoteInputs;
-  if (local.left) s = moveCannon(s, 1, -1);
-  if (local.right) s = moveCannon(s, 1, 1);
-  if (remote.left) s = moveCannon(s, 2, -1);
-  if (remote.right) s = moveCannon(s, 2, 1);
+  const step = stepTick(game.gameState, game.localInputs, game.remoteInputs, {
+    local: game.localFirePressed,
+    remote: game.remoteFirePressed,
+  });
+  game.localFirePressed = step.held.local;
+  game.remoteFirePressed = step.held.remote;
+  if (step.fired.local) game.audio.playFire();
+  if (step.fired.remote) game.audio.playFire();
+  if (step.marched) game.audio.playMarch();
+  playEvents(game.audio, step.state.events);
+  game.gameState = step.state;
 
-  // A missile goes on the press, not while the key is held.
-  if (local.fire && !game.localFirePressed) {
-    s = fireMissile(s, 1);
-    game.audio.playFire();
-  }
-  game.localFirePressed = local.fire;
-  if (remote.fire && !game.remoteFirePressed) {
-    s = fireMissile(s, 2);
-    game.audio.playFire();
-  }
-  game.remoteFirePressed = remote.fire;
-
-  s = moveAliens(s, 1);
-  if (s.mode !== GAME_MODE.COOP) s = moveAliens(s, 2);
-  if (s.alien1MoveTimer > prev.alien1MoveTimer + 5) game.audio.playMarch();
-
-  s = spawnBombs(s);
-  s = updateMissiles(s);
-  s = updateBombs(s);
-  s = updateUFO(s);
-  s = checkMissileAlienHits(s);
-  s = checkMissileUFOHit(s);
-  s = checkBombShieldHits(s);
-  s = checkBombCannonHits(s);
-  s = checkAlienReachedGround(s);
-  s = processDropQueue(s);
-  s = updateCombos(s);
-  playEvents(game.audio, s.events);
-
-  const over = checkGameOver(s);
-  if (over.ended) {
-    s.phase = PHASE.FINISHED;
-    game.endResult = over;
-    game.gameState = s;
+  if (step.over.ended) {
+    game.endResult = step.over;
     return false;
   }
-  if (checkWaveClear(s)) {
-    s.phase = PHASE.WAVE_CLEAR;
-    s.events.waveCleared = true;
+  if (step.state.phase === PHASE.WAVE_CLEAR) {
     game.audio.playWaveClear();
-    game.gameState = s;
     game.broadcast();
     game.invalidate();
     return false;
   }
-  game.gameState = tickTimers(s);
   return true;
 }
 
@@ -154,7 +100,10 @@ function nextWave(game) {
  * Co-op is won or lost together, and its result names no winner.
  */
 function playEnd(game, winner) {
-  const won = game.gameState.mode === GAME_MODE.COOP ? winner > 0 : game.outcome(winner) === "win";
+  const won =
+    game.gameState.mode === GAME_MODE.COOP
+      ? coopSurvived(game.gameState)
+      : game.outcome(winner) === "win";
   if (won) game.audio.playVictory();
   else game.audio.playInvaded();
 }
@@ -173,8 +122,8 @@ export function applySnapshot(game, decoded) {
 
 export default defineGame({
   inputs: {
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
     fire: [" ", "Spacebar"],
   },
   captureKeys: ["ArrowLeft", "ArrowRight", " ", "Spacebar", "a", "A", "d", "D"],
@@ -183,11 +132,7 @@ export default defineGame({
   audio: { sounds: SOUNDS },
   theme: getColors,
   // The game id picks the mode; only the host seeds the waves.
-  init: (game) => {
-    game.gameMode = MODE_MAP[game.gameId] ?? GAME_MODE.INVASION_WAR;
-    game.seed = game.isHost ? (game.random() * 0xffffffff) >>> 0 : 0;
-    return createInitialState(game.gameMode, game.seed);
-  },
+  init: seededInit(MODE_MAP, GAME_MODE.INVASION_WAR, createInitialState),
   setup: (game) => {
     game.localFirePressed = false;
     game.remoteFirePressed = false;
@@ -204,29 +149,15 @@ export default defineGame({
     begin: "COUNTDOWN",
     states: {
       // The beep sounds on each second that passes; the last one brings the first wave.
-      // ex_dna:disable-for-lines:11 this game's own defineGame definition
-      COUNTDOWN: {
-        enter: (game) => {
-          game.gameState.countdown = COUNTDOWN_FROM;
-          game.broadcast();
-          game.invalidate();
-        },
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          game.audio.playCountdown();
-          if (remaining === 0) {
-            game.gameState = createWave(game.gameState, 1);
-            game.gameState.phase = PHASE.PLAYING;
-            game.broadcast();
-            game.frameCount = 0;
-            return;
-          }
-          game.gameState.countdown = remaining;
-          game.broadcast();
-          game.invalidate();
-        },
+      COUNTDOWN: beepCountdownState({
         next: "PLAYING",
-      },
+        start: (game) => {
+          game.gameState = createWave(game.gameState, 1);
+          game.gameState.phase = PHASE.PLAYING;
+          game.broadcast();
+          game.frameCount = 0;
+        },
+      }),
       PLAYING: { tick: step },
       WAVE_CLEAR: {
         tick: step,
@@ -246,13 +177,8 @@ export default defineGame({
           const { winner } = game.endResult;
           game.broadcast();
           game.invalidate();
-          // ex_dna:disable-for-lines:13 this game's own defineGame definition
           playEnd(game, winner);
-          game.finish({
-            end: { score1, score2, winner },
-            result: { score: { p1: score1, p2: score2 }, winner },
-            broadcast: false,
-          });
+          finishScored(game, score1, score2, winner, { broadcast: false });
         },
       },
     },

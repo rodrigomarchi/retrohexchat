@@ -24,6 +24,8 @@ export const JET_RADIUS = 6;
 export const JET_LATERAL_SPEED = 3.0;
 export const INITIAL_LIVES = 3;
 export const INITIAL_FUEL = 255;
+/** The height both jets fly at, from the start and after every respawn. */
+export const JET_Y = CANVAS_H - 60;
 
 // Speed levels (pixels per frame of scroll)
 export const SPEED_MIN = 1;
@@ -38,6 +40,10 @@ export const MISSILE_RADIUS = 3;
 // --- Mine ---
 export const MINE_RADIUS = 5;
 export const MAX_MINES_PER_PLAYER = 2;
+/** How far ahead of its jet a mine is dropped. */
+export const MINE_AHEAD = 60;
+/** A mine drifts down at this share of the river's speed. */
+export const MINE_DRIFT = 0.5;
 export const MINE_COOLDOWN_DUEL = 300; // 5s at 60fps
 export const MINE_COOLDOWN_BLITZ = 180; // 3s at 60fps
 
@@ -203,6 +209,8 @@ export function spawnEntities(state) {
       const vx = (rng() > 0.5 ? 1 : -1) * speed;
 
       newEnemies.push({
+        // Unique: spawn rows are at least ENEMY_SPAWN_MIN apart, three to a row at most.
+        id: Math.floor(s.nextEnemySpawnDist) * 4 + i,
         type,
         x,
         y: -15 - i * 20, // stagger slightly above screen
@@ -227,7 +235,8 @@ export function spawnEntities(state) {
     const margin = 30;
     const x = bank.leftX + margin + rng() * Math.max(bank.rightX - bank.leftX - margin * 2, 40);
 
-    const newFuels = [...s.fuels.filter((f) => f.available), { x, y: -10, available: true }];
+    const station = { id: Math.floor(s.nextFuelSpawnDist), x, y: -10, available: true };
+    const newFuels = [...s.fuels.filter((f) => f.available), station];
     s = {
       ...s,
       fuels: newFuels,
@@ -260,6 +269,21 @@ export function getMineCooldown(mode) {
   return mode === GAME_MODE.BLITZ ? MINE_COOLDOWN_BLITZ : MINE_COOLDOWN_DUEL;
 }
 
+/** A step's events before anything has happened in it (host only). */
+const NO_EVENTS = Object.freeze({
+  enemyKill: 0, // players who killed: bit 1 for P1, bit 2 for P2
+  enemyKillType: 0,
+  fuelCapture: 0, // players who refuelled, as bits like enemyKill
+  fuelDestroyed: false,
+  bridgeHit: false,
+  bridgeDestroyed: 0, // players who destroyed it, as bits like enemyKill
+  mineDeployed: 0,
+  mineHit: 0, // player who got hit
+  death: 0, // players who died: bit 1 for P1, bit 2 for P2
+  fuelEmpty: 0, // players whose fuel ran out, as bits like death
+  killSteal: false,
+});
+
 /**
  * Create initial game state.
  * @param {number} mode - GAME_MODE enum
@@ -270,7 +294,7 @@ export function createInitialState(mode, seed) {
   return {
     // Jet 1 (host/P1)
     jet1X: CANVAS_W / 2 - 30,
-    jet1Y: CANVAS_H - 60,
+    jet1Y: JET_Y,
     jet1Speed: SPEED_BASE,
     jet1Fuel: INITIAL_FUEL,
     jet1Lives: INITIAL_LIVES,
@@ -284,7 +308,7 @@ export function createInitialState(mode, seed) {
 
     // Jet 2 (peer/P2)
     jet2X: CANVAS_W / 2 + 30,
-    jet2Y: CANVAS_H - 60,
+    jet2Y: JET_Y,
     jet2Speed: SPEED_BASE,
     jet2Fuel: INITIAL_FUEL,
     jet2Lives: INITIAL_LIVES,
@@ -331,21 +355,10 @@ export function createInitialState(mode, seed) {
     nextEnemySpawnDist: INITIAL_SAFE_ZONE,
     nextFuelSpawnDist: INITIAL_SAFE_ZONE + 200,
     nextBridgeSpawnDist: BRIDGE_SPAWN_INTERVAL,
+    nextMineId: 1,
 
     // Event flags (host only, cleared each frame)
-    events: {
-      enemyKill: 0, // player who killed: 0=none, 1=P1, 2=P2
-      enemyKillType: 0,
-      fuelCapture: 0,
-      fuelDestroyed: false,
-      bridgeHit: false,
-      bridgeDestroyed: 0, // player who destroyed: 0=none
-      mineDeployed: 0,
-      mineHit: 0, // player who got hit
-      death: 0, // player who died
-      fuelEmpty: 0, // player whose fuel ran out
-      killSteal: false,
-    },
+    events: { ...NO_EVENTS },
   };
 }
 
@@ -435,7 +448,9 @@ export function updateMissiles(state) {
 // --- Mines ---
 
 /**
- * Deploy a mine at a jet's position.
+ * Drop a mine `MINE_AHEAD` in front of a jet. It drifts down slower than the
+ * river, into the line both jets fly on, and blows up the rival jet that
+ * meets it there.
  * @param {object} state
  * @param {number} player - 1 or 2
  * @returns {object}
@@ -453,8 +468,9 @@ export function deployMine(state, player) {
   if (playerMines.length >= MAX_MINES_PER_PLAYER) return state;
 
   const mine = {
+    id: state.nextMineId,
     x: state[`${jetPrefix}X`],
-    y: state[`${jetPrefix}Y`] + 20,
+    y: state[`${jetPrefix}Y`] - MINE_AHEAD,
     owner: player,
     active: true,
   };
@@ -465,13 +481,14 @@ export function deployMine(state, player) {
     ...state,
     mines: [...state.mines, mine],
     mineCount: state.mineCount + 1,
+    nextMineId: state.nextMineId + 1,
     [cdKey]: cooldown,
     events: { ...state.events, mineDeployed: player },
   };
 }
 
 /**
- * Update mines (drift downward with scroll).
+ * Update mines (drift downward at `MINE_DRIFT` of the scroll).
  * @param {object} state
  * @param {number} scrollDelta - how much scroll moved this frame
  * @returns {object}
@@ -480,7 +497,7 @@ export function updateMines(state, scrollDelta) {
   if (state.mines.length === 0) return state;
 
   const mines = state.mines
-    .map((m) => (m.active ? { ...m, y: m.y + scrollDelta * 0.5 } : m))
+    .map((m) => (m.active ? { ...m, y: m.y + scrollDelta * MINE_DRIFT } : m))
     .filter((m) => m.active && m.y < CANVAS_H + 50);
 
   return { ...state, mines, mineCount: mines.length };
@@ -559,7 +576,8 @@ export function updateScroll(state) {
 // --- Fuel ---
 
 /**
- * Drain fuel from both jets based on their speed.
+ * Drain fuel from both jets based on their speed. A jet whose tank runs
+ * dry dies, as a crash would.
  * @param {object} state
  * @param {number} frameCount - for modulo-based drain rate
  * @returns {object}
@@ -586,7 +604,8 @@ export function drainFuel(state, frameCount) {
       const newFuel = s[fuelKey] - 1;
       if (newFuel <= 0) {
         s = { ...s, [fuelKey]: 0 };
-        events.fuelEmpty = player;
+        events.fuelEmpty |= player;
+        events.death |= player;
       } else {
         s = { ...s, [fuelKey]: newFuel };
       }
@@ -599,30 +618,49 @@ export function drainFuel(state, frameCount) {
 // --- Collision detection ---
 
 /**
+ * A jet's key in the state: `jetKey(2, "X")` is "jet2X".
+ * @param {number} player - 1 or 2
+ * @param {string} field
+ * @returns {string}
+ */
+function jetKey(player, field) {
+  return `jet${player}${field}`;
+}
+
+/** Whether a jet can be hit: in play and not invulnerable. */
+function vulnerable(state, player) {
+  return Boolean(state[jetKey(player, "Alive")] && !state[jetKey(player, "Invuln")]);
+}
+
+/** Whether a jet's centre is closer than `reach` to a point. */
+function jetTouches(state, player, point, reach) {
+  const dx = state[jetKey(player, "X")] - point.x;
+  const dy = state[jetKey(player, "Y")] - point.y;
+  return dx * dx + dy * dy < reach * reach;
+}
+
+/**
  * Check if a jet collides with river banks.
  * @param {object} state
  * @param {number} player - 1 or 2
  * @returns {boolean}
  */
 export function checkRiverCollision(state, player) {
-  const xKey = player === 1 ? "jet1X" : "jet2X";
-  const yKey = player === 1 ? "jet1Y" : "jet2Y";
-  const aliveKey = player === 1 ? "jet1Alive" : "jet2Alive";
-  const invulnKey = player === 1 ? "jet1Invuln" : "jet2Invuln";
-
-  if (!state[aliveKey] || state[invulnKey]) return false;
+  if (!vulnerable(state, player)) return false;
 
   // Convert screen Y to world Y for bank lookup
-  const worldY = state.scrollY + (CANVAS_H - state[yKey]);
+  const worldY = state.scrollY + (CANVAS_H - state[jetKey(player, "Y")]);
   const bank = getBankAtWorld(worldY, state.seed, state.mode);
-  const x = state[xKey];
+  const x = state[jetKey(player, "X")];
 
   return x - JET_RADIUS < bank.leftX || x + JET_RADIUS > bank.rightX;
 }
 
 /**
  * Check missile-enemy collisions.
- * All entities are in screen space — direct comparison.
+ * All entities are in screen space — direct comparison. Both missiles look at
+ * the enemies as they stood before this step, so two missiles that reach the
+ * same enemy on the same step both score it.
  * @param {object} state
  * @returns {object}
  */
@@ -630,78 +668,67 @@ export function checkMissileHits(state) {
   let s = { ...state };
   const events = { ...s.events };
   const enemies = [...s.enemies];
+  const hitDist = MISSILE_RADIUS + 8;
 
   for (const mNum of [1, 2]) {
     const prefix = mNum === 1 ? "m1" : "m2";
-    if (!s[`${prefix}Active`]) continue;
+    if (!state[`${prefix}Active`]) continue;
 
-    const mx = s[`${prefix}X`];
-    const my = s[`${prefix}Y`];
+    const mx = state[`${prefix}X`];
+    const my = state[`${prefix}Y`];
+    const i = state.enemies.findIndex((enemy) => {
+      const dx = mx - enemy.x;
+      const dy = my - enemy.y;
+      return enemy.alive && dx * dx + dy * dy < hitDist * hitDist;
+    });
+    if (i < 0) continue;
 
-    for (let i = 0; i < enemies.length; i++) {
-      if (!enemies[i].alive) continue;
+    const enemy = state.enemies[i];
+    enemies[i] = { ...enemy, alive: false };
 
-      const dx = mx - enemies[i].x;
-      const dy = my - enemies[i].y;
-      const hitDist = MISSILE_RADIUS + 8;
+    const scoreKey = mNum === 1 ? "score1" : "score2";
+    let points = 0;
+    if (enemy.type === ENEMY_TYPE.BOAT) points = SCORE_BOAT;
+    else if (enemy.type === ENEMY_TYPE.HELI) points = SCORE_HELI;
+    else if (enemy.type === ENEMY_TYPE.JET) points = SCORE_JET;
 
-      if (dx * dx + dy * dy < hitDist * hitDist) {
-        enemies[i] = { ...enemies[i], alive: false };
-        s = { ...s, [`${prefix}Active`]: false };
-
-        const scoreKey = mNum === 1 ? "score1" : "score2";
-        let points = 0;
-        if (enemies[i].type === ENEMY_TYPE.BOAT) points = SCORE_BOAT;
-        else if (enemies[i].type === ENEMY_TYPE.HELI) points = SCORE_HELI;
-        else if (enemies[i].type === ENEMY_TYPE.JET) points = SCORE_JET;
-
-        s = { ...s, [scoreKey]: s[scoreKey] + points };
-        events.enemyKill = mNum;
-        events.enemyKillType = enemies[i].type;
-        break;
-      }
-    }
+    s = { ...s, [`${prefix}Active`]: false, [scoreKey]: s[scoreKey] + points };
+    events.enemyKill |= mNum;
+    events.enemyKillType = enemy.type;
   }
 
   return { ...s, enemies, events };
 }
 
 /**
- * Check missile-bridge collisions.
+ * Check missile-bridge collisions. Each missile at the bridge takes one hit
+ * point; when the bridge falls, every missile that hit it on that step scores.
  * @param {object} state
  * @returns {object}
  */
 export function checkBridgeHits(state) {
   if (!state.bridgeActive) return state;
 
-  let s = { ...state };
-  const events = { ...s.events };
-
-  for (const mNum of [1, 2]) {
+  const hitters = [1, 2].filter((mNum) => {
     const prefix = mNum === 1 ? "m1" : "m2";
-    if (!s[`${prefix}Active`]) continue;
+    return (
+      state[`${prefix}Active`] && Math.abs(state[`${prefix}Y`] - state.bridgeY) < BRIDGE_HEIGHT
+    );
+  });
+  if (hitters.length === 0) return state;
 
-    const my = s[`${prefix}Y`];
+  let s = { ...state };
+  const events = { ...s.events, bridgeHit: true };
+  for (const mNum of hitters) s = { ...s, [mNum === 1 ? "m1Active" : "m2Active"]: false };
 
-    if (Math.abs(my - s.bridgeY) < BRIDGE_HEIGHT) {
-      s = { ...s, [`${prefix}Active`]: false };
-      const newHp = s.bridgeHp - 1;
-      events.bridgeHit = true;
+  const newHp = s.bridgeHp - hitters.length;
+  if (newHp > 0) return { ...s, bridgeHp: newHp, events };
 
-      if (newHp <= 0) {
-        const scoreKey = mNum === 1 ? "score1" : "score2";
-        s = {
-          ...s,
-          bridgeHp: 0,
-          bridgeActive: false,
-          [scoreKey]: s[scoreKey] + SCORE_BRIDGE,
-        };
-        events.bridgeDestroyed = mNum;
-      } else {
-        s = { ...s, bridgeHp: newHp };
-      }
-      break;
-    }
+  s = { ...s, bridgeHp: 0, bridgeActive: false };
+  for (const mNum of hitters) {
+    const scoreKey = mNum === 1 ? "score1" : "score2";
+    s = { ...s, [scoreKey]: s[scoreKey] + SCORE_BRIDGE };
+    events.bridgeDestroyed |= mNum;
   }
 
   return { ...s, events };
@@ -713,35 +740,21 @@ export function checkBridgeHits(state) {
  * @returns {object}
  */
 export function checkEnemyCollisions(state) {
-  const s = { ...state };
-  const events = { ...s.events };
+  const events = { ...state.events };
 
   for (const player of [1, 2]) {
-    const xKey = player === 1 ? "jet1X" : "jet2X";
-    const yKey = player === 1 ? "jet1Y" : "jet2Y";
-    const aliveKey = player === 1 ? "jet1Alive" : "jet2Alive";
-    const invulnKey = player === 1 ? "jet1Invuln" : "jet2Invuln";
-
-    if (!s[aliveKey] || s[invulnKey]) continue;
-
-    for (const e of s.enemies) {
-      if (!e.alive) continue;
-      const dx = s[xKey] - e.x;
-      const dy = s[yKey] - e.y;
-      const hitDist = JET_RADIUS + 8;
-
-      if (dx * dx + dy * dy < hitDist * hitDist) {
-        events.death = player;
-        break;
-      }
+    if (!vulnerable(state, player)) continue;
+    if (state.enemies.some((e) => e.alive && jetTouches(state, player, e, JET_RADIUS + 8))) {
+      events.death |= player;
     }
   }
 
-  return { ...s, events };
+  return { ...state, events };
 }
 
 /**
- * Check fuel station captures.
+ * Check fuel station captures, then missiles hitting stations. A station two
+ * jets (or two missiles) reach on the same step goes to both.
  * @param {object} state
  * @returns {object}
  */
@@ -754,27 +767,15 @@ export function checkFuelCapture(state) {
     if (!fuels[i].available) continue;
 
     for (const player of [1, 2]) {
-      const xKey = player === 1 ? "jet1X" : "jet2X";
-      const yKey = player === 1 ? "jet1Y" : "jet2Y";
-      const aliveKey = player === 1 ? "jet1Alive" : "jet2Alive";
-      const fuelKey = player === 1 ? "jet1Fuel" : "jet2Fuel";
+      if (!s[jetKey(player, "Alive")] || !jetTouches(s, player, fuels[i], 15)) continue;
 
-      if (!s[aliveKey]) continue;
-
-      const dx = s[xKey] - fuels[i].x;
-      const dy = s[yKey] - fuels[i].y;
-
-      if (dx * dx + dy * dy < 15 * 15) {
-        fuels[i] = { ...fuels[i], available: false };
-        const newFuel = Math.min(255, s[fuelKey] + FUEL_REFILL);
-        s = { ...s, [fuelKey]: newFuel };
-        events.fuelCapture = player;
-        break;
-      }
+      const fuelKey = jetKey(player, "Fuel");
+      s = { ...s, [fuelKey]: Math.min(255, s[fuelKey] + FUEL_REFILL) };
+      events.fuelCapture |= player;
+      fuels[i] = { ...fuels[i], available: false };
     }
   }
 
-  // Check missile hits on fuel stations
   for (let i = 0; i < fuels.length; i++) {
     if (!fuels[i].available) continue;
 
@@ -786,12 +787,10 @@ export function checkFuelCapture(state) {
       const dy = s[`${prefix}Y`] - fuels[i].y;
 
       if (dx * dx + dy * dy < 12 * 12) {
-        fuels[i] = { ...fuels[i], available: false };
-        s = { ...s, [`${prefix}Active`]: false };
         const scoreKey = mNum === 1 ? "score1" : "score2";
-        s = { ...s, [scoreKey]: s[scoreKey] + SCORE_FUEL_DESTROYED };
+        s = { ...s, [`${prefix}Active`]: false, [scoreKey]: s[scoreKey] + SCORE_FUEL_DESTROYED };
         events.fuelDestroyed = true;
-        break;
+        fuels[i] = { ...fuels[i], available: false };
       }
     }
   }
@@ -812,31 +811,21 @@ export function checkMineCollisions(state) {
   let mines = [...s.mines];
 
   for (const player of [1, 2]) {
-    const xKey = player === 1 ? "jet1X" : "jet2X";
-    const yKey = player === 1 ? "jet1Y" : "jet2Y";
-    const aliveKey = player === 1 ? "jet1Alive" : "jet2Alive";
-    const invulnKey = player === 1 ? "jet1Invuln" : "jet2Invuln";
+    if (!vulnerable(s, player)) continue;
 
-    if (!s[aliveKey] || s[invulnKey]) continue;
+    const i = mines.findIndex(
+      (mine) =>
+        mine.active &&
+        mine.owner !== player &&
+        jetTouches(s, player, mine, JET_RADIUS + MINE_RADIUS),
+    );
+    if (i < 0) continue;
 
-    for (let i = 0; i < mines.length; i++) {
-      if (!mines[i].active) continue;
-      if (mines[i].owner === player) continue;
-
-      const dx = s[xKey] - mines[i].x;
-      const dy = s[yKey] - mines[i].y;
-      const hitDist = JET_RADIUS + MINE_RADIUS;
-
-      if (dx * dx + dy * dy < hitDist * hitDist) {
-        mines[i] = { ...mines[i], active: false };
-        events.mineHit = player;
-        events.death = player;
-
-        const ownerScoreKey = mines[i].owner === 1 ? "score1" : "score2";
-        s = { ...s, [ownerScoreKey]: s[ownerScoreKey] + SCORE_MINE_HIT };
-        break;
-      }
-    }
+    mines[i] = { ...mines[i], active: false };
+    events.mineHit = player;
+    events.death |= player;
+    const ownerScoreKey = `score${mines[i].owner}`;
+    s = { ...s, [ownerScoreKey]: s[ownerScoreKey] + SCORE_MINE_HIT };
   }
 
   mines = mines.filter((m) => m.active);
@@ -851,22 +840,129 @@ export function checkMineCollisions(state) {
 export function checkBridgeCollision(state) {
   if (!state.bridgeActive) return state;
 
-  const s = { ...state };
-  const events = { ...s.events };
-
+  const events = { ...state.events };
   for (const player of [1, 2]) {
-    const yKey = player === 1 ? "jet1Y" : "jet2Y";
-    const aliveKey = player === 1 ? "jet1Alive" : "jet2Alive";
-    const invulnKey = player === 1 ? "jet1Invuln" : "jet2Invuln";
-
-    if (!s[aliveKey] || s[invulnKey]) continue;
-
-    if (Math.abs(s[yKey] - s.bridgeY) < BRIDGE_HEIGHT + JET_RADIUS) {
-      events.death = player;
+    if (!vulnerable(state, player)) continue;
+    if (Math.abs(state[jetKey(player, "Y")] - state.bridgeY) < BRIDGE_HEIGHT + JET_RADIUS) {
+      events.death |= player;
     }
   }
 
-  return { ...s, events };
+  return { ...state, events };
+}
+
+// --- One step of the river ---
+
+/**
+ * Everything one step does after the jets have steered and fired: the river
+ * scrolls and spawns, everything moves, hits and crashes are counted, and
+ * every jet that died loses a life — both, when they go down together. A jet
+ * that ran dry hands its rival the fuel-out bonus.
+ * @param {object} state
+ * @param {number} frameCount - for modulo-based fuel drain
+ * @returns {object}
+ */
+export function advanceRiver(state, frameCount) {
+  const scrolled = updateScroll(state);
+  const { scrollDelta } = scrolled;
+  let s = scrolled.state;
+  s = spawnEntities(s);
+  s = updateMissiles(s);
+  s = updateEnemies(s, scrollDelta);
+  s = updateFuels(s, scrollDelta);
+  s = updateBridge(s, scrollDelta);
+  s = updateMines(s, scrollDelta);
+  s = checkMissileHits(s);
+  s = checkBridgeHits(s);
+  s = checkEnemyCollisions(s);
+  // A station reached on the step the tank runs dry saves the jet.
+  s = checkFuelCapture(s);
+  s = drainFuel(s, frameCount);
+  s = checkMineCollisions(s);
+  s = checkBridgeCollision(s);
+  for (const player of [1, 2]) {
+    if (checkRiverCollision(s, player)) {
+      s = { ...s, events: { ...s.events, death: s.events.death | player } };
+    }
+  }
+
+  for (const player of [1, 2]) {
+    if (!(s.events.death & player)) continue;
+    s = handleDeath(s, player);
+    if (s.events.fuelEmpty & player) {
+      const rivalKey = player === 1 ? "score2" : "score1";
+      s = { ...s, [rivalKey]: s[rivalKey] + SCORE_FUEL_OUT };
+    }
+  }
+
+  return s;
+}
+
+/**
+ * A jet's held keys moving it: left, right, faster, slower.
+ * @param {object} state
+ * @param {number} player - 1 or 2
+ * @param {{left?: boolean, right?: boolean, accel?: boolean, decel?: boolean}} keys
+ * @returns {object}
+ */
+function steerJet(state, player, keys) {
+  let next = state;
+  if (keys.left) next = moveJet(next, player, -1);
+  if (keys.right) next = moveJet(next, player, 1);
+  if (keys.accel) next = accelerateJet(next, player, 1);
+  if (keys.decel) next = accelerateJet(next, player, -1);
+  return next;
+}
+
+/**
+ * One step of the match with both jets' keys: they steer, a missile or a
+ * mine goes on the press of its trigger — one already down the step before
+ * does nothing — and the river advances. On the step a jet loses its last
+ * life the match is FINISHED; on any other the timers tick.
+ * @param {object} state
+ * @param {{1: object, 2: object}} keys - each jet's held keys: left, right,
+ *   accel, decel, fire, mine
+ * @param {{1: {fire: boolean, mine: boolean}, 2: {fire: boolean, mine: boolean}}} held -
+ *   the triggers that were down the step before
+ * @param {number} frameCount - for modulo-based fuel drain
+ * @returns {{state: object, held: object, fired: number, dropped: number, respawned: number}}
+ *   the next state and triggers; who fired a missile, dropped a mine and came
+ *   back, as bits like events.death
+ */
+export function stepTick(state, keys, held, frameCount) {
+  let s = clearEvents(state);
+  for (const player of [1, 2]) s = steerJet(s, player, keys[player]);
+
+  let fired = 0;
+  for (const player of [1, 2]) {
+    if (!keys[player].fire || held[player].fire) continue;
+    const missileKey = player === 1 ? "m1Active" : "m2Active";
+    const before = s[missileKey];
+    s = fireMissile(s, player);
+    if (s[missileKey] && !before) fired |= player;
+  }
+
+  let dropped = 0;
+  for (const player of [1, 2]) {
+    if (!keys[player].mine || held[player].mine) continue;
+    const before = s.mineCount;
+    s = deployMine(s, player);
+    if (s.mineCount > before) dropped |= player;
+  }
+
+  s = advanceRiver(s, frameCount);
+  const wasAlive = { 1: s.jet1Alive, 2: s.jet2Alive };
+  s = processRespawns(s);
+  let respawned = 0;
+  if (s.jet1Alive && !wasAlive[1]) respawned |= 1;
+  if (s.jet2Alive && !wasAlive[2]) respawned |= 2;
+
+  s = checkGameOver(s).ended ? { ...s, phase: PHASE.FINISHED } : tickTimers(s);
+  const nextHeld = {
+    1: { fire: Boolean(keys[1].fire), mine: Boolean(keys[1].mine) },
+    2: { fire: Boolean(keys[2].fire), mine: Boolean(keys[2].mine) },
+  };
+  return { state: s, held: nextHeld, fired, dropped, respawned };
 }
 
 // --- Death and respawn ---
@@ -895,7 +991,8 @@ export function handleDeath(state, player) {
 }
 
 /**
- * Process respawn timers. Respawn at center bottom.
+ * Process respawn timers. A jet comes back mid-river at its flying height,
+ * with a full tank.
  * @param {object} state
  * @returns {object}
  */
@@ -919,6 +1016,7 @@ export function processRespawns(state) {
     const xKey = player === 1 ? "jet1X" : "jet2X";
     const yKey = player === 1 ? "jet1Y" : "jet2Y";
     const speedKey = player === 1 ? "jet1Speed" : "jet2Speed";
+    const fuelKey = player === 1 ? "jet1Fuel" : "jet2Fuel";
 
     s = {
       ...s,
@@ -927,8 +1025,9 @@ export function processRespawns(state) {
       [invulnKey]: true,
       [invulnTimerKey]: INVULN_DURATION,
       [xKey]: CANVAS_W / 2,
-      [yKey]: CANVAS_H - 40,
+      [yKey]: JET_Y,
       [speedKey]: SPEED_BASE,
+      [fuelKey]: INITIAL_FUEL,
     };
   }
 
@@ -1002,19 +1101,7 @@ export function tickTimers(state) {
 export function clearEvents(state) {
   return {
     ...state,
-    events: {
-      enemyKill: 0,
-      enemyKillType: 0,
-      fuelCapture: 0,
-      fuelDestroyed: false,
-      bridgeHit: false,
-      bridgeDestroyed: 0,
-      mineDeployed: 0,
-      mineHit: 0,
-      death: 0,
-      fuelEmpty: 0,
-      killSteal: false,
-    },
+    events: { ...NO_EVENTS },
   };
 }
 

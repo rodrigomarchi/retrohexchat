@@ -4,38 +4,13 @@ import { createRng } from "../../../../js/lib/games/core/rng.js";
 import { createInitialState } from "../../../../js/lib/games/hex_freecell/physics.js";
 import { GEOMETRY } from "../../../../js/lib/games/hex_freecell/protocol.js";
 import { render } from "../../../../js/lib/games/hex_freecell/renderer.js";
-import { recordingCanvas } from "../../../support/games/recording_canvas.js";
+import { drawnTable, expectMinis, images } from "../../../support/games/card_tables.js";
 
-const colors = { felt: "f", feltDark: "d", slot: "s", ink: "i", shadow: "sh" };
-const region = (i, w, h) => ({ x: i * (w + 2), y: 0, w, h });
-const atlas = {
-  image: { id: "atlas" },
-  card: { width: 64, height: 88 },
-  faces: Array.from({ length: 52 }, (_, i) => region(i, 64, 88)),
-  backs: [0, 1, 2, 3].map((i) => region(60 + i, 64, 88)),
-  mini: {
-    card: { width: 44, height: 62 },
-    faces: Array.from({ length: 52 }, (_, i) => ({ ...region(i, 44, 62), y: 1000 })),
-    backs: [0, 1, 2, 3].map((i) => ({ ...region(60 + i, 44, 62), y: 1000 })),
-  },
-};
-
-function drawn(geometry, size) {
+/** The canvas log of a fresh deal drawn on `geometry`'s table, its cards `size`. */
+function drawn(geometry, size, scene = {}) {
   const state = createInitialState(createRng(3).next, geometry);
-  const canvas = recordingCanvas(geometry.view.width, geometry.view.height);
-  canvas.clearLog();
-  render(canvas.getContext("2d"), {
-    state,
-    fx: createEffects({ size }),
-    drag: null,
-    atlas,
-    colors,
-    now: 0,
-    back: 0,
-  });
-  return canvas.log;
+  return drawnTable(render, geometry.view, { state, fx: createEffects({ size }), ...scene });
 }
-const images = (log) => log.filter(([op]) => op === "drawImage");
 
 describe("Hex FreeCell's picture", () => {
   it("draws the 52 cards of the deal and the eight empty cells and foundations", () => {
@@ -47,27 +22,16 @@ describe("Hex FreeCell's picture", () => {
   it("draws the minis, at their size, on the table standing up", () => {
     const cards = images(drawn(GEOMETRY.PORTRAIT, "mini"));
     expect(cards).toHaveLength(52);
-    for (const call of cards) {
-      expect(call[3]).toBe(1000);
-      expect(call.slice(8)).toEqual([44, 62]);
-    }
+    expectMinis(cards);
   });
 
   it("draws a held card at the table's size, a mini on the table standing up", () => {
     const state = createInitialState(createRng(3).next, GEOMETRY.PORTRAIT);
     const card = state.table.columns[0].at(-1);
-    const canvas = recordingCanvas(464, 760);
-    canvas.clearLog();
-    render(canvas.getContext("2d"), {
-      state,
-      fx: createEffects({ size: "mini" }),
+    const log = drawn(GEOMETRY.PORTRAIT, "mini", {
       drag: { from: { pile: "column", col: 0, index: 6 }, cards: [card], x: 100, y: 300 },
-      atlas,
-      colors,
-      now: 0,
-      back: 0,
     });
-    const held = images(canvas.log).at(-1);
+    const held = images(log).at(-1);
     expect(held.slice(6)).toEqual([100, 298, 44, 62]);
     expect(held[3]).toBe(1000);
   });

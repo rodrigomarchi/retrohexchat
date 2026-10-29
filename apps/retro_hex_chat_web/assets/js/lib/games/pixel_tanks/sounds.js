@@ -3,7 +3,7 @@
  * @module games/pixel_tanks/sounds
  */
 
-import { blip, notes, sweep } from "../core/synth.js";
+import { LOSE_SWEEP, WIN_FANFARE, blip, notes, sweep } from "../core/synth.js";
 
 export const SOUNDS = {
   /** A heavy blast: falling 400 → 100 Hz sawtooth, 150 ms. */
@@ -19,10 +19,9 @@ export const SOUNDS = {
   /** A subtle click in the last 15 s: 800 Hz square, 30 ms. */
   timerTick: blip("square", 800, 0.03, 0.06),
   /** A three-note fanfare: A4-C♯5-E5. */
-  // ex_dna:disable-for-lines:6 this game's own sound table
   roundEnd: notes([440, 554, 659], { wave: "square", note: 0.15, vol: 0.1 }),
   /** Rising C5-E5-G5-C6-E6. */
-  win: notes([523, 659, 784, 1047, 1319], { wave: "square", note: 0.12, vol: 0.12 }),
+  win: WIN_FANFARE,
   /** Falling 500 → 150 Hz sawtooth, 700 ms. */
-  lose: sweep("sawtooth", 500, 150, 0.7, 0.1),
+  lose: LOSE_SWEEP,
 };

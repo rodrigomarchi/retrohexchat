@@ -25,13 +25,21 @@ export const CELL = {
   P2_TRAIL: 2,
 };
 
-// Opposite direction pairs (for 180° reversal prevention)
-const OPPOSITE = {
+/** The way straight back from each direction: a cycle never turns into it. */
+export const OPPOSITE = Object.freeze({
   [DIR.UP]: DIR.DOWN,
   [DIR.DOWN]: DIR.UP,
   [DIR.LEFT]: DIR.RIGHT,
   [DIR.RIGHT]: DIR.LEFT,
-};
+});
+
+/** One cell's step in each direction. */
+export const DELTA = Object.freeze({
+  [DIR.UP]: Object.freeze({ x: 0, y: -1 }),
+  [DIR.DOWN]: Object.freeze({ x: 0, y: 1 }),
+  [DIR.LEFT]: Object.freeze({ x: -1, y: 0 }),
+  [DIR.RIGHT]: Object.freeze({ x: 1, y: 0 }),
+});
 
 /**
  * Create a fresh grid (2D Uint8Array).
@@ -92,18 +100,8 @@ export function applyDirection(currentDir, requestedDir) {
  * @returns {{x: number, y: number}}
  */
 function advance(x, y, dir) {
-  switch (dir) {
-    case DIR.UP:
-      return { x, y: y - 1 };
-    case DIR.DOWN:
-      return { x, y: y + 1 };
-    case DIR.LEFT:
-      return { x: x - 1, y };
-    case DIR.RIGHT:
-      return { x: x + 1, y };
-    default:
-      return { x, y };
-  }
+  const delta = DELTA[dir];
+  return delta ? { x: x + delta.x, y: y + delta.y } : { x, y };
 }
 
 /**
@@ -184,7 +182,6 @@ export function createCrashParticles(gridX, gridY, color, random = Math.random) 
     px,
     py,
     12,
-    // ex_dna:disable-for-lines:13 this game's own rule on the shared core helper
     { speed: [2, 4], extra: () => ({ life: 1.0, color: color || gameColor("ffaa00") }) },
     random,
   );

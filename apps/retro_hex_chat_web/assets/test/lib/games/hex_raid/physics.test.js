@@ -10,6 +10,14 @@ import {
   SCORE_JET,
   SCORE_BRIDGE,
   SCORE_MINE_HIT,
+  SCORE_FUEL_OUT,
+  FUEL_REFILL,
+  JET_Y,
+  MINE_AHEAD,
+  MINE_DRIFT,
+  advanceRiver,
+  stepTick,
+  updateMines,
   getBankAtWorld,
   getRiverWidthAtScroll,
   getDifficulty,
@@ -43,6 +51,25 @@ import {
   ENEMY_TYPE,
   MAX_ENEMIES,
 } from "../../../../js/lib/games/hex_raid/protocol.js";
+
+/** Where the jets are as a River Duel starts. */
+const START = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+
+/** A River Duel on seed 42 as it starts, with `overrides` on top. */
+function raidState(overrides = {}) {
+  return { ...createInitialState(GAME_MODE.RIVER_DUEL, 42), ...overrides };
+}
+
+/** A river in flight with player one's missile on an enemy of `type` at (100, 200). */
+function p1MissileOn(type, alive) {
+  return raidState({
+    m1Active: true,
+    m1X: 100,
+    m1Y: 200,
+    enemies: [{ type, x: 100, y: 200, alive }],
+    enemyCount: 1,
+  });
+}
 
 describe("Hex Raid Physics", () => {
   describe("getRiverWidthAtScroll", () => {
@@ -134,57 +161,50 @@ describe("Hex Raid Physics", () => {
 
   describe("spawnEntities", () => {
     it("spawns enemies when scrollY passes threshold", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, scrollY: 400, nextEnemySpawnDist: 300 };
+      const state = raidState({ phase: PHASE.FLYING, scrollY: 400, nextEnemySpawnDist: 300 });
       const result = spawnEntities(state);
       expect(result.enemies.length).toBeGreaterThan(0);
       expect(result.nextEnemySpawnDist).toBeGreaterThan(300);
     });
 
     it("does not spawn when scrollY has not reached threshold", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, scrollY: 100, nextEnemySpawnDist: 300 };
+      const state = raidState({ phase: PHASE.FLYING, scrollY: 100, nextEnemySpawnDist: 300 });
       const result = spawnEntities(state);
       expect(result.enemies.length).toBe(0);
     });
 
     it("spawns fuel depots", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, scrollY: 600, nextFuelSpawnDist: 500 };
+      const state = raidState({ phase: PHASE.FLYING, scrollY: 600, nextFuelSpawnDist: 500 });
       const result = spawnEntities(state);
       expect(result.fuels.length).toBeGreaterThan(0);
     });
 
     it("spawns bridge when threshold reached and no active bridge", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         phase: PHASE.FLYING,
         scrollY: 2100,
         nextBridgeSpawnDist: 2000,
         bridgeActive: false,
-      };
+      });
       const result = spawnEntities(state);
       expect(result.bridgeActive).toBe(true);
       expect(result.bridgeHp).toBe(BRIDGE_HP);
     });
 
     it("does not spawn bridge when one is already active", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         phase: PHASE.FLYING,
         scrollY: 2100,
         nextBridgeSpawnDist: 2000,
         bridgeActive: true,
         bridgeHp: 3,
-      };
+      });
       const result = spawnEntities(state);
       expect(result.bridgeActive).toBe(true);
     });
 
     it("does not spawn enemies past MAX_ENEMIES", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      let state = raidState();
       const fullEnemies = Array.from({ length: MAX_ENEMIES }, (_, i) => ({
         type: ENEMY_TYPE.BOAT,
         x: 300 + i,
@@ -205,15 +225,13 @@ describe("Hex Raid Physics", () => {
     });
 
     it("does not spawn in WAITING phase", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.WAITING, scrollY: 5000, nextEnemySpawnDist: 100 };
+      const state = raidState({ phase: PHASE.WAITING, scrollY: 5000, nextEnemySpawnDist: 100 });
       const result = spawnEntities(state);
       expect(result.enemies.length).toBe(0);
     });
 
     it("enemy Y is above screen (negative)", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, scrollY: 400, nextEnemySpawnDist: 300 };
+      const state = raidState({ phase: PHASE.FLYING, scrollY: 400, nextEnemySpawnDist: 300 });
       const result = spawnEntities(state);
       for (const e of result.enemies) {
         expect(e.y).toBeLessThan(0);
@@ -223,7 +241,7 @@ describe("Hex Raid Physics", () => {
 
   describe("createInitialState", () => {
     it("creates valid initial state", () => {
-      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const state = raidState();
       expect(state.phase).toBe(PHASE.WAITING);
       expect(state.jet1Lives).toBe(INITIAL_LIVES);
       expect(state.jet2Lives).toBe(INITIAL_LIVES);
@@ -240,7 +258,7 @@ describe("Hex Raid Physics", () => {
     });
 
     it("has spawn thresholds", () => {
-      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const state = raidState();
       expect(state.nextEnemySpawnDist).toBeGreaterThan(0);
       expect(state.nextFuelSpawnDist).toBeGreaterThan(0);
       expect(state.nextBridgeSpawnDist).toBeGreaterThan(0);
@@ -249,21 +267,19 @@ describe("Hex Raid Physics", () => {
 
   describe("jet movement", () => {
     it("moves jet laterally within bounds", () => {
-      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const state = raidState();
       const moved = moveJet(state, 1, 1); // right
       expect(moved.jet1X).toBeGreaterThan(state.jet1X);
     });
 
     it("clamps jet position to canvas bounds", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, jet1X: CANVAS_W - 1 };
+      const state = raidState({ jet1X: CANVAS_W - 1 });
       const moved = moveJet(state, 1, 1);
       expect(moved.jet1X).toBeLessThanOrEqual(CANVAS_W);
     });
 
     it("does not move dead jet", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, jet1Alive: false };
+      const state = raidState({ jet1Alive: false });
       const moved = moveJet(state, 1, 1);
       expect(moved.jet1X).toBe(state.jet1X);
     });
@@ -271,36 +287,66 @@ describe("Hex Raid Physics", () => {
 
   describe("missile firing", () => {
     it("fires missile from jet position", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING };
+      const state = raidState({ phase: PHASE.FLYING });
       const fired = fireMissile(state, 1);
       expect(fired.m1Active).toBe(true);
       expect(fired.m1X).toBe(state.jet1X);
     });
 
     it("does not fire when missile already active", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, m1Active: true };
+      const state = raidState({ phase: PHASE.FLYING, m1Active: true });
       const fired = fireMissile(state, 1);
       expect(fired).toBe(state);
     });
 
     it("does not fire when jet is dead", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, jet1Alive: false };
+      const state = raidState({ phase: PHASE.FLYING, jet1Alive: false });
       const fired = fireMissile(state, 1);
       expect(fired.m1Active).toBe(false);
     });
   });
 
   describe("mine deployment", () => {
-    it("deploys mine at jet position", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING };
+    it("drops a mine ahead of the jet, in its lane", () => {
+      const state = raidState({ phase: PHASE.FLYING });
       const deployed = deployMine(state, 1);
       expect(deployed.mineCount).toBe(1);
-      expect(deployed.mines[0].owner).toBe(1);
-      expect(deployed.mines[0].active).toBe(true);
+      expect(deployed.mines[0]).toMatchObject({
+        x: state.jet1X,
+        y: state.jet1Y - MINE_AHEAD,
+        owner: 1,
+        active: true,
+      });
+    });
+
+    it("gives every mine an id of its own", () => {
+      let state = raidState({ phase: PHASE.FLYING });
+      state = deployMine(deployMine(state, 1), 2);
+      expect(state.mines[0].id).not.toBe(state.mines[1].id);
+    });
+
+    it("drifts mines down slower than the river", () => {
+      const state = raidState({
+        mines: [{ id: 1, x: 300, y: 100, owner: 1, active: true }],
+        mineCount: 1,
+      });
+      expect(updateMines(state, 4).mines[0].y).toBe(100 + 4 * MINE_DRIFT);
+    });
+
+    it("a dropped mine drifts into a rival flying in that lane", () => {
+      let state = raidState({ phase: PHASE.FLYING, jet1X: 300, jet2X: 300 });
+      state = deployMine(state, 1);
+
+      let frame = 0;
+      while (state.jet2Alive && frame < 200) {
+        state = advanceRiver(clearEvents(state), frame++);
+      }
+
+      expect(state.jet2Alive).toBe(false);
+      expect(state.jet1Alive).toBe(true);
+      expect(state.score1).toBe(SCORE_MINE_HIT);
+      // It takes the time to drift down to touching distance: a second at base speed.
+      expect(frame).toBeGreaterThanOrEqual((MINE_AHEAD - 11) / (2 * MINE_DRIFT));
     });
 
     it("blocks mines in PACIFIST mode", () => {
@@ -311,15 +357,13 @@ describe("Hex Raid Physics", () => {
     });
 
     it("respects mine cooldown", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, jet1MineCooldown: 100 };
+      const state = raidState({ phase: PHASE.FLYING, jet1MineCooldown: 100 });
       const deployed = deployMine(state, 1);
       expect(deployed.mineCount).toBe(0);
     });
 
     it("does not deploy when dead", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, jet1Alive: false };
+      const state = raidState({ phase: PHASE.FLYING, jet1Alive: false });
       const deployed = deployMine(state, 1);
       expect(deployed.mineCount).toBe(0);
     });
@@ -333,16 +377,14 @@ describe("Hex Raid Physics", () => {
 
   describe("missile collision with enemies (screen-space)", () => {
     it("destroys enemy and awards correct score", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         phase: PHASE.FLYING,
         m1Active: true,
         m1X: 100,
         m1Y: 200,
         enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: 200, alive: true }],
         enemyCount: 1,
-      };
+      });
       const result = checkMissileHits(state);
       expect(result.enemies[0].alive).toBe(false);
       expect(result.m1Active).toBe(false);
@@ -355,105 +397,135 @@ describe("Hex Raid Physics", () => {
         [ENEMY_TYPE.HELI, SCORE_HELI],
         [ENEMY_TYPE.JET, SCORE_JET],
       ]) {
-        let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-        state = {
-          ...state,
-          m1Active: true,
-          m1X: 100,
-          m1Y: 200,
-          enemies: [{ type, x: 100, y: 200, alive: true }],
-          enemyCount: 1,
-        };
+        const state = p1MissileOn(type, true);
         const result = checkMissileHits(state);
         expect(result.score1).toBe(expectedScore);
       }
     });
 
     it("does not hit dead enemies", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = p1MissileOn(ENEMY_TYPE.BOAT, false);
+      const result = checkMissileHits(state);
+      expect(result.m1Active).toBe(true);
+    });
+
+    it("two missiles reaching the same enemy on the same step both score it", () => {
+      const state = raidState({
         m1Active: true,
         m1X: 100,
         m1Y: 200,
-        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: 200, alive: false }],
+        m2Active: true,
+        m2X: 102,
+        m2Y: 200,
+        enemies: [{ type: ENEMY_TYPE.HELI, x: 101, y: 200, alive: true }],
         enemyCount: 1,
-      };
+      });
+
       const result = checkMissileHits(state);
-      expect(result.m1Active).toBe(true);
+
+      expect(result.score1).toBe(SCORE_HELI);
+      expect(result.score2).toBe(SCORE_HELI);
+      expect(result.m1Active).toBe(false);
+      expect(result.m2Active).toBe(false);
+      expect(result.events.enemyKill).toBe(3);
     });
   });
 
   describe("bridge mechanics (screen-space)", () => {
-    it("bridge hit decrements HP", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+    /** Jet 1's missile at a bridge with `hp` hit points left. */
+    const missileAtBridge = (hp) =>
+      raidState({
         m1Active: true,
         m1X: CANVAS_W / 2,
         m1Y: 200,
         bridgeY: 200,
         bridgeActive: true,
-        bridgeHp: BRIDGE_HP,
-      };
-      const result = checkBridgeHits(state);
+        bridgeHp: hp,
+      });
+
+    it("bridge hit decrements HP", () => {
+      const result = checkBridgeHits(missileAtBridge(BRIDGE_HP));
       expect(result.bridgeHp).toBe(BRIDGE_HP - 1);
       expect(result.m1Active).toBe(false);
     });
 
     it("bridge destroyed awards points and triggers event", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
-        m1Active: true,
-        m1X: CANVAS_W / 2,
-        m1Y: 200,
-        bridgeY: 200,
-        bridgeActive: true,
-        bridgeHp: 1,
-      };
-      const result = checkBridgeHits(state);
+      const result = checkBridgeHits(missileAtBridge(1));
       expect(result.bridgeActive).toBe(false);
       expect(result.bridgeHp).toBe(0);
       expect(result.score1).toBe(SCORE_BRIDGE);
       expect(result.events.bridgeDestroyed).toBe(1);
     });
 
+    it("both missiles that bring a bridge down on the same step score it", () => {
+      const state = raidState({
+        m1Active: true,
+        m1X: CANVAS_W / 2 - 20,
+        m1Y: 200,
+        m2Active: true,
+        m2X: CANVAS_W / 2 + 20,
+        m2Y: 202,
+        bridgeY: 200,
+        bridgeActive: true,
+        bridgeHp: 2,
+      });
+
+      const result = checkBridgeHits(state);
+
+      expect(result.bridgeActive).toBe(false);
+      expect(result.score1).toBe(SCORE_BRIDGE);
+      expect(result.score2).toBe(SCORE_BRIDGE);
+      expect(result.events.bridgeDestroyed).toBe(3);
+    });
+
+    it("both jets hitting the bridge together both lose a life", () => {
+      let state = raidState();
+      state = clearEvents({ ...state, phase: PHASE.FLYING, scrollY: 1000 });
+      state = { ...state, bridgeY: JET_Y - 2, bridgeActive: true, bridgeHp: BRIDGE_HP };
+
+      const result = advanceRiver(state, 1);
+
+      expect(result.events.death).toBe(3);
+      expect(result.jet1Lives).toBe(INITIAL_LIVES - 1);
+      expect(result.jet2Lives).toBe(INITIAL_LIVES - 1);
+    });
+
     it("jet collides with intact bridge", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         jet1Y: 200,
         bridgeY: 200,
         bridgeActive: true,
         bridgeHp: 3,
-      };
+      });
       const result = checkBridgeCollision(state);
       expect(result.events.death).toBe(1);
     });
 
     it("no collision with destroyed bridge", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         jet1Y: 200,
         bridgeY: 200,
         bridgeActive: false,
-      };
+      });
       const result = checkBridgeCollision(state);
       expect(result).toBe(state);
     });
   });
 
   describe("fuel mechanics (screen-space)", () => {
+    /** `state` after `frames` steps of fuel drain. */
+    const drained = (state, frames) => {
+      let next = state;
+      for (let i = 0; i < frames; i++) next = drainFuel(next, i);
+      return next;
+    };
+
     it("captures fuel station (first come first served)", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
-        fuels: [{ x: state.jet1X, y: state.jet1Y, available: true }],
+      const state = raidState({
+        fuels: [{ x: START.jet1X, y: START.jet1Y, available: true }],
         fuelCount: 1,
         jet1Fuel: 100,
-      };
+      });
       const result = checkFuelCapture(state);
       expect(result.fuels[0].available).toBe(false);
       expect(result.jet1Fuel).toBeGreaterThan(100);
@@ -461,72 +533,102 @@ describe("Hex Raid Physics", () => {
     });
 
     it("does not capture unavailable fuel", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
-        fuels: [{ x: state.jet1X, y: state.jet1Y, available: false }],
+      const state = raidState({
+        fuels: [{ x: START.jet1X, y: START.jet1Y, available: false }],
         fuelCount: 1,
         jet1Fuel: 100,
-      };
+      });
       const result = checkFuelCapture(state);
       expect(result.jet1Fuel).toBe(100);
     });
 
     it("fuel drain depletes over time", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, jet1Fuel: 10 };
-
-      for (let i = 0; i < 20; i++) {
-        state = drainFuel(state, i);
-      }
+      const state = drained(raidState({ phase: PHASE.FLYING, jet1Fuel: 10 }), 20);
       expect(state.jet1Fuel).toBeLessThan(10);
     });
 
     it("fuel empty triggers death event", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, jet1Fuel: 1 };
-
-      for (let i = 0; i < 20; i++) {
-        state = drainFuel(state, i);
-      }
+      const state = drained(raidState({ phase: PHASE.FLYING, jet1Fuel: 1 }), 20);
       expect(state.jet1Fuel).toBe(0);
       expect(state.events.fuelEmpty).toBe(1);
+      expect(state.events.death).toBe(1);
+    });
+
+    it("an empty tank costs a life and hands the rival the fuel-out bonus", () => {
+      let state = raidState();
+      state = clearEvents({ ...state, phase: PHASE.FLYING, jet1Fuel: 1 });
+
+      const result = advanceRiver(state, 0);
+
+      expect(result.jet1Alive).toBe(false);
+      expect(result.jet1Lives).toBe(INITIAL_LIVES - 1);
+      expect(result.score2).toBe(SCORE_FUEL_OUT);
+      expect(result.jet2Lives).toBe(INITIAL_LIVES);
+    });
+
+    it("a station reached on the step the tank runs dry saves the jet", () => {
+      const state = clearEvents(
+        raidState({
+          phase: PHASE.FLYING,
+          jet1Fuel: 1,
+          fuels: [{ id: 1, x: START.jet1X, y: START.jet1Y, available: true }],
+          fuelCount: 1,
+        }),
+      );
+
+      const result = advanceRiver(state, 0);
+
+      expect(result.jet1Alive).toBe(true);
+      expect(result.events.death).toBe(0);
+      expect(result.jet1Fuel).toBe(1 + FUEL_REFILL - 1);
+    });
+
+    it("a station both jets reach on the same step refuels both", () => {
+      const state = raidState({
+        jet1X: 300,
+        jet2X: 310,
+        fuels: [{ x: 305, y: START.jet1Y, available: true }],
+        fuelCount: 1,
+        jet1Fuel: 100,
+        jet2Fuel: 100,
+      });
+
+      const result = checkFuelCapture(state);
+
+      expect(result.jet1Fuel).toBeGreaterThan(100);
+      expect(result.jet2Fuel).toBeGreaterThan(100);
+      expect(result.events.fuelCapture).toBe(3);
+      expect(result.fuels[0].available).toBe(false);
     });
   });
 
   describe("updateEnemies (screen-space drift)", () => {
     it("drifts enemies downward by scrollDelta", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         scrollY: 500,
         enemies: [{ type: ENEMY_TYPE.BOAT, x: 320, y: 100, alive: true, vx: 0 }],
         enemyCount: 1,
-      };
+      });
       const result = updateEnemies(state, 2);
       expect(result.enemies[0].y).toBe(102);
     });
 
     it("removes enemies that scroll off bottom", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         scrollY: 500,
         enemies: [{ type: ENEMY_TYPE.BOAT, x: 320, y: CANVAS_H + 60, alive: true, vx: 0 }],
         enemyCount: 1,
-      };
+      });
       const result = updateEnemies(state, 2);
       expect(result.enemies.length).toBe(0);
     });
 
     it("enemy jets rush downward extra fast", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         scrollY: 500,
         enemies: [{ type: ENEMY_TYPE.JET, x: 320, y: 100, alive: true, vx: 0 }],
         enemyCount: 1,
-      };
+      });
       const result = updateEnemies(state, 2);
       // scroll drift (2) + jet rush (3) = 5
       expect(result.enemies[0].y).toBe(105);
@@ -535,23 +637,19 @@ describe("Hex Raid Physics", () => {
 
   describe("updateFuels", () => {
     it("drifts fuel stations downward", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         fuels: [{ x: 300, y: 100, available: true }],
         fuelCount: 1,
-      };
+      });
       const result = updateFuels(state, 2);
       expect(result.fuels[0].y).toBe(102);
     });
 
     it("removes fuel that scrolls off bottom", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
+      const state = raidState({
         fuels: [{ x: 300, y: CANVAS_H + 60, available: true }],
         fuelCount: 1,
-      };
+      });
       const result = updateFuels(state, 2);
       expect(result.fuels.length).toBe(0);
     });
@@ -559,52 +657,42 @@ describe("Hex Raid Physics", () => {
 
   describe("updateBridge", () => {
     it("drifts bridge downward", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, bridgeY: 100, bridgeActive: true };
+      const state = raidState({ bridgeY: 100, bridgeActive: true });
       const result = updateBridge(state, 2);
       expect(result.bridgeY).toBe(102);
     });
 
     it("deactivates bridge that scrolls off bottom", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, bridgeY: CANVAS_H + 49, bridgeActive: true };
+      const state = raidState({ bridgeY: CANVAS_H + 49, bridgeActive: true });
       const result = updateBridge(state, 2);
       expect(result.bridgeActive).toBe(false);
     });
   });
 
   describe("mine collisions", () => {
-    it("mine hits opponent", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
-        mines: [{ x: state.jet2X, y: state.jet2Y, owner: 1, active: true }],
+    /** A mine laid by `owner` right on jet `jet`, with `overrides` on top. */
+    const mineOnJet = (jet, owner, overrides = {}) =>
+      raidState({
+        mines: [{ x: START[`jet${jet}X`], y: START[`jet${jet}Y`], owner, active: true }],
         mineCount: 1,
-      };
+        ...overrides,
+      });
+
+    it("mine hits opponent", () => {
+      const state = mineOnJet(2, 1);
       const result = checkMineCollisions(state);
       expect(result.events.mineHit).toBe(2);
       expect(result.score1).toBe(SCORE_MINE_HIT);
     });
 
     it("mine does not hit own player", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
-        mines: [{ x: state.jet1X, y: state.jet1Y, owner: 1, active: true }],
-        mineCount: 1,
-      };
+      const state = mineOnJet(1, 1);
       const result = checkMineCollisions(state);
       expect(result.events.mineHit).toBe(0);
     });
 
     it("mine does not hit invulnerable player", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = {
-        ...state,
-        jet2Invuln: true,
-        mines: [{ x: state.jet2X, y: state.jet2Y, owner: 1, active: true }],
-        mineCount: 1,
-      };
+      const state = mineOnJet(2, 1, { jet2Invuln: true });
       const result = checkMineCollisions(state);
       expect(result.events.mineHit).toBe(0);
     });
@@ -612,29 +700,28 @@ describe("Hex Raid Physics", () => {
 
   describe("river collision", () => {
     it("detects jet outside river bounds", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      let state = raidState();
       // Place jet at x=0 which is definitely on the left bank
       state = { ...state, jet1X: 5, scrollY: 500 };
       expect(checkRiverCollision(state, 1)).toBe(true);
     });
 
     it("no collision when jet is inside river", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      let state = raidState();
       // Center of screen is definitely in the river
       state = { ...state, jet1X: CANVAS_W / 2, scrollY: 500 };
       expect(checkRiverCollision(state, 1)).toBe(false);
     });
 
     it("no collision when invulnerable", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, jet1X: 5, jet1Invuln: true, scrollY: 500 };
+      const state = raidState({ jet1X: 5, jet1Invuln: true, scrollY: 500 });
       expect(checkRiverCollision(state, 1)).toBe(false);
     });
   });
 
   describe("death and respawn", () => {
     it("handleDeath decrements lives and marks dead", () => {
-      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const state = raidState();
       const result = handleDeath(state, 1);
       expect(result.jet1Lives).toBe(INITIAL_LIVES - 1);
       expect(result.jet1Alive).toBe(false);
@@ -642,7 +729,7 @@ describe("Hex Raid Physics", () => {
     });
 
     it("processRespawns restores jet after timer", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      let state = raidState();
       state = handleDeath(state, 1);
       state = { ...state, jet1RespawnTimer: 0 };
 
@@ -651,48 +738,54 @@ describe("Hex Raid Physics", () => {
       expect(result.jet1Respawning).toBe(false);
       expect(result.jet1Invuln).toBe(true);
     });
+
+    it("respawns at the flying height with a full tank", () => {
+      let state = raidState();
+      state = handleDeath({ ...state, jet1Fuel: 0 }, 1);
+      state = { ...state, jet1RespawnTimer: 0 };
+
+      const result = processRespawns(state);
+
+      expect(result.jet1Y).toBe(JET_Y);
+      expect(result.jet1Y).toBe(raidState().jet1Y);
+      expect(result.jet1Fuel).toBe(INITIAL_FUEL);
+    });
   });
 
   describe("game over", () => {
     it("detects game over when both players have 0 lives", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, jet1Lives: 0, jet1Alive: false, jet2Lives: 0, jet2Alive: false };
+      const state = raidState({ jet1Lives: 0, jet1Alive: false, jet2Lives: 0, jet2Alive: false });
       expect(checkGameOver(state).ended).toBe(true);
     });
 
     it("game is over when one player exhausts all lives", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, jet1Lives: 0, jet1Alive: false, jet2Lives: 1, jet2Alive: true };
+      const state = raidState({ jet1Lives: 0, jet1Alive: false, jet2Lives: 1, jet2Alive: true });
       const result = checkGameOver(state);
       expect(result.ended).toBe(true);
       expect(result.winner).toBe(2);
     });
 
     it("game is not over while both players have lives", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, jet1Lives: 1, jet1Alive: true, jet2Lives: 1, jet2Alive: true };
+      const state = raidState({ jet1Lives: 1, jet1Alive: true, jet2Lives: 1, jet2Alive: true });
       expect(checkGameOver(state).ended).toBe(false);
     });
 
     it("getWinner returns player with higher score", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, score1: 1000, score2: 500 };
+      let state = raidState({ score1: 1000, score2: 500 });
       expect(getWinner(state)).toBe(1);
       state = { ...state, score1: 500, score2: 1000 };
       expect(getWinner(state)).toBe(2);
     });
 
     it("getWinner handles tie (player 1 wins)", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, score1: 500, score2: 500 };
+      const state = raidState({ score1: 500, score2: 500 });
       expect(getWinner(state)).toBe(1);
     });
   });
 
   describe("timers", () => {
     it("tickTimers decrements invulnerability", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, jet1Invuln: true, jet1InvulnTimer: 2 };
+      let state = raidState({ jet1Invuln: true, jet1InvulnTimer: 2 });
       state = tickTimers(state);
       expect(state.jet1InvulnTimer).toBe(1);
       state = tickTimers(state);
@@ -701,14 +794,13 @@ describe("Hex Raid Physics", () => {
     });
 
     it("tickTimers decrements mine cooldown", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, jet1MineCooldown: 5 };
+      let state = raidState({ jet1MineCooldown: 5 });
       state = tickTimers(state);
       expect(state.jet1MineCooldown).toBe(4);
     });
 
     it("clearEvents resets all event flags", () => {
-      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const state = raidState();
       state.events.death = 1;
       state.events.enemyKill = 2;
       state.events.fuelCapture = 1;
@@ -721,38 +813,106 @@ describe("Hex Raid Physics", () => {
 
   describe("scroll mechanics", () => {
     it("updateScroll increases scrollY", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, phase: PHASE.FLYING, jet1Speed: 2, jet2Speed: 2 };
+      const state = raidState({ phase: PHASE.FLYING, jet1Speed: 2, jet2Speed: 2 });
       const { state: newState, scrollDelta } = updateScroll(state);
       expect(newState.scrollY).toBeGreaterThan(0);
       expect(scrollDelta).toBeGreaterThan(0);
     });
 
     it("updateScroll updates section milestone", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, scrollY: 1999 };
+      const state = raidState({ scrollY: 1999 });
       const { state: newState } = updateScroll(state);
       expect(newState.section).toBe(1); // (1999+2)/2000 = 1
     });
   });
 
+  describe("stepTick", () => {
+    const idle = {
+      left: false,
+      right: false,
+      accel: false,
+      decel: false,
+      fire: false,
+      mine: false,
+    };
+    const released = { 1: { fire: false, mine: false }, 2: { fire: false, mine: false } };
+    const flying = () => raidState({ phase: PHASE.FLYING });
+
+    it("steers both jets and fires a missile on the press of the trigger", () => {
+      const state = flying();
+      const step = stepTick(
+        state,
+        { 1: { ...idle, fire: true }, 2: { ...idle, right: true } },
+        released,
+        0,
+      );
+
+      expect(step.state.m1Active).toBe(true);
+      expect(step.fired).toBe(1);
+      expect(step.state.jet2X).toBeGreaterThan(state.jet2X);
+      expect(step.held).toEqual({
+        1: { fire: true, mine: false },
+        2: { fire: false, mine: false },
+      });
+    });
+
+    it("does nothing for a trigger still held from the step before", () => {
+      const step = stepTick(
+        flying(),
+        { 1: { ...idle, fire: true, mine: true }, 2: idle },
+        { 1: { fire: true, mine: true }, 2: { fire: false, mine: false } },
+        0,
+      );
+
+      expect(step.state.m1Active).toBe(false);
+      expect(step.state.mineCount).toBe(0);
+      expect(step.fired).toBe(0);
+      expect(step.dropped).toBe(0);
+    });
+
+    it("drops a mine on the press and ticks the timers", () => {
+      const step = stepTick(flying(), { 1: idle, 2: { ...idle, mine: true } }, released, 0);
+
+      expect(step.dropped).toBe(2);
+      expect(step.state.mineCount).toBe(1);
+      expect(step.state.jet2MineCooldown).toBe(getMineCooldown(GAME_MODE.RIVER_DUEL) - 1);
+    });
+
+    it("finishes the match on the step a jet loses its last life", () => {
+      const state = { ...flying(), jet1Lives: 1, jet1Fuel: 1 };
+      const step = stepTick(state, { 1: idle, 2: idle }, released, 0);
+
+      expect(step.state.jet1Lives).toBe(0);
+      expect(step.state.phase).toBe(PHASE.FINISHED);
+    });
+
+    it("brings a jet back when its respawn timer is up", () => {
+      let state = handleDeath(flying(), 2);
+      state = { ...state, jet2RespawnTimer: 0 };
+      const step = stepTick(state, { 1: idle, 2: idle }, released, 1);
+
+      expect(step.respawned).toBe(2);
+      expect(step.state.jet2Alive).toBe(true);
+    });
+  });
+
   describe("purity of functions", () => {
     it("moveJet does not mutate input state", () => {
-      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const state = raidState();
       const x = state.jet1X;
       moveJet(state, 1, 1);
       expect(state.jet1X).toBe(x);
     });
 
     it("fireMissile does not mutate input state", () => {
-      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const state = raidState();
       const active = state.m1Active;
       fireMissile(state, 1);
       expect(state.m1Active).toBe(active);
     });
 
     it("handleDeath does not mutate input state", () => {
-      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const state = raidState();
       const lives = state.jet1Lives;
       handleDeath(state, 1);
       expect(state.jet1Lives).toBe(lives);

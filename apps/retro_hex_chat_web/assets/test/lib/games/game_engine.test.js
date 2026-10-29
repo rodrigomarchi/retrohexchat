@@ -97,14 +97,19 @@ describe("game_engine", () => {
       expect(engine.animFrame).toBeNull();
     });
 
-    describe("a guest's held keys", () => {
-      class Paddle extends GameEngine {
-        static INPUT_BITS = { up: 0 };
-        static KEYMAP = keymap({ up: ["ArrowUp"] });
-      }
+    /** A game with one input, `up` on the up arrow. */
+    class Paddle extends GameEngine {
+      static INPUT_BITS = { up: 0 };
+      static KEYMAP = keymap({ up: ["ArrowUp"] });
+    }
 
-      const hold = () =>
+    describe("a guest's held keys", () => {
+      /** A guest's engine started, with the up arrow held down. */
+      const holdOnGuest = () => {
+        engine = new Paddle(canvas, channel, "hex_pong", false);
+        engine.start();
         window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", cancelable: true }));
+      };
 
       afterEach(() => {
         window.dispatchEvent(new KeyboardEvent("keyup", { key: "ArrowUp", cancelable: true }));
@@ -112,9 +117,7 @@ describe("game_engine", () => {
 
       it("go to the host while the channel is open", () => {
         const clock = frames();
-        engine = new Paddle(canvas, channel, "hex_pong", false);
-        engine.start();
-        hold();
+        holdOnGuest();
         clock.run(5);
         expect(channel.send).toHaveBeenCalled();
       });
@@ -122,9 +125,7 @@ describe("game_engine", () => {
       it("are not sent on a closed channel", () => {
         const clock = frames();
         channel.readyState = "closed";
-        engine = new Paddle(canvas, channel, "hex_pong", false);
-        engine.start();
-        hold();
+        holdOnGuest();
         clock.run(5);
         expect(channel.send).not.toHaveBeenCalled();
       });
@@ -135,20 +136,13 @@ describe("game_engine", () => {
           throw new Error("closed");
         });
         vi.spyOn(console, "error").mockImplementation(() => {});
-        engine = new Paddle(canvas, channel, "hex_pong", false);
-        engine.start();
-        hold();
+        holdOnGuest();
         expect(() => clock.run(5)).not.toThrow();
         expect(channel.send).toHaveBeenCalled();
       });
     });
 
     describe("keyboard target", () => {
-      class Paddle extends GameEngine {
-        static INPUT_BITS = { up: 0 };
-        static KEYMAP = keymap({ up: ["ArrowUp"] });
-      }
-
       const press = (target, type) =>
         target.dispatchEvent(new KeyboardEvent(type, { key: "ArrowUp", cancelable: true }));
 

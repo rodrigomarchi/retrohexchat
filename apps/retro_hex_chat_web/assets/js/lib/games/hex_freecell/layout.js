@@ -6,12 +6,19 @@
  * @module games/hex_freecell/layout
  */
 
-import { cardPlace, columnX, hitColumns, layColumns } from "../core/card_table/piles.js";
+import {
+  cardPlace,
+  columnX,
+  hitColumns,
+  layColumns,
+  tableGeometry,
+} from "../core/card_table/piles.js";
 import { contains } from "../core/pointer.js";
 import { CELLS, GEOMETRY } from "./protocol.js";
 
 /** The table a game is laid out on: its own, or lying down when it names none. */
-export const geometryOf = (table) => table.geometry ?? GEOMETRY.LANDSCAPE;
+// ex_dna:disable-for-lines:7 this game's own layout: its geometry and a card's place on it
+export const geometryOf = tableGeometry(GEOMETRY);
 
 /** Every pile's place and every card's, in the canvas's pixels. */
 export function layout(table) {

@@ -6,12 +6,12 @@
  * @module games/hex_solitaire/layout
  */
 
-import { cardPlace, hitColumns, layColumns } from "../core/card_table/piles.js";
+import { cardPlace, hitColumns, layColumns, tableGeometry } from "../core/card_table/piles.js";
 import { contains } from "../core/pointer.js";
 import { CARD, COLUMNS, GEOMETRY, TABLE, TOP_ROW } from "./protocol.js";
 
 /** The table a game is laid out on: its own, or lying down when it names none. */
-export const geometryOf = (state) => state.geometry ?? GEOMETRY.LANDSCAPE;
+export const geometryOf = tableGeometry(GEOMETRY);
 
 const columnX = (geo, col) => geo.left + col * (CARD.width + geo.gap);
 const place = (x, y) => cardPlace(x, y, CARD);

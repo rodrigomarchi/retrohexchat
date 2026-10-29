@@ -108,6 +108,18 @@ const POINTER_EVENTS = Object.freeze({
 });
 
 /**
+ * The keys of each direction: its arrow, and its WASD letter in either case.
+ * A game's `inputs` name what each direction does, e.g. `{ fire: [" "],
+ * rotateLeft: ARROW_KEYS.left }`.
+ */
+export const ARROW_KEYS = Object.freeze({
+  up: Object.freeze(["ArrowUp", "w", "W"]),
+  down: Object.freeze(["ArrowDown", "s", "S"]),
+  left: Object.freeze(["ArrowLeft", "a", "A"]),
+  right: Object.freeze(["ArrowRight", "d", "D"]),
+});
+
+/**
  * The arrows, WASD in either case and the space bar: the keys most games take
  * from the page while a match runs, so they move and fire instead of scrolling.
  */
@@ -127,6 +139,63 @@ export const ARROWS_WASD_SPACE = Object.freeze([
   "d",
   "D",
 ]);
+
+/**
+ * A seed for the world the host makes, drawn from the match's own generator.
+ * @param {{ random: () => number }} game
+ * @returns {number} a 32-bit unsigned integer
+ */
+export function drawSeed(game) {
+  return (game.random() * 0xffffffff) >>> 0;
+}
+
+/**
+ * The `init` of a game whose id picks its mode and whose host seeds its
+ * world: `game.gameMode` from `modes` by the game id (else `fallback`), and
+ * `game.seed` drawn by the host — the guest's is 0 until a snapshot brings
+ * the host's. The state is `create(mode, seed)`.
+ * @param {Record<string, number>} modes - game id to mode
+ * @param {number} fallback
+ * @param {(mode: number, seed: number) => object} create
+ * @returns {(game: object) => object}
+ */
+export function seededInit(modes, fallback, create) {
+  return (game) => {
+    game.gameMode = modes[game.gameId] ?? fallback;
+    game.seed = game.isHost ? drawSeed(game) : 0;
+    return create(game.gameMode, game.seed);
+  };
+}
+
+/**
+ * The snapshot of a game whose state goes on the wire packed flat: the host
+ * sends `pack(state)`; the guest takes the mode it names and `unpack`s it.
+ * @param {(state: object) => object} pack
+ * @param {(decoded: object) => object} unpack
+ * @returns {{ toWire: Function, applySnapshot: Function }} for defineGame
+ */
+export function packedSnapshot(pack, unpack) {
+  return {
+    toWire: (game) => pack(game.gameState),
+    applySnapshot: (game, decoded) => {
+      game.gameMode = decoded.mode;
+      game.gameState = unpack(decoded);
+    },
+  };
+}
+
+/**
+ * The `onStart` of a seeded game: the host starts from a fresh state of its
+ * mode and seed (`create(mode, seed)`), so a match begun again on the same
+ * engine starts from the beginning.
+ * @param {(mode: number, seed: number) => object} create
+ * @returns {(game: object) => void}
+ */
+export function freshOnHost(create) {
+  return (game) => {
+    if (game.isHost) game.gameState = create(game.gameMode, game.seed);
+  };
+}
 
 /**
  * @param {object} def
@@ -307,6 +376,18 @@ export function defineGame(def) {
 
     // ── What the phase hooks use ──
 
+    /**
+     * Let go of every input, this player's and the other's, forget the peer
+     * and count frames from 0 again: what a game stopped between matches
+     * does before the next.
+     */
+    forgetMatch() {
+      this.localInputs = released();
+      this.remoteInputs = released();
+      this.peerReady = false;
+      this.frameCount = 0;
+    }
+
     /** Send the host's snapshot to the guest. */
     broadcast() {
       this._broadcastState();
@@ -408,6 +489,18 @@ export function defineGame(def) {
     _gameLoop() {
       this._deliverPointer();
       this.flow.step();
+      this._watchPhase();
+    }
+
+    // Every phase change is the end of one round, serve or match and the
+    // start of the next: the AI forgets what it kept of the last one. The
+    // engine watches the phase itself, every step, so an AI asked only while
+    // a round is played hears of it as surely as one asked every step.
+    _watchPhase() {
+      const phase = this.gameState?.phase;
+      if (phase === this._watchedPhase) return;
+      this._watchedPhase = phase;
+      this.opponentController?.forget?.();
     }
 
     _idleStep() {

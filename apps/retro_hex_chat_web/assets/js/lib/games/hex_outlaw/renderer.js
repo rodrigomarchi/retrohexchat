@@ -20,7 +20,15 @@ import {
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { burst, drawCenterText, drawMatchOver, waitingText } from "../core/render.js";
+import {
+  burst,
+  drawCenterText,
+  drawMatchOver,
+  drawRoundDots,
+  drawScoreLabels,
+  stepParticles,
+  waitingText,
+} from "../core/render.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -382,21 +390,15 @@ export function createHitParticles(x, y, random = Math.random) {
 }
 
 /**
- * Update particles (tick + remove dead).
+ * Update particles (tick + remove dead): a hat falls, the rest slow.
  * @param {Array} particles
  * @returns {Array}
  */
 export function updateParticles(particles) {
-  return particles
-    .map((p) => ({
-      ...p,
-      x: p.x + p.vx,
-      y: p.y + p.vy,
-      vy: p.isHat ? p.vy + 0.15 : p.vy, // Gravity on hat
-      vx: p.isHat ? p.vx : p.vx * 0.95,
-      life: p.life - 1,
-    }))
-    .filter((p) => p.life > 0);
+  return stepParticles(particles, {
+    fade: 1,
+    velocity: (p) => (p.isHat ? { vx: p.vx, vy: p.vy + 0.15 } : { vx: p.vx * 0.95, vy: p.vy }),
+  });
 }
 
 function drawParticles(ctx, particles) {
@@ -421,18 +423,7 @@ function drawParticles(ctx, particles) {
 function drawHUD(ctx, state, colors) {
   const hudY = 10;
 
-  ctx.font = "bold 14px monospace";
-  ctx.textBaseline = "top";
-
-  // P1 score (left)
-  ctx.textAlign = "left";
-  ctx.fillStyle = colors.fg;
-  ctx.fillText(jt`P1: ${state.score1}`, ARENA_LEFT + 4, hudY);
-
-  // P2 score (right)
-  ctx.textAlign = "right";
-  ctx.fillStyle = colors.accent;
-  ctx.fillText(jt`P2: ${state.score2}`, ARENA_RIGHT - 4, hudY);
+  drawScoreLabels(ctx, state, colors, ARENA_LEFT + 4, ARENA_RIGHT - 4, hudY);
 
   // Game title (center)
   ctx.textAlign = "center";
@@ -468,22 +459,7 @@ function drawHUD(ctx, state, colors) {
   ctx.textAlign = "center";
   ctx.fillStyle = colors.muted;
   ctx.fillText(jt`Round ${state.round}`, CANVAS_W / 2, bottomY - 4);
-
-  for (let i = 0; i < 3; i++) {
-    const dx = CANVAS_W / 2 - 20 + i * 20;
-    ctx.beginPath();
-    ctx.arc(dx, bottomY + 8, 3, 0, Math.PI * 2);
-    // ex_dna:disable-for-lines:7 this game's own drawing
-    ctx.fillStyle = i < state.roundWins1 ? colors.fg : colors.muted;
-    ctx.fill();
-  }
-  for (let i = 0; i < 3; i++) {
-    const dx = CANVAS_W / 2 + 40 + i * 20;
-    ctx.beginPath();
-    ctx.arc(dx, bottomY + 8, 3, 0, Math.PI * 2);
-    ctx.fillStyle = i < state.roundWins2 ? colors.accent : colors.muted;
-    ctx.fill();
-  }
+  drawRoundDots(ctx, state, colors, CANVAS_W, bottomY + 8);
 }
 
 // --- Phase Overlays ---

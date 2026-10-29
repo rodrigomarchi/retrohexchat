@@ -10,22 +10,16 @@
  * @module games/hex_tennis
  */
 
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, ARROW_KEYS, defineGame } from "../core/define_game.js";
+import { beepCountdownState } from "../core/rounds.js";
 import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { createTennisAI, normalizeTennisAIDifficulty } from "./ai.js";
 import {
-  advanceScore,
-  checkHitZone,
-  checkNetCollision,
-  checkOutOfBounds,
-  checkServeLanding,
-  clearEventFlags,
   createInitialState,
-  performServe,
   resetForNextPoint,
   shouldChangeover,
-  updateBall,
-  updatePlayer,
+  stepRally,
+  stepServing,
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
@@ -33,8 +27,6 @@ import { SOUNDS } from "./sounds.js";
 
 const POINT_PAUSE_FRAMES = 120; // 2 s at 60 steps a second
 const CHANGEOVER_PAUSE_FRAMES = 120;
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const MODE_MAP = {
   hex_tennis: GAME_MODE.CLASSIC,
@@ -44,77 +36,37 @@ const MODE_MAP = {
 
 /** The server moves and serves on the press; the serve clock serves for them when it runs out. */
 function serving(game, state) {
-  let s = updatePlayer(state, 1, game.localInputs);
-  s = updatePlayer(s, 2, game.remoteInputs);
-  if (game.localInputs.serve && !game.localServePressed && s.server === 1) {
-    s = performServe(s, game.random);
-    game.audio.playServe();
-  }
-  game.localServePressed = game.localInputs.serve;
-  if (game.remoteInputs.serve && !game.remoteServePressed && s.server === 2) {
-    s = performServe(s, game.random);
-    game.audio.playServe();
-  }
-  game.remoteServePressed = game.remoteInputs.serve;
-
-  if (s.phase === PHASE.SERVING) {
-    s = { ...s, serveTimer: s.serveTimer - 1 };
-    if (s.serveTimer <= 0) {
-      s = performServe(s, game.random);
-      game.audio.playServe();
-    }
-  }
-  game.gameState = s;
+  const pressed = { local: game.localServePressed, remote: game.remoteServePressed };
+  const next = stepServing(state, game.localInputs, game.remoteInputs, pressed, game.random);
+  if (next.served) game.audio.playServe();
+  game.localServePressed = next.pressed.local;
+  game.remoteServePressed = next.pressed.remote;
+  game.gameState = next.state;
 }
 
 /**
- * The ball in play. Returns `false` when the step ends here: a fault that
- * sends the point back to the serve publishes itself, a point is announced
- * at once, and the match's end reports itself on entering GAME_OVER.
+ * The ball in play. Returns `false` when the step ends here: a point is
+ * announced at once, and the match's end reports itself on entering GAME_OVER.
  */
 function rally(game, state) {
   const prev = game.gameState;
-  let s = clearEventFlags(state);
-  s = updatePlayer(s, 1, game.localInputs);
-  s = updatePlayer(s, 2, game.remoteInputs);
-  s = updateBall(s);
-  s = checkHitZone(s, 1);
-  s = checkHitZone(s, 2);
+  const { state: s, point } = stepRally(state, game.localInputs, game.remoteInputs);
+  game.gameState = s;
   if (s.hitEvent && !prev.hitEvent) game.audio.playHit();
-
-  s = checkServeLanding(s);
-  if (s.faultEvent && !prev.faultEvent) {
-    game.audio.playFault();
-    if (s.phase === PHASE.SERVING) {
-      game.gameState = s;
-      game.invalidate();
-      game.frameCount++;
-      game.broadcast();
-      return false;
-    }
-  }
-
-  s = checkNetCollision(s);
+  if (s.faultEvent && !prev.faultEvent) game.audio.playFault();
   if (s.netFault && !prev.netFault) game.audio.playNetHit();
-  s = checkOutOfBounds(s);
   if (s.outOfBounds && !prev.outOfBounds) {
     if (s.outType === 3) game.audio.playAce();
     else game.audio.playOut();
   }
+  if (!point) return true;
 
-  if (s.pointWinner > 0) {
-    s = advanceScore(s);
-    game.audio.playPoint();
-    game.gameState = s;
-    if (s.phase === PHASE.GAME_OVER) return false;
-    s.phase = PHASE.POINT;
-    game.pointPauseCounter = POINT_PAUSE_FRAMES;
-    game.invalidate();
-    game.broadcast();
-    return false;
-  }
-  game.gameState = s;
-  return true;
+  game.audio.playPoint();
+  if (s.phase === PHASE.GAME_OVER) return false;
+  game.pointPauseCounter = POINT_PAUSE_FRAMES;
+  game.invalidate();
+  game.broadcast();
+  return false;
 }
 
 /** The pause after a point, then a changeover of ends when one is due. */
@@ -176,10 +128,10 @@ function applySnapshot(game, decoded) {
 
 export default defineGame({
   inputs: {
-    up: ["ArrowUp", "w", "W"],
-    down: ["ArrowDown", "s", "S"],
-    left: ["ArrowLeft", "a", "A"],
-    right: ["ArrowRight", "d", "D"],
+    up: ARROW_KEYS.up,
+    down: ARROW_KEYS.down,
+    left: ARROW_KEYS.left,
+    right: ARROW_KEYS.right,
     serve: [" ", "Shift"],
   },
   captureKeys: [...ARROWS_WASD_SPACE, "Shift"],
@@ -207,28 +159,17 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      // The beep sounds on each second that passes, the last one included.
-      // ex_dna:disable-for-lines:11 this game's own defineGame definition
-      COUNTDOWN: {
-        enter: (game) => {
-          // ex_dna:disable-for-lines:9 this game's own defineGame definition
-          game.gameState.countdown = COUNTDOWN_FROM;
-          game.broadcast();
-          game.invalidate();
-        },
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          game.audio.playCountdown();
-          if (remaining === 0) {
-            game.gameState.phase = PHASE.SERVING;
-            game.frameCount = 0;
-          }
-          game.gameState.countdown = remaining;
-          game.broadcast();
-          game.invalidate();
-        },
+      // The beep sounds on each second that passes; the last one brings the serve.
+      COUNTDOWN: beepCountdownState({
         next: "SERVING",
-      },
+        start: (game) => {
+          game.gameState.phase = PHASE.SERVING;
+          game.frameCount = 0;
+          game.gameState.countdown = 0;
+          game.broadcast();
+          game.invalidate();
+        },
+      }),
       SERVING: { tick: play },
       RALLY: { tick: play },
       POINT: { tick: play },

@@ -17,6 +17,8 @@ import {
   shouldFire,
   tankMovementInputs,
 } from "../../../../js/lib/games/pixel_tanks/ai.js";
+import { expectPassedOpeningWaits, scriptedRng } from "../../../support/games/ai_tests.js";
+import { describeStrengthOrder } from "../../../support/games/strength_order.js";
 
 function playingState() {
   const state = createInitialState(GAME_MODE.MAZE_BATTLE, 0);
@@ -26,6 +28,38 @@ function playingState() {
 
 function openWalls() {
   return decodeMaze(0);
+}
+
+/** Player two at (500, 240) facing player one on the same line, 80 px off. */
+function facingState(overrides = {}) {
+  return {
+    ...playingState(),
+    tank1X: 420,
+    tank1Y: 240,
+    tank2X: 500,
+    tank2Y: 240,
+    tank2Rot: Math.PI,
+    ...overrides,
+  };
+}
+
+/** Player two mid-field with player one's shell 70 px off and flying at it. */
+function shellIncoming(overrides = {}) {
+  return facingState({
+    tank1X: 48,
+    tank2X: 320,
+    m1Active: true,
+    m1X: 250,
+    m1Y: 240,
+    m1VX: 5,
+    m1VY: 0,
+    ...overrides,
+  });
+}
+
+/** Player two's inputs for `state` on the open field. */
+function look(ai, state) {
+  return ai.nextInputs({ state, player: 2, walls: openWalls() });
 }
 
 function walledArena() {
@@ -53,24 +87,13 @@ describe("PixelTanksAI", () => {
     expect(ai.difficulty).toBe("hard");
   });
 
-  it("returns neutral inputs outside the playing phase", () => {
+  it.each([
+    ["outside the playing phase", () => createInitialState(GAME_MODE.MAZE_BATTLE, 0)],
+    ["during respawn pause", () => ({ ...playingState(), respawnPause: 12 })],
+  ])("returns neutral inputs %s", (_when, state) => {
     const ai = createPixelTanksAI({ difficulty: "hard", rng: () => 0.5 });
-    const state = createInitialState(GAME_MODE.MAZE_BATTLE, 0);
 
-    expect(ai.nextInputs({ state, player: 2, walls: openWalls() })).toEqual({
-      rotateLeft: false,
-      rotateRight: false,
-      forward: false,
-      fire: false,
-    });
-  });
-
-  it("returns neutral inputs during respawn pause", () => {
-    const ai = createPixelTanksAI({ difficulty: "hard", rng: () => 0.5 });
-    const state = playingState();
-    state.respawnPause = 12;
-
-    expect(ai.nextInputs({ state, player: 2, walls: openWalls() })).toEqual({
+    expect(look(ai, state())).toEqual({
       rotateLeft: false,
       rotateRight: false,
       forward: false,
@@ -79,11 +102,7 @@ describe("PixelTanksAI", () => {
   });
 
   it("chooses a direct attack target when the opponent is visible", () => {
-    const state = playingState();
-    state.tank1X = 420;
-    state.tank1Y = 240;
-    state.tank2X = 500;
-    state.tank2Y = 240;
+    const state = facingState();
 
     const target = chooseTankTarget(state, 2, openWalls(), PIXEL_TANKS_AI_DIFFICULTIES.hard);
 
@@ -113,14 +132,7 @@ describe("PixelTanksAI", () => {
   });
 
   it("detects incoming enemy missiles and selects an evasion angle", () => {
-    const state = playingState();
-    state.tank2X = 320;
-    state.tank2Y = 240;
-    state.m1Active = true;
-    state.m1X = 250;
-    state.m1Y = 240;
-    state.m1VX = 5;
-    state.m1VY = 0;
+    const state = shellIncoming();
 
     const threat = incomingMissileThreat(state, 2, PIXEL_TANKS_AI_DIFFICULTIES.hard);
 
@@ -129,14 +141,7 @@ describe("PixelTanksAI", () => {
   });
 
   it("ignores missiles moving away from the tank", () => {
-    const state = playingState();
-    state.tank2X = 320;
-    state.tank2Y = 240;
-    state.m1Active = true;
-    state.m1X = 250;
-    state.m1Y = 240;
-    state.m1VX = -5;
-    state.m1VY = 0;
+    const state = shellIncoming({ m1VX: -5 });
 
     expect(incomingMissileThreat(state, 2, PIXEL_TANKS_AI_DIFFICULTIES.hard)).toBeNull();
   });
@@ -150,14 +155,7 @@ describe("PixelTanksAI", () => {
   });
 
   it("fires only when aligned, visible, and off cooldown", () => {
-    const state = playingState();
-    state.tank1X = 420;
-    state.tank1Y = 240;
-    state.tank2X = 500;
-    state.tank2Y = 240;
-    state.tank2Rot = Math.PI;
-
-    expect(
+    const opensFire = (state) =>
       shouldFire(
         state,
         2,
@@ -165,31 +163,17 @@ describe("PixelTanksAI", () => {
         PIXEL_TANKS_AI_DIFFICULTIES.hard,
         0,
         () => 0,
-        { walls: openWalls() },
-      ),
-    ).toBe(true);
+        {
+          walls: openWalls(),
+        },
+      );
 
-    state.tank2Rot = Math.PI / 2;
-    expect(
-      shouldFire(
-        state,
-        2,
-        { angle: Math.PI, distance: 80 },
-        PIXEL_TANKS_AI_DIFFICULTIES.hard,
-        0,
-        () => 0,
-        { walls: openWalls() },
-      ),
-    ).toBe(false);
+    expect(opensFire(facingState())).toBe(true);
+    expect(opensFire(facingState({ tank2Rot: Math.PI / 2 }))).toBe(false);
   });
 
   it("does not fire through walls", () => {
-    const state = playingState();
-    state.tank1X = 100;
-    state.tank1Y = 240;
-    state.tank2X = 500;
-    state.tank2Y = 240;
-    state.tank2Rot = Math.PI;
+    const state = facingState({ tank1X: 100 });
 
     expect(
       shouldFire(
@@ -206,15 +190,10 @@ describe("PixelTanksAI", () => {
 
   it("emits a one-frame fire press through the controller cooldown", () => {
     const ai = createPixelTanksAI({ difficulty: "hard", rng: () => 0.5 });
-    const state = playingState();
-    state.tank1X = 420;
-    state.tank1Y = 240;
-    state.tank2X = 500;
-    state.tank2Y = 240;
-    state.tank2Rot = Math.PI;
+    const state = facingState();
 
-    const first = ai.nextInputs({ state, player: 2, walls: openWalls() });
-    const second = ai.nextInputs({ state, player: 2, walls: openWalls() });
+    const first = look(ai, state);
+    const second = look(ai, state);
 
     expect(first.fire).toBe(true);
     expect(second.fire).toBe(false);
@@ -223,15 +202,83 @@ describe("PixelTanksAI", () => {
   it("uses the configured rng for aim error and fire odds", () => {
     const rng = vi.fn(() => 0.5);
     const ai = createPixelTanksAI({ difficulty: "hard", rng });
-    const state = playingState();
-    state.tank1X = 420;
-    state.tank1Y = 240;
-    state.tank2X = 500;
-    state.tank2Y = 240;
-    state.tank2Rot = Math.PI;
+    const state = facingState();
 
-    ai.nextInputs({ state, player: 2, walls: openWalls() });
+    look(ai, state);
 
     expect(rng).toHaveBeenCalled();
   });
+
+  it("keeps one aim error for a shot instead of drawing a fresh one each look", () => {
+    const draws = [0.999, 0.001];
+    let next = 0;
+    const ai = createPixelTanksAI({ difficulty: "hard", rng: () => draws[next++ % 2] });
+    const state = facingState({ tank1X: 300, tank1Invuln: true });
+
+    const turns = Array.from({ length: 12 }, () => look(ai, state).rotateRight);
+
+    expect(turns.every((right) => right)).toBe(true);
+    expect(next).toBe(1);
+  });
+
+  it("rolls the fire odds once per opening and waits out the cooldown after passing", () => {
+    const ai = createPixelTanksAI({ difficulty: "normal", rng: scriptedRng([0.5, 0.99], 0.5) });
+    const state = facingState({ tank1X: 300 });
+
+    expectPassedOpeningWaits(
+      () => look(ai, state).fire,
+      PIXEL_TANKS_AI_DIFFICULTIES.normal.fireCooldownFrames,
+    );
+  });
+
+  it("dodges a shell only once it is reactionFrames old", () => {
+    const ai = createPixelTanksAI({ difficulty: "hard", rng: () => 0 });
+    const state = shellIncoming();
+
+    expect(look(ai, { ...state, m1Age: 0 }).rotateRight).toBe(false);
+    for (let age = 1; age < 20; age++) look(ai, { ...state, m1Age: age });
+    expect(look(ai, { ...state, m1Age: 20 }).rotateRight).toBe(true);
+  });
+
+  it("decides once per shell whether to dodge it", () => {
+    const ai = createPixelTanksAI({ difficulty: "hard", rng: scriptedRng([0.99, 0.5], 0) });
+    const state = shellIncoming({ tank1Invuln: true });
+
+    for (let age = 0; age < 30; age++) {
+      expect(look(ai, { ...state, m1Age: age }).rotateRight).toBe(false);
+    }
+  });
+});
+
+describe("PixelTanksAI between rounds", () => {
+  it("lets go of its target and draws a fresh aim once a new round starts", () => {
+    const rng = vi.fn(() => 0.5);
+    const ai = createPixelTanksAI({ difficulty: "hard", rng });
+    const state = facingState({ tank1Invuln: true });
+
+    look(ai, state);
+    look(ai, state);
+    expect(rng).toHaveBeenCalledTimes(1);
+
+    ai.forget();
+    look(ai, state);
+    expect(rng).toHaveBeenCalledTimes(2);
+  });
+});
+
+describeStrengthOrder("Pixel Tanks", PIXEL_TANKS_AI_DIFFICULTIES, {
+  decisionInterval: "down",
+  aimErrorAngle: "down",
+  turnDeadzone: "down",
+  moveAngle: "up",
+  aimTolerance: "down",
+  standoffDistance: "down",
+  fireMaxDistance: "up",
+  fireCooldownFrames: "down",
+  fireChance: "up",
+  dodgeChance: "up",
+  reactionFrames: "down",
+  threatFrames: "up",
+  threatRadius: "up",
+  threatMargin: "up",
 });

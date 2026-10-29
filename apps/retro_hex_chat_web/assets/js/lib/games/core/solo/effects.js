@@ -11,7 +11,7 @@
  * @module games/core/solo/effects
  */
 
-import { stepParticles } from "../render.js";
+import { burst, stepParticles } from "../render.js";
 import { progress } from "../tween.js";
 
 /** The effects of one match. */
@@ -52,4 +52,21 @@ export function glowAt(fx, i, now) {
   const glow = fx.list.find((e) => e.kind === "glow" && e.i === i && now >= e.start);
   if (!glow) return 0;
   return Math.sin(progress(glow.start, glow.ticks, now) * Math.PI);
+}
+
+/**
+ * Sparks bursting from the middle of `place` (`{ x, y, w, h }`): `count` of
+ * them at `speed` (`[base, spread]`, as `burst` takes it), the `k`th coloured
+ * `color(k)`, flying and fading over `ticks` from `now`; `kind` is the name
+ * the picture draws them by.
+ */
+export function burstFrom(fx, place, { count, speed, color, now, ticks, random, kind = "sparks" }) {
+  const particles = burst(
+    place.x + place.w / 2,
+    place.y + place.h / 2,
+    count,
+    { speed, extra: (k) => ({ life: 1, color: color(k) }) },
+    random,
+  );
+  fx.list.push({ kind, particles, start: now, ticks });
 }

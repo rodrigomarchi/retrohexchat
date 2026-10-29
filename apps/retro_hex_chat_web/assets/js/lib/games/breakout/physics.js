@@ -6,8 +6,15 @@
 
 import { PHASE, BLOCK_ROWS, BLOCK_COLS, TOTAL_BLOCKS } from "./protocol.js";
 import { gameColor } from "../../game_colors.js";
-import { burst, stepParticles } from "../core/render.js";
-import { moveBall, paddleBounce } from "../core/paddle.js";
+import {
+  brickSparks,
+  fadeSparks,
+  lowerFlag,
+  moveBall,
+  paddleBounce,
+  serveFromMiddle,
+  startPaddleTick,
+} from "../core/paddle.js";
 
 // --- Constants ---
 
@@ -335,6 +342,48 @@ export function checkWin(state) {
 }
 
 /**
+ * One tick of play as the host runs it: both paddles move, the ball moves and
+ * bounces off the walls, the paddles and the blocks, a ball out at the top or
+ * bottom costs a life, and the board's end is checked. What happened comes
+ * back beside the state, whose own flags are left down; the block hit's
+ * details stay on the state as checkBlockCollision left them.
+ * @param {object} state
+ * @param {{ left: boolean, right: boolean }} local - paddle one's keys
+ * @param {{ left: boolean, right: boolean }} remote - paddle two's keys
+ * @returns {{ state: object, events: { wallBounced: boolean, paddleHit: boolean, blockHit: boolean, exitSide: "top"|"bottom"|null } }}
+ */
+export function stepTick(state, local, remote) {
+  const start = startPaddleTick(state, local, remote, TICK_STEPS);
+  const s = checkBlockCollision(start.state);
+  const blockHit = lowerFlag(s, "blockHit");
+
+  const out = checkLifeLost(s);
+  let exitSide = null;
+  if (lowerFlag(out, "lifeLost")) exitSide = out.ballY <= BALL_SIZE / 2 ? "top" : "bottom";
+
+  const { wallBounced, paddleHit } = start;
+  return { state: checkWin(out), events: { wallBounced, paddleHit, blockHit, exitSide } };
+}
+
+const TICK_STEPS = { updatePaddle, updateBall, checkWallBounce, checkPaddleCollision };
+
+/**
+ * The serve after a lost life goes back toward the side the ball left by;
+ * the first one goes either way.
+ * @param {object} state
+ * @param {"top"|"bottom"|null} exitSide - where the last ball went out
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
+ * @returns {object} new state
+ */
+export function serveAfter(state, exitSide, random = Math.random) {
+  let direction;
+  if (exitSide === "bottom") direction = -1;
+  else if (exitSide === "top") direction = 1;
+  else direction = random() < 0.5 ? 1 : -1;
+  return serveBall(state, direction, random);
+}
+
+/**
  * Serve the ball from center in the given direction.
  * @param {object} state
  * @param {number} direction - 1 = downward (toward P1), -1 = upward (toward P2)
@@ -342,18 +391,8 @@ export function checkWin(state) {
  * @returns {object} new state
  */
 export function serveBall(state, direction = 1, random = Math.random) {
-  const angle = ((random() * 60 - 30) * Math.PI) / 180;
-  const speed = INITIAL_BALL_SPEED;
-
-  return {
-    ...state,
-    ballX: CANVAS_W / 2,
-    ballY: CANVAS_H / 2,
-    ballVX: speed * Math.sin(angle),
-    ballVY: direction * speed * Math.cos(angle),
-    ballSpeed: speed,
-    phase: PHASE.PLAYING,
-  };
+  const serve = { width: CANVAS_W, height: CANVAS_H, speed: INITIAL_BALL_SPEED, axis: "y" };
+  return serveFromMiddle(state, { ...serve, toward: direction, playing: PHASE.PLAYING }, random);
 }
 
 /**
@@ -364,16 +403,8 @@ export function serveBall(state, direction = 1, random = Math.random) {
  * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
-// ex_dna:disable-for-lines:15 this game's own rule on the shared core helper
 export function createBlockParticles(x, y, color, random = Math.random) {
-  return burst(
-    x,
-    y,
-    8,
-    // ex_dna:disable-for-lines:13 this game's own rule on the shared core helper
-    { speed: [2, 3], extra: () => ({ life: 1.0, color: color || gameColor("ffaa00") }) },
-    random,
-  );
+  return brickSparks(x, y, color, random);
 }
 
 /**
@@ -382,5 +413,5 @@ export function createBlockParticles(x, y, color, random = Math.random) {
  * @returns {Array} updated particles (alive only)
  */
 export function updateParticles(particles) {
-  return stepParticles(particles, { drag: 0.96, fade: 0.04 });
+  return fadeSparks(particles, 0.04);
 }

@@ -6,25 +6,20 @@
  */
 
 import { schema, bits, u8, u16 } from "../core/codec.js";
-import { MSG_TYPE } from "../core/protocol_base.js";
+import { MSG_TYPE, ROUND_STANDING_FIELDS, ROUNDS_GAME_END, phases } from "../core/protocol_base.js";
 
 export * from "../core/protocol_base.js";
 
-// Game phase enum
-export const PHASE = {
-  WAITING: 0,
-  COUNTDOWN: 1,
-  SPAWNING: 2,
-  FIGHTING: 3,
-  ROUND_OVER: 4,
-  MATCH_OVER: 5,
-};
+/** The match's phases, by their value on the wire. */
+export const PHASE = phases("SPAWNING", "FIGHTING", "ROUND_OVER", "MATCH_OVER");
 
-// Punch state enum
+// Punch state enum: a punch winds up (the arm drawn back, where everyone can
+// see it coming), flies, then the arm recovers.
 export const PUNCH_STATE = {
   IDLE: 0,
   PUNCHING: 1,
   COOLDOWN: 2,
+  WINDUP: 3,
 };
 
 /** One boxer: position, facing, the punch (state and arm in one byte), its timer. */
@@ -43,23 +38,11 @@ const boxer = (b) => [
 export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
   ...boxer("b1"),
   ...boxer("b2"),
-  u8("score1"),
-  u8("score2"),
-  u8("phase"),
-  u8("countdown"),
-  u8("round"),
-  u8("roundWins1"),
-  u8("roundWins2"),
+  ...ROUND_STANDING_FIELDS,
   u16("roundTimer"),
   u8("lastHitPlayer"),
   u8("lastHitPoints"),
 ]);
 
-/** How the match ended. */
-export const GAME_END = schema(MSG_TYPE.GAME_END, [
-  u8("score1"),
-  u8("score2"),
-  u8("winner"),
-  u8("roundWins1"),
-  u8("roundWins2"),
-]);
+/** How the match ended: the rounds' end of every match played in rounds. */
+export const GAME_END = ROUNDS_GAME_END;

@@ -5,9 +5,9 @@
  * @module games/surround_ai
  */
 
-import { CELL } from "./physics.js";
+import { CELL, DELTA, OPPOSITE } from "./physics.js";
 import { DIR, GRID_H, GRID_W, PHASE } from "./protocol.js";
-import { aiRequest, aiRng, normalizeDifficulty, randomUnit } from "../core/ai.js";
+import { TableAI, aiRequest, normalizeDifficulty, randomUnit } from "../core/ai.js";
 
 const GRID_AREA = GRID_W * GRID_H;
 const TABLE_CENTER = Object.freeze({
@@ -16,41 +16,35 @@ const TABLE_CENTER = Object.freeze({
 });
 
 const DIRECTIONS = Object.freeze([DIR.UP, DIR.DOWN, DIR.LEFT, DIR.RIGHT]);
-const OPPOSITE = Object.freeze({
-  [DIR.UP]: DIR.DOWN,
-  [DIR.DOWN]: DIR.UP,
-  [DIR.LEFT]: DIR.RIGHT,
-  [DIR.RIGHT]: DIR.LEFT,
-});
-
-const DELTA = Object.freeze({
-  [DIR.UP]: Object.freeze({ x: 0, y: -1 }),
-  [DIR.DOWN]: Object.freeze({ x: 0, y: 1 }),
-  [DIR.LEFT]: Object.freeze({ x: -1, y: 0 }),
-  [DIR.RIGHT]: Object.freeze({ x: 1, y: 0 }),
-});
-
+// How far ahead each level sees, and how often it slips. `floodLimit` is how
+// many open cells it counts behind each turn: a short count cannot tell a
+// pocket from the open board. A mistake takes a turn that is open now but
+// worse; a lapse keeps the cycle going straight for `lapseMoves` moves
+// without looking, which is how it can drive into a wall.
 export const SURROUND_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
-    decisionFrames: 4,
-    floodLimit: 120,
-    mistakeRate: 0.18,
+    floodLimit: 30,
+    mistakeRate: 0.22,
+    lapseRate: 0.05,
+    lapseMoves: 4,
     corridorWeight: 2.4,
     centerWeight: 0.4,
     opponentDistanceWeight: 0.05,
   }),
   normal: Object.freeze({
-    decisionFrames: 2,
-    floodLimit: 520,
-    mistakeRate: 0.05,
+    floodLimit: 60,
+    mistakeRate: 0.17,
+    lapseRate: 0.045,
+    lapseMoves: 4,
     corridorWeight: 3.2,
     centerWeight: 0.7,
     opponentDistanceWeight: 0.08,
   }),
   hard: Object.freeze({
-    decisionFrames: 1,
     floodLimit: GRID_AREA,
-    mistakeRate: 0,
+    mistakeRate: 0.11,
+    lapseRate: 0.045,
+    lapseMoves: 4,
     corridorWeight: 4,
     centerWeight: 1,
     opponentDistanceWeight: 0.12,
@@ -75,25 +69,25 @@ export function createSurroundAI(options = {}) {
   return new SurroundAI(options);
 }
 
-export class SurroundAI {
+export class SurroundAI extends TableAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeSurroundAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
+    super(options, normalizeSurroundAIDifficulty, SURROUND_AI_DIFFICULTIES);
     this.lastDirection = null;
+    this.lapseLeft = 0;
   }
 
   /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
+   * A new round: no lapse running, no direction of the last round's cycle.
    * @returns {void}
    */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizeSurroundAIDifficulty(difficulty);
+  forget() {
+    this.lapseLeft = 0;
+    this.lastDirection = null;
   }
 
   /**
@@ -107,28 +101,32 @@ export class SurroundAI {
     const { state, player } = aiRequest(request);
     const actor = playerState(state, player);
 
-    if (!actor || state.phase !== PHASE.PLAYING) {
-      this.frame++;
-      return this.lastDirection ?? actor?.dir ?? DIR.LEFT;
-    }
+    if (!actor || state.phase !== PHASE.PLAYING) return actor?.dir ?? DIR.LEFT;
 
-    const difficulty = normalizeSurroundAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
+    const difficulty = this.difficultyFor(request);
 
     const config = SURROUND_AI_DIFFICULTIES[difficulty];
-    if (
-      this.lastDirection !== null &&
-      this.frame % config.decisionFrames !== 0 &&
-      isSafeDirection(state, player, this.lastDirection)
-    ) {
-      this.frame++;
-      return this.lastDirection;
-    }
+    if (this.lastDirection !== null && this.lapsing(config)) return actor.dir;
 
     const direction = chooseDirection(state, player, config, this.rng);
     this.lastDirection = direction;
-    this.frame++;
     return direction;
+  }
+
+  /**
+   * Whether this move is spent not looking: a lapse, once drawn, runs its
+   * whole length, whatever lies ahead.
+   * @param {object} config
+   * @returns {boolean}
+   */
+  lapsing(config) {
+    if (this.lapseLeft > 0) {
+      this.lapseLeft--;
+      return true;
+    }
+    if (randomUnit(this.rng) >= config.lapseRate) return false;
+    this.lapseLeft = config.lapseMoves - 1;
+    return true;
   }
 }
 
@@ -165,14 +163,14 @@ function rankDirections(state, player, config) {
     .sort((left, right) => right.score - left.score);
 }
 
-function isSafeDirection(state, player, direction) {
-  const actor = playerState(state, player);
-  if (!actor || direction === OPPOSITE[actor.dir]) return false;
-
-  return isOpenCell(state, advance(actor, direction));
-}
-
-function reachableArea(state, start, limit) {
+/**
+ * The open cells reachable from `start`, an open cell, counted up to `limit`.
+ * @param {object} state
+ * @param {{x: number, y: number}} start
+ * @param {number} limit
+ * @returns {number}
+ */
+export function reachableArea(state, start, limit) {
   const queue = [start];
   const visited = new Set([cellKey(start)]);
   let count = 0;
@@ -228,7 +226,13 @@ function advance(pos, direction) {
   return { x: pos.x + delta.x, y: pos.y + delta.y };
 }
 
-function isOpenCell(state, pos) {
+/**
+ * Whether a cell is on the grid and empty.
+ * @param {object} state
+ * @param {{x: number, y: number}} pos
+ * @returns {boolean}
+ */
+export function isOpenCell(state, pos) {
   return (
     pos.x >= 0 &&
     pos.x < GRID_W &&

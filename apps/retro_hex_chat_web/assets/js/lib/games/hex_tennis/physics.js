@@ -48,9 +48,13 @@ export const BALL_MAX_SPEED = 9.0;
 export const BALL_DECELERATION = 0.02;
 export const BALL_MIN_SPEED = 1.5;
 const BALL_GRAVITY = 0.015;
+// A return leaves the racket this high, and passes at least NET_MARGIN over the net.
+const RETURN_HEIGHT = 0.1;
+const NET_MARGIN = 0.1;
 
 // Serve
 export const SERVE_SPEED = 6.0;
+const SERVE_HEIGHT = 0.3;
 export const SERVE_TIMEOUT_FRAMES = 600; // 10 seconds at 60fps
 
 // Player movement bounds
@@ -60,6 +64,18 @@ const P2_MIN_Y = COURT_TOP + PLAYER_HALF_H;
 const P2_MAX_Y = NET_Y - NET_HALF_H - 10;
 const PLAYER_MIN_X = COURT_LEFT + PLAYER_HALF_W;
 const PLAYER_MAX_X = COURT_RIGHT - PLAYER_HALF_W;
+
+/** A tick's event flags, all down: no hit, serve, fault, out, point or call. */
+const NO_EVENTS = Object.freeze({
+  hitEvent: false,
+  serveEvent: false,
+  netFault: false,
+  outOfBounds: false,
+  outType: OUT_TYPE.NONE,
+  pointWinner: 0,
+  faultEvent: false,
+  announcement: ANNOUNCEMENT.NONE,
+});
 
 /**
  * Create the initial game state for a given mode.
@@ -81,6 +97,8 @@ export function createInitialState(gameMode) {
       speed: 0,
       height: 0,
       heightVel: 0,
+      landX: null,
+      landY: null,
     },
 
     p1Points: 0,
@@ -96,14 +114,7 @@ export function createInitialState(gameMode) {
     phase: PHASE.WAITING,
     countdown: 3,
 
-    hitEvent: false,
-    serveEvent: false,
-    netFault: false,
-    outOfBounds: false,
-    outType: OUT_TYPE.NONE,
-    pointWinner: 0,
-    faultEvent: false,
-    announcement: ANNOUNCEMENT.NONE,
+    ...NO_EVENTS,
 
     lastHitter: 0,
     rallyCount: 0,
@@ -158,7 +169,7 @@ export function updateBall(state) {
   if (state.phase !== PHASE.RALLY) return state;
 
   const b = state.ball;
-  let { x, y, vx, vy, speed, height, heightVel } = b;
+  let { x, y, vx, vy, speed, height, heightVel, landX, landY } = b;
 
   // Move
   x += vx;
@@ -173,17 +184,21 @@ export function updateBall(state) {
     vy *= scale;
   }
 
-  // Height arc (parabolic)
+  // Height arc (parabolic); where it first touches the ground after a shot is where it landed
   height += heightVel;
   heightVel -= BALL_GRAVITY;
   if (height < 0) {
     height = 0;
     heightVel = 0;
+    if (!Number.isFinite(landY)) {
+      landX = x;
+      landY = y;
+    }
   }
 
   return {
     ...state,
-    ball: { x, y, vx, vy, speed, height, heightVel },
+    ball: { x, y, vx, vy, speed, height, heightVel, landX, landY },
   };
 }
 
@@ -210,6 +225,10 @@ export function checkHitZone(state, player) {
     return state;
   }
 
+  // Ball must be on this player's side of the net, clear of it
+  const netClear = NET_HALF_H + BALL_RADIUS;
+  if (player === 1 ? b.y < NET_Y + netClear : b.y > NET_Y - netClear) return state;
+
   // Ball must be coming TOWARD this player (not already moving away)
   if (player === 1 && b.vy < 0) return state; // ball going up, away from P1
   if (player === 2 && b.vy > 0) return state; // ball going down, away from P2
@@ -234,9 +253,17 @@ export function checkHitZone(state, player) {
   const newVx = Math.sin(crossAngle) * newSpeed;
   const newVy = Math.cos(crossAngle) * newSpeed * dir;
 
-  // Launch height for net clearance
-  const newHeight = 0.1;
-  const newHeightVel = 0.08 + newSpeed * 0.008;
+  // The arc peaks over the net, so it lands about as deep in the far half as
+  // it was hit in this one; a ball met close to the net is struck from high
+  // enough to be over it by the time it gets there
+  const toNet = Math.abs(NET_Y - b.y);
+  const newHeightVel = BALL_GRAVITY * (toNet / Math.abs(newVy));
+  const framesToNetBand = Math.max(1, (toNet - netClear) / Math.abs(newVy));
+  const heightAtNetBand =
+    RETURN_HEIGHT +
+    framesToNetBand * newHeightVel -
+    (BALL_GRAVITY * framesToNetBand * (framesToNetBand - 1)) / 2;
+  const newHeight = RETURN_HEIGHT + Math.max(0, NET_HEIGHT_FACTOR + NET_MARGIN - heightAtNetBand);
 
   return {
     ...state,
@@ -247,6 +274,8 @@ export function checkHitZone(state, player) {
       speed: newSpeed,
       height: newHeight,
       heightVel: newHeightVel,
+      landX: null,
+      landY: null,
     },
     lastHitter: player,
     hitEvent: true,
@@ -303,8 +332,25 @@ export function checkOutOfBounds(state) {
     };
   }
 
+  const wide = b.x < COURT_LEFT - 10 || b.x > COURT_RIGHT + 10;
+  const past = b.height <= 0 && (b.y < COURT_TOP - 20 || b.y > COURT_BOTTOM + 20);
+
+  // Landed in the receiver's half and got past them: the hitter's point —
+  // an ace off an unreturned serve, a winner off a rally shot.
+  if ((wide || past) && landedIn(state)) {
+    if (state.rallyCount === 0) {
+      return {
+        ...state,
+        outOfBounds: true,
+        outType: OUT_TYPE.ACE,
+        pointWinner: state.lastHitter,
+      };
+    }
+    return { ...state, pointWinner: state.lastHitter };
+  }
+
   // Sideline out (left/right)
-  if (b.x < COURT_LEFT - 10 || b.x > COURT_RIGHT + 10) {
+  if (wide) {
     const winner = state.lastHitter === 1 ? 2 : 1;
     return {
       ...state,
@@ -358,6 +404,21 @@ export function checkOutOfBounds(state) {
 }
 
 /**
+ * Whether the last shot first touched down inside the half of the player it
+ * was hit to.
+ * @param {object} state
+ * @returns {boolean}
+ */
+function landedIn(state) {
+  const { landX, landY } = state.ball;
+  if (!Number.isFinite(landX) || !Number.isFinite(landY)) return false;
+  if (landX < COURT_LEFT || landX > COURT_RIGHT) return false;
+  return state.lastHitter === 1
+    ? landY >= COURT_TOP && landY < NET_Y
+    : landY > NET_Y && landY <= COURT_BOTTOM;
+}
+
+/**
  * Perform a serve.
  * @param {object} state
  * @param {() => number} [random=Math.random] - draws in [0, 1)
@@ -383,17 +444,21 @@ export function performServe(state, random = Math.random) {
   const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 0.001);
 
   const speed = state.isSecondServe ? SERVE_SPEED * 0.8 : SERVE_SPEED;
+  const startY = sy + (srv === 1 ? -15 : 15);
+  const arc = serveArc(startY, dy / dist, dist, speed);
 
   return {
     ...state,
     ball: {
       x: sx,
-      y: sy + (srv === 1 ? -15 : 15),
+      y: startY,
       vx: (dx / dist) * speed,
       vy: (dy / dist) * speed,
       speed,
-      height: 0.3,
-      heightVel: 0.06,
+      height: arc.height,
+      heightVel: arc.heightVel,
+      landX: null,
+      landY: null,
     },
     phase: PHASE.RALLY,
     lastHitter: srv,
@@ -404,6 +469,50 @@ export function performServe(state, random = Math.random) {
 }
 
 /**
+ * The arc that brings a serve hit at `speed` down `distance` away, on its
+ * target, and over the net on the way: the frames it takes to get there,
+ * slowing as it goes, and the lift that lands it on the last of them. A serve
+ * whose arc would pass the net lower than NET_MARGIN over it is struck from
+ * higher, still landing on the same frame.
+ * @param {number} startY - where the ball leaves the racket
+ * @param {number} alongY - the share of its travel that goes up or down the court
+ * @param {number} distance
+ * @param {number} speed
+ * @returns {{ height: number, heightVel: number }}
+ */
+function serveArc(startY, alongY, distance, speed) {
+  const netClear = NET_HALF_H + BALL_RADIUS;
+  let travelled = 0;
+  let pace = speed;
+  let frames = 0;
+  let netFrom = null;
+  let netTo = null;
+  while (travelled < distance && frames < SERVE_TIMEOUT_FRAMES) {
+    travelled += pace;
+    pace = Math.max(pace - BALL_DECELERATION, BALL_MIN_SPEED);
+    frames++;
+    if (Math.abs(startY + travelled * alongY - NET_Y) <= netClear) {
+      netFrom ??= frames;
+      netTo = frames;
+    }
+  }
+  if (frames === 0) return { height: SERVE_HEIGHT, heightVel: 0 };
+
+  // The height after k frames is height + k·heightVel − fallen(k)
+  const fallen = (k) => (BALL_GRAVITY * k * (k - 1)) / 2;
+  const over = NET_HEIGHT_FACTOR + NET_MARGIN;
+  let height = SERVE_HEIGHT;
+  let heightVel = (fallen(frames) - height) / frames;
+  for (const k of [netFrom, netTo]) {
+    if (k === null || k >= frames) continue;
+    if (height + k * heightVel - fallen(k) >= over) continue;
+    heightVel = (fallen(frames) - fallen(k) - over) / (frames - k);
+    height = fallen(frames) - frames * heightVel;
+  }
+  return { height, heightVel };
+}
+
+/**
  * Check if a serve has landed and whether it's a fault.
  * @param {object} state
  * @returns {object} new state
@@ -411,30 +520,22 @@ export function performServe(state, random = Math.random) {
 export function checkServeLanding(state) {
   // Only check on serves that haven't been returned (rallyCount === 0)
   if (state.rallyCount !== 0) return state;
-  if (state.ball.height > 0) return state;
+  if (state.ball.height > 0 || !Number.isFinite(state.ball.landY)) return state;
 
   const b = state.ball;
   const srv = state.server;
   const isDeuceCourt = state.totalPointsInGame % 2 === 0;
 
-  // Determine correct service box
-  let boxLeft, boxRight, boxTop, boxBottom;
-  if (srv === 1) {
-    // P1 serves to P2's side (top)
-    boxTop = COURT_TOP;
-    boxBottom = SERVICE_LINE_TOP;
-    boxLeft = isDeuceCourt ? CENTER_LINE_X : COURT_LEFT;
-    boxRight = isDeuceCourt ? COURT_RIGHT : CENTER_LINE_X;
-  } else {
-    // P2 serves to P1's side (bottom)
-    boxTop = SERVICE_LINE_BOTTOM;
-    boxBottom = COURT_BOTTOM;
-    boxLeft = isDeuceCourt ? COURT_LEFT : CENTER_LINE_X;
-    boxRight = isDeuceCourt ? COURT_RIGHT : CENTER_LINE_X;
-  }
+  // The service box: between the net and the receiver's service line, on the
+  // half performServe aims at — the right one on the deuce court, the left on the ad
+  const boxTop = srv === 1 ? SERVICE_LINE_TOP : NET_Y;
+  const boxBottom = srv === 1 ? NET_Y : SERVICE_LINE_BOTTOM;
+  const boxLeft = isDeuceCourt ? CENTER_LINE_X : COURT_LEFT;
+  const boxRight = isDeuceCourt ? COURT_RIGHT : CENTER_LINE_X;
 
-  // Check if ball landed in the correct service box
-  const inBox = b.x >= boxLeft && b.x <= boxRight && b.y >= boxTop && b.y <= boxBottom;
+  // Judged where the serve first touched down, not where it has rolled to since
+  const inBox =
+    b.landX >= boxLeft && b.landX <= boxRight && b.landY >= boxTop && b.landY <= boxBottom;
 
   if (!inBox) {
     // Fault
@@ -645,14 +746,7 @@ export function resetForNextPoint(state) {
       heightVel: 0,
     },
     phase: PHASE.SERVING,
-    hitEvent: false,
-    serveEvent: false,
-    netFault: false,
-    outOfBounds: false,
-    outType: OUT_TYPE.NONE,
-    pointWinner: 0,
-    faultEvent: false,
-    announcement: ANNOUNCEMENT.NONE,
+    ...NO_EVENTS,
     lastHitter: 0,
     rallyCount: 0,
     isSecondServe: false,
@@ -666,15 +760,66 @@ export function resetForNextPoint(state) {
  * @returns {object} new state
  */
 export function clearEventFlags(state) {
-  return {
-    ...state,
-    hitEvent: false,
-    serveEvent: false,
-    netFault: false,
-    outOfBounds: false,
-    outType: OUT_TYPE.NONE,
-    pointWinner: 0,
-    faultEvent: false,
-    announcement: ANNOUNCEMENT.NONE,
-  };
+  return { ...state, ...NO_EVENTS };
+}
+
+/**
+ * One tick of the serve as the host runs it: both players move, the server
+ * serves on a fresh press of serve, and the serve clock serves for them when
+ * it runs out. `pressed` is whether each side's serve key was down last tick.
+ * @param {object} state
+ * @param {{ up: boolean, down: boolean, left: boolean, right: boolean, serve: boolean }} local
+ * @param {{ up: boolean, down: boolean, left: boolean, right: boolean, serve: boolean }} remote
+ * @param {{ local: boolean, remote: boolean }} pressed
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
+ * @returns {{ state: object, pressed: { local: boolean, remote: boolean }, served: boolean }}
+ */
+export function stepServing(state, local, remote, pressed, random = Math.random) {
+  let s = updatePlayer(state, 1, local);
+  s = updatePlayer(s, 2, remote);
+  let served = false;
+  if (local.serve && !pressed.local && s.server === 1) {
+    s = performServe(s, random);
+    served = true;
+  }
+  if (remote.serve && !pressed.remote && s.server === 2) {
+    s = performServe(s, random);
+    served = true;
+  }
+
+  if (s.phase === PHASE.SERVING) {
+    s = { ...s, serveTimer: s.serveTimer - 1 };
+    if (s.serveTimer <= 0) {
+      s = performServe(s, random);
+      served = true;
+    }
+  }
+  return { state: s, pressed: { local: local.serve, remote: remote.serve }, served };
+}
+
+/**
+ * One tick of the ball in play as the host runs it: both players move, the
+ * ball moves and is struck in a hit zone, a serve's landing is judged — a
+ * first fault sends play back to the serve — and the net and the lines are
+ * checked. A point decided is scored, and play pauses on it unless it ended
+ * the match. The tick's event flags are set on the state.
+ * @param {object} state
+ * @param {{ up: boolean, down: boolean, left: boolean, right: boolean }} local
+ * @param {{ up: boolean, down: boolean, left: boolean, right: boolean }} remote
+ * @returns {{ state: object, point: boolean }}
+ */
+export function stepRally(state, local, remote) {
+  let s = clearEventFlags(state);
+  s = updatePlayer(s, 1, local);
+  s = updatePlayer(s, 2, remote);
+  s = checkHitZone(checkHitZone(updateBall(s), 1), 2);
+  s = checkServeLanding(s);
+  if (s.faultEvent && s.phase === PHASE.SERVING) return { state: s, point: false };
+
+  s = checkOutOfBounds(checkNetCollision(s));
+  if (s.pointWinner === 0) return { state: s, point: false };
+
+  s = advanceScore(s);
+  if (s.phase !== PHASE.GAME_OVER) s.phase = PHASE.POINT;
+  return { state: s, point: true };
 }

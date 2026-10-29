@@ -8,78 +8,49 @@
  * @module games/pong
  */
 
-import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
-import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
-import { countdownState } from "../core/rounds.js";
+import { ARROWS_WASD_SPACE, ARROW_KEYS, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, finishScored, guestEnd, playOutcome } from "../core/result.js";
+import {
+  countdownToServe,
+  endTick,
+  playTick,
+  playingState,
+  servingState,
+} from "../core/paddle_flow.js";
 import { createPongAI, normalizePongAIDifficulty } from "./ai.js";
 import {
   CANVAS_W,
-  checkPaddleCollision,
-  checkScore,
-  checkWallBounce,
-  checkWin,
   createInitialState,
   createScoreParticles,
+  // ex_dna:disable-for-lines:9 this game's own imports
   serveBall,
-  updateBall,
-  updatePaddle,
+  stepTick,
   updateParticles,
 } from "./physics.js";
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
 
-const SERVE_DELAY_TICKS = 48; // 0.8 s
-// ex_dna:disable-for-lines:25 this game's own defineGame definition
 const SCORE_PAUSE_TICKS = 90; // 1.5 s
-const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 /** One simulation step on the host. */
 function step(game) {
-  game.updateOpponent();
-
-  let s = game.gameState;
-  s = updatePaddle(s, 1, game.localInputs);
-  s = updatePaddle(s, 2, game.remoteInputs);
-  s = updateBall(s);
-  s = checkWallBounce(s);
-  if (s.wallBounced) {
-    game.audio.playWallBounce();
-    s.wallBounced = false;
-  }
-
-  s = checkPaddleCollision(s);
-  if (s.paddleHit) {
-    game.audio.playPaddleHit();
-    s.paddleHit = false;
-  }
-
-  s = checkScore(s);
-  if (s.scored) {
+  const { state: s, events } = playTick(game, stepTick);
+  if (events.scored) {
     game.audio.playScore();
     s.particles = createScoreParticles(
       s.lastScorer === 1 ? CANVAS_W - 20 : 20,
       s.ballY,
       game.fxRandom,
     );
-    // ex_dna:disable-for-lines:13 this game's own defineGame definition
-    s.scored = false;
   }
-
-  s = checkWin(s);
-  if (s.particles && s.particles.length > 0) s.particles = updateParticles(s.particles);
-
-  game.gameState = s;
-  game.invalidate();
-  game.frameCount++;
-  game.broadcast();
+  endTick(game, s, updateParticles);
 }
 
 export default defineGame({
   inputs: {
-    up: ["ArrowUp", "w", "W"],
-    down: ["ArrowDown", "s", "S"],
+    up: ARROW_KEYS.up,
+    down: ARROW_KEYS.down,
   },
   captureKeys: ARROWS_WASD_SPACE,
   interpolate: { keys: ["ballX", "ballY", "paddle1Y", "paddle2Y"] },
@@ -94,40 +65,21 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: countdownState({
-        from: COUNTDOWN_FROM,
-        every: COUNTDOWN_EVERY_TICKS,
-        next: "SERVING",
-      }),
-      SERVING: {
-        enter: (game) => {
+      COUNTDOWN: countdownToServe(),
+      SERVING: servingState({
+        prepare: (game) => {
           game.gameState.countdown = 0;
-          game.broadcast();
-          game.invalidate();
         },
-        after: { ticks: SERVE_DELAY_TICKS },
-        then: (game) => {
-          game.gameState = serveBall(game.gameState, game.random);
-          game.broadcast();
-        },
-        next: "PLAYING",
-      },
-      PLAYING: {
-        enter: (game) => {
-          game.frameCount = 0;
-        },
-        tick: step,
-      },
+        serve: (game) => serveBall(game.gameState, game.random),
+      }),
+      PLAYING: playingState(step),
       SCORED: { after: { ticks: SCORE_PAUSE_TICKS }, next: "SERVING" },
       FINISHED: {
         final: true,
         enter: (game) => {
           const { score1, score2, winner } = game.gameState;
           playOutcome(game, winner);
-          game.finish({
-            end: { score1, score2, winner },
-            result: { score: { p1: score1, p2: score2 }, winner },
-          });
+          finishScored(game, score1, score2, winner);
         },
       },
     },

@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_games",
-    "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines on your rival. 10 sections of increasing difficulty."
+    "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines in your rival's path. The further you fly, the narrower the river and the more enemies come."
   )}
 </p>
 <.diagram_game_raid class="w-full max-w-lg mx-auto my-4" />
@@ -35,15 +35,25 @@
   <li>
     {dgettext("help_games", "Fly over fuel stations to capture fuel — first come, first served")}
   </li>
-  <li>{dgettext("help_games", "Destroy bridges (3 HP) to advance to the next section")}</li>
-  <li>{dgettext("help_games", "Drop mines to sabotage your opponent")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Bridges take 3 hits and pay a big bonus — flying into one is a crash"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Mines drop ahead of your jet and drift slowly down your lane — a rival who flies into one loses a life and you score"
+    )}
+  </li>
   <li>
     {dgettext("help_games", "Run out of fuel or crash into banks/enemies and you lose a life")}
   </li>
   <li>
     {dgettext(
       "help_games",
-      "3 lives per player — highest score when all sections clear or both out of lives wins"
+      "3 lives per player — the match ends as soon as either jet is out of lives, and the higher score wins"
     )}
   </li>
 </ul>
@@ -52,7 +62,7 @@
   <li>
     <strong>{dgettext("help_games", "Hex Raid")}</strong> {dgettext(
       "help_games",
-      "— Full rules: mines, fuel competition, 10 sections"
+      "— Full rules: mines and fuel competition"
     )}
   </li>
   <li>
@@ -64,7 +74,7 @@
   <li>
     <strong>{dgettext("help_games", "Blitz")}</strong> {dgettext(
       "help_games",
-      "— 5 sections, narrow river, faster mine recharge"
+      "— Starts deep in: narrow river, scarce fuel, faster mine recharge"
     )}
   </li>
 </ul>

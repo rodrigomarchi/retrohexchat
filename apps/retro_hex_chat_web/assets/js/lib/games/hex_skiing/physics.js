@@ -112,21 +112,38 @@ const DIFFICULTY = [
 // ── State creation ─────────────────────────────────────────────
 
 /**
- * Create the initial game state.
- * @param {number} mode - GAME_MODE enum
- * @param {number} seed - Uint32 RNG seed
+ * A skier at the top of the slope, at `x`, with a clean run ahead.
+ * @param {number} x
  * @returns {object}
  */
-export function createInitialState(mode, seed) {
-  const round = 0;
-  const diff = DIFFICULTY[0];
+function skierAtStart(x) {
+  return {
+    x,
+    velX: 0,
+    state: SKIER_STATE.SKIING,
+    timer: 0,
+    boostTimer: 0,
+    iceTimer: 0,
+    stunTimer: 0,
+    distance: 0,
+  };
+}
+
+/**
+ * Everything a round starts afresh: a new slope drawn from `slopeSeed` at
+ * the round's difficulty, the avalanche and blizzard back at rest, and both
+ * skiers at the top.
+ * @param {number} mode - GAME_MODE enum
+ * @param {number} round - 0-based
+ * @param {number} slopeSeed
+ * @returns {object}
+ */
+function freshRound(mode, round, slopeSeed) {
+  const diff = DIFFICULTY[Math.min(round, DIFFICULTY.length - 1)];
 
   return {
-    phase: PHASE.WAITING,
-    mode,
     round,
     countdown: 3,
-    seed,
 
     scrollY: 0,
     avalancheY: AVALANCHE_START_OFFSET,
@@ -137,33 +154,11 @@ export function createInitialState(mode, seed) {
     blizzardTimer: 0,
     blizzardCooldown: BLIZZARD_INTERVAL,
 
-    // Player 1 (host — left start)
-    p1: {
-      x: CANVAS_W / 2 - 40,
-      velX: 0,
-      state: SKIER_STATE.SKIING,
-      timer: 0,
-      boostTimer: 0,
-      iceTimer: 0,
-      stunTimer: 0,
-      distance: 0,
-    },
-
-    // Player 2 (peer — right start)
-    p2: {
-      x: CANVAS_W / 2 + 40,
-      velX: 0,
-      state: SKIER_STATE.SKIING,
-      timer: 0,
-      boostTimer: 0,
-      iceTimer: 0,
-      stunTimer: 0,
-      distance: 0,
-    },
+    // Player 1 (host — left start), player 2 (peer — right start)
+    p1: skierAtStart(CANVAS_W / 2 - 40),
+    p2: skierAtStart(CANVAS_W / 2 + 40),
 
     events: 0,
-    p1RoundWins: 0,
-    p2RoundWins: 0,
 
     // Generated obstacle chunks
     obstacles: [],
@@ -179,11 +174,28 @@ export function createInitialState(mode, seed) {
     itemSpawnTimer: ITEM_SPAWN_INTERVAL,
 
     // RNG instance
-    _rng: createRng(seed).next,
+    _rng: createRng(slopeSeed).next,
     _difficulty: diff,
 
     // Frame counter for avalanche accel
     frameCount: 0,
+  };
+}
+
+/**
+ * Create the initial game state.
+ * @param {number} mode - GAME_MODE enum
+ * @param {number} seed - Uint32 RNG seed
+ * @returns {object}
+ */
+export function createInitialState(mode, seed) {
+  return {
+    phase: PHASE.WAITING,
+    mode,
+    seed,
+    p1RoundWins: 0,
+    p2RoundWins: 0,
+    ...freshRound(mode, 0, seed),
   };
 }
 
@@ -287,6 +299,16 @@ export function unpackState(flat) {
 // ── Physics update functions ───────────────────────────────────
 
 /**
+ * Where a run in `mode` ends: the course's length, or nowhere in the
+ * avalanche escape, which runs until someone is caught.
+ * @param {number} mode - GAME_MODE enum
+ * @returns {number}
+ */
+export function finishLineOf(mode) {
+  return mode === GAME_MODE.AVALANCHE_ESCAPE ? Infinity : COURSE_LENGTH;
+}
+
+/**
  * Get effective scroll speed for a skier based on their lateral velocity.
  */
 export function getScrollSpeed(player) {
@@ -312,16 +334,18 @@ export function getScrollSpeed(player) {
 /**
  * Update a single skier's lateral position based on input.
  */
-export function updateSkier(player, input) {
+export function updateSkier(player, input, finishLine = COURSE_LENGTH) {
   const p = { ...player };
+  // A skier past the finish line has their time; the clock no longer runs
+  const clockRuns = p.distance < finishLine;
 
-  // Stunned: no movement
+  // Stunned: no movement, but the run's clock keeps going — a crash costs time
   if (p.stunTimer > 0) {
     p.stunTimer--;
     if (p.stunTimer === 0) {
       p.state = SKIER_STATE.SKIING;
     }
-    // Timer doesn't tick while stunned
+    if (clockRuns) p.timer += 1 / 60;
     return p;
   }
 
@@ -366,7 +390,7 @@ export function updateSkier(player, input) {
 
   // Advance timer (time in seconds at 60fps)
   const speed = getScrollSpeed(p);
-  if (speed > 0) {
+  if (speed > 0 && clockRuns) {
     p.timer += 1 / 60;
   }
 
@@ -512,10 +536,12 @@ export function checkCollisions(state) {
   let events = s.events;
 
   const skierY = s.scrollY + SKIER_SCREEN_Y;
+  const finishLine = finishLineOf(s.mode);
 
   for (const key of ["p1", "p2"]) {
     const player = { ...s[key] };
-    if (player.stunTimer > 0) {
+    // A stunned skier is down already; a finished one is off the course
+    if (player.stunTimer > 0 || player.distance >= finishLine) {
       s[key] = player;
       continue;
     }
@@ -577,6 +603,7 @@ export function checkGates(state) {
   let s = { ...state };
   let events = s.events;
   const skierY = s.scrollY + SKIER_SCREEN_Y;
+  const finishLine = finishLineOf(s.mode);
 
   const newGates = s.gates.map((g) => {
     const gate = { ...g };
@@ -588,6 +615,8 @@ export function checkGates(state) {
       if (gate[cleared]) continue;
 
       const player = s[key];
+      // Gates past the finish line earn a finished skier nothing
+      if (player.distance >= finishLine) continue;
       const py = skierY;
 
       if (py >= gateTop && py <= gateBot) {
@@ -693,13 +722,18 @@ export function checkGameOver(state) {
   let p1Out = false;
   let p2Out = false;
 
-  if (p1Engulfed) {
+  // A skier past the finish line is safe from the avalanche
+  const finishLine = finishLineOf(s.mode);
+  const p1Finished = s.p1.distance >= finishLine;
+  const p2Finished = s.p2.distance >= finishLine;
+
+  if (p1Engulfed && !p1Finished) {
     // If a player is stunned when avalanche arrives, they're engulfed
     if (s.p1.stunTimer > 0) p1Out = true;
     // If avalanche is well past skier position
     if (avalancheScreenY >= SKIER_SCREEN_Y + SKIER_H) p1Out = true;
   }
-  if (p2Engulfed) {
+  if (p2Engulfed && !p2Finished) {
     if (s.p2.stunTimer > 0) p2Out = true;
     if (avalancheScreenY >= SKIER_SCREEN_Y + SKIER_H) p2Out = true;
   }
@@ -707,8 +741,6 @@ export function checkGameOver(state) {
   // Course completion (not in escape mode)
   if (s.mode !== GAME_MODE.AVALANCHE_ESCAPE) {
     const courseEnd = COURSE_LENGTH;
-    const p1Finished = s.p1.distance >= courseEnd;
-    const p2Finished = s.p2.distance >= courseEnd;
 
     if ((p1Finished && p2Finished) || p1Out || p2Out) {
       return endRound(s, p1Out, p2Out);
@@ -716,10 +748,11 @@ export function checkGameOver(state) {
 
     // If one finished, keep going until the other finishes or gets engulfed
     if (p1Finished || p2Finished) {
-      // Give a grace period — if both don't finish within CANVAS_H more distance
+      // Give a grace period — if both don't finish within CANVAS_H more distance,
+      // the one still on the course loses to the one who finished
       const maxDist = Math.max(s.p1.distance, s.p2.distance);
       if (maxDist >= courseEnd + CANVAS_H * 2) {
-        return endRound(s, p1Out, p2Out);
+        return endRound(s, p1Out || !p1Finished, p2Out || !p2Finished);
       }
     }
   } else {
@@ -784,52 +817,38 @@ function endRound(state, p1Out, p2Out) {
  */
 export function startNextRound(state) {
   const nextRound = state.round + 1;
-  const diff = DIFFICULTY[Math.min(nextRound, DIFFICULTY.length - 1)];
 
   return {
     ...state,
     phase: PHASE.COUNTDOWN,
-    round: nextRound,
-    countdown: 3,
-    scrollY: 0,
-    avalancheY: AVALANCHE_START_OFFSET,
-    avalancheSpeed: state.mode === GAME_MODE.CLEAN_RUN ? 0 : diff.avalancheBase,
-    avalancheAccelTimer: 0,
-    blizzardActive: false,
-    blizzardTimer: 0,
-    blizzardCooldown: BLIZZARD_INTERVAL,
-    p1: {
-      x: CANVAS_W / 2 - 40,
-      velX: 0,
-      state: SKIER_STATE.SKIING,
-      timer: 0,
-      boostTimer: 0,
-      iceTimer: 0,
-      stunTimer: 0,
-      distance: 0,
-    },
-    p2: {
-      x: CANVAS_W / 2 + 40,
-      velX: 0,
-      state: SKIER_STATE.SKIING,
-      timer: 0,
-      boostTimer: 0,
-      iceTimer: 0,
-      stunTimer: 0,
-      distance: 0,
-    },
-    events: 0,
-    obstacles: [],
-    nextChunkY: 0,
-    gates: [],
-    nextGateY: GATE_INTERVAL,
-    gateWidth: diff.gateWidth,
-    items: [],
-    itemSpawnTimer: ITEM_SPAWN_INTERVAL,
-    _rng: createRng(state.seed + nextRound * 1000).next,
-    _difficulty: diff,
-    frameCount: 0,
+    ...freshRound(state.mode, nextRound, state.seed + nextRound * 1000),
   };
+}
+
+/**
+ * One racing tick of the slope: both skiers move on their inputs, the slope
+ * scrolls and fills in ahead, and the collisions, gates, avalanche, blizzard
+ * and round's end are settled.
+ * @param {object} state
+ * @param {{ p1: {left: boolean, right: boolean}, p2: {left: boolean, right: boolean} }} inputs
+ * @returns {object}
+ */
+export function stepTick(state, inputs) {
+  let s = {
+    ...state,
+    events: 0,
+    p1: updateSkier(state.p1, inputs.p1, finishLineOf(state.mode)),
+    p2: updateSkier(state.p2, inputs.p2, finishLineOf(state.mode)),
+  };
+  s = updateScroll(s);
+  s = ensureChunks(s);
+  s = ensureGates(s);
+  s = updateItems(s);
+  s = checkCollisions(s);
+  s = checkGates(s);
+  s = updateAvalanche(s);
+  s = updateBlizzard(s);
+  return checkGameOver(s);
 }
 
 /**

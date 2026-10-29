@@ -32,6 +32,16 @@ function match(states, initial = "WAITING") {
 }
 
 /** `n` simulation steps. */
+/** A match that serves for 48 steps, then plays; `then` is the serve's end. */
+function servingThenPlaying() {
+  const then = vi.fn();
+  const { flow } = match({
+    SERVING: { after: { ticks: 48 }, then, next: "PLAYING" },
+    PLAYING: {},
+  });
+  return { flow, then };
+}
+
 function stepTimes(flow, n) {
   for (let i = 0; i < n; i++) flow.step();
 }
@@ -59,11 +69,7 @@ describe("flow", () => {
   });
 
   it("after: runs `then` and moves to `next` once its steps are counted", () => {
-    const then = vi.fn();
-    const { flow } = match({
-      SERVING: { after: { ticks: 48 }, then, next: "PLAYING" },
-      PLAYING: {},
-    });
+    const { flow, then } = servingThenPlaying();
     flow.go("SERVING");
     stepTimes(flow, 47);
     expect(flow.name).toBe("SERVING");
@@ -241,11 +247,7 @@ describe("flow", () => {
   });
 
   it("stop: nothing pending fires until a phase is entered again", () => {
-    const then = vi.fn();
-    const { flow } = match({
-      SERVING: { after: { ticks: 48 }, then, next: "PLAYING" },
-      PLAYING: {},
-    });
+    const { flow, then } = servingThenPlaying();
     flow.go("SERVING");
     flow.stop();
     stepTimes(flow, 100);

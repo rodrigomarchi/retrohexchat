@@ -6,8 +6,8 @@
 
 import { PHASE, BRICKS_ROWS, BRICKS_COLS, INITIAL_LIVES } from "./protocol.js";
 import { gameColor } from "../../game_colors.js";
-import { burst, stepParticles } from "../core/render.js";
-import { paddleBounce } from "../core/paddle.js";
+import { burst } from "../core/render.js";
+import { brickSparks, fadeSparks, lowerFlag, paddleBounce } from "../core/paddle.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -414,57 +414,77 @@ export function checkBrickCollision(state) {
  */
 export function checkKingHit(state) {
   if (state.phase !== PHASE.PLAYING || state.caughtBy !== 0) return state;
+  return kingHitBy(state, 1) ?? kingHitBy(state, 2) ?? state;
+}
 
-  const halfBall = FIREBALL_SIZE / 2;
-  const halfKing = KING_SIZE / 2;
-
-  // Check P1 king
-  if (
-    state.p1KingAlive &&
-    state.fireballX - halfBall <= P1_KING_X + halfKing &&
-    state.fireballX + halfBall >= P1_KING_X - halfKing &&
-    state.fireballY - halfBall <= P1_KING_Y + halfKing &&
-    state.fireballY + halfBall >= P1_KING_Y - halfKing
-  ) {
-    // Check if path to king is open (inner column bricks destroyed)
-    const innerBricksAlive = state.p1Bricks.some(
-      (b) => b.alive && b.col === 0 && Math.abs(b.y + b.h / 2 - state.fireballY) < b.h,
-    );
-    if (!innerBricksAlive) {
-      return {
-        ...state,
-        kingHit: true,
-        kingHitPlayer: 1,
-        p1KingAlive: false,
-        p1Lives: state.p1Lives - 1,
-      };
-    }
+/**
+ * The state with `player`'s king hit, when the fireball touches it and no
+ * inner-column brick at the fireball's height still guards it; else null.
+ * @param {object} state
+ * @param {1|2} player
+ * @returns {object|null}
+ */
+function kingHitBy(state, player) {
+  const p = `p${player}`;
+  const kingX = player === 1 ? P1_KING_X : P2_KING_X;
+  const kingY = player === 1 ? P1_KING_Y : P2_KING_Y;
+  const innerCol = player === 1 ? 0 : BRICKS_COLS - 1;
+  const reach = FIREBALL_SIZE / 2 + KING_SIZE / 2;
+  if (!state[`${p}KingAlive`]) return null;
+  if (Math.abs(state.fireballX - kingX) > reach || Math.abs(state.fireballY - kingY) > reach) {
+    return null;
   }
 
-  // Check P2 king
-  if (
-    state.p2KingAlive &&
-    state.fireballX - halfBall <= P2_KING_X + halfKing &&
-    state.fireballX + halfBall >= P2_KING_X - halfKing &&
-    state.fireballY - halfBall <= P2_KING_Y + halfKing &&
-    state.fireballY + halfBall >= P2_KING_Y - halfKing
-  ) {
-    const innerBricksAlive = state.p2Bricks.some(
-      (b) =>
-        b.alive && b.col === BRICKS_COLS - 1 && Math.abs(b.y + b.h / 2 - state.fireballY) < b.h,
-    );
-    if (!innerBricksAlive) {
-      return {
-        ...state,
-        kingHit: true,
-        kingHitPlayer: 2,
-        p2KingAlive: false,
-        p2Lives: state.p2Lives - 1,
-      };
-    }
+  // The path to the king is open once the inner column bricks are gone
+  const guarded = state[`${p}Bricks`].some(
+    (b) => b.alive && b.col === innerCol && Math.abs(b.y + b.h / 2 - state.fireballY) < b.h,
+  );
+  if (guarded) return null;
+  return {
+    ...state,
+    kingHit: true,
+    kingHitPlayer: player,
+    [`${p}KingAlive`]: false,
+    [`${p}Lives`]: state[`${p}Lives`] - 1,
+  };
+}
+
+/**
+ * One tick of play as the host runs it: both shields move, the fireball
+ * moves (or rides the shield that caught it) and bounces off the walls, a
+ * shield deflects it or catches it while its player holds Space, it breaks
+ * a brick, and a king it reaches is hit, which stops play. What happened
+ * comes back beside the state, whose own flags are left down; the brick
+ * hit's details stay on the state as checkBrickCollision left them.
+ * @param {object} state
+ * @param {{ up: boolean, down: boolean, space: boolean }} local - shield one's keys
+ * @param {{ up: boolean, down: boolean, space: boolean }} remote - shield two's keys
+ * @returns {{ state: object, events: { wallBounced: boolean, shieldHit: boolean, caught: boolean, brickHit: boolean, kingHit: boolean } }}
+ */
+export function stepTick(state, local, remote) {
+  let s = updateShield(state, 1, local);
+  s = updateShield(s, 2, remote);
+  s = checkWallBounce(updateFireball(updateCaughtFireball(s)));
+  const wallBounced = lowerFlag(s, "wallBounced");
+
+  s = checkShieldCollision(s);
+  const shieldHit = s.shieldHit;
+  let caught = false;
+  if (shieldHit) {
+    s = checkCatch(s, local, remote);
+    caught = lowerFlag(s, "caught");
+    s.shieldHit = false;
+    s.shieldHitPlayer = 0;
   }
 
-  return state;
+  s = checkBrickCollision(s);
+  const brickHit = lowerFlag(s, "brickHit");
+
+  s = checkKingHit(s);
+  const kingHit = lowerFlag(s, "kingHit");
+  if (kingHit) s.phase = PHASE.KING_HIT;
+
+  return { state: s, events: { wallBounced, shieldHit, caught, brickHit, kingHit } };
 }
 
 /**
@@ -535,15 +555,8 @@ export function checkGameOver(state) {
  * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
-// ex_dna:disable-for-lines:17 this game's own rule on the shared core helper
 export function createBrickParticles(x, y, color, random = Math.random) {
-  return burst(
-    x,
-    y,
-    8,
-    { speed: [2, 3], extra: () => ({ life: 1.0, color: color || gameColor("ffaa00") }) },
-    random,
-  );
+  return brickSparks(x, y, color, random);
 }
 
 /**
@@ -572,5 +585,5 @@ export function createKingParticles(x, y, random = Math.random) {
  * @returns {Array} updated particles (alive only)
  */
 export function updateParticles(particles) {
-  return stepParticles(particles, { drag: 0.96, fade: 0.04 });
+  return fadeSparks(particles, 0.04);
 }

@@ -31,6 +31,15 @@ import {
   getObstacleRect,
 } from "../../../../js/lib/games/hex_outlaw/physics.js";
 import { PHASE, GAME_MODE } from "../../../../js/lib/games/hex_outlaw/protocol.js";
+import { stepTick } from "../../../../js/lib/games/hex_outlaw/physics.js";
+import { inFlight } from "./in_flight.js";
+import { pressAndHold, released } from "../../../support/games/physics_tests.js";
+
+/** `step` takes both bullets out of flight. */
+function expectBulletsCleared(step) {
+  const s = { ...createInitialState(GAME_MODE.QUICK_DRAW), b1active: true, b2active: true };
+  expect(step(s)).toMatchObject({ b1active: false, b2active: false });
+}
 
 describe("Hex Outlaw Physics", () => {
   describe("createInitialState", () => {
@@ -204,12 +213,7 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.QUICK_DRAW);
       s = {
         ...s,
-        b1x: ARENA_RIGHT + 1,
-        b1y: 200,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 0,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: ARENA_RIGHT + 1, y: 200 }),
       };
       s = tickBullets(s);
       expect(s.b1active).toBe(false);
@@ -219,12 +223,7 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.RICOCHET);
       s = {
         ...s,
-        b1x: 200,
-        b1y: ARENA_TOP + BULLET_RADIUS + 1,
-        b1vx: BULLET_SPEED_X,
-        b1vy: -5,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: 200, y: ARENA_TOP + BULLET_RADIUS + 1, vy: -5 }),
       };
       s = tickBullets(s);
       expect(s.b1vy).toBeGreaterThan(0); // Bounced
@@ -235,12 +234,7 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.RICOCHET);
       s = {
         ...s,
-        b1x: 200,
-        b1y: ARENA_BOTTOM - BULLET_RADIUS - 1,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 5,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: 200, y: ARENA_BOTTOM - BULLET_RADIUS - 1, vy: 5 }),
       };
       s = tickBullets(s);
       expect(s.b1vy).toBeLessThan(0); // Bounced
@@ -251,12 +245,7 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.RICOCHET);
       s = {
         ...s,
-        b1x: 200,
-        b1y: ARENA_TOP + BULLET_RADIUS + 1,
-        b1vx: BULLET_SPEED_X,
-        b1vy: -5,
-        b1active: true,
-        b1bounced: true, // Already bounced once
+        ...inFlight("b1", { x: 200, y: ARENA_TOP + BULLET_RADIUS + 1, vy: -5, bounced: true }), // Already bounced once
       };
       s = tickBullets(s);
       // Should not bounce again — vy stays negative
@@ -307,12 +296,7 @@ describe("Hex Outlaw Physics", () => {
       // Place bullet right on top of P2
       s = {
         ...s,
-        b1x: s.p2x,
-        b1y: s.p2y,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 0,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: s.p2x, y: s.p2y }),
       };
       const { state, p2Hit } = checkBulletCollisions(s);
       expect(p2Hit).toBe(true);
@@ -325,12 +309,7 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.NO_MANS_LAND);
       s = {
         ...s,
-        b2x: s.p1x,
-        b2y: s.p1y,
-        b2vx: -BULLET_SPEED_X,
-        b2vy: 0,
-        b2active: true,
-        b2bounced: false,
+        ...inFlight("b2", { x: s.p1x, y: s.p1y }),
       };
       const { state, p1Hit } = checkBulletCollisions(s);
       expect(p1Hit).toBe(true);
@@ -344,12 +323,7 @@ describe("Hex Outlaw Physics", () => {
       const obsRect = getObstacleRect(s);
       s = {
         ...s,
-        b1x: obsRect.x + obsRect.w / 2,
-        b1y: obsRect.y + obsRect.h / 2,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 0,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: obsRect.x + obsRect.w / 2, y: obsRect.y + obsRect.h / 2 }),
       };
       const { state, obsHit } = checkBulletCollisions(s);
       expect(obsHit).toBe(true);
@@ -361,12 +335,7 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.NO_MANS_LAND);
       s = {
         ...s,
-        b1x: CANVAS_W / 2,
-        b1y: ARENA_TOP + 10,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 0,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: CANVAS_W / 2, y: ARENA_TOP + 10 }),
       };
       const { state, p2Hit, obsHit } = checkBulletCollisions(s);
       expect(p2Hit).toBe(false);
@@ -413,11 +382,7 @@ describe("Hex Outlaw Physics", () => {
     });
 
     it("deactivates bullets", () => {
-      let s = createInitialState(GAME_MODE.QUICK_DRAW);
-      s = { ...s, b1active: true, b2active: true };
-      s = enterHitPause(s);
-      expect(s.b1active).toBe(false);
-      expect(s.b2active).toBe(false);
+      expectBulletsCleared(enterHitPause);
     });
   });
 
@@ -511,11 +476,7 @@ describe("Hex Outlaw Physics", () => {
     });
 
     it("deactivates bullets", () => {
-      let s = createInitialState(GAME_MODE.QUICK_DRAW);
-      s = { ...s, b1active: true, b2active: true };
-      const s2 = resetForNewRound(s);
-      expect(s2.b1active).toBe(false);
-      expect(s2.b2active).toBe(false);
+      expectBulletsCleared(resetForNewRound);
     });
 
     it("resets to WAITING phase", () => {
@@ -589,12 +550,7 @@ describe("Hex Outlaw Physics", () => {
       // Bullet already bounced, now heading toward bottom wall
       s = {
         ...s,
-        b1x: 200,
-        b1y: ARENA_BOTTOM - BULLET_RADIUS,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 5,
-        b1active: true,
-        b1bounced: true,
+        ...inFlight("b1", { x: 200, y: ARENA_BOTTOM - BULLET_RADIUS, vy: 5, bounced: true }),
       };
       s = tickBullets(s);
       // Should deactivate because bounced && out of vertical bounds
@@ -606,12 +562,7 @@ describe("Hex Outlaw Physics", () => {
       // Place bullet so y + vy lands exactly at ARENA_TOP + BULLET_RADIUS
       s = {
         ...s,
-        b1x: 200,
-        b1y: ARENA_TOP + BULLET_RADIUS + 5,
-        b1vx: BULLET_SPEED_X,
-        b1vy: -5,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: 200, y: ARENA_TOP + BULLET_RADIUS + 5, vy: -5 }),
       };
       s = tickBullets(s);
       // y = (ARENA_TOP + BR + 5) + (-5) = ARENA_TOP + BR, condition: y - BR <= ARENA_TOP → true
@@ -623,12 +574,7 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.RICOCHET);
       s = {
         ...s,
-        b1x: 200,
-        b1y: ARENA_TOP + BULLET_RADIUS + 3,
-        b1vx: BULLET_SPEED_X,
-        b1vy: -5,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: 200, y: ARENA_TOP + BULLET_RADIUS + 3, vy: -5 }),
       };
       s = tickBullets(s);
       expect(s.b1active).toBe(true);
@@ -639,12 +585,7 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.QUICK_DRAW);
       s = {
         ...s,
-        b2x: ARENA_LEFT - 1,
-        b2y: 200,
-        b2vx: -BULLET_SPEED_X,
-        b2vy: 0,
-        b2active: true,
-        b2bounced: false,
+        ...inFlight("b2", { x: ARENA_LEFT - 1, y: 200 }),
       };
       s = tickBullets(s);
       expect(s.b2active).toBe(false);
@@ -656,18 +597,8 @@ describe("Hex Outlaw Physics", () => {
       let s = createInitialState(GAME_MODE.NO_MANS_LAND);
       s = {
         ...s,
-        b1x: s.p2x,
-        b1y: s.p2y,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 0,
-        b1active: true,
-        b1bounced: false,
-        b2x: s.p1x,
-        b2y: s.p1y,
-        b2vx: -BULLET_SPEED_X,
-        b2vy: 0,
-        b2active: true,
-        b2bounced: false,
+        ...inFlight("b1", { x: s.p2x, y: s.p2y }),
+        ...inFlight("b2", { x: s.p1x, y: s.p1y }),
       };
       const { state, p1Hit, p2Hit } = checkBulletCollisions(s);
       expect(p1Hit).toBe(true);
@@ -684,12 +615,7 @@ describe("Hex Outlaw Physics", () => {
         ...s,
         p2x: obsRect.x + obsRect.w + GUNSLINGER_W / 2,
         p2y: obsRect.y + obsRect.h / 2,
-        b1x: obsRect.x + obsRect.w / 2,
-        b1y: obsRect.y + obsRect.h / 2,
-        b1vx: BULLET_SPEED_X,
-        b1vy: 0,
-        b1active: true,
-        b1bounced: false,
+        ...inFlight("b1", { x: obsRect.x + obsRect.w / 2, y: obsRect.y + obsRect.h / 2 }),
       };
       const { state, p2Hit, obsHit } = checkBulletCollisions(s);
       expect(obsHit).toBe(true);
@@ -786,5 +712,62 @@ describe("Hex Outlaw Physics", () => {
       tickBullets(s);
       expect(s.b1x).toBe(prevX);
     });
+  });
+});
+
+describe("stepTick", () => {
+  const idle = released("up", "down", "left", "right", "fire");
+  const fire = { ...idle, fire: true };
+  const level = { 1: false, 2: false };
+  const shotAtRival = (state) => ({
+    ...state,
+    ...inFlight("b1", { x: state.p2x - BULLET_SPEED_X, y: state.p2y }),
+  });
+  const playing = (mode = GAME_MODE.NO_MANS_LAND) => ({
+    ...createInitialState(mode),
+    phase: PHASE.PLAYING,
+  });
+
+  it("shoots on the press at the shooter's aim, not while the key is held", () => {
+    const state = playing(GAME_MODE.RICOCHET);
+    const { first, held } = pressAndHold(
+      (next, pressed) => stepTick(next, { 1: fire, 2: idle }, pressed, { 1: true, 2: false }),
+      state,
+      level,
+      (next) => ({ ...next, b1active: false }),
+    );
+
+    expect(first.events.fired).toEqual([1]);
+    expect(first.state.b1vy).toBeLessThan(0);
+    expect(held.events.fired).toEqual([]);
+  });
+
+  it("freezes the street after a hit that does not end the round", () => {
+    const state = shotAtRival(playing());
+
+    const step = stepTick(state, { 1: idle, 2: idle }, level, level);
+
+    expect(step.events.hit).toEqual({ player: 2, x: state.p2x, y: state.p2y });
+    expect(step.events.roundOver).toBe(false);
+    expect(step.state.phase).toBe(PHASE.HIT_PAUSE);
+  });
+
+  it("ends the round on the winning hit", () => {
+    const state = shotAtRival({ ...playing(), score1: SCORE_TO_WIN - 1 });
+
+    const step = stepTick(state, { 1: idle, 2: idle }, level, level);
+
+    expect(step.events.roundOver).toBe(true);
+    expect(step.state.roundWins1).toBe(1);
+  });
+
+  it("only runs the freeze while the street is frozen", () => {
+    const state = { ...playing(), phase: PHASE.HIT_PAUSE, hitPauseTimer: 5 };
+
+    const step = stepTick(state, { 1: fire, 2: fire }, level, level);
+
+    expect(step.paused).toBe(true);
+    expect(step.state.hitPauseTimer).toBe(4);
+    expect(step.pressed).toBe(level);
   });
 });

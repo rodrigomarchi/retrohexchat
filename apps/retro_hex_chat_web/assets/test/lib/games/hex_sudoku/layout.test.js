@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { GEOMETRY, hitAt, layout } from "../../../../js/lib/games/hex_sudoku/layout.js";
 import { CEILING, PENALTY, SAFETY_TICKS } from "../../../../js/lib/games/hex_sudoku/protocol.js";
 import { winPoints } from "../../../../js/lib/games/hex_sudoku/scoring.js";
+import { expectLaidApart } from "../../../support/games/places.js";
 
 describe("a win's points", () => {
   it("are more the faster it was, a minute at least", () => {
@@ -19,10 +20,6 @@ describe("a win's points", () => {
   });
 });
 
-const within = (r, view) =>
-  r.x >= 0 && r.y >= 0 && r.x + r.w <= view.width && r.y + r.h <= view.height;
-const apart = (a, b) =>
-  a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
 const centre = (r) => [r.x + r.w / 2, r.y + r.h / 2];
 
 describe.each(["LANDSCAPE", "PORTRAIT"])("the table lying %s", (side) => {
@@ -31,10 +28,7 @@ describe.each(["LANDSCAPE", "PORTRAIT"])("the table lying %s", (side) => {
   const places = [grid, laid.bar, ...laid.keys, ...Object.values(laid.tools)];
 
   it("fits the grid, the keys and the tools in the view, none over another", () => {
-    for (const r of places) expect(within(r, view)).toBe(true);
-    places.forEach((a, n) => {
-      for (const b of places.slice(n + 1)) expect(apart(a, b)).toBe(true);
-    });
+    expectLaidApart(places, view);
   });
 
   it("draws the art on whole half pixels: a square of 16, a key and a tool of 24", () => {

@@ -22,17 +22,13 @@ import {
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
 import {
-  drawBackground,
-  drawCountdown,
   drawGlitchBanner,
   drawGlitchText,
-  drawGrid,
   drawParticleDots,
-  drawScanlines,
-  drawVignette,
-  drawWaiting,
+  drawTopLabel,
   glitchJitter,
 } from "../core/render.js";
+import { drawArena, drawGlass, drawLifeSquares, drawStartOverlay } from "../core/paddle_render.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -58,8 +54,7 @@ export function getColors(canvas) {
  * @param {number} time - timestamp for animations
  */
 export function render(ctx, state, colors, time) {
-  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
-  drawGrid(ctx, colors, CANVAS_W, CANVAS_H, { alpha: 0.15 });
+  drawArena(ctx, colors, CANVAS_W, CANVAS_H, 0.15);
 
   // Draw castles
   if (state.p1Bricks) {
@@ -94,18 +89,12 @@ export function render(ctx, state, colors, time) {
   drawHUD(ctx, state, colors, time);
 
   // Phase overlays
-  if (state.phase === PHASE.COUNTDOWN) {
-    drawCountdown(ctx, state.countdown, colors, time, CANVAS_W, CANVAS_H);
-  } else if (state.phase === PHASE.WAITING) {
-    drawWaiting(ctx, colors, time, CANVAS_W, CANVAS_H);
-  } else if (state.phase === PHASE.KING_HIT) {
-    drawKingHitOverlay(ctx, state, colors, time);
-  } else if (state.phase === PHASE.FINISHED) {
-    drawFinished(ctx, state, colors, time);
-  }
+  const screen = { width: CANVAS_W, height: CANVAS_H };
+  const overlaid = drawStartOverlay(ctx, state, colors, time, PHASE, screen);
+  if (!overlaid && state.phase === PHASE.KING_HIT) drawKingHitOverlay(ctx, state, colors, time);
+  if (!overlaid && state.phase === PHASE.FINISHED) drawFinished(ctx, state, colors, time);
 
-  drawScanlines(ctx, CANVAS_W, CANVAS_H);
-  drawVignette(ctx, CANVAS_W, CANVAS_H);
+  drawGlass(ctx, CANVAS_W, CANVAS_H);
 }
 
 /**
@@ -276,20 +265,15 @@ export function drawCatchIndicator(ctx, state, colors, time) {
  */
 export function drawHUD(ctx, state, colors, _time) {
   // P1 lives (left side)
-  drawLives(ctx, 10, CANVAS_H - 14, state.p1Lives, colors.fg);
+  drawLifeSquares(ctx, 10, CANVAS_H - 14, state.p1Lives, INITIAL_LIVES, colors.fg);
 
   // P2 lives (right side)
-  drawLives(ctx, CANVAS_W - 10 - INITIAL_LIVES * 12, CANVAS_H - 14, state.p2Lives, colors.accent);
+  const p2LivesX = CANVAS_W - 10 - INITIAL_LIVES * 12;
+  drawLifeSquares(ctx, p2LivesX, CANVAS_H - 14, state.p2Lives, INITIAL_LIVES, colors.accent);
 
   // Round indicator (top center)
   ctx.save();
-  ctx.shadowColor = colors.muted;
-  ctx.shadowBlur = 4;
-  ctx.fillStyle = colors.muted;
-  ctx.font = "12px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  ctx.fillText(jt`ROUND ${state.round}`, CANVAS_W / 2, 6);
+  drawTopLabel(ctx, jt`ROUND ${state.round}`, colors.muted, CANVAS_W, 6);
   ctx.restore();
 
   // Title
@@ -302,26 +286,6 @@ export function drawHUD(ctx, state, colors, _time) {
   ctx.textBaseline = "top";
   ctx.fillText(t("HEX WARLORDS"), CANVAS_W / 2, CANVAS_H - 18);
   ctx.restore();
-}
-
-/**
- * Draw lives as small squares.
- */
-function drawLives(ctx, startX, y, lives, color) {
-  const size = 6;
-  const gap = 12;
-
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 4;
-  // ex_dna:disable-for-lines:13 this game's own drawing
-  ctx.fillStyle = color;
-
-  for (let i = 0; i < Math.min(lives, INITIAL_LIVES); i++) {
-    ctx.fillRect(startX + i * gap, y - size, size, size);
-  }
-
-  ctx.shadowBlur = 0;
-  ctx.shadowColor = "transparent";
 }
 
 /**

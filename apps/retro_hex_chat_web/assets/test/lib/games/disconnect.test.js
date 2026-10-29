@@ -1,6 +1,6 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { loadP2PEngineClass } from "../../../js/lib/games/engine_loader.js";
-import { playMatch } from "../../support/games/harness.js";
+import { matchPerTest } from "../../support/games/harness.js";
 import { TWO_PLAYER_ENGINE_GAME_IDS } from "../../support/games/engines.js";
 
 // One id per two-player engine: the variants share their engine's lifecycle, and
@@ -8,17 +8,11 @@ import { TWO_PLAYER_ENGINE_GAME_IDS } from "../../support/games/engines.js";
 const GAMES = TWO_PLAYER_ENGINE_GAME_IDS;
 
 describe.each(GAMES)("%s when the other side disconnects", (gameId) => {
-  let match;
-
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
+  const play = matchPerTest();
 
   it("ends a match in play, redraws it once and reports it as disconnected", async () => {
     const Engine = await loadP2PEngineClass(gameId);
-    match = await playMatch({ gameId });
+    const match = await play({ gameId });
     match.advance(5000);
     const { host } = match.engines;
     expect(host.gameState.phase).not.toBe(Engine.FINAL_PHASE);
@@ -40,7 +34,7 @@ describe.each(GAMES)("%s when the other side disconnects", (gameId) => {
 
   it("stays over afterwards: no countdown, step or second report", async () => {
     const Engine = await loadP2PEngineClass(gameId);
-    match = await playMatch({ gameId });
+    const match = await play({ gameId });
     match.advance(2000);
     match.close();
     match.advance(100);
@@ -54,7 +48,7 @@ describe.each(GAMES)("%s when the other side disconnects", (gameId) => {
   });
 
   it("does not throw before the first state arrives", async () => {
-    match = await playMatch({ gameId });
+    const match = await play({ gameId });
     expect(() => match.close()).not.toThrow();
   });
 });

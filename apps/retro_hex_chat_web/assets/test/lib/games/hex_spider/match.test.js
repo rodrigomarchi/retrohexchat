@@ -1,42 +1,26 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { PHASE } from "../../../../js/lib/games/core/card_table/table.js";
 import { faceOf, suitOf } from "../../../../js/lib/games/core/cards.js";
 import HexSpider from "../../../../js/lib/games/hex_spider/index.js";
 import { layout } from "../../../../js/lib/games/hex_spider/layout.js";
 import { GEOMETRY } from "../../../../js/lib/games/hex_spider/protocol.js";
-import { playMatch } from "../../../support/games/harness.js";
+import {
+  itEndsEarly,
+  itReplays,
+  soloMatches,
+  underway,
+} from "../../../support/games/solo_tests.js";
+import { S, card, itStandsUpWithMinis } from "../../../support/games/card_tables.js";
 
-const S = 0;
-const card = (rank, suit, copy = 0) => copy * 52 + suit * 13 + rank - 1;
 const suitRun = (copy) => Array.from({ length: 13 }, (_, i) => card(13 - i, S, copy));
-const rect = { left: 0, top: 0, width: 720, height: 540 };
-const solo = (options = {}) =>
-  playMatch({
-    EngineClass: HexSpider,
-    gameId: "hex_spider",
-    mode: "solo",
-    matchSeed: 42,
-    rect,
-    ...options,
-  });
-const tapOn = (match, r) => {
-  match.pointer("down", r.x + 10, r.y + 10);
-  match.pointer("up", r.x + 10, r.y + 10);
-};
+/** A tap a little inside a place. */
+const tapOn = (match, r) => match.tap(r.x + 10, r.y + 10);
 
 describe("a match of Hex Spider", () => {
-  let match;
-
-  afterEach(() => {
-    match?.stop();
-    match?.restore();
-    match = null;
-  });
+  const solo = soloMatches(HexSpider, "hex_spider", { left: 0, top: 0, width: 720, height: 540 });
 
   it("begins dealt, and a tap on the stock deals a row for a point", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     expect(host.gameState.phase).toBe(PHASE.PLAYING);
     expect(host.gameState.score).toBe(500);
 
@@ -62,9 +46,7 @@ describe("a match of Hex Spider", () => {
   });
 
   it("wins with the last suit, celebrates and reports the score once", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     const last = suitRun(7);
     const columns = Array.from({ length: 10 }, (_, i) => ({
       down: [],
@@ -90,9 +72,7 @@ describe("a match of Hex Spider", () => {
   });
 
   it("pays a hundred for each suit a row puts away, two at once", async () => {
-    match = await solo();
-    match.advance(100);
-    const { host } = match.engines;
+    const { match, host } = await underway(solo);
     const columns = Array.from({ length: 10 }, (_, i) => ({
       down: [],
       up: i < 2 ? suitRun(i).slice(0, 12) : [card(13, S, i % 8)],
@@ -113,35 +93,15 @@ describe("a match of Hex Spider", () => {
     expect(host.gameState.score).toBe(699);
   });
 
-  it("stands the table up with the minis in a box taller than wide", async () => {
-    match = await solo({ rect: { left: 0, top: 0, width: 360, height: 600 } });
-    match.advance(100);
-    const { host } = match.engines;
-    expect(host.view).toEqual(GEOMETRY.PORTRAIT.view);
-    expect(host.fx.card).toEqual({ width: 44, height: 62 });
-  });
+  itStandsUpWithMinis(solo, GEOMETRY);
 
-  it("ends early with the points it holds", async () => {
-    match = await solo();
-    match.advance(500);
-    match.engines.host.quit();
-    expect(match.results.host).toEqual([{ score: { p1: 500, p2: 0 }, ended_early: true }]);
-  });
+  itEndsEarly("ends early with the points it holds", solo, { points: 500 });
 
-  it("plays the same match for the same seed and the same presses", async () => {
-    const stock = layout({ ...(await solo()).engines.host.gameState.table }).stock.at(-1);
-    const script = [300, 900].flatMap((at) => [
-      { at, side: "host", pointer: "down", x: stock.x + 10, y: stock.y + 10 },
-      { at: at + 30, side: "host", pointer: "up", x: stock.x + 10, y: stock.y + 10 },
-    ]);
-    const finalState = async () => {
-      const m = await solo({ script });
-      m.advance(2000);
-      const state = JSON.stringify(m.engines.host.gameState);
-      m.stop();
-      m.restore();
-      return state;
-    };
-    expect(await finalState()).toBe(await finalState());
+  itReplays(solo, async () => {
+    const dealt = await solo();
+    const stock = layout(dealt.engines.host.gameState.table).stock.at(-1);
+    dealt.stop();
+    dealt.restore();
+    return [300, 900].map((at) => [at, stock.x + 10, stock.y + 10]);
   });
 });

@@ -3,36 +3,12 @@ import { createRng } from "../../../../js/lib/games/core/rng.js";
 import { createEffects } from "../../../../js/lib/games/core/card_table/effects.js";
 import { dealEffects } from "../../../../js/lib/games/hex_solitaire/effects.js";
 import { layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
-import { MODE } from "../../../../js/lib/games/hex_solitaire/protocol.js";
+import { MODE, VIEW } from "../../../../js/lib/games/hex_solitaire/protocol.js";
 import { createInitialState } from "../../../../js/lib/games/hex_solitaire/physics.js";
 import { render } from "../../../../js/lib/games/hex_solitaire/renderer.js";
-import { recordingCanvas } from "../../../support/games/recording_canvas.js";
+import { TEST_ATLAS, drawnTable, images } from "../../../support/games/card_tables.js";
 
-const colors = { felt: "f", feltDark: "d", slot: "s", ink: "i", shadow: "sh" };
-const region = (i) => ({ x: i * 66, y: 0, w: 64, h: 88 });
-const image = { id: "atlas" };
-const atlas = {
-  image,
-  card: { width: 64, height: 88 },
-  faces: Array.from({ length: 52 }, (_, i) => region(i)),
-  backs: [0, 1, 2, 3].map((i) => region(60 + i)),
-};
-
-function drawn(scene) {
-  const canvas = recordingCanvas(640, 480);
-  canvas.clearLog();
-  render(canvas.getContext("2d"), {
-    fx: createEffects(),
-    drag: null,
-    atlas,
-    colors,
-    now: 0,
-    back: 0,
-    ...scene,
-  });
-  return canvas.log;
-}
-const images = (log) => log.filter(([op]) => op === "drawImage");
+const drawn = (scene) => drawnTable(render, VIEW, scene);
 const state = createInitialState(createRng(3).next, MODE.DRAW1);
 
 describe("the picture", () => {
@@ -43,7 +19,7 @@ describe("the picture", () => {
   });
 
   it("draws the back the player chose for every card face down", () => {
-    const backTwo = atlas.backs[2];
+    const backTwo = TEST_ATLAS.backs[2];
     const log = drawn({ state, back: 2 });
     const backs = images(log).filter((call) => call[2] === backTwo.x);
     expect(backs).toHaveLength(22); // 21 dealt face down, and the stock
@@ -100,7 +76,7 @@ describe("the picture", () => {
       items: [{ card: 12, x: 0, y: 0, vx: 0, vy: 0, launch: 0 }],
     });
     const log = drawn({ state: won, fx, now: 1 });
-    const queen = atlas.faces[11];
+    const queen = TEST_ATLAS.faces[11];
     const spadesPlace = layout(won.table).foundations[0];
     expect(
       images(log).some((c) => c[2] === queen.x && c[6] === spadesPlace.x && c[7] === spadesPlace.y),

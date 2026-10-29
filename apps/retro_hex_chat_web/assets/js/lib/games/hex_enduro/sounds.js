@@ -4,7 +4,7 @@
  * @module games/hex_enduro/sounds
  */
 
-import { blip, notes, sweep } from "../core/synth.js";
+import { FANFARE, blip, notes, sweep } from "../core/synth.js";
 
 export const SOUNDS = {
   /** A quick sine sweep, 400 → 600 Hz, 60 ms. */
@@ -24,7 +24,7 @@ export const SOUNDS = {
   /** 600 Hz square blip, 80 ms. */
   countdown: blip("square", 600, 0.08, 0.1),
   /** Rising C5-E5-G5-C6-E6. */
-  victory: notes([523, 659, 784, 1047, 1319], { wave: "square", note: 0.1, gap: 0.02, vol: 0.1 }),
+  victory: notes(FANFARE, { wave: "square", note: 0.1, gap: 0.02, vol: 0.1 }),
   /** Falling 200 → 30 Hz sawtooth, 800 ms. */
   gameOver: sweep("sawtooth", 200, 30, 0.8, 0.12),
   /** A rapid pulse: 800 Hz square, 30 ms. */

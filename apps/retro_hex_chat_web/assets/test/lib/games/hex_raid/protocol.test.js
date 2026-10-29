@@ -1,17 +1,26 @@
 import { describe, it, expect } from "vitest";
 import {
-  MSG_TYPE,
   PHASE,
   GAME_MODE,
   ENEMY_TYPE,
   MAX_ENEMIES,
   MAX_FUEL,
   MAX_MINES,
-  encodeGameReady,
-  getMessageType,
   SNAPSHOT,
   GAME_END,
 } from "../../../../js/lib/games/hex_raid/protocol.js";
+import * as protocol from "../../../../js/lib/games/hex_raid/protocol.js";
+import { createInitialState } from "../../../../js/lib/games/hex_raid/physics.js";
+import {
+  describeHandshake,
+  describeTwoByteScoreEnd,
+  itFramesMessages,
+} from "../../../support/games/protocol_tests.js";
+
+/** A snapshot of a match as it starts, with `overrides` on top. */
+function snapshotState(overrides = {}) {
+  return { ...createInitialState(GAME_MODE.RIVER_DUEL, 0), ...overrides };
+}
 
 describe("Hex Raid Protocol", () => {
   describe("game state encode/decode", () => {
@@ -143,47 +152,9 @@ describe("Hex Raid Protocol", () => {
     });
 
     it("handles zero entities", () => {
-      const state = {
-        jet1X: 0,
-        jet1Y: 0,
-        jet1Speed: 0,
-        jet1Fuel: 0,
-        jet1Lives: 0,
-        jet1Alive: false,
-        jet1Invuln: false,
-        jet1Respawning: false,
-        jet2X: 0,
-        jet2Y: 0,
-        jet2Speed: 0,
-        jet2Fuel: 0,
-        jet2Lives: 0,
-        jet2Alive: false,
-        jet2Invuln: false,
-        jet2Respawning: false,
-        m1X: 0,
-        m1Y: 0,
-        m1Active: false,
-        m2X: 0,
-        m2Y: 0,
-        m2Active: false,
-        enemies: [],
-        enemyCount: 0,
-        fuels: [],
-        fuelCount: 0,
-        mines: [],
-        mineCount: 0,
-        bridgeY: 0,
-        bridgeHp: 0,
-        bridgeActive: false,
-        score1: 0,
-        score2: 0,
-        phase: PHASE.WAITING,
-        countdown: 3,
-        section: 1,
-        scrollY: 0,
+      const state = snapshotState({
         mode: GAME_MODE.PACIFIST,
-        seed: 0,
-      };
+      });
 
       const buf = SNAPSHOT.encode(state);
       const d = SNAPSHOT.decode(buf);
@@ -217,29 +188,11 @@ describe("Hex Raid Protocol", () => {
         });
       }
 
-      const state = {
+      const state = snapshotState({
         jet1X: 320,
         jet1Y: 400,
-        jet1Speed: 2,
-        jet1Fuel: 255,
-        jet1Lives: 3,
-        jet1Alive: true,
-        jet1Invuln: false,
-        jet1Respawning: false,
         jet2X: 320,
         jet2Y: 400,
-        jet2Speed: 2,
-        jet2Fuel: 255,
-        jet2Lives: 3,
-        jet2Alive: true,
-        jet2Invuln: false,
-        jet2Respawning: false,
-        m1X: 0,
-        m1Y: 0,
-        m1Active: false,
-        m2X: 0,
-        m2Y: 0,
-        m2Active: false,
         enemies,
         enemyCount: MAX_ENEMIES,
         fuels,
@@ -249,15 +202,12 @@ describe("Hex Raid Protocol", () => {
         bridgeY: 1000,
         bridgeHp: 3,
         bridgeActive: true,
-        score1: 0,
-        score2: 0,
         phase: PHASE.FLYING,
         countdown: 0,
         section: 1,
-        scrollY: 0,
         mode: GAME_MODE.BLITZ,
         seed: 42,
-      };
+      });
 
       const buf = SNAPSHOT.encode(state);
       const d = SNAPSHOT.decode(buf);
@@ -272,47 +222,22 @@ describe("Hex Raid Protocol", () => {
     });
 
     it("handles respawning flag", () => {
-      const state = {
+      const state = snapshotState({
         jet1X: 320,
         jet1Y: 400,
         jet1Speed: 0,
         jet1Fuel: 100,
         jet1Lives: 2,
         jet1Alive: false,
-        jet1Invuln: false,
         jet1Respawning: true,
         jet2X: 320,
         jet2Y: 400,
-        jet2Speed: 2,
         jet2Fuel: 200,
-        jet2Lives: 3,
-        jet2Alive: true,
-        jet2Invuln: false,
-        jet2Respawning: false,
-        m1X: 0,
-        m1Y: 0,
-        m1Active: false,
-        m2X: 0,
-        m2Y: 0,
-        m2Active: false,
-        enemies: [],
-        enemyCount: 0,
-        fuels: [],
-        fuelCount: 0,
-        mines: [],
-        mineCount: 0,
-        bridgeY: 0,
-        bridgeHp: 0,
-        bridgeActive: false,
-        score1: 0,
-        score2: 0,
         phase: PHASE.FLYING,
         countdown: 0,
         section: 1,
-        scrollY: 0,
-        mode: GAME_MODE.RIVER_DUEL,
         seed: 1,
-      };
+      });
 
       const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.jet1Alive).toBe(false);
@@ -321,59 +246,18 @@ describe("Hex Raid Protocol", () => {
       expect(d.jet2Respawning).toBe(false);
     });
 
-    it("returns null for truncated buffer", () => {
-      const buf = new ArrayBuffer(10);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(185);
-      new DataView(buf).setUint8(0, 0x81);
-      expect(SNAPSHOT.decode(buf)).toBeNull();
-    });
+    itFramesMessages(SNAPSHOT, { short: [10], length: 185, wrongType: 0x81 });
 
     it("roundtrips high scores (Uint16)", () => {
-      const state = {
-        jet1X: 0,
-        jet1Y: 0,
-        jet1Speed: 0,
-        jet1Fuel: 0,
-        jet1Lives: 0,
-        jet1Alive: false,
-        jet1Invuln: false,
-        jet1Respawning: false,
-        jet2X: 0,
-        jet2Y: 0,
-        jet2Speed: 0,
-        jet2Fuel: 0,
-        jet2Lives: 0,
-        jet2Alive: false,
-        jet2Invuln: false,
-        jet2Respawning: false,
-        m1X: 0,
-        m1Y: 0,
-        m1Active: false,
-        m2X: 0,
-        m2Y: 0,
-        m2Active: false,
-        enemies: [],
-        enemyCount: 0,
-        fuels: [],
-        fuelCount: 0,
-        mines: [],
-        mineCount: 0,
-        bridgeY: 0,
-        bridgeHp: 0,
-        bridgeActive: false,
+      const state = snapshotState({
         score1: 12340,
         score2: 65000,
         phase: PHASE.FINISHED,
         countdown: 0,
         section: 10,
         scrollY: 18000.0,
-        mode: GAME_MODE.RIVER_DUEL,
         seed: 0xffffffff,
-      };
+      });
 
       const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.score1).toBe(12340);
@@ -383,100 +267,12 @@ describe("Hex Raid Protocol", () => {
     });
   });
 
-  describe("game end encode/decode", () => {
-    it("roundtrips a result", () => {
-      const result = { score1: 2340, score2: 1890, winner: 1 };
-      const buf = GAME_END.encode(result);
-      expect(buf.byteLength).toBe(6);
-
-      const d = GAME_END.decode(buf);
-      expect(d).not.toBeNull();
-      expect(d.score1).toBe(2340);
-      expect(d.score2).toBe(1890);
-      expect(d.winner).toBe(1);
-    });
-
-    it("handles high scores", () => {
-      const result = { score1: 50000, score2: 32000, winner: 2 };
-      const d = GAME_END.decode(GAME_END.encode(result));
-      expect(d.score1).toBe(50000);
-      expect(d.score2).toBe(32000);
-      expect(d.winner).toBe(2);
-    });
-
-    it("returns null for truncated buffer", () => {
-      expect(GAME_END.decode(new ArrayBuffer(2))).toBeNull();
-    });
-
-    it("returns null for wrong type", () => {
-      const buf = new ArrayBuffer(6);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(GAME_END.decode(buf)).toBeNull();
-    });
-  });
-
-  describe("game ready", () => {
-    it("encodes single byte", () => {
-      const buf = encodeGameReady();
-      expect(buf.byteLength).toBe(1);
-      expect(new DataView(buf).getUint8(0)).toBe(MSG_TYPE.GAME_READY);
-    });
-  });
-
-  describe("getMessageType", () => {
-    it("returns null for empty buffer", () => {
-      expect(getMessageType(new ArrayBuffer(0))).toBeNull();
-    });
-  });
+  describeTwoByteScoreEnd(protocol);
+  describeHandshake(protocol);
 
   describe("boundary values", () => {
-    function makeMinimalState(overrides = {}) {
-      return {
-        jet1X: 0,
-        jet1Y: 0,
-        jet1Speed: 0,
-        jet1Fuel: 0,
-        jet1Lives: 0,
-        jet1Alive: false,
-        jet1Invuln: false,
-        jet1Respawning: false,
-        jet2X: 0,
-        jet2Y: 0,
-        jet2Speed: 0,
-        jet2Fuel: 0,
-        jet2Lives: 0,
-        jet2Alive: false,
-        jet2Invuln: false,
-        jet2Respawning: false,
-        m1X: 0,
-        m1Y: 0,
-        m1Active: false,
-        m2X: 0,
-        m2Y: 0,
-        m2Active: false,
-        enemies: [],
-        enemyCount: 0,
-        fuels: [],
-        fuelCount: 0,
-        mines: [],
-        mineCount: 0,
-        bridgeY: 0,
-        bridgeHp: 0,
-        bridgeActive: false,
-        score1: 0,
-        score2: 0,
-        phase: PHASE.WAITING,
-        countdown: 0,
-        section: 1,
-        scrollY: 0,
-        mode: GAME_MODE.RIVER_DUEL,
-        seed: 0,
-        ...overrides,
-      };
-    }
-
     it("roundtrips max Uint16 values (65535)", () => {
-      const state = makeMinimalState({
+      const state = snapshotState({
         jet1X: 65535,
         jet1Y: 65535,
         score1: 65535,
@@ -490,7 +286,7 @@ describe("Hex Raid Protocol", () => {
     });
 
     it("roundtrips max Uint8 values (255)", () => {
-      const state = makeMinimalState({
+      const state = snapshotState({
         jet1Speed: 255,
         jet1Fuel: 255,
         jet1Lives: 255,
@@ -508,7 +304,7 @@ describe("Hex Raid Protocol", () => {
     it("roundtrips all PHASE values", () => {
       const phases = [PHASE.WAITING, PHASE.COUNTDOWN, PHASE.FLYING, PHASE.FINISHED];
       for (const phase of phases) {
-        const state = makeMinimalState({ phase });
+        const state = snapshotState({ phase });
         const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(d.phase).toBe(phase);
       }
@@ -517,20 +313,20 @@ describe("Hex Raid Protocol", () => {
     it("roundtrips all GAME_MODE values", () => {
       const modes = [GAME_MODE.RIVER_DUEL, GAME_MODE.PACIFIST, GAME_MODE.BLITZ];
       for (const mode of modes) {
-        const state = makeMinimalState({ mode });
+        const state = snapshotState({ mode });
         const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(d.mode).toBe(mode);
       }
     });
 
     it("roundtrips negative scrollY", () => {
-      const state = makeMinimalState({ scrollY: -100.5 });
+      const state = snapshotState({ scrollY: -100.5 });
       const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.scrollY).toBeCloseTo(-100.5, 1);
     });
 
     it("roundtrips very large scrollY", () => {
-      const state = makeMinimalState({ scrollY: 100000.0 });
+      const state = snapshotState({ scrollY: 100000.0 });
       const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.scrollY).toBeCloseTo(100000.0, 0);
     });

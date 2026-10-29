@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { BASE_MSG } from "../../../js/lib/games/net_protocol.js";
 import { PHASE as HOCKEY } from "../../../js/lib/games/hex_hockey/protocol.js";
 import { PHASE as OUTLAW } from "../../../js/lib/games/hex_outlaw/protocol.js";
@@ -11,7 +11,7 @@ import {
   PHASE as TRAILS,
 } from "../../../js/lib/games/surround/protocol.js";
 import { PHASE as WARLORDS } from "../../../js/lib/games/warlords/protocol.js";
-import { playMatch } from "../../support/games/harness.js";
+import { matchPerTest } from "../../support/games/harness.js";
 import { TWO_PLAYER_ENGINE_GAME_IDS } from "../../support/games/engines.js";
 
 /*
@@ -23,14 +23,10 @@ import { TWO_PLAYER_ENGINE_GAME_IDS } from "../../support/games/engines.js";
 
 let match = null;
 
-afterEach(() => {
-  match?.stop();
-  match?.restore();
-  match = null;
-});
+const startMatch = matchPerTest();
 
 async function underway(gameId, phase, options = {}) {
-  match = await playMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5, ...options });
+  match = await startMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5, ...options });
   const reached = match.runUntil(() => match.engines.host.gameState?.phase === phase, 30_000);
   expect(reached, `${gameId} reaches phase ${phase}`).toBe(true);
 }
@@ -205,7 +201,7 @@ const bytesOf = (hex) => new Uint8Array(hex.match(/../g).map((b) => parseInt(b, 
 
 describe.each(ENGINES)("%s — a peer's stray datagrams", (gameId) => {
   it("the host ignores a snapshot sent to it", async () => {
-    match = await playMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5 });
+    match = await startMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5 });
     match.advance(500);
     const { host } = match.engines;
     const early = host.gameState.phase;
@@ -223,7 +219,7 @@ describe.each(ENGINES)("%s — a peer's stray datagrams", (gameId) => {
   });
 
   it("the guest ignores a snapshot cut short", async () => {
-    match = await playMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5 });
+    match = await startMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5 });
     match.advance(500);
     const { guest } = match.engines;
     const before = guest.gameState.phase;

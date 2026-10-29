@@ -1,41 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { PHASE, GAME_MODE, WEATHER } from "../../../../js/lib/games/hex_enduro/protocol.js";
 import { createInitialState } from "../../../../js/lib/games/hex_enduro/physics.js";
 import { getColors, render } from "../../../../js/lib/games/hex_enduro/renderer.js";
-
-function createMockCtx() {
-  return {
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 0,
-    globalAlpha: 1.0,
-    globalCompositeOperation: "source-over",
-    font: "",
-    textAlign: "",
-    textBaseline: "",
-    shadowColor: "transparent",
-    shadowBlur: 0,
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-    fillText: vi.fn(),
-    beginPath: vi.fn(),
-    moveTo: vi.fn(),
-    lineTo: vi.fn(),
-    closePath: vi.fn(),
-    fill: vi.fn(),
-    stroke: vi.fn(),
-    setLineDash: vi.fn(),
-    measureText: vi.fn(() => ({ width: 50 })),
-    createLinearGradient: vi.fn(() => ({
-      addColorStop: vi.fn(),
-    })),
-    createRadialGradient: vi.fn(() => ({
-      addColorStop: vi.fn(),
-    })),
-    save: vi.fn(),
-    restore: vi.fn(),
-  };
-}
+import { createMockCtx } from "../../../support/games/renderer_tests.js";
 
 function createDefaultColors() {
   return {
@@ -54,6 +21,7 @@ function createDefaultColors() {
   };
 }
 
+// ex_dna:disable-for-lines:11 this test file's own context and palette, made fresh per test
 describe("Hex Enduro Renderer", () => {
   let ctx;
   let colors;

@@ -65,6 +65,17 @@ export function blip(wave, freq, dur, vol) {
 }
 
 /**
+ * One steady note that rings out: it fades exponentially to silence.
+ * @param {OscillatorType} wave
+ * @param {number} freq
+ * @param {number} dur
+ * @param {number} vol
+ */
+export function ring(wave, freq, dur, vol) {
+  return { wave, freq, vol: fade(vol, dur, "exp"), dur };
+}
+
+/**
  * One note gliding from one pitch to another while it fades linearly.
  * @param {OscillatorType} wave
  * @param {number} from
@@ -286,3 +297,12 @@ export function createGameAudio({ sounds = {}, masterVolume = null, extend } = {
   }
   return audio;
 }
+
+/** The rising fanfare of a won match: C5-E5-G5-C6-E6. */
+export const FANFARE = Object.freeze([523, 659, 784, 1047, 1319]);
+
+/** The win most duels end on: the fanfare in square notes of 120 ms. */
+export const WIN_FANFARE = notes(FANFARE, { wave: "square", note: 0.12, vol: 0.12 });
+
+/** The loss most duels end on: a sawtooth falling from 500 to 150 Hz over 700 ms. */
+export const LOSE_SWEEP = sweep("sawtooth", 500, 150, 0.7, 0.1);

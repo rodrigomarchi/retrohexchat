@@ -23,31 +23,17 @@ import {
   drawVignette,
   stepParticles,
 } from "../../../../js/lib/games/core/render.js";
+import { createMockCtx } from "../../../support/games/renderer_tests.js";
 
 const W = 640;
 const H = 480;
 const colors = { bg: "#000", fg: "#0f0", muted: "#333", warning: "#fa0" };
 
-function createMockCtx() {
-  return {
-    fillStyle: "",
-    font: "",
-    textAlign: "",
-    textBaseline: "",
-    shadowColor: "",
-    shadowBlur: 0,
-    fillRect: vi.fn(),
-    fillText: vi.fn(),
-    save: vi.fn(),
-    restore: vi.fn(),
-  };
-}
-
 describe("game hud", () => {
   let ctx;
 
   beforeEach(() => {
-    ctx = createMockCtx();
+    ctx = createMockCtx({ shadowColor: "" });
   });
 
   it("fills the whole canvas with the background", () => {
@@ -60,7 +46,7 @@ describe("game hud", () => {
     drawScanlines(ctx, W, H);
     expect(ctx.fillRect).toHaveBeenCalledTimes(H / 2);
 
-    ctx = createMockCtx();
+    ctx = createMockCtx({ shadowColor: "" });
     drawScanlines(ctx, W, H, { alpha: 0.06, step: 3 });
     expect(ctx.fillRect).toHaveBeenCalledTimes(Math.ceil(H / 3));
     expect(ctx.fillStyle).toBe("rgba(0,0,0,0.06)");

@@ -15,6 +15,7 @@ import {
 } from "../../../../js/lib/games/hex_blocks/protocol.js";
 import { render } from "../../../../js/lib/games/hex_blocks/renderer.js";
 import { recordingCanvas } from "../../../support/games/recording_canvas.js";
+import { cutsOf, filledWith } from "../../../support/games/canvas_log.js";
 
 const NAMES = [
   ...PIECES.map((p) => `gem_${p.colour}`),
@@ -35,8 +36,7 @@ const atlas = { image: { id: "tiles" }, regions };
 const colors = Object.fromEntries(
   ["back", "panel", "edge", "well", "gem", "trail", "led", "pulse"].map((name) => [name, name]),
 );
-const cut = (log, name) =>
-  log.filter(([op, , sx]) => op === "drawImage" && sx === regions[name].x).length;
+const cut = (log, name) => cutsOf(log, regions[name]);
 const alphas = (log, name) => {
   let alpha = 1;
   const seen = [];
@@ -48,16 +48,12 @@ const alphas = (log, name) => {
 };
 
 const random = () => createRng(5).fork("bag").next;
-/** How many rectangles were filled in `colour`. */
-const filledWith = (log, colour) => {
-  let fill = null;
-  let n = 0;
-  for (const [op, , value] of log) {
-    if (op === "fillStyle") fill = value;
-    if (op === "fillRect" && fill === colour) n++;
-  }
-  return n;
-};
+/** The effects the game plays of the change from `before` to `after`. */
+function effectsOf(before, after) {
+  const fx = createEffects();
+  playedEffects(fx, { before, after, laid: layout(GEOMETRY.LANDSCAPE), now: 0, random: () => 0.5 });
+  return fx;
+}
 /** The colour the well's frame is filled with: the first fill after the background. */
 const edgeOf = (log) => log.filter(([op]) => op === "fillStyle").map(([, , v]) => v)[1];
 function playing(mode = MODE.hex_blocks) {
@@ -119,14 +115,7 @@ describe("Hex Blocks' picture", () => {
   it("pulses the level when it goes up, and tints the well's frame by the level", () => {
     const before = playing();
     const after = { ...before, level: 2, events: EVENT.LEVEL };
-    const fx = createEffects();
-    playedEffects(fx, {
-      before,
-      after,
-      laid: layout(GEOMETRY.LANDSCAPE),
-      now: 0,
-      random: () => 0.5,
-    });
+    const fx = effectsOf(before, after);
     const pulsing = drawn(after, { fx, now: 5 });
     expect(filledWith(pulsing, "pulse")).toBeGreaterThan(0);
     expect(filledWith(drawn(after, { fx, now: 200 }), "pulse")).toBe(0);
@@ -144,14 +133,7 @@ describe("Hex Blocks' picture", () => {
     // A piece set in the well that cleared the bottom row, as the physics records it.
     const landed = { n: 1, cells: [], well: before.well, trail: null };
     const after = { ...before, cleared: [ROWS - 1], landed, events: 0 };
-    const fx = createEffects();
-    playedEffects(fx, {
-      before,
-      after,
-      laid: layout(GEOMETRY.LANDSCAPE),
-      now: 0,
-      random: () => 0.5,
-    });
+    const fx = effectsOf(before, after);
     expect(cut(drawn(after, { fx, now: 1 }), "flash")).toBe(COLS);
   });
 });

@@ -15,6 +15,7 @@ import {
   BOXER_BODY_RADIUS,
   PUNCH_RANGE,
   PUNCH_DURATION,
+  PUNCH_WINDUP,
   FIST_RADIUS,
   KO_SCORE,
   DIR_DX,
@@ -28,6 +29,8 @@ import {
   drawBackground,
   drawCenterText,
   drawMatchOver,
+  drawRoundDots,
+  drawScoreLabels,
   stepParticles,
 } from "../core/render.js";
 
@@ -135,7 +138,7 @@ function drawBoxer(ctx, state, player, color, colors) {
   ctx.fill();
 }
 
-function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, _colors) {
+function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, colors) {
   // Perpendicular direction for arm offsets
   const perpDirLeft = (dir + 6) % 8; // 90 degrees counter-clockwise
   const perpDirRight = (dir + 2) % 8; // 90 degrees clockwise
@@ -159,9 +162,17 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, _colo
     punchExtension = ext * PUNCH_RANGE;
   }
 
+  // Wind-up: the punching arm draws back toward the body as the punch nears.
+  const windup =
+    punchState === PUNCH_STATE.WINDUP ? 1 - (punchTimer - 1) / Math.max(1, PUNCH_WINDUP - 1) : 0;
+  const armLength = (side) => {
+    if (arm !== side) return restLength;
+    if (punchState === PUNCH_STATE.PUNCHING) return restLength + punchExtension;
+    return restLength * (1 - 0.6 * windup);
+  };
+
   // Draw left arm
-  const lLength =
-    arm === 0 && punchState === PUNCH_STATE.PUNCHING ? restLength + punchExtension : restLength;
+  const lLength = armLength(0);
   const lEndX = lArmBaseX + DIR_DX[dir] * lLength;
   const lEndY = lArmBaseY + DIR_DY[dir] * lLength;
 
@@ -180,8 +191,7 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, _colo
   ctx.fill();
 
   // Draw right arm
-  const rLength =
-    arm === 1 && punchState === PUNCH_STATE.PUNCHING ? restLength + punchExtension : restLength;
+  const rLength = armLength(1);
   const rEndX = rArmBaseX + DIR_DX[dir] * rLength;
   const rEndY = rArmBaseY + DIR_DY[dir] * rLength;
 
@@ -198,6 +208,19 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, _colo
   ctx.arc(rEndX, rEndY, FIST_RADIUS, 0, Math.PI * 2);
   ctx.fillStyle = armColor;
   ctx.fill();
+
+  // The cocked fist glows in the warning colour, brighter as the punch nears,
+  // so the rival can see it coming.
+  if (punchState === PUNCH_STATE.WINDUP) {
+    ctx.save();
+    ctx.globalAlpha = 0.35 + 0.5 * windup;
+    ctx.beginPath();
+    ctx.arc(arm === 0 ? lEndX : rEndX, arm === 0 ? lEndY : rEndY, FIST_RADIUS + 3, 0, Math.PI * 2);
+    ctx.strokeStyle = colors.warning;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+  }
 
   // Hit flash on fist when connecting
   if (punchState === PUNCH_STATE.PUNCHING && punchExtension > PUNCH_RANGE * 0.3) {
@@ -251,19 +274,7 @@ function drawParticles(ctx, particles) {
 function drawHUD(ctx, state, colors, frameCount) {
   const hudY = 16;
 
-  // Score labels
-  ctx.font = "bold 14px monospace";
-  ctx.textBaseline = "top";
-
-  // P1 score (left)
-  ctx.textAlign = "left";
-  ctx.fillStyle = colors.fg;
-  ctx.fillText(jt`P1: ${state.score1}`, RING_LEFT + 4, hudY);
-
-  // P2 score (right)
-  ctx.textAlign = "right";
-  ctx.fillStyle = colors.accent;
-  ctx.fillText(jt`P2: ${state.score2}`, RING_RIGHT - 4, hudY);
+  drawScoreLabels(ctx, state, colors, RING_LEFT + 4, RING_RIGHT - 4, hudY);
 
   // Game title (center)
   ctx.textAlign = "center";
@@ -313,25 +324,7 @@ function drawHUD(ctx, state, colors, frameCount) {
   ctx.font = "10px monospace";
   ctx.fillStyle = colors.muted;
   ctx.fillText(jt`Round ${state.round}`, CANVAS_W / 2, dotY);
-
-  // Round win dots
-  for (let i = 0; i < 3; i++) {
-    const dx = CANVAS_W / 2 - 20 + i * 20;
-    ctx.beginPath();
-    ctx.arc(dx, dotY + 12, 3, 0, Math.PI * 2);
-    if (i < state.roundWins1) ctx.fillStyle = colors.fg;
-    // ex_dna:disable-for-lines:7 this game's own drawing
-    else ctx.fillStyle = colors.muted;
-    ctx.fill();
-  }
-  for (let i = 0; i < 3; i++) {
-    const dx = CANVAS_W / 2 + 40 + i * 20;
-    ctx.beginPath();
-    ctx.arc(dx, dotY + 12, 3, 0, Math.PI * 2);
-    if (i < state.roundWins2) ctx.fillStyle = colors.accent;
-    else ctx.fillStyle = colors.muted;
-    ctx.fill();
-  }
+  drawRoundDots(ctx, state, colors, CANVAS_W, dotY + 12);
 }
 
 // --- Phase Overlays ---

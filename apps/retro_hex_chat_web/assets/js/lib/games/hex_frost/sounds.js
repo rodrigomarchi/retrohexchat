@@ -4,12 +4,9 @@
  * @module games/hex_frost/sounds
  */
 
-import { fade, glide } from "../core/synth.js";
+import { fade, glide, ring } from "../core/synth.js";
 
 export const MASTER_VOLUME = 0.3;
-
-/** A note that rings out exponentially. */
-const ring = (wave, freq, dur, vol) => ({ wave, freq, vol: fade(vol, dur, "exp"), dur });
 
 /** A note gliding exponentially (never below 20 Hz) while it rings out. */
 const slide = (wave, from, to, dur, vol) => ({

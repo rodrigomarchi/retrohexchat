@@ -10,8 +10,8 @@
 import {
   FX,
   addFlight,
-  cascadeFrom,
   dealEffects as deal,
+  foundationCascade,
   playedEffects,
   sparks,
 } from "../core/card_table/effects.js";
@@ -94,11 +94,12 @@ export function actionEffects(fx, played) {
 }
 
 /** A win: the suits leave their places, kings first, and bounce off the felt. */
-export function cascadeEffects(fx, table, now, random) {
+export const cascadeEffects = foundationCascade({
+  layout,
+  geometryOf,
   // A suit lies king first: turned over, its king is on top and leaves first.
-  const piles = table.foundations.map((suit) => [...suit].reverse());
-  cascadeFrom(fx, layout(table).foundations, piles, geometryOf(table).view, now, random);
-}
+  piles: (table) => table.foundations.map((suit) => [...suit].reverse()),
+});
 
 /** Nothing moves by itself on Spider's table: a move is always the player's. */
 export const autoMove = () => ({ type: "none" });

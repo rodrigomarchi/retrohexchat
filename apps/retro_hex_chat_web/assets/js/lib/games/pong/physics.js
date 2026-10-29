@@ -5,8 +5,15 @@
  */
 
 import { PHASE } from "./protocol.js";
-import { burst, stepParticles } from "../core/render.js";
-import { moveBall, paddleBounce } from "../core/paddle.js";
+import { burst } from "../core/render.js";
+import {
+  fadeSparks,
+  lowerFlag,
+  moveBall,
+  paddleBounce,
+  serveFromMiddle,
+  startPaddleTick,
+} from "../core/paddle.js";
 
 // --- Constants ---
 
@@ -223,25 +230,35 @@ export function checkWin(state) {
 }
 
 /**
+ * One tick of play as the host runs it: both paddles move, the ball moves and
+ * bounces off the walls and paddles, and a ball past a paddle scores and may
+ * end the match. What happened comes back beside the state, whose own flags
+ * are left down.
+ * @param {object} state
+ * @param {{ up: boolean, down: boolean }} local - paddle one's keys
+ * @param {{ up: boolean, down: boolean }} remote - paddle two's keys
+ * @returns {{ state: object, events: { wallBounced: boolean, paddleHit: boolean, scored: boolean } }}
+ */
+export function stepTick(state, local, remote) {
+  const start = startPaddleTick(state, local, remote, TICK_STEPS);
+  const s = checkScore(start.state);
+  const scored = lowerFlag(s, "scored");
+  const events = { wallBounced: start.wallBounced, paddleHit: start.paddleHit, scored };
+  return { state: checkWin(s), events };
+}
+
+const TICK_STEPS = { updatePaddle, updateBall, checkWallBounce, checkPaddleCollision };
+
+/**
  * Serve the ball from center toward the opponent of the last scorer.
  * @param {object} state
  * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {object} new state
  */
 export function serveBall(state, random = Math.random) {
-  const direction = state.lastScorer === 1 ? 1 : -1;
-  const angle = ((random() * 60 - 30) * Math.PI) / 180;
-  const speed = INITIAL_BALL_SPEED;
-
-  return {
-    ...state,
-    ballX: CANVAS_W / 2,
-    ballY: CANVAS_H / 2,
-    ballVX: speed * Math.cos(angle) * direction,
-    ballVY: speed * Math.sin(angle),
-    ballSpeed: speed,
-    phase: PHASE.PLAYING,
-  };
+  const toward = state.lastScorer === 1 ? 1 : -1;
+  const serve = { width: CANVAS_W, height: CANVAS_H, speed: INITIAL_BALL_SPEED, axis: "x", toward };
+  return serveFromMiddle(state, { ...serve, playing: PHASE.PLAYING }, random);
 }
 
 /**
@@ -261,5 +278,5 @@ export function createScoreParticles(x, y, random = Math.random) {
  * @returns {Array} updated particles (alive only)
  */
 export function updateParticles(particles) {
-  return stepParticles(particles, { drag: 0.96, fade: 0.03 });
+  return fadeSparks(particles, 0.03);
 }

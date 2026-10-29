@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  expectFreshLookAfterForget,
+  expectNeutralOutsidePlay,
+  expectOneAimPerApproach,
+} from "../../../support/games/ai_tests.js";
+
+import {
   createInitialState,
   BALL_SIZE,
   CANVAS_H,
@@ -67,31 +73,18 @@ describe("Pong AI", () => {
     expect(predictPaddleInterceptY(state, 2)).toBeNull();
   });
 
-  it("moves the AI paddle down when the target is below its center", () => {
-    const ai = createPongAI({ difficulty: "hard", rng: () => 0.5 });
-    const state = playingState({
-      ballX: 500,
-      ballY: 220,
-      ballVX: 5,
-      ballVY: 0,
-      paddle2Y: 100,
-    });
+  it.each([
+    ["down", "below", 220, 100, { up: false, down: true }],
+    ["up", "above", 180, 300, { up: true, down: false }],
+  ])(
+    "moves the AI paddle %s when the target is %s its center",
+    (_way, _side, ballY, paddle2Y, keys) => {
+      const ai = createPongAI({ difficulty: "hard", rng: () => 0.5 });
+      const state = playingState({ ballX: 500, ballY, ballVX: 5, ballVY: 0, paddle2Y });
 
-    expect(ai.nextInputs({ state, player: 2 })).toEqual({ up: false, down: true });
-  });
-
-  it("moves the AI paddle up when the target is above its center", () => {
-    const ai = createPongAI({ difficulty: "hard", rng: () => 0.5 });
-    const state = playingState({
-      ballX: 500,
-      ballY: 180,
-      ballVX: 5,
-      ballVY: 0,
-      paddle2Y: 300,
-    });
-
-    expect(ai.nextInputs({ state, player: 2 })).toEqual({ up: true, down: false });
-  });
+      expect(ai.nextInputs({ state, player: 2 })).toEqual(keys);
+    },
+  );
 
   it("returns toward the table center while the ball moves away", () => {
     const ai = createPongAI({ difficulty: "hard", rng: () => 0.5 });
@@ -105,11 +98,7 @@ describe("Pong AI", () => {
 
   it("stays neutral outside active play", () => {
     const ai = createPongAI({ difficulty: "hard", rng: () => 0.5 });
-
-    expect(ai.nextInputs({ state: createInitialState(), player: 2 })).toEqual({
-      up: false,
-      down: false,
-    });
+    expectNeutralOutsidePlay(ai, createInitialState(), { up: false, down: false });
   });
 
   it("keeps harder difficulties more precise than easier ones", () => {
@@ -132,5 +121,27 @@ describe("Pong AI", () => {
     });
 
     expect(ai.nextInputs({ state, player: 2 })).toEqual({ up: false, down: false });
+  });
+
+  it("keeps one aim error for a whole approach and draws a new one for the next", () => {
+    const incoming = playingState({ ballX: 320, ballY: 240, ballVX: 5, ballVY: 0, paddle2Y: 200 });
+    expectOneAimPerApproach({
+      create: (rng) => createPongAI({ difficulty: "hard", rng }),
+      incoming,
+      away: playingState({ ballX: 320, ballY: 240, ballVX: -5, ballVY: 0, paddle2Y: 200 }),
+      every: PONG_AI_DIFFICULTIES.hard.reactionFrames,
+      aim: (ai) => ai.sampledTargetY,
+      intercept: predictPaddleInterceptY(incoming, 2),
+      errorPx: PONG_AI_DIFFICULTIES.hard.errorPx,
+    });
+  });
+
+  it("looks again at once after forgetting the last round", () => {
+    expectFreshLookAfterForget({
+      create: (rng) => createPongAI({ difficulty: "easy", rng }),
+      before: playingState({ ballX: 320, ballY: 150, ballVX: 5, ballVY: 0 }),
+      after: playingState({ ballX: 320, ballY: 320, ballVX: 5, ballVY: 0 }),
+      aim: (ai) => ai.sampledTargetY,
+    });
   });
 });

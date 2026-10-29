@@ -211,64 +211,71 @@ export function bool(name) {
 }
 
 /**
- * Up to eight booleans in one byte, the first name in bit 0.
- * @param {string[]} names
+ * A field of one byte: `pack` makes the byte from the object, `unpack` sets
+ * the object's fields from it.
+ * @param {object} spec
+ * @param {(obj: object) => number} pack
+ * @param {(byte: number, out: object) => void} unpack
  * @returns {Field}
  */
-export function flags(names) {
+function byteField(spec, pack, unpack) {
   return {
-    spec: { kind: "flags", names },
+    spec,
     size: () => 1,
     write(view, offset, obj) {
-      let byte = 0;
-      names.forEach((name, bit) => {
-        if (obj[name]) byte |= 1 << bit;
-      });
-      view.setUint8(offset, byte);
+      view.setUint8(offset, pack(obj));
       return offset + 1;
     },
     read(view, offset, out) {
       if (offset + 1 > view.byteLength) return -1;
-      const byte = view.getUint8(offset);
-      names.forEach((name, bit) => {
-        out[name] = (byte & (1 << bit)) !== 0;
-      });
+      unpack(view.getUint8(offset), out);
       return offset + 1;
     },
   };
 }
 
 /**
+ * Up to eight booleans in one byte, the first name in bit 0.
+ * @param {string[]} names
+ * @returns {Field}
+ */
+export function flags(names) {
+  return bits(
+    names.map((name) => [name, 1]),
+    { spec: { kind: "flags", names }, boolean: true },
+  );
+}
+
+/**
  * Small integers packed into one byte, the first in the lowest bits, each
  * masked to its width.
  * @param {Array<[string, number]>} parts - `[name, width in bits]`
+ * @param {{ spec?: object, boolean?: boolean }} [options] - `boolean` writes each part as
+ *   1 for anything truthy and reads it back as a boolean
  * @returns {Field}
  */
-export function bits(parts) {
-  return {
-    spec: { kind: "bits", parts },
-    size: () => 1,
-    write(view, offset, obj) {
+export function bits(parts, { spec = { kind: "bits", parts }, boolean = false } = {}) {
+  return byteField(
+    spec,
+    (obj) => {
       let byte = 0;
       let shift = 0;
       for (const [name, width] of parts) {
-        byte |= (obj[name] & ((1 << width) - 1)) << shift;
+        const value = boolean ? (obj[name] ? 1 : 0) : obj[name];
+        byte |= (value & ((1 << width) - 1)) << shift;
         shift += width;
       }
-      view.setUint8(offset, byte);
-      return offset + 1;
+      return byte;
     },
-    read(view, offset, out) {
-      if (offset + 1 > view.byteLength) return -1;
-      const byte = view.getUint8(offset);
+    (byte, out) => {
       let shift = 0;
       for (const [name, width] of parts) {
-        out[name] = (byte >> shift) & ((1 << width) - 1);
+        const value = (byte >> shift) & ((1 << width) - 1);
+        out[name] = boolean ? value !== 0 : value;
         shift += width;
       }
-      return offset + 1;
     },
-  };
+  );
 }
 
 /**

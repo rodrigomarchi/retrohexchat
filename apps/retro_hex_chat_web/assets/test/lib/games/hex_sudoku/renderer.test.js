@@ -11,6 +11,7 @@ import {
   toggleNote,
 } from "../../../../js/lib/games/hex_sudoku/rules.js";
 import { recordingCanvas } from "../../../support/games/recording_canvas.js";
+import { cutsOf, filledWith } from "../../../support/games/canvas_log.js";
 
 const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const NAMES = ["given", "mine", "wrong", "hint", "note", "key", "spent"]
@@ -37,17 +38,7 @@ const colors = Object.fromEntries(
     "key",
   ].map((name) => [name, name]),
 );
-const cut = (log, name) =>
-  log.filter(([op, , sx]) => op === "drawImage" && sx === regions[name].x).length;
-const filled = (log, colour) => {
-  let fill = null;
-  let n = 0;
-  for (const [op, , value] of log) {
-    if (op === "fillStyle") fill = value;
-    if (op === "fillRect" && fill === colour) n++;
-  }
-  return n;
-};
+const cut = (log, name) => cutsOf(log, regions[name]);
 
 const SOLUTION = parseGrid(
   "534678912672195348198342567859761423426853791713924856961537284287419635345286179",
@@ -66,7 +57,7 @@ function drawn(state, side = "LANDSCAPE") {
 describe("Hex Sudoku's picture", () => {
   it("draws the bar, an empty grid and the keypad while the grid is being made", () => {
     const log = drawn(createInitialState());
-    expect(filled(log, "paper")).toBe(81);
+    expect(filledWith(log, "paper")).toBe(81);
     expect(cut(log, "key_1")).toBe(1);
     expect(cut(log, "pencil")).toBe(1);
     expect(cut(log, "cross")).toBe(1);
@@ -91,11 +82,11 @@ describe("Hex Sudoku's picture", () => {
     expect(cut(log, "spent_5")).toBe(1);
     expect(cut(log, "key_9")).toBe(1);
     expect(cut(log, "pencil_on")).toBe(1);
-    expect(filled(log, "chosen")).toBe(1);
-    expect(filled(log, "wrong")).toBe(1);
+    expect(filledWith(log, "chosen")).toBe(1);
+    expect(filledWith(log, "wrong")).toBe(1);
     // The other 5s; the twenty squares in row 0, column 0 and the first box, but the wrong one.
-    expect(filled(log, "same")).toBe(8);
-    expect(filled(log, "peer")).toBe(20 - 1);
+    expect(filledWith(log, "same")).toBe(8);
+    expect(filledWith(log, "peer")).toBe(20 - 1);
   });
 
   it("runs the clock past 99 minutes, as long as a game may last", () => {

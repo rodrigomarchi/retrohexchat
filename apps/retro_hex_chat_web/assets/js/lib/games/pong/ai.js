@@ -16,10 +16,7 @@ import {
 } from "./physics.js";
 import { PHASE } from "./protocol.js";
 import {
-  aiRequest,
-  aiRng,
   clamp,
-  createReaction,
   dutyFrame,
   finiteMotion,
   interceptAt,
@@ -27,6 +24,7 @@ import {
   reflect,
   toward,
 } from "../core/ai.js";
+import { PaddleAI } from "../core/paddle_ai.js";
 
 const BALL_MIN_Y = BALL_SIZE / 2;
 const BALL_MAX_Y = CANVAS_H - BALL_SIZE / 2;
@@ -35,22 +33,27 @@ const PADDLE_MAX_CENTER_Y = CANVAS_H - PADDLE_H / 2;
 const TABLE_CENTER_Y = CANVAS_H / 2;
 const NEUTRAL_INPUTS = Object.freeze({ up: false, down: false });
 
+/**
+ * How each difficulty plays. `errorPx` is the aim error drawn once for each
+ * approach of the ball: past PADDLE_H / 2 + BALL_SIZE / 2 (45 px) it misses,
+ * and a wide `deadzonePx` stops the paddle short of where it aimed.
+ */
 export const PONG_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
     reactionFrames: 14,
-    errorPx: 44,
-    deadzonePx: 18,
+    errorPx: 56,
+    deadzonePx: 13,
     movementDuty: 0.55,
   }),
   normal: Object.freeze({
     reactionFrames: 7,
-    errorPx: 18,
+    errorPx: 55,
     deadzonePx: 10,
     movementDuty: 0.8,
   }),
   hard: Object.freeze({
     reactionFrames: 3,
-    errorPx: 6,
+    errorPx: 53.5,
     deadzonePx: 6,
     movementDuty: 1,
   }),
@@ -111,27 +114,15 @@ export function createPongAI(options = {}) {
   return new PongAI(options);
 }
 
-export class PongAI {
+export class PongAI extends PaddleAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizePongAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
-    this.reaction = createReaction();
+    super(options, normalizePongAIDifficulty, PONG_AI_DIFFICULTIES);
     this.sampledTargetY = TABLE_CENTER_Y;
-  }
-
-  /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
-   * @returns {void}
-   */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizePongAIDifficulty(difficulty);
-    this.reaction.reset();
   }
 
   /**
@@ -142,32 +133,25 @@ export class PongAI {
    * @returns {{up: boolean, down: boolean}}
    */
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
+    const turn = this.playFrame(request, PHASE.PLAYING, {
+      incoming: (state, player) => predictPaddleInterceptY(state, player) !== null,
+      every: "reactionFrames",
+      look: (state, player, config) => this._sampleTargetY(state, player, config),
+    });
+    if (!turn) return NEUTRAL_INPUTS;
 
-    if (!state || state.phase !== PHASE.PLAYING) {
-      this.frame++;
-      return NEUTRAL_INPUTS;
-    }
-
-    const difficulty = normalizePongAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-
-    const config = PONG_AI_DIFFICULTIES[difficulty];
-    this.sampledTargetY = this.reaction.sample(config.reactionFrames, () =>
-      this._sampleTargetY(state, player, config),
-    );
-
-    const inputs = this._inputsForTarget(state, player, config);
+    this.sampledTargetY = turn.target;
+    const inputs = this._inputsForTarget(turn.state, turn.player, turn.config);
     this.frame++;
     return inputs;
   }
 
   _sampleTargetY(state, player, config) {
     const interceptY = predictPaddleInterceptY(state, player);
-    const targetY = interceptY === null ? TABLE_CENTER_Y : interceptY;
-    const error = ((this.rng() || 0) * 2 - 1) * config.errorPx;
+    if (interceptY === null) return TABLE_CENTER_Y;
 
-    return clamp(targetY + error, PADDLE_MIN_CENTER_Y, PADDLE_MAX_CENTER_Y);
+    const error = this.aimError(config.errorPx);
+    return clamp(interceptY + error, PADDLE_MIN_CENTER_Y, PADDLE_MAX_CENTER_Y);
   }
 
   _inputsForTarget(state, player, config) {

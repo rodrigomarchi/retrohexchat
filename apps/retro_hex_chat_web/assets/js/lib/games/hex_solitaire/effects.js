@@ -10,8 +10,8 @@
 import {
   FX,
   addFlight,
-  cascadeFrom,
   dealEffects as deal,
+  foundationCascade,
   playedEffects,
 } from "../core/card_table/effects.js";
 import { easeOutCubic } from "../core/tween.js";
@@ -60,16 +60,7 @@ export function actionEffects(fx, played) {
  * A win: the cards leave the foundations, kings first, and bounce along the
  * felt until they are off it.
  */
-export function cascadeEffects(fx, table, now, random) {
-  cascadeFrom(
-    fx,
-    layout(table).foundations,
-    table.foundations,
-    geometryOf(table).view,
-    now,
-    random,
-  );
-}
+export const cascadeEffects = foundationCascade({ layout, geometryOf });
 
 /** The card the finish sent up between two tables, as a move. */
 export function autoMove(before, after) {

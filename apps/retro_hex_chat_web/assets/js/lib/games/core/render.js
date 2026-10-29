@@ -286,18 +286,21 @@ export function burst(
 
 /**
  * One step of particles: each moves by its velocity, slows by `drag` and
- * loses `fade` of its life; the spent ones are dropped.
+ * loses `fade` of its life; the spent ones are dropped. A game whose
+ * particles move otherwise gives `velocity`, a particle's next velocity.
  * @param {Array<{ x: number, y: number, vx: number, vy: number, life: number }>} particles
- * @param {{ drag: number, fade: number }} options
+ * @param {{ drag?: number, fade: number, velocity?: (p: object) => { vx: number, vy: number } }} options
  */
-export function stepParticles(particles, { drag, fade }) {
+export function stepParticles(
+  particles,
+  { drag, fade, velocity = (p) => ({ vx: p.vx * drag, vy: p.vy * drag }) },
+) {
   return particles
     .map((p) => ({
       ...p,
       x: p.x + p.vx,
       y: p.y + p.vy,
-      vx: p.vx * drag,
-      vy: p.vy * drag,
+      ...velocity(p),
       life: p.life - fade,
     }))
     .filter((p) => p.life > 0);
@@ -461,3 +464,138 @@ export function drawMatchOver(ctx, state, colors, width, height) {
   drawCenterText(ctx, t("MATCH OVER"), 24, colors.rope, width, height);
   drawCenterText(ctx, jt`${winner} WINS!`, 36, color, width, height, 35);
 }
+
+/**
+ * A duel's two scores along the top: player one's at `left`, in the
+ * foreground colour, player two's ending at `right`, in the accent.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{ score1: number, score2: number }} state
+ * @param {{ fg: string, accent: string }} colors
+ * @param {number} left
+ * @param {number} right
+ * @param {number} y
+ */
+export function drawScoreLabels(ctx, state, colors, left, right, y) {
+  ctx.font = "bold 14px monospace";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "left";
+  ctx.fillStyle = colors.fg;
+  ctx.fillText(jt`P1: ${state.score1}`, left, y);
+  ctx.textAlign = "right";
+  ctx.fillStyle = colors.accent;
+  ctx.fillText(jt`P2: ${state.score2}`, right, y);
+}
+
+/**
+ * A dot for each of the three rounds a side can take, lit for those it took:
+ * player one's to the left of the middle, player two's to the right, at `y`.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{ roundWins1: number, roundWins2: number }} state
+ * @param {{ fg: string, accent: string, muted: string }} colors
+ * @param {number} width - the canvas width
+ * @param {number} y
+ */
+export function drawRoundDots(ctx, state, colors, width, y) {
+  const rows = [
+    [width / 2 - 20, state.roundWins1, colors.fg],
+    [width / 2 + 40, state.roundWins2, colors.accent],
+  ];
+  for (const [left, wins, lit] of rows) {
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.arc(left + i * 20, y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = i < wins ? lit : colors.muted;
+      ctx.fill();
+    }
+  }
+}
+
+/**
+ * Square particles, each in the colour and size `look` gives it and faded
+ * by the alpha it says.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Array<{ x: number, y: number }>} particles
+ * @param {(p: object) => { alpha: number, color: string, size: number }} look
+ */
+export function drawSquareParticles(ctx, particles, look) {
+  for (const p of particles) {
+    const { alpha, color, size } = look(p);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.fillRect(p.x - size / 2, p.y - size / 2, size, size);
+  }
+  ctx.globalAlpha = 1;
+}
+
+/**
+ * A shot's trail: three fading dots behind it, four pixels apart, along the
+ * direction (`nx`, `ny`) it flies, each smaller than the one before.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} x
+ * @param {number} y
+ * @param {number} nx - the unit direction it flies, across
+ * @param {number} ny - and down
+ * @param {number} radius - the shot's own
+ * @param {string} color
+ */
+export function drawShotTrail(ctx, x, y, nx, ny, radius, color) {
+  ctx.globalAlpha = 0.2;
+  ctx.fillStyle = color;
+  for (let i = 1; i <= 3; i++) {
+    ctx.beginPath();
+    ctx.arc(x - nx * i * 4, y - ny * i * 4, radius * (1 - i * 0.2), 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+/**
+ * A shot: a dot of `radius` in `color`, and a bright core half its size.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} x
+ * @param {number} y
+ * @param {number} radius
+ * @param {string} color
+ * @param {string} core
+ */
+export function drawShotDot(ctx, x, y, radius, color, core) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = core;
+  ctx.beginPath();
+  ctx.arc(x, y, radius * 0.5, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+/**
+ * A small glowing label centred at the top, `y` down — the round being played.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {string} text
+ * @param {string} color
+ * @param {number} width - the canvas width
+ * @param {number} y
+ */
+export function drawTopLabel(ctx, text, color, width, y) {
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 4;
+  ctx.fillStyle = color;
+  ctx.font = "12px monospace";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillText(text, width / 2, y);
+}
+
+/**
+ * The page's colours the green-on-black sports games read first, each with
+ * the colour it falls back to: a `readGameColors` table to spread into a
+ * game's own.
+ */
+export const GREEN_ON_BLACK = Object.freeze({
+  bg: ["--game-bg-color", "0a0a14"],
+  fg: ["--game-fg-color", "39ff14"],
+  accent: ["--game-accent-color", "00e5ff"],
+  muted: ["--game-muted-color", "1a1a2a"],
+  glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+});

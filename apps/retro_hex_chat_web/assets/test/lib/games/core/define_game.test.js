@@ -35,6 +35,7 @@ function closable() {
 describe("defineGame", () => {
   let match;
 
+  // Some tests stop one match and play another; only the last is left to stop.
   afterEach(() => {
     match?.stop();
     match?.restore();
@@ -128,7 +129,12 @@ describe("defineGame", () => {
 
   describe("a pointer game", () => {
     const pointerMatch = (options) =>
-      playMatch({ EngineClass: FakePointerGame, gameId: "fake_pointer", mode: "solo", ...options });
+      playMatch({
+        EngineClass: FakePointerGame,
+        gameId: "fake_pointer",
+        mode: "solo",
+        ...options,
+      });
     const logOf = (m) => m.engines.host.gameState.log;
 
     it("hands a press over on the next tick, in canvas pixels, and not before", async () => {

@@ -23,6 +23,7 @@ import {
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
 import {
+  GREEN_ON_BLACK,
   drawBackground,
   drawGlitchText,
   drawScanlines,
@@ -44,14 +45,9 @@ const OUT_MESSAGES = ["", "OUT!", "LONG!", "ACE!", "DEAD BALL"];
  * @param {HTMLCanvasElement} canvas
  * @returns {object} color palette
  */
-// ex_dna:disable-for-lines:8 this game's own drawing
 export function getColors(canvas) {
   return readGameColors(canvas, {
-    bg: ["--game-bg-color", "0a0a14"],
-    fg: ["--game-fg-color", "39ff14"],
-    accent: ["--game-accent-color", "00e5ff"],
-    muted: ["--game-muted-color", "1a1a2a"],
-    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    ...GREEN_ON_BLACK,
     warning: ["--game-warning-color", "ffaa00"],
     courtColor: ["--game-court-color", "0e1a0e"],
     lineColor: ["--game-line-color", "39ff1480"],
@@ -260,7 +256,9 @@ function drawPlayer(ctx, x, y, color, isServing, time) {
 }
 
 function drawBall(ctx, ball, colors, time) {
-  const { x, y, vx, vy, height } = ball;
+  const { x, y, vx, vy } = ball;
+  // Drawn within the 0..1 a snapshot carries, so host and guest see one arc.
+  const height = Math.min(1, Math.max(0, ball.height));
 
   // Shadow on ground
   const shadowAlpha = 0.3 * (1 - height);

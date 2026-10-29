@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  expectFreshLookAfterForget,
+  expectNeutralOutsidePlay,
+  expectOneAimPerApproach,
+  itSetsDifficulty,
+} from "../../../support/games/ai_tests.js";
+
+import {
   BALL_SIZE,
   CANVAS_W,
   PADDLE_H,
@@ -17,6 +24,7 @@ import {
   predictBreakoutInterceptX,
   reflectBreakoutX,
 } from "../../../../js/lib/games/breakout/ai.js";
+import { partnerDifficulty } from "../../../../js/lib/games/breakout/index.js";
 
 function playingState(overrides = {}) {
   return {
@@ -34,13 +42,7 @@ describe("BreakoutAI", () => {
     expect(normalizeBreakoutAIDifficulty(null)).toBe("normal");
   });
 
-  it("updates difficulty through the public setter", () => {
-    const ai = createBreakoutAI({ difficulty: "easy" });
-
-    ai.setDifficulty("hard");
-
-    expect(ai.difficulty).toBe("hard");
-  });
+  itSetsDifficulty(createBreakoutAI);
 
   it("predicts a straight intercept for the top paddle", () => {
     const state = playingState({
@@ -107,11 +109,7 @@ describe("BreakoutAI", () => {
 
   it("stays neutral outside active play", () => {
     const ai = createBreakoutAI({ difficulty: "hard", rng: () => 0.5 });
-
-    expect(ai.nextInputs({ state: createInitialState(), player: 2 })).toEqual({
-      left: false,
-      right: false,
-    });
+    expectNeutralOutsidePlay(ai, createInitialState(), { left: false, right: false });
   });
 
   it("keeps harder difficulties more precise than easier ones", () => {
@@ -145,5 +143,34 @@ describe("BreakoutAI", () => {
 
     expect(ai.nextInputs({ state: first, player: 2 })).toEqual({ left: true, right: false });
     expect(ai.nextInputs({ state: second, player: 2 })).toEqual({ left: true, right: false });
+  });
+
+  it("keeps one aim error for a whole approach and draws a new one for the next", () => {
+    const incoming = playingState({ ballX: 320, ballY: 240, ballVX: 0, ballVY: -4, paddle2X: 280 });
+    expectOneAimPerApproach({
+      create: (rng) => createBreakoutAI({ difficulty: "hard", rng }),
+      incoming,
+      away: playingState({ ballX: 320, ballY: 240, ballVX: 0, ballVY: 4, paddle2X: 280 }),
+      every: BREAKOUT_AI_DIFFICULTIES.hard.reactionFrames,
+      aim: (ai) => ai.sampledTargetX,
+      intercept: predictBreakoutInterceptX(incoming, 2),
+      errorPx: BREAKOUT_AI_DIFFICULTIES.hard.errorPx,
+    });
+  });
+
+  it("gives an easy game the strongest partner and a hard game the weakest", () => {
+    expect(partnerDifficulty("easy")).toBe("hard");
+    expect(partnerDifficulty("normal")).toBe("normal");
+    expect(partnerDifficulty("hard")).toBe("easy");
+    expect(partnerDifficulty("unknown")).toBe("normal");
+  });
+
+  it("looks again at once after forgetting the last round", () => {
+    expectFreshLookAfterForget({
+      create: (rng) => createBreakoutAI({ difficulty: "easy", rng }),
+      before: playingState({ ballX: 150, ballY: 240, ballVX: 0, ballVY: -4 }),
+      after: playingState({ ballX: 480, ballY: 240, ballVX: 0, ballVY: -4 }),
+      aim: (ai) => ai.sampledTargetX,
+    });
   });
 });

@@ -22,6 +22,7 @@ import {
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawScanlines, drawVignette } from "../core/render.js";
 
 // ── Road colors (per weather) ──
 const SKY_COLORS = {
@@ -611,23 +612,6 @@ function drawFinished(ctx, state, colors, time) {
 // ── CRT Effects ──
 
 function drawCRT(ctx) {
-  // Scanlines
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  for (let y = 0; y < CANVAS_H; y += 3) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
-
-  // Vignette
-  const grad = ctx.createRadialGradient(
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_W * 0.3,
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_W * 0.7,
-  );
-  grad.addColorStop(0, "rgba(0,0,0,0)");
-  grad.addColorStop(1, "rgba(0,0,0,0.3)");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H, { step: 3 });
+  drawVignette(ctx, CANVAS_W, CANVAS_H, { from: 0.3, to: 0.7, of: "width", edge: 0.3 });
 }

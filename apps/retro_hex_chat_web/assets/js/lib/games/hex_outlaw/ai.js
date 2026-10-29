@@ -8,8 +8,6 @@
 import { GAME_MODE, PHASE } from "./protocol.js";
 import {
   ARENA_BOTTOM,
-  ARENA_LEFT,
-  ARENA_RIGHT,
   ARENA_TOP,
   BULLET_RADIUS,
   BULLET_SPEED_X,
@@ -18,10 +16,13 @@ import {
   GUNSLINGER_HIT_W,
   NML_P2_MIN_X,
   RICOCHET_ANGLE,
+  bulletHitsGunslinger,
+  bulletHitsRect,
+  bulletLeftArena,
   getObstacleRect,
   ricochet,
 } from "./physics.js";
-import { aiRequest, aiRng, clamp, normalizeDifficulty, randomUnit } from "../core/ai.js";
+import { TableAI, clamp, createPerThing, normalizeDifficulty, randomUnit } from "../core/ai.js";
 
 const NEUTRAL_INPUTS = Object.freeze({
   up: false,
@@ -40,35 +41,72 @@ const BULLET_PREFIX = Object.freeze({
 });
 const INPUT_TARGET_DEADZONE = 2;
 
+// dodgeChance: the odds a bullet is dodged at all, decided once per bullet,
+// and only once the bullet is reactionFrames old. fireChance: the odds an
+// opening is taken; a passed one waits out the cooldown. fireWindowPx stays
+// inside the 13 px a bullet hits within, on every difficulty.
 export const OUTLAW_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
     dodgeTriggerPx: 18,
     threatFrames: 26,
-    fireWindowPx: 8,
-    fireCooldownFrames: 74,
-    fireChance: 0.45,
-    targetDeadzonePx: 18,
-    preferredNmlOffset: 76,
+    dodgeChance: 0.35,
+    reactionFrames: 37,
+    fireWindowPx: 9,
+    fireCooldownFrames: 72,
+    fireChance: 0.9,
+    targetDeadzonePx: 11,
+    preferredNmlOffset: 54,
   }),
   normal: Object.freeze({
     dodgeTriggerPx: 26,
     threatFrames: 40,
-    fireWindowPx: 13,
-    fireCooldownFrames: 46,
-    fireChance: 0.78,
+    dodgeChance: 0.38,
+    reactionFrames: 36,
+    fireWindowPx: 9,
+    fireCooldownFrames: 70,
+    fireChance: 0.9,
     targetDeadzonePx: 11,
     preferredNmlOffset: 54,
   }),
   hard: Object.freeze({
     dodgeTriggerPx: 34,
     threatFrames: 58,
-    fireWindowPx: 18,
-    fireCooldownFrames: 28,
-    fireChance: 1,
-    targetDeadzonePx: 7,
-    preferredNmlOffset: 34,
+    dodgeChance: 0.45,
+    reactionFrames: 35,
+    fireWindowPx: 9,
+    fireCooldownFrames: 62,
+    fireChance: 0.9,
+    targetDeadzonePx: 11,
+    preferredNmlOffset: 54,
   }),
 });
+
+// The street changes how much a dodge or a quicker draw is worth: around the
+// moving stagecoach and across No Man's Land the same odds play differently,
+// so those modes carry their own.
+const MODE_DIFFICULTIES = Object.freeze({
+  [GAME_MODE.STAGECOACH]: Object.freeze({
+    easy: Object.freeze({ dodgeChance: 0.38, fireCooldownFrames: 69 }),
+    normal: Object.freeze({ dodgeChance: 0.44, fireCooldownFrames: 62 }),
+    hard: Object.freeze({ dodgeChance: 0.55, fireCooldownFrames: 50 }),
+  }),
+  [GAME_MODE.NO_MANS_LAND]: Object.freeze({
+    easy: Object.freeze({ dodgeChance: 0.39, fireCooldownFrames: 67 }),
+    normal: Object.freeze({ dodgeChance: 0.42, fireCooldownFrames: 65 }),
+    hard: Object.freeze({ dodgeChance: 0.47, fireCooldownFrames: 59 }),
+  }),
+});
+
+/**
+ * The AI's settings for a difficulty on a street: the difficulty's own,
+ * with the street's where it has some.
+ * @param {"easy"|"normal"|"hard"} difficulty
+ * @param {number} [gameMode]
+ * @returns {object}
+ */
+export function outlawAIConfig(difficulty, gameMode) {
+  return { ...OUTLAW_AI_DIFFICULTIES[difficulty], ...MODE_DIFFICULTIES[gameMode]?.[difficulty] };
+}
 
 /**
  * @param {unknown} difficulty
@@ -114,25 +152,26 @@ export function createOutlawAI(options = {}) {
   return new OutlawAI(options);
 }
 
-export class OutlawAI {
+export class OutlawAI extends TableAI {
   /**
    * @param {object} [options]
    * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    * @param {() => number} [options.rng]
    */
   constructor(options = {}) {
-    this.difficulty = normalizeOutlawAIDifficulty(options.difficulty);
-    this.rng = aiRng(options);
-    this.frame = 0;
+    super(options, normalizeOutlawAIDifficulty, OUTLAW_AI_DIFFICULTIES);
     this.fireCooldown = 0;
+    this._incoming = null;
+    this._bullets = createPerThing();
   }
 
   /**
-   * @param {"easy"|"normal"|"hard"|string} difficulty
+   * A new point, round or match: no bullet under watch.
    * @returns {void}
    */
-  setDifficulty(difficulty) {
-    this.difficulty = normalizeOutlawAIDifficulty(difficulty);
+  forget() {
+    this._incoming = null;
+    this._bullets.reset();
   }
 
   /**
@@ -142,24 +181,21 @@ export class OutlawAI {
    * @param {1|2} [request.player]
    * @returns {{up: boolean, down: boolean, left: boolean, right: boolean, fire: boolean}}
    */
-  // ex_dna:disable-for-lines:9 this AI's own turn: its cooldowns and the phase it plays in
+  // ex_dna:disable-for-lines:6 this AI's own turn: its cooldowns and the phase it plays in
   nextInputs(request = {}) {
-    const { state, player } = aiRequest(request);
-
-    this.frame++;
+    const { state, player } = this.startTurn(request);
     if (this.fireCooldown > 0) this.fireCooldown--;
 
     if (!state || state.phase !== PHASE.PLAYING) return NEUTRAL_INPUTS;
 
-    const difficulty = normalizeOutlawAIDifficulty(request.difficulty || this.difficulty);
-    if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
-    const config = OUTLAW_AI_DIFFICULTIES[difficulty];
+    const difficulty = this.difficultyFor(request);
+    const config = outlawAIConfig(difficulty, state.gameMode);
 
     const actor = playerState(state, player);
     const opponent = playerState(state, player === 1 ? 2 : 1);
     if (!actor || !opponent) return NEUTRAL_INPUTS;
 
-    const threat = incomingThreat(state, player, config);
+    const threat = incomingThreat(this._noticedBullet(state, player, config), player, config);
     if (threat) {
       return {
         ...movementAwayFromThreat(state, player, threat.y),
@@ -168,13 +204,35 @@ export class OutlawAI {
     }
 
     const attack = chooseAttack(state, player, config);
-    const fire = shouldFire(state, player, attack, config, this.fireCooldown, this.rng);
-    if (fire) this.fireCooldown = config.fireCooldownFrames;
+    const movement = movementTowardAttack(state, player, attack, config);
+    if (!fireOpening(state, player, attack, config, this.fireCooldown)) {
+      return { ...movement, fire: false };
+    }
 
-    return {
-      ...movementTowardAttack(state, player, attack, config),
-      fire,
-    };
+    // One roll per opening; a passed one waits out the cooldown like a shot.
+    this.fireCooldown = config.fireCooldownFrames;
+    return { ...movement, fire: randomUnit(this.rng) < config.fireChance };
+  }
+
+  /**
+   * The state as this AI sees it: the rival's bullet is there only once it
+   * is reactionFrames old, and only if this AI is to dodge it — decided once
+   * per bullet.
+   */
+  _noticedBullet(state, player, config) {
+    const prefix = BULLET_PREFIX[player === 1 ? 2 : 1];
+    if (state[`${prefix}active`] !== true) {
+      this._incoming = null;
+      this._bullets.keep([]);
+      return state;
+    }
+
+    if (this._incoming === null) this._incoming = this.frame;
+    const bullet = this._incoming;
+    this._bullets.keep([bullet]);
+    const dodges = this._bullets.decide(bullet, () => randomUnit(this.rng) < config.dodgeChance);
+    const seen = dodges && this.frame - bullet >= config.reactionFrames;
+    return seen ? state : { ...state, [`${prefix}active`]: false };
   }
 }
 
@@ -225,10 +283,9 @@ function chooseStraightShotY(state, player, actor, opponent, config) {
   return Math.abs(actor.y - above) <= Math.abs(actor.y - below) ? above : below;
 }
 
-function shouldFire(state, player, attack, config, fireCooldown, rng) {
+function fireOpening(state, player, attack, config, fireCooldown) {
   if (fireCooldown > 0) return false;
   if (bulletState(state, player).active) return false;
-  if (randomUnit(rng) > config.fireChance) return false;
 
   if (state.gameMode === GAME_MODE.RICOCHET) {
     return !!findRicochetShot(state, player, attack.aimUp);
@@ -329,57 +386,48 @@ function findRicochetShot(state, player, preferredAimUp = null) {
   return null;
 }
 
-function simulatedShotHits(state, bullet, opponent) {
+/**
+ * A bullet's flight, frame by frame, until `reached` says something (what it
+ * says is the answer), the obstacle stops it, it leaves the street, or
+ * `maxFrames` pass: `missed` then.
+ */
+function fly(state, bullet, maxFrames, reached, missed) {
   let x = bullet.x;
   let y = bullet.y;
   let vy = bullet.vy;
   let bounced = bullet.bounced;
   const rect = getObstacleRect(state);
 
-  for (let frame = 0; frame < 100; frame++) {
+  for (let frame = 0; frame < maxFrames; frame++) {
     x += bullet.vx;
     y += vy;
 
     ({ y, vy, bounced } = ricochet(y, vy, bounced));
 
-    if (rect && bulletHitsRect(x, y, rect)) return false;
-    if (bulletHitsGunslinger(x, y, opponent.x, opponent.y)) return true;
-    if (x < ARENA_LEFT - BULLET_RADIUS || x > ARENA_RIGHT + BULLET_RADIUS) return false;
-    if (bounced && (y - BULLET_RADIUS < ARENA_TOP || y + BULLET_RADIUS > ARENA_BOTTOM)) {
-      return false;
-    }
+    if (rect && bulletHitsRect(x, y, rect)) return missed;
+    const answer = reached(x, y);
+    if (answer !== undefined) return answer;
+    if (bulletLeftArena(x, y, bounced)) return missed;
   }
 
-  return false;
+  return missed;
+}
+
+function simulatedShotHits(state, bullet, opponent) {
+  return fly(
+    state,
+    bullet,
+    100,
+    (x, y) => (bulletHitsGunslinger(x, y, opponent.x, opponent.y) ? true : undefined),
+    false,
+  );
 }
 
 function simulateBulletCrossing(state, bullet, targetX, options) {
-  let x = bullet.x;
-  let y = bullet.y;
-  let vy = bullet.vy;
-  let bounced = bullet.bounced;
-  const rect = getObstacleRect(state);
-
-  for (let frame = 0; frame < options.maxFrames; frame++) {
-    x += bullet.vx;
-    y += vy;
-
-    ({ y, vy, bounced } = ricochet(y, vy, bounced));
-
-    if (rect && bulletHitsRect(x, y, rect)) return null;
-
-    if (
-      (bullet.vx > 0 && x >= targetX - GUNSLINGER_HIT_W / 2) ||
-      (bullet.vx < 0 && x <= targetX + GUNSLINGER_HIT_W / 2)
-    ) {
-      return y;
-    }
-
-    if (x < ARENA_LEFT - BULLET_RADIUS || x > ARENA_RIGHT + BULLET_RADIUS) return null;
-    if (bounced && (y - BULLET_RADIUS < ARENA_TOP || y + BULLET_RADIUS > ARENA_BOTTOM)) return null;
-  }
-
-  return null;
+  const halfW = GUNSLINGER_HIT_W / 2;
+  const crossed = (x) =>
+    bullet.vx > 0 ? x >= targetX - halfW : bullet.vx < 0 && x <= targetX + halfW;
+  return fly(state, bullet, options.maxFrames, (x, y) => (crossed(x) ? y : undefined), null);
 }
 
 function lineBlockedAtY(y, fromX, toX, rect) {
@@ -388,24 +436,6 @@ function lineBlockedAtY(y, fromX, toX, rect) {
   const crossesX = rect.x <= maxX && rect.x + rect.w >= minX;
   const crossesY = y + BULLET_RADIUS >= rect.y && y - BULLET_RADIUS <= rect.y + rect.h;
   return crossesX && crossesY;
-}
-
-function bulletHitsRect(bx, by, rect) {
-  const closestX = clamp(bx, rect.x, rect.x + rect.w);
-  const closestY = clamp(by, rect.y, rect.y + rect.h);
-  const dx = bx - closestX;
-  const dy = by - closestY;
-  return dx * dx + dy * dy <= BULLET_RADIUS * BULLET_RADIUS;
-}
-
-function bulletHitsGunslinger(bx, by, gx, gy) {
-  const halfW = GUNSLINGER_HIT_W / 2;
-  const halfH = GUNSLINGER_HIT_H / 2;
-  const closestX = clamp(bx, gx - halfW, gx + halfW);
-  const closestY = clamp(by, gy - halfH, gy + halfH);
-  const dx = bx - closestX;
-  const dy = by - closestY;
-  return dx * dx + dy * dy <= BULLET_RADIUS * BULLET_RADIUS;
 }
 
 function playerState(state, player) {

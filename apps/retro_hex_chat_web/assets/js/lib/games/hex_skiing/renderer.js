@@ -24,19 +24,14 @@ import {
 import { PHASE, GAME_MODE, SKIER_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawVignette, snowfall, waitingText } from "../core/render.js";
+import { GREEN_ON_BLACK, drawVignette, snowfall, waitingText } from "../core/render.js";
 
 /**
  * Read CSS custom properties from the canvas element.
  */
-// ex_dna:disable-for-lines:8 this game's own drawing
 export function readColors(canvas) {
   return readGameColors(canvas, {
-    bg: ["--game-bg-color", "0a0a14"],
-    fg: ["--game-fg-color", "39ff14"],
-    accent: ["--game-accent-color", "00e5ff"],
-    muted: ["--game-muted-color", "1a1a2a"],
-    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    ...GREEN_ON_BLACK,
     warning: ["--game-warning-color", "ff4444"],
     snow: ["--game-snow-color", "1a1a2e"],
     tree: ["--game-tree-color", "1a3a1a"],

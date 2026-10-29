@@ -62,3 +62,25 @@ export const ARROWS = {
   horizontal: { host: ["ArrowLeft", "ArrowRight"], guest: ["a", "d"] },
   all: { host: ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], guest: ["w", "d", "s", "a"] },
 };
+
+/**
+ * A tap at a point of the table, at `at` ms: a press and its release, with
+ * the mouse `button` when one is named.
+ * @returns {Array<{at: number, pointer: string, x: number, y: number, button?: number}>}
+ */
+export const tapAt = (at, x, y, button) => [
+  { at, pointer: "down", x, y, ...(button ? { button } : {}) },
+  { at: at + 40, pointer: "up", x, y, ...(button ? { button } : {}) },
+];
+
+/**
+ * The sweep for a vehicle that turns and drives forward (a tank, a ship):
+ * forward, left, forward, right, with the space bar as its trigger.
+ * @param {"host"|"guest"} side
+ */
+export const turnAndDriveScript = (side) =>
+  sweep(
+    side,
+    { host: ["ArrowUp", "ArrowLeft", "ArrowUp", "ArrowRight"], guest: ["w", "a", "w", "d"] },
+    [" "],
+  );
