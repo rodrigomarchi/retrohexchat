@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
 
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Channels.{Server, Supervisor}
+  alias RetroHexChat.DataCase
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.App.BrowserIdCookie
   alias RetroHexChatWeb.App.Paths
@@ -14,11 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
   # its last visitor leaves, and these tests ask the lobby about its visitors
   # after one has.
   setup do
-    {:ok, _pid} = Supervisor.ensure_started("#lobby")
-    keeper = "Keeper#{uid()}"
-    {:ok, _} = Server.join("#lobby", keeper)
-    on_exit(fn -> Server.part("#lobby", keeper) end)
-    :ok
+    DataCase.keep_lobby_open()
   end
 
   defp open_channel(founder) do

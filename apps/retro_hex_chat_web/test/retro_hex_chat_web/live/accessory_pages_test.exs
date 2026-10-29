@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.AccessoryPagesTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.DataCase
   alias RetroHexChatWeb.App.Paths
 
   @pages [
@@ -107,6 +108,8 @@ defmodule RetroHexChatWeb.AccessoryPagesTest do
     end
 
     test "#{@page.path} opens the program on the desktop for a member", %{conn: conn} do
+      # The member's desktop joins the lobby as it mounts.
+      DataCase.keep_lobby_open()
       {:ok, view, _html} = conn |> chat_conn("acc#{uid()}") |> live(@page.path)
 
       view

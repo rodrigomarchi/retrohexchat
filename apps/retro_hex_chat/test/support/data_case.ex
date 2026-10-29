@@ -17,6 +17,8 @@ defmodule RetroHexChat.DataCase do
   use ExUnit.CaseTemplate
 
   alias Ecto.Adapters.SQL.Sandbox
+  alias RetroHexChat.Channels.Server, as: ChannelServer
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Scraper.Cache, as: ScraperCache
 
   using do
@@ -71,6 +73,20 @@ defmodule RetroHexChat.DataCase do
         :error -> Application.delete_env(:retro_hex_chat, :default_channel)
       end
     end)
+  end
+
+  @doc """
+  Keeps the default channel's room up for the test. In tests `#lobby` is an
+  unregistered room, which stops when its last visitor leaves — and another
+  test's visitor can leave between a page finding it alive and joining it, so
+  the mount crashes on a process that is gone. A member of its own holds it.
+  """
+  @spec keep_lobby_open() :: :ok
+  def keep_lobby_open do
+    {:ok, _pid} = ChannelSupervisor.ensure_started("#lobby")
+    keeper = "Keeper#{System.unique_integer([:positive]) |> rem(100_000)}"
+    {:ok, _} = ChannelServer.join("#lobby", keeper)
+    on_exit(fn -> ChannelServer.part("#lobby", keeper) end)
   end
 
   @doc """
