@@ -21,7 +21,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   Rows are decorated here, on their way into the stream: a link in a message
   carries the same Markdown card the RSS bot publishes, read from the scraper's
-  archive and never from the network.
+  archive and never from the network. Each row is also placed in its speaker's
+  run (`MessageGrouping`), against the rows `rendered` says are around it, so a
+  row that changes its header because of a neighbour is re-streamed with it.
 
   Context (`chat_clear_token`, `nick_color_fn`, `timestamp_format`, `timezone`,
   `strip_formatting`, `edit_mode_message_id`, `show_status_tab`) is supplied by the
@@ -52,6 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.ChatLive.MessageGrouping
   alias RetroHexChatWeb.ChatLive.ReadMarkers
   alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.ShareLinkRef
@@ -195,12 +198,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:insert, msg}}, socket) do
-    msg = decorate(socket, msg)
+    msg = socket |> decorate(msg) |> place(socket)
 
     {:ok,
      socket
      |> track(fn rendered -> upsert(rendered, msg) end)
-     |> stream_insert(:chat_messages, msg, tail_opts(socket))}
+     |> stream_insert(:chat_messages, msg, tail_opts(socket))
+     |> restart_top()}
   end
 
   # `rendered` mirrors the stream, pruning included, so it is the honest answer
@@ -218,25 +222,50 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # order above the existing rows (a load-more must never reset the stream —
   # ephemeral system lines are not in the DB and would vanish). No limit: see
   # the note on `@dom_limit` — a limit here deletes the page being inserted.
+  #
+  # The page is placed above the first row on screen, which keeps its band; if
+  # what now sits above it takes away its header or its day label, it is
+  # re-streamed in place.
   def update(%{action: {:prepend, items}}, socket) do
-    items = decorate_all(items, viewer(socket))
+    {items, moved} =
+      items
+      |> decorate_all(viewer(socket))
+      |> MessageGrouping.annotate_before(List.first(socket.assigns.rendered), tz(socket))
 
-    {:ok,
-     items
-     |> Enum.reverse()
-     |> Enum.reduce(
-       socket
-       |> assign(:scrollback?, true)
-       |> track(fn rendered -> items ++ rendered end),
-       &stream_insert(&2, :chat_messages, &1, at: 0)
-     )}
+    socket =
+      items
+      |> Enum.reverse()
+      |> Enum.reduce(
+        socket
+        |> assign(:scrollback?, true)
+        |> track(fn rendered -> items ++ rendered end),
+        &stream_insert(&2, :chat_messages, &1, at: 0)
+      )
+
+    {:ok, if(moved, do: replace_rows(socket, [moved]), else: socket)}
   end
 
+  # The rows below a removed one are placed again against what is now above
+  # them, and only the ones that moved are re-streamed.
   def update(%{action: {:delete, id}}, socket) do
+    {above, below} =
+      socket.assigns.rendered
+      |> Enum.reject(&(&1.id == id))
+      |> Enum.split_while(fn row -> not after_removed?(socket.assigns.rendered, row, id) end)
+
+    moved =
+      above
+      |> MessageGrouping.annotate_after(below, tz(socket))
+      |> Enum.zip(below)
+      |> Enum.reject(fn {placed, old} -> placed == old end)
+      |> Enum.map(&elem(&1, 0))
+
     {:ok,
      socket
      |> track(fn rendered -> Enum.reject(rendered, &(&1.id == id)) end)
-     |> stream_delete(:chat_messages, %{id: id})}
+     |> stream_delete(:chat_messages, %{id: id})
+     |> replace_rows(moved)
+     |> restart_top()}
   end
 
   # A reset is a new context — the scrollback the reader had loaded belongs to
@@ -247,7 +276,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # same thing (rows removed, rows added), and guessing between them throws a
   # reader paging through history down to the newest message.
   def update(%{action: {:reset, items}}, socket) do
-    items = decorate_all(items, viewer(socket))
+    items = items |> decorate_all(viewer(socket)) |> MessageGrouping.annotate_all(tz(socket))
 
     {:ok,
      socket
@@ -280,11 +309,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # Re-streaming what is already held is what makes a presentation change cost
   # nothing at the database. The limit is the number of rows being re-streamed,
   # so restyling a loaded scrollback cannot silently shorten it.
+  #
+  # The timezone is part of the presentation, so the runs and day breaks are
+  # placed again.
   def update(%{action: :restyle}, socket) do
-    rendered = socket.assigns.rendered
+    rendered = MessageGrouping.annotate_all(socket.assigns.rendered, tz(socket))
 
     {:ok,
      socket
+     |> assign(:rendered, rendered)
      |> stream(:chat_messages, rendered,
        reset: true,
        limit: -max(@dom_limit, length(rendered))
@@ -468,6 +501,40 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       send(self(), {:share_card_spaces, spaces})
       assign(socket, share_card_spaces: spaces)
     end
+  end
+
+  # ── Speaker runs ───────────────────────────────────────────
+
+  defp tz(socket), do: socket.assigns[:timezone] || "Etc/UTC"
+
+  # A new row continues from the rows on screen; a row already there (an edit,
+  # a reaction, a reply count) keeps the place in its run it had.
+  @spec place(map(), Phoenix.LiveView.Socket.t()) :: map()
+  defp place(msg, socket) do
+    rendered = socket.assigns.rendered
+
+    case Enum.find(rendered, &(&1.id == Map.get(msg, :id))) do
+      nil -> rendered |> MessageGrouping.annotate_after([msg], tz(socket)) |> hd()
+      old -> MessageGrouping.carry(msg, old)
+    end
+  end
+
+  # The first row on screen opens a run and says its day. After the oldest row
+  # is pruned off the tail, the new first row may have been a continuation.
+  @spec restart_top(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp restart_top(socket) do
+    case socket.assigns.rendered do
+      [top | _] ->
+        restarted = MessageGrouping.restart(top, tz(socket))
+        if restarted == top, do: socket, else: replace_rows(socket, [restarted])
+
+      [] ->
+        socket
+    end
+  end
+
+  defp after_removed?(rendered, row, id) do
+    Enum.find_index(rendered, &(&1.id == row.id)) > Enum.find_index(rendered, &(&1.id == id))
   end
 
   @spec upsert([map()], map()) :: [map()]

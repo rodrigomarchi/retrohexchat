@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
 
   @moduletag :liveview_feature
 
-  alias RetroHexChat.Channels.{Registry, Supervisor}
+  alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Chat.Queries
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
@@ -277,6 +277,99 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
       # The rows are restyled from what the viewport already holds, so the
       # pagination state is untouched — a refetch would have reset it.
       assert pagination(view) == before
+    end
+  end
+
+  # The continuous-paper layout: runs of one speaker share a header and a band.
+  # The band of a line is decided when it reaches the screen; an older page
+  # loading above must never repaint a line the reader is looking at.
+  describe "speaker runs and their bands" do
+    defp seed_runs(channel, count) do
+      for i <- 1..count do
+        {:ok, _msg} =
+          Queries.insert_message(%{
+            channel_name: channel,
+            author_nickname: if(rem(div(i - 1, 3), 2) == 0, do: "Ana", else: "Bob"),
+            content: "run line #{i}",
+            type: "message"
+          })
+      end
+    end
+
+    defp bands(rows), do: Map.new(rows, &{&1.id, &1.band})
+
+    defp assert_alternates(rows) do
+      rows
+      |> Enum.filter(& &1.band)
+      |> Enum.chunk_every(2, 1, :discard)
+      |> Enum.each(fn [up, down] ->
+        if down.group_start?,
+          do: assert(up.band != down.band, "neighbouring runs share a band"),
+          else: assert(up.band == down.band, "a run changes band halfway")
+      end)
+    end
+
+    test "the first page is grouped, and the top line opens a run and says its day",
+         %{conn: conn} do
+      channel = "#runs#{uid()}"
+      ensure_channel(channel)
+      seed_runs(channel, 12)
+
+      view = connect_user(conn, "Runs#{uid()}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      rows = viewport_rendered(view)
+      [top | _] = rows
+
+      assert top.group_start?
+      assert %Date{} = top.day_break
+      assert Enum.count(rows, & &1.group_start?) == 4
+      assert_alternates(rows)
+    end
+
+    test "loading an older page keeps every band already on screen", %{conn: conn} do
+      channel = "#runsold#{uid()}"
+      ensure_channel(channel)
+      # 61 lines: the page boundary falls inside a run, so the old top line
+      # loses its header to the page above it.
+      seed_runs(channel, 61)
+
+      view = connect_user(conn, "RunsO#{uid()}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      before = viewport_rendered(view)
+
+      render_click(view, "load_more", %{})
+      rows = viewport_rendered(view)
+
+      assert Map.take(bands(rows), Map.keys(bands(before))) == bands(before)
+      assert_alternates(rows)
+      assert hd(rows).group_start?
+
+      old_top = Enum.find(rows, &(&1.id == hd(before).id))
+      refute old_top.group_start?, "the old top line now continues the run above it"
+      assert old_top.day_break == nil
+    end
+
+    test "a line arriving from the same speaker continues the run at the bottom",
+         %{conn: conn} do
+      channel = "#runslive#{uid()}"
+      nick = "RunsL#{uid()}"
+      ensure_channel(channel)
+      seed_runs(channel, 3)
+      # Joined before the reader arrives: a join announced on screen is narration
+      # and would rightly break the run.
+      {:ok, _} = Server.join(channel, "Ana")
+
+      view = connect_user(conn, nick)
+      render_click(view, "switch_channel", %{"channel" => channel})
+      {:ok, _} = Server.send_message(channel, "Ana", "one more")
+      _ = render(view)
+
+      last = view |> viewport_rendered() |> List.last()
+
+      assert last.content == "one more"
+      refute last.group_start?
+      assert last.band == hd(viewport_rendered(view)).band
     end
   end
 end
