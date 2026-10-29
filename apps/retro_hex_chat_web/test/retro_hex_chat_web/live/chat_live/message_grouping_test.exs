@@ -128,10 +128,14 @@ defmodule RetroHexChatWeb.ChatLive.MessageGroupingTest do
     end
 
     test "a line with no usable time neither groups nor breaks a day" do
-      rows = MessageGrouping.annotate_all([say(1, "ana", at(15, 0)), say(2, "ana", nil)], @tz)
+      rows =
+        MessageGrouping.annotate_all(
+          [say(1, "ana", at(15, 0)), say(2, "ana", nil), say(3, "bob", at(15, 1))],
+          @tz
+        )
 
-      assert shape(rows) == [{1, true, :a}, {2, true, :b}]
-      assert Enum.at(rows, 1).day_break == nil
+      assert shape(rows) == [{1, true, :a}, {2, true, :b}, {3, true, :a}]
+      assert Enum.map(rows, & &1.day_break) == [~D[2026-10-21], nil, nil]
     end
   end
 
@@ -171,7 +175,7 @@ defmodule RetroHexChatWeb.ChatLive.MessageGroupingTest do
             [say(1, "bob", at(15, 29))],
             [say(1, "bob", at(15, 28)), narrate(2, at(15, 29))]
           ] do
-        {annotated, changed} = MessageGrouping.annotate_before(page, hd(screen), @tz)
+        {annotated, changed} = MessageGrouping.annotate_before(page, screen, @tz)
         below = changed || hd(screen)
         assert below.band == hd(screen).band
         whole = annotated ++ [below]
@@ -192,7 +196,7 @@ defmodule RetroHexChatWeb.ChatLive.MessageGroupingTest do
     test "a page by the same speaker joins the run below and hands it back without its header" do
       [first | _] = MessageGrouping.annotate_all([say(10, "bob", at(15, 30))], @tz)
 
-      {page, changed} = MessageGrouping.annotate_before([say(1, "bob", at(15, 29))], first, @tz)
+      {page, changed} = MessageGrouping.annotate_before([say(1, "bob", at(15, 29))], [first], @tz)
 
       assert shape(page) == [{1, true, :a}]
       assert %{id: 10, group_start?: false, band: :a, day_break: nil} = changed
@@ -202,7 +206,7 @@ defmodule RetroHexChatWeb.ChatLive.MessageGroupingTest do
       [first | _] = MessageGrouping.annotate_all([say(10, "bob", at(15, 30))], @tz)
 
       {page, changed} =
-        MessageGrouping.annotate_before([say(1, "ana", at(15, 29, 20))], first, @tz)
+        MessageGrouping.annotate_before([say(1, "ana", at(15, 29, 20))], [first], @tz)
 
       assert shape(page) == [{1, true, :b}]
       assert changed == nil
@@ -211,16 +215,32 @@ defmodule RetroHexChatWeb.ChatLive.MessageGroupingTest do
     test "the line below drops its day label when the page above is the same day" do
       [first | _] = MessageGrouping.annotate_all([say(10, "bob", at(15, 30))], @tz)
 
-      {[top], changed} = MessageGrouping.annotate_before([narrate(1, at(15, 0))], first, @tz)
+      {[top], changed} = MessageGrouping.annotate_before([narrate(1, at(15, 0))], [first], @tz)
 
       assert top.day_break == ~D[2026-10-21]
       assert %{group_start?: true, day_break: nil} = changed
     end
 
+    # Narration has no band, so the run below it is the one the page must
+    # alternate with.
+    test "a narration line at the top of the screen does not hide the run below it" do
+      screen =
+        MessageGrouping.annotate_all(
+          [narrate(10, at(15, 30)), say(11, "ana", at(15, 31)), say(12, "bob", at(15, 32))],
+          @tz
+        )
+
+      {[carol], _changed} =
+        MessageGrouping.annotate_before([say(1, "carol", at(15, 29))], screen, @tz)
+
+      assert Enum.at(screen, 1).band == :a
+      assert carol.band == :b
+    end
+
     test "with nothing on screen it is the same as annotating everything" do
       rows = [say(1, "ana", at(15, 0)), say(2, "bob", at(15, 1))]
 
-      assert MessageGrouping.annotate_before(rows, nil, @tz) ==
+      assert MessageGrouping.annotate_before(rows, [], @tz) ==
                {MessageGrouping.annotate_all(rows, @tz), nil}
     end
   end
@@ -234,11 +254,26 @@ defmodule RetroHexChatWeb.ChatLive.MessageGroupingTest do
                MessageGrouping.restart(second, @tz)
     end
 
-    test "a line deleted in place is a regroup; an edit is not" do
+    test "a line deleted in place, or gaining a card, is a regroup; an edit is not" do
       old = say(2, "ana", at(15, 1))
 
       assert MessageGrouping.regroup?(Map.put(old, :deleted_at, at(15, 2)), old)
+      assert MessageGrouping.regroup?(Map.put(old, :share_card, %{slug: "x"}), old)
       refute MessageGrouping.regroup?(Map.put(old, :edited_at, at(15, 2)), old)
+    end
+
+    test "placing rows again keeps every band and redraws headers and days" do
+      rows =
+        MessageGrouping.annotate_all([say(1, "ana", at(23, 0)), say(2, "ana", at(23, 2))], @tz)
+
+      painted = Enum.map(rows, &Map.put(&1, :band, :b))
+
+      # In UTC the two lines are still one run on one day.
+      assert [
+               %{band: :b, group_start?: true, day_break: ~D[2026-10-21]},
+               %{band: :b, group_start?: false}
+             ] =
+               MessageGrouping.place_again(painted, "Etc/UTC")
     end
 
     test "an edited line keeps the place in its run that it had" do

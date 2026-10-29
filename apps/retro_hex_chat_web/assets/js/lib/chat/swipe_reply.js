@@ -4,9 +4,9 @@
  * Touch only. The line follows the finger (through the CSS-owned
  * `chat-message--swiping` class and the `--swipe-x` custom property) and a
  * release past the threshold asks for a reply to it, exactly as the menu's
- * Reply would. A mostly vertical drag is left to the scroll, and narration —
- * a system line, a line that never reached the server — is not something to
- * answer.
+ * Reply would. A mostly vertical drag is left to the scroll, and only speech
+ * that reached the server can be answered — not an action, a system line, a
+ * deleted line or one still without an id.
  *
  * @module chat/swipe_reply
  */
@@ -34,9 +34,15 @@ export function swipeIntent(dx, dy) {
   return "swipe";
 }
 
-/** Whether a row is a line somebody could answer. */
+const SPEECH = ["chat-message--message", "chat-message--normal", "chat-message--arcade_link"];
+
+/** Whether a row is a stored line somebody said, the only kind there is to answer. */
 function answerable(row) {
-  return row.dataset.systemMessage !== "true" && /^\d+$/.test(row.dataset.realId || "");
+  return (
+    SPEECH.some((kind) => row.classList.contains(kind)) &&
+    !row.classList.contains("chat-message--deleted") &&
+    /^\d+$/.test(row.dataset.realId || "")
+  );
 }
 
 /**

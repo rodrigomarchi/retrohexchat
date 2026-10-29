@@ -36,7 +36,9 @@ describe("createSwipeReply", () => {
   beforeEach(() => {
     document.body.innerHTML = `
       <div id="list">
-        <div class="chat-message" data-real-id="42"><span class="chat-content">hi</span></div>
+        <div class="chat-message chat-message--message" data-real-id="42"><span class="chat-content">hi</span></div>
+        <div class="chat-message chat-message--action" data-real-id="43">waves</div>
+        <div class="chat-message chat-message--message chat-message--deleted" data-real-id="44">gone</div>
         <div class="chat-message" data-real-id="system-1" data-system-message="true">joined</div>
       </div>`;
     root = document.getElementById("list");
@@ -62,6 +64,17 @@ describe("createSwipeReply", () => {
     touch("pointerdown", 10, 100, row);
     touch("pointermove", 10 + SWIPE_REPLY_PX - 10, 100, row);
     touch("pointerup", 10 + SWIPE_REPLY_PX - 10, 100, row);
+
+    expect(onReply).not.toHaveBeenCalled();
+  });
+
+  it("never answers an action or a deleted line", () => {
+    for (const id of ["43", "44"]) {
+      const line = root.querySelector(`[data-real-id="${id}"]`);
+      touch("pointerdown", 10, 100, line);
+      touch("pointermove", 10 + SWIPE_REPLY_PX + 5, 100, line);
+      touch("pointerup", 10 + SWIPE_REPLY_PX + 5, 100, line);
+    }
 
     expect(onReply).not.toHaveBeenCalled();
   });

@@ -57,18 +57,20 @@ defmodule RetroHexChatWeb.ChatLive.MessageGrouping do
   end
 
   @doc """
-  Annotates an older `page` (oldest first) arriving above `below`, the first row
-  already on screen. Bands are derived from `below` upwards, so it keeps its own.
+  Annotates an older `page` (oldest first) arriving above `screen`, the rows
+  already on screen in order. Bands are derived upwards from the first of them,
+  and from the nearest run below when that first row is narration, so every row
+  on screen keeps its own.
 
-  Returns the page and `below` re-annotated when its header or day label changed
-  because of what now sits above it, or `nil` when it did not.
+  Returns the page and the first row on screen re-annotated when its header or
+  day label changed because of what now sits above it, or `nil` when it did not.
   """
-  @spec annotate_before([row()], row() | nil, String.t()) :: {[row()], row() | nil}
-  def annotate_before(page, nil, tz), do: {annotate_all(page, tz), nil}
-  def annotate_before([], _below, _tz), do: {[], nil}
+  @spec annotate_before([row()], [row()], String.t()) :: {[row()], row() | nil}
+  def annotate_before(page, [], tz), do: {annotate_all(page, tz), nil}
+  def annotate_before([], _screen, _tz), do: {[], nil}
 
-  def annotate_before(page, below, tz) do
-    banded = bands_upward(page, below, tz)
+  def annotate_before(page, [below | _] = screen, tz) do
+    banded = bands_upward(page, below, Enum.find_value(screen, &Map.get(&1, :band)), tz)
 
     annotated = place_all(banded, nil, tz)
     moved = place(below, List.last(annotated), tz)
@@ -85,10 +87,18 @@ defmodule RetroHexChatWeb.ChatLive.MessageGrouping do
 
   @doc """
   Whether a row drawn again stopped (or started) being speech — a line deleted
-  in place — so the rows from it down have to be placed again.
+  in place — or gained (or lost) a card, so the rows from it down have to be
+  placed again.
   """
   @spec regroup?(row(), row()) :: boolean()
-  def regroup?(row, old), do: speech?(row) != speech?(old)
+  def regroup?(row, old), do: speech?(row) != speech?(old) or card?(row) != card?(old)
+
+  @doc """
+  Draws the headers and day labels of rows already on screen again — after a
+  change of timezone, say — keeping every band they have.
+  """
+  @spec place_again([row()], String.t()) :: [row()]
+  def place_again(rows, tz), do: place_all(rows, nil, tz)
 
   @doc "Gives a re-rendered row (an edit, a reaction) the place in its run the old one had."
   @spec carry(row(), row()) :: row()
@@ -108,12 +118,15 @@ defmodule RetroHexChatWeb.ChatLive.MessageGrouping do
   end
 
   # Header and day label depend only on the row above; the band is already set.
+  # A row above with no usable time says nothing about the day, so it breaks
+  # no day either.
   defp place(row, prev, tz) do
     date = local_date(row, tz)
+    above = prev && local_date(prev, tz)
 
     row
     |> Map.put(:group_start?, not continues?(prev, row, tz))
-    |> Map.put(:day_break, if(is_nil(prev) or date != local_date(prev, tz), do: date))
+    |> Map.put(:day_break, if(is_nil(prev) or (above && date != above), do: date))
   end
 
   defp place_all(rows, prev, tz) do
@@ -128,11 +141,11 @@ defmodule RetroHexChatWeb.ChatLive.MessageGrouping do
 
   # Walks the page from the bottom up: a row that runs into the one below shares
   # its band, and any other speech takes the band opposite to the nearest run below.
-  defp bands_upward(page, below, tz) do
+  defp bands_upward(page, below, band_below, tz) do
     {banded, _acc} =
       page
       |> Enum.reverse()
-      |> Enum.map_reduce({below, below.band}, fn row, {next, band_below} ->
+      |> Enum.map_reduce({below, band_below}, fn row, {next, band_below} ->
         band =
           cond do
             not speech?(row) -> nil

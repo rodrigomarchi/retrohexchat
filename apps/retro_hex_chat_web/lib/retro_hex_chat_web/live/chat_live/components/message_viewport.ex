@@ -240,7 +240,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     {items, moved} =
       items
       |> decorate_all(viewer(socket))
-      |> MessageGrouping.annotate_before(List.first(socket.assigns.rendered), tz(socket))
+      |> MessageGrouping.annotate_before(socket.assigns.rendered, tz(socket))
 
     socket =
       items
@@ -306,10 +306,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # nothing at the database. The limit is the number of rows being re-streamed,
   # so restyling a loaded scrollback cannot silently shorten it.
   #
-  # The timezone is part of the presentation, so the runs and day breaks are
-  # placed again.
+  # The timezone is part of the presentation, so headers and day breaks are
+  # drawn again; every band stays the one it was given.
   def update(%{action: :restyle}, socket) do
-    rendered = MessageGrouping.annotate_all(socket.assigns.rendered, tz(socket))
+    rendered = MessageGrouping.place_again(socket.assigns.rendered, tz(socket))
 
     {:ok,
      socket
