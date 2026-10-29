@@ -56,7 +56,52 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachmentTest do
       )
 
     assert html =~ ~s(data-testid="message-voice")
-    refute html =~ "0:00"
+    assert length_text(html) == "--:--"
+  end
+
+  defp length_text(html) do
+    html
+    |> LazyHTML.from_fragment()
+    |> LazyHTML.query("[data-testid=message-voice-duration]")
+    |> LazyHTML.text()
+  end
+
+  describe "a file that plays" do
+    defp video do
+      voice(%{id: 9, filename: "clip.mp4", preview_kind: "video", preview_metadata: %{}})
+    end
+
+    # One look for everything that plays: the Hex device, never the
+    # browser's own controls, which differ from one browser to the next.
+    test "plays in the Hex player, without the browser's controls" do
+      for attachment <- [voice(), video(), voice(%{filename: "song.mp3", preview_metadata: %{}})] do
+        html = render_component(&attachment_tile/1, attachment: attachment)
+
+        assert html =~ ~s(phx-hook="HexPlayerHook")
+        assert html =~ ~s(data-testid="hex-player-play")
+        refute html =~ ~r/<(audio|video)[^>]*\bcontrols\b/
+      end
+    end
+
+    test "a video gets a screen and a key to fill the screen; a sound gets a spectrum" do
+      video_html = render_component(&attachment_tile/1, attachment: video())
+      assert video_html =~ "<video"
+      assert video_html =~ ~s(data-testid="hex-player-fullscreen")
+      refute video_html =~ "data-player-scope"
+
+      sound_html = render_component(&attachment_tile/1, attachment: voice())
+      assert sound_html =~ "data-player-scope"
+      refute sound_html =~ ~s(data-testid="hex-player-fullscreen")
+    end
+
+    # The same line is drawn in the conversation and in its thread at once.
+    test "the same file has a player of its own in each place it is drawn" do
+      chat = render_component(&attachment_tile/1, attachment: video())
+      thread = render_component(&attachment_tile/1, attachment: video(), scope: "thread")
+
+      assert chat =~ ~s(id="hex-player-chat-9")
+      assert thread =~ ~s(id="hex-player-thread-9")
+    end
   end
 
   # Absence: an ordinary audio file is not a recording, and keeps the tile that

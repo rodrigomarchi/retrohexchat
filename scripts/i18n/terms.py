@@ -23,6 +23,10 @@ from .protection import FEED_RE, SUIT_RE, protect, restore
 
 # English term pattern -> accepted forms per locale. `pt` covers both
 # Portuguese locales; a locale with no entry is not checked for that term.
+# What a sentence about something heard or watched mentions: its player plays
+# it back, it is never a game's.
+_MEDIA = r"(?:sounds?|audio|videos?|voices?|radio|music|recordings?|spectrum)\b"
+
 _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
     # A playing card, never a bank card or a business card: Spanish gave
     # "tarjeta" in every line of a card game's help, and Portuguese "cartão".
@@ -547,7 +551,9 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
     # "Right-click a player". Media, video and audio players, and a game's
     # single-player mode, are the other words; so is Hex Radio, "the internet
     # radio player" in "a retro player", which was kept English for want of a
-    # "jogador".
+    # "jogador". So is any player in a sentence about a sound, a video or a
+    # voice: "Audio and video play in a small player" is not a game's.
+    r"(?:^|(?<=[.!?])\s)(?![^.!?]*\b" + _MEDIA + r")[^.!?]*?"
     r"(?<!media )(?<!video )(?<!audio )(?<!radio )(?<!retro )(?<!native )(?<!single-)(?<!multi-)\bplayers?\b": {
         "pt": ("jogador",),
         "es": ("jugador",),
@@ -699,6 +705,20 @@ def missing_terms(source: str, translated: str, locale_code: str) -> list[str]:
 # Spanish wrote "Mover una tarjeta, o las cartas encima de ella", a bank card
 # and a playing card in one sentence, so the card term alone passed it.
 _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
+    # Playing a sound or a video back, never playing a game: Portuguese gave
+    # "Áudio e vídeo jogar em um pequeno jogador" for "Audio and video play in
+    # a small player".
+    r"(?:^|(?<=[.!?])\s)(?=[^.!?]*\b" + _MEDIA + r")[^.!?]*\b(?:players?|play(?:s|ed|ing)?)\b": {
+        "pt": ("jogador", "jogar", "joga ", "jogam"),
+        "es": ("jugador", "jugar", "juega", "jugad", "jugando"),
+        "it": ("giocator", "giocare", "giocat", "gioca "),
+        "pl": ("gracz",),
+        "ru": ("игрок",),
+        "id": ("pemain",),
+        "ja": ("選手",),
+        "zh_hans": ("玩家", "选手"),
+        "zh_hant": ("玩家", "選手"),
+    },
     r"\b(?:face-down\s+cards?|playing\s+cards?|card\s+game|game\s+of\s+cards"
     r"|cards?\s+at\s+a\s+time|cards?\s+on\s+(?:a|its|the)\s+pile|cards?\s+on\s+top\s+of"
     r"|cards?\s+(?:back\s+)?from\s+(?:the\s+deck|a\s+pile)|(?:its|the)\s+next\s+card"

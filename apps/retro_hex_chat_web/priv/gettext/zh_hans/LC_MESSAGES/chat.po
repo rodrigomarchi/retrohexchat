@@ -1189,7 +1189,7 @@ msgstr "灰色"
 msgid "Half-Op"
 msgstr "半业务"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:156
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:160
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:238
 #, elixir-autogen, elixir-format
 msgid "Help"
@@ -1781,7 +1781,7 @@ msgid "Send"
 msgstr "发送"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:151
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:147
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:151
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Server"
@@ -1792,7 +1792,7 @@ msgstr "服务器"
 msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "服务器设置\"%{key}\"改为\"%{value}\"."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:118
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:122
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:526
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:100
 #, elixir-autogen, elixir-format
@@ -1838,8 +1838,8 @@ msgid "Symbols"
 msgstr "符号"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:79
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:175
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:98
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:134
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:159
@@ -2451,7 +2451,7 @@ msgstr "联系说明"
 msgid "Custom Menus"
 msgstr "自定义菜单"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:213
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:217
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "删除"
@@ -2500,7 +2500,7 @@ msgstr "输入当前昵称 。"
 msgid "Enter the new nick."
 msgstr "输入新昵称 。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:127
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:131
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:99
 #, elixir-autogen, elixir-format
 msgid "Error"
@@ -2960,8 +2960,8 @@ msgstr "下一个 P2P 版式"
 msgid "Opening private room..."
 msgstr "打开私人房间..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:103
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:181
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:185
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:115
 #, elixir-autogen, elixir-format
 msgid "P2P"
@@ -3197,7 +3197,7 @@ msgstr "%{peer}接受了P2P请求 - 连接."
 msgid "Auto-Join"
 msgstr "自动加入"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:185
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:189
 #, elixir-autogen, elixir-format
 msgid "P2P request"
 msgstr "P2P请求"
@@ -3207,7 +3207,7 @@ msgstr "P2P请求"
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "p2P请求来自%{from} - 从PM头加入."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:187
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:191
 #, elixir-autogen, elixir-format
 msgid "Use the P2P control in this private message."
 msgstr "在此私有信件中使用 P2P 控制 。"
@@ -3427,7 +3427,7 @@ msgstr "私人信息"
 msgid "User list rail"
 msgstr "用户列表侧栏"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:380
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:347
 #: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Archive"
@@ -3470,7 +3470,7 @@ msgstr "附件上传失败"
 msgid "Attachments can only be sent with messages"
 msgstr "附件只能用信件发送"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:376
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:343
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "音频"
@@ -3485,7 +3485,7 @@ msgstr "粗体"
 msgid "Bulleted list"
 msgstr "项目符号列表"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:379
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:346
 #, elixir-autogen, elixir-format
 msgid "Code"
 msgstr "代码"
@@ -3505,7 +3505,7 @@ msgstr "复制源码"
 msgid "Could not store attachment: %{reason}"
 msgstr "无法存储附件 : %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:382
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:349
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr "文件"
@@ -3520,7 +3520,7 @@ msgstr "标题"
 msgid "IRC formatting"
 msgstr "IRC 格式"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:374
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:341
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "图片"
@@ -3560,18 +3560,17 @@ msgstr "消息格式"
 msgid "Numbered list"
 msgstr "编号列表"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:381
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:348
 #, elixir-autogen, elixir-format
 msgid "Office"
 msgstr "Office"
 
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:192
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:284
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "打开"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:377
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:344
 #, elixir-autogen, elixir-format
 msgid "PDF"
 msgstr "PDF"
@@ -3581,7 +3580,7 @@ msgstr "PDF"
 msgid "Plain text"
 msgstr "纯文本"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:247
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:251
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:135
 #, elixir-autogen, elixir-format
 msgid "Preview"
@@ -3610,7 +3609,7 @@ msgstr "删除线"
 msgid "Strip Formatting"
 msgstr "清除格式"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:378
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:345
 #, elixir-autogen, elixir-format
 msgid "Text"
 msgstr "文本"
@@ -3621,7 +3620,7 @@ msgstr "文本"
 msgid "Too many attachments"
 msgstr "附件过多"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:375
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:342
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "视频"
@@ -3636,7 +3635,7 @@ msgstr "编写"
 msgid "You"
 msgstr "你"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:339
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:306
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "文件"
@@ -4110,8 +4109,8 @@ msgstr "此浏览器没有授予麦克风权限。"
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "此浏览器录制的格式无法在本聊天中发送"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:160
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:348
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:152
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:315
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:531
 #, elixir-autogen, elixir-format
 msgid "Voice message"

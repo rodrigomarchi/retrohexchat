@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **274 spec files** under `e2e/tests/`.
-- **690 Playwright `test()` cases**.
-- **636 documented flows**, 635 done, 1 not done.
+- **275 spec files** under `e2e/tests/`.
+- **695 Playwright `test()` cases**.
+- **641 documented flows**, 640 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -542,6 +542,11 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O32 | On a desktop the composer toolbar offers the microphone; a discarded take sends nothing, a finished one is sent alone — even with a file attached mid-take, which stays pending — and a file attached alone sends without text | `tests/chat-voice-messages.spec.ts` | done |
 | O33 | The conversation is one Tab stop: arrows move between lines, Enter reacts, Shift+F10 opens the line's menu | `tests/chat-message-actions.spec.ts` | done |
 | O34 | One conversation holding every kind of line — runs of one speaker, a mention, /me, a reply, emoji alone, photos, a reaction, an edit and a delete — read on a desktop and on a phone | `tests/chat-message-layout.spec.ts` | done |
+| O35 | A sound attached to a message plays in the Hex player: Play, Pause where it was, the position slider, Stop back at the start — never the browser's own controls | `tests/hex-player.spec.ts` | done |
+| O36 | A video attached to a message plays on the Hex player's screen, with a key to fill the screen, and comes back to the start when it ends | `tests/hex-player.spec.ts` | done |
+| O37 | Only one thing plays at a time: starting a second sound pauses the first | `tests/hex-player.spec.ts` | done |
+| O38 | On a phone the Hex player fits the conversation's width with every key reachable | `tests/hex-player.spec.ts` | done |
+| O39 | A voice message recorded in the browser — a file with no length of its own — plays and moves through the length the server measured | `tests/hex-player.spec.ts` | done |
 
 ### P - Persistence, Reconnect, History, No-Focus-Steal
 

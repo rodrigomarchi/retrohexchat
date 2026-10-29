@@ -6,7 +6,7 @@ import {
   scopePoints,
   simulatedBars,
   spectrumBars,
-} from "../../../js/lib/radio/visualizer.js";
+} from "../../../js/lib/hex_device/visualizer.js";
 
 describe("spectrumBars", () => {
   it("folds the bins into bars of 0 to 1", () => {

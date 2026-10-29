@@ -182,7 +182,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.RadioWindow do
       phx-hook="RadioHook"
       phx-target={@myself}
       tabindex="-1"
-      class="hex-radio"
+      class="hex-device hex-radio"
       data-testid="hex-radio"
     >
       <.radio_player

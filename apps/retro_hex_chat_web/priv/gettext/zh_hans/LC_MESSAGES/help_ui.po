@@ -308,7 +308,7 @@ msgstr "输入自动完成( A)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
@@ -500,7 +500,7 @@ msgstr "节"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:100
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:98
@@ -3692,7 +3692,7 @@ msgstr "——复古游戏和%{arcade},每组与游戏一组. %{arcade}在你的
 msgid "A group can hold groups of its own, just as a desktop folder can hold folders: %{games} ▸ %{arcade} holds a group per kind of game. Each one flies out beside the last, or on a phone takes the list over one level further. Such a group starts with a row that opens its folder on the desktop."
 msgstr "一个组可以持有自己的组,就像桌面文件夹可以持有文件夹一样: %{games} ▸ %{arcade}每类游戏都持有一个组. 每个人飞出 在最后的, 或电话取名单 在一个层次上。 这样一组以打开桌面上的文件夹的行开始 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "/radio Command"
 msgstr "/radio Command"
@@ -3776,3 +3776,8 @@ msgstr "The buttons under the list choose what it shows: TOP the most played sta
 #, elixir-autogen, elixir-format
 msgid "The slider sets the volume, which is kept for next time; the speaker beside it mutes the sound without stopping the station"
 msgstr "The slider sets the volume, which is kept for next time; the speaker beside it mutes the sound without stopping the station"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Hex Radio is switched off when a sound or a video from a message starts"
+msgstr "当消息中的声音或视频开始时, Hex 电台会关闭"

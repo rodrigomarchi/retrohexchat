@@ -904,7 +904,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "Accès"
@@ -3058,7 +3058,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:48
@@ -3089,7 +3089,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -3298,7 +3298,7 @@ msgid "Tabs"
 msgstr "Tables"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:96
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
@@ -3599,7 +3599,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:92
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "Collecteur d'URL"
@@ -5670,7 +5670,7 @@ msgstr ""
 " stockées dans le compte. Les clients gardent l'historique uniquement dans "
 "la mémoire du navigateur pour la page actuelle."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Downloads are authorized by the chat server first. If access is allowed, the server redirects to a short-lived signed storage URL."
 msgstr ""
@@ -5678,20 +5678,10 @@ msgstr ""
 "l'accès est autorisé, le serveur redirige vers une URL de stockage signée de"
 " courte durée."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "File Paths"
 msgstr "Chemins de fichier"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Image attachments render as inline thumbnails. Audio and video attachments use native players, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
-msgstr ""
-"Les pièces jointes d'image rendent comme des vignettes en ligne. Les pièces "
-"jointes audio et vidéo utilisent des lecteurs natifs, les fichiers PDF "
-"exposent une action de prévisualisation, et d'autres fichiers rendent comme "
-"des cartes de fichiers sécurisées avec des métadonnées de type, taille et "
-"chemin."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5718,7 +5708,7 @@ msgstr ""
 "Les formats non sécurisés du navigateur, y compris SVG et HTML, sont "
 "conservés comme fichiers téléchargeables au lieu d'aperçus en ligne."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Uploaded files are stored with a logical directory path so administrators can browse them later without depending on the storage bucket's internal object keys."
 msgstr ""
@@ -6811,7 +6801,7 @@ msgstr "En écrire un"
 msgid "A Minute, and Then It Stops"
 msgstr "Une minute, puis ça s'arrête"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Message Attachments"
 msgstr "Pièces jointes des messages"
@@ -6821,7 +6811,7 @@ msgstr "Pièces jointes des messages"
 msgid "Recording One"
 msgstr "En enregistrer un"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "Où c'est proposé"
@@ -6856,7 +6846,7 @@ msgstr "Le fondateur doit être identifié auprès de NickServ pour le basculer 
 msgid "A recording stops by itself after one minute and is sent as it is. After a minute it stops being something the other person can take in during a conversation, which is what writing is for."
 msgstr "Un enregistrement s'arrête toute seule après une minute et est envoyé tel quel. Après une minute, il cesse d'être quelque chose que l'autre personne peut prendre pendant une conversation, ce qui est ce que l'écriture est pour."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "On a desktop and on a phone, in any browser that can record. If the browser cannot record, the microphone does not appear, and the attachment button can still send an audio file."
 msgstr "Sur un bureau et sur un téléphone, dans tout navigateur qui peut enregistrer. Si le navigateur ne peut pas enregistrer, le microphone n'apparaît pas, et le bouton de fixation peut toujours envoyer un fichier audio."
@@ -8035,12 +8025,12 @@ msgstr "Avec le clavier: de la boîte de message appuyez sur Shift+Tab jusqu'à 
 msgid "The number beside an emoji shows how many people chose it. Point at it to see their names. In your own reactions the number uses bold text. Each person counts only once per emoji, even after many clicks."
 msgstr "Le nombre à côté d'un emoji montre combien de personnes l'ont choisi. Montrez-lui leurs noms. Dans vos propres réactions, le nombre utilise un texte gras. Chaque personne ne compte qu'une fois par emoji, même après de nombreux clics."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "A message with only one to three emoji is printed large. Pictures appear without a frame; point at one to see its file name and size, and click it to open it."
 msgstr "Un message avec seulement un à trois emoji est imprimé grand. Les images apparaissent sans cadre; pointez à un pour voir son nom et sa taille de fichier, et cliquez dessus pour l'ouvrir."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Notices From the Room"
 msgstr "Avis de la salle"
@@ -8055,7 +8045,7 @@ msgstr "Sur un téléphone, vous pouvez aussi glisser le message à droite : la 
 msgid "On a phone, press and hold the message: the quick emoji are across the top of the menu that opens"
 msgstr "Sur un téléphone, appuyez et maintenez le message : les emoji rapides sont en haut du menu qui s'ouvre"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Pictures and Emoji"
 msgstr "Photos et Emoji"
@@ -8070,32 +8060,82 @@ msgstr "Pointez au message et cliquez sur le sourire qui apparaît à côté, pu
 msgid "The conversation is printed like continuous printer paper, the kind with green and white stripes."
 msgstr "La conversation est imprimée comme du papier d'imprimante continu, le genre avec des rayures vertes et blanches."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Where a Day Starts"
 msgstr "Où une journée commence"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "A dotted perforation with the date marks the first message of each day. Each message shows only the hour and minute. Point at the hour to see the full date."
 msgstr "Une perforation pointillée avec la date marque le premier message de chaque jour. Chaque message ne montre que l'heure et la minute. Pointez à l'heure pour voir la date complète."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "One Name Above Several Lines"
 msgstr "Un nom au-dessus de plusieurs lignes"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Point at a message, or reach it with the keyboard, to see the hour it was written. Your own messages are printed on a light blue stripe."
 msgstr "Pointer un message, ou l'atteindre avec le clavier, pour voir l'heure où il a été écrit. Vos propres messages sont imprimés sur une bande bleue."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "When one person writes several messages in a row, their name and the hour appear once, above the first message. The messages under it share the same stripe. A new stripe starts when someone else speaks, after five minutes of silence, or on a new day."
 msgstr "Lorsqu'une personne écrit plusieurs messages de suite, son nom et l'heure apparaissent une fois, au-dessus du premier message. Les messages sous elle partagent la même bande. Une nouvelle bande commence quand quelqu'un d'autre parle, après cinq minutes de silence, ou un nouveau jour."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Some messages come from the room rather than from a person: /me actions, System, Service and Error messages, and deleted messages. They have no stripe and appear between the stripes, each with a small icon."
 msgstr "Some messages come from the room rather than from a person: /me actions, System, Service and Error messages, and deleted messages. They have no stripe and appear between the stripes, each with a small icon."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Playing Sound and Video"
+msgstr "Lecture du son et de la vidéo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Voice Messages"
+msgstr "Voice Messages"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Listening to a Voice Message"
+msgstr "Listening to a Voice Message"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "A video has one more button, which fills the screen; Esc goes back"
+msgstr "Une vidéo a un bouton de plus, qui remplit l'écran; Esc retourne"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "A voice message shows how long it is. It is played back in the same media player as any other sound."
+msgstr "A voice message shows how long it is. It is played back in the same media player as any other sound."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Audio and video are played back in a small media player that looks like Hex Radio. Its display shows the name, the elapsed time and the length, the spectrum of a sound, and a slider to jump to another moment."
+msgstr "Audio et vidéo sont lus dans un petit lecteur multimédia qui ressemble à Hex Radio. Son affichage montre le nom, le temps écoulé et la longueur, le spectre d'un son, et un curseur pour sauter à un autre moment."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Only one sound is heard at a time. Starting a new sound puts the old one on pause and switches Hex Radio off"
+msgstr "Un seul son est entendu à la fois. Démarrer un nouveau son met l'ancien en pause et éteindre Hex Radio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "The buttons under the display play the sound, pause it where it is, and stop it at the start"
+msgstr "Les boutons sous l'affichage jouent le son, le pausent où il est, et l'arrêtent au début"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "The mute button turns the sound off without stopping it"
+msgstr "Le bouton muet éteint le son sans l'arrêter"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Image attachments render as inline thumbnails. Audio and video attachments are played back in the message, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
+msgstr "Les pièces jointes d'image rendent comme des vignettes en ligne. Les pièces jointes audio et vidéo sont lues de nouveau dans le message, les fichiers PDF exposent une action de prévisualisation, et d'autres fichiers rendent comme des cartes de fichiers sécurisées avec des métadonnées de type, taille et chemin."

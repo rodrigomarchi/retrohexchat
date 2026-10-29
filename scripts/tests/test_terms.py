@@ -273,6 +273,37 @@ class MissingTermsTest(unittest.TestCase):
         )
         self.assertEqual(missing_terms("Audio and video attachments use native players", "lecteurs natifs", "fr"), [])
 
+    def test_a_sound_is_played_back_in_a_media_player(self):
+        source = "Audio and video play in a small player with the look of Hex Radio."
+        # What the Portuguese model shipped: a game's player, playing a game.
+        self.assertTrue(
+            missing_terms(source, "Áudio e vídeo jogar em um pequeno jogador com o olhar de Hex Radio.", "pt_BR")
+        )
+        self.assertEqual(
+            missing_terms(source, "Áudio e vídeo tocam em um pequeno reprodutor com o visual do Hex Radio.", "pt_BR"),
+            [],
+        )
+        voice = "A voice message shows how long it is and plays in its own small player."
+        self.assertTrue(missing_terms(voice, "Uma mensagem de voz toca em seu próprio pequeno jogador.", "pt_BR"))
+        self.assertEqual(missing_terms(voice, "Uma mensagem de voz toca em seu próprio pequeno reprodutor.", "pt_BR"), [])
+
+    def test_the_time_a_sound_has_played_is_not_a_game_played(self):
+        source = "Its display shows the name, the time played and the spectrum of a sound."
+        # What the Spanish and Italian models shipped.
+        self.assertTrue(missing_terms(source, "Su pantalla muestra el nombre, el tiempo jugado y el espectro de un sonido.", "es"))
+        self.assertTrue(missing_terms(source, "Il suo display mostra il nome, il tempo giocato e lo spettro di un suono.", "it"))
+        self.assertEqual(
+            missing_terms(source, "Su pantalla muestra el nombre, el tiempo transcurrido y el espectro de un sonido.", "es"),
+            [],
+        )
+
+    def test_a_game_player_is_still_held_beside_a_media_sentence(self):
+        # The game's sentence still asks for a game's player. (A wrong sense is
+        # read over the whole translation, which cannot say which sentence a
+        # word came from, so such a text keeps its English until it is split.)
+        source = "Audio plays in the message. Right-click a player to watch the match."
+        self.assertTrue(missing_terms(source, "O áudio toca na mensagem. Clique com o botão direito num tocador para assistir.", "pt_BR"))
+
     def test_playing_a_game_is_not_playing_back(self):
         source = "Play browser-native games against the computer."
         self.assertTrue(missing_terms(source, "ブラウザネイティブのゲームをコンピュータと再生します。", "ja"))

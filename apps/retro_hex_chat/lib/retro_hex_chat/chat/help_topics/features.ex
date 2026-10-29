@@ -238,14 +238,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "files"),
           dgettext("help", "upload"),
           dgettext("help", "download"),
-          dgettext("help", "signed URL")
+          dgettext("help", "signed URL"),
+          dgettext("help", "video"),
+          dgettext("help", "player")
         ],
         icon: :icon_file_send,
         description:
           dgettext(
             "help",
-            "Attach uploaded files to channel and private messages, then download them through authorized links."
-          )
+            "Attach uploaded files to channel and private messages, play their sound and video in the message, and download them through authorized links."
+          ),
+        see_also: ["feature-voice-messages", "ui-hex-radio"]
       },
       %{
         id: "feature-voice-messages",

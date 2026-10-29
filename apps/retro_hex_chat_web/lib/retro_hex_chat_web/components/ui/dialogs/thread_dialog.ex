@@ -90,6 +90,7 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
             timezone={@timezone}
             strip_formatting={@strip_formatting}
             viewer={@viewer}
+            scope="thread"
           />
         </div>
       </.inset>
@@ -128,6 +129,7 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
             timezone={@timezone}
             strip_formatting={@strip_formatting}
             viewer={@viewer}
+            scope="thread"
           />
         </div>
       </.inset>

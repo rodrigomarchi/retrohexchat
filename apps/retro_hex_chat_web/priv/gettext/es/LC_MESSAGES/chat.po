@@ -1209,7 +1209,7 @@ msgstr "Grey"
 msgid "Half-Op"
 msgstr "Media hora"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:156
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:160
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:238
 #, elixir-autogen, elixir-format
 msgid "Help"
@@ -1806,7 +1806,7 @@ msgid "Send"
 msgstr "Enviar"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:151
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:147
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:151
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Server"
@@ -1817,7 +1817,7 @@ msgstr "Servidor"
 msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "La configuración del servidor '%{key}' cambió a '%{value}'."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:118
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:122
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:526
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:100
 #, elixir-autogen, elixir-format
@@ -1863,8 +1863,8 @@ msgid "Symbols"
 msgstr "Símbolos"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:79
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:175
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:98
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:134
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:159
@@ -2479,7 +2479,7 @@ msgstr "Nota de contacto"
 msgid "Custom Menus"
 msgstr "Menús personalizados"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:213
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:217
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Suprimido"
@@ -2528,7 +2528,7 @@ msgstr "Entra en el negro actual."
 msgid "Enter the new nick."
 msgstr "Entra en el nuevo nick."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:127
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:131
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:99
 #, elixir-autogen, elixir-format
 msgid "Error"
@@ -2989,8 +2989,8 @@ msgstr "Siguiente diseño P2P"
 msgid "Opening private room..."
 msgstr "Abrir habitación privada..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:103
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:181
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:185
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:115
 #, elixir-autogen, elixir-format
 msgid "P2P"
@@ -3228,7 +3228,7 @@ msgstr "%{peer} aceptó la solicitud P2P - conectando..."
 msgid "Auto-Join"
 msgstr "Auto-Join"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:185
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:189
 #, elixir-autogen, elixir-format
 msgid "P2P request"
 msgstr "Solicitud de P2P"
@@ -3238,7 +3238,7 @@ msgstr "Solicitud de P2P"
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "Solicitud P2P de %{from} - únete desde el encabezado del MP."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:187
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:191
 #, elixir-autogen, elixir-format
 msgid "Use the P2P control in this private message."
 msgstr "Utilice el control P2P en este mensaje privado."
@@ -3458,7 +3458,7 @@ msgstr "Mensajes privados"
 msgid "User list rail"
 msgstr "Barra de lista de usuarios"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:380
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:347
 #: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Archive"
@@ -3501,7 +3501,7 @@ msgstr "Carga de adjunto falló"
 msgid "Attachments can only be sent with messages"
 msgstr "Los adjuntos sólo se pueden enviar con mensajes"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:376
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:343
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "Audio"
@@ -3516,7 +3516,7 @@ msgstr "Negrita"
 msgid "Bulleted list"
 msgstr "Lista con viñetas"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:379
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:346
 #, elixir-autogen, elixir-format
 msgid "Code"
 msgstr "Código"
@@ -3536,7 +3536,7 @@ msgstr "Copiar fuente"
 msgid "Could not store attachment: %{reason}"
 msgstr "No podía almacenar el apego: %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:382
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:349
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr "Archivo"
@@ -3551,7 +3551,7 @@ msgstr "Encabezado"
 msgid "IRC formatting"
 msgstr "Formato IRC"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:374
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:341
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "Imagen"
@@ -3591,18 +3591,17 @@ msgstr "Formato del mensaje"
 msgid "Numbered list"
 msgstr "Lista numerada"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:381
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:348
 #, elixir-autogen, elixir-format
 msgid "Office"
 msgstr "Office"
 
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:192
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:284
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "Abrir"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:377
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:344
 #, elixir-autogen, elixir-format
 msgid "PDF"
 msgstr "PDF"
@@ -3612,7 +3611,7 @@ msgstr "PDF"
 msgid "Plain text"
 msgstr "Texto sin formato"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:247
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:251
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:135
 #, elixir-autogen, elixir-format
 msgid "Preview"
@@ -3641,7 +3640,7 @@ msgstr "Tachado"
 msgid "Strip Formatting"
 msgstr "Quitar formato"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:378
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:345
 #, elixir-autogen, elixir-format
 msgid "Text"
 msgstr "Texto"
@@ -3652,7 +3651,7 @@ msgstr "Texto"
 msgid "Too many attachments"
 msgstr "Demasiados adjuntos"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:375
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:342
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "Vídeo"
@@ -3667,7 +3666,7 @@ msgstr "Escribir"
 msgid "You"
 msgstr "Tú"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:339
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:306
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "archivo"
@@ -4152,8 +4151,8 @@ msgstr "Este navegador no dio acceso al micrófono."
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "Este navegador grabó en un formato que este chat no puede enviar"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:160
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:348
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:152
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:315
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:531
 #, elixir-autogen, elixir-format
 msgid "Voice message"

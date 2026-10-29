@@ -15,7 +15,7 @@
 <p>
   {dgettext(
     "help_features",
-    "Image attachments render as inline thumbnails. Audio and video attachments use native players, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
+    "Image attachments render as inline thumbnails. Audio and video attachments are played back in the message, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
   )}
 </p>
 <p>
@@ -24,6 +24,36 @@
     "Unsafe browser-rendered formats, including SVG and HTML, are kept as downloadable files instead of inline previews."
   )}
 </p>
+<.help_h4 icon={:icon_btn_play}>{dgettext("help_features", "Playing Sound and Video")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Audio and video are played back in a small media player that looks like Hex Radio. Its display shows the name, the elapsed time and the length, the spectrum of a sound, and a slider to jump to another moment."
+  )}
+</p>
+<ul>
+  <li>
+    {dgettext(
+      "help_features",
+      "The buttons under the display play the sound, pause it where it is, and stop it at the start"
+    )}
+  </li>
+  <li>
+    {dgettext("help_features", "The mute button turns the sound off without stopping it")}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "A video has one more button, which fills the screen; Esc goes back"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Only one sound is heard at a time. Starting a new sound puts the old one on pause and switches Hex Radio off"
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_folder}>{dgettext("help_features", "File Paths")}</.help_h4>
 <p>
   {dgettext(
@@ -47,4 +77,9 @@
   <.help_link topic="feature-url-catcher">
     {dgettext("help_features", "URL Catcher")}
   </.help_link>
+  ·
+  <.help_link topic="feature-voice-messages">
+    {dgettext("help_features", "Voice Messages")}
+  </.help_link>
+  · <.help_link topic="ui-hex-radio">Hex Radio</.help_link>
 </p>

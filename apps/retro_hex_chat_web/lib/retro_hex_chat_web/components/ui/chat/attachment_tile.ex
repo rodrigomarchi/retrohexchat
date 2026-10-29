@@ -4,11 +4,17 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.HexPlayer, only: [hex_player: 1]
+
   alias RetroHexChat.Chat.VoiceMessages
   alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
 
   attr :attachments, :list, default: []
+
+  attr :scope, :string,
+    default: "chat",
+    doc: "where the line is drawn, so the same file's players never share an id"
 
   @spec attachment_gallery(map()) :: Phoenix.LiveView.Rendered.t()
   def attachment_gallery(assigns) do
@@ -18,12 +24,13 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
       class="message-attachments mt-1 flex max-w-full flex-wrap gap-1"
       data-testid="message-attachments"
     >
-      <.attachment_tile :for={attachment <- @attachments} attachment={attachment} />
+      <.attachment_tile :for={attachment <- @attachments} attachment={attachment} scope={@scope} />
     </div>
     """
   end
 
   attr :attachment, :map, required: true
+  attr :scope, :string, default: "chat"
 
   @spec attachment_tile(map()) :: Phoenix.LiveView.Rendered.t()
   def attachment_tile(assigns) do
@@ -34,11 +41,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
       <% "image" -> %>
         <.image_tile attachment={@attachment} />
       <% "video" -> %>
-        <.video_tile attachment={@attachment} />
+        <.video_tile attachment={@attachment} scope={@scope} />
       <% "voice" -> %>
-        <.voice_tile attachment={@attachment} />
+        <.voice_tile attachment={@attachment} scope={@scope} />
       <% "audio" -> %>
-        <.audio_tile attachment={@attachment} />
+        <.audio_tile attachment={@attachment} scope={@scope} />
       <% _kind_or_nil -> %>
         <.file_tile attachment={@attachment} />
     <% end %>
@@ -81,120 +88,117 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
     """
   end
 
-  # The frame of a tile that plays something: a fixed width, so a run of them
-  # lines up down the conversation.
-  @frame "w-72 max-w-full border border-border bg-surface text-xs shadow-retro-field"
-
   attr :attachment, :map, required: true
+  attr :scope, :string, required: true
 
   defp video_tile(assigns) do
-    assigns = assign(assigns, :frame, @frame)
-
     ~H"""
     <div
-      class={@frame}
       data-testid="message-attachment"
       data-preview-kind={preview_kind(@attachment)}
       title={logical_path(@attachment)}
     >
-      <.tile_header attachment={@attachment} />
-      <video
+      <.hex_player
+        id={player_id(@scope, @attachment)}
+        kind={:video}
         src={preview_href(@attachment)}
-        controls
-        preload="metadata"
-        class="block h-40 w-full bg-black"
-        data-testid="message-attachment-video-preview"
-      ></video>
-      <.tile_footer attachment={@attachment} />
+        title={filename(@attachment)}
+        testid="message-attachment-video-preview"
+      >
+        <.player_foot attachment={@attachment} />
+      </.hex_player>
     </div>
     """
   end
 
   attr :attachment, :map, required: true
+  attr :scope, :string, required: true
 
   defp audio_tile(assigns) do
-    assigns = assign(assigns, :frame, @frame)
-
     ~H"""
     <div
-      class={@frame}
       data-testid="message-attachment"
       data-preview-kind={preview_kind(@attachment)}
       title={logical_path(@attachment)}
     >
-      <.tile_header attachment={@attachment} />
-      <div class="bg-white p-1">
-        <audio
-          src={preview_href(@attachment)}
-          controls
-          preload="metadata"
-          class="h-8 w-full"
-          data-testid="message-attachment-audio-preview"
-        ></audio>
-      </div>
-      <.tile_footer attachment={@attachment} />
+      <.hex_player
+        id={player_id(@scope, @attachment)}
+        kind={:audio}
+        src={preview_href(@attachment)}
+        title={filename(@attachment)}
+        testid="message-attachment-audio-preview"
+      >
+        <.player_foot attachment={@attachment} />
+      </.hex_player>
+    </div>
+    """
+  end
+
+  attr :attachment, :map, required: true
+  attr :scope, :string, required: true
+
+  # Somebody speaking, and for how long. The filename is a timestamp the
+  # recorder invented and the directory is a fact about storage, so neither is
+  # on the tile — the length is the one measurement a listener decides with.
+  defp voice_tile(assigns) do
+    assigns = assign(assigns, :duration_ms, VoiceMessages.duration_ms(assigns.attachment))
+
+    ~H"""
+    <div data-testid="message-voice" data-preview-kind="voice">
+      <.hex_player
+        id={player_id(@scope, @attachment)}
+        kind={:audio}
+        src={preview_href(@attachment)}
+        title={dgettext("chat", "Voice message")}
+        length_ms={@duration_ms}
+        length_testid="message-voice-duration"
+        testid="message-attachment-audio-preview"
+      >
+        <span class="min-w-0 flex-1 truncate">
+          {Format.bytes(attachment_byte_size(@attachment))}
+        </span>
+        <.open_link attachment={@attachment} />
+      </.hex_player>
     </div>
     """
   end
 
   attr :attachment, :map, required: true
 
-  # Somebody speaking, and for how long. The filename is a timestamp the
-  # recorder invented and the byte size is a fact about storage, so neither is
-  # on the tile — the length is the one measurement a listener decides with.
-  defp voice_tile(assigns) do
-    assigns =
-      assigns
-      |> assign(:duration_ms, VoiceMessages.duration_ms(assigns.attachment))
-      |> assign(:frame, @frame)
-
+  # Under a file's player: its size, where it is kept, and the link that opens it.
+  defp player_foot(assigns) do
     ~H"""
-    <div
-      class={@frame}
-      data-testid="message-voice"
-      data-preview-kind="voice"
-    >
-      <div class="flex h-6 items-center gap-1 border-b border-border bg-muted px-1">
-        <Icons.icon_microphone class="h-4 w-4 shrink-0" />
-        <span class="min-w-0 flex-1 truncate font-bold">
-          {dgettext("chat", "Voice message")}
-        </span>
-        <span
-          :if={@duration_ms}
-          class="shrink-0 tabular-nums text-muted-foreground"
-          data-testid="message-voice-duration"
-        >
-          {Format.clock_ms(@duration_ms)}
-        </span>
-      </div>
-      <div class="bg-white p-1">
-        <audio
-          src={preview_href(@attachment)}
-          controls
-          preload="metadata"
-          class="h-8 w-full"
-          data-testid="message-attachment-audio-preview"
-        ></audio>
-      </div>
-      <div class="flex items-center gap-1 border-t border-border px-1 py-0.5">
-        <span class="min-w-0 flex-1 truncate text-muted-foreground">
-          {Format.bytes(attachment_byte_size(@attachment))}
-        </span>
-        <a
-          href={attachment_href(@attachment)}
-          target="_blank"
-          rel="noopener"
-          data-confirm-tab="attachment"
-          data-confirm-label={confirm_label(@attachment)}
-          class="shrink-0 font-bold text-foreground hover:underline"
-          data-testid="message-attachment-download"
-        >
-          {dgettext("chat", "Open")}
-        </a>
-      </div>
-    </div>
+    <span class="shrink-0">{Format.bytes(attachment_byte_size(@attachment))}</span>
+    <span class="min-w-0 flex-1 truncate font-mono" data-testid="message-attachment-path">
+      {directory_path(@attachment)}
+    </span>
+    <.open_link attachment={@attachment} />
     """
   end
+
+  attr :attachment, :map, required: true
+
+  defp open_link(assigns) do
+    ~H"""
+    <a
+      href={attachment_href(@attachment)}
+      target="_blank"
+      rel="noopener"
+      data-confirm-tab="attachment"
+      data-confirm-label={confirm_label(@attachment)}
+      class="font-bold"
+      data-testid="message-attachment-download"
+    >
+      {dgettext("chat", "Open")}
+    </a>
+    """
+  end
+
+  # A player's id: the same line can be drawn in the conversation and in its
+  # thread at once, and each copy is a player of its own.
+  defp player_id(scope, attachment), do: "hex-player-#{scope}-#{attachment_id(attachment)}"
+
+  defp attachment_id(attachment), do: Map.get(attachment, :id) || Map.get(attachment, "id")
 
   attr :attachment, :map, required: true
 
@@ -245,43 +249,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
         data-testid="message-attachment-preview"
       >
         {dgettext("chat", "Preview")}
-      </a>
-    </div>
-    """
-  end
-
-  attr :attachment, :map, required: true
-
-  defp tile_header(assigns) do
-    ~H"""
-    <div class="flex h-6 items-center gap-1 border-b border-border bg-muted px-1">
-      <Icons.icon_file_send class="h-4 w-4 shrink-0" />
-      <span class="min-w-0 flex-1 truncate font-mono">{filename(@attachment)}</span>
-      <span class="shrink-0 text-muted-foreground">
-        {Format.bytes(attachment_byte_size(@attachment))}
-      </span>
-    </div>
-    """
-  end
-
-  attr :attachment, :map, required: true
-
-  defp tile_footer(assigns) do
-    ~H"""
-    <div class="flex items-center gap-1 border-t border-border px-1 py-0.5 text-muted-foreground">
-      <span class="min-w-0 flex-1 truncate font-mono" data-testid="message-attachment-path">
-        {directory_path(@attachment)}
-      </span>
-      <a
-        href={attachment_href(@attachment)}
-        target="_blank"
-        rel="noopener"
-        data-confirm-tab="attachment"
-        data-confirm-label={confirm_label(@attachment)}
-        class="shrink-0 font-bold text-foreground hover:underline"
-        data-testid="message-attachment-download"
-      >
-        {dgettext("chat", "Open")}
       </a>
     </div>
     """

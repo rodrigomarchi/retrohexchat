@@ -825,7 +825,7 @@ msgstr "一個實時字符計數器出現在顯示的輸入框附近"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "訪問"
@@ -2783,7 +2783,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:48
@@ -2814,7 +2814,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -3006,7 +3006,7 @@ msgid "Tabs"
 msgstr "標籤"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:96
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
@@ -3253,7 +3253,7 @@ msgstr "在搜索框中鍵入按名稱或關鍵字過濾emojis(最少2個字符)
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:92
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "URL 捕捉器"
@@ -5018,20 +5018,15 @@ msgstr ")在歷史延續前被過濾."
 msgid "For identified registered users, the last 100 entries are stored with the account. Guests keep history only in browser memory for the current page."
 msgstr "對於已識別的註冊用戶,最後100個條目與賬戶一起存儲. 嘉賓只保留當前頁面的瀏覽器內存中的歷史."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Downloads are authorized by the chat server first. If access is allowed, the server redirects to a short-lived signed storage URL."
 msgstr "下載首先由聊天服務器授權. 如果允許訪問,服務器會重定向到短壽命的簽名存儲 URL."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "File Paths"
 msgstr "檔案路徑"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Image attachments render as inline thumbnails. Audio and video attachments use native players, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
-msgstr "圖像附件渲染爲內含縮略圖 。 音頻和視頻附件使用本地玩家,PDF文件暴露了預覽動作,其他文件作爲安全的文件卡渲染有類型,大小和路徑元數據."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5053,7 +5048,7 @@ msgstr "傳送"
 msgid "Unsafe browser-rendered formats, including SVG and HTML, are kept as downloadable files instead of inline previews."
 msgstr "包括SVG和HTML在內的不安全瀏覽器交付格式被保存爲可下載文件,而不是內置預覽."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Uploaded files are stored with a logical directory path so administrators can browse them later without depending on the storage bucket's internal object keys."
 msgstr "上傳的文件以邏輯目錄路徑存儲,這樣管理員可以稍後瀏覽,而不取決於存儲桶的內部對象密鑰."
@@ -5936,7 +5931,7 @@ msgstr "如何書寫"
 msgid "A Minute, and Then It Stops"
 msgstr "一分鐘，然後自動停止"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Message Attachments"
 msgstr "訊息附件"
@@ -5946,7 +5941,7 @@ msgstr "訊息附件"
 msgid "Recording One"
 msgstr "錄製一則"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "在哪裡可用"
@@ -5981,7 +5976,7 @@ msgstr "創建者必須向 NickServ 驗證身分才能切換，僅僅使用其�
 msgid "A recording stops by itself after one minute and is sent as it is. After a minute it stops being something the other person can take in during a conversation, which is what writing is for."
 msgstr "一分鐘後,錄音會自行結束,並按原樣發送。 一分鐘後,它不再是別人在談話中可以接受的東西,這就是寫作的目的。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "On a desktop and on a phone, in any browser that can record. If the browser cannot record, the microphone does not appear, and the attachment button can still send an audio file."
 msgstr "在桌面和手機上,在任何可以錄製的瀏覽器中. 如果瀏覽器無法錄製,麥克風就不會出現,附件按鈕仍然可以發送音頻文件."
@@ -7160,12 +7155,12 @@ msgstr "鍵盤:從消息框按 Shift+Tab 鍵,直到選擇消息,移動到您想�
 msgid "The number beside an emoji shows how many people chose it. Point at it to see their names. In your own reactions the number uses bold text. Each person counts only once per emoji, even after many clicks."
 msgstr "數字旁邊的emoji 顯示有多少人選擇它。 指着它看他們的名字。 在你自己的反應中,數字使用粗體文字. 每個人每個emoji只計算一次,即使在多次點擊之後."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "A message with only one to three emoji is printed large. Pictures appear without a frame; point at one to see its file name and size, and click it to open it."
 msgstr "一個只有1到3個emoji的信息是大字印刷的. 圖片出現時沒有框架;一點可以查看其文件名稱和大小,然後單擊以打開."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Notices From the Room"
 msgstr "Notices From the Room"
@@ -7180,7 +7175,7 @@ msgstr "在電話中您也可以向右刷卡: 回覆欄打開引用它 。"
 msgid "On a phone, press and hold the message: the quick emoji are across the top of the menu that opens"
 msgstr "在電話中按下並保存信息:快速的emoji在打開的菜單的頂端"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Pictures and Emoji"
 msgstr "圖片和Emoji"
@@ -7195,32 +7190,82 @@ msgstr "指向消息並點擊它旁邊出現的笑臉,然後選擇它提供的�
 msgid "The conversation is printed like continuous printer paper, the kind with green and white stripes."
 msgstr "對話像連續印刷紙一樣印刷,那種帶有綠色和白色條紋."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Where a Day Starts"
 msgstr "一天從哪裏開始"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "A dotted perforation with the date marks the first message of each day. Each message shows only the hour and minute. Point at the hour to see the full date."
 msgstr "A dotted perforation with the date marks the first message of each day. Each message shows only the hour and minute. Point at the hour to see the full date."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "One Name Above Several Lines"
 msgstr "數行之上的一個名稱"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Point at a message, or reach it with the keyboard, to see the hour it was written. Your own messages are printed on a light blue stripe."
 msgstr "指向一條消息,或者用鍵盤到達它,以查看它被寫入的時間. 你的信息被印在一條淺藍色的條紋上。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "When one person writes several messages in a row, their name and the hour appear once, above the first message. The messages under it share the same stripe. A new stripe starts when someone else speaks, after five minutes of silence, or on a new day."
 msgstr "When one person writes several messages in a row, their name and the hour appear once, above the first message. The messages under it share the same stripe. A new stripe starts when someone else speaks, after five minutes of silence, or on a new day."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Some messages come from the room rather than from a person: /me actions, System, Service and Error messages, and deleted messages. They have no stripe and appear between the stripes, each with a small icon."
 msgstr "一些消息來自房間而不是一個人:/me動作,系統,服務和錯誤消息,以及刪除的消息. 它們沒有條紋,出現在條紋之間,每個條紋都有一個小圖標."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Playing Sound and Video"
+msgstr "播放聲音和視頻"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Voice Messages"
+msgstr "語音信息"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Listening to a Voice Message"
+msgstr "正在收聽語音信息"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "A video has one more button, which fills the screen; Esc goes back"
+msgstr "視頻還有一個按鈕, 它會填滿屏幕; Esc 返回"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "A voice message shows how long it is. It is played back in the same media player as any other sound."
+msgstr "一個語音信息顯示它有多長。 它和任何其他聲音都在同一個媒體播放器中播放。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Audio and video are played back in a small media player that looks like Hex Radio. Its display shows the name, the elapsed time and the length, the spectrum of a sound, and a slider to jump to another moment."
+msgstr "音頻和視頻在像Hex Radio的小型媒體播放器中播放。 它的顯示顯示名稱,經過的時間和長度,聲音的光譜,以及滑動器可以跳到另一個時刻."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Only one sound is heard at a time. Starting a new sound puts the old one on pause and switches Hex Radio off"
+msgstr "一次只聽到一個聲音。 啓動新聲音後, 舊聲音暫停, 並關閉 Hex 收音機"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "The buttons under the display play the sound, pause it where it is, and stop it at the start"
+msgstr "顯示器下方的按鈕播放聲音,在位置暫停,在開始時停止"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "The mute button turns the sound off without stopping it"
+msgstr "啞巴按鈕關閉聲音而不停止"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Image attachments render as inline thumbnails. Audio and video attachments are played back in the message, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
+msgstr "圖像附件渲染爲內含縮略圖 。 音頻和視頻附件在消息中回放,PDF文件曝光預覽動作,其他文件作爲安全文件卡渲染,帶有類型,大小和路徑元數據."

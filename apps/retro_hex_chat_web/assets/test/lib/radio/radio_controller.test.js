@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createRadio, formatElapsed } from "../../../js/lib/radio/radio_controller.js";
+import { claimSound } from "../../../js/lib/hex_device/exclusive.js";
+import { createRadio } from "../../../js/lib/radio/radio_controller.js";
 
 // An <audio> that plays or fails when the test says so.
 function fakeAudio() {
@@ -92,14 +93,6 @@ afterEach(() => {
   document.body.innerHTML = "";
 });
 
-describe("formatElapsed", () => {
-  it("shows minutes and seconds, and hours past an hour", () => {
-    expect(formatElapsed(0)).toBe("0:00");
-    expect(formatElapsed(65_000)).toBe("1:05");
-    expect(formatElapsed(3_725_000)).toBe("1:02:05");
-  });
-});
-
 describe("createRadio", () => {
   it("plays a station that shares its sound through the equalizer", () => {
     const { el, radio, shared, plain, status } = mountRadio();
@@ -112,6 +105,18 @@ describe("createRadio", () => {
     expect(radio.state()).toMatchObject({ state: "playing", mode: "shared", station: "s1" });
     expect(el.dataset.radioMode).toBe("shared");
     expect(plain.src).toBe("");
+  });
+
+  it("stops when another device starts playing, and stays quiet while stopped", () => {
+    const { radio, shared } = mountRadio();
+    const message = claimSound(window, document.createElement("div"), () => {});
+    radio.play(STATION);
+    shared.onplaying();
+
+    message.announce();
+    expect(radio.state().state).toBe("stopped");
+    expect(shared.src).toBe("");
+    message.release();
   });
 
   it("plays a station that does not share its sound on the plain element", () => {

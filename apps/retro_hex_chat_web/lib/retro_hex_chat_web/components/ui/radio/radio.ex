@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
   def radio_player(assigns) do
     ~H"""
     <section class="hex-radio__main" data-testid="hex-radio-player">
-      <div class="hex-radio__lcd" data-testid="hex-radio-display">
+      <div class="hex-device__lcd hex-radio__lcd" data-testid="hex-radio-display">
         <div class="hex-radio__clock">
           <span class="hex-radio__glyph" aria-hidden="true"></span>
           <span
@@ -122,7 +122,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
       <div class="hex-radio__row">
         <button
           type="button"
-          class="hex-radio__key hex-radio__key--icon"
+          class="hex-device__key hex-device__key--icon"
           aria-pressed="false"
           aria-label={dgettext("ui", "Mute")}
           title={dgettext("ui", "Mute")}
@@ -140,7 +140,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
             min="0"
             max="100"
             value="80"
-            class="hex-radio__slider"
+            class="hex-device__slider"
             aria-label={dgettext("ui", "Volume")}
             data-radio-volume
             data-testid="hex-radio-volume"
@@ -149,7 +149,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
         <button
           id="hex-radio-equalizer-toggle"
           type="button"
-          class="hex-radio__key hex-radio__key--switch"
+          class="hex-device__key hex-device__key--switch"
           aria-pressed="false"
           phx-click={toggle_panel("#hex-radio-equalizer", "#hex-radio-equalizer-toggle")}
           data-testid="hex-radio-equalizer-toggle"
@@ -159,7 +159,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
         <button
           id="hex-radio-list-toggle"
           type="button"
-          class="hex-radio__key hex-radio__key--switch"
+          class="hex-device__key hex-device__key--switch"
           aria-pressed="true"
           phx-click={toggle_panel("#hex-radio-stations", "#hex-radio-list-toggle")}
           data-testid="hex-radio-list-toggle"
@@ -171,7 +171,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
       <div class="hex-radio__transport">
         <button
           type="button"
-          class="hex-radio__key"
+          class="hex-device__key"
           aria-label={dgettext("ui", "Previous station")}
           title={dgettext("ui", "Previous station")}
           phx-click="radio_step"
@@ -183,7 +183,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
         </button>
         <button
           type="button"
-          class="hex-radio__key"
+          class="hex-device__key"
           aria-label={dpgettext("ui", "radio", "Play")}
           title={dpgettext("ui", "radio", "Play")}
           phx-click={play_click(@station, @target)}
@@ -193,7 +193,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
         </button>
         <button
           type="button"
-          class="hex-radio__key"
+          class="hex-device__key"
           aria-label={dgettext("ui", "Stop")}
           title={dgettext("ui", "Stop")}
           phx-click={command("stop")}
@@ -203,7 +203,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
         </button>
         <button
           type="button"
-          class="hex-radio__key"
+          class="hex-device__key"
           aria-label={dgettext("ui", "Next station")}
           title={dgettext("ui", "Next station")}
           phx-click="radio_step"
@@ -215,7 +215,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
         </button>
         <button
           type="button"
-          class="hex-radio__key hex-radio__key--star"
+          class="hex-device__key hex-device__key--star"
           aria-pressed={to_string(@starred?)}
           aria-label={star_label(@starred?)}
           title={star_label(@starred?)}
@@ -265,7 +265,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
       <div class="hex-radio__eq-head">
         <button
           type="button"
-          class="hex-radio__key hex-radio__key--switch"
+          class="hex-device__key hex-device__key--switch"
           aria-pressed="true"
           data-radio-toggle="eq-power"
           phx-click={command("eq-power")}
@@ -276,7 +276,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
         <canvas data-radio-curve class="hex-radio__curve" aria-hidden="true"></canvas>
         <button
           type="button"
-          class="hex-radio__key"
+          class="hex-device__key"
           phx-click={command("flat")}
           data-testid="hex-radio-eq-flat"
         >
@@ -315,7 +315,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
         max="12"
         step="1"
         value="0"
-        class="hex-radio__slider hex-radio__band-slider"
+        class="hex-device__slider hex-radio__band-slider"
         aria-label={@label}
         data-radio-band={@name}
         data-testid={@testid}
@@ -377,7 +377,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
           class="hex-radio__field"
           data-testid="hex-radio-search-input"
         />
-        <button type="submit" class="hex-radio__key" data-testid="hex-radio-search-submit">
+        <button type="submit" class="hex-device__key" data-testid="hex-radio-search-submit">
           {dgettext("ui", "Search")}
         </button>
       </.form>
@@ -514,7 +514,7 @@ defmodule RetroHexChatWeb.Components.UI.Radio do
     ~H"""
     <button
       type="button"
-      class="hex-radio__key hex-radio__key--foot"
+      class="hex-device__key hex-device__key--foot"
       aria-pressed={to_string(@pressed)}
       aria-haspopup={@menu && "menu"}
       title={@title}

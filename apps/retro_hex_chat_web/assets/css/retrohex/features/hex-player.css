@@ -1,0 +1,114 @@
+/* ── Hex Player (components/ui/media/hex_player.ex, lib/hex_player/) ── */
+/* A sound or a video in a message, as a small Hex appliance: the kit's
+   graphite body (hex-device.css), the display with the title, the time and
+   the position, and a row of keys. A fixed width, so a run of them lines up
+   down the conversation. State comes from the root's `data-player-state`. */
+
+.hex-player {
+  @apply flex w-72 max-w-full flex-col gap-retro-2;
+  padding: 3px;
+  color: #cfd6dd;
+  background: linear-gradient(180deg, #3b424b, #23282e);
+  border: 1px solid #0b0d10;
+  box-shadow:
+    inset 1px 1px 0 #5d6772,
+    inset -1px -1px 0 #0b0d10;
+}
+
+/* A video's screen: black glass sunk into the metal. */
+.hex-player__screen {
+  @apply relative bg-black;
+  border: 1px solid #000000;
+  box-shadow: 1px 1px 0 #5d6772;
+}
+.hex-player__screen > video {
+  @apply block h-40 w-full;
+  object-fit: contain;
+}
+.hex-player:fullscreen {
+  @apply w-full;
+}
+.hex-player:fullscreen .hex-player__screen {
+  @apply min-h-0 flex-1;
+}
+.hex-player:fullscreen .hex-player__screen > video {
+  @apply h-full;
+}
+
+.hex-player__lcd {
+  @apply flex flex-col gap-retro-2;
+  padding: 2px 4px;
+}
+.hex-player__head {
+  @apply flex items-center gap-retro-4;
+}
+/* The state glyph: a triangle while playing, two bars paused, a square stopped. */
+.hex-player__glyph {
+  @apply shrink-0;
+  width: 7px;
+  height: 8px;
+  background: var(--device-amber-dim);
+}
+.hex-player[data-player-state="playing"] .hex-player__glyph {
+  background: var(--device-text);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  box-shadow: 0 0 4px var(--device-text);
+}
+.hex-player[data-player-state="paused"] .hex-player__glyph {
+  background: linear-gradient(90deg, var(--device-amber) 0 35%, transparent 35% 65%, var(--device-amber) 65%);
+}
+.hex-player__title {
+  @apply min-w-0 flex-1 truncate;
+  font-size: 13px;
+  text-shadow: 0 0 4px rgb(255 180 58 / 0.45);
+}
+.hex-player__time {
+  @apply shrink-0 tabular-nums;
+  text-shadow: 0 0 4px rgb(255 180 58 / 0.45);
+}
+.hex-player__track {
+  @apply flex items-center gap-retro-4;
+}
+.hex-player__seek {
+  @apply min-w-0 flex-1;
+}
+.hex-player__scope {
+  @apply block shrink-0;
+  width: 4.5rem;
+  height: 14px;
+  image-rendering: pixelated;
+}
+
+.hex-player__keys {
+  @apply flex items-center gap-retro-2;
+}
+.hex-player__key {
+  width: 26px;
+  height: 20px;
+  padding: 0;
+}
+.hex-player__spacer {
+  @apply flex-1;
+}
+/* Play while it is not playing, Pause while it is: one place on the row. */
+.hex-player__key--pause,
+.hex-player[data-player-state="playing"] .hex-player__key--play {
+  @apply hidden;
+}
+.hex-player[data-player-state="playing"] .hex-player__key--pause {
+  @apply inline-flex;
+}
+
+/* What the file is and where it opens, engraved under the keys. */
+.hex-player__foot {
+  @apply flex items-center gap-retro-4 px-1;
+  font-size: 11px;
+  color: #8f99a3;
+}
+.hex-player__foot a {
+  @apply shrink-0;
+  color: var(--device-text);
+}
+.hex-player__foot a:hover {
+  @apply underline;
+}

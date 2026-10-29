@@ -1,13 +1,14 @@
 /**
- * What Hex Radio draws on its display: a spectrum of bars with falling peaks,
- * or the oscilloscope's line.
+ * What the Hex devices draw on their displays — Hex Radio and the players of
+ * the chat's sounds: a spectrum of bars with falling peaks, or the
+ * oscilloscope's line.
  *
  * Real when the station shares its sound with the page (an analyser's
  * frequency and wave data); otherwise bars that move like music without
  * hearing it, because the browser keeps the samples of that stream out of
- * the page. The colours are the stylesheet's (`--radio-*` on the canvas).
+ * the page. The colours are the stylesheet's (`--device-*` on the canvas).
  *
- * @module radio/visualizer
+ * @module hex_device/visualizer
  */
 
 /** How many bars the spectrum draws. */
@@ -69,11 +70,11 @@ export function readColours(canvas) {
   const style = canvas.ownerDocument.defaultView.getComputedStyle(canvas);
   const read = (name) => style.getPropertyValue(name).trim();
   return {
-    bar: read("--radio-bar"),
-    peak: read("--radio-peak"),
-    line: read("--radio-line"),
-    curve: read("--radio-curve"),
-    curveOff: read("--radio-curve-off"),
+    bar: read("--device-bar"),
+    peak: read("--device-peak"),
+    line: read("--device-line"),
+    curve: read("--device-curve"),
+    curveOff: read("--device-curve-off"),
   };
 }
 

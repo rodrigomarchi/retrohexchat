@@ -133,6 +133,12 @@ export const lazyFeatureHooks = {
     serverEvents: [],
     reason: "Hex Radio's player, equalizer and spectrum are only needed once its window opens.",
   }),
+  HexPlayerHook: lazyFeatureHook({
+    name: "HexPlayerHook",
+    loader: () => import("./hex_player/hex_player_hook"),
+    serverEvents: [],
+    reason: "The players of sounds and videos in messages are only needed once one is drawn.",
+  }),
   MetricChartHook: lazyFeatureHook({
     name: "MetricChartHook",
     loader: () => import("./system/metric_chart_hook"),

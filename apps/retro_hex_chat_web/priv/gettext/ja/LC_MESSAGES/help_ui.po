@@ -310,7 +310,7 @@ msgstr "入力とオートコンプリート"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
@@ -502,7 +502,7 @@ msgstr "セクション"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:100
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:98
@@ -3793,7 +3793,7 @@ msgstr "— レトロゲームと%{arcade}は、各カテゴリーのグルー�
 msgid "A group can hold groups of its own, just as a desktop folder can hold folders: %{games} ▸ %{arcade} holds a group per kind of game. Each one flies out beside the last, or on a phone takes the list over one level further. Such a group starts with a row that opens its folder on the desktop."
 msgstr "グループは、デスクトップフォルダとして、独自のグループを保持することができます: %{games} ▸ %{arcade}は、ゲームごとにグループを保持しています。 最後の横、または電話の横にある各1つがさらに1つのレベル上のリストを取る。 そのようなグループは、デスクトップ上のフォルダを開く行から始まります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "/radio Command"
 msgstr "/radio Command"
@@ -3877,3 +3877,8 @@ msgstr "リストの下のボタンは、それが示すものを選択します
 #, elixir-autogen, elixir-format
 msgid "The slider sets the volume, which is kept for next time; the speaker beside it mutes the sound without stopping the station"
 msgstr "スライダーは、次の時間のために保持されるボリュームを設定します。 スピーカーは、ステーションを停止することなく音をミュートします"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Hex Radio is switched off when a sound or a video from a message starts"
+msgstr "メッセージから音やビデオが始まると、ヘックスラジオが切り替わります"

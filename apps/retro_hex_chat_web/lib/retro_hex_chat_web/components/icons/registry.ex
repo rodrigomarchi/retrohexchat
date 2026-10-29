@@ -443,6 +443,7 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_music_note, RetroHexChatWeb.Icons.Media},
     {:icon_radio_play, RetroHexChatWeb.Icons.Media},
     {:icon_radio_stop, RetroHexChatWeb.Icons.Media},
+    {:icon_radio_pause, RetroHexChatWeb.Icons.Media},
     {:icon_radio_prev, RetroHexChatWeb.Icons.Media},
     {:icon_radio_next, RetroHexChatWeb.Icons.Media},
     {:icon_radio_volume, RetroHexChatWeb.Icons.Media},

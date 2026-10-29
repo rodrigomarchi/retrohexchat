@@ -324,7 +324,7 @@ msgstr "Wpisz & Autocomplete"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
@@ -518,7 +518,7 @@ msgstr "Sekcje"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:100
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_hex_paint.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:98
@@ -4124,7 +4124,7 @@ msgstr "- Retro Games i %{arcade}, każda grupa kategorii z ich gier. %{arcade} 
 msgid "A group can hold groups of its own, just as a desktop folder can hold folders: %{games} ▸ %{arcade} holds a group per kind of game. Each one flies out beside the last, or on a phone takes the list over one level further. Such a group starts with a row that opens its folder on the desktop."
 msgstr "Grupa może posiadać własne grupy, podobnie jak folder pulpitu może przechowywać foldery: %{games} ▸ %{arcade} posiada grupę na rodzaj gry. Każdy z nich odlatuje obok ostatniego, albo przez telefon zabiera listę o jeden poziom dalej. Taka grupa zaczyna się od wiersza, który otwiera swój folder na pulpicie."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "/radio Command"
 msgstr "/radio Command"
@@ -4208,3 +4208,8 @@ msgstr "Przyciski na liście wybierają to, co pokazuje: TOP najczęściej grane
 #, elixir-autogen, elixir-format
 msgid "The slider sets the volume, which is kept for next time; the speaker beside it mutes the sound without stopping the station"
 msgstr "Suwak ustawia głośność, która jest przechowywana następnym razem; głośnik obok niego tłumi dźwięk bez zatrzymywania stacji"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_hex_radio.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Hex Radio is switched off when a sound or a video from a message starts"
+msgstr "Hex Radio jest wyłączone, gdy dźwięk lub wideo z wiadomości zaczyna"

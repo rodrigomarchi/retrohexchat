@@ -18,6 +18,8 @@
  * @module radio/radio_controller
  */
 import { t } from "../i18n.js";
+import { formatElapsed } from "../hex_device/clock.js";
+import { claimSound } from "../hex_device/exclusive.js";
 import { log } from "../logger.js";
 import { createEqualizer, gainFor, preampGain } from "./equalizer.js";
 import { keepVolume, readVolume } from "./preferences.js";
@@ -30,18 +32,7 @@ import {
   scopePoints,
   simulatedBars,
   spectrumBars,
-} from "./visualizer.js";
-
-/** Elapsed time as the display shows it: `m:ss`, or `h:mm:ss` past an hour. */
-export function formatElapsed(ms) {
-  const total = Math.max(0, Math.floor(ms / 1000));
-  const hours = Math.floor(total / 3600);
-  const minutes = Math.floor((total % 3600) / 60);
-  const seconds = String(total % 60).padStart(2, "0");
-  return hours > 0
-    ? `${hours}:${String(minutes).padStart(2, "0")}:${seconds}`
-    : `${minutes}:${seconds}`;
-}
+} from "../hex_device/visualizer.js";
 
 const STATE_TEXT = () => ({
   stopped: t("Stopped"),
@@ -100,6 +91,8 @@ export function createRadio(el, ports) {
   let frame = null;
   let colours = null;
   let equalizerOn = true;
+  // Another device that starts playing — a voice message, say — stops this one.
+  let sound = null;
   let preamp = 0;
   const bands = new Array(10).fill(0);
 
@@ -220,6 +213,7 @@ export function createRadio(el, ports) {
     attempt += 1;
     startedAt = null;
     showState("connecting");
+    sound?.announce();
 
     if (ensureGraph()) {
       Promise.resolve(graph.context.resume?.()).catch((error) =>
@@ -429,6 +423,9 @@ export function createRadio(el, ports) {
       el.addEventListener("input", onInput);
       el.addEventListener("click", onClick);
       el.addEventListener("keydown", onKey);
+      sound = claimSound(win, el, () => {
+        if (state === "playing" || state === "connecting") stop();
+      });
       showState("stopped");
       paint();
     },
@@ -453,6 +450,7 @@ export function createRadio(el, ports) {
       el.removeEventListener("input", onInput);
       el.removeEventListener("click", onClick);
       el.removeEventListener("keydown", onKey);
+      sound?.release();
       Promise.resolve(graph?.context.close?.()).catch((error) =>
         log.debug("[HexRadio] the audio context did not close", error),
       );

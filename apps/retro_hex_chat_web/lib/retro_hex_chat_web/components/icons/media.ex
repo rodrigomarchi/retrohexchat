@@ -746,6 +746,19 @@ defmodule RetroHexChatWeb.Icons.Media do
     """
   end
 
+  # -- Hex devices, Pause: two bars (16×16, in the colour of its text) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_radio_pause(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_radio_pause(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M4 3h3v10H4zM9 3h3v10H9z" fill="currentColor" />
+    </svg>
+    """
+  end
+
   # -- Hex Radio, Previous station: a bar and two triangles pointing left (16×16, in the colour of its text) --
 
   attr :class, :string, default: nil

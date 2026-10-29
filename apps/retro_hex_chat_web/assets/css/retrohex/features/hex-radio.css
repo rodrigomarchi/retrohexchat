@@ -1,124 +1,16 @@
 /* ── Hex Radio (components/ui/radio/radio.ex, lib/radio/) ──── */
-/* An appliance on the desktop: graphite metal with Hex teal, an amber LCD,
+/* An appliance on the desktop, built from the Hex device kit (hex-device.css):
    three stacked panels — the player, the equaliser, the stations — under a
-   thin device title strip instead of the Win98 frame. Every colour is set
-   here, once, as a custom property the canvases read too. */
-
-/* The device frame (`desktop_window skin="device"`). */
-.window--device {
-  --device-metal-top: #3b424b;
-  --device-metal-bottom: #23282e;
-  --device-light: #5d6772;
-  --device-dark: #0b0d10;
-  --device-teal: #34cfc4;
-  --device-teal-dim: #1c6f6c;
-  @apply flex flex-col;
-  padding: 2px;
-  color: #cfd6dd;
-  background: linear-gradient(180deg, var(--device-metal-top), var(--device-metal-bottom));
-  border: 1px solid var(--device-dark);
-  box-shadow:
-    inset 1px 1px 0 var(--device-light),
-    inset -1px -1px 0 var(--device-dark),
-    3px 3px 0 rgb(0 0 0 / 0.35);
-}
-.window-title-bar--device {
-  @apply px-1;
-  height: 16px;
-  cursor: default;
-  background:
-    repeating-linear-gradient(
-      180deg,
-      transparent 0 3px,
-      rgb(52 207 196 / 0.18) 3px 4px
-    ),
-    linear-gradient(180deg, #2e343c, #1a1e23);
-  border-bottom: 1px solid var(--device-dark);
-}
-.window-title-bar__title--device {
-  font-family: "RH Pixel", "RH Pixel JP", monospace;
-  font-size: 12px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--device-teal);
-  text-shadow: 0 0 4px rgb(52 207 196 / 0.45);
-}
-.window-title-bar--device .tool-button {
-  width: 12px;
-  height: 12px;
-  min-width: 0;
-  padding: 0;
-  background: linear-gradient(180deg, #4a525c, #2b3038);
-  border: 1px solid var(--device-dark);
-}
-.window-title-bar--device .tool-button > svg {
-  filter: brightness(0) invert(0.85);
-}
+   thin device title strip instead of the Win98 frame. */
 
 /* ── The appliance ─────────────────────────────────────────── */
 .hex-radio {
-  --radio-amber: #ffb43a;
-  --radio-amber-dim: #6a4a14;
-  --radio-lcd: #070908;
-  --radio-text: #34cfc4;
-  --radio-bar: #34cfc4;
-  --radio-peak: #ffb43a;
-  --radio-line: #ffb43a;
-  --radio-curve: #ffb43a;
-  --radio-curve-off: #3a4048;
   container-type: inline-size;
   @apply relative flex min-h-0 flex-1 flex-col gap-retro-2 outline-none;
-  font-family: "RH Pixel", "RH Pixel JP", monospace;
-  font-size: 12px;
 }
 
-/* Keys: raised graphite, pressed in when held or switched on. */
-.hex-radio__key {
-  @apply inline-flex items-center justify-center gap-retro-2;
-  min-height: 20px;
-  padding: 1px 6px;
-  color: #d7dde3;
-  font: inherit;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, #4d5661, #2c3239);
-  border: 1px solid #0b0d10;
-  box-shadow:
-    inset 1px 1px 0 #6e7884,
-    inset -1px -1px 0 #1a1e23;
-}
-.hex-radio__key:hover:not(:disabled) {
-  color: #ffffff;
-}
-.hex-radio__key:active:not(:disabled),
-.hex-radio__key[aria-pressed="true"] {
-  background: linear-gradient(180deg, #23282e, #343b43);
-  box-shadow:
-    inset 1px 1px 0 #0b0d10,
-    inset -1px -1px 0 #4d5661;
-}
-.hex-radio__key:disabled {
-  color: #6b737c;
-}
-/* A switch carries its own lamp: dark when off, teal when on. */
-.hex-radio__key--switch::before {
-  content: "";
-  width: 4px;
-  height: 4px;
-  background: #1c2a2a;
-  border: 1px solid #0b0d10;
-}
-.hex-radio__key--switch[aria-pressed="true"] {
-  color: var(--radio-text);
-}
-.hex-radio__key--switch[aria-pressed="true"]::before {
-  background: var(--radio-text);
-  box-shadow: 0 0 4px var(--radio-text);
-}
-.hex-radio__key--icon[aria-pressed="true"] {
-  color: var(--radio-amber);
-}
 /* A station not starred shows its star faded. */
-.hex-radio__key--star[aria-pressed="false"] > svg,
+.hex-device__key--star[aria-pressed="false"] > svg,
 .hex-radio__station-star[aria-pressed="false"] > svg {
   opacity: 0.3;
   filter: grayscale(1);
@@ -132,12 +24,6 @@
   @apply grid gap-x-retro-8 gap-y-retro-2 p-1;
   grid-template-columns: 7.5rem minmax(0, 1fr);
   grid-template-rows: auto 32px;
-  color: var(--radio-amber);
-  background: var(--radio-lcd);
-  border: 1px solid #000000;
-  box-shadow:
-    inset 1px 1px 0 #000000,
-    1px 1px 0 #5d6772;
 }
 .hex-radio__clock {
   @apply flex items-center gap-retro-6;
@@ -146,12 +32,12 @@
 .hex-radio__glyph {
   width: 9px;
   height: 10px;
-  background: var(--radio-amber-dim);
+  background: var(--device-amber-dim);
 }
 .hex-radio[data-radio-state="playing"] .hex-radio__glyph {
-  background: var(--radio-text);
+  background: var(--device-text);
   clip-path: polygon(0 0, 100% 50%, 0 100%);
-  box-shadow: 0 0 4px var(--radio-text);
+  box-shadow: 0 0 4px var(--device-text);
 }
 .hex-radio__time {
   font-size: 28px;
@@ -197,14 +83,14 @@
 .hex-radio__facts {
   @apply flex flex-wrap items-center gap-retro-4;
   font-size: 11px;
-  color: var(--radio-amber-dim);
+  color: var(--device-amber-dim);
 }
 .hex-radio__fact {
   @apply inline-flex items-center gap-retro-2;
 }
 .hex-radio__box {
   padding: 0 3px;
-  color: var(--radio-amber);
+  color: var(--device-amber);
   border: 1px solid #3a2a0c;
   background: #0d0b06;
 }
@@ -216,13 +102,13 @@
 }
 .hex-radio[data-radio-state="playing"] .hex-radio__lamp--live,
 .hex-radio[data-radio-mode="plain"] .hex-radio__lamp--sim {
-  color: var(--radio-text);
-  text-shadow: 0 0 4px var(--radio-text);
+  color: var(--device-text);
+  text-shadow: 0 0 4px var(--device-text);
 }
 .hex-radio__state {
   @apply truncate;
   font-size: 11px;
-  color: var(--radio-text);
+  color: var(--device-text);
 }
 
 .hex-radio__row,
@@ -232,7 +118,7 @@
 .hex-radio__volume {
   @apply flex min-w-0 flex-1 items-center;
 }
-.hex-radio__transport .hex-radio__key {
+.hex-radio__transport .hex-device__key {
   width: 30px;
   height: 22px;
   padding: 0;
@@ -240,46 +126,6 @@
 .hex-radio__badge {
   @apply ml-auto inline-flex;
   filter: drop-shadow(0 0 3px rgb(52 207 196 / 0.5));
-}
-
-/* The device's trackbars: a sunken groove lit from teal to amber, and a
-   small metal thumb. `input.` to outrank the global Win98 trackbar. */
-.hex-radio input.hex-radio__slider {
-  appearance: none;
-  height: 14px;
-  width: 100%;
-  margin: 0;
-  background: transparent;
-}
-.hex-radio input.hex-radio__slider::-webkit-slider-runnable-track {
-  height: 6px;
-  background: linear-gradient(90deg, #1c6f6c, #34cfc4 55%, #ffb43a);
-  border: 1px solid #000000;
-  box-shadow: 1px 1px 0 #5d6772;
-}
-.hex-radio input.hex-radio__slider::-moz-range-track {
-  height: 6px;
-  background: linear-gradient(90deg, #1c6f6c, #34cfc4 55%, #ffb43a);
-  border: 1px solid #000000;
-}
-.hex-radio input.hex-radio__slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 10px;
-  height: 14px;
-  margin-top: -5px;
-  background: linear-gradient(90deg, #8a95a1, #4d5661);
-  border: 1px solid #0b0d10;
-  box-shadow: inset 1px 1px 0 #c9d1d8;
-}
-.hex-radio input.hex-radio__slider::-moz-range-thumb {
-  width: 10px;
-  height: 14px;
-  border-radius: 0;
-  background: linear-gradient(90deg, #8a95a1, #4d5661);
-  border: 1px solid #0b0d10;
-}
-.hex-radio input.hex-radio__slider:disabled {
-  opacity: 0.35;
 }
 
 /* ── The panels ────────────────────────────────────────────── */
@@ -296,7 +142,7 @@
   font-size: 11px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--radio-text);
+  color: var(--device-text);
 }
 .hex-radio__panel-title::before,
 .hex-radio__panel-title::after {
@@ -314,7 +160,7 @@
 .hex-radio__curve {
   @apply block min-w-0 flex-1;
   height: 22px;
-  background: var(--radio-lcd);
+  background: var(--device-lcd);
   border: 1px solid #000000;
 }
 .hex-radio__bands {
@@ -327,7 +173,7 @@
 }
 .hex-radio__band--preamp {
   @apply mr-retro-4;
-  color: var(--radio-text);
+  color: var(--device-text);
 }
 .hex-radio__band-track {
   @apply relative block;
@@ -356,7 +202,7 @@
 }
 .hex-radio__eq-note {
   font-size: 11px;
-  color: var(--radio-amber);
+  color: var(--device-amber);
 }
 .hex-radio__eq-note:empty {
   @apply hidden;
@@ -373,8 +219,8 @@
   @apply min-w-0 flex-1 px-1;
   height: 20px;
   font: inherit;
-  color: var(--radio-text);
-  background: var(--radio-lcd);
+  color: var(--device-text);
+  background: var(--device-lcd);
   border: 1px solid #000000;
   box-shadow: 1px 1px 0 #5d6772;
 }
@@ -384,13 +230,13 @@
 .hex-radio__list {
   @apply relative min-h-0 flex-1 overflow-y-auto p-1;
   min-height: 6rem;
-  background: var(--radio-lcd);
+  background: var(--device-lcd);
   border: 1px solid #000000;
   box-shadow: 1px 1px 0 #5d6772;
 }
 .hex-radio__empty {
   @apply p-1;
-  color: var(--radio-text);
+  color: var(--device-text);
 }
 .hex-radio__stations-list {
   @apply flex flex-col;
@@ -402,7 +248,7 @@
   @apply flex min-w-0 flex-1 items-baseline gap-retro-8 px-1 text-left;
   font: inherit;
   font-size: 13px;
-  color: var(--radio-text);
+  color: var(--device-text);
 }
 .hex-radio__station-play:hover {
   background: #0b2a2e;
@@ -416,7 +262,7 @@
 }
 .hex-radio__station-facts {
   @apply whitespace-nowrap;
-  color: var(--radio-amber);
+  color: var(--device-amber);
 }
 .hex-radio__station-star {
   @apply inline-flex shrink-0 items-center justify-center;
@@ -427,13 +273,13 @@
   @apply absolute inset-x-1 bottom-1 grid gap-retro-2 p-1;
   grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
   background: #12171b;
-  border: 1px solid var(--radio-text);
+  border: 1px solid var(--device-text);
   box-shadow: 0 0 8px rgb(52 207 196 / 0.35);
 }
 .hex-radio__genre {
   @apply truncate px-1 text-left;
   font: inherit;
-  color: var(--radio-text);
+  color: var(--device-text);
 }
 .hex-radio__genre:hover {
   background: #0b2a2e;
@@ -445,13 +291,13 @@
 .hex-radio__foot {
   @apply flex items-center gap-retro-4;
 }
-.hex-radio__key--foot {
+.hex-device__key--foot {
   padding: 1px 5px;
 }
 .hex-radio__count {
   @apply ml-auto px-1;
-  color: var(--radio-amber);
-  background: var(--radio-lcd);
+  color: var(--device-amber);
+  background: var(--device-lcd);
   border: 1px solid #000000;
   min-width: 2.5rem;
   text-align: right;

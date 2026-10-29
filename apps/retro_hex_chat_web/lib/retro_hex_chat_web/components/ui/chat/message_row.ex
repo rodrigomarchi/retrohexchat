@@ -43,6 +43,10 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   attr :viewer, :string, default: nil, doc: "whose reaction chips are drawn as pressed"
   attr :show_avatars, :boolean, default: true, doc: "whether character portraits are drawn"
 
+  attr :scope, :string,
+    default: "chat",
+    doc: "where the line is drawn — the conversation or a thread — so its players' ids differ"
+
   @spec message_row_body(map()) :: Phoenix.LiveView.Rendered.t()
   def message_row_body(assigns) do
     ~H"""
@@ -251,7 +255,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             <%!-- A link into this app draws itself rather than being scraped:
                   the useful thing is the room's state, not a page title. --%>
             <.share_card msg={@msg} strip_formatting={@strip_formatting} timezone={@timezone} />
-            <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} />
+            <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} scope={@scope} />
             <.edited_tag
               :if={Map.get(@msg, :edited_at)}
               timestamp={ChatHelpers.format_edit_timestamp(@msg.edited_at, @timezone)}
