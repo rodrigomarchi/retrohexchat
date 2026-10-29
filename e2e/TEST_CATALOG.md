@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **271 spec files** under `e2e/tests/`.
-- **683 Playwright `test()` cases**.
-- **628 documented flows**, 627 done, 1 not done.
+- **272 spec files** under `e2e/tests/`.
+- **684 Playwright `test()` cases**.
+- **629 documented flows**, 628 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -539,6 +539,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O31 | Ctrl-clicking a link skips the question, because it already asked for a tab | `tests/chat-open-tab-confirm.spec.ts` | done |
 | O32 | On a desktop the composer toolbar offers the microphone; a discarded take sends nothing, a finished one is sent alone — even with a file attached mid-take, which stays pending — and a file attached alone sends without text | `tests/chat-voice-messages.spec.ts` | done |
 | O33 | The conversation is one Tab stop: arrows move between lines, Enter reacts, Shift+F10 opens the line's menu | `tests/chat-message-actions.spec.ts` | done |
+| O34 | One conversation holding every kind of line — runs of one speaker, a mention, /me, a reply, emoji alone, photos, a reaction, an edit and a delete — read on a desktop and on a phone | `tests/chat-message-layout.spec.ts` | done |
 
 ### P - Persistence, Reconnect, History, No-Focus-Steal
 
