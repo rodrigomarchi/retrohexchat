@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
   @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
-  alias RetroHexChat.Chat.Queries
+  alias RetroHexChat.Chat.{Queries, Service}
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
   defp connect_user(conn, nick) do
@@ -286,13 +286,15 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
   describe "speaker runs and their bands" do
     defp seed_runs(channel, count) do
       for i <- 1..count do
-        {:ok, _msg} =
+        {:ok, msg} =
           Queries.insert_message(%{
             channel_name: channel,
             author_nickname: if(rem(div(i - 1, 3), 2) == 0, do: "Ana", else: "Bob"),
             content: "run line #{i}",
             type: "message"
           })
+
+        msg
       end
     end
 
@@ -348,6 +350,24 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
       old_top = Enum.find(rows, &(&1.id == hd(before).id))
       refute old_top.group_start?, "the old top line now continues the run above it"
       assert old_top.day_break == nil
+    end
+
+    test "deleting the line that opened a run gives the next line the header back",
+         %{conn: conn} do
+      channel = "#runsdel#{uid()}"
+      ensure_channel(channel)
+      [opener, _second, _third] = seed_runs(channel, 3)
+
+      view = connect_user(conn, "RunsD#{uid()}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      {:ok, _} = Service.delete_message(opener.id, "Ana")
+      _ = render(view)
+
+      [deleted, second | _] = viewport_rendered(view)
+
+      assert deleted.deleted_at
+      assert deleted.band == nil
+      assert second.group_start?, "the run lost the line that named its speaker"
     end
 
     test "a line arriving from the same speaker continues the run at the bottom",

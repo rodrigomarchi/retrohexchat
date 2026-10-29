@@ -8,7 +8,8 @@ defmodule RetroHexChatWeb.ChatLive.MessageGrouping do
     * `group_start?` — the line opens a run and draws the speaker's header. A
       line continues the run above it when both are speech by the same nickname,
       on the same local day, at most five minutes apart, and neither carries a
-      card. Narration (actions, system lines, notices, help) always stands alone.
+      card. Narration (actions, system lines, notices, help, a deleted line)
+      always stands alone.
     * `band` — `:a` or `:b` for speech, `nil` for narration. Each run takes the
       band opposite to the nearest run above it, so neighbouring speakers never
       share a colour, and narration between them does not count.
@@ -81,6 +82,13 @@ defmodule RetroHexChatWeb.ChatLive.MessageGrouping do
   """
   @spec restart(row(), String.t()) :: row()
   def restart(row, tz), do: place(row, nil, tz)
+
+  @doc """
+  Whether a row drawn again stopped (or started) being speech — a line deleted
+  in place — so the rows from it down have to be placed again.
+  """
+  @spec regroup?(row(), row()) :: boolean()
+  def regroup?(row, old), do: speech?(row) != speech?(old)
 
   @doc "Gives a re-rendered row (an edit, a reaction) the place in its run the old one had."
   @spec carry(row(), row()) :: row()
@@ -163,7 +171,9 @@ defmodule RetroHexChatWeb.ChatLive.MessageGrouping do
     end
   end
 
-  defp speech?(row), do: Map.get(row, :type, :message) in @speech_types
+  defp speech?(row),
+    do: Map.get(row, :type, :message) in @speech_types and is_nil(Map.get(row, :deleted_at))
+
   defp card?(row), do: Enum.any?(@card_keys, &Map.get(row, &1))
 
   defp local_date(row, tz) do

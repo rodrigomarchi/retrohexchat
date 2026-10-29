@@ -93,14 +93,20 @@ defmodule RetroHexChatWeb.ChatLive.MessageGroupingTest do
       assert shape(rows) == [{1, true, :a}, {2, true, :b}, {3, true, :a}]
     end
 
-    test "a deleted line stays inside its speaker's run" do
+    # A deleted line has no author on screen ("message deleted"), so a run it
+    # opened would leave the lines under it without a name.
+    test "a deleted line is narration: no band, and it breaks the run" do
       rows =
         MessageGrouping.annotate_all(
-          [say(1, "ana", at(15, 0)), say(2, "ana", at(15, 1), %{deleted_at: at(15, 2)})],
+          [
+            say(1, "ana", at(15, 0)),
+            say(2, "ana", at(15, 1), %{deleted_at: at(15, 2)}),
+            say(3, "ana", at(15, 1))
+          ],
           @tz
         )
 
-      assert shape(rows) == [{1, true, :a}, {2, false, :a}]
+      assert shape(rows) == [{1, true, :a}, {2, true, nil}, {3, true, :b}]
     end
 
     test "the day is the reader's local day: 01:30 UTC is still the evening before in São Paulo" do
@@ -226,6 +232,13 @@ defmodule RetroHexChatWeb.ChatLive.MessageGroupingTest do
 
       assert %{group_start?: true, band: :a, day_break: ~D[2026-10-21]} =
                MessageGrouping.restart(second, @tz)
+    end
+
+    test "a line deleted in place is a regroup; an edit is not" do
+      old = say(2, "ana", at(15, 1))
+
+      assert MessageGrouping.regroup?(Map.put(old, :deleted_at, at(15, 2)), old)
+      refute MessageGrouping.regroup?(Map.put(old, :edited_at, at(15, 2)), old)
     end
 
     test "an edited line keeps the place in its run that it had" do

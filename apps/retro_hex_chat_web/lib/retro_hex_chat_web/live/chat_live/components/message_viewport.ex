@@ -198,13 +198,23 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:insert, msg}}, socket) do
-    msg = socket |> decorate(msg) |> place(socket)
+    msg = decorate(socket, msg)
 
-    {:ok,
-     socket
-     |> track(fn rendered -> upsert(rendered, msg) end)
-     |> stream_insert(:chat_messages, msg, tail_opts(socket))
-     |> restart_top()}
+    case Enum.find(socket.assigns.rendered, &(&1.id == Map.get(msg, :id))) do
+      nil ->
+        msg = socket.assigns.rendered |> MessageGrouping.annotate_after([msg], tz(socket)) |> hd()
+
+        {:ok,
+         socket
+         |> track(fn rendered -> upsert(rendered, msg) end)
+         |> stream_insert(:chat_messages, msg, tail_opts(socket))
+         |> restart_top()}
+
+      old ->
+        if MessageGrouping.regroup?(msg, old),
+          do: {:ok, reflow(socket, &if(&1.id == msg.id, do: msg, else: &1))},
+          else: {:ok, replace_rows(socket, [MessageGrouping.carry(msg, old)])}
+    end
   end
 
   # `rendered` mirrors the stream, pruning included, so it is the honest answer
@@ -248,24 +258,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # The rows below a removed one are placed again against what is now above
   # them, and only the ones that moved are re-streamed.
   def update(%{action: {:delete, id}}, socket) do
-    {above, below} =
-      socket.assigns.rendered
-      |> Enum.reject(&(&1.id == id))
-      |> Enum.split_while(fn row -> not after_removed?(socket.assigns.rendered, row, id) end)
-
-    moved =
-      above
-      |> MessageGrouping.annotate_after(below, tz(socket))
-      |> Enum.zip(below)
-      |> Enum.reject(fn {placed, old} -> placed == old end)
-      |> Enum.map(&elem(&1, 0))
-
     {:ok,
      socket
-     |> track(fn rendered -> Enum.reject(rendered, &(&1.id == id)) end)
      |> stream_delete(:chat_messages, %{id: id})
-     |> replace_rows(moved)
-     |> restart_top()}
+     |> reflow(&if(&1.id == id, do: :removed, else: &1))}
   end
 
   # A reset is a new context — the scrollback the reader had loaded belongs to
@@ -507,16 +503,27 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   defp tz(socket), do: socket.assigns[:timezone] || "Etc/UTC"
 
-  # A new row continues from the rows on screen; a row already there (an edit,
-  # a reaction, a reply count) keeps the place in its run it had.
-  @spec place(map(), Phoenix.LiveView.Socket.t()) :: map()
-  defp place(msg, socket) do
+  # One row on screen changed what it is (deleted in place) or left: `change`
+  # maps each row to itself, its replacement, or `:removed`. Every row from that
+  # point down is placed again against what is now above it, and only the rows
+  # that came out different are re-streamed.
+  @spec reflow(Phoenix.LiveView.Socket.t(), (map() -> map() | :removed)) ::
+          Phoenix.LiveView.Socket.t()
+  defp reflow(socket, change) do
     rendered = socket.assigns.rendered
+    index = Enum.find_index(rendered, &(change.(&1) != &1)) || length(rendered)
+    {above, from} = Enum.split(rendered, index)
+    changed = from |> Enum.map(change) |> Enum.reject(&(&1 == :removed))
+    placed = MessageGrouping.annotate_after(above, changed, tz(socket))
 
-    case Enum.find(rendered, &(&1.id == Map.get(msg, :id))) do
-      nil -> rendered |> MessageGrouping.annotate_after([msg], tz(socket)) |> hd()
-      old -> MessageGrouping.carry(msg, old)
-    end
+    moved =
+      placed
+      |> Enum.reject(fn row -> Enum.find(from, &(&1.id == row.id)) == row end)
+
+    socket
+    |> track(fn _rendered -> above ++ placed end)
+    |> replace_rows(moved)
+    |> restart_top()
   end
 
   # The first row on screen opens a run and says its day. After the oldest row
@@ -531,10 +538,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       [] ->
         socket
     end
-  end
-
-  defp after_removed?(rendered, row, id) do
-    Enum.find_index(rendered, &(&1.id == row.id)) > Enum.find_index(rendered, &(&1.id == id))
   end
 
   @spec upsert([map()], map()) :: [map()]
