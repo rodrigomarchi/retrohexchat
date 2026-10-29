@@ -25,6 +25,7 @@ import {
   previewDoom,
   readyDoom,
   resetArcade,
+  shootersFolder,
   startDoom,
   warmDoom,
 } from "./arcade";
@@ -561,7 +562,7 @@ test.describe("EP01 overview", () => {
     try {
       await film(page, shot, async ({ pace, cue, follow, focus }) => {
         await openArcade(page, chat);
-        await focus(page.getByTestId("arcade-games-window"));
+        await focus(shootersFolder(page));
         await restCursor(page);
 
         await cue("you'll find DOOM");
@@ -714,7 +715,7 @@ test.describe("EP01 overview", () => {
         // The Arcade opens early: DOOM needs a few seconds to be playable.
         await cue("It runs in your browser");
         await openArcade(page, chat);
-        await focus(page.getByTestId("arcade-games-window"));
+        await focus(shootersFolder(page));
         await pace(800);
         await previewDoom(page);
         await pace(800);

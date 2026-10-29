@@ -17,19 +17,21 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
   The desktop menu cannot scroll — `overflow` would make it a clipping context
   and swallow the flyouts, which escape to the right — so the root list has to
-  fit on screen at any height. Root rows stay one level of groups deep:
+  fit on screen at any height. Root rows are groups:
 
       View ▸ Tools ▸ Automation ▸ P2P ▸ Games ▸ Account ▸ [Admin ▸ System ▸]
       Windows ▸ Navigate ▸ Language ▸
       Help ▸
       Disconnect
 
-  One level is also the limit the `WindowManagerHook` supports: opening a group
-  closes every other `[data-start-submenu]` in the menu, an ancestor included, so
-  a nested group would shut its own parent. That limit is why Language is a root
-  group rather than a row inside Settings, and why Settings itself was folded
-  back into Tools: three windows never earned a row of their own once one had to
-  be given up.
+  A group may hold groups of its own — Games ▸ Arcade ▸ First-Person Shooters ▸
+  is the one that does, because a catalogue of games is folders of folders on
+  the desktop too. The `WindowManagerHook` keeps a group's ancestors open when
+  it opens one, flying each level out beside the last on a desktop and
+  drilling one level at a time on a phone. Depth is not a way to make room,
+  though: Language is a root group, and Settings was folded back into Tools,
+  because a row a reader must hunt for under another is a row they do not
+  find.
 
   This menu is a superset of every non-privileged menu bar the app renders — the
   chat's `MenuBarApp`, the help viewer's `HelpMenuBar` and the landing shell's
@@ -46,6 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.AppGroups
+  alias RetroHexChatWeb.Components.UI.DesktopLaunchers
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
@@ -96,6 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
       |> assign(:help?, assigns.help_open)
       |> assign(:nav_pages, nav_pages())
       |> assign(:locales, LanguageMenu.shell_locale_links(assigns))
+      |> assign(:catalogues, DesktopLaunchers.catalogues())
 
     ~H"""
     <div class="relative">
@@ -260,25 +264,12 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         >
           <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
           <%= if @full do %>
-            <%!-- The Games folder, one icon per game, each opening the game's
-              home: this row is the way to it, not a second copy of it. It
-              lives on the chat's desktop, so a screen without one has no
-              folder to open. --%>
-            <.window_item
-              window="desktop-launcher-games"
-              label={dgettext("ui", "Retro Games")}
-              icon_fn={:icon_game_pong}
-              disabled={!@chat?}
-              testid="start-menu-item-retro-games"
-            />
-            <%!-- Open to every reader of the chat: the arcade asks for an
-              account, or an identified nickname, when it needs one. It is a
-              catalogue of its own and stays one row. --%>
-            <.app_item
-              action="open_arcade"
+            <%!-- The two catalogues, as the desktop's folders: a category per
+              submenu, its games inside. --%>
+            <.start_menu_folder
+              :for={folder <- @catalogues}
+              folder={folder}
               on_action={@on_action}
-              label={dgettext("ui", "Arcade")}
-              icon_fn={:icon_game_arcade}
               disabled={!@chat?}
             />
           <% end %>
@@ -534,6 +525,43 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
   # ── Private helpers ─────────────────────────────────
 
+  # A desktop folder as a group of the menu (`DesktopLaunchers.folder/6`):
+  # first the row that opens the folder's own window, then its items, any of
+  # which may be a folder in turn — a submenu inside this one. Every group
+  # whose desktop folder holds folders gets its menu this way, at any depth.
+  attr :folder, :map, required: true, doc: "a desktop folder: label, icon_fn, window_id, items"
+  attr :on_action, :any, required: true
+  attr :disabled, :boolean, required: true, doc: "this screen has no desktop for the folder"
+
+  defp start_menu_folder(assigns) do
+    assigns = assign(assigns, :key, DesktopLaunchers.folder_key(assigns.folder))
+
+    ~H"""
+    <.start_menu_submenu
+      label={@folder.label}
+      key={@folder.window_id}
+      muted={@disabled}
+      testid={"start-menu-folder-#{@key}"}
+    >
+      <:icon>{apply(Icons, @folder.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+      <.window_item
+        window={@folder.window_id}
+        label={dgettext("ui", "Open %{folder}", folder: @folder.label)}
+        icon_fn={@folder.icon_fn}
+        disabled={@disabled}
+        testid={"start-menu-item-open-#{@key}"}
+      />
+      <.start_menu_separator />
+      <.group_item
+        :for={item <- @folder.items}
+        item={item}
+        on_action={@on_action}
+        disabled={@disabled}
+      />
+    </.start_menu_submenu>
+    """
+  end
+
   # The public pages, from the one list every menu reads, linked in the
   # reader's language — the same entries on every screen, like the rest of
   # this menu.
@@ -592,9 +620,19 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
     """
   end
 
+  # One entry of a group, in whichever shape a desktop folder holds it
+  # (`DesktopLaunchers`), so a group of the menu and the folder on the desk
+  # can be the same list. `disabled` is the screen's: it has nothing for the
+  # group's entries to act on.
   attr :item, :map, required: true
   attr :on_action, :any, required: true
   attr :disabled, :boolean, required: true
+
+  defp group_item(%{item: %{kind: :folder}} = assigns) do
+    ~H"""
+    <.start_menu_folder folder={@item.folder} on_action={@on_action} disabled={@disabled} />
+    """
+  end
 
   defp group_item(%{item: %{kind: :window}} = assigns) do
     ~H"""
@@ -602,7 +640,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
       window={@item.window}
       label={@item.label}
       icon_fn={@item.icon_fn}
-      disabled={@disabled}
+      disabled={@disabled or @item[:disabled] == true}
     />
     """
   end
@@ -614,8 +652,42 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
       on_action={@on_action}
       label={@item.label}
       icon_fn={@item.icon_fn}
-      disabled={@disabled}
+      disabled={@disabled or @item[:disabled] == true}
     />
+    """
+  end
+
+  # A place on the desktop, followed as a patch there and loaded from anywhere
+  # else; a game's row is named after its game.
+  defp group_item(%{item: %{kind: kind}} = assigns) when kind in [:card, :patch] do
+    ~H"""
+    <.link_item
+      href={@item.path}
+      patch={!@disabled}
+      label={@item.label}
+      icon_fn={@item.icon_fn}
+      testid={group_item_testid(@item)}
+    />
+    """
+  end
+
+  defp group_item(%{item: %{kind: :link}} = assigns) do
+    ~H"""
+    <.link_item
+      href={@item.href}
+      label={@item.label}
+      icon_fn={@item.icon_fn}
+      disabled={@item.disabled}
+      target={@item.target}
+      rel={@item.rel}
+      testid={"start-menu-" <> @item.testid}
+    />
+    """
+  end
+
+  defp group_item(%{item: %{kind: :copy}} = assigns) do
+    ~H"""
+    <.copy_item disabled={@disabled or @item.disabled} />
     """
   end
 
@@ -624,6 +696,9 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
     <.start_menu_separator />
     """
   end
+
+  defp group_item_testid(%{kind: :card, game: game}), do: "start-menu-item-game-#{game.id}"
+  defp group_item_testid(%{testid: testid}), do: "start-menu-" <> testid
 
   # Opens/focuses a desktop window client-side (no server round trip). A disabled
   # row drops the attribute as well as the click: the hook reads the DOM, and a

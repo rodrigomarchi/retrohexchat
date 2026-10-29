@@ -371,13 +371,14 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     )
   end
 
-  # The arcade asks for an account and, once there is one, opens — on the game
-  # that was pressed, from a game's channel or a card about it.
+  # A game of the arcade asks for an account and, once there is one, opens —
+  # the game that was pressed, from a game's channel or a card about it. The
+  # Arcade's folders are a catalogue anyone may browse, so opening the Arcade
+  # without a game passes.
   defp gate("open_arcade", %{"game-id" => game_id}, socket) when is_binary(game_id),
     do: {:halt, ask_to_sign_in(socket, :games, Paths.chat_arcade_path(game_id))}
 
-  defp gate("open_arcade", _params, socket),
-    do: {:halt, ask_to_sign_in(socket, :games, Paths.chat_arcade_path())}
+  defp gate("open_arcade", _params, socket), do: {:cont, socket}
 
   # A program asks for an account and, once there is one, opens.
   defp gate("open_paint", _params, socket),

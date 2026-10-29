@@ -11,6 +11,17 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   per page of the site and the site's About (`desktop_site_icons/1`), where a
   member keeps the pages in the About this site folder. The home's two files,
   README.txt and the Trash, close a visitor's app column.
+
+  ## Folders inside folders
+
+  A folder may hold folders (`folder/6`, an item of kind `:folder`), to any
+  depth. Each folder has a window of its own, drawn beside its parent's, and
+  shows its items either as icons or, `view: :cards`, as screenshot cards. The
+  Start menu walks the same tree (`StartMenuApp`), a submenu per folder, so a
+  feature that groups its entries this way gets the desktop folders, their
+  windows, their taskbar buttons and the menu at once. The game catalogues
+  (`catalogues/0`) are the first to: Retro Games and the Arcade hold a folder
+  per category, and each category holds its games' cards.
   """
   use RetroHexChatWeb.Component
 
@@ -20,13 +31,14 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Window
 
-  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.AppGroups
+  alias RetroHexChatWeb.Components.UI.Landing.GameCards
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Components.UI.Site.DesktopFiles
   alias RetroHexChatWeb.Components.UI.Site.Document
+  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.Registry
   alias RetroHexChatWeb.PublicPages
@@ -34,6 +46,9 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   @screens [:chat, :showcase]
   @connect_dialog_id "desktop-connect-required-dialog"
+
+  # Each catalogue and the desktop folder its categories live in.
+  @catalogues [multiplayer: :games, arcade: :arcade]
 
   attr :screen, :atom,
     required: true,
@@ -61,10 +76,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
     items =
       if assigns.visitor,
-        do:
-          interleave(Enum.reject(groups, &(&1.id == :site)), launcher_apps(assigns)) ++
-            desktop_files(),
-        else: interleave(groups, launcher_apps(assigns))
+        do: Enum.map(Enum.reject(groups, &(&1.id == :site)), &{:group, &1}) ++ desktop_files(),
+        else: Enum.map(groups, &{:group, &1})
 
     assigns = assign(assigns, items: items, chat?: assigns.screen == :chat)
 
@@ -102,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   # One desktop icon, in whichever shape the item takes: a page of the site, a
-  # window it opens, a file it shows, the program it runs, or the closed door
+  # window it opens, a file it shows, the folder it opens, or the closed door
   # that says a chat session is what is missing.
   attr :item, :any, required: true
   attr :screen, :atom, required: true
@@ -180,44 +193,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     """
   end
 
-  defp launcher_shortcut(%{item: {:app, app}} = assigns) do
-    assigns = assign(assigns, :app, app)
-
-    ~H"""
-    <.desktop_icon
-      :if={@chat? and @app.enabled?}
-      window={@app.window_id}
-      action={@app.action}
-      label={@app.label}
-      data-testid={"desktop-icon-#{@app.id}"}
-    >
-      <:icon>{apply(Icons, @app.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
-    </.desktop_icon>
-
-    <%!-- Present and grayed rather than absent: an icon that names what the app
-          can do and says it is out of reach is the same bargain the Start menu
-          makes everywhere else. --%>
-    <.desktop_icon
-      :if={@chat? and not @app.enabled?}
-      label={@app.label}
-      disabled
-      data-testid={"desktop-icon-#{@app.id}"}
-    >
-      <:icon>{apply(Icons, @app.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
-    </.desktop_icon>
-
-    <.desktop_icon
-      :if={!@chat?}
-      label={@app.label}
-      data-desktop-connect-required="true"
-      data-desktop-connect-dialog={@connect_dialog_id}
-      data-testid={"desktop-icon-#{@app.id}"}
-    >
-      <:icon>{apply(Icons, @app.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
-    </.desktop_icon>
-    """
-  end
-
   attr :screen, :atom, required: true, values: @screens
   attr :is_admin, :boolean, default: false
   attr :windows, :list, default: []
@@ -231,32 +206,44 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   @spec desktop_launcher_windows(map()) :: Phoenix.LiveView.Rendered.t()
   def desktop_launcher_windows(assigns) do
-    assigns =
-      assign(
-        assigns,
-        :groups,
-        launcher_window_groups(assigns)
-      )
+    assigns = assign(assigns, :folders, folder_windows(assigns))
 
     ~H"""
     <.desktop_window
-      :for={group <- @groups}
-      id={group.window_id}
-      title={group.label}
+      :for={folder <- @folders}
+      id={folder.window_id}
+      title={folder.label}
       open={false}
-      default_x={group.default_x}
-      default_y={group.default_y}
-      width={500}
-      height={330}
+      default_x={folder.default_x}
+      default_y={folder.default_y}
+      width={if folder.view == :cards, do: 660, else: 500}
+      height={if folder.view == :cards, do: 460, else: 330}
       min_width={320}
       min_height={220}
       body_class="desktop-launcher-window bg-white p-2"
-      data-testid={"desktop-launcher-window-#{group.id}"}
+      data-testid={"desktop-launcher-window-#{folder_key(folder)}"}
     >
-      <:icon>{apply(Icons, group.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+      <:icon>{apply(Icons, folder.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
 
-      <div class="desktop-launcher-grid" data-testid={"desktop-launcher-grid-#{group.id}"}>
-        <.launcher_item :for={item <- group.items} item={item} />
+      <div
+        :if={folder.view == :icons}
+        class="desktop-launcher-grid"
+        data-testid={"desktop-launcher-grid-#{folder_key(folder)}"}
+      >
+        <.launcher_item :for={item <- folder.items} item={item} />
+      </div>
+
+      <div
+        :if={folder.view == :cards}
+        class="desktop-launcher-cards"
+        data-testid={"desktop-launcher-grid-#{folder_key(folder)}"}
+      >
+        <GameCards.game_card
+          :for={item <- folder.items}
+          game={item.game}
+          path={item.path}
+          testid={item.testid}
+        />
       </div>
 
       <:status>
@@ -265,14 +252,74 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
             "ui",
             "%{count} object",
             "%{count} objects",
-            group.object_count,
-            count: group.object_count
+            object_count(folder.items),
+            count: object_count(folder.items)
           )}
         </.window_status_bar_field>
       </:status>
     </.desktop_window>
     """
   end
+
+  @doc """
+  The window a catalogue category opens in, by its catalogue and category:
+  `desktop-launcher-arcade-fps`. The Start menu opens the same windows, and
+  the Arcade goes back to one when its game is left.
+  """
+  @spec category_window_id(GameCatalog.kind(), GameCatalog.category()) :: String.t()
+  def category_window_id(kind, category),
+    do: "desktop-launcher-#{Keyword.fetch!(@catalogues, kind)}-#{category}"
+
+  @doc "The desktop folder a catalogue's categories live in: `desktop-launcher-arcade`."
+  @spec catalogue_window_id(GameCatalog.kind()) :: String.t()
+  def catalogue_window_id(kind), do: "desktop-launcher-#{Keyword.fetch!(@catalogues, kind)}"
+
+  @doc """
+  The two game catalogues as desktop folders: Retro Games and the Arcade, each
+  holding a folder per category (`GameCatalog.groups/1`), each of those
+  holding its games as cards. The desktop's folders and the Start menu's
+  Games group both read these.
+  """
+  @spec catalogues() :: [map()]
+  def catalogues do
+    for {kind, id} <- @catalogues do
+      categories =
+        for group <- GameCatalog.groups(kind) do
+          folder(
+            category_window_id(kind, group.category),
+            group.category,
+            group.name,
+            group.icon_fn,
+            Enum.map(group.games, &game_card(kind, &1)),
+            view: :cards
+          )
+        end
+
+      %{
+        id: id,
+        label: catalogue_label(kind),
+        icon_fn: catalogue_icon(kind),
+        window_id: catalogue_window_id(kind),
+        view: :icons,
+        items: categories
+      }
+    end
+  end
+
+  defp catalogue_label(:multiplayer), do: dgettext("ui", "Retro Games")
+  defp catalogue_label(:arcade), do: dgettext("ui", "Arcade")
+
+  defp catalogue_icon(:multiplayer), do: :icon_game_pong
+  defp catalogue_icon(:arcade), do: :icon_game_arcade
+
+  # A Retro Game opens its home over the chat — how to play, who is playing,
+  # who is winning — and the game itself opens from there. An arcade game
+  # opens the Arcade on its sheet, which asks a visitor for an account.
+  defp game_card(:multiplayer, game),
+    do: card(game, Paths.game_page_path(game.id), "desktop-launcher-item-game-#{game.id}")
+
+  defp game_card(:arcade, game),
+    do: card(game, Paths.chat_arcade_path(game.id), "arcade-game-#{game.id}")
 
   attr :screen, :atom, required: true, values: @screens
   attr :is_admin, :boolean, default: false
@@ -283,22 +330,17 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   @spec desktop_launcher_taskbar_buttons(map()) :: Phoenix.LiveView.Rendered.t()
   def desktop_launcher_taskbar_buttons(assigns) do
-    assigns =
-      assign(
-        assigns,
-        :groups,
-        launcher_window_groups(assigns)
-      )
+    assigns = assign(assigns, :folders, folder_windows(assigns))
 
     ~H"""
     <.taskbar_button
-      :for={group <- @groups}
-      window={group.window_id}
-      label={group.label}
+      :for={folder <- @folders}
+      window={folder.window_id}
+      label={folder.label}
       class="desktop-taskbar__window-button"
-      data-testid={"desktop-launcher-taskbar-#{group.id}"}
+      data-testid={"desktop-launcher-taskbar-#{folder_key(folder)}"}
     >
-      <:icon>{apply(Icons, group.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+      <:icon>{apply(Icons, folder.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
     </.taskbar_button>
     """
   end
@@ -378,33 +420,29 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     """
   end
 
-  defp interleave(groups, apps) do
-    Enum.flat_map(groups, fn group ->
-      [{:group, group} | for(app <- apps, app.after == group.id, do: {:app, app})]
-    end)
-  end
-
   defp launcher_groups(assigns) do
     cap = capabilities(assigns)
 
-    [
-      group(:site, dgettext("landing", "About this site"), :icon_hex_stone, site_items(cap)),
-      group(:view, dgettext("ui", "View"), :icon_channels, view_items(cap)),
-      group(:tools, dgettext("ui", "Tools"), :icon_group_tools, tools_items(cap)),
-      group(:accessories, dgettext("ui", "Accessories"), :icon_paint, accessories_items(cap)),
-      group(
-        :automation,
-        dgettext("ui", "Automation"),
-        :icon_dialog_perform,
-        automation_items(cap)
-      ),
-      group(:games, dgettext("ui", "Retro Games"), :icon_game_pong, games_items(cap)),
-      group(:account, dgettext("ui", "Account"), :icon_status_user, account_items(cap)),
-      group(:admin, dgettext("ui", "Admin"), :icon_shield, admin_items(cap)),
-      group(:system, dgettext("ui", "System"), :icon_server, system_items(cap)),
-      group(:language, dgettext("ui", "Language"), :icon_globe, language_items(cap)),
-      group(:help, dgettext("ui", "Help"), :icon_group_help, help_items(cap))
-    ]
+    ([
+       group(:site, dgettext("landing", "About this site"), :icon_hex_stone, site_items(cap)),
+       group(:view, dgettext("ui", "View"), :icon_channels, view_items(cap)),
+       group(:tools, dgettext("ui", "Tools"), :icon_group_tools, tools_items(cap)),
+       group(:accessories, dgettext("ui", "Accessories"), :icon_paint, accessories_items(cap)),
+       group(
+         :automation,
+         dgettext("ui", "Automation"),
+         :icon_dialog_perform,
+         automation_items(cap)
+       )
+     ] ++
+       catalogues() ++
+       [
+         group(:account, dgettext("ui", "Account"), :icon_status_user, account_items(cap)),
+         group(:admin, dgettext("ui", "Admin"), :icon_shield, admin_items(cap)),
+         group(:system, dgettext("ui", "System"), :icon_server, system_items(cap)),
+         group(:language, dgettext("ui", "Language"), :icon_globe, language_items(cap)),
+         group(:help, dgettext("ui", "Help"), :icon_group_help, help_items(cap))
+       ])
     |> Enum.reject(&privileged_group_hidden?(&1, cap))
     |> Enum.with_index()
     |> Enum.map(fn {group, index} ->
@@ -412,35 +450,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       |> Map.put(:window_id, "desktop-launcher-#{group.id}")
       |> Map.put(:default_x, 72 + rem(index, 4) * 28)
       |> Map.put(:default_y, 48 + div(index, 4) * 28)
-      |> Map.put(:object_count, object_count(group.items))
     end)
-  end
-
-  # Desktop programs that are not folders: double-clicking one runs it rather
-  # than opening a drawer to pick from. The arcade is the only one, and it is
-  # one because its window already *is* a catalogue — nesting it inside another
-  # bought a scroll and cost a feature.
-  defp launcher_apps(assigns) do
-    cap = capabilities(assigns)
-
-    [
-      %{
-        id: :arcade,
-        label: dgettext("ui", "Arcade"),
-        icon_fn: :icon_game_arcade,
-        window_id: "arcade-games",
-        # Beside Retro Games, because they are the same family: a desktop that
-        # puts them at opposite ends of the column has split the feature again,
-        # just horizontally instead of by depth.
-        after: :games,
-        # The server opens this window: a session has to exist before there is
-        # anything to draw, so the icon pushes the event and the window follows.
-        action: "open_arcade",
-        # Open to every reader of the chat: the arcade itself asks for an
-        # account, or for the nickname to be identified, when it needs one.
-        enabled?: cap.chat?
-      }
-    ]
   end
 
   defp site_shortcuts do
@@ -461,6 +471,39 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     |> launcher_groups()
     |> Enum.filter(&(&1.id in [:language, :help]))
   end
+
+  # Every folder's window: the desktop's own folders, then every folder inside
+  # them, at any depth, each cascading a step from the last.
+  defp folder_windows(assigns) do
+    groups = launcher_window_groups(assigns)
+
+    nested =
+      groups
+      |> Enum.flat_map(&subfolders/1)
+      |> Enum.with_index()
+      |> Enum.map(fn {folder, index} ->
+        folder
+        |> Map.put(:default_x, 120 + rem(index, 6) * 24)
+        |> Map.put(:default_y, 56 + rem(index, 6) * 24)
+      end)
+
+    groups ++ nested
+  end
+
+  defp subfolders(folder) do
+    for %{kind: :folder, folder: child} <- folder.items,
+        node <- [child | subfolders(child)],
+        do: node
+  end
+
+  @doc """
+  What follows the window id's common prefix — `games`, `arcade-fps` — which
+  names a folder's window, grid, taskbar button and menu rows in tests, and is
+  unique wherever the folder sits.
+  """
+  @spec folder_key(%{required(:window_id) => String.t(), optional(atom()) => any()}) ::
+          String.t()
+  def folder_key(folder), do: String.replace_prefix(folder.window_id, "desktop-launcher-", "")
 
   defp desktop_icon_available?(:chat, _group), do: true
   defp desktop_icon_available?(_screen, %{id: :site}), do: false
@@ -483,7 +526,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   defp group(id, label, icon_fn, items),
-    do: %{id: id, label: label, icon_fn: icon_fn, items: items}
+    do: %{id: id, label: label, icon_fn: icon_fn, items: items, view: :icons}
 
   defp privileged_group_hidden?(%{id: id}, cap) when id in [:admin, :system], do: !cap.admin?
   defp privileged_group_hidden?(_group, _cap), do: false
@@ -546,26 +589,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   defp automation_items(cap), do: group_items(cap, :automation)
 
-  # The folder is the catalogue, because a folder full of games is what a
-  # catalogue looks like on this desktop: one icon per game, its modes chosen
-  # on the game's own page. An icon opens that page over the chat — how to
-  # play, who is playing now, who is winning — and the game itself opens from
-  # there, in a tab of its own. The page is public, so a visitor may open it
-  # too. The names are proper nouns and stay untranslated.
-  #
-  # Nothing but games lives here. The arcade used to sit at the end of this
-  # list and was the thirty-fifth icon in it: a whole feature below the fold of
-  # a window you had to scroll, reached by two clicks, which is the same thing
-  # as hiding it. It is a program of its own now, with an icon of its own —
-  # `launcher_apps/1`.
-  defp games_items(_cap) do
-    for game <- Catalog.base_games() do
-      patch(Paths.game_page_path(game.id), game.name, Registry.game(game.id),
-        testid: "desktop-launcher-item-game-#{game.id}"
-      )
-    end
-  end
-
   defp account_items(cap), do: group_items(cap, :account)
 
   defp group_items(cap, group) do
@@ -579,6 +602,9 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
         %{kind: :separator} ->
           separator()
+
+        %{kind: :folder} ->
+          item
       end
     end
   end
@@ -714,6 +740,52 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     }
   end
 
+  @doc """
+  A folder inside a folder: an item that opens a window of its own (`window_id`)
+  showing `items` — as icons, or as screenshot cards with `view: :cards`, whose
+  items are `card/3`s. The Start menu shows it as a submenu.
+  """
+  @spec folder(String.t(), atom(), String.t(), atom(), [map()], keyword()) :: map()
+  def folder(window_id, id, label, icon_fn, items, opts \\ []) do
+    node = %{
+      id: id,
+      label: label,
+      icon_fn: icon_fn,
+      window_id: window_id,
+      view: Keyword.get(opts, :view, :icons),
+      items: items
+    }
+
+    %{
+      kind: :folder,
+      folder: node,
+      window: window_id,
+      label: label,
+      icon_fn: icon_fn,
+      disabled: false,
+      testid: Keyword.get(opts, :testid, "desktop-launcher-item-folder-#{folder_key(node)}")
+    }
+  end
+
+  @doc """
+  A game in a `view: :cards` folder: its screenshot card, opening `path` as
+  a patch. Anywhere a folder shows icons — the Start menu — it is the game's
+  icon and name.
+  """
+  @spec card(GameCatalog.game(), String.t(), String.t()) :: map()
+  def card(game, path, testid) do
+    %{
+      kind: :card,
+      game: game,
+      path: path,
+      label: game.name,
+      icon_fn: Registry.game(game.id),
+      icon_kind: :icon,
+      disabled: false,
+      testid: testid
+    }
+  end
+
   defp patch(path, label, icon_fn, opts) do
     %{
       kind: :patch,
@@ -764,7 +836,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     """
   end
 
-  defp launcher_item(%{item: %{kind: :window}} = assigns) do
+  defp launcher_item(%{item: %{kind: kind}} = assigns) when kind in [:window, :folder] do
     assigns = assign_item_class(assigns)
 
     ~H"""
@@ -842,7 +914,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     """
   end
 
-  defp launcher_item(%{item: %{kind: :patch}} = assigns) do
+  defp launcher_item(%{item: %{kind: kind}} = assigns) when kind in [:patch, :card] do
     assigns = assign_item_class(assigns)
 
     ~H"""

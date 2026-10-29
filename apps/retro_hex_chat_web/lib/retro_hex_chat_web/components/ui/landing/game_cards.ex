@@ -67,7 +67,9 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
 
   @doc """
   A game in a list: its picture, its name and its line, as one link — to its
-  page on the site, or in the chat to the Arcade open on its sheet.
+  page on the site, or in the chat to its home or the Arcade open on its sheet.
+  Tighter than the bare card: a catalogue shows a dozen of these side by side,
+  two to a row on a phone, and the picture is what a reader picks by.
   """
   @spec game_card(map()) :: Phoenix.LiveView.Rendered.t()
   def game_card(assigns) do
@@ -79,14 +81,14 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
     >
       <.card class="h-full">
         <.game_screenshot game={@game} />
-        <.card_header>
+        <.card_header class="gap-retro-6 p-retro-8 pb-retro-4">
           <:icon><Icons.game_icon game_id={@game.id} class="h-4 w-4" /></:icon>
           <.dynamic tag={@heading} class="text-sm font-bold leading-tight tracking-tight">
             {@game.name}
           </.dynamic>
         </.card_header>
-        <.card_content>
-          <.card_description>{@game.tagline}</.card_description>
+        <.card_content class="px-retro-8 pb-retro-8">
+          <.card_description class="text-xs">{@game.tagline}</.card_description>
         </.card_content>
       </.card>
     </.link>
@@ -95,13 +97,13 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
 
   attr :groups, :list,
     required: true,
-    doc: "%{engine, name, cards: [%{game, path, testid?}]} per engine"
+    doc: "%{category, name, cards: [%{game, path, testid?}]} per category"
 
   attr :columns, :string, required: true, doc: "the grid's columns"
 
   @doc """
-  The arcade's cards under their engines (`GameCatalog.arcade_groups/0`): the
-  same grouping on the public catalogue and in the in-app Arcade.
+  Cards under their categories (`GameCatalog.groups/1`): the same shelves on
+  the public catalogue as in the app's folders.
   """
   @spec game_card_groups(map()) :: Phoenix.LiveView.Rendered.t()
   def game_card_groups(assigns) do
@@ -109,11 +111,9 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
     <section
       :for={group <- @groups}
       class="mb-4 last:mb-0"
-      data-testid={"game-group-#{group.engine}"}
+      data-testid={"game-group-#{group.category}"}
     >
-      <h3 class="text-xs font-bold mb-2">
-        {dgettext("games", "%{engine} Engine", engine: group.name)}
-      </h3>
+      <h3 class="text-xs font-bold mb-2">{group.name}</h3>
       <div class={["grid gap-3", @columns]}>
         <.game_card
           :for={card <- group.cards}
@@ -127,11 +127,11 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
     """
   end
 
-  attr :groups, :list, required: true, doc: "`GameCatalog.arcade_cards/0`"
+  attr :groups, :list, required: true, doc: "`GameCatalog.cards(:arcade)`"
   attr :rest, :global
 
   @doc """
-  The arcade in a few lines: each engine, then its games as icons that open
+  The arcade in a few lines: each category, then its games as icons that open
   their pages — the short form of the catalogue a page's summary window shows.
   """
   @spec arcade_game_links(map()) :: Phoenix.LiveView.Rendered.t()
@@ -139,9 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
     ~H"""
     <div class="space-y-retro-8" {@rest}>
       <section :for={group <- @groups}>
-        <h4 class="text-xs font-bold mb-retro-4">
-          {dgettext("games", "%{engine} Engine", engine: group.name)}
-        </h4>
+        <h4 class="text-xs font-bold mb-retro-4">{group.name}</h4>
         <ul class="grid grid-cols-[repeat(auto-fill,minmax(88px,1fr))] gap-retro-6">
           <li :for={card <- group.cards}>
             <.link
@@ -162,7 +160,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   attr :window, Window, required: true
   attr :heading_id, :string, required: true
   attr :cards, :list, default: [], doc: "%{game, path} per card"
-  attr :groups, :list, default: nil, doc: "the cards under their engines, instead of `cards`"
+  attr :groups, :list, default: nil, doc: "the cards under their categories, instead of `cards`"
   attr :columns, :string, required: true, doc: "the grid's columns"
 
   attr :catalogue_path, :string,

@@ -130,6 +130,7 @@ const WindowManagerCore = {
     this.focusedId = null;
     this.stacked = false;
     this.startMenuRootScroll = 0;
+    this.startMenuDepth = 0;
     this.drag = null;
     this.resize = null;
     this.windows = {};
@@ -1770,8 +1771,10 @@ const WindowManagerCore = {
     this.closeStartSubmenus(menu);
   },
 
-  // Groups inside the Start menu open on hover and on click. Hovering any
-  // ungrouped row closes them, so at most one flyout shows at a time.
+  // Groups inside the Start menu open on hover and on click, and a group may
+  // hold groups of its own (a desktop folder of folders). Opening one keeps
+  // its ancestors open and shuts everything else, so exactly one path of
+  // flyouts shows at a time; hovering an ungrouped root row shuts them all.
   //
   // Hover is a pointer affordance: the stacked menu is a drill-down where
   // opening a group replaces the whole list, and a finger dragging across the
@@ -1803,7 +1806,7 @@ const WindowManagerCore = {
     if (!submenu) return true;
 
     if (submenu.dataset.submenuOpen === "true") {
-      this.setStartSubmenu(submenu, false);
+      this.closeStartSubmenu(submenu);
     } else {
       this.openStartSubmenu(submenu);
     }
@@ -1814,14 +1817,15 @@ const WindowManagerCore = {
   openStartSubmenu(submenu) {
     const menu = this.startMenu();
     if (menu) this.closeStartSubmenus(menu, submenu);
-    this.setStartSubmenu(submenu, true);
+    startSubmenuPath(submenu).forEach((group) => this.setStartSubmenu(group, true));
     // The selection cannot change while the menu is up, so reading it as the
     // group opens is enough — the same moment the menu bar reads it.
     refreshCopySelectionItems(submenu);
   },
 
-  // Put back the Start menu and the group open in it, found again by its key
-  // (`data-start-submenu-key`) when the patch replaced the nodes.
+  // Put back the Start menu and the group open in it — the deepest, with every
+  // group above it — found again by its key (`data-start-submenu-key`) when the
+  // patch replaced the nodes.
   restoreStartMenu() {
     const menu = this.startMenu();
     if (!menu) return;
@@ -1830,7 +1834,15 @@ const WindowManagerCore = {
     const submenu = menu.querySelector(
       `[data-start-submenu-key="${cssEscape(this.startSubmenuKey)}"]`,
     );
-    if (submenu) this.setStartSubmenu(submenu, true);
+    if (!submenu) return;
+    // The reader is still on the level they were reading, scrolled where they
+    // left it: reopening the path a level at a time must not count as a drill.
+    this.restoringStartMenu = true;
+    try {
+      startSubmenuPath(submenu).forEach((group) => this.setStartSubmenu(group, true));
+    } finally {
+      this.restoringStartMenu = false;
+    }
   },
 
   // The same for the taskbar group the reader opened (`data-taskbar-group-key`).
@@ -1842,10 +1854,18 @@ const WindowManagerCore = {
     else this.taskbarGroupKey = null;
   },
 
-  closeStartSubmenus(root, except = null) {
+  // Shut every group under `root`, except `keep` and the groups it sits in.
+  closeStartSubmenus(root, keep = null) {
+    const kept = keep ? startSubmenuPath(keep) : [];
     root.querySelectorAll("[data-start-submenu]").forEach((submenu) => {
-      if (submenu !== except) this.setStartSubmenu(submenu, false);
+      if (!kept.includes(submenu)) this.setStartSubmenu(submenu, false);
     });
+  },
+
+  // Shut one group and every group inside it; the group it sits in stays.
+  closeStartSubmenu(submenu) {
+    this.closeStartSubmenus(submenu.querySelector("[data-start-submenu-panel]") || submenu);
+    this.setStartSubmenu(submenu, false);
   },
 
   taskbarGroups() {
@@ -1895,35 +1915,61 @@ const WindowManagerCore = {
   },
 
   setStartSubmenu(submenu, open) {
-    const key = submenu.dataset.startSubmenuKey;
-    if (open) this.startSubmenuKey = key;
-    else if (this.startSubmenuKey === key) this.startSubmenuKey = null;
     submenu.dataset.submenuOpen = open ? "true" : "false";
     const trigger = submenu.querySelector("[data-start-submenu-trigger]");
     if (trigger) trigger.setAttribute("aria-expanded", open ? "true" : "false");
     const panel = submenu.querySelector("[data-start-submenu-panel]");
-    if (panel) panel.classList.toggle("u-hidden", !open);
+    if (panel) {
+      panel.classList.toggle("u-hidden", !open);
+      this.placeStartSubmenuPanel(panel, open);
+    }
     this.syncStartMenuLevel();
   },
 
-  // Which level the Start menu is showing. Desktop flies the group panel out
-  // beside the list and both levels stay on screen; the stacked shell has no
-  // room for that, so the open group takes the menu over and its own row
-  // becomes the way back (the level swap itself is CSS). The two levels are
-  // one scroll container, so the root's offset is carried across the drill and
-  // handed back on the way out — otherwise returning from a group near the
-  // bottom of a long menu lands at the top, nowhere near where the user was.
+  // A flyout opens to the right of its row, and one nested deep enough on a
+  // narrow desktop runs off the screen: that one flies out to the left of its
+  // row instead, over the levels it came from, as Windows did.
+  placeStartSubmenuPanel(panel, open) {
+    panel.classList.remove("desktop-start-submenu__panel--flip");
+    if (!open || this.stacked) return;
+    if (panel.getBoundingClientRect().right > window.innerWidth) {
+      panel.classList.add("desktop-start-submenu__panel--flip");
+    }
+  },
+
+  // Which level the Start menu is showing. Desktop flies each group's panel
+  // out beside the last and every level stays on screen; the stacked shell has
+  // no room for that, so the deepest open group takes the menu over and its
+  // own row becomes the way back (the level swap itself is CSS, keyed on
+  // `data-start-level` and on each group's `data-submenu-child-open`). The
+  // levels are one scroll container, so the root's offset is carried across
+  // the drill and handed back on the way out — otherwise returning from a
+  // group near the bottom of a long menu lands at the top, nowhere near where
+  // the user was — and each deeper level starts at its top.
   syncStartMenuLevel() {
     const menu = this.startMenu();
     if (!menu) return;
 
-    const open = Boolean(menu.querySelector('[data-start-submenu][data-submenu-open="true"]'));
-    const level = open ? "submenu" : "root";
-    if (menu.dataset.startLevel === level) return;
+    const deepest = deepestOpenStartSubmenu(menu);
+    this.startSubmenuKey = deepest ? deepest.dataset.startSubmenuKey || null : null;
+    menu.querySelectorAll("[data-start-submenu]").forEach((submenu) => {
+      const childOpen = Boolean(
+        submenu.querySelector(
+          '[data-start-submenu-panel] [data-start-submenu][data-submenu-open="true"]',
+        ),
+      );
+      submenu.dataset.submenuChildOpen = childOpen ? "true" : "false";
+    });
 
-    if (open) this.startMenuRootScroll = menu.scrollTop;
-    menu.dataset.startLevel = level;
-    menu.scrollTop = open ? 0 : this.startMenuRootScroll || 0;
+    // Written every time: a server patch may have redrawn the menu without it.
+    const depth = deepest ? startSubmenuPath(deepest).length : 0;
+    menu.dataset.startLevel = depth > 0 ? "submenu" : "root";
+
+    const previous = this.startMenuDepth;
+    if (depth === previous || this.restoringStartMenu) return;
+    if (previous === 0) this.startMenuRootScroll = menu.scrollTop;
+    this.startMenuDepth = depth;
+    menu.scrollTop = depth > 0 ? 0 : this.startMenuRootScroll || 0;
   },
 
   onDocPointerDown(e) {
@@ -2092,6 +2138,23 @@ const WindowManagerCore = {
     rememberedLayouts.set(this.persistKey, data);
   },
 };
+
+// A Start menu group and every group it sits in, outermost first.
+export function startSubmenuPath(submenu) {
+  const path = [];
+  for (let group = submenu; group; group = group.parentElement?.closest("[data-start-submenu]")) {
+    path.unshift(group);
+  }
+  return path;
+}
+
+// The open group with no open group inside it: the level the reader is on.
+export function deepestOpenStartSubmenu(menu) {
+  const open = [...menu.querySelectorAll('[data-start-submenu][data-submenu-open="true"]')];
+  return (
+    open.find((group) => !open.some((other) => other !== group && group.contains(other))) || null
+  );
+}
 
 // The address of the page of the site a window belongs to, or null for any
 // other window (`data-document-address` on its group's root).

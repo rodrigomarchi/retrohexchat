@@ -1,8 +1,9 @@
 defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
   @moduledoc """
-  In-chat solo arcade flow: the Games → Arcade menu opens a managed window and
-  creates a solo session; choosing a game previews it, starting from the preview
-  drives the domain, and leaving closes it. Asserts on synchronous LiveView state
+  In-chat solo arcade flow: the Arcade's folders are browsed without a
+  session; a game's card opens the managed window on its sheet and creates a
+  solo session, starting from the sheet drives the domain, and Back or leaving
+  closes it — Back returning to the game's category folder. Asserts on synchronous LiveView state
   (`:sys.get_state`) and persisted domain rows — never on async broadcasts.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
@@ -12,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
   alias RetroHexChat.Arcade
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChatWeb.Components.UI.StartMenuApp
+  alias RetroHexChatWeb.GameCatalog
 
   defp register(nickname) do
     {:ok, nick} =
@@ -34,35 +36,33 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
   defp open_windows(view), do: :sys.get_state(view.pid).socket.assigns.open_windows
 
   describe "open_arcade" do
-    test "an identified user opens the arcade window and creates a lobby session", %{conn: conn} do
+    # The Arcade's folders are a catalogue: opening the Arcade without a game
+    # opens them, for anyone, and starts nothing.
+    test "without a game opens the Arcade's folder and starts no session", %{conn: conn} do
       nick = "arc#{uid()}"
-      registered = register(nick)
+      register(nick)
       {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
-      render_click(view, "toolbar_action", %{"action" => "open_arcade"})
+      render_click(view, "open_arcade", %{})
 
-      assert %{status: "lobby", user_id: user_id, token: token} = arcade_session(view)
-      assert user_id == registered.id
-      assert "arcade-games" in open_windows(view)
-      assert {:ok, %{status: "lobby"}} = Arcade.get_session(token)
-    end
-
-    # Scores are kept against a nickname: one not identified is sent to the
-    # sign-in window, which comes back to the arcade.
-    test "an unidentified nickname is asked to sign in, and starts no session", %{conn: conn} do
-      nick = "guest#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/")
-
-      render_click(view, "toolbar_action", %{"action" => "open_arcade"})
-
-      assert_patch(view, "/connect?return_to=%2F%3Farcade%3D&signup=games")
+      assert_push_event(view, "window_command", %{action: "open", id: "desktop-launcher-arcade"})
       assert arcade_session(view) == nil
       refute "arcade-games" in open_windows(view)
     end
 
-    # Play in a game's channel, or on a card about it, names the game: signing
-    # in comes back to that game rather than to the catalogue.
-    test "an unidentified nickname pressing Play on a game comes back to it", %{conn: conn} do
+    test "an unidentified nickname browses the folder without being asked", %{conn: conn} do
+      {:ok, view, _} = live(chat_conn(conn, "guest#{uid()}"), "/")
+
+      render_click(view, "open_arcade", %{})
+
+      assert_push_event(view, "window_command", %{action: "open", id: "desktop-launcher-arcade"})
+      assert arcade_session(view) == nil
+    end
+
+    # Scores are kept against a nickname: picking a game with one not
+    # identified is sent to the sign-in window, which comes back to that game.
+    test "an unidentified nickname picking a game is asked to sign in, and comes back to it",
+         %{conn: conn} do
       {:ok, view, _} = live(chat_conn(conn, "guest#{uid()}"), "/")
 
       render_click(view, "open_arcade", %{"game-id" => "hacx"})
@@ -71,21 +71,43 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       assert arcade_session(view) == nil
     end
 
-    test "a game id opens the window already previewing that game", %{conn: conn} do
+    test "a game opens the window on its sheet and creates a lobby session", %{conn: conn} do
       nick = "arcd#{uid()}"
+      registered = register(nick)
+      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/")
+
+      render_click(view, "open_arcade", %{"game-id" => "doom_shareware"})
+
+      assert %{
+               status: "lobby",
+               user_id: user_id,
+               token: token,
+               previewed_game: %{id: "doom_shareware"}
+             } = arcade_session(view)
+
+      assert user_id == registered.id
+      assert "arcade-games" in open_windows(view)
+      assert {:ok, %{status: "lobby", game_id: nil}} = Arcade.get_session(token)
+    end
+  end
+
+  # The Arcade's folder is called "Arcade" too: the window carries its game,
+  # so the two read apart on the taskbar.
+  describe "the window's name" do
+    test "the title bar and the taskbar button name the game", %{conn: conn} do
+      nick = "arct#{uid()}"
       register(nick)
       {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
-      render_click(view, "toolbar_action", %{
-        "action" => "open_arcade",
-        "game-id" => "doom_shareware"
-      })
+      render_click(view, "open_arcade", %{"game-id" => "doom_shareware"})
+      document = view |> render() |> Floki.parse_document!()
+      title = "Arcade — DOOM: Knee-Deep in the Dead"
 
-      assert %{status: "lobby", token: token, previewed_game: %{id: "doom_shareware"}} =
-               arcade_session(view)
+      assert document |> Floki.find(~s([data-testid="arcade-games-window"])) |> Floki.text() =~
+               title
 
-      assert "arcade-games" in open_windows(view)
-      assert {:ok, %{status: "lobby", game_id: nil}} = Arcade.get_session(token)
+      assert document |> Floki.find(~s([data-window-taskbar="arcade-games"])) |> Floki.text() =~
+               title
     end
   end
 
@@ -120,6 +142,17 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       assert_patch(view, "/c/lobby")
     end
 
+    test "naming no game opens the Arcade's folder", %{conn: conn} do
+      nick = "arcn#{uid()}"
+      register(nick)
+
+      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/?arcade=")
+      _ = render(view)
+
+      assert_push_event(view, "window_command", %{action: "open", id: "desktop-launcher-arcade"})
+      assert arcade_session(view) == nil
+    end
+
     test "a game the arcade does not have opens nothing", %{conn: conn} do
       nick = "arcx#{uid()}"
       register(nick)
@@ -134,20 +167,30 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     end
   end
 
-  # Launching the arcade is the Start menu's job — it opens a program of its
-  # own, not something the chat window acts on.
-  describe "Start menu ▸ Games" do
+  # The Start menu walks the same folders the desktop shows: Games ▸ Arcade ▸
+  # a category ▸ its games, each opening the Arcade on its sheet.
+  describe "Start menu ▸ Games ▸ Arcade" do
     defp start_menu do
       render_component(&StartMenuApp.start_menu_app/1, screen: :chat, windows: [])
       |> Floki.parse_document!()
     end
 
-    test "shows Arcade as a single launcher entry, never one row per game" do
+    test "is a folder of categories, each listing its games" do
       document = start_menu()
 
-      assert [row] = Floki.find(document, ~s([data-testid="start-menu-item-open_arcade"]))
-      assert Floki.attribute([row], "disabled") == []
-      assert Floki.find(document, ~s([data-testid^="menu-game-"])) == []
+      assert [_] = Floki.find(document, ~s([data-testid="start-menu-folder-arcade"]))
+
+      for group <- GameCatalog.groups(:arcade), game <- group.games do
+        assert [row] =
+                 Floki.find(
+                   document,
+                   ~s([data-start-submenu-key="desktop-launcher-arcade-#{group.category}"] [data-testid="start-menu-item-game-#{game.id}"])
+                 )
+
+        assert Floki.attribute(row, "href") == ["/?arcade=#{game.id}"]
+      end
+
+      assert Floki.find(document, ~s([data-testid="start-menu-item-open_arcade"])) == []
     end
   end
 
@@ -156,18 +199,18 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       nick = "arcp#{uid()}"
       register(nick)
       {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/")
-      render_click(view, "toolbar_action", %{"action" => "open_arcade"})
+      render_click(view, "open_arcade", %{"game-id" => "doom_shareware"})
       %{view: view, token: arcade_session(view).token}
     end
 
-    test "previewing a game stores the selected game details", %{view: view, token: token} do
-      preview(view, "doom_shareware")
+    test "picking another game shows its sheet in the same session", %{view: view, token: token} do
+      preview(view, "freedoom1")
 
       assert %{
                status: "lobby",
                token: ^token,
                previewed_game: %{
-                 id: "doom_shareware",
+                 id: "freedoom1",
                  about: [_ | _],
                  keys: [_ | _],
                  tips: [_ | _]
@@ -177,13 +220,13 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       assert {:ok, %{status: "lobby", game_id: nil}} = Arcade.get_session(token)
     end
 
-    test "selecting directly without a preview does not start the game", %{
+    test "starting a game other than the one on the sheet does nothing", %{
       view: view,
       token: token
     } do
-      render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
+      render_click(view, "arcade_select_game", %{"game-id" => "freedoom1"})
 
-      assert %{status: "lobby", previewed_game: nil} = arcade_session(view)
+      assert %{status: "lobby", previewed_game: %{id: "doom_shareware"}} = arcade_session(view)
       assert {:ok, %{status: "lobby", game_id: nil}} = Arcade.get_session(token)
     end
 
@@ -198,13 +241,12 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
 
     # The game tab is opened by an anchor with `rel="noopener"`, so there is no
     # handle to close it with — which is the price of the tab having its own
-    # event loop. Returning to the launcher ends the *session*, and the tab the
-    # person opened stays theirs to close.
-    test "returning to the launcher starts a fresh lobby and touches no window", %{
+    # event loop. Back ends the *session*, and the tab the person opened stays
+    # theirs to close.
+    test "Back after a game ends the session and returns to the game's category", %{
       view: view,
       token: token
     } do
-      preview(view, "doom_shareware")
       render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
       render(view)
 
@@ -213,10 +255,68 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       render_click(view, "arcade_back_to_launcher", %{})
 
       refute_push_event(view, "close_game_window", %{})
-      assert %{status: "lobby", token: new_token} = arcade_session(view)
-      refute new_token == token
-      assert "arcade-games" in open_windows(view)
+
+      assert_push_event(view, "window_command", %{
+        action: "open",
+        id: "desktop-launcher-arcade-fps"
+      })
+
+      assert arcade_session(view) == nil
+      refute "arcade-games" in open_windows(view)
       assert {:ok, %{status: "closed"}} = Arcade.get_session(token)
+    end
+
+    test "Back on a sheet ends the session and returns to the game's category", %{
+      view: view,
+      token: token
+    } do
+      preview(view, "scummvm_bass")
+      render_click(view, "arcade_back", %{})
+
+      assert_push_event(view, "window_command", %{
+        action: "open",
+        id: "desktop-launcher-arcade-adventure"
+      })
+
+      assert arcade_session(view) == nil
+      refute "arcade-games" in open_windows(view)
+      assert {:ok, session} = Arcade.get_session(token)
+      assert session.status in ["closed", "finished"]
+    end
+
+    # The category windows stay open beside the Arcade's: a game picked there
+    # after the last one finished is that game's sheet, in a fresh session.
+    test "a game picked after one finished starts afresh on its sheet", %{
+      view: view,
+      token: token
+    } do
+      send(view.pid, %{
+        event: "arcade_status_changed",
+        payload: %{status: "finished", token: token, duration_seconds: 5}
+      })
+
+      assert %{status: "finished"} = arcade_session(view)
+
+      render_click(view, "open_arcade", %{"game-id" => "freedoom1"})
+
+      assert %{status: "lobby", token: new_token, previewed_game: %{id: "freedoom1"}} =
+               arcade_session(view)
+
+      refute new_token == token
+      assert {:ok, %{status: "closed"}} = Arcade.get_session(token)
+    end
+
+    test "a game the arcade does not have opens its folder, not an empty window", %{
+      conn: conn
+    } do
+      nick = "arcu#{uid()}"
+      register(nick)
+      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/")
+
+      render_click(view, "open_arcade", %{"game-id" => "no_such_game"})
+
+      assert_push_event(view, "window_command", %{action: "open", id: "desktop-launcher-arcade"})
+      assert arcade_session(view) == nil
     end
 
     test "leaving closes the session and unmounts the window", %{view: view, token: token} do

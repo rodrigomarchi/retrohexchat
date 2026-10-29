@@ -346,7 +346,7 @@ msgstr "Nickname ändern"
 #: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:64
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:67
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:41
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:51
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:52
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:140
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:221
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:283
@@ -1032,7 +1032,7 @@ msgstr "Bitte beachten Sie:"
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:281
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:351
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:285
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:372
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:414
 #, elixir-autogen, elixir-format
 msgid "OK"
 msgstr "OK"
@@ -3652,17 +3652,17 @@ msgstr "Woher jedes Feld stammt"
 msgid "Why pages failed"
 msgstr "Warum Seiten fehlgeschlagen sind"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:340
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:382
 #, elixir-autogen, elixir-format
 msgid "Connect required"
 msgstr "Verbindung erforderlich"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:357
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:399
 #, elixir-autogen, elixir-format
 msgid "This app group needs a chat session."
 msgstr "Diese App-Gruppe braucht eine Chat-Sitzung."
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:360
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:402
 #, elixir-autogen, elixir-format
 msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
 msgstr ""
@@ -3808,34 +3808,34 @@ msgstr ""
 "schon im Kanal steht, wird je veröffentlicht. Ausschalten nimmt die Seiten "
 "offline."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:70
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "A message that somebody answered shows how many replies it collected. Choose that to read them together."
 msgstr ""
 "Eine Nachricht, die jemand beantwortet hat, zeigt an, wie viele Antworten "
 "sie gesammelt hat. Wähle das aus, um sie zusammen zu lesen."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:141
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Could not load more of this thread."
 msgstr "Weitere Beiträge dieses Threads konnten nicht geladen werden."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:69
 #, elixir-autogen, elixir-format
 msgid "No thread is open."
 msgstr "Es ist kein Thread geöffnet."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:95
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:100
 #, elixir-autogen, elixir-format
 msgid "Nobody has answered this yet."
 msgstr "Darauf hat noch niemand geantwortet."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:158
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Reply in this thread"
 msgstr "In diesem Thread antworten"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:101
 #, elixir-autogen, elixir-format
 msgid "Your reply starts the thread, and stays in the room as well."
 msgstr "Deine Antwort eröffnet den Thread und bleibt zugleich im Raum stehen."
@@ -4788,7 +4788,7 @@ msgstr "Eine Miniatur einer Kanalzeile mit einem Server-Emoji"
 msgid "A miniature of the card a lookup answers with"
 msgstr "Eine Miniatur der Karte ein Lookup Antworten mit"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:54
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:55
 #, elixir-autogen, elixir-format
 msgid "A miniature of the line a thread hangs off and its first answer"
 msgstr "Eine Miniatur der Linie hängt ein Faden ab und seine erste Antwort"
@@ -4803,7 +4803,7 @@ msgstr "Eine Miniatur des nächsten Ereignisses und wenn es beginnt"
 msgid "A miniature of the tab a room opens as"
 msgstr "Eine Miniatur der Registerkarte öffnet sich ein Zimmer als"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:59
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:60
 #, elixir-autogen, elixir-format
 msgid "A thread keeps an argument out of the room it started in: the replies live here instead of scrolling the channel. Everyone in the channel can open it and read the whole thing."
 msgstr ""
@@ -4827,7 +4827,7 @@ msgstr ""
 "Liste und wird im Raum erzählt, wenn die Zeit kommt. Nur ein Bediener kann "
 "einen auf den Kalender setzen."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:47
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:48
 #, elixir-autogen, elixir-format
 msgid "One disagreement, start to finish"
 msgstr "Eine Meinungsverschiedenheit, beginnen zu beenden"

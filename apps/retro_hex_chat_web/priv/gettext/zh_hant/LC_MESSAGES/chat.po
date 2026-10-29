@@ -1362,7 +1362,7 @@ msgstr "離開頻道"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:495
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:391
+#: lib/retro_hex_chat_web/live/desktop_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "離開"
@@ -1403,8 +1403,8 @@ msgstr "最多10個自動對應規則"
 msgid "Menu is full (max 10 items per type)"
 msgstr "菜單已滿( 每類最多10項)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:237
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:242
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:236
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:241
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "信件到 %{target} - / 用於命令"
@@ -1837,7 +1837,7 @@ msgstr "狀態"
 msgid "Symbols"
 msgstr "符號"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:98
@@ -1919,8 +1919,8 @@ msgstr "/helpchanserv或/help頻道-許可,以獲取完整細節."
 msgid "Type /help nickserv for full details."
 msgstr "詳細信息請輸入 /help nickserv."
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:234
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:247
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:233
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:246
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "輸入命令 - / 用於列表"
@@ -2366,7 +2366,7 @@ msgstr "* 缺少邀請頻道"
 msgid "* Missing invite target"
 msgstr "* 缺少邀請目標"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:371
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2377,6 +2377,8 @@ msgstr "賬戶"
 msgid "Alias Editor"
 msgstr "別名編輯器"
 
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:271
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:273
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:397
 #, elixir-autogen, elixir-format
 msgid "Arcade"
@@ -2878,7 +2880,7 @@ msgstr "%{peer}離開P2P會話."
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer}失去了P2P連接——等待他們返回......"
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:340
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:369
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "場景結束"
@@ -2903,7 +2905,7 @@ msgstr "無法裝入遊戲 。 請再試一次"
 msgid "Could not start the P2P invite."
 msgstr "無法啓動 P2P 邀請 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:263
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:292
 #, elixir-autogen, elixir-format
 msgid "Could not start the arcade session. Please try again."
 msgstr "無法啓動街機會話 。 請再試一次"
@@ -3230,17 +3232,17 @@ msgstr "忽略列表"
 msgid "Nick Colors"
 msgstr "暱稱顏色"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:283
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "管理"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "聯繫人"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "連接時"
@@ -3601,9 +3603,9 @@ msgid "Strikethrough"
 msgstr "刪除線"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:325
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:508
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:551
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:337
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:139
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:143
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "清除格式"
@@ -3720,7 +3722,7 @@ msgstr "無法載入縮圖"
 msgid "Thumbnail is being prepared"
 msgstr "正在準備縮圖"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
 #, elixir-autogen, elixir-format
 msgid "Round-trip to the server"
 msgstr "與伺服器的往返時間"
@@ -3894,15 +3896,15 @@ msgstr "• 尼克在%{window}無活動後過期"
 msgid "Copy Invite Link"
 msgstr "複製邀請連結"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:173
 #, elixir-autogen, elixir-format
 msgid "React"
 msgstr "回應"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:306
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:307
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:145
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:146
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:147
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:148
 #, elixir-autogen, elixir-format
 msgid "React with %{emoji}"
 msgstr "用 %{emoji} 回應"
@@ -4067,7 +4069,7 @@ msgid "Where"
 msgstr "在哪"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:150
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "角色頭像"
@@ -6023,7 +6025,7 @@ msgstr "%{category}：在頻道列表中查看全部頻道"
 msgid "Message not found."
 msgstr "找不到信件 。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:174
 #, elixir-autogen, elixir-format
 msgid "React to %{nick}"
 msgstr "回應 %{nick} 的訊息"
@@ -6033,12 +6035,12 @@ msgstr "回應 %{nick} 的訊息"
 msgid "(attachment)"
 msgstr "(附件)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:215
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:214
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:217
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:216
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m %{seconds}s"
 msgstr "%{minutes}m %{seconds}s"

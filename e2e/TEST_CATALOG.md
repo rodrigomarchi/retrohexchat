@@ -58,7 +58,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 | Page Object            | Status | Purpose                                                                  |
 | ---------------------- | ------ | ------------------------------------------------------------------------ |
 | `pages/ConnectPage.ts` | done   | Connect/register/auth flows and `uniqueNickname()` helper                |
-| `pages/ChatPage.ts`    | active | Chat shell locators and shared high-level actions (incl. Games → Arcade) |
+| `pages/ChatPage.ts`    | active | Chat shell locators and shared high-level actions (incl. the game folders) |
 
 ## Notable Product Fixes Found By E2E
 
@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **273 spec files** under `e2e/tests/`.
-- **687 Playwright `test()` cases**.
-- **631 documented flows**, 630 done, 1 not done.
+- **688 Playwright `test()` cases**.
+- **632 documented flows**, 631 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -382,7 +382,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M17 | Bot enable/disable/destroy changes response behavior and cleans up (features P2) | `tests/chat-bots.spec.ts` | done |
 | M18 | `/announce` broadcasts to connected users and bypasses ignore (features P1) | `tests/chat-announce.spec.ts` | done |
 | M19 | Regular user admin-only commands show permission errors (features P1) | `tests/chat-admin-permissions.spec.ts` | done |
-| M20 | The Arcade desktop icon opens the catalogue's cards under their engines, a game's sheet, then launches a WASM session through a noopener anchor at its own address | `tests/chat-arcade.spec.ts` | done |
+| M20 | The Arcade desktop icon opens a folder per category, a category's window shows its game cards, a card opens the game's sheet, which launches a WASM session through a noopener anchor at its own address, and Back returns to the category | `tests/chat-arcade.spec.ts` | done |
 | M21 | The production provisioning script runs end to end with every line accepted by the Admin Console | `tests/chat-admin-server-provision.spec.ts` | done |
 | M22 | A newcomer joining a provisioned channel is greeted, and every advertised bot trigger answers | `tests/chat-admin-server-provision.spec.ts` | done |
 | M23 | The Bot Management roster describes each bot, and selecting one drills into it | `tests/chat-bot-management-window.spec.ts` | done |
@@ -398,12 +398,13 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M33 | A runtime listing is resized, narrowed, and read row by row | `tests/chat-system-windows.spec.ts` | done |
 | M34 | Open system windows are reachable from the taskbar | `tests/chat-system-windows.spec.ts` | done |
 | M35 | The system windows coexist on one desktop | `tests/chat-system-windows.spec.ts` | done |
-| M36 | The Games folder is the catalogue: a game icon opens the game's home over the chat, and its Play opens the game in a tab of its own (features P2) | `tests/chat-retro-games.spec.ts` | done |
-| M37 | Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M36 | The Games folder holds a folder per category, each a window of game cards: a card opens the game's home over the chat, and its Play opens the game in a tab of its own (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M37 | Start -> Games -> Retro Games opens the folder, a category's group lists its games, a game opens its home, and the Arcade is a folder of its own (features P2) | `tests/chat-retro-games.spec.ts` | done |
 | M38 | An admin gives a bot a language with /bot set or Bot Management, and its flag is drawn beside its nickname in the user list, the roster and its detail | `tests/chat-bot-management-window.spec.ts` | done |
 | M39 | /bot set game_announce on gives a bot the Game capability, which Bot Management shows as a working capability that can be switched off | `tests/chat-bot-management-window.spec.ts` | done |
-| M40 | Play on an arcade game's public page opens the Arcade on that game for a member, and asks a visitor to sign in from the Arcade icon | `tests/chat-arcade.spec.ts` | done |
+| M40 | Play on an arcade game's public page opens the Arcade on that game for a member; a visitor browses the Arcade's folders and is asked to sign in only on picking a game | `tests/chat-arcade.spec.ts` | done |
 | M41 | End pressed mid-match (from the menu over it) writes the match down as it stood: the score and "Ended early", with nobody named the winner (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M42 | On a phone, Start drills one level per tap down Games -> Arcade -> First-Person Shooters, its header leads back up, and a category's window shows its cards two to a row | `tests/chat-retro-games.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 

@@ -119,6 +119,48 @@ one page at a time, so help and sign-in open beside the page, not instead of it.
   no menu names) and a route in the `:desktop` live_session; nothing in the
   chat's template changes.
 
+### 7.0.2 Folders inside folders, and groups inside groups
+
+A desktop folder (`Components.UI.DesktopLaunchers`) may hold folders, to any
+depth, and the Start menu shows the same tree as groups inside groups. It is a
+property of the desktop, not of one feature: the game catalogues are the first to
+use it (Retro Games and the Arcade hold a folder per category), and anything else
+that outgrows one folder takes the same shape.
+
+- **Declare the tree once.** A folder inside a folder is an item built with
+  `DesktopLaunchers.folder/6` — window id, id, label, icon, items, and
+  `view: :icons | :cards`. Its items are the usual ones (`window`, `action`,
+  `patch`, `link`, `separator`) or folders again; a `:cards` folder holds
+  `DesktopLaunchers.card/3`s and draws them as screenshot cards
+  (`Landing.GameCards.game_card/1`) in a grid that follows the window's width.
+  Window ids extend the parent's: `desktop-launcher-arcade` holds
+  `desktop-launcher-arcade-fps`.
+- **Everything else follows from it.** Every folder in the tree gets a
+  client-owned window (`open={false}`, like the top-level folders) and a taskbar
+  button, and the Start menu renders it with `start_menu_folder/1`: a submenu
+  whose first row opens the folder's window, then its items, recursing into any
+  folder among them. Its rows are drawn by the same `group_item/1` that draws
+  every group's, so any kind a desktop folder holds works in the menu too.
+- **Where to put a folder.** In a group of `AppGroups` (Tools, Accessories,
+  Automation, Account), as one more item: the desktop folder and the Start menu
+  group both read that list, so both nest it. The game catalogues are top-level
+  folders of their own (`DesktopLaunchers.catalogues/0`, listed under Start ▸
+  Games). Test ids follow `folder_key/1` — the window id without its
+  `desktop-launcher-` prefix, `arcade-fps` — so two folders with the same name in
+  different parents never collide.
+- **The menu nests in the window manager.** Opening a group keeps every group
+  above it open and shuts the rest (`startSubmenuPath`), so one path of flyouts
+  shows at a time; a flyout that would leave the screen opens to the left of its
+  row (`placeStartSubmenuPanel`). On a phone the menu drills one level per tap: a
+  group with an open group inside it is marked `data-submenu-child-open`, and the
+  CSS hides its row and its other entries so the inner group's row becomes the
+  header that leads back. A server patch puts back the whole path from the
+  deepest open group's key, keeping the level and the scroll the reader was on.
+- **Depth is not a way to make room.** The root of the Start menu has a height
+  budget (`start_menu_symmetry_test.exs`), but a row hidden two levels down is a
+  row nobody finds. Nest what is naturally a catalogue — many entries of one
+  kind, sorted into kinds — not unrelated features.
+
 ### 7.1 Chat: managed windows (server-owned lifecycle)
 
 An island whose hooks or data channels must outlive a close is kept **always mounted** (rule

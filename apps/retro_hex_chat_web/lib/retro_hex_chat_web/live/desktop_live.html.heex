@@ -622,12 +622,13 @@
       </.desktop_window>
 
       <%!-- Arcade — server-managed solo-game launcher, a pure read-model of the
-          @arcade_session assign.
+          @arcade_session assign: a game's sheet, then the game in play.
           The X keeps the session alive while a game is running (the pop-up
-          keeps playing); the Leave/Close button inside ends it. --%>
+          keeps playing); End Session or Close inside ends it. --%>
       <.desktop_window
         :if={@arcade_session && "arcade-games" in @open_windows}
         {WindowRegistry.attrs("arcade-games")}
+        title={window_title(@arcade_session)}
         persist_geometry={false}
         on_close="arcade_window_close"
         body_class="h-full min-h-0 overflow-hidden p-2"
@@ -635,7 +636,6 @@
       >
         <.solo_lobby
           id="arcade-lobby"
-          groups={arcade_groups()}
           session_status={@arcade_session.status}
           previewed_game={@arcade_session.previewed_game}
           game_name={@arcade_session.game_name}

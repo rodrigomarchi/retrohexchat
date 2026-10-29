@@ -391,6 +391,13 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_game_soltys, RetroHexChatWeb.Icons.Games},
     {:icon_game_arcade, RetroHexChatWeb.Icons.Games},
     {:icon_game_generic, RetroHexChatWeb.Icons.Games},
+    {:icon_game_genre_sports, RetroHexChatWeb.Icons.Games},
+    {:icon_game_genre_shooters, RetroHexChatWeb.Icons.Games},
+    {:icon_game_genre_action, RetroHexChatWeb.Icons.Games},
+    {:icon_game_genre_cards, RetroHexChatWeb.Icons.Games},
+    {:icon_game_genre_puzzles, RetroHexChatWeb.Icons.Games},
+    {:icon_game_genre_fps, RetroHexChatWeb.Icons.Games},
+    {:icon_game_genre_adventure, RetroHexChatWeb.Icons.Games},
 
     # Flags
     {:icon_flag_en, RetroHexChatWeb.Icons.Flags},

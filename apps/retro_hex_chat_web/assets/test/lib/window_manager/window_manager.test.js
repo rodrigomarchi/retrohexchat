@@ -1052,6 +1052,143 @@ describe("WindowManager", () => {
     });
   });
 
+  // A desktop folder of folders is a group of groups in the menu: Games ▸
+  // Arcade ▸ First-Person Shooters ▸ DOOM.
+  describe("Start menu groups inside groups", () => {
+    function openStartMenu() {
+      el.querySelector("[data-window-start-menu]").classList.remove("u-hidden");
+      el.querySelector("[data-window-start-menu]").insertAdjacentHTML(
+        "beforeend",
+        `<div data-start-submenu data-start-submenu-key="games" data-submenu-open="false"
+              data-testid="games">
+           <button data-start-submenu-trigger>Games</button>
+           <div data-start-submenu-panel class="u-hidden">
+             <button data-window-open="call" data-testid="open-games"></button>
+             <div data-start-submenu data-start-submenu-key="games-arcade"
+                  data-submenu-open="false" data-testid="arcade">
+               <button data-start-submenu-trigger>Arcade</button>
+               <div data-start-submenu-panel class="u-hidden">
+                 <div data-start-submenu data-start-submenu-key="games-arcade-fps"
+                      data-submenu-open="false" data-testid="fps">
+                   <button data-start-submenu-trigger>FPS</button>
+                   <div data-start-submenu-panel class="u-hidden">
+                     <button data-window-open="conn" data-testid="doom"></button>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>`,
+      );
+    }
+
+    const group = (testid) => el.querySelector(`[data-testid="${testid}"]`);
+    const isOpen = (testid) => group(testid).dataset.submenuOpen === "true";
+    const trigger = (testid) =>
+      group(testid).querySelector(":scope > [data-start-submenu-trigger]");
+    const drill = (...testids) => testids.forEach((testid) => trigger(testid).click());
+
+    it("keeps every group above an opened one open", () => {
+      openStartMenu();
+      drill("games", "arcade", "fps");
+
+      expect([isOpen("games"), isOpen("arcade"), isOpen("fps")]).toEqual([true, true, true]);
+      expect(
+        group("fps").querySelector("[data-start-submenu-panel]").classList.contains("u-hidden"),
+      ).toBe(false);
+    });
+
+    it("shuts a group with every group inside it, and leaves the one it sits in", () => {
+      openStartMenu();
+      drill("games", "arcade", "fps");
+
+      trigger("arcade").click();
+
+      expect([isOpen("games"), isOpen("arcade"), isOpen("fps")]).toEqual([true, false, false]);
+    });
+
+    it("shuts the deeper groups when an entry of an outer group is hovered", () => {
+      openStartMenu();
+      drill("games", "arcade", "fps");
+
+      group("open-games").dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+
+      expect([isOpen("games"), isOpen("arcade"), isOpen("fps")]).toEqual([true, false, false]);
+    });
+
+    it("shuts the whole path when another root group opens", () => {
+      openStartMenu();
+      drill("games", "arcade", "fps");
+
+      el.querySelector("[data-start-submenu-trigger]").click();
+
+      expect([isOpen("games"), isOpen("arcade"), isOpen("fps")]).toEqual([false, false, false]);
+    });
+
+    it("marks the groups a deeper one is open in, so the stacked menu shows one level", () => {
+      hook.stacked = true;
+      openStartMenu();
+      const menu = el.querySelector("[data-window-start-menu]");
+
+      drill("games", "arcade", "fps");
+      expect(menu.dataset.startLevel).toBe("submenu");
+      expect(group("games").dataset.submenuChildOpen).toBe("true");
+      expect(group("arcade").dataset.submenuChildOpen).toBe("true");
+      expect(group("fps").dataset.submenuChildOpen).toBe("false");
+
+      // The open group's own row is the way back up one level.
+      trigger("fps").click();
+      expect(group("arcade").dataset.submenuChildOpen).toBe("false");
+      expect(menu.dataset.startLevel).toBe("submenu");
+
+      drill("arcade", "games");
+      expect(menu.dataset.startLevel).toBe("root");
+    });
+
+    // A message arriving redraws the menu; the reader deep in a long group
+    // stays where they had scrolled to.
+    it("keeps the scroll of the level being read when a redraw puts the path back", () => {
+      hook.stacked = true;
+      openStartMenu();
+      const menu = el.querySelector("[data-window-start-menu]");
+      drill("games", "arcade", "fps");
+      menu.scrollTop = 120;
+
+      for (const testid of ["games", "arcade", "fps"]) group(testid).dataset.submenuOpen = "false";
+      hook.restoreStartMenu();
+
+      expect(isOpen("fps")).toBe(true);
+      expect(menu.scrollTop).toBe(120);
+    });
+
+    it("flies a panel out to the left when it would run off the screen", () => {
+      openStartMenu();
+      const panel = (testid) => group(testid).querySelector(":scope > [data-start-submenu-panel]");
+      const rect = vi
+        .spyOn(Element.prototype, "getBoundingClientRect")
+        .mockImplementation(function () {
+          const right = this.closest?.('[data-testid="fps"]') ? window.innerWidth + 50 : 100;
+          return { left: 0, top: 0, right, bottom: 0, width: right, height: 0, x: 0, y: 0 };
+        });
+
+      drill("games", "arcade", "fps");
+
+      expect(panel("fps").classList.contains("desktop-start-submenu__panel--flip")).toBe(true);
+      expect(panel("arcade").classList.contains("desktop-start-submenu__panel--flip")).toBe(false);
+      rect.mockRestore();
+    });
+
+    it("puts the whole path back after a redraw closed it", () => {
+      openStartMenu();
+      drill("games", "arcade", "fps");
+
+      for (const testid of ["games", "arcade", "fps"]) group(testid).dataset.submenuOpen = "false";
+      hook.restoreStartMenu();
+
+      expect([isOpen("games"), isOpen("arcade"), isOpen("fps")]).toEqual([true, true, true]);
+    });
+  });
+
   it("remembers window state in browser memory for a fresh mount", () => {
     command({ action: "open", id: "call" });
 

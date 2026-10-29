@@ -1,7 +1,7 @@
 /**
  * @section M - Admin, Server Operations, Bots
- * @flow M20 [done] The Arcade desktop icon opens the catalogue's cards under their engines, a game's sheet, then launches a WASM session through a noopener anchor at its own address
- * @flow M40 [done] Play on an arcade game's public page opens the Arcade on that game for a member, and asks a visitor to sign in from the Arcade icon
+ * @flow M20 [done] The Arcade desktop icon opens a folder per category, a category's window shows its game cards, a card opens the game's sheet, which launches a WASM session through a noopener anchor at its own address, and Back returns to the category
+ * @flow M40 [done] Play on an arcade game's public page opens the Arcade on that game for a member; a visitor browses the Arcade's folders and is asked to sign in only on picking a game
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -42,7 +42,7 @@ async function knownSignedInUser(
 }
 
 test.describe("In-chat Arcade", () => {
-  test("Games -> Arcade opens the icon launcher, previews, and launches DOOM", async ({
+  test("the Arcade's folders lead to DOOM's sheet, which launches it", async ({
     browser,
   }) => {
     const user = await knownSignedInUser(
@@ -53,26 +53,32 @@ test.describe("In-chat Arcade", () => {
     );
 
     try {
-      // One double-click from the desktop, with no folder in between.
-      await expect(user.chat.arcadeIcon).toBeVisible();
+      // The Arcade is a folder of categories; the browsing needs no session.
+      await user.chat.openArcadeFolder();
       await expect(
-        user.page.getByTestId("menu-game-doom_shareware"),
-      ).toHaveCount(0);
-      await user.chat.arcadeIcon.dblclick();
+        user.chat.arcadeFolderGrid.getByTestId(
+          "desktop-launcher-item-folder-arcade-fps",
+        ),
+      ).toBeVisible();
+      await expect(
+        user.chat.arcadeFolderGrid.getByTestId(
+          "desktop-launcher-item-folder-arcade-adventure",
+        ),
+      ).toBeVisible();
+      await expect(user.chat.arcadeWindow).toHaveCount(0);
+      await shot(user.chat.arcadeFolderWindow, "arcade-folder");
 
+      await user.chat.openCategoryOf(
+        user.chat.arcadeFolderWindow,
+        "arcade-game-doom_shareware",
+      );
+      const fps = user.page.getByTestId("desktop-launcher-window-arcade-fps");
+      const doomCard = fps.getByTestId("arcade-game-doom_shareware");
+      await expect(doomCard).toBeInViewport();
+      await shot(fps, "arcade-fps-cards");
+
+      await doomCard.click();
       await expect(user.chat.arcadeWindow).toBeVisible();
-      await expect(user.chat.arcadeLibrary).toBeVisible();
-      await expect(user.chat.arcadeIconGrid).toBeVisible();
-      await expect(
-        user.page.getByTestId("solo-game-doom_shareware"),
-      ).toHaveCount(0);
-      await expect(user.page.getByTestId("game-group-scummvm")).toBeVisible();
-      await shot(user.chat.arcadeWindow, "arcade-icon-launcher");
-
-      const doomIcon = user.page.getByTestId("arcade-game-doom_shareware");
-      await expect(doomIcon).toBeVisible();
-
-      await doomIcon.click();
       await expect(user.page.getByTestId("arcade-game-preview")).toBeVisible();
       await expect(
         user.page.getByTestId("solo-game-start-doom_shareware"),
@@ -124,11 +130,12 @@ test.describe("In-chat Arcade", () => {
       await expect(user.page.getByTestId("arcade-reopen")).toBeVisible();
       await shot(user.chat.arcadeWindow, "doom-session-started");
 
+      // Back ends the session and puts the game's category in front again.
       await user.page.getByTestId("arcade-back").click();
-      await expect(user.chat.arcadeLibrary).toBeVisible();
-      await expect(user.chat.arcadeIconGrid).toBeVisible();
+      await expect(user.chat.arcadeWindow).toHaveCount(0);
+      await expect(doomCard).toBeInViewport();
       await user.page.mouse.move(16, 16);
-      await shot(user.chat.arcadeWindow, "arcade-returned-to-launcher");
+      await shot(fps, "arcade-returned-to-category");
     } finally {
       await user.ctx.close();
     }
@@ -171,19 +178,25 @@ test.describe("In-chat Arcade", () => {
     }
   });
 
-  test("a visitor's Arcade icon asks for an account (M40)", async ({
+  test("a visitor browses the Arcade, and a game asks for an account (M40)", async ({
     page,
   }) => {
     await page.goto("/chat");
-    const icon = page.getByTestId("desktop-icon-arcade");
-    await expect(icon).toBeVisible();
-    await icon.dblclick();
+    const chat = new ChatPage(page);
 
+    // The folders are a catalogue: open to anyone, nothing asked.
+    await chat.openArcadeFolder();
+    await expect(
+      page.locator('[data-testid="document-window-connect"]'),
+    ).toHaveCount(0);
+
+    // Picking a game is what needs a nickname that keeps scores.
+    await chat.openArcadeGame("hacx");
     await expect(
       page.locator('[data-testid="document-window-connect"]'),
     ).toBeVisible();
     await expect(page).toHaveURL(
-      /\/connect\?(?=.*signup=games)(?=.*return_to=%2F%3Farcade%3D)/,
+      /\/connect\?(?=.*signup=games)(?=.*return_to=%2F%3Farcade%3Dhacx)/,
     );
     await shot(page, "visitor-arcade-asks-to-sign-in");
   });

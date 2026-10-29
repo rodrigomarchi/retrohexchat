@@ -13,8 +13,6 @@ defmodule RetroHexChatWeb.Site.Pages.Games do
 
   @impl RetroHexChatWeb.Site.Page
   def load(_params, _ctx) do
-    multiplayer = Enum.map(GameCatalog.list(:multiplayer), &card/1)
-
     {:ok,
      %{
        active_page: :games,
@@ -28,11 +26,12 @@ defmodule RetroHexChatWeb.Site.Pages.Games do
                "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play."
              )
          ),
-         cards_window("arcade", dgettext("landing", "Arcade"), :icon_game_arcade,
-           groups: GameCatalog.arcade_cards()
-         ),
-         cards_window("multiplayer", dgettext("landing", "Retro Games"), :icon_joystick,
-           cards: multiplayer
+         cards_window("arcade", dgettext("landing", "Arcade"), :icon_game_arcade, :arcade),
+         cards_window(
+           "multiplayer",
+           dgettext("landing", "Retro Games"),
+           :icon_joystick,
+           :multiplayer
          )
        ],
        canonical_path: "/games",
@@ -52,24 +51,22 @@ defmodule RetroHexChatWeb.Site.Pages.Games do
      }}
   end
 
-  defp cards_window(id, title, icon, list) do
-    every_card =
-      Keyword.get_lazy(list, :cards, fn -> Enum.flat_map(list[:groups], & &1.cards) end)
+  # Both catalogues on their category shelves, the same ones the app's
+  # folders show.
+  defp cards_window(id, title, icon, kind) do
+    groups = GameCatalog.cards(kind)
+    every_card = Enum.flat_map(groups, & &1.cards)
 
     Window.new(id, title, icon,
       width: 1000,
       body: &game_card_list/1,
       assigns: %{
         heading_id: id <> "-heading",
-        cards: Keyword.get(list, :cards, []),
-        groups: list[:groups],
+        groups: groups,
         columns: "grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
         catalogue_path: nil
       },
       status: [dngettext("landing", "%{count} game", "%{count} games", length(every_card))]
     )
   end
-
-  defp card(game),
-    do: %{game: game, path: PublicPages.localized_path(GameCatalog.page_path(game))}
 end

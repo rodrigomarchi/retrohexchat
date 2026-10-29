@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
   @moduletag :liveview
 
   describe "desktop shell" do
-    test "pins app folders and opens games from the Games folder", %{conn: conn} do
+    test "pins app folders and opens games from the Games folder's categories", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       assert has_element?(
@@ -23,11 +23,16 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
                ~s(#chat-desktop [data-testid="desktop-launcher-window-games"][data-window-id="desktop-launcher-games"][data-window-initial-open="false"])
              )
 
-      # The folder is the catalogue: a game per game, each opening its home
-      # over the chat.
+      # The folder holds a folder per category; Sports holds Hex Pong, whose
+      # card opens its home over the chat.
       assert has_element?(
                view,
-               ~s(#chat-desktop [data-testid="desktop-launcher-window-games"] [data-testid="desktop-launcher-item-game-hex_pong"][href="/games/hex-pong"][data-phx-link="patch"])
+               ~s(#chat-desktop [data-testid="desktop-launcher-window-games"] [data-testid="desktop-launcher-item-folder-games-sports"][data-window-open="desktop-launcher-games-sports"])
+             )
+
+      assert has_element?(
+               view,
+               ~s(#chat-desktop [data-testid="desktop-launcher-window-games-sports"] [data-testid="desktop-launcher-item-game-hex_pong"][href="/games/hex-pong"][data-phx-link="patch"])
              )
 
       refute has_element?(

@@ -11,53 +11,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:202
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:269
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:315
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:47
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:141
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:204
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:250
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Назад"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:112
-#, elixir-autogen, elixir-format
-msgid "Classic games running in your browser via WebAssembly"
-msgstr "Классические игры, работающие в вашем браузере через WebAssembly"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:319
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:254
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Закрыть"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:273
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:52
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:208
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "End Session"
 msgstr "Завершающая сессия"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:306
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:241
 #, elixir-autogen, elixir-format
 msgid "Play time:"
 msgstr "Время игры:"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:51
-#, elixir-autogen, elixir-format
-msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
-msgstr ""
-"Сеанс будет закрыт из-за бездействия в ближайшее время. Выберите игру, чтобы"
-" она была активной."
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:235
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:170
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "Игра в прогрессе"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:300
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:235
 #, elixir-autogen, elixir-format
 msgid "Session complete"
 msgstr "Заседание завершено"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:239
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:174
 #, elixir-autogen, elixir-format
 msgid "Started %{time}"
 msgstr "Начало %{time}"
@@ -68,7 +56,7 @@ msgid "AI won"
 msgstr "ИИ победил"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:325
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:119
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:128
 #, elixir-autogen, elixir-format
 msgid "Again"
 msgstr "Еще раз"
@@ -89,7 +77,7 @@ msgid "Easy"
 msgstr "Легко"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:229
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:102
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Завершить"
@@ -125,7 +113,7 @@ msgid "Normal"
 msgstr "Обычно"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:185
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Play vs AI"
 msgstr "Играть против ИИ"
@@ -172,11 +160,6 @@ msgstr "Режим"
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Движение"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:130
-#, elixir-autogen, elixir-format
-msgid "Ready"
-msgstr "Готово"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:341
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:362
@@ -380,16 +363,8 @@ msgstr "Удар"
 msgid "Forward"
 msgstr "Вперед"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:131
-#, elixir-autogen, elixir-format
-msgid "WebAssembly"
-msgstr "WebAssembly"
-
 #: lib/retro_hex_chat_web/components/ui/games/arcade_play_card.ex:57
 #: lib/retro_hex_chat_web/components/ui/games/game_sheet.ex:37
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:115
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:143
-#: lib/retro_hex_chat_web/controllers/help_content/helpers.ex:65
 #, elixir-autogen, elixir-format
 msgid "%{engine} Engine"
 msgstr "Движок %{engine}"
@@ -414,11 +389,6 @@ msgstr "Клавиша"
 msgid "Keyboard Controls"
 msgstr "Управление с клавиатуры"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:206
-#, elixir-autogen, elixir-format
-msgid "Leave"
-msgstr "Покинуть"
-
 #: lib/retro_hex_chat_web/components/ui/games/game_sheet.ex:92
 #, elixir-autogen, elixir-format
 msgid "Tips"
@@ -435,13 +405,13 @@ msgstr "Ретро-игры"
 msgid "Play with someone"
 msgstr "Играть с кем-то"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:265
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:46
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:200
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Open the game tab"
 msgstr "Открыть вкладку игры"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:246
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:181
 #, elixir-autogen, elixir-format
 msgid "The game runs in a tab of its own, with its own address. Closing that tab does not end the session — End Session does, and so does leaving it alone for a while."
 msgstr ""
@@ -708,7 +678,7 @@ msgid "Play with somebody you know"
 msgstr "Играть со знакомым"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:164
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Create a match link"
 msgstr "Создать ссылку на матч"
@@ -771,26 +741,21 @@ msgstr "Вы"
 msgid "Only registered nicknames appear in the ranking."
 msgstr "В рейтинге появляются только зарегистрированные прозвища."
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:198
-#: lib/retro_hex_chat_web/controllers/help_content/helpers.ex:101
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:137
+#: lib/retro_hex_chat_web/controllers/help_content/helpers.ex:85
 #, elixir-autogen, elixir-format
 msgid "How to play"
 msgstr "Как играть"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:22
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:264
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:190
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:33
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:24
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:267
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:129
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:27
 #: lib/retro_hex_chat_web/site/pages/features/solo_arcade.html.heex:17
 #: lib/retro_hex_chat_web/site/pages/index/solo_arcade.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Play now"
 msgstr "Играть сейчас"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:110
-#, elixir-autogen, elixir-format
-msgid "Arcade"
-msgstr "Аркада"
 
 #: lib/retro_hex_chat_web/components/ui/games/arcade_play_card.ex:62
 #, elixir-autogen, elixir-format
@@ -1041,14 +1006,14 @@ msgstr "Сбросить мину"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:219
 #: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:278
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:100
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:109
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Continue"
 msgstr "Продолжить"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_stage.ex:103
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "Full screen"
 msgstr "Во весь экран"
@@ -1084,3 +1049,10 @@ msgstr "Нажмите Esc, чтобы вернуться в игру."
 #, elixir-autogen, elixir-format
 msgid "3 lives — top score wins"
 msgstr "3 жизни — высший балл"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:51
+#, elixir-autogen, elixir-format
+msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
+msgstr ""
+"Сеанс будет закрыт из-за бездействия в ближайшее время. Выберите игру, чтобы"
+" она была активной."

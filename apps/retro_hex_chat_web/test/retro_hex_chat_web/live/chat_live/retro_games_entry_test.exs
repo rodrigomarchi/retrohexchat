@@ -4,9 +4,10 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
 
   A catalogue is not a room: there is nothing to create and nothing to
   announce. What the chat keeps is the catalogue — the Games folder holds a
-  game per game, its modes chosen on the game's home, which each icon opens
-  over the chat. The game itself opens from there, in a tab of its own. The
-  Start menu carries the way to that folder and not a second copy of it.
+  folder per category, and each category's window a card per game, its modes
+  chosen on the game's home, which each card opens over the chat. The game
+  itself opens from there, in a tab of its own. The Start menu walks the same
+  folders.
 
   What is left to assert is that the folder is complete, that each row says
   where it goes, that nothing opens a tab on the bare catalogue any more, and
@@ -22,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
   alias RetroHexChatWeb.Components.UI.StartMenuApp
 
   describe "the catalogue" do
-    test "the Games folder holds a game per game, each opening its home" do
+    test "the Games folder's categories hold a game per game, each opening its home" do
       document = render_launcher()
 
       for game <- Catalog.base_games() do
@@ -42,14 +43,22 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
       end
     end
 
-    test "the Start menu opens that folder rather than carrying a second copy" do
+    # Start walks the same folders: its first row opens the Retro Games
+    # folder, and each category's group lists its games, each opening its home.
+    test "the Start menu opens that folder and walks its categories" do
       document = render_start_menu()
 
-      assert [item] = Floki.find(document, ~s([data-testid="start-menu-item-retro-games"]))
+      assert [item] = Floki.find(document, ~s([data-testid="start-menu-item-open-games"]))
       assert Floki.attribute(item, "data-window-open") == ["desktop-launcher-games"]
       assert Floki.attribute(item, "href") == []
 
-      refute Floki.raw_html(document) =~ "start-menu-item-game-"
+      assert [game] =
+               Floki.find(
+                 document,
+                 ~s([data-start-submenu-key="desktop-launcher-games-sports"] [data-testid="start-menu-item-game-hex_pong"])
+               )
+
+      assert Floki.attribute(game, "href") == ["/games/hex-pong"]
     end
 
     test "neither entry opens a tab on the bare catalogue any more" do

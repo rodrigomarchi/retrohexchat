@@ -96,7 +96,7 @@ defmodule RetroHexChatWeb.Site.Pages.Index do
            body: &solo_arcade/1,
            assigns: %{
              catalogue_path: PublicPages.localized_path("/games"),
-             arcade: GameCatalog.arcade_cards()
+             arcade: GameCatalog.cards(:arcade)
            },
            status: [
              {:check,

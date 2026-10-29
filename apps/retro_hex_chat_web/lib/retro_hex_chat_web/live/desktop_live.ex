@@ -87,7 +87,6 @@ defmodule RetroHexChatWeb.DesktopLive do
   alias RetroHexChatWeb.ChatLive.P2PReadModel
   alias RetroHexChatWeb.ChatLive.SpaceReadModel
   alias RetroHexChatWeb.ChatLive.Visitor
-  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Site
 
   alias RetroHexChatWeb.ChatLive.Components.{
@@ -1066,9 +1065,6 @@ defmodule RetroHexChatWeb.DesktopLive do
   end
 
   # ── View helpers ──────────────────────────────────────────────
-
-  # The arcade under its engines, as the public catalogue shows it.
-  defp arcade_groups, do: GameCatalog.arcade_groups()
 
   defp maybe_broadcast_nick_changed(socket, old_nickname, new_nickname)
        when is_binary(old_nickname) and old_nickname != "" and old_nickname != new_nickname do

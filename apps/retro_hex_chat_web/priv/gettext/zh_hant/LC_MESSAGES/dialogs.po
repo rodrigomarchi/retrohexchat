@@ -341,7 +341,7 @@ msgstr "更改暱稱"
 #: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:64
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:67
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:41
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:51
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:52
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:140
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:221
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:283
@@ -1020,7 +1020,7 @@ msgstr "通知名單"
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:281
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:351
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:285
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:372
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:414
 #, elixir-autogen, elixir-format
 msgid "OK"
 msgstr "確定"
@@ -3606,17 +3606,17 @@ msgstr "每個欄位的來源"
 msgid "Why pages failed"
 msgstr "頁面失敗的原因"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:340
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:382
 #, elixir-autogen, elixir-format
 msgid "Connect required"
 msgstr "需要連線"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:357
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:399
 #, elixir-autogen, elixir-format
 msgid "This app group needs a chat session."
 msgstr "此應用程式分組需要一個聊天工作階段。"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:360
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:402
 #, elixir-autogen, elixir-format
 msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
 msgstr "請先連線才能使用這個應用程式資料夾。說明和語言在沒有聊天工作階段時依然可用。"
@@ -3747,32 +3747,32 @@ msgid "Publish a page per day that anybody can read and a search engine can inde
 msgstr ""
 "發布每天一頁、任何人都能讀、搜尋引擎也能索引的內容。只有你打開它之後說的話才會發布——頻道裡已有的內容永遠不會被公開。關掉它會撤下這些頁面。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:70
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "A message that somebody answered shows how many replies it collected. Choose that to read them together."
 msgstr "有人回覆過的訊息會顯示收到了多少則回覆。選擇它就能一起閱讀。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:141
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Could not load more of this thread."
 msgstr "無法載入此討論串的更多內容。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:69
 #, elixir-autogen, elixir-format
 msgid "No thread is open."
 msgstr "目前沒有開啟的討論串。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:95
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:100
 #, elixir-autogen, elixir-format
 msgid "Nobody has answered this yet."
 msgstr "還沒有人回覆這則訊息。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:158
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Reply in this thread"
 msgstr "在此討論串中回覆"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:101
 #, elixir-autogen, elixir-format
 msgid "Your reply starts the thread, and stays in the room as well."
 msgstr "你的回覆會開啟這個討論串，同時也留在房間裡。"
@@ -4608,7 +4608,7 @@ msgstr "一個使用服務器 emoji 的頻道線的小型"
 msgid "A miniature of the card a lookup answers with"
 msgstr "一張小卡片的搜索答案"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:54
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:55
 #, elixir-autogen, elixir-format
 msgid "A miniature of the line a thread hangs off and its first answer"
 msgstr "一條線的微小的線條被掛斷了,它的第一個答案"
@@ -4623,7 +4623,7 @@ msgstr "下一個事件的微型和何時開始"
 msgid "A miniature of the tab a room opens as"
 msgstr "一個小的標籤,一個房間打開作爲"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:59
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:60
 #, elixir-autogen, elixir-format
 msgid "A thread keeps an argument out of the room it started in: the replies live here instead of scrolling the channel. Everyone in the channel can open it and read the whole thing."
 msgstr "一條線將一個爭論從它開始的房間裏保留出來: 答案就住在這裏而不是滾動頻道. 頻道中的每個人都可以打開,閱讀整件事."
@@ -4638,7 +4638,7 @@ msgstr "這裏添加了一個屬於服務器的emoji:每個人都在兩個結腸
 msgid "An event belongs to the channel, so everybody in it sees the same list and is told in the room when the time comes. Only an operator can put one on the calendar."
 msgstr "一個事件屬於頻道,所以裏面的每個人都看到同樣的列表,並在時間到來時在房間裏被告知. 只有操作員才能在日曆上放置一個."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:47
+#: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:48
 #, elixir-autogen, elixir-format
 msgid "One disagreement, start to finish"
 msgstr "一個分歧,開始結束"

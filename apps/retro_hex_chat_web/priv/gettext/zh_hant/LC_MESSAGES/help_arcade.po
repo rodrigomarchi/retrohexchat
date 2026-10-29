@@ -46,7 +46,7 @@ msgstr "(1995) —— LK Avalon的超現實波蘭謎題冒險. 把你爺爺從�
 msgid "(1996) — Hilarious Spanish point & click parody of Dracula. Full version with MP3 voice acting."
 msgstr "(1996年) – 搞笑的西班牙點和點擊的Dracula poody. 完整版本,由MP3語音代理."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "/ns identify"
 msgstr "/ns identify"
@@ -948,7 +948,7 @@ msgstr ""
 msgid "PWAD compatible"
 msgstr "PWAD 兼容"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes)."
 msgstr "5分鐘後卸任。 大廳在15分鐘無活動後失效(警告時間爲10分鐘)."
@@ -1307,7 +1307,7 @@ msgstr "救救獵槍"
 msgid "ScummVM"
 msgstr "積分VM"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:119
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_bass.html.heex:122
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_drascula.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_dreamweb.html.heex:108
@@ -1335,7 +1335,7 @@ msgstr "副火力是關鍵"
 msgid "Secret hunt"
 msgstr "祕密狩獵"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_chex_quest.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:147
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom_shareware.html.heex:112
@@ -1364,7 +1364,7 @@ msgstr "祕密狩獵"
 msgid "See Also"
 msgstr "另請參閱"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Session Timeouts"
 msgstr "會話超時"
@@ -1500,7 +1500,7 @@ msgstr "和大家好好談談"
 msgid "Talk to everyone twice"
 msgstr "和大家說兩句"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Technology"
 msgstr "技術"
@@ -2870,12 +2870,6 @@ msgid "— the legendary multi-engine adventure game interpreter with an officia
 msgstr ""
 "——傳奇的多引擎冒險遊戲解釋器,帶有官方的Emscripten後端,編譯爲WebAssembly(GPL-3. 遊戲數據通過HTTP文件系統按需加載."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "."
-msgstr "."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:149
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_halflife.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_quake.html.heex:108
@@ -2886,46 +2880,36 @@ msgstr "."
 msgid "Arcade"
 msgstr "街機"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "Games"
-msgstr "遊戲"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "menu and choose"
-msgstr "菜單和選擇"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "%{engine} games are powered by"
 msgstr "%{engine} 遊戲由以下技術驅動"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:68
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "%{game} is powered by"
 msgstr "%{game} 由以下技術驅動"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly via Emscripten)."
 msgstr "(%{engine} 透過 Emscripten 編譯為 WebAssembly)。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:80
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly)."
 msgstr "(%{engine} 編譯為 WebAssembly)。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly). All support keyboard, mouse, and gamepad input."
 msgstr "(%{engine} 編譯為 WebAssembly)。全部支援鍵盤、滑鼠與遊戲手把輸入。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "(%{engine} reimplementation compiled to WebAssembly)."
 msgstr "(%{engine} 重新實作，編譯為 WebAssembly)。"
@@ -2935,40 +2919,25 @@ msgstr "(%{engine} 重新實作，編譯為 WebAssembly)。"
 msgid "ScummVM (Script Creation Utility for Maniac Mansion Virtual Machine) began in 2001 as a project to run LucasArts adventure games on modern systems. It has since grown to support over 300 games across dozens of engines, from Sierra's AGI/SCI to Revolution Software's Virtual Theatre. The games available here — from %{first_game} to %{last_game} — represent the golden age of point & click adventures (1992–1996)."
 msgstr "ScummVM（Script Creation Utility for Maniac Mansion Virtual Machine）始於 2001 年，最初是為了在現代系統上執行 LucasArts 冒險遊戲。如今它已支援數十種引擎上的 300 多款遊戲，從 Sierra 的 AGI/SCI 到 Revolution Software 的 Virtual Theatre。這裡提供的遊戲，從 %{first_game} 到 %{last_game}，代表了點擊式冒險遊戲的黃金年代（1992–1996）。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Double-click the Arcade desktop icon, or open the "
-msgstr "連按兩下桌面上的街機圖示，或者開啟"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Then press %{play}, which opens the game in a browser tab of its own."
 msgstr "然後按下%{play},在自己的瀏覽器標籤中打開遊戲."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "To play, you must be registered and identified:"
 msgstr "要玩,必須註冊和確認:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "A window opens right on the chat desktop with every game, grouped by engine as in the catalogue on the site. Choose one to see its details: a screenshot, the keyboard controls and tips, as on its page."
-msgstr "窗口在聊天桌面上與每款遊戲右側打開,與網站目錄一樣按引擎分組. 選擇一個來查看其細節:一個截圖,鍵盤控制和提示,如其頁面."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "%{end_session} finishes the session, and so does leaving it alone for a while."
 msgstr "%{end_session}完成會話,也暫時讓會話獨處."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "The game's tab is yours, not the chat's: closing it does not end the session, and the chat cannot close it for you."
 msgstr "遊戲的標籤是您的,而不是聊天:關閉它不會結束會話,聊天不能爲您關閉."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:43
-#, elixir-autogen, elixir-format
-msgid "While a game is running, %{open_tab} brings the address back if you closed it and %{back} returns to the list of games."
-msgstr "在遊戲運行期間,%{open_tab}如果關閉地址,就會帶回地址,%{back}返回遊戲列表."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2985,7 +2954,7 @@ msgstr "沒有下載,沒有插件:遊戲引擎在您的瀏覽器中以本土運�
 msgid "Anybody can read an arcade channel and the page of the game without an account. Playing and talking need a registered nickname that you have identified. A visitor who presses %{play} sees the sign-in window, and comes back to the same game."
 msgstr "任何人都可以在沒有帳號的情況下讀取一個街機頻道和遊戲的頁面. 玩耍和說話需要你確認的註冊暱稱 按%{play}的訪客看到登錄窗口,回到同一個遊戲."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Arcade Channels"
 msgstr "街機頻道"
@@ -2995,7 +2964,7 @@ msgstr "街機頻道"
 msgid "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
 msgstr "除了遊戲的細節外,它的頁面還展示了最近誰播放,誰最經常本週和所有時間開始遊戲,你開始遊戲的次數,以及其頻道的最後幾行."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Each game has a channel of its own, like %{channel}, where a bot says who starts it."
 msgstr "每款遊戲都有自己的頻道,比如%{channel},一個機器人說是誰開始的."
@@ -3089,3 +3058,18 @@ msgstr "在頻道中鍵入%{command}以再次看到控制器."
 #, elixir-autogen, elixir-format
 msgid "When you join the channel of an arcade game, the bot privately tells you what the game is and how to control it."
 msgstr "當加入街機遊戲的頻道時,機器人私下告訴你遊戲是什麼,如何控制."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Choose a game to see its details in the Arcade window: a screenshot, the keyboard controls and tips, as on its page."
+msgstr "Choose a game to see its details in the Arcade window: a screenshot, the keyboard controls and tips, as on its page."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "While a game is running, %{open_tab} brings the address back if you closed it and %{back} ends the session and returns to the folder the game came from."
+msgstr "當遊戲運行時,%{open_tab}將地址帶回,如果您關閉它,%{back}結束會話,返回到遊戲來自的文件夾."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Double-click the Arcade desktop icon, or open Start ▸ Games ▸ Arcade. The Arcade holds a folder per kind of game, as in the list below, and each folder shows its games with a screenshot of each, as the catalogue on the site does. Anyone can look through them."
+msgstr "Double-click the Arcade desktop icon, or open Start ▸ Games ▸ Arcade. The Arcade holds a folder per kind of game, as in the list below, and each folder shows its games with a screenshot of each, as the catalogue on the site does. Anyone can look through them."

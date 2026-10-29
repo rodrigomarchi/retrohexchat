@@ -1375,7 +1375,7 @@ msgstr "Tinggalkan Kanal"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:495
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:391
+#: lib/retro_hex_chat_web/live/desktop_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "Meninggalkan"
@@ -1416,8 +1416,8 @@ msgstr "Maksimum 10 aturan auto- respon"
 msgid "Menu is full (max 10 items per type)"
 msgstr "Menu penuh (maksimal 10 butir per tipe)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:237
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:242
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:236
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:241
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "Pesan ke %{target} - / untuk perintah"
@@ -1856,7 +1856,7 @@ msgstr "Status"
 msgid "Symbols"
 msgstr "Simbol"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:98
@@ -1938,8 +1938,8 @@ msgstr "Ketik chanserv /help atau saluran /help untuk rincian penuh."
 msgid "Type /help nickserv for full details."
 msgstr "Ketik /help nickserv untuk rincian penuh."
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:234
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:247
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:233
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:246
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "Ketik perintah - / untuk daftar"
@@ -2389,7 +2389,7 @@ msgstr "* Saluran undangan hilang"
 msgid "* Missing invite target"
 msgstr "* Hilang target undangan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:371
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2400,6 +2400,8 @@ msgstr "Akun"
 msgid "Alias Editor"
 msgstr "Penyunting Alias"
 
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:271
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:273
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:397
 #, elixir-autogen, elixir-format
 msgid "Arcade"
@@ -2901,7 +2903,7 @@ msgstr "%{peer} meninggalkan sesi P2P."
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer} kehilangan koneksi P2P - menunggu mereka kembali..."
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:340
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:369
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "Sesi arkade berakhir."
@@ -2926,7 +2928,7 @@ msgstr "Tidak bisa memuat permainan. Tolong coba lagi."
 msgid "Could not start the P2P invite."
 msgstr "Tak bisa memulai undangan P2P."
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:263
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:292
 #, elixir-autogen, elixir-format
 msgid "Could not start the arcade session. Please try again."
 msgstr "Tidak dapat memulai sesi arcade. Tolong coba lagi."
@@ -3254,17 +3256,17 @@ msgstr "Abaikan Daftar"
 msgid "Nick Colors"
 msgstr "Warna Nick"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:283
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Admin"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "Kontak"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "Menyambung"
@@ -3625,9 +3627,9 @@ msgid "Strikethrough"
 msgstr "Coret"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:325
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:508
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:551
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:337
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:139
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:143
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Hapus format"
@@ -3744,7 +3746,7 @@ msgstr "Gambar mini tidak dapat dimuat"
 msgid "Thumbnail is being prepared"
 msgstr "Gambar mini sedang disiapkan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
 #, elixir-autogen, elixir-format
 msgid "Round-trip to the server"
 msgstr "Waktu pulang pergi ke server"
@@ -3919,15 +3921,15 @@ msgstr "Nicks berakhir setelah %{window} tidak aktif"
 msgid "Copy Invite Link"
 msgstr "Salin tautan undangan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:173
 #, elixir-autogen, elixir-format
 msgid "React"
 msgstr "Bereaksi"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:306
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:307
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:145
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:146
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:147
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:148
 #, elixir-autogen, elixir-format
 msgid "React with %{emoji}"
 msgstr "Bereaksi dengan %{emoji}"
@@ -4096,7 +4098,7 @@ msgid "Where"
 msgstr "Di mana"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:150
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Potret karakter"
@@ -6054,7 +6056,7 @@ msgstr "%{category}: semua kanal, di Daftar Saluran"
 msgid "Message not found."
 msgstr "Pesan tidak ditemukan."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:174
 #, elixir-autogen, elixir-format
 msgid "React to %{nick}"
 msgstr "Beri reaksi ke pesan %{nick}"
@@ -6064,12 +6066,12 @@ msgstr "Beri reaksi ke pesan %{nick}"
 msgid "(attachment)"
 msgstr "(lampiran)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:215
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:214
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:217
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:216
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m %{seconds}s"
 msgstr "%{minutes}m %{seconds}s"

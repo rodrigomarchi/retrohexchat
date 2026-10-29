@@ -825,11 +825,11 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
     test "the Arcade's help lists every game, each linking to its page", %{conn: conn} do
       document = document(conn, "/chat/help/feature-arcade")
 
-      for group <- GameCatalog.arcade_groups(), game <- group.games do
+      for group <- GameCatalog.groups(:arcade), game <- group.games do
         assert [_] =
                  Floki.find(
                    document,
-                   ~s([data-testid="help-games-#{group.engine}"] a[href="/games/#{game.slug}"])
+                   ~s([data-testid="help-games-#{group.category}"] a[href="/games/#{game.slug}"])
                  )
       end
     end

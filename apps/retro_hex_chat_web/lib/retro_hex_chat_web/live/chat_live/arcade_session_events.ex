@@ -6,13 +6,16 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
       nil → "lobby" → preview → "playing" → "finished" → nil
 
-  Opening "Games → Arcade" (registered + identified only) creates a solo session
-  (`Arcade.create_session` + `join_session`), subscribes to `"arcade:\#{token}"`
-  and opens the managed "arcade-games" window with the catalogue's cards. A card
-  is the Arcade's own address on its game (`/?arcade=<id>`), which opens that
-  game's sheet; starting from the sheet drives the domain
-  (`Arcade.select_game`) and, in the same click, follows an anchor to
-  `/play/arcade/:game` — the game's own address — in a tab of its own.
+  The games are picked in the Arcade's category folders, which anyone may
+  browse (`DesktopLaunchers`). A card there is the Arcade's own address on its
+  game (`/?arcade=<id>`): for an identified nickname it creates a solo session
+  (`Arcade.create_session` + `join_session`), subscribes to
+  `"arcade:\#{token}"` and opens the managed "arcade-games" window on that
+  game's sheet; anyone else is asked to sign in first. Starting from the sheet
+  drives the domain (`Arcade.select_game`) and, in the same click, follows an
+  anchor to `/play/arcade/:game` — the game's own address — in a tab of its
+  own. Back, from the sheet or after a game, ends the session and returns to
+  the game's category folder.
 
   **The server no longer opens or closes that tab.** It is an anchor with
   `rel="noopener"`, which is what buys the game its own event loop, and the
@@ -40,6 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Visitor
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Components.UI.DesktopLaunchers
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Site.Address
 
@@ -58,8 +62,12 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
     {:halt, socket}
   end
 
-  def handle_event("arcade_back", _params, %{assigns: %{arcade_session: %{} = s}} = socket) do
-    {:halt, put_arcade(socket, %{s | previewed_game: nil})}
+  def handle_event(
+        "arcade_back",
+        _params,
+        %{assigns: %{arcade_session: %{previewed_game: %{id: game_id}}}} = socket
+      ) do
+    {:halt, socket |> close_arcade("user_closed") |> open_category(game_id)}
   end
 
   def handle_event(
@@ -84,14 +92,9 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   def handle_event(
         "arcade_back_to_launcher",
         _params,
-        %{assigns: %{arcade_session: %{} = s}} = socket
+        %{assigns: %{arcade_session: %{game_id: game_id}}} = socket
       ) do
-    socket =
-      socket
-      |> close_current_arcade(s, "user_returned_to_launcher")
-      |> start_session()
-
-    {:halt, socket}
+    {:halt, socket |> close_arcade("user_returned_to_launcher") |> open_category(game_id)}
   end
 
   # X on the picker: while a game is running keep the session alive (the popup
@@ -115,10 +118,10 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   @spec handle_info(term(), Socket.t()) :: {:cont | :halt, Socket.t()}
   # A link that named an arcade game — the public game page's way in — opens
-  # the arcade on that game once the chat is up, as the menu would; one that
-  # names none (`?arcade=`, where a visitor's sign-in returns) opens its
-  # catalogue. The parameter is dropped from the address first: left there,
-  # every reconnect would mount on it again and open a new arcade session. The
+  # the arcade on that game once the chat is up, as its card would; one that
+  # names none (`?arcade=`) opens the Arcade's folder. The parameter is
+  # dropped from the address first: left there, every reconnect would mount
+  # on it again and open a new arcade session. The
   # window opens on the next message, after the patch has brought the chat
   # forward, so the arcade ends up in front of it rather than behind.
   def handle_info({:open_arcade_link, game_id}, socket) do
@@ -222,25 +225,51 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   # ── Internal ──────────────────────────────────────────────────
 
-  # The arcade keeps scores against a nickname, so one that is not identified
-  # is sent to the sign-in window, which comes back to the arcade — on the
-  # game a link named, when it named one.
-  @spec open_arcade(Socket.t(), String.t()) :: Socket.t()
   # A Play that named a game — in a game's channel, on a card about it —
   # comes back to that game once the nickname is identified.
   defp game_id_of(%{"game-id" => game_id}) when is_binary(game_id), do: game_id
   defp game_id_of(_params), do: ""
 
+  # The arcade keeps scores against a nickname, so one that is not identified
+  # is sent to the sign-in window, which comes back to the game it picked.
+  # Without a game — or with one the arcade does not have — there is nothing
+  # to start: the Arcade's folder opens, and anyone may browse it. A game
+  # picked after the last one finished starts afresh; one picked while a game
+  # is running brings that game's window forward, where End Session is.
+  @spec open_arcade(Socket.t(), String.t()) :: Socket.t()
   defp open_arcade(socket, game_id \\ "") do
     cond do
+      game_id != "" and GameCatalog.get_arcade(game_id) == :error ->
+        open_arcade(socket, "")
+
+      match?(%{status: "finished"}, socket.assigns[:arcade_session]) and game_id != "" ->
+        socket
+        |> close_current_arcade(socket.assigns.arcade_session, "user_returned_to_launcher")
+        |> start_session()
+
       socket.assigns[:arcade_session] ->
         Windows.open(socket, @window)
+
+      game_id == "" ->
+        Windows.open(socket, DesktopLaunchers.catalogue_window_id(:arcade))
 
       not identified?(socket) ->
         Visitor.ask_to_sign_in(socket, :games, Paths.chat_arcade_path(game_id))
 
       true ->
         start_session(socket)
+    end
+  end
+
+  # The category folder `game_id` was picked from, in front again.
+  @spec open_category(Socket.t(), String.t() | nil) :: Socket.t()
+  defp open_category(socket, game_id) do
+    case GameCatalog.get_arcade(game_id || "") do
+      {:ok, game} ->
+        Windows.open(socket, DesktopLaunchers.category_window_id(:arcade, game.category))
+
+      :error ->
+        Windows.open(socket, DesktopLaunchers.catalogue_window_id(:arcade))
     end
   end
 

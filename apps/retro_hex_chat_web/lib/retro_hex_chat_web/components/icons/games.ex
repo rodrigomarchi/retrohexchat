@@ -1592,4 +1592,225 @@ defmodule RetroHexChatWeb.Icons.Games do
     </svg>
     """
   end
+
+  # Genres — the category folders of the Retro Games and the Arcade.
+
+  # -- Sports: a trophy --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_genre_sports(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_genre_sports(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path
+        d="M9 6h14v1h-14zM9 7h1v4h-1zM12 7h10v1h-10zM11 8h11v3h-11zM9 11h13v2h-13zM10 13h11v1h-11zM11 14h9v1h-9zM12 15h7v1h-7zM14 16h3v1h-3zM15 17h1v2h-1zM14 19h3v1h-3zM13 20h5v1h-5z"
+        fill="#ffcc00"
+      />
+      <path
+        d="M5 7h4v1h-4zM22 7h5v1h-5zM5 8h1v3h-1zM8 8h1v4h-1zM22 8h1v4h-1zM26 8h1v3h-1zM6 11h1v1h-1zM25 11h1v1h-1zM7 12h2v1h-2zM22 12h3v1h-3zM9 13h1v1h-1zM21 13h1v1h-1zM10 14h1v1h-1zM20 14h1v1h-1zM11 15h1v1h-1zM19 15h1v1h-1zM13 16h1v1h-1zM17 16h1v1h-1zM14 17h1v2h-1zM16 17h1v2h-1zM13 19h1v1h-1zM17 19h1v1h-1zM12 20h1v1h-1zM18 20h1v1h-1z"
+        fill="#ff6600"
+      />
+      <path d="M10 7h2v1h-2zM10 8h1v3h-1z" fill="#fff" />
+      <path d="M10 21h11v1h-11zM10 22h1v3h-1zM20 22h1v3h-1zM9 25h13v1h-13z" fill="#8b5a2b" />
+      <path d="M11 22h9v1h-9zM11 23h1v1h-1zM19 23h1v1h-1zM11 24h9v1h-9z" fill="#b08850" />
+      <path d="M12 23h7v1h-7z" fill="#e8c98a" />
+    </svg>
+    """
+  end
+
+  # -- Shooters: a crosshair --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_genre_shooters(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_genre_shooters(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path
+        d="M15 3h2v2h-2zM13 5h6v1h-6zM10 6h12v1h-12zM9 7h4v1h-4zM15 7h2v4h-2zM19 7h4v1h-4zM8 8h3v1h-3zM21 8h3v1h-3zM7 9h3v1h-3zM22 9h3v1h-3zM6 10h3v1h-3zM23 10h3v1h-3zM6 11h2v2h-2zM24 11h2v2h-2zM5 13h2v2h-2zM25 13h2v2h-2zM3 15h8v2h-8zM21 15h8v2h-8zM5 17h2v2h-2zM25 17h2v2h-2zM6 19h2v2h-2zM24 19h2v2h-2zM6 21h3v1h-3zM15 21h2v4h-2zM23 21h3v1h-3zM7 22h3v1h-3zM22 22h3v1h-3zM8 23h3v1h-3zM21 23h3v1h-3zM9 24h4v1h-4zM19 24h4v1h-4zM10 25h12v1h-12zM13 26h6v1h-6zM15 27h2v2h-2z"
+        fill="#ff0000"
+      />
+      <path
+        d="M14 11h4v1h-4zM12 12h2v1h-2zM18 12h2v1h-2zM12 13h1v1h-1zM19 13h1v1h-1zM11 14h1v4h-1zM20 14h1v4h-1zM12 18h1v1h-1zM19 18h1v1h-1zM12 19h2v1h-2zM18 19h2v1h-2zM14 20h4v1h-4z"
+        fill="#990000"
+      />
+      <path d="M15 15h2v2h-2z" fill="#ffcc00" />
+    </svg>
+    """
+  end
+
+  # -- Action: a lightning bolt --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_genre_action(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_genre_action(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path
+        d="M18 5h8v1h-8zM17 6h1v1h-1zM24 6h1v1h-1zM16 7h1v1h-1zM23 7h1v1h-1zM15 8h1v1h-1zM22 8h1v1h-1zM14 9h1v1h-1zM21 9h1v1h-1zM13 10h1v1h-1zM20 10h1v1h-1zM12 11h1v1h-1zM19 11h1v1h-1zM11 12h1v1h-1zM18 12h7v1h-7zM10 13h1v1h-1zM23 13h1v1h-1zM9 14h7v1h-7zM22 14h1v1h-1zM14 15h1v1h-1zM20 15h1v1h-1zM13 16h1v1h-1zM19 16h1v1h-1zM12 17h1v1h-1zM18 17h1v1h-1zM11 18h1v1h-1zM16 18h1v1h-1zM10 19h1v1h-1zM15 19h1v1h-1zM9 20h1v1h-1zM13 20h1v1h-1zM8 21h1v1h-1zM12 21h1v1h-1zM7 22h1v2h-1zM10 22h1v1h-1zM9 23h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM6 25h2v1h-2z"
+        fill="#ff6600"
+      />
+      <path
+        d="M18 6h6v1h-6zM17 7h6v1h-6zM16 8h6v1h-6zM15 9h6v1h-6zM14 10h6v1h-6zM13 11h6v1h-6zM12 12h6v1h-6zM11 13h12v1h-12zM16 14h6v1h-6zM15 15h5v1h-5zM14 16h5v1h-5zM13 17h5v1h-5zM12 18h4v1h-4zM11 19h4v1h-4zM10 20h3v1h-3zM9 21h3v1h-3zM8 22h2v1h-2zM8 23h1v1h-1zM7 24h1v1h-1z"
+        fill="#ffcc00"
+      />
+    </svg>
+    """
+  end
+
+  # -- Cards: a card face over a card back --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_genre_cards(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_genre_cards(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path
+        d="M5 5h13v1h-13zM5 6h1v16h-1zM17 6h1v3h-1zM13 9h14v1h-14zM13 10h1v12h-1zM26 10h1v17h-1zM5 22h9v1h-9zM13 23h1v4h-1zM13 27h14v1h-14z"
+        fill="#000"
+      />
+      <path
+        d="M6 6h11v1h-11zM6 7h1v14h-1zM16 7h1v2h-1zM14 10h12v1h-12zM14 11h1v2h-1zM16 11h1v1h-1zM18 11h8v2h-8zM14 13h2v1h-2zM17 13h9v1h-9zM14 14h12v1h-12zM14 15h3v1h-3zM19 15h1v1h-1zM22 15h4v1h-4zM14 16h2v2h-2zM23 16h3v2h-3zM14 18h3v1h-3zM22 18h4v1h-4zM14 19h4v1h-4zM21 19h5v1h-5zM14 20h5v1h-5zM20 20h6v1h-6zM6 21h7v1h-7zM14 21h12v6h-12z"
+        fill="#fff"
+      />
+      <path
+        d="M7 7h1v1h-1zM9 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM7 9h1v1h-1zM9 9h1v1h-1zM11 9h1v1h-1zM8 10h1v1h-1zM10 10h1v1h-1zM12 10h1v1h-1zM7 11h1v1h-1zM9 11h1v1h-1zM11 11h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM12 12h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM11 13h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM12 14h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM11 15h1v1h-1zM8 16h1v1h-1zM10 16h1v1h-1zM12 16h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM11 17h1v1h-1zM8 18h1v1h-1zM10 18h1v1h-1zM12 18h1v1h-1zM7 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM8 20h1v1h-1zM10 20h1v1h-1zM12 20h1v1h-1z"
+        fill="#003399"
+      />
+      <path
+        d="M8 7h1v1h-1zM10 7h1v1h-1zM12 7h1v1h-1zM14 7h1v1h-1zM7 8h1v1h-1zM9 8h1v1h-1zM11 8h1v1h-1zM13 8h1v1h-1zM15 8h1v1h-1zM8 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM7 10h1v1h-1zM9 10h1v1h-1zM11 10h1v1h-1zM8 11h1v1h-1zM10 11h1v1h-1zM12 11h1v1h-1zM7 12h1v1h-1zM9 12h1v1h-1zM11 12h1v1h-1zM8 13h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM7 14h1v1h-1zM9 14h1v1h-1zM11 14h1v1h-1zM8 15h1v1h-1zM10 15h1v1h-1zM12 15h1v1h-1zM7 16h1v1h-1zM9 16h1v1h-1zM11 16h1v1h-1zM8 17h1v1h-1zM10 17h1v1h-1zM12 17h1v1h-1zM7 18h1v1h-1zM9 18h1v1h-1zM11 18h1v1h-1zM8 19h1v1h-1zM10 19h1v1h-1zM12 19h1v1h-1zM7 20h1v1h-1zM9 20h1v1h-1zM11 20h1v1h-1z"
+        fill="#0066ff"
+      />
+      <path
+        d="M15 11h1v1h-1zM17 11h1v1h-1zM15 12h3v1h-3zM16 13h1v1h-1zM17 15h2v1h-2zM20 15h2v1h-2zM16 16h7v2h-7zM17 18h5v1h-5zM18 19h3v1h-3zM19 20h1v1h-1z"
+        fill="#ff0000"
+      />
+    </svg>
+    """
+  end
+
+  # -- Puzzles: a jigsaw piece --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_genre_puzzles(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_genre_puzzles(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path
+        d="M14 3h1v1h-1zM12 4h5v2h-5zM11 6h7v1h-7zM12 7h6v1h-6zM12 8h5v1h-5zM13 9h4v1h-4zM13 10h3v1h-3zM6 11h16v4h-16zM8 15h14v1h-14zM9 16h18v1h-18zM9 17h19v4h-19zM8 21h15v1h-15zM25 21h1v1h-1zM6 22h16v4h-16z"
+        fill="#00ccff"
+      />
+      <path
+        d="M15 3h1v1h-1zM17 4h1v2h-1zM18 6h1v2h-1zM11 7h1v1h-1zM17 8h1v2h-1zM12 9h1v1h-1zM16 10h1v1h-1zM22 11h1v5h-1zM6 15h2v1h-2zM25 15h1v1h-1zM8 16h1v1h-1zM27 16h1v1h-1zM28 17h1v4h-1zM23 21h2v1h-2zM26 21h2v1h-2zM22 22h1v4h-1zM25 22h1v1h-1zM6 26h17v1h-17z"
+        fill="#006699"
+      />
+    </svg>
+    """
+  end
+
+  # -- First-person shooters: a corridor seen down the barrel --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_genre_fps(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_genre_fps(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path
+        d="M2 2h28v1h-28zM3 3h26v1h-26zM4 4h24v1h-24zM5 5h22v1h-22zM6 6h20v1h-20zM7 7h18v1h-18zM8 8h16v1h-16zM9 9h14v1h-14zM10 10h12v1h-12zM11 11h10v1h-10zM15 18h2v1h-2z"
+        fill="#000"
+      />
+      <path
+        d="M2 3h1v1h-1zM29 3h1v1h-1zM2 4h2v1h-2zM28 4h2v1h-2zM2 5h3v1h-3zM27 5h3v1h-3zM2 6h4v1h-4zM26 6h4v1h-4zM2 7h5v1h-5zM25 7h5v1h-5zM2 8h6v1h-6zM24 8h6v1h-6zM2 9h7v1h-7zM23 9h7v1h-7zM2 10h8v1h-8zM22 10h8v1h-8zM2 11h9v1h-9zM21 11h9v1h-9zM2 12h10v8h-10zM20 12h10v8h-10zM13 18h1v6h-1zM18 18h1v6h-1zM2 20h9v1h-9zM21 20h9v1h-9zM2 21h8v1h-8zM22 21h8v1h-8zM2 22h7v1h-7zM23 22h7v1h-7zM2 23h6v1h-6zM24 23h6v1h-6zM2 24h5v1h-5zM25 24h5v1h-5zM2 25h4v1h-4zM26 25h4v1h-4zM2 26h3v1h-3zM27 26h3v1h-3zM2 27h2v1h-2zM28 27h2v1h-2zM2 28h1v1h-1zM29 28h1v1h-1z"
+        fill="#888"
+      />
+      <path
+        d="M12 12h8v2h-8zM12 14h2v1h-2zM15 14h2v1h-2zM18 14h2v1h-2zM12 15h8v3h-8zM12 18h1v2h-1zM19 18h1v2h-1z"
+        fill="#444"
+      />
+      <path d="M14 14h1v1h-1zM17 14h1v1h-1z" fill="#ff0000" />
+      <path d="M14 18h1v1h-1zM17 18h1v1h-1zM14 19h4v5h-4z" fill="#c0c0c0" />
+      <path
+        d="M11 20h2v1h-2zM19 20h2v1h-2zM10 21h3v1h-3zM19 21h3v1h-3zM9 22h4v1h-4zM19 22h4v1h-4zM8 23h5v1h-5zM19 23h5v1h-5zM7 24h5v1h-5zM20 24h5v1h-5zM6 25h6v1h-6zM20 25h6v1h-6zM5 26h6v1h-6zM20 26h7v1h-7zM4 27h7v1h-7zM20 27h8v1h-8zM3 28h8v1h-8zM20 28h9v1h-9zM2 29h9v1h-9zM20 29h10v1h-10z"
+        fill="#8b5a2b"
+      />
+      <path d="M12 24h8v1h-8zM11 26h1v4h-1z" fill="#b08850" />
+      <path d="M12 25h8v5h-8z" fill="#e8c98a" />
+    </svg>
+    """
+  end
+
+  # -- Adventures: a magnifying glass over a map --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_genre_adventure(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_genre_adventure(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path
+        d="M3 6h1v20h-1zM24 6h1v13h-1zM22 19h3v1h-3zM22 20h1v1h-1zM24 20h1v1h-1zM23 21h1v1h-1zM25 21h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM24 23h2v1h-2zM27 23h1v1h-1zM24 24h1v2h-1zM26 24h1v1h-1zM28 24h1v1h-1zM27 25h1v1h-1z"
+        fill="#8b5a2b"
+      />
+      <path
+        d="M4 6h20v1h-20zM23 20h1v1h-1zM24 21h1v1h-1zM25 22h1v1h-1zM26 23h1v1h-1zM27 24h1v1h-1zM4 25h20v1h-20zM28 25h1v1h-1z"
+        fill="#b08850"
+      />
+      <path
+        d="M4 7h10v1h-10zM20 7h4v1h-4zM4 8h2v2h-2zM8 8h5v1h-5zM21 8h3v1h-3zM9 9h3v1h-3zM22 9h2v1h-2zM4 10h3v1h-3zM8 10h3v1h-3zM23 10h1v1h-1zM4 11h6v6h-6zM4 17h7v1h-7zM23 17h1v1h-1zM4 18h8v1h-8zM22 18h2v1h-2zM4 19h9v1h-9zM21 19h1v1h-1zM4 20h10v1h-10zM20 20h2v1h-2zM4 21h6v1h-6zM11 21h12v1h-12zM4 22h4v1h-4zM9 22h3v1h-3zM13 22h11v1h-11zM4 23h2v1h-2zM7 23h17v1h-17zM4 24h20v1h-20z"
+        fill="#e8c98a"
+      />
+      <path
+        d="M14 7h6v1h-6zM13 8h8v1h-8zM12 9h3v1h-3zM19 9h3v1h-3zM11 10h2v1h-2zM21 10h2v1h-2zM10 11h3v1h-3zM21 11h3v1h-3zM10 12h2v4h-2zM22 12h2v4h-2zM10 16h3v1h-3zM21 16h3v1h-3zM11 17h2v1h-2zM21 17h2v1h-2zM12 18h3v1h-3zM19 18h3v1h-3zM13 19h8v1h-8zM14 20h6v1h-6z"
+        fill="#c0c0c0"
+      />
+      <path d="M6 8h2v1h-2zM6 9h3v1h-3zM7 10h1v1h-1z" fill="#006600" />
+      <path
+        d="M15 9h4v1h-4zM13 10h8v1h-8zM13 11h1v1h-1zM16 11h5v1h-5zM12 12h2v1h-2zM15 12h7v1h-7zM12 13h10v3h-10zM13 16h8v2h-8zM15 18h4v1h-4z"
+        fill="#00ccff"
+      />
+      <path d="M14 11h2v1h-2zM14 12h1v1h-1z" fill="#fff" />
+      <path d="M10 21h1v1h-1zM8 22h1v1h-1zM12 22h1v1h-1zM6 23h1v1h-1z" fill="#990000" />
+    </svg>
+    """
+  end
 end

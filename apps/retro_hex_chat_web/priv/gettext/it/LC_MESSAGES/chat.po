@@ -1381,7 +1381,7 @@ msgstr "Lascia un canale"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:495
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:391
+#: lib/retro_hex_chat_web/live/desktop_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "Lasciare"
@@ -1422,8 +1422,8 @@ msgstr "Massimo 10 regole di risposta automatica"
 msgid "Menu is full (max 10 items per type)"
 msgstr "Menu completo (max 10 articoli per tipo)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:237
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:242
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:236
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:241
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "Messaggio a %{target} — / per i comandi"
@@ -1861,7 +1861,7 @@ msgstr "Stato"
 msgid "Symbols"
 msgstr "Simboli"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:98
@@ -1945,8 +1945,8 @@ msgstr "Tipo /help chanserv o /help canale-permissioni per dettagli completi."
 msgid "Type /help nickserv for full details."
 msgstr "Digitare /help nickserv per dettagli completi."
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:234
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:247
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:233
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:246
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "Digitare un comando — / per l'elenco"
@@ -2394,7 +2394,7 @@ msgstr "* canale di invito mancante"
 msgid "* Missing invite target"
 msgstr "* Obiettivo di invito mancante"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:371
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2405,6 +2405,8 @@ msgstr "Account"
 msgid "Alias Editor"
 msgstr "Alias Editor"
 
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:271
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:273
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:397
 #, elixir-autogen, elixir-format
 msgid "Arcade"
@@ -2906,7 +2908,7 @@ msgstr "%{peer} ha lasciato la sessione P2P."
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer} ha perso la connessione P2P - in attesa di loro di tornare..."
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:340
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:369
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "Fine della sessione Arcade."
@@ -2931,7 +2933,7 @@ msgstr "Non poteva caricare il gioco. Per favore riprovate."
 msgid "Could not start the P2P invite."
 msgstr "Non poteva iniziare l'invito P2P."
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:263
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:292
 #, elixir-autogen, elixir-format
 msgid "Could not start the arcade session. Please try again."
 msgstr "Non poteva iniziare la sessione arcade. Per favore riprovate."
@@ -3263,17 +3265,17 @@ msgstr "Elenco Ignore"
 msgid "Nick Colors"
 msgstr "Nick Colori"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:283
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Admin"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "Contatti"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "On Connect"
@@ -3634,9 +3636,9 @@ msgid "Strikethrough"
 msgstr "Barrato"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:325
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:508
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:551
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:337
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:139
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:143
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Rimuovi formattazione"
@@ -3753,7 +3755,7 @@ msgstr "Impossibile caricare la miniatura"
 msgid "Thumbnail is being prepared"
 msgstr "La miniatura è in preparazione"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
 #, elixir-autogen, elixir-format
 msgid "Round-trip to the server"
 msgstr "Andata e ritorno verso il server"
@@ -3930,15 +3932,15 @@ msgstr "• Nicks scade dopo %{window} di inattività"
 msgid "Copy Invite Link"
 msgstr "Copia link di invito"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:173
 #, elixir-autogen, elixir-format
 msgid "React"
 msgstr "Reagisci"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:306
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:307
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:145
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:146
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:147
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:148
 #, elixir-autogen, elixir-format
 msgid "React with %{emoji}"
 msgstr "Reagisci con %{emoji}"
@@ -4111,7 +4113,7 @@ msgid "Where"
 msgstr "Dove"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:150
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Ritratti dei personaggi"
@@ -6072,7 +6074,7 @@ msgstr "%{category}: tutti i canali, nell'elenco dei canali"
 msgid "Message not found."
 msgstr "Messaggio non trovato."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:174
 #, elixir-autogen, elixir-format
 msgid "React to %{nick}"
 msgstr "Reagisci al messaggio di %{nick}"
@@ -6082,12 +6084,12 @@ msgstr "Reagisci al messaggio di %{nick}"
 msgid "(attachment)"
 msgstr "(allegato)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:215
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:214
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:217
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:216
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m %{seconds}s"
 msgstr "%{minutes}m %{seconds}s"

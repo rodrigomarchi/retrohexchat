@@ -12,15 +12,27 @@ import { ChatPage } from "../pages/ChatPage";
 const DOOM_E1M1 =
   "https://static.retrohexchat.app/arcade/doom_shareware/index.html?-warp&1&1&-skill&3";
 
-/** Double-clicks the desktop's Arcade icon and waits for its library. */
-export async function openArcade(page: Page, chat: ChatPage) {
-  await chat.arcadeIcon.dblclick();
-  await expect(page.getByTestId("arcade-games-window")).toBeVisible();
+/** The window of the Arcade's First-Person Shooters folder, where DOOM is. */
+export function shootersFolder(page: Page) {
+  return page.getByTestId("desktop-launcher-window-arcade-fps");
 }
 
-/** Picks DOOM in the open Arcade window, so its preview shows. */
+/**
+ * Double-clicks the desktop's Arcade icon and opens its First-Person
+ * Shooters folder, whose cards DOOM is among.
+ */
+export async function openArcade(page: Page, chat: ChatPage) {
+  await chat.openArcadeFolder();
+  await chat.openCategoryOf(
+    chat.arcadeFolderWindow,
+    "arcade-game-doom_shareware",
+  );
+  await expect(shootersFolder(page)).toBeVisible();
+}
+
+/** Picks DOOM's card in the open folder, so the Arcade opens on its sheet. */
 export async function previewDoom(page: Page) {
-  await page.getByTestId("arcade-game-doom_shareware").click();
+  await shootersFolder(page).getByTestId("arcade-game-doom_shareware").click();
   await expect(page.getByTestId("arcade-game-preview")).toBeVisible();
 }
 
@@ -94,8 +106,8 @@ export async function playDoom(doom: Page, ms: number) {
  * Closes the game tab and ends the session (which closes the Arcade window),
  * so the next visit offers Play again.
  * The chat cannot see a tab on another origin: closing it leaves the session
- * "in progress", and Back only returns to the library while it stays so — the
- * next visit would open on "Game in progress" with no Play button.
+ * "in progress", and the next pick would open on "Game in progress" with no
+ * Play button.
  */
 export async function closeDoom(page: Page, doom: Page) {
   await doom.close();
@@ -128,20 +140,31 @@ export async function warmDoom(ctx: BrowserContext) {
 }
 
 /**
- * Off camera: leaves the Arcade closed, with no session in progress — a
- * session left "playing" reopens on its own state, without a Play button.
+ * Off camera: leaves the Arcade and its folders closed, with no session in
+ * progress — a session left "playing" reopens on its own state, without a
+ * Play button. Picking DOOM shows that state, or DOOM's sheet when there is
+ * none (a finished session starts afresh on a pick).
  */
 export async function resetArcade(page: Page, chat: ChatPage) {
   const window = page.getByTestId("arcade-games-window");
-  for (let attempt = 0; attempt < 3; attempt++) {
-    if (!(await window.isVisible())) await openArcade(page, chat);
-    if (await page.getByTestId("arcade-library").isVisible()) {
-      await closeArcade(page);
-      return;
-    }
-    // A game in progress: end it, and look again.
+  if (!(await window.isVisible())) {
+    await openArcade(page, chat);
+    await shootersFolder(page)
+      .getByTestId("arcade-game-doom_shareware")
+      .click();
+    await expect(window).toBeVisible();
+  }
+  if (await page.getByTestId("arcade-game-preview").isVisible()) {
+    await closeArcade(page);
+  } else {
+    // A game in progress: ending it closes the window with the session.
     await page.getByTestId("solo-session-end").click();
     await expect(window).toBeHidden();
   }
-  throw new Error("the Arcade still shows a game in progress after ending it");
+  for (const folder of [shootersFolder(page), chat.arcadeFolderWindow]) {
+    if (await folder.isVisible()) {
+      await folder.locator('[data-window-control="close"]').click();
+      await expect(folder).toBeHidden();
+    }
+  }
 }

@@ -525,4 +525,27 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.mode_word("hex_blocks_sprint") == "sprint"
     end
   end
+
+  describe "categories" do
+    test "every game sits on exactly one shelf, its modes on their game's" do
+      shelved = Enum.flat_map(Catalog.categories(), &Catalog.games_in/1)
+      ids = Enum.map(shelved, & &1.id)
+
+      assert Enum.sort(ids) == Enum.sort(Enum.map(Catalog.base_games(), & &1.id))
+      assert ids == Enum.uniq(ids)
+
+      assert Catalog.category("hex_pong") == :sports
+      assert Catalog.category("hex_spider_4suits") == :cards
+      assert Catalog.category("no_such_game") == nil
+    end
+
+    test "a shelf's games are listed in its own order and named in the reader's language" do
+      assert Enum.map(Catalog.games_in(:puzzles), & &1.id) == ~w(hex_mines hex_sudoku hex_blocks)
+      assert Catalog.categories() == [:sports, :shooters, :action, :cards, :puzzles]
+
+      Gettext.with_locale(RetroHexChat.Gettext, "en", fn ->
+        assert Catalog.category_name(:puzzles) == "Puzzles"
+      end)
+    end
+  end
 end

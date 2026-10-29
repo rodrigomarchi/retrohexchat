@@ -49,7 +49,13 @@ defmodule RetroHexChatWeb.GameCatalog do
           og_height: pos_integer()
         }
   @type mode :: %{id: String.t(), name: String.t(), tagline: String.t()}
-  @type group :: %{engine: atom(), name: String.t(), games: [game()]}
+  @type category :: Arcade.category() | Games.category()
+  @type group :: %{
+          category: category(),
+          name: String.t(),
+          icon_fn: atom(),
+          games: [game()]
+        }
   @type game :: %{
           id: String.t(),
           slug: String.t(),
@@ -62,6 +68,7 @@ defmodule RetroHexChatWeb.GameCatalog do
           keys: [{String.t(), String.t()}],
           tips: [String.t()],
           modes: [mode()],
+          category: category(),
           engine: atom() | nil,
           engine_name: String.t() | nil,
           icon: String.t(),
@@ -88,27 +95,37 @@ defmodule RetroHexChatWeb.GameCatalog do
   end
 
   @doc """
-  The arcade's games under their engines, in the catalogue's order — the one
-  grouping the public catalogue, the in-app Arcade and its help all show.
+  The games of one kind on their category shelves, in the catalogue's order —
+  the one grouping the in-app folders, the Start menu, the public catalogue
+  and the help all show.
   """
-  @spec arcade_groups() :: [group()]
-  def arcade_groups do
-    games = Enum.group_by(arcade_games(), & &1.engine)
+  @spec groups(kind()) :: [group()]
+  def groups(:arcade) do
+    games = Enum.group_by(arcade_games(), & &1.category)
 
-    for engine <- Arcade.engines(), Map.has_key?(games, engine) do
-      %{engine: engine, name: Arcade.engine_name(engine), games: Map.fetch!(games, engine)}
+    for category <- Arcade.categories(), Map.has_key?(games, category) do
+      group(category, Arcade.category_name(category), Map.fetch!(games, category))
+    end
+  end
+
+  def groups(:multiplayer) do
+    by_id = Map.new(multiplayer_games(), &{&1.id, &1})
+
+    for category <- Games.categories() do
+      games = Enum.map(Games.games_in(category), &Map.fetch!(by_id, &1.id))
+      group(category, Games.category_name(category), games)
     end
   end
 
   @doc """
-  `arcade_groups/0` as a list of links: each game beside its page, in the
-  reader's language — what every public list of the arcade draws.
+  `groups/1` as lists of links: each game beside its page, in the reader's
+  language — what every public list of the catalogue draws.
   """
-  @spec arcade_cards() :: [%{engine: atom(), name: String.t(), cards: [map()]}]
-  def arcade_cards do
-    for group <- arcade_groups() do
+  @spec cards(kind()) :: [map()]
+  def cards(kind) do
+    for group <- groups(kind) do
       cards = Enum.map(group.games, &%{game: &1, path: PublicPages.localized_path(page_path(&1))})
-      %{engine: group.engine, name: group.name, cards: cards}
+      Map.put(group, :cards, cards)
     end
   end
 
@@ -126,15 +143,15 @@ defmodule RetroHexChatWeb.GameCatalog do
   def slugs, do: Enum.map(list(), & &1.slug)
 
   @doc """
-  A few other games worth a click from `game`'s page: the same engine for the
-  arcade, the other multiplayer games otherwise.
+  A few other games worth a click from `game`'s page: the ones on its shelf
+  first, then the rest of its kind.
   """
   @spec related(game(), pos_integer()) :: [game()]
   def related(game, count \\ 4) do
     candidates = Enum.reject(list(game.kind), &(&1.id == game.id))
 
     {same, rest} =
-      Enum.split_with(candidates, &(game.kind == :arcade and &1.engine == game.engine))
+      Enum.split_with(candidates, &(&1.category == game.category))
 
     Enum.take(same ++ rest, count)
   end
@@ -190,6 +207,7 @@ defmodule RetroHexChatWeb.GameCatalog do
         keys: sheet.controls,
         tips: sheet.tips,
         modes: [],
+        category: Arcade.category(game),
         engine: game.engine,
         engine_name: Arcade.engine_name(game.engine),
         icon: game.icon,
@@ -218,6 +236,7 @@ defmodule RetroHexChatWeb.GameCatalog do
         keys: [],
         tips: [],
         modes: modes,
+        category: Games.category(game.id),
         engine: nil,
         engine_name: nil,
         icon: game.icon,
@@ -226,6 +245,25 @@ defmodule RetroHexChatWeb.GameCatalog do
       }
     end)
   end
+
+  # Each shelf's folder icon, named after what the games on it have in common.
+  @category_icons %{
+    sports: :icon_game_genre_sports,
+    shooters: :icon_game_genre_shooters,
+    action: :icon_game_genre_action,
+    cards: :icon_game_genre_cards,
+    puzzles: :icon_game_genre_puzzles,
+    fps: :icon_game_genre_fps,
+    adventure: :icon_game_genre_adventure
+  }
+
+  defp group(category, name, games),
+    do: %{
+      category: category,
+      name: name,
+      icon_fn: Map.fetch!(@category_icons, category),
+      games: games
+    }
 
   # A game without written content still has a sheet: its description is
   # the About.

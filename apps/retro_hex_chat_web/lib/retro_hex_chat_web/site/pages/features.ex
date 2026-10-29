@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
      %{
        active_page: :features,
        catalogue_path: PublicPages.localized_path("/games"),
-       arcade: GameCatalog.arcade_cards(),
+       arcade: GameCatalog.cards(:arcade),
        mirc_commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
        paint_path: PublicPages.localized_path(PublicPages.path(:paint)),
        ascii_art_path: PublicPages.localized_path(PublicPages.path(:ascii_art)),

@@ -65,15 +65,19 @@ defmodule RetroHexChatWeb.StartMenuEntryPointsFeatureTest do
       assert render(view) =~ "chat-messages"
     end
 
-    # The row is live for every reader of the chat; a nickname not proven
-    # is sent to the sign-in window, which comes back to the arcade.
-    test "the Arcade row asks an unidentified nick to sign in", %{conn: conn} do
+    # A game's row is the Arcade's address on it, live for every reader of
+    # the chat; a nickname not proven is sent to the sign-in window, which
+    # comes back to that game.
+    test "an Arcade game's row asks an unidentified nick to sign in", %{conn: conn} do
       view = connect_user(conn, "StartArc#{uid()}")
 
-      assert has_element?(view, ~s|[data-testid="start-menu-item-open_arcade"]:not([disabled])|)
+      assert has_element?(
+               view,
+               ~s|[data-testid="start-menu-item-game-doom_shareware"][href="/?arcade=doom_shareware"][data-phx-link="patch"]|
+             )
 
-      click(view, "open_arcade")
-      assert_patch(view, "/connect?return_to=%2F%3Farcade%3D&signup=games")
+      render_patch(view, "/?arcade=doom_shareware")
+      assert_patch(view, "/connect?return_to=%2F%3Farcade%3Ddoom_shareware&signup=games")
     end
   end
 

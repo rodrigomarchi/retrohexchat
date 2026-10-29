@@ -5,7 +5,6 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Components.UI.GameSheet
-  alias RetroHexChatWeb.Components.UI.Landing.GameCards
   alias RetroHexChatWeb.Icons
 
   import RetroHexChatWeb.Components.UI.Badge
@@ -13,15 +12,16 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   import RetroHexChatWeb.Components.UI.Inset
 
   @doc """
-  Renders the multi-state body of the solo arcade window: the game launcher,
-  preview, playing and finished states.
+  Renders the multi-state body of the solo arcade window: the game's sheet,
+  then the playing and finished states. The games themselves are picked in
+  the Arcade's category folders (`DesktopLaunchers`), each of which opens this
+  window on the game's sheet.
 
   The window chrome (title bar, close control) is supplied by the enclosing
   `desktop_window` — this component renders only the body content. Composed from
   platform primitives (Button, Badge, Icons).
   """
   attr :id, :string, required: true
-  attr :groups, :list, required: true, doc: "`RetroHexChatWeb.GameCatalog.arcade_groups/0`"
   attr :session_status, :string, default: "lobby"
   attr :previewed_game, :map, default: nil
   attr :game_name, :string, default: nil
@@ -55,18 +55,11 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         </span>
       </div>
 
-      <.lobby_launcher
-        :if={@session_status == "lobby" && !@previewed_game}
-        groups={@groups}
-        on_close={@on_close}
-      />
-
       <.lobby_preview
         :if={@session_status == "lobby" && @previewed_game}
         previewed_game={@previewed_game}
         on_select_game={@on_select_game}
         on_back={@on_back}
-        on_close={@on_close}
       />
 
       <.playing_state
@@ -91,68 +84,14 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
     """
   end
 
-  # ── Lobby: Game Launcher ────────────────────────────────
-
-  attr :groups, :list, required: true
-  attr :on_close, :any, default: nil
-
-  # The same cards, under the same engines, as the public catalogue; a card
-  # opens the game's sheet here instead of its page.
-  defp lobby_launcher(assigns) do
-    assigns =
-      assign(assigns, :card_groups, Enum.map(assigns.groups, &card_group/1))
-
-    ~H"""
-    <div data-testid="arcade-library" class="flex min-h-0 flex-1 flex-col gap-retro-8">
-      <div class="flex items-center gap-retro-12">
-        <Icons.icon_game_arcade class="h-8 w-8 flex-shrink-0" />
-        <div class="min-w-0">
-          <p class="text-sm font-bold">{dgettext("games", "Arcade")}</p>
-          <p class="text-xs text-muted-foreground">
-            {dgettext("games", "Classic games running in your browser via WebAssembly")}
-          </p>
-        </div>
-      </div>
-
-      <.inset data-testid="arcade-icon-window" class="min-h-0 flex-1 overflow-auto p-retro-10">
-        <div data-testid="arcade-icon-grid">
-          <GameCards.game_card_groups
-            groups={@card_groups}
-            columns="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-          />
-        </div>
-      </.inset>
-
-      <div
-        data-testid="arcade-status-bar"
-        class="flex items-center justify-between gap-retro-8 bg-surface px-retro-8 py-retro-4 text-[11px] shadow-retro-field"
-      >
-        <span>{dgettext("games", "Ready")}</span>
-        <span class="font-bold">{dgettext("games", "WebAssembly")}</span>
-      </div>
-    </div>
-    """
-  end
-
-  # Each card is the Arcade's own address on its game (`/?arcade=<id>`), so it
-  # can be opened, shared or bookmarked like the public page's.
-  defp card_group(group) do
-    cards =
-      Enum.map(
-        group.games,
-        &%{game: &1, path: Paths.chat_arcade_path(&1.id), testid: "arcade-game-#{&1.id}"}
-      )
-
-    %{engine: group.engine, name: group.name, cards: cards}
-  end
-
   # ── Lobby: Game Preview ─────────────────────────────────
 
   attr :previewed_game, :map, required: true
   attr :on_select_game, :any, default: nil
   attr :on_back, :any, default: nil
-  attr :on_close, :any, default: nil
 
+  # Back returns to the folder the game was picked from; the window's X is
+  # the way out of the Arcade altogether.
   defp lobby_preview(assigns) do
     ~H"""
     <.inset
@@ -200,10 +139,6 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           <.button variant="outline" phx-click={@on_back} data-testid="arcade-preview-back">
             <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
             {dgettext("games", "Back")}
-          </.button>
-          <.button variant="outline" phx-click={@on_close}>
-            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {dgettext("games", "Leave")}
           </.button>
         </:actions>
       </GameSheet.game_sheet>
@@ -324,6 +259,18 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   end
 
   # ── Helpers ─────────────────────────────────────────────
+
+  @doc """
+  The Arcade window's title, on its title bar and its taskbar button: the
+  game it is showing beside the Arcade's name, so the window reads apart from
+  the Arcade's folder, which is called just "Arcade".
+  """
+  @spec window_title(map() | nil) :: String.t()
+  def window_title(%{previewed_game: %{name: name}}), do: titled(name)
+  def window_title(%{game_name: name}) when is_binary(name), do: titled(name)
+  def window_title(_session), do: dgettext("chat", "Arcade")
+
+  defp titled(game), do: dgettext("chat", "Arcade") <> " — " <> game
 
   # The domain sends the raw start instant (DateTime or ISO8601 string); show the
   # wall-clock time it was where the player is.

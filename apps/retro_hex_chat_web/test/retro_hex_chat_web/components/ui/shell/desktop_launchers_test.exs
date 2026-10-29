@@ -5,11 +5,12 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
   alias RetroHexChatWeb.Components.UI.DesktopLaunchers
   alias RetroHexChatWeb.Components.UI.StartMenuApp
+  alias RetroHexChatWeb.GameCatalog
 
   @moduletag :unit
 
-  # Programs that are not folders sit beside the folder they belong with, so
-  # the arcade follows Retro Games rather than trailing the column.
+  # The two game catalogues sit side by side, the Arcade right after Retro
+  # Games rather than trailing the column.
   @shortcut_ids ~w(
     desktop-icon-site
     desktop-icon-view
@@ -127,10 +128,9 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     refute html =~ ~s(data-window-id="desktop-launcher-navigate")
     refute html =~ ~s(data-window-id="desktop-launcher-admin")
     refute html =~ ~s(data-window-id="desktop-launcher-system")
-    # The Games folder holds the games themselves, so the tab is offered on a
-    # game rather than on the list of them — and nothing else is in there. The
-    # arcade is a program with an icon of its own, not the last row of a list
-    # you have to scroll to reach it.
+    # The Games folder holds a folder per category, and each category's
+    # window holds its games.
+    assert enabled?(html, "desktop-launcher-item-folder-games-sports")
     assert enabled?(html, "desktop-launcher-item-game-hex_pong")
     assert enabled?(html, "desktop-launcher-item-game-hex_hockey")
     refute html =~ ~s(data-testid="desktop-launcher-item-open_arcade")
@@ -190,25 +190,65 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     assert enabled?(admin_html, "desktop-launcher-item-open_system_home")
   end
 
-  # The arcade is not a folder: its desktop icon runs it, for every reader of
-  # the chat — the arcade asks for an account itself when it needs one.
-  test "the arcade icon runs the arcade" do
-    identified_html =
-      render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat)
+  # Both catalogues are folders of folders: a folder per category, each with a
+  # window of its own whose games are cards.
+  test "the game catalogues hold a folder per category, each a window of cards" do
+    html = render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :chat)
+    doc = document(html)
 
-    assert enabled?(identified_html, "desktop-icon-arcade")
+    for {folder, kind} <- [{"games", :multiplayer}, {"arcade", :arcade}],
+        group <- GameCatalog.groups(kind) do
+      window = "desktop-launcher-#{folder}-#{group.category}"
+
+      assert [item] =
+               Floki.find(
+                 doc,
+                 ~s([data-testid="desktop-launcher-grid-#{folder}"] [data-testid="desktop-launcher-item-folder-#{folder}-#{group.category}"])
+               )
+
+      assert Floki.attribute(item, "data-window-open") == [window]
+      assert html =~ ~s(data-window-id="#{window}")
+
+      cards =
+        Floki.find(doc, ~s([data-testid="desktop-launcher-grid-#{folder}-#{group.category}"] a))
+
+      assert length(cards) == length(group.games)
+
+      for game <- group.games,
+          do: assert(Floki.find(cards, ~s(img[src="#{game.screenshot.path}"])) != [])
+    end
+  end
+
+  # An arcade game's card opens the Arcade on its sheet; the Arcade asks for
+  # an account then, so the folders are open to every reader of the chat.
+  test "an arcade card opens the Arcade on its game" do
+    html = render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :chat)
+
+    assert [card] = Floki.find(document(html), ~s([data-testid="arcade-game-doom_shareware"]))
+    assert Floki.attribute(card, "href") == ["/?arcade=doom_shareware"]
+    assert Floki.attribute(card, "data-phx-link") == ["patch"]
+
+    icons = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat)
 
     assert Floki.attribute(
-             document(identified_html),
-             ~s([data-testid="desktop-icon-arcade"]),
-             "data-window-shortcut-action"
-           ) == ["open_arcade"]
-
-    assert Floki.attribute(
-             document(identified_html),
+             document(icons),
              ~s([data-testid="desktop-icon-arcade"]),
              "data-window-shortcut"
-           ) == ["arcade-games"]
+           ) ==
+             ["desktop-launcher-arcade"]
+
+    visitor =
+      render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat, visitor: true)
+
+    assert enabled?(visitor, "desktop-icon-arcade")
+  end
+
+  test "a folder inside a folder has its own taskbar button" do
+    html = render_component(&DesktopLaunchers.desktop_launcher_taskbar_buttons/1, screen: :chat)
+
+    assert html =~ ~s(data-window-taskbar="desktop-launcher-arcade-fps")
+    assert html =~ ~s(data-testid="desktop-launcher-taskbar-arcade-fps")
+    assert html =~ ~s(data-window-taskbar="desktop-launcher-games-cards")
   end
 
   test "launcher taskbar buttons target the app-folder windows" do

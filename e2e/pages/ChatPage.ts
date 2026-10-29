@@ -46,12 +46,13 @@ export class ChatPage {
   readonly gamesFolderWindow: Locator;
   readonly gamesFolderGrid: Locator;
   readonly startGamesSubmenuTrigger: Locator;
+  readonly startRetroGamesTrigger: Locator;
   readonly startRetroGamesItem: Locator;
   readonly retroGamesWindow: Locator;
   readonly arcadeIcon: Locator;
+  readonly arcadeFolderWindow: Locator;
+  readonly arcadeFolderGrid: Locator;
   readonly arcadeWindow: Locator;
-  readonly arcadeLibrary: Locator;
-  readonly arcadeIconGrid: Locator;
   readonly disconnectMenuItem: Locator;
   readonly startButton: Locator;
   readonly startMenu: Locator;
@@ -349,25 +350,26 @@ export class ChatPage {
     this.toolsMenuTrigger = page
       .locator("button[data-menubar-trigger]")
       .filter({ hasText: "Tools" });
-    // Games left the menu bar for a desktop folder, and the folder is the
-    // catalogue: one icon per game plus the Arcade. The way in is a
-    // double-click on the folder rather than a menu, and Start ▸ Games ▸ Retro
-    // Games opens that same folder rather than a tab.
+    // The two game catalogues are desktop folders of folders: Retro Games and
+    // the Arcade each hold a folder per category, and a category's window
+    // holds its games as cards. Start ▸ Games ▸ Retro Games walks the same
+    // tree, its first row opening the folder itself.
     this.gamesFolderIcon = page.getByTestId("desktop-icon-games");
     this.gamesFolderWindow = page.getByTestId("desktop-launcher-window-games");
     this.gamesFolderGrid = page.getByTestId("desktop-launcher-grid-games");
     this.startGamesSubmenuTrigger = page.getByTestId(
       "start-menu-games-submenu",
     );
-    this.startRetroGamesItem = page.getByTestId("start-menu-item-retro-games");
+    this.startRetroGamesTrigger = page.getByTestId("start-menu-folder-games");
+    this.startRetroGamesItem = page.getByTestId("start-menu-item-open-games");
     this.retroGamesWindow = page.getByTestId("retro-games-window");
-    // The arcade is a program, not a folder row: it has a desktop icon of its
-    // own beside Retro Games, because the last icon of a list you must scroll
-    // is a feature in hiding.
     this.arcadeIcon = page.getByTestId("desktop-icon-arcade");
+    this.arcadeFolderWindow = page.getByTestId(
+      "desktop-launcher-window-arcade",
+    );
+    this.arcadeFolderGrid = page.getByTestId("desktop-launcher-grid-arcade");
+    // The Arcade's own window: a game's sheet, then the game in play.
     this.arcadeWindow = page.getByTestId("arcade-games-window");
-    this.arcadeLibrary = page.getByTestId("arcade-library");
-    this.arcadeIconGrid = page.getByTestId("arcade-icon-grid");
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = visibleContextMenuItem(page, "disconnect");
     // Admin and System are Start-menu groups, not menu-bar ones: what a
@@ -889,9 +891,7 @@ export class ChatPage {
     await expect(this.searchBar).toBeVisible();
   }
 
-  // Retro Games is a catalogue with an address, so the Games folder's entry is
-  // a link and opening it is a new tab rather than a window on this desktop.
-  /** The icon a single game has inside the Games folder. */
+  /** The card a single game has inside its category's folder. */
   gameFolderIcon(gameId: string): Locator {
     return this.page
       .getByTestId(`desktop-launcher-item-game-${gameId}`)
@@ -899,15 +899,32 @@ export class ChatPage {
   }
 
   /**
-   * Opens one game from the Games folder, in the tab of its own it lands in.
-   *
-   * The second tab is offered on the game and never on the catalogue: the
-   * folder is the catalogue, so there is nothing to open a tab for until a
-   * game is chosen.
+   * Opens, inside an open catalogue folder, the category folder a card sits
+   * in. The category is read off the card's own window, so a spec names the
+   * game and never has to know which shelf it is on.
    */
-  /** A game's icon opens its home over the chat, on the same desktop. */
+  async openCategoryOf(folderWindow: Locator, cardTestId: string) {
+    const windowId = await this.page
+      .getByTestId(cardTestId)
+      .first()
+      .evaluate((card) =>
+        card.closest("[data-window-id]")?.getAttribute("data-window-id"),
+      );
+
+    await expect(folderWindow).toBeVisible();
+    await folderWindow.locator(`[data-window-open="${windowId}"]`).click();
+    await expect(
+      this.page.locator(`[data-window-id="${windowId}"]`),
+    ).toBeVisible();
+  }
+
+  /** A game's card opens its home over the chat, on the same desktop. */
   async openGameHomeFromFolder(gameId: string): Promise<Locator> {
     await this.openGamesFolder();
+    await this.openCategoryOf(
+      this.gamesFolderWindow,
+      `desktop-launcher-item-game-${gameId}`,
+    );
 
     const icon = this.gameFolderIcon(gameId);
     await expect(icon).toBeVisible();
@@ -942,10 +959,10 @@ export class ChatPage {
     return games;
   }
 
-  /** Start ▸ Games ▸ Retro Games, which opens the folder rather than a tab. */
+  /** Start ▸ Games ▸ Retro Games ▸ Open, which opens the folder rather than a tab. */
   async openGamesFolderFromStart() {
-    await this.openStartGroup(
-      this.startGamesSubmenuTrigger,
+    await this.openStartPath(
+      [this.startGamesSubmenuTrigger, this.startRetroGamesTrigger],
       this.startRetroGamesItem,
     );
     await this.startRetroGamesItem.click();
@@ -953,11 +970,24 @@ export class ChatPage {
     await expect(this.gamesFolderGrid).toBeVisible();
   }
 
-  async openArcadeFromDesktopShortcut() {
+  /** The Arcade's desktop icon opens its folder of categories. */
+  async openArcadeFolder() {
     await expect(this.arcadeIcon).toBeVisible();
     await this.arcadeIcon.dblclick();
-    await expect(this.arcadeWindow).toBeVisible();
-    await expect(this.arcadeIconGrid).toBeVisible();
+    await expect(this.arcadeFolderWindow).toBeVisible();
+    await expect(this.arcadeFolderGrid).toBeVisible();
+  }
+
+  /** Arcade ▸ the game's category ▸ its card: the Arcade window on its sheet. */
+  async openArcadeGame(gameId: string) {
+    await this.openArcadeFolder();
+    await this.openCategoryOf(this.arcadeFolderWindow, `arcade-game-${gameId}`);
+
+    const card = this.page
+      .getByTestId(`arcade-game-${gameId}`)
+      .filter({ visible: true });
+    await expect(card).toBeInViewport();
+    await card.click();
   }
 
   // Start, not the menu strip. These three are opened while the Address Book
@@ -1575,6 +1605,24 @@ export class ChatPage {
       await this.startButton.click();
       await expect(this.startMenu).toBeVisible();
     }
+  }
+
+  /**
+   * Expand a path of Start-menu groups, a group inside a group, and leave the
+   * last one expanded. Retried as a whole for the same reason as
+   * `openStartGroup`.
+   */
+  async openStartPath(triggers: Locator[], item?: Locator) {
+    await expect(async () => {
+      await this.openStartMenu();
+      for (const trigger of triggers) {
+        // An open group's row is hidden on a phone once a deeper one opens.
+        if ((await trigger.getAttribute("aria-expanded")) === "true") continue;
+        await expect(trigger).toBeVisible({ timeout: 1_000 });
+        await trigger.click();
+      }
+      if (item) await expect(item).toBeVisible({ timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
   }
 
   async openAdminSubmenu() {

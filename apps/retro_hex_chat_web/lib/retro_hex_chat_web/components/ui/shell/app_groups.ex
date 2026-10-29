@@ -10,7 +10,10 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
     * `%{kind: :action, action: event, ...}` — sent to the server, which
       runs whatever opening it involves (rows read from the database,
       channel state, identity sync) or acts without a window;
-    * `%{kind: :separator}`.
+    * `%{kind: :separator}`;
+    * a folder of its own (`DesktopLaunchers.folder/6`), which the desktop
+      draws as a folder inside the group's folder and the Start menu as a
+      group inside the group.
 
   Labels are resolved on every call, never in a module attribute, so they
   follow the reader's locale.
@@ -22,6 +25,13 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
           %{kind: :window, window: String.t(), label: String.t(), icon_fn: atom()}
           | %{kind: :action, action: String.t(), label: String.t(), icon_fn: atom()}
           | %{kind: :separator}
+          | %{
+              kind: :folder,
+              folder: map(),
+              window: String.t(),
+              label: String.t(),
+              icon_fn: atom()
+            }
 
   @type group :: :tools | :accessories | :automation | :account
 

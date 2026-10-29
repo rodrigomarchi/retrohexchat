@@ -530,6 +530,8 @@ _ROWS = {
     "Use":          ("Usar", "Usar", "Usar", "Utiliser", "Benutzen", "Usa", "Gebruiken", "Użyj", "Использовать", "Gunakan", "使う", "使用", "使用"),
     # The URL Catcher's count: a label and a number, so no language has to
     # agree a noun with it.
+    # A folder's own row at the top of its Start menu group.
+    "Open %{folder}": ("Abrir %{folder}", "Abrir %{folder}", "Abrir %{folder}", "Ouvrir %{folder}", "%{folder} öffnen", "Apri %{folder}", "%{folder} openen", "Otwórz %{folder}", "Открыть %{folder}", "Buka %{folder}", "%{folder}を開く", "打开%{folder}", "開啟%{folder}"),
     "Links: %{count}": ("Links: %{count}", "Links: %{count}", "Enlaces: %{count}", "Liens : %{count}", "Links: %{count}", "Link: %{count}", "Links: %{count}", "Linki: %{count}", "Ссылки: %{count}", "Tautan: %{count}", "リンク: %{count}", "链接：%{count}", "連結：%{count}"),
     # A Space's gates ask before they move you, and its help names what lights
     # up as you walk past.
@@ -917,6 +919,15 @@ _CONTEXT_ROWS = {
     # The reader's own tab in a game's home: never the pronoun in a sentence.
     ("player", "You"): ("Você", "Você", "Tú", "Vous", "Du", "Tu", "Jij", "Ty", "Вы", "Kamu", "あなた", "你", "你"),
     ("game", "Play"): ("Jogar", "Jogar", "Jugar", "Jouer", "Spielen", "Gioca", "Spelen", "Graj", "Играть", "Main", "遊ぶ", "玩", "玩"),
+    # The shelves of the game catalogues: a kind of game, never the key
+    # table's "Action" column or a channel's "Sports" subject.
+    ("game category", "Sports"): ("Esportes", "Desporto", "Deportes", "Sports", "Sport", "Sport", "Sport", "Sport", "Спорт", "Olahraga", "スポーツ", "体育", "體育"),
+    ("game category", "Shooters"): ("Tiro", "Tiro", "Disparos", "Tir", "Shooter", "Sparatutto", "Shooters", "Strzelanki", "Шутеры", "Tembak-tembakan", "シューティング", "射击", "射擊"),
+    ("game category", "Action"): ("Ação", "Ação", "Acción", "Action", "Action", "Azione", "Actie", "Akcja", "Экшен", "Aksi", "アクション", "动作", "動作"),
+    ("game category", "Cards"): ("Cartas", "Cartas", "Cartas", "Cartes", "Karten", "Carte", "Kaarten", "Karty", "Карты", "Kartu", "カード", "纸牌", "紙牌"),
+    ("game category", "Puzzles"): ("Quebra-cabeças", "Quebra-cabeças", "Rompecabezas", "Réflexion", "Denkspiele", "Rompicapo", "Puzzels", "Łamigłówki", "Головоломки", "Teka-teki", "パズル", "益智", "益智"),
+    ("game category", "First-Person Shooters"): ("Tiro em primeira pessoa", "Tiro na primeira pessoa", "Disparos en primera persona", "Tir à la première personne", "Ego-Shooter", "Sparatutto in prima persona", "First-person shooters", "Strzelanki FPP", "Шутеры от первого лица", "Tembak orang pertama", "FPS", "第一人称射击", "第一人稱射擊"),
+    ("game category", "Adventures"): ("Aventuras", "Aventuras", "Aventuras", "Aventures", "Adventures", "Avventure", "Avonturen", "Przygodówki", "Квесты", "Petualangan", "アドベンチャー", "冒险", "冒險"),
     ("furniture", "Table"): ("Mesa", "Mesa", "Mesa", "Table", "Tisch", "Tavolo", "Tafel", "Stół", "Стол", "Meja", "テーブル", "桌子", "桌子"),
     # The Construct's other pieces whose English names mean something else
     # elsewhere: a die is never dying, a sign never a signature, a board never

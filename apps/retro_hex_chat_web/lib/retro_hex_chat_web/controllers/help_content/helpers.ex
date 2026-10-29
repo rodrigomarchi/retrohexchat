@@ -48,44 +48,28 @@ defmodule RetroHexChatWeb.HelpContent.Helpers do
 
   @doc """
   The games of the catalogue, read from it so the help never lists fewer than
-  there are: the arcade under its engines, or the Retro Games. Each name opens
+  there are, on the same category shelves as the app's folders. Each name opens
   the game's page — its screenshot, keys and tips — and How to play opens its
   topic.
   """
   attr :kind, :atom, required: true, values: [:arcade, :multiplayer]
 
   @spec help_game_list(map()) :: Phoenix.LiveView.Rendered.t()
-  def help_game_list(%{kind: :arcade} = assigns) do
-    assigns = assign(assigns, :groups, GameCatalog.arcade_cards())
+  def help_game_list(assigns) do
+    assigns = assign(assigns, :groups, GameCatalog.cards(assigns.kind))
 
     ~H"""
-    <section :for={group <- @groups} data-testid={"help-games-#{group.engine}"}>
-      <h4 class="flex items-center gap-1.5 text-sm font-bold mt-4 mb-1.5 text-text">
-        <Icons.game_icon game_id={hd(group.cards).game.id} class="w-3.5 h-3.5 flex-shrink-0" />
-        {dgettext("games", "%{engine} Engine", engine: group.name)}
-      </h4>
-      <ul>
-        <.help_game_item :for={card <- group.cards} card={card} />
-      </ul>
-    </section>
-    """
-  end
-
-  def help_game_list(%{kind: :multiplayer} = assigns) do
-    assigns =
-      assign(
-        assigns,
-        :cards,
-        Enum.map(
-          GameCatalog.list(:multiplayer),
-          &%{game: &1, path: PublicPages.localized_path(GameCatalog.page_path(&1))}
-        )
-      )
-
-    ~H"""
-    <ul data-testid="help-games-multiplayer">
-      <.help_game_item :for={card <- @cards} card={card} />
-    </ul>
+    <div data-testid={"help-games-#{@kind}"}>
+      <section :for={group <- @groups} data-testid={"help-games-#{group.category}"}>
+        <h4 class="flex items-center gap-1.5 text-sm font-bold mt-4 mb-1.5 text-text">
+          {apply(Icons, group.icon_fn, [%{class: "w-3.5 h-3.5 flex-shrink-0"}])}
+          {group.name}
+        </h4>
+        <ul>
+          <.help_game_item :for={card <- group.cards} card={card} />
+        </ul>
+      </section>
+    </div>
     """
   end
 

@@ -257,7 +257,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
       {:ok, view, _html} = live(conn, "/")
 
       for {event, params, feature} <- [
-            {"open_arcade", %{}, :games},
+            {"open_arcade", %{"game-id" => "doom_shareware"}, :games},
             {"open_paint", %{}, :paint},
             {"open_ascii_art", %{}, :ascii_art},
             {"arcade_select_game", %{"game" => "doom"}, :games},
@@ -268,7 +268,6 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
             {"visitor_link", %{"feature" => "games"}, :games},
             {"visitor_link", %{"feature" => "anything"}, :feature},
             {"visitor_sign_in", %{}, :chat},
-            {"toolbar_action", %{"action" => "open_arcade"}, :games},
             {"toolbar_action", %{"action" => "open_away_dialog"}, :feature}
           ] do
         render_hook(view, event, params)
@@ -278,6 +277,16 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
       html = render(view)
       assert html =~ ~s(data-testid="document-window-connect")
       assert html =~ "This feature needs an account."
+    end
+
+    # The Arcade's folders are a catalogue to browse; only a game asks.
+    test "the Arcade without a game opens its folder, and asks nothing", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
+
+      render_hook(view, "open_arcade", %{})
+
+      assert_push_event(view, "window_command", %{action: "open", id: "desktop-launcher-arcade"})
+      refute render(view) =~ ~s(data-testid="document-window-connect")
     end
 
     test "a link held in the chat comes back to where it led once they sign in", %{conn: conn} do

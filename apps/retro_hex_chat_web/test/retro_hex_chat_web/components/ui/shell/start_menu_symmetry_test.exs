@@ -92,15 +92,30 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
              """
     end
 
-    test "no group nests another group" do
-      # `openStartSubmenu` closes every other `[data-start-submenu]` in the menu,
-      # an ancestor included — a nested group would shut its own parent.
+    # A group inside a group is a desktop folder inside a folder: its first
+    # row opens that folder's own window, so the menu and the desktop are the
+    # same tree. Games ▸ Arcade ▸ First-Person Shooters ▸ is one.
+    test "a group nests another only as a desktop folder, which opens first" do
       for screen <- @screens do
-        panels = Floki.find(document(screen), "[data-start-submenu-panel]")
+        nested =
+          document(screen)
+          |> Floki.find("[data-start-submenu-panel] [data-start-submenu]")
 
-        for panel <- panels do
-          assert Floki.find(panel, "[data-start-submenu]") == [],
-                 "#{screen} nests a group inside a group"
+        assert nested != [], "#{screen} lost the game catalogues' folders"
+
+        for group <- nested do
+          [first | _rows] =
+            group |> Floki.find("[data-start-submenu-panel]") |> hd() |> Floki.children()
+
+          [testid] = Floki.attribute(first, "data-testid")
+
+          assert String.starts_with?(testid, "start-menu-item-open-"),
+                 "#{screen}: #{testid} should be the row that opens the folder"
+
+          if screen == :chat do
+            assert [window] = Floki.attribute(first, "data-window-open")
+            assert String.starts_with?(window, "desktop-launcher-")
+          end
         end
       end
     end
@@ -140,9 +155,14 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       end
     end
 
-    test "Retro Games needs the chat desktop" do
-      assert enabled?(:chat, "start-menu-item-retro-games")
-      refute enabled?(:showcase, "start-menu-item-retro-games")
+    # The folders are windows of the chat's desktop; a screen without one has
+    # no folder to open.
+    test "the game folders need the chat desktop" do
+      for testid <- ~w(start-menu-item-open-games start-menu-item-open-arcade
+                       start-menu-item-open-games-sports start-menu-item-open-arcade-fps) do
+        assert enabled?(:chat, testid)
+        refute enabled?(:showcase, testid)
+      end
     end
 
     test "the public pages are reachable from everywhere, including the chat" do
@@ -174,10 +194,25 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       end
     end
 
-    # The arcade asks for an account itself, so it only needs a chat.
-    test "the arcade needs a chat" do
-      assert enabled?(:chat, "start-menu-item-open_arcade")
-      refute enabled?(:showcase, "start-menu-item-open_arcade")
+    # A game is an address: on the desktop it opens as a patch — a Retro
+    # Game's home, the Arcade on an arcade game's sheet, which asks a visitor
+    # for an account itself — and from the showcase it is a page away.
+    test "every game is reachable from its category" do
+      chat = document(:chat)
+
+      assert [hex_pong] = Floki.find(chat, ~s([data-testid="start-menu-item-game-hex_pong"]))
+      assert Floki.attribute(hex_pong, "data-phx-link") == ["patch"]
+
+      assert [doom] = Floki.find(chat, ~s([data-testid="start-menu-item-game-doom_shareware"]))
+      assert Floki.attribute(doom, "href") == ["/?arcade=doom_shareware"]
+
+      assert [_] =
+               Floki.find(
+                 chat,
+                 ~s([data-start-submenu-key="desktop-launcher-arcade-fps"] [data-testid="start-menu-item-game-doom_shareware"])
+               )
+
+      assert enabled?(:showcase, "start-menu-item-game-hex_pong")
     end
 
     test "the chat window's own menu needs the chat window" do

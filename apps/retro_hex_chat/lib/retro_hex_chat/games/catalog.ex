@@ -84,7 +84,30 @@ defmodule RetroHexChat.Games.Catalog do
                      hex_sudoku hex_sudoku_medium hex_sudoku_hard hex_blocks hex_blocks_sprint)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
 
+  # The shelf each game sits on, wherever the catalogue is listed: the Retro
+  # Games folder, the Start menu, the public catalogue. A game's modes sit on
+  # their game's shelf. Every game sits on exactly one (checked below), and
+  # the lists are in the order the shelf shows them. The names carry a context
+  # of their own: "Action" is also a column of a game's key table.
+  @categories [
+    sports:
+      {dpgettext_noop("games", "game category", "Sports"),
+       ~w(hex_pong hex_tennis hex_hockey hex_boxing hex_skiing hex_enduro)},
+    shooters:
+      {dpgettext_noop("games", "game category", "Shooters"),
+       ~w(pixel_tanks star_duel gravity_well debris_field hex_raid hex_invaders hex_outlaw)},
+    action:
+      {dpgettext_noop("games", "game category", "Action"),
+       ~w(light_trails block_breakers hex_warlords hex_jungle hex_frost)},
+    cards:
+      {dpgettext_noop("games", "game category", "Cards"),
+       ~w(hex_solitaire hex_freecell hex_spider)},
+    puzzles:
+      {dpgettext_noop("games", "game category", "Puzzles"), ~w(hex_mines hex_sudoku hex_blocks)}
+  ]
+
   @type ranking :: :versus | :score | :coop
+  @type category :: :sports | :shooters | :action | :cards | :puzzles
 
   @type game :: %{
           required(:id) => String.t(),
@@ -829,6 +852,17 @@ defmodule RetroHexChat.Games.Catalog do
       description: "one-player game #{id} must be played solo and ranked by score"
   end
 
+  base_ids = for %{id: id} = game <- @games, not Map.has_key?(game, :mode_of), do: id
+  shelved = for {_category, {_name, ids}} <- @categories, id <- ids, do: id
+
+  for id <- base_ids, Enum.count(shelved, &(&1 == id)) != 1 do
+    raise CompileError, description: "game #{id} needs exactly one category"
+  end
+
+  for id <- shelved, id not in base_ids do
+    raise CompileError, description: "categorised game #{id} is not a base game in the catalogue"
+  end
+
   # ex_dna:disable-for-lines:32 two catalogues, one lookup API each over its own @games
   @spec list_games() :: [game()]
   def list_games, do: Enum.map(@games, &translate_game/1)
@@ -897,6 +931,38 @@ defmodule RetroHexChat.Games.Catalog do
       %{mode_of: base_id} -> base_id
       _base_or_unknown -> game_id
     end
+  end
+
+  @doc "Every category, in the order the catalogue shows them."
+  @spec categories() :: [category()]
+  def categories, do: Keyword.keys(@categories)
+
+  @doc "A category's name, in the reader's language."
+  @spec category_name(category()) :: String.t()
+  def category_name(category) do
+    {name, _ids} = Keyword.fetch!(@categories, category)
+    Gettext.dpgettext(RetroHexChat.Gettext, "games", "game category", name)
+  end
+
+  @doc "The base games on `category`'s shelf, in the order it shows them."
+  @spec games_in(category()) :: [game()]
+  def games_in(category) do
+    {_name, ids} = Keyword.fetch!(@categories, category)
+
+    Enum.map(ids, fn id ->
+      {:ok, game} = get_game(id)
+      game
+    end)
+  end
+
+  @doc """
+  The category `game_id` — or the game it is a mode of — sits in; nil for an
+  id no longer in the catalogue.
+  """
+  @spec category(String.t()) :: category() | nil
+  def category(game_id) do
+    base_id = base_id(game_id)
+    Enum.find_value(@categories, fn {category, {_name, ids}} -> base_id in ids and category end)
   end
 
   @doc "How a finished match of `game_id` is ranked."

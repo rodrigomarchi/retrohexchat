@@ -36,7 +36,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
         assert is_binary(game.name)
         assert is_binary(game.tagline)
         assert is_binary(game.description)
-        assert game.engine in Catalog.engines()
+        assert is_binary(Catalog.engine_name(game.engine))
         assert is_binary(game.controls)
         assert is_binary(game.icon)
       end
@@ -117,12 +117,24 @@ defmodule RetroHexChat.Arcade.CatalogTest do
     end
   end
 
-  describe "engines/0" do
-    test "names every engine its games run on, in the order they are listed" do
-      listed = Catalog.list_games() |> Enum.map(& &1.engine) |> Enum.dedup()
-
-      assert listed == Catalog.engines()
+  describe "engine_name/1" do
+    test "names an engine by its own name" do
       assert Catalog.engine_name(:quake2) == "Quake II"
+    end
+  end
+
+  describe "categories" do
+    test "a game's engine puts it on its shelf" do
+      assert Catalog.categories() == [:fps, :adventure]
+
+      for game <- Catalog.list_games() do
+        expected = if game.engine == :scummvm, do: :adventure, else: :fps
+        assert Catalog.category(game) == expected
+      end
+
+      Gettext.with_locale(RetroHexChat.Gettext, "en", fn ->
+        assert Catalog.category_name(:fps) == "First-Person Shooters"
+      end)
     end
   end
 

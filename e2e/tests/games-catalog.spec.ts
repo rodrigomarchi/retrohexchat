@@ -80,13 +80,14 @@ test("an arcade game's page is the same sheet the in-app Arcade shows (PW22)", a
   await shot(page, "arcade-game-page-phone-keys");
 });
 
-test("the arcade is listed under its engines on every page that lists it (PW22)", async ({
+test("both catalogues are listed on their category shelves on every page that lists them (PW22)", async ({
   page,
 }) => {
   await page.goto("/games");
   await bringForward(page, "site-arcade");
   const arcade = page.getByTestId("site-window-arcade");
-  await expect(arcade.getByTestId("game-group-scummvm")).toBeVisible();
+  await expect(arcade.getByTestId("game-group-adventure")).toBeVisible();
+  await expect(arcade.getByTestId("game-group-fps")).toBeVisible();
   await expect(arcade.getByTestId("game-card-scummvm-bass")).toBeVisible();
   await shot(page, "games-catalogue-arcade");
 
@@ -118,7 +119,7 @@ test("the arcade is listed under its engines on every page that lists it (PW22)"
   await shot(summary, "features-arcade");
 
   // The home's windows wait closed behind the chat; the list is there all
-  // the same, every game under its engine.
+  // the same, every game on its shelf.
   await page.goto("/");
   await expect(
     page
@@ -129,17 +130,24 @@ test("the arcade is listed under its engines on every page that lists it (PW22)"
   // The help lists the same games, from the same catalogue, each opening
   // its page.
   await page.goto("/chat/help/feature-arcade");
-  const help = page.getByTestId("help-games-scummvm");
+  const help = page.getByTestId("help-games-adventure");
   await help.scrollIntoViewIfNeeded();
   await expect(help.locator('a[href="/games/scummvm-bass"]')).toBeVisible();
   await shot(page, "help-arcade-games");
   await page.goto("/chat/help/feature-retro-games");
   await expect(
     page
-      .getByTestId("help-games-multiplayer")
+      .getByTestId("help-games-sports")
       .locator('a[href="/games/hex-tennis"]'),
   ).toBeVisible();
   await shot(page, "help-retro-games");
+
+  // The Retro Games on the same shelves as the app's folders.
+  await page.goto("/games");
+  await bringForward(page, "site-multiplayer");
+  const retro = page.getByTestId("site-window-multiplayer");
+  await expect(retro.getByTestId("game-group-cards")).toBeVisible();
+  await shot(page, "games-catalogue-retro");
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/games");

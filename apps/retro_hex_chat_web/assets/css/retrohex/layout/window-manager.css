@@ -345,6 +345,17 @@
   grid-column: 1 / -1;
 }
 
+/* A category folder of games: screenshot cards instead of icons. The columns
+   follow the window's own width, not the screen's — a window is narrower than
+   the viewport the breakpoints read — so a phone gets two and a wide window
+   four or more. */
+.desktop-launcher-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  align-content: start;
+}
+
 /* Narrow viewports drop window management: exactly one window is shown at a
    time (the WM hook keeps only the focused window visible), filling the
    workspace like a fullscreen mobile app. The taskbar is the window switcher. */
@@ -683,6 +694,15 @@
   margin-left: -3px;
 }
 
+/* A flyout that would run off the right edge opens to the left of its row
+   (`placeStartSubmenuPanel`), overlapping it by the same padding. */
+.desktop-start-submenu__panel.desktop-start-submenu__panel--flip {
+  left: auto;
+  right: 100%;
+  margin-left: 0;
+  margin-right: -3px;
+}
+
 /* No scroll on the desktop menu: `overflow` would make it a clipping context and
    swallow the flyouts, which escape to the right. Length is handled by grouping
    instead — the same answer the menu bar dropdowns use. */
@@ -708,6 +728,17 @@
 
 .desktop--stacked
   .desktop-start-menu[data-start-level="submenu"]
+  > *:not([data-submenu-open="true"]) {
+  display: none;
+}
+
+/* A group inside a group drills the same way, one level further: while one of
+   its own groups is open, the outer group's row and its other entries step
+   aside, and the inner group's row becomes the header that leads back. */
+.desktop--stacked .desktop-start-submenu[data-submenu-child-open="true"] > [data-start-submenu-trigger],
+.desktop--stacked
+  .desktop-start-submenu[data-submenu-child-open="true"]
+  > [data-start-submenu-panel]
   > *:not([data-submenu-open="true"]) {
   display: none;
 }

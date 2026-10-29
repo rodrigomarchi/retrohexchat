@@ -55,7 +55,7 @@
   <li>
     <strong>{dgettext("help_ui", "Games")}</strong> {dgettext(
       "help_ui",
-      "— Retro Games, and %{arcade}. %{arcade} saves scores under your nickname, so your nickname must be identified first.",
+      "— Retro Games and %{arcade}, each a group of categories with their games. %{arcade} saves scores under your nickname, so your nickname must be identified first.",
       arcade: dgettext("ui", "Arcade")
     )}
   </li>
@@ -108,6 +108,12 @@
   {dgettext(
     "help_ui",
     "On a desktop a group flies out beside the menu; hovering another group switches to it, so at most one flyout shows at a time. On a phone the menu drills down instead: tapping a group replaces the list with its entries, and the group's own row at the top takes you back."
+  )}
+  {dgettext(
+    "help_ui",
+    "A group can hold groups of its own, just as a desktop folder can hold folders: %{games} ▸ %{arcade} holds a group per kind of game. Each one flies out beside the last, or on a phone takes the list over one level further. Such a group starts with a row that opens its folder on the desktop.",
+    games: dgettext("ui", "Games"),
+    arcade: dgettext("ui", "Arcade")
   )}
 </p>
 

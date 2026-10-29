@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChat.Arcade.Catalog
+
   attr :class, :string, default: nil
 
   @spec diagram_arcade_flow(map()) :: Phoenix.LiveView.Rendered.t()
@@ -17,7 +19,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       aria-label={
         dgettext(
           "diagrams",
-          "%{arcade} flow: open the Games menu and choose %{arcade}, pick a game, check its details, press %{play}, then the WASM game runs in a browser tab of its own",
+          "%{arcade} flow: open the Games menu and choose %{arcade}, pick a game in one of its folders, check its details, press %{play}, then the WASM game runs in a browser tab of its own",
           arcade: dgettext("ui", "Arcade"),
           play: dgettext("games", "Play now")
         )
@@ -87,7 +89,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       <rect x="208" y="55" width="2" height="16" fill="#808080" />
       <path d="M204 69 h10 l-5 5 z" fill="#808080" />
 
-      <%!-- ── Step 2: Arcade icon launcher ── --%>
+      <%!-- ── Step 2: one of the Arcade's category folders, titled with the
+            category's own name ── --%>
       <%!-- Shadow --%>
       <rect x="64" y="82" width="300" height="82" fill="#000" />
       <%!-- Window --%>
@@ -117,7 +120,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {dgettext("diagrams", "Arcade - Pick a Game")}
+        {Catalog.category_name(:fps)}
       </text>
       <%!-- Content inset --%>
       <rect x="66" y="100" width="288" height="52" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -202,7 +205,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       <path d="M204 176 h10 l-5 5 z" fill="#808080" />
 
       <%!-- ── Step 3: Game details ── --%>
-      <%!-- Back window (lobby, dimmed) --%>
+      <%!-- Back window (the category folder, dimmed) --%>
       <rect x="84" y="192" width="200" height="40" fill="#c0c0c0" stroke="#808080" stroke-width="1" />
       <rect x="87" y="195" width="194" height="14" fill="#808080" />
       <text
@@ -213,7 +216,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {dgettext("diagrams", "Arcade - Pick a Game")}
+        {Catalog.category_name(:fps)}
       </text>
 
       <%!-- Front window (game details) --%>

@@ -19,7 +19,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.SoloLobbyPage do
      assign(socket,
        page_title: dgettext("showcase", "Solo Lobby"),
        active_page: "solo-lobby",
-       sample_groups: GameCatalog.arcade_groups(),
        sample_preview: sample_preview()
      )}
   end

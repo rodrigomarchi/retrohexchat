@@ -299,8 +299,8 @@ defmodule RetroHexChat.Arcade.Catalog do
     }
   ]
 
-  # Each engine's own name — a proper noun, the same in every language — in
-  # the order the catalogue lists its games.
+  # Each engine's own name — a proper noun, the same in every language — shown
+  # on a game's sheet. Every engine here must sit on a shelf (checked below).
   @engines [
     doom: "DOOM",
     quake: "Quake",
@@ -310,13 +310,47 @@ defmodule RetroHexChat.Arcade.Catalog do
     scummvm: "ScummVM"
   ]
 
-  @doc "Every engine, in the order the catalogue lists its games."
-  @spec engines() :: [atom()]
-  def engines, do: Keyword.keys(@engines)
-
   @doc "An engine's own name: `:quake2` is \"Quake II\"."
   @spec engine_name(atom()) :: String.t()
   def engine_name(engine), do: Keyword.fetch!(@engines, engine)
+
+  # The shelf each game sits on, wherever the arcade is listed: the Arcade
+  # folder, the Start menu, the public catalogue. A game's engine decides it,
+  # so a new game lands on its shelf without a line here; a new engine must
+  # be given one (checked below).
+  @categories [
+    fps:
+      {dpgettext_noop("arcade", "game category", "First-Person Shooters"),
+       [:doom, :quake, :quake2, :wolfenstein, :halflife]},
+    adventure: {dpgettext_noop("arcade", "game category", "Adventures"), [:scummvm]}
+  ]
+
+  shelved = for {_category, {_name, engines}} <- @categories, engine <- engines, do: engine
+
+  for engine <- Keyword.keys(@engines), Enum.count(shelved, &(&1 == engine)) != 1 do
+    raise CompileError, description: "engine #{engine} needs exactly one category"
+  end
+
+  @type category :: :fps | :adventure
+
+  @doc "Every category, in the order the catalogue shows them."
+  @spec categories() :: [category()]
+  def categories, do: Keyword.keys(@categories)
+
+  @doc "A category's name, in the reader's language."
+  @spec category_name(category()) :: String.t()
+  def category_name(category) do
+    {name, _engines} = Keyword.fetch!(@categories, category)
+    Gettext.dpgettext(RetroHexChat.Gettext, "arcade", "game category", name)
+  end
+
+  @doc "The category a game's engine puts it in."
+  @spec category(game()) :: category()
+  def category(%{engine: engine}) do
+    Enum.find_value(@categories, fn {category, {_name, engines}} ->
+      engine in engines and category
+    end)
+  end
 
   # ex_dna:disable-for-lines:29 two catalogues, one lookup API each over its own @games
   @spec list_games() :: [game()]

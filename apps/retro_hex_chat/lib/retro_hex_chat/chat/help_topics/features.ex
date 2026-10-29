@@ -2287,12 +2287,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             " " <>
             dgettext(
               "help",
-              "The Retro Games desktop icon opens a folder with one icon per game, and Start ▸ Games ▸ Retro Games opens the same folder."
+              "The Retro Games desktop icon opens a folder with a folder per category, and Start ▸ Games ▸ Retro Games lists the same categories with their games."
             ) <>
             " " <>
             dgettext(
               "help",
-              "Each icon opens the page of its game over the chat. Against the computer opens the game in a browser tab of its own."
+              "Each game opens its page over the chat. Against the computer opens the game in a browser tab of its own."
             ),
         see_also: [
           "feature-hex-pong",
@@ -3453,12 +3453,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Classic action games and adventures in your browser via WebAssembly, grouped by engine as in the catalogue on the site."
+            "Classic action games and adventures in your browser via WebAssembly, in a folder per kind of game as in the catalogue on the site."
           ) <>
             " " <>
             dgettext(
               "help",
-              "Open the Arcade from its desktop icon or from the Start menu. To play, you must be registered and identified."
+              "Open the Arcade from its desktop icon or from Start ▸ Games ▸ Arcade, and anyone can look through its folders. To play, you must be registered and identified."
             ) <>
             " " <>
             dgettext(

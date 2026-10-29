@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.Site.Document
+  alias RetroHexChatWeb.Components.UI.SoloLobby
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Site.About
   alias RetroHexChatWeb.Site.Window
@@ -360,9 +361,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     end
   end
 
-  # One button names what it is showing rather than what it is: the chat button
-  # mirrors the active conversation. Everything else is its registered title.
+  # A button names what it is showing rather than what it is: the chat button
+  # mirrors the active conversation, the Arcade's its game. Everything else is
+  # its registered title.
   defp label(%{id: "chat"}, assigns), do: assigns.chat_label
+  defp label(%{id: "arcade-games"}, assigns), do: SoloLobby.window_title(assigns.arcade_session)
   defp label(window, _assigns), do: window.taskbar_label
 
   # Start ▸ Windows names a page once, by the window it opens with.
