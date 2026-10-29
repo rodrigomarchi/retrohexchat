@@ -338,6 +338,9 @@
     max-height: 70vh;
     overflow-y: auto;
     padding-bottom: env(safe-area-inset-bottom, 0);
+    /* Above the contextual tips (.toast-container): a sheet the reader just
+       opened must not have its lower items covered by a tip. */
+    z-index: 9100;
   }
 
   .context-menu--sheet ul {
