@@ -77,14 +77,22 @@ defmodule RetroHexChatWeb.PaginatedList do
   `fetch` receives the query options (`[limit: …, cursor: …]`) and returns a
   `Page`. The guard here is the authoritative one — the hook's `data-has-more`
   is a courtesy that saves a round trip, not a permission check.
+
+  `then` receives the socket and the page just appended, for a caller that
+  keeps something about the last rows it showed.
   """
-  @spec load(Phoenix.LiveView.Socket.t(), atom(), (keyword() -> Page.t())) ::
-          Phoenix.LiveView.Socket.t()
-  def load(socket, name, fetch) when is_function(fetch, 1) do
+  @spec load(
+          Phoenix.LiveView.Socket.t(),
+          atom(),
+          (keyword() -> Page.t()),
+          (Phoenix.LiveView.Socket.t(), Page.t() -> Phoenix.LiveView.Socket.t())
+        ) :: Phoenix.LiveView.Socket.t()
+  def load(socket, name, fetch, then \\ fn socket, _page -> socket end)
+      when is_function(fetch, 1) and is_function(then, 2) do
     if can_load_more?(socket, name) do
       try do
         page = socket |> state(name) |> State.query_opts() |> fetch.()
-        append(socket, name, page)
+        socket |> append(name, page) |> then.(page)
       rescue
         error ->
           # A page that fails must say so. Left to raise, the LiveView would be

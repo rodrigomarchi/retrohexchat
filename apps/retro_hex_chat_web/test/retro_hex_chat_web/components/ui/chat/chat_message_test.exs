@@ -171,12 +171,16 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
 
   describe "message_kind_icon/1" do
     test "renders a distinct svg for each known kind" do
-      user = render_component(&message_kind_icon/1, kind: "user")
+      service = render_component(&message_kind_icon/1, kind: "service")
       system = render_component(&message_kind_icon/1, kind: "system")
 
-      assert user =~ "<svg"
+      assert service =~ "<svg"
       assert system =~ "<svg"
-      refute user == system
+      refute service == system
+    end
+
+    test "a person has no kind icon" do
+      refute render_component(&message_kind_icon/1, kind: "user") =~ "<svg"
     end
 
     test "renders nothing for an unknown kind" do

@@ -78,6 +78,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatLayout do
               nick={msg.nick}
               nick_color={Map.get(msg, :nick_color)}
               type={Map.get(msg, :type, "normal")}
+              band={Map.get(msg, :band)}
+              continuation={Map.get(msg, :continuation, false)}
             >
               {msg.text}
             </.chat_message>

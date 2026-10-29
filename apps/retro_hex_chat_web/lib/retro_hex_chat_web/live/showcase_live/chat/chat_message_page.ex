@@ -77,22 +77,22 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
         description="Standard IRC messages with timestamps and colored nicks."
       >
         <.chat_message_list class="min-h-[120px]">
-          <.chat_message timestamp="27/02 11:49" nick="Brutus" nick_color="text-teal">
+          <.chat_message band="a" timestamp="11:49" nick="Brutus" nick_color="text-teal">
             {dgettext("showcase", "*nods silently* Stay out of trouble, Troll.")}
           </.chat_message>
-          <.chat_message timestamp="27/02 11:49" nick="Reginald" nick_color="text-success-dark">
+          <.chat_message band="b" timestamp="11:49" nick="Reginald" nick_color="text-success-dark">
             {dgettext("showcase", "*tips hat* Do return soon, Troll.")}
           </.chat_message>
-          <.chat_message timestamp="27/02 11:49" nick="Patches" nick_color="text-error">
+          <.chat_message band="a" timestamp="11:49" nick="Patches" nick_color="text-error">
             {dgettext("showcase", "Troll heading out? Cool cool. The lobby will keep your seat warm.")}
           </.chat_message>
-          <.chat_message timestamp="27/02 12:08" nick="Reginald" nick_color="text-success-dark">
+          <.chat_message band="b" timestamp="12:08" nick="Reginald" nick_color="text-success-dark">
             {dgettext("showcase", "*adjusts monocle* Reginald here — your server concierge.")}
           </.chat_message>
         </.chat_message_list>
         <.code_example>
           &lt;.chat_message_list&gt;
-          &lt;.chat_message timestamp="27/02 11:49" nick="Brutus" nick_color="text-teal"&gt;
+          &lt;.chat_message timestamp="11:49" nick="Brutus" nick_color="text-teal"&gt;
           *nods silently* Stay out of trouble, Troll.
           &lt;/.chat_message&gt;
           &lt;/.chat_message_list&gt;
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
         description="Different message types: action, system, error, notice, service."
       >
         <.chat_message_list class="min-h-[140px]">
-          <.chat_message timestamp="14:30" nick="Troll" type="normal" nick_color="text-link">
+          <.chat_message band="a" timestamp="14:30" nick="Troll" type="normal" nick_color="text-link">
             {dgettext("showcase", "Hello everyone!")}
           </.chat_message>
           <.chat_message timestamp="14:30" nick="Troll" type="action">
@@ -141,19 +141,19 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
         description="Different nick colors for user identification."
       >
         <.chat_message_list class="min-h-[100px]">
-          <.chat_message timestamp="15:00" nick="Alice" nick_color="text-error">
+          <.chat_message band="a" timestamp="15:00" nick="Alice" nick_color="text-error">
             {dgettext("showcase", "Hey!")}
           </.chat_message>
-          <.chat_message timestamp="15:00" nick="Bob" nick_color="text-link">
+          <.chat_message band="b" timestamp="15:00" nick="Bob" nick_color="text-link">
             {dgettext("showcase", "Hi Alice!")}
           </.chat_message>
-          <.chat_message timestamp="15:01" nick="Charlie" nick_color="text-teal">
+          <.chat_message band="a" timestamp="15:01" nick="Charlie" nick_color="text-teal">
             {dgettext("showcase", "What's up?")}
           </.chat_message>
-          <.chat_message timestamp="15:01" nick="Diana" nick_color="text-action">
+          <.chat_message band="b" timestamp="15:01" nick="Diana" nick_color="text-action">
             {dgettext("showcase", "Not much, you?")}
           </.chat_message>
-          <.chat_message timestamp="15:02" nick="Reginald" nick_color="text-success-dark">
+          <.chat_message band="a" timestamp="15:02" nick="Reginald" nick_color="text-success-dark">
             {dgettext("showcase", "Greetings, everyone.")}
           </.chat_message>
         </.chat_message_list>
@@ -164,13 +164,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
         description="Messages with long text wrap properly within the grid."
       >
         <.chat_message_list class="min-h-[80px]">
-          <.chat_message timestamp="16:00" nick="Patches" nick_color="text-error">
+          <.chat_message band="a" timestamp="16:00" nick="Patches" nick_color="text-error">
             {dgettext(
               "showcase",
               "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
             )}
           </.chat_message>
-          <.chat_message timestamp="16:01" nick="Brutus" nick_color="text-teal">
+          <.chat_message band="b" timestamp="16:01" nick="Brutus" nick_color="text-teal">
             {dgettext(
               "showcase",
               "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."

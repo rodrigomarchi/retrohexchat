@@ -138,9 +138,8 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   end
 
   @doc """
-  Formats a message timestamp for the metadata column. Bare (no brackets): the
-  two-line meta column carries its own visual framing, so `[ ]` would only add
-  noise on small screens.
+  Formats a message timestamp. Bare (no brackets): narration draws mIRC's
+  brackets in CSS, and the head of a speaker's run prints the time plain.
   """
   @spec format_time(DateTime.t() | any(), atom(), String.t()) :: String.t()
   def format_time(%DateTime{} = dt, :hh_mm, tz),

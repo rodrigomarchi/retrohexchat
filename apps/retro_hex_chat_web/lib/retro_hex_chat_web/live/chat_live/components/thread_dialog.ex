@@ -16,6 +16,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
   window those three replies are already in would be a door back into the room
   you are standing in.
 
+  The replies are printed on the room's continuous paper (`MessageGrouping`):
+  a run of one person shares a header and a band. `reply_tail` is the last
+  reply shown, which the next page and a reply arriving continue from.
+
   Writing is the room's: `thread_reply` asks the host to aim the conversation's
   composer at this thread, because that is where the reply is going to appear.
   """
@@ -26,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
 
   alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Chat.Queries
+  alias RetroHexChatWeb.ChatLive.MessageGrouping
   alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.PaginatedList
 
@@ -42,7 +47,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
       timezone: "Etc/UTC",
       strip_formatting: false,
       viewer: nil,
-      loaded_root_id: :none
+      loaded_root_id: :none,
+      reply_tail: nil
     },
     lists: [
       replies: [page_size: @page_size, dom_id: &"thread-reply-#{&1.id}"]
@@ -51,7 +57,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:reply_arrived, item}}, socket) do
-    {:ok, PaginatedList.insert(socket, :replies, put_locale(item))}
+    [item] = place_after(socket, [put_locale(item)])
+
+    {:ok,
+     socket
+     |> PaginatedList.insert(:replies, item)
+     |> assign(reply_tail: item)}
   end
 
   def update(assigns, socket) do
@@ -68,7 +79,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("thread_load_more", _params, socket) do
-    {:noreply, PaginatedList.load(socket, :replies, &fetch(socket, &1))}
+    {:noreply,
+     PaginatedList.load(
+       socket,
+       :replies,
+       fn opts ->
+         page = fetch(socket, opts)
+         %{page | items: place_after(socket, page.items)}
+       end,
+       &remember_tail/2
+     )}
   end
 
   def handle_event("thread_reply", _params, socket) do
@@ -106,11 +126,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
         |> PaginatedList.reset(:replies, RetroHexChat.Page.empty())
 
       message ->
+        page = fetch(socket, limit: @page_size)
+        page = %{page | items: MessageGrouping.annotate_all(page.items, tz(socket))}
+
         socket
-        |> assign(root: put_locale(row(socket.assigns.kind, message)))
-        |> PaginatedList.reset(:replies, fetch(socket, limit: @page_size))
+        |> assign(root: put_locale(row(socket.assigns.kind, message)), reply_tail: nil)
+        |> PaginatedList.reset(:replies, page)
+        |> remember_tail(page)
     end
   end
+
+  # Replies arriving below the last one shown continue its run.
+  @spec place_after(Phoenix.LiveView.Socket.t(), [map()]) :: [map()]
+  defp place_after(socket, items) do
+    MessageGrouping.annotate_after(List.wrap(socket.assigns.reply_tail), items, tz(socket))
+  end
+
+  defp remember_tail(socket, %{items: []}), do: socket
+  defp remember_tail(socket, %{items: items}), do: assign(socket, reply_tail: List.last(items))
+
+  defp tz(socket), do: socket.assigns[:timezone] || "Etc/UTC"
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()
   defp fetch(socket, opts) do

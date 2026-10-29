@@ -110,6 +110,43 @@ defmodule RetroHexChatWeb.ChatLive.ThreadTest do
     end
   end
 
+  # The thread is printed on the same continuous paper as the room: replies in
+  # a row from one person share one header and one band.
+  describe "the replies on paper" do
+    defp thread_rows(view) do
+      view
+      |> render()
+      |> LazyHTML.from_fragment()
+      |> LazyHTML.query("[data-testid=thread-lines] .chat-message__row")
+    end
+
+    test "a run of one person shares a header, the next person takes the other band", ctx do
+      reply(ctx, "the wiki")
+      reply(ctx, "or the topic")
+
+      {:ok, _id} =
+        Server.send_message(ctx.channel, ctx.owner, "the wiki it is", reply_to_id: ctx.root_id)
+
+      render_click(ctx.view, "open_thread", %{"message_id" => to_string(ctx.root_id)})
+      rows = thread_rows(ctx.view)
+
+      assert LazyHTML.attribute(rows, "data-band") == ["a", "a", "b"]
+      assert LazyHTML.attribute(rows, "data-continuation") == ["true"]
+    end
+
+    test "the run carries on across a page of older replies loaded below", ctx do
+      for i <- 1..26, do: reply(ctx, "reply #{i}")
+
+      render_click(ctx.view, "open_thread", %{"message_id" => to_string(ctx.root_id)})
+      ctx.view |> element("[data-testid=thread-load-more]") |> render_click()
+      rows = thread_rows(ctx.view)
+
+      assert Enum.count(rows) == 26
+      assert rows |> LazyHTML.attribute("data-band") |> Enum.uniq() == ["a"]
+      assert rows |> LazyHTML.attribute("data-continuation") |> length() == 25
+    end
+  end
+
   test "a thread the reader cannot resolve says so instead of opening", ctx do
     render_click(ctx.view, "open_thread", %{"message_id" => "999999"})
 

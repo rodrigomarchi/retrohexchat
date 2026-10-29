@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
   import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
+  import RetroHexChatWeb.Components.UI.DayBreak
   import RetroHexChatWeb.Components.UI.MessageRow
   import RetroHexChatWeb.Components.UI.DialogBanner
 
@@ -76,17 +77,21 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
 
       <.inset
         :if={@root}
-        class="shrink-0 border-b-2 border-border p-2"
+        class="chat-paper shrink-0 border-b-2 border-border"
         data-testid="thread-root"
       >
-        <.message_row_body
-          msg={@root}
-          nick_color_fn={@nick_color_fn}
-          timestamp_format={@timestamp_format}
-          timezone={@timezone}
-          strip_formatting={@strip_formatting}
-          viewer={@viewer}
-        />
+        <div class="chat-message">
+          <%!-- The line a thread hangs off can be from another day than the
+              replies under it, so it carries its date. --%>
+          <.message_row_body
+            msg={@root}
+            nick_color_fn={@nick_color_fn}
+            timestamp_format={:dd_mm_hh_mm}
+            timezone={@timezone}
+            strip_formatting={@strip_formatting}
+            viewer={@viewer}
+          />
+        </div>
       </.inset>
 
       <.list_empty_state
@@ -99,7 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
       <.inset
         :if={@root && not State.empty?(@state)}
         id={"#{@id}-list"}
-        class="min-h-[160px] flex-1 overflow-y-auto p-1"
+        class="chat-paper min-h-[160px] flex-1 overflow-y-auto"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"
@@ -112,9 +117,10 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
         <div
           :for={{dom_id, reply} <- @replies}
           id={dom_id}
-          class="border-b border-border p-2 last:border-b-0"
+          class="chat-message"
           data-testid={"thread-reply-#{reply.id}"}
         >
+          <.day_break :if={Map.get(reply, :day_break)} date={reply.day_break} />
           <.message_row_body
             msg={reply}
             nick_color_fn={@nick_color_fn}

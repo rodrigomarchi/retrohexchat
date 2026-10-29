@@ -9,11 +9,13 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
   emoji alone — a row of framed squares under every line is louder than the
   conversation.
 
-  The picker is a smiley at the end of the strip, drawn on every stored
-  message and on every screen, so reaching it needs no hover a touch screen does
-  not have. It sits where the next reaction will appear: the chips keep the
-  order their emoji first arrived in, so a pick lands in the smiley's place and
-  the smiley steps one along. The picks open over it, on the same line.
+  The picker is a smiley at the end of the strip, rendered on every stored
+  message. On the conversation's paper it shows only while the line is pointed
+  at or focused (on a touch screen the line's long-press menu carries the quick
+  picks instead), and a line nobody reacted to spends no line on it. It sits
+  where the next reaction will appear: the chips keep the order their emoji
+  first arrived in, so a pick lands in the smiley's place and the smiley steps
+  one along. The picks open over it, on the same line.
 
   Without a picker (a line nobody can react to) the strip renders only when
   there is something in it.

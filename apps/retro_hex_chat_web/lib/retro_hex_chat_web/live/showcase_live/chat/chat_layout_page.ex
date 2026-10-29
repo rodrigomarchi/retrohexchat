@@ -19,31 +19,41 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatLayoutPage do
        active_page: "chat-layout",
        messages: [
          %{
+           band: "a",
            timestamp: "14:20",
            nick: "alice",
            text: dgettext("showcase", "Hey everyone!"),
            nick_color: "text-blue-600"
          },
          %{
+           band: "b",
            timestamp: "14:21",
            nick: "bob",
            text: dgettext("showcase", "Hi alice! How's it going?"),
            nick_color: "text-green-600"
          },
          %{
+           band: "a",
            timestamp: "14:22",
            nick: "carol",
            text: dgettext("showcase", "Welcome to #lobby!"),
            nick_color: "text-red-600"
          },
          %{
+           band: "b",
            timestamp: "14:23",
            nick: "alice",
            text: dgettext("showcase", "Pretty good, working on some code"),
            nick_color: "text-blue-600"
          },
-         %{timestamp: "14:24", nick: "dave", text: dgettext("showcase", "Anyone up for a game?")},
          %{
+           band: "a",
+           timestamp: "14:24",
+           nick: "dave",
+           text: dgettext("showcase", "Anyone up for a game?")
+         },
+         %{
+           band: "b",
            timestamp: "14:25",
            nick: "bob",
            text: dgettext("showcase", "Sure! What game?"),

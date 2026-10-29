@@ -1038,8 +1038,8 @@ defmodule RetroHexChatWeb.DesktopLive do
       quit_reason: nil,
       show_emoji_picker: false,
       # The conversation prints the day once, as a perforation between days, so
-      # a line carries only its time. The status tab and a thread have no day
-      # breaks and keep the date on every line (desktop_live.html.heex).
+      # a line carries only its time. The status tab has no day breaks and keeps
+      # the date on every line (desktop_live.html.heex).
       timestamp_format: :hh_mm,
       lag_ms: nil,
       lag_status: :normal,

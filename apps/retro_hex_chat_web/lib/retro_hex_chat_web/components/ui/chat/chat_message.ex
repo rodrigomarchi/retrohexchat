@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   The kind icon names an origin at a glance (a wrench/shield/warning/etc.). A
   line a person wrote has none: the portrait, flag and coloured nickname already
   say so. It is derived from `type`/`source`; pass `kind` to override it
-  explicitly (e.g. `"help"`, `"arcade"`, `"deleted"`).
+  explicitly (e.g. `"help"`, `"deleted"`).
   """
   attr :id, :string, default: nil, doc: "Message ID for stream compatibility"
   attr :timestamp, :string, default: nil
@@ -203,11 +203,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   @doc """
   Renders the small pixel-art kind icon shown before a message's nick/source.
 
-  `kind` is one of the resolved kinds (`"user"`, `"system"`, `"service"`,
-  `"error"`, `"notice"`, `"server"`, `"help"`, `"arcade"`, `"deleted"`);
-  anything else renders nothing so an unknown kind never crashes the row.
+  `kind` is one of the resolved kinds (`"system"`, `"service"`, `"error"`,
+  `"notice"`, `"server"`, `"help"`, `"deleted"`); anything else renders
+  nothing so an unknown kind never crashes the row. A line a person wrote has
+  no kind icon.
   """
-  @known_kinds ~w(user system service error notice server help arcade deleted)
+  @known_kinds ~w(system service error notice server help deleted)
 
   attr :kind, :string, default: nil
   attr :class, :string, default: "h-3.5 w-3.5"
@@ -217,8 +218,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     ~H"""
     <span :if={known_kind?(@kind)} class="flex shrink-0" data-message-kind={@kind}>
       <%= case @kind do %>
-        <% "user" -> %>
-          <Icons.icon_status_user class={@class} />
         <% "system" -> %>
           <Icons.icon_wrench class={@class} />
         <% "service" -> %>
@@ -231,8 +230,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
           <Icons.icon_server class={@class} />
         <% "help" -> %>
           <Icons.icon_question class={@class} />
-        <% "arcade" -> %>
-          <Icons.icon_game_arcade class={@class} />
         <% "deleted" -> %>
           <Icons.icon_close class={@class} />
         <% _ -> %>
