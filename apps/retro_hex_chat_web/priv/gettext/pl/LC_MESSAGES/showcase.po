@@ -47,17 +47,17 @@ msgstr "*! * @ *. bad.isp"
 msgid "*!*@troll.host"
 msgstr "*! * @ troll.host"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:90
 #, elixir-autogen, elixir-format
 msgid "*adjusts monocle* Reginald here — your server concierge."
 msgstr "* dostosowuje monokle * Reginald tutaj — Twój konsjerż serwera."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:81
 #, elixir-autogen, elixir-format
 msgid "*nods silently* Stay out of trouble, Troll."
 msgstr "* kiwa głową cicho * Trzymaj się z dala od kłopotów, Troll."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:35
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:84
 #, elixir-autogen, elixir-format
 msgid "*tips hat* Do return soon, Troll."
 msgstr "* tips hat * Wracaj wkrótce, Troll."
@@ -698,7 +698,7 @@ msgid "Browse available channels and join one to start chatting."
 msgstr ""
 "Przeglądaj dostępne kanały i dołącz do jednego, aby rozpocząć rozmowy."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:174
 #, elixir-autogen, elixir-format
 msgid "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
 msgstr ""
@@ -732,7 +732,7 @@ msgstr "Mogę to dostosować?"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:117
 #, elixir-autogen, elixir-format
 msgid "Cannot send to channel: you are banned."
 msgstr "Nie można wysłać na kanał: masz zakaz."
@@ -764,7 +764,7 @@ msgstr "Opis karty jest tutaj."
 msgid "Center"
 msgstr "Centrum"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:74
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:123
 #, elixir-autogen, elixir-format
 msgid "ChanServ has set mode +o Troll."
 msgstr "ChanServ ma ustawiony tryb + o Troll."
@@ -911,8 +911,8 @@ msgstr "Wejście rozmowy"
 msgid "Chat Layout"
 msgstr "Układ czatu"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:17
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:24
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:55
 #: lib/retro_hex_chat_web/showcase_catalog.ex:412
 #, elixir-autogen, elixir-format
 msgid "Chat Message"
@@ -1930,7 +1930,7 @@ msgstr "Duch"
 msgid "Got it"
 msgstr "Rozumiem."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:108
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:157
 #, elixir-autogen, elixir-format
 msgid "Greetings, everyone."
 msgstr "Witam wszystkich."
@@ -1956,7 +1956,7 @@ msgstr "Sprzęt"
 msgid "Has minimize, maximize, and close buttons."
 msgstr "Ma zminimalizować, zmaksymalizować i zamknąć przyciski."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:108
 #, elixir-autogen, elixir-format
 msgid "Hello everyone!"
 msgstr "Witam wszystkich!"
@@ -1982,12 +1982,12 @@ msgstr "Pomoc & Zamknij"
 msgid "Hey everyone!"
 msgstr "Hej wszyscy!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:96
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:145
 #, elixir-autogen, elixir-format
 msgid "Hey!"
 msgstr "Hej!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:99
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:148
 #, elixir-autogen, elixir-format
 msgid "Hi Alice!"
 msgstr "Cześć Alice!"
@@ -2397,7 +2397,7 @@ msgstr "Wyloguj"
 msgid "Long Message"
 msgstr "Długa wiadomość"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:114
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:163
 #, elixir-autogen, elixir-format
 msgid "Long Messages & Wrapping"
 msgstr "Długie wiadomości i owijanie"
@@ -2445,7 +2445,7 @@ msgstr "Menu"
 msgid "Message Menu"
 msgstr "Menu wiadomości"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:103
 #, elixir-autogen, elixir-format
 msgid "Message Types"
 msgstr "Typy wiadomości"
@@ -2563,7 +2563,7 @@ msgstr "Zmiana Nicka"
 msgid "Nick Change Dialog"
 msgstr "Okno zmiany Nick"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:91
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:140
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:43
@@ -2650,7 +2650,7 @@ msgstr "Niedopuszczalne"
 msgid "Normal"
 msgstr "Normalny"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:76
 #, elixir-autogen, elixir-format
 msgid "Normal Messages"
 msgstr "Normalne wiadomości"
@@ -2660,7 +2660,7 @@ msgstr "Normalne wiadomości"
 msgid "Not joined"
 msgstr "Niepołączone"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:105
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:154
 #, elixir-autogen, elixir-format
 msgid "Not much, you?"
 msgstr "Niewiele, a ty?"
@@ -4009,17 +4009,17 @@ msgstr "Widok drzewa"
 msgid "Troll"
 msgstr "Troll"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:114
 #, elixir-autogen, elixir-format
 msgid "Troll has joined the channel."
 msgstr "Troll dołączył do kanału."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:38
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:87
 #, elixir-autogen, elixir-format
 msgid "Troll heading out? Cool cool. The lobby will keep your seat warm."
 msgstr "Troll wychodzi? Super. lobby ogrzeje twoje miejsce."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:168
 #, elixir-autogen, elixir-format
 msgid "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
 msgstr ""
@@ -4271,7 +4271,7 @@ msgstr "Witamy w RetroHexChat!"
 msgid "What is RetroHexChat?"
 msgstr "Co to jest RetroHexChat?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:102
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:151
 #, elixir-autogen, elixir-format
 msgid "What's up?"
 msgstr "Co jest?"
@@ -4467,7 +4467,7 @@ msgstr "Skala wskaźnika Z-"
 msgid "Zero Results"
 msgstr "Zero wyników"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:71
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:120
 #, elixir-autogen, elixir-format
 msgid "[Server] Maintenance in 5 minutes."
 msgstr "Konserwacja za 5 minut."
@@ -4593,7 +4593,7 @@ msgstr "user @ example.com"
 msgid "vip!*@*.good.isp"
 msgstr "vip!*@*.good.isp"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:111
 #, elixir-autogen, elixir-format
 msgid "waves to the channel"
 msgstr "fale do kanału"
@@ -5319,3 +5319,8 @@ msgstr "Arcade gry logos/cover sztuki"
 #, elixir-autogen, elixir-format
 msgid "P2P multiplayer and arcade flow"
 msgstr "P2P multiplayer and arcade flow"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:58
+#, elixir-autogen, elixir-format
+msgid "Continuous Paper"
+msgstr "Papier ciągły"

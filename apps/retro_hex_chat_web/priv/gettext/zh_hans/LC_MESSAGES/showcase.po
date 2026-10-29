@@ -47,17 +47,17 @@ msgstr "{\\fn黑体\\fs22\\bord1\\shad0\\3aHBE\\4aH00\\fscx67\\fscy66\\2cHFFFFFF
 msgid "*!*@troll.host"
 msgstr "{\\fn黑体\\fs22\\bord1\\shad0\\3aHBE\\4aH00\\fscx67\\fscy66\\2cHFFFFFF\\3cH808080}你这混蛋"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:90
 #, elixir-autogen, elixir-format
 msgid "*adjusts monocle* Reginald here — your server concierge."
 msgstr "*justs onecle * Reginald here — 您的服务器管理员 。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:81
 #, elixir-autogen, elixir-format
 msgid "*nods silently* Stay out of trouble, Troll."
 msgstr "*默默地点头* 别惹麻烦 特洛尔"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:35
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:84
 #, elixir-autogen, elixir-format
 msgid "*tips hat* Do return soon, Troll."
 msgstr "*尖顶帽子* 快回来,特洛尔"
@@ -686,7 +686,7 @@ msgstr "浏览频道"
 msgid "Browse available channels and join one to start chatting."
 msgstr "浏览可用的频道并加入一个频道开始聊天 。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:174
 #, elixir-autogen, elixir-format
 msgid "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
 msgstr "布鲁图斯在这里 — 我维护和平。 好好玩,我们会相处的 需要提醒时按规则键"
@@ -718,7 +718,7 @@ msgstr "我能定制一下吗?"
 msgid "Cancel"
 msgstr "取消"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:117
 #, elixir-autogen, elixir-format
 msgid "Cannot send to channel: you are banned."
 msgstr "无法发送到频道 : 您被禁止 。"
@@ -750,7 +750,7 @@ msgstr "卡片描述在这里。"
 msgid "Center"
 msgstr "中间"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:74
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:123
 #, elixir-autogen, elixir-format
 msgid "ChanServ has set mode +o Troll."
 msgstr "ChanServ 设置了模式 +o Troll 。"
@@ -897,8 +897,8 @@ msgstr "聊天输入"
 msgid "Chat Layout"
 msgstr "聊天布局"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:17
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:24
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:55
 #: lib/retro_hex_chat_web/showcase_catalog.ex:412
 #, elixir-autogen, elixir-format
 msgid "Chat Message"
@@ -1914,7 +1914,7 @@ msgstr "鬼头"
 msgid "Got it"
 msgstr "明白了,我们走了"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:108
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:157
 #, elixir-autogen, elixir-format
 msgid "Greetings, everyone."
 msgstr "大家好,你们好"
@@ -1940,7 +1940,7 @@ msgstr "硬件"
 msgid "Has minimize, maximize, and close buttons."
 msgstr "最小化、最大化和关闭按钮。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:108
 #, elixir-autogen, elixir-format
 msgid "Hello everyone!"
 msgstr "你们好!"
@@ -1966,12 +1966,12 @@ msgstr "帮助关闭( C)"
 msgid "Hey everyone!"
 msgstr "大家好! 大家好! 你们好!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:96
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:145
 #, elixir-autogen, elixir-format
 msgid "Hey!"
 msgstr "糑"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:99
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:148
 #, elixir-autogen, elixir-format
 msgid "Hi Alice!"
 msgstr "嗨,爱丽丝!"
@@ -2379,7 +2379,7 @@ msgstr "注销"
 msgid "Long Message"
 msgstr "长消息"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:114
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:163
 #, elixir-autogen, elixir-format
 msgid "Long Messages & Wrapping"
 msgstr "长消息折叠( R)"
@@ -2427,7 +2427,7 @@ msgstr "菜单"
 msgid "Message Menu"
 msgstr "信件菜单"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:103
 #, elixir-autogen, elixir-format
 msgid "Message Types"
 msgstr "信件类型"
@@ -2545,7 +2545,7 @@ msgstr "昵称更改"
 msgid "Nick Change Dialog"
 msgstr "昵称更改对话框"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:91
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:140
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:43
@@ -2632,7 +2632,7 @@ msgstr "不可开除"
 msgid "Normal"
 msgstr "普通"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:76
 #, elixir-autogen, elixir-format
 msgid "Normal Messages"
 msgstr "普通信件"
@@ -2642,7 +2642,7 @@ msgstr "普通信件"
 msgid "Not joined"
 msgstr "未加入"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:105
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:154
 #, elixir-autogen, elixir-format
 msgid "Not much, you?"
 msgstr "没有多少,你呢?"
@@ -3980,17 +3980,17 @@ msgstr "树形视图"
 msgid "Troll"
 msgstr "巨兽"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:114
 #, elixir-autogen, elixir-format
 msgid "Troll has joined the channel."
 msgstr "巨怪加入了频道"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:38
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:87
 #, elixir-autogen, elixir-format
 msgid "Troll heading out? Cool cool. The lobby will keep your seat warm."
 msgstr "巨怪要出去吗? 凉爽。 大厅会保暖的"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:168
 #, elixir-autogen, elixir-format
 msgid "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
 msgstr "巨怪要出去吗? 凉爽。 大厅会保暖的 我们总是开放。 像一个24/7的餐厅,但有更好的无线。"
@@ -4240,7 +4240,7 @@ msgstr "欢迎来到复古HexChat!"
 msgid "What is RetroHexChat?"
 msgstr "复古HexChat是什么来着?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:102
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:151
 #, elixir-autogen, elixir-format
 msgid "What's up?"
 msgstr "这是怎么回事?"
@@ -4433,7 +4433,7 @@ msgstr "Z 缩放"
 msgid "Zero Results"
 msgstr "无结果"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:71
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:120
 #, elixir-autogen, elixir-format
 msgid "[Server] Maintenance in 5 minutes."
 msgstr "[服务] 维护在五分钟。"
@@ -4559,7 +4559,7 @@ msgstr "用户@ example.com"
 msgid "vip!*@*.good.isp"
 msgstr "不错,不错"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:111
 #, elixir-autogen, elixir-format
 msgid "waves to the channel"
 msgstr "到频道的波浪"
@@ -5273,3 +5273,8 @@ msgstr "街机游戏标志/cover艺术"
 #, elixir-autogen, elixir-format
 msgid "P2P multiplayer and arcade flow"
 msgstr "P2P 多人游戏和街机流"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:58
+#, elixir-autogen, elixir-format
+msgid "Continuous Paper"
+msgstr "连续纸张"

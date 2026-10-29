@@ -88,7 +88,7 @@ msgstr ""
 "), nad wejściem pojawia się podpowiedź pokazująca składnię poleceń z "
 "bieżącym parametrem podświetlonym pogrubioną."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "). Invalid regex patterns show an inline error."
 msgstr "). Nieprawidłowe wzory regex pokazują błąd inline."
@@ -849,7 +849,7 @@ msgstr ""
 ": Twoje własne zmiany joins/parts/nick nigdy nie uruchamiają zasad auto- "
 "odpowiedzi."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "A bar appears above the input showing the original author and a preview of their message. Click ✕ to cancel the reply."
 msgstr ""
@@ -964,12 +964,12 @@ msgstr "Zastosuj"
 msgid "Argument Completion"
 msgstr "Zakończenie sporu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Arrow Down"
 msgstr "Strzałka w dół"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Arrow Up"
 msgstr "Arrow up"
@@ -1146,12 +1146,12 @@ msgstr "Anuluj"
 msgid "Cancel the edit and restore the input to its previous state."
 msgstr "Anuluj edycję i przywróć wejście do poprzedniego stanu."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Case-sensitive matching (default: case-insensitive)."
 msgstr "Dopasowanie case- sensitive (domyślnie: case- insensitive)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Case:"
 msgstr "Przypadek:"
@@ -1311,7 +1311,7 @@ msgstr "Linki przyciskowe:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Closing"
 msgstr "Zamknięcie"
@@ -1338,7 +1338,7 @@ msgstr "Podręcznik składni poleceń"
 msgid "Commands"
 msgstr "Polecenia"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Compose Bar"
 msgstr "Pasek komponujący"
@@ -1393,7 +1393,7 @@ msgstr "Menu kontekstowe:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -1663,7 +1663,7 @@ msgstr ""
 "rozdzielczość ekranu, język, strefa czasowa, rdzenie procesora i głębokość "
 "kolorów. Urządzenia przystosowane do dotyku pokazują wskaźnik dotykowy."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Edge Cases"
@@ -1729,7 +1729,7 @@ msgstr "Wpisz:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Escape"
 msgstr "Ucieczka"
@@ -1759,7 +1759,7 @@ msgstr "Zwolnienia"
 msgid "Expert:"
 msgstr "Ekspert:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Extend search into the database beyond currently loaded messages."
 msgstr ""
@@ -1919,7 +1919,7 @@ msgstr "Zaznacz słowa"
 msgid "Highlighting"
 msgstr "Podświetlanie"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "History:"
 msgstr "Historia:"
@@ -2168,8 +2168,8 @@ msgstr "Nawigacja klawiatury"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:57
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
@@ -2304,13 +2304,13 @@ msgid "Message"
 msgstr "Wiadomość"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Message Delete"
 msgstr "Wiadomość Usuń"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Message Edit"
@@ -2355,7 +2355,7 @@ msgstr "Wielokrotne kopnięcia"
 msgid "Mute"
 msgstr "Wycisz"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "My nick:"
 msgstr "Mój nick:"
@@ -2542,7 +2542,7 @@ msgstr ""
 "Tylko operatorzy kanałów mogą wysyłać zaproszenia. Kanał musi mieć tryb + i "
 "(invite- only). Użytkownik docelowy musi być online, a nie w kanale."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Only search messages that mention your nickname."
 msgstr "Tylko wiadomości, które mówią o twoim przezwisku."
@@ -2669,7 +2669,7 @@ msgstr "Trwałość:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Press"
@@ -2772,7 +2772,7 @@ msgstr "Ponowne łączenie"
 msgid "Recursion detection"
 msgstr "Wykrywanie nawrotu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Regex:"
 msgstr "Regex:"
@@ -2805,7 +2805,7 @@ msgstr "Rejestracja nowego pseudonimu (natychmiast rozpoczyna 7-dniowy zegar)"
 msgid "Regular"
 msgstr "Regularne"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Regular expression matching (e.g.,"
 msgstr "dopasowanie wyrażenia regularnego (np."
@@ -2815,7 +2815,7 @@ msgstr "dopasowanie wyrażenia regularnego (np."
 msgid "Repeating"
 msgstr "Uchylenie"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Replies appear with a quoted block showing the original message, with your response below. Click the quoted block to scroll to and highlight the original message."
 msgstr ""
@@ -2947,7 +2947,7 @@ msgstr "Charakterystyka bezpieczeństwa"
 msgid "Search"
 msgstr "Szukaj"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Search Filters"
 msgstr "Filtry wyszukiwania"
@@ -3011,7 +3011,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:70
@@ -3023,9 +3023,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -3092,7 +3092,7 @@ msgstr ""
 "Operatorzy serwerów mogą wysyłać wiadomości do użytkowników, którzy "
 "zdecydują się na"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Session Memory"
 msgstr "Pamięć sesji"
@@ -3134,7 +3134,7 @@ msgid "Shift+Enter"
 msgstr "Shift + Wpisz"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:134
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "Cheatsheet"
@@ -3380,7 +3380,7 @@ msgstr "Oczyszczanie działa automatycznie co 6 godzin"
 msgid "The registration is permanently deleted"
 msgstr "Rejestracja jest trwale usuwana"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "The search bar remembers your last search term. When you reopen it, the previous query is restored and matches are re-highlighted."
 msgstr ""
@@ -3664,7 +3664,7 @@ msgstr "Tryby wyświetlania i przełączania kanałów (+ m, + i, + t, + k, + l)
 msgid "View, add, and remove ignores from the visual dialog."
 msgstr "Widok, dodanie i usunięcie ignorów z okna dialogowego."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Visual Format"
 msgstr "Format wizualny"
@@ -3857,7 +3857,7 @@ msgstr ""
 "przycisk jest dostępny, aby przestać ponownie próbować. Można również "
 "odświeżyć stronę, aby rozpocząć nowe połączenie."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "buttons, or press"
 msgstr "przyciski lub naciśnij"
@@ -3882,7 +3882,7 @@ msgstr "current/maximum"
 msgid "dismisses the dialog."
 msgstr "odrzuca okno dialogowe."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "error|warn"
 msgstr "Błąd% 124; ostrzeż"
@@ -3918,7 +3918,7 @@ msgstr "dla ksywki docelowej."
 msgid "in an empty input works as before (server-side history)."
 msgstr "w pustym wejściu działa jak wcześniej (historia server- side)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "in the search input to jump between matches. The chat scrolls to each match automatically."
 msgstr ""
@@ -3961,7 +3961,7 @@ msgstr "Wiadomość."
 msgid "once per unique sender"
 msgstr "raz na jednego nadawcę"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "or click the close button. All highlights are removed."
 msgstr "lub kliknij przycisk zamknięcia. Wszystkie pasemki są usuwane."
@@ -4531,20 +4531,13 @@ msgstr "Menu kontekstowe UI"
 msgid "Desktop & Windows"
 msgstr "Desktop & Windows"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Each chat message is laid out in two columns: a compact metadata column and the message text."
-msgstr ""
-"Każda wiadomość na czacie znajduje się w dwóch kolumnach: kompaktowa kolumna"
-" metadanych i tekst wiadomości."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Edit > Find"
 msgstr "Edycja > Znajdź"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:85
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Edit Menu"
 msgstr "Edytuj menu"
@@ -4679,11 +4672,6 @@ msgstr ""
 msgid "Routing Policy"
 msgstr "Polityka routingu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Sender Icons"
-msgstr "Ikony nadawcy"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The Account dialog profile tab can start a nickname change. Registered target nicknames still require the NickServ password in the confirmation flow."
@@ -4691,11 +4679,6 @@ msgstr ""
 "Zakładka Profil konta może rozpocząć zmianę pseudonimu. Zarejestrowane "
 "przezwiska docelowe nadal wymagają hasła NickServ w przepływie "
 "potwierdzenia."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "The Metadata Column"
-msgstr "Kolumna metadanych"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:31
 #, elixir-autogen, elixir-format
@@ -4721,25 +4704,6 @@ msgid "The current user mode is wallops (+w), which controls whether operator br
 msgstr ""
 "Obecny tryb użytkownika to wallops (+ w), który kontroluje, czy komunikaty "
 "nadawane przez operatora są dostarczane do zakładki Status."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "The message text gets the wider column and a slightly larger font, so it reads well on phones as well as desktop — without dropping the retro monospace identity. Nicknames are shown plainly, with no surrounding angle brackets, and the timestamp carries the full date and time in its hover tooltip."
-msgstr ""
-"Tekst wiadomości otrzymuje szerszą kolumnę i nieco większą czcionkę, więc "
-"dobrze odczytuje się na telefonach i pulpicie - bez upuszczania tożsamości "
-"retro monospace. Nazwy nick są wyświetlane wyraźnie, bez otaczających "
-"nawiasów kątowych, a znacznik czasu nosi pełną datę i czas w podpowiedzi."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The narrow left column shows the author's nickname — or, for system lines, an origin label such as System, Error, Service or MOTD — on the first line, with a smaller, muted timestamp beneath it. The nickname stays clickable for the hover card, private messages and the context menu."
-msgstr ""
-"W wąskiej lewej kolumnie znajduje się pseudonim autora - lub, dla linii "
-"systemowych, etykieta pochodzenia, taka jak System, Błąd, Serwis lub MOTD - "
-"na pierwszej linii, z mniejszym, przyciśniętym znacznikiem czasu pod nią. "
-"Pseudonim pozostaje klikalny dla karty hover, prywatnych wiadomości i menu "
-"kontekstowego."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
 #, elixir-autogen, elixir-format
@@ -4809,11 +4773,6 @@ msgstr ""
 "w tym wspólne kanały, czas online, czas bezczynności, rejestracja, status "
 "wyjazdowy, bio, i dane klienta, gdy jest dostępny."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Why It Looks This Way"
-msgstr "Dlaczego wygląda Tędy"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Your bio is a short profile line shown in whois output. Registered users keep it across sessions; guests keep it for the current session. The Account dialog shows the 200-character limit while you type."
@@ -4859,16 +4818,6 @@ msgid "with no arguments. The dialog lists active timers and provides Add, Edit,
 msgstr ""
 "bez żadnych argumentów. Okno dialogowe zawiera aktywne timery i zawiera "
 "przyciski Add, Edit i Stop, nie wymagające pierwotnej składni poleceń."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "A small pixel-art icon sits in front of each name to signal where the line came from at a glance: a user glyph for anything a person typed, and distinct glyphs for System, Service, Error, Server, Help and deleted lines. The nickname itself is shown a little larger and bolder, while the timestamp is smaller, so your eye lands on who spoke first."
-msgstr ""
-"Mała ikona pixel- art siedzi przed każdą nazwą do sygnału, skąd linia "
-"pochodzi w skrócie: glif użytkownika dla wszystkiego, co osoba wpisała, i "
-"odrębne glify dla systemu, Service, Błąd, Server, Pomoc i usunięte linie. "
-"Sam pseudonim jest pokazany trochę większy i odważniejszy, podczas gdy "
-"znacznik czasu jest mniejszy, więc oko ląduje na, kto mówił pierwszy."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
 #, elixir-autogen, elixir-format
@@ -6171,7 +6120,7 @@ msgstr ""
 "Reakcja to odpowiedź na wiadomość kosztująca jedno kliknięcie. Dociera do "
 "osoby, która napisała linijkę, i nikogo nie zmusza do czytania."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
 msgstr ""
@@ -6179,12 +6128,12 @@ msgstr ""
 "budzi żadnego urządzenia. To celowe: najtańsza rzecz, jaką możesz tu "
 "powiedzieć, ma pozostać tania także dla odbiorcy."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Click your own reaction again to take it back"
 msgstr "Kliknij swoją reakcję ponownie, aby ją cofnąć"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker"
@@ -6195,12 +6144,12 @@ msgstr "Emoji Picker"
 msgid "How to React"
 msgstr "Jak zareagować"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "It Notifies Nobody"
 msgstr "Nikogo nie powiadamia"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "What the Numbers Mean"
 msgstr "Co oznaczają liczby"
@@ -6455,7 +6404,7 @@ msgstr ""
 " ten wiersz, aby przeczytać całą wymianę razem, w kolejności, w jakiej się "
 "odbyła."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
 msgstr ""
@@ -6482,7 +6431,7 @@ msgstr ""
 " się zgadzały. Odpowiedzi napisane, zanim ta funkcja istniała, zachowują "
 "cytowaną wiadomość i nie są tu liczone."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "If the original message was deleted, the quote shows that it is gone and the reply stays where it is. Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
 msgstr ""
@@ -6506,7 +6455,7 @@ msgstr "Otwieranie wątku"
 msgid "Replying From the Window"
 msgstr "Odpowiadanie z okna"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Replying to a Reply"
 msgstr "Odpowiadanie na odpowiedź"
@@ -6523,7 +6472,7 @@ msgstr ""
 msgid "Saving a Message"
 msgstr "Zapisywanie wiadomości"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "Wątki"
@@ -7911,22 +7860,82 @@ msgstr "Język bota"
 msgid "A bot carries a flag too, for the language it speaks. An admin gives a bot its language with %{command} or in Bot Management. A bot nobody gave a language has no flag."
 msgstr "Bot również nosi flagę, dla języka, który mówi. Administrator daje bot jego język z %{command} lub w Bot Management. Bot, którego nikt nie dał językowi, nie ma flagi."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "For any other emoji, right-click the message (on a phone, press and hold it) and choose %{item}"
 msgstr "Dla innych emoji, prawy kliknij wiadomość (na telefonie, naciśnij i przytrzymaj go) i wybierz %{item}"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "With the keyboard: from the message box press Shift+Tab until a message is selected, move to the one you want with the arrow keys and press Enter"
 msgstr "Z klawiaturą: z pola wiadomości naciśnij Shift+Tab aż wiadomość zostanie wybrana, przejdź do tego, który chcesz za pomocą klawiszy strzałek i naciśnij Enter"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "The number beside an emoji shows how many people chose it. Point at it to see their names. In your own reactions the number uses bold text. Each person counts only once per emoji, even after many clicks."
 msgstr "Liczba obok emoji pokazuje, ilu ludzi ją wybrało. Wskaż na ich nazwiska. We własnych reakcjach liczba używa pogrubionego tekstu. Każda osoba liczy tylko raz na emoji, nawet po wielu kliknięciach."
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "A message with only one to three emoji is printed large. Pictures appear without a frame; point at one to see its file name and size, and click it to open it."
+msgstr "Wiadomość z tylko jedną do trzech emoji jest drukowany duży. Obrazy pojawiają się bez ramki; wskaż na jeden, aby zobaczyć jego nazwę pliku i rozmiar, i kliknij, aby go otworzyć."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Notices From the Room"
+msgstr "Notices From the Room"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "On a phone you can also swipe the message to the right: the reply bar opens quoting it."
+msgstr "Na telefonie można również przesunąć wiadomość w prawo: pasek odpowiedzi otwiera cytowanie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "On a phone, press and hold the message: the quick emoji are across the top of the menu that opens"
+msgstr "W telefonie naciśnij i przytrzymaj wiadomość: szybkie emoji są na górze menu, które otwiera"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Pictures and Emoji"
+msgstr "Zdjęcia i Emoji"
+
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "Click the smiley under the message and choose one of the emoji it offers. Your reaction appears in the same place."
-msgstr "Kliknij Smiley pod wiadomością i wybierz jeden z emoji oferuje. Twoja reakcja pojawia się w tym samym miejscu."
+msgid "Point at the message and click the smiley that appears beside it, then choose one of the emoji it offers. Your reaction appears under the message."
+msgstr "Wskaż na wiadomość i kliknij uśmiech, który pojawia się obok niej, a następnie wybierz jeden z emoji oferuje. Twoja reakcja pojawia się pod wiadomością."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The conversation is printed like continuous printer paper, the kind with green and white stripes."
+msgstr "Rozmowa jest drukowana jak papier drukarski, typu z zielonymi i białymi paskami."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Where a Day Starts"
+msgstr "Gdzie zaczyna się dzień"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "A dotted perforation with the date marks the first message of each day. Each message shows only the hour and minute. Point at the hour to see the full date."
+msgstr "Perforacja kropkowana z datą oznacza pierwszą wiadomość każdego dnia. Każda wiadomość pokazuje tylko godzinę i minutę. Wskaż godzinę na pełną datę."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "One Name Above Several Lines"
+msgstr "Jedna nazwa powyżej kilku linii"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Point at a message, or reach it with the keyboard, to see the hour it was written. Your own messages are printed on a light blue stripe."
+msgstr "Wskaż na wiadomość, lub dotrzeć do niej za pomocą klawiatury, aby zobaczyć godzinę to zostało napisane. Twoje własne wiadomości są drukowane na jasnoniebieskim pasku."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "When one person writes several messages in a row, their name and the hour appear once, above the first message. The messages under it share the same stripe. A new stripe starts when someone else speaks, after five minutes of silence, or on a new day."
+msgstr "Kiedy jedna osoba pisze kilka wiadomości z rzędu, jej imię i godzina pojawiają się raz, powyżej pierwszej wiadomości. Wiadomości pod nim mają ten sam pasek. Nowy pasek zaczyna się, gdy ktoś inny mówi, po pięciu minutach ciszy, lub w nowy dzień."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Some messages come from the room rather than from a person: /me actions, System, Service and Error messages, and deleted messages. They have no stripe and appear between the stripes, each with a small icon."
+msgstr "Niektóre wiadomości pochodzą raczej z pokoju niż od osoby: działania /me, System, Service i Error wiadomości oraz usunięte wiadomości. Nie mają pasków i pojawiają się między paskami, każdy z małą ikoną."

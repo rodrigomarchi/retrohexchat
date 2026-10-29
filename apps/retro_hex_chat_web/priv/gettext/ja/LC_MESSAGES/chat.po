@@ -631,7 +631,7 @@ msgstr "連絡する%{nickname}を追加"
 msgid "Added %{nickname} to notify list"
 msgstr "リストに通知するために%{nickname}を追加"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:137
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:142
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:279
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -724,7 +724,7 @@ msgstr ""
 msgid "Away"
 msgstr "離席中"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:177
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:183
 #, elixir-autogen, elixir-format
 msgid "Ban"
@@ -865,7 +865,7 @@ msgstr "%{channel}の歴史は%{admin}によって浄化されました。"
 msgid "Channel %{channel} not found"
 msgstr "チャンネル%{channel}が見つかりません"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:265
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:270
 #, elixir-autogen, elixir-format
 msgid "Channel Info"
 msgstr "チャネル情報"
@@ -1009,18 +1009,18 @@ msgstr "コンタクトリストがいっぱい(最大100エントリー)"
 msgid "Conversations"
 msgstr "コンバージョン"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:257
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:262
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:210
 #, elixir-autogen, elixir-format
 msgid "Copy Channel Name"
 msgstr "コピー チャネルの名前"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:296
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:324
 #, elixir-autogen, elixir-format
 msgid "Copy Message"
 msgstr "コピーメッセージ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:116
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:121
 #, elixir-autogen, elixir-format
 msgid "Copy Nick"
 msgstr "コピーニック"
@@ -1030,7 +1030,7 @@ msgstr "コピーニック"
 msgid "Copy Nickname"
 msgstr "コピーニックネーム"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:231
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:236
 #, elixir-autogen, elixir-format
 msgid "Copy URL"
 msgstr "URLのコピー"
@@ -1046,7 +1046,7 @@ msgstr "%{nickname} を連絡先に追加できません。"
 msgid "Could not set color for %{nickname}"
 msgstr "%{nickname}のカラーを設定できません"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:397
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:425
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "削除"
@@ -1169,13 +1169,13 @@ msgstr "フード&ドリンク"
 msgid "For"
 msgstr "For"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:194
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:199
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:205
 #, elixir-autogen, elixir-format
 msgid "Give Op (+o)"
 msgstr "Op を贈る (+o)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:183
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:188
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:194
 #, elixir-autogen, elixir-format
 msgid "Give Voice (+v)"
@@ -1218,14 +1218,14 @@ msgstr "ホスト"
 msgid "Idle"
 msgstr "アイドル"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:125
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:129
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:130
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:134
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:141
 #, elixir-autogen, elixir-format
 msgid "Ignore"
 msgstr "無視"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:406
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:434
 #, elixir-autogen, elixir-format
 msgid "Ignore Sender"
 msgstr "イグノー・センダー"
@@ -1330,7 +1330,7 @@ msgstr "見つからない項目"
 msgid "Join %{channel}"
 msgstr "%{channel}を結合して下さい"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:249
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:254
 #, elixir-autogen, elixir-format
 msgid "Join Channel"
 msgstr "チャンネル登録"
@@ -1341,7 +1341,7 @@ msgstr "チャンネル登録"
 msgid "Joined %{channel}"
 msgstr "%{channel} に参加"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:163
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:168
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:174
 #, elixir-autogen, elixir-format
 msgid "Kick"
@@ -1411,8 +1411,8 @@ msgstr "最大10個の自動応答ルール"
 msgid "Menu is full (max 10 items per type)"
 msgstr "メニューがいっぱいです(最大10個/種類)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:212
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:217
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:237
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:242
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "%{target}へのメッセージ — / コマンド"
@@ -1567,7 +1567,7 @@ msgstr "オンライン"
 msgid "Open /chat/help in a new tab."
 msgstr "新しいタブで/chat/helpを開きます。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:227
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:232
 #, elixir-autogen, elixir-format
 msgid "Open Link"
 msgstr "オープンリンク"
@@ -1629,7 +1629,7 @@ msgstr "%{channel}で再びノックする前にお待ちください"
 msgid "Prev"
 msgstr "前のページ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:78
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:83
 #, elixir-autogen, elixir-format
 msgid "Private Message"
 msgstr "プライベートメッセージ"
@@ -1698,7 +1698,7 @@ msgstr "通知リストから%{nickname}を削除"
 msgid "Removed custom color for %{nickname}"
 msgstr "%{nickname}のカスタムカラーを削除"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:360
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:388
 #, elixir-autogen, elixir-format
 msgid "Reply"
 msgstr "スタッフ"
@@ -1744,7 +1744,7 @@ msgstr "見つからないルール"
 msgid "Rules:"
 msgstr "ルール:"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:235
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:240
 #, elixir-autogen, elixir-format
 msgid "Save to URL List"
 msgstr "URLリストに保存"
@@ -1927,8 +1927,8 @@ msgstr "/helpチャンザーまたは/helpチャンネル権限をフル詳細�
 msgid "Type /help nickserv for full details."
 msgstr "詳細は/helpnickservを入力してください。"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:209
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:222
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:234
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:247
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "コマンド - / リスト"
@@ -1953,7 +1953,7 @@ msgstr "禁止エラー:%{message}"
 msgid "Underline (Ctrl+Shift+U)"
 msgstr "インライン (Ctrl+Shift+U)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:125
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:130
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:141
 #, elixir-autogen, elixir-format
 msgid "Unignore"
@@ -2006,7 +2006,7 @@ msgstr "ユーザーモード +%{flag} を有効にしました。"
 msgid "User mode -%{flag} disabled."
 msgstr "ユーザーモード -%{flag} は無効になっています。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:147
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:152
 #, elixir-autogen, elixir-format
 msgid "User not registered"
 msgstr "ユーザー登録"
@@ -2047,7 +2047,7 @@ msgstr "%{server_name}へようこそ!"
 msgid "White"
 msgstr "ホワイト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:99
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:104
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:85
 #, elixir-autogen, elixir-format
 msgid "Whois"
@@ -2308,7 +2308,7 @@ msgid "is typing..."
 msgstr "は..."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:150
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:328
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:357
 #, elixir-autogen, elixir-format
 msgid "messages"
 msgstr "メッセージ"
@@ -2562,7 +2562,7 @@ msgstr "キーボードショートカット"
 msgid "Language"
 msgstr "言語"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:112
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:93
 #, elixir-autogen, elixir-format
 msgid "Last Seen (Whowas)"
@@ -2578,7 +2578,7 @@ msgstr "最終確認: %{target}"
 msgid "Last seen"
 msgstr "最後に見ました"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:327
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:356
 #, elixir-autogen, elixir-format
 msgid "Loading %{channel}..."
 msgstr "%{channel}を読み込み中..."
@@ -2594,7 +2594,7 @@ msgstr "モットD"
 msgid "Message must be 200 characters or less"
 msgstr "メッセージは200文字以内"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:205
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:210
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:216
 #, elixir-autogen, elixir-format
 msgid "Mute (channel)"
@@ -2697,13 +2697,13 @@ msgstr "Quit メッセージ"
 msgid "Reconnecting"
 msgstr "再接続中"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:193
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:198
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:204
 #, elixir-autogen, elixir-format
 msgid "Remove Op (-o)"
 msgstr "Opを削除(-o)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:182
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:187
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:193
 #, elixir-autogen, elixir-format
 msgid "Remove Voice (-v)"
@@ -2729,7 +2729,7 @@ msgstr "秒は数でなければなりません。"
 msgid "Send Notice"
 msgstr "Send Notice"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:86
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:91
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:72
 #, elixir-autogen, elixir-format
 msgid "Send Notice..."
@@ -2781,7 +2781,7 @@ msgstr "確認するサーバー名を入力します。"
 msgid "URL Catcher"
 msgstr "URLキャッチャー"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:204
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:209
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:215
 #, elixir-autogen, elixir-format
 msgid "Unmute (channel)"
@@ -3096,7 +3096,7 @@ msgstr "上に歩く"
 msgid "Toggle fullscreen"
 msgstr "全画面表示を切り替え"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:387
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:415
 #, elixir-autogen, elixir-format
 msgid "Edit"
 msgstr "編集"
@@ -3106,7 +3106,7 @@ msgstr "編集"
 msgid "Joining..."
 msgstr "Joining..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:152
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:157
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:153
 #: lib/retro_hex_chat_web/live/app/p2p_live.ex:646
 #, elixir-autogen, elixir-format
@@ -3433,7 +3433,7 @@ msgstr "プライベートメッセージ"
 msgid "User list rail"
 msgstr "ユーザー一覧バー"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:373
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:380
 #: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Archive"
@@ -3476,7 +3476,7 @@ msgstr "添付ファイルアップロード失敗"
 msgid "Attachments can only be sent with messages"
 msgstr "添付ファイルのみメッセージで送信できます"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:369
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:376
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "オーディオ"
@@ -3491,7 +3491,7 @@ msgstr "太字"
 msgid "Bulleted list"
 msgstr "箇条書きリスト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:372
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:379
 #, elixir-autogen, elixir-format
 msgid "Code"
 msgstr "コード"
@@ -3501,7 +3501,7 @@ msgstr "コード"
 msgid "Code block"
 msgstr "コードブロック"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:305
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:333
 #, elixir-autogen, elixir-format
 msgid "Copy Source"
 msgstr "ソースをコピー"
@@ -3511,7 +3511,7 @@ msgstr "ソースをコピー"
 msgid "Could not store attachment: %{reason}"
 msgstr "添付ファイルを保存できません: %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:375
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:382
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr "ファイル"
@@ -3526,7 +3526,7 @@ msgstr "見出し"
 msgid "IRC formatting"
 msgstr "IRC 書式"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:367
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:374
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "画像"
@@ -3566,18 +3566,18 @@ msgstr "メッセージ形式"
 msgid "Numbered list"
 msgstr "番号付きリスト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:374
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:381
 #, elixir-autogen, elixir-format
 msgid "Office"
 msgstr "Office"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:185
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:277
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:192
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:284
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "開く"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:370
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:377
 #, elixir-autogen, elixir-format
 msgid "PDF"
 msgstr "PDF"
@@ -3587,7 +3587,7 @@ msgstr "PDF"
 msgid "Plain text"
 msgstr "プレーンテキスト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:240
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:247
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:135
 #, elixir-autogen, elixir-format
 msgid "Preview"
@@ -3616,7 +3616,7 @@ msgstr "取り消し線"
 msgid "Strip Formatting"
 msgstr "書式を解除"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:371
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:378
 #, elixir-autogen, elixir-format
 msgid "Text"
 msgstr "テキスト"
@@ -3627,7 +3627,7 @@ msgstr "テキスト"
 msgid "Too many attachments"
 msgstr "添付ファイルが多すぎます"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:368
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:375
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "ビデオ"
@@ -3642,7 +3642,7 @@ msgstr "作成"
 msgid "You"
 msgstr "あなた"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:332
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:339
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "ファイル"
@@ -3907,14 +3907,16 @@ msgstr "招待リンクをコピー"
 msgid "React"
 msgstr "リアクション"
 
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:306
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:307
 #: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:145
 #: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:146
 #, elixir-autogen, elixir-format
 msgid "React with %{emoji}"
 msgstr "%{emoji} でリアクションする"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:315
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:19
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:343
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "React..."
 msgstr "リアクション..."
@@ -3973,22 +3975,22 @@ msgstr "固定 (%{count})"
 msgid "Show the messages this channel keeps"
 msgstr "このチャンネルが保持しているメッセージを表示"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:327
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:355
 #, elixir-autogen, elixir-format
 msgid "Pin"
 msgstr "固定する"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:336
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:364
 #, elixir-autogen, elixir-format
 msgid "Unpin"
 msgstr "固定を解除"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:356
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:384
 #, elixir-autogen, elixir-format
 msgid "Remove from Saved"
 msgstr "保存から削除"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:347
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:375
 #, elixir-autogen, elixir-format
 msgid "Save for Later"
 msgstr "後で見る"
@@ -4020,7 +4022,7 @@ msgid "%{count} reply"
 msgid_plural "%{count} replies"
 msgstr[0] "%{count}件の返信"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:372
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:400
 #, elixir-autogen, elixir-format
 msgid "Open Thread (%{count} reply)"
 msgid_plural "Open Thread (%{count} replies)"
@@ -4114,8 +4116,8 @@ msgstr "このブラウザはマイクへのアクセスを許可しませんで
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "このブラウザはこのチャットが送信できない形式で録音しました"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:153
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:341
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:160
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:348
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:531
 #, elixir-autogen, elixir-format
 msgid "Voice message"
@@ -5967,7 +5969,7 @@ msgstr "Write here, in any channel, or privately to anyone."
 msgid "Playing %{game}"
 msgstr "%{game}の再生"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:95
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:100
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:51
 #, elixir-autogen, elixir-format
@@ -6024,7 +6026,7 @@ msgstr "もっと見る…"
 msgid "%{category}: every channel, in the Channel List"
 msgstr "%{category}：すべてのチャンネルをチャンネルリストで"
 
-#: lib/retro_hex_chat_web/live/chat_live/reaction_events.ex:93
+#: lib/retro_hex_chat_web/live/chat_live/reaction_events.ex:109
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "メッセージが見つかりません。"
@@ -6039,12 +6041,12 @@ msgstr "%{nick} のメッセージにリアクション"
 msgid "(attachment)"
 msgstr "(添付ファイル)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:190
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:215
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:192
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:217
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m %{seconds}s"
 msgstr "%{minutes}m %{seconds}s"

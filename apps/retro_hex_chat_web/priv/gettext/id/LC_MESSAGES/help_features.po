@@ -88,7 +88,7 @@ msgstr ""
 "), sebuah tooltip muncul di atas masukan menampilkan sintaks perintah dengan"
 " parameter saat ini disorot dalam tebal."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "). Invalid regex patterns show an inline error."
 msgstr "). Pola regex tak valid menampilkan galat inline."
@@ -845,7 +845,7 @@ msgstr ""
 "Anda sendiri joins/parts/nick perubahan tidak pernah memicu Anda otomatis "
 "menanggapi aturan."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "A bar appears above the input showing the original author and a preview of their message. Click ✕ to cancel the reply."
 msgstr ""
@@ -958,12 +958,12 @@ msgstr "Terapkan"
 msgid "Argument Completion"
 msgstr "Penyelesai Argumen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Arrow Down"
 msgstr "Panah Turun"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Arrow Up"
 msgstr "Panah Naik"
@@ -1138,12 +1138,12 @@ msgstr "Batal"
 msgid "Cancel the edit and restore the input to its previous state."
 msgstr "Batalkan penyuntingan dan kembalikan masukan ke keadaan sebelumnya."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Case-sensitive matching (default: case-insensitive)."
 msgstr "Case- pencocokan sensitif (baku: case-sensitivitas)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Case:"
 msgstr "Case:"
@@ -1300,7 +1300,7 @@ msgstr "Taut Dapat Diklik:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Closing"
 msgstr "Menutup"
@@ -1327,7 +1327,7 @@ msgstr "Tooltip Sintaksis Perintah"
 msgid "Commands"
 msgstr "Perintah"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Compose Bar"
 msgstr "Batang Kompose"
@@ -1382,7 +1382,7 @@ msgstr "Menu Konteks:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -1653,7 +1653,7 @@ msgstr ""
 " waktu, inti CPU, dan kedalaman warna. Perangkat yang diaktifkan sentuh "
 "menampilkan indikator sentuh."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Edge Cases"
@@ -1719,7 +1719,7 @@ msgstr "Enter:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Escape"
 msgstr "Kabur"
@@ -1749,7 +1749,7 @@ msgstr "Exemptions"
 msgid "Expert:"
 msgstr "Ahli:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Extend search into the database beyond currently loaded messages."
 msgstr "Panjangkan pencarian ke basis data di luar pesan yang kini dimuat."
@@ -1907,7 +1907,7 @@ msgstr "Sorot Kata"
 msgid "Highlighting"
 msgstr "Penyorotan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "History:"
 msgstr "Sejarah:"
@@ -2155,8 +2155,8 @@ msgstr "Navigasi Papan Ketik"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:57
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
@@ -2291,13 +2291,13 @@ msgid "Message"
 msgstr "Pesan"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Message Delete"
 msgstr "Hapus Pesan"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Message Edit"
@@ -2342,7 +2342,7 @@ msgstr "Beberapa Kicks"
 msgid "Mute"
 msgstr "Bisukan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "My nick:"
 msgstr "Nickku:"
@@ -2528,7 +2528,7 @@ msgstr ""
 "mode + i (invite-only) diset. Pengguna target mesti daring dan belum ada "
 "dalam kanal."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Only search messages that mention your nickname."
 msgstr "Hanya pesan pencarian yang menyebutkan nama panggilan Anda."
@@ -2655,7 +2655,7 @@ msgstr "Ketekunan:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Press"
@@ -2757,7 +2757,7 @@ msgstr "Menghubungkan ulang"
 msgid "Recursion detection"
 msgstr "Deteksi rekursi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Regex:"
 msgstr "Regex:"
@@ -2789,7 +2789,7 @@ msgstr "Mendaftar nama panggilan baru (mulai jam 7 hari segera)"
 msgid "Regular"
 msgstr "Reguler"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Regular expression matching (e.g.,"
 msgstr "Ekspresi reguler yang cocok (misalnya,"
@@ -2799,7 +2799,7 @@ msgstr "Ekspresi reguler yang cocok (misalnya,"
 msgid "Repeating"
 msgstr "Ulangi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Replies appear with a quoted block showing the original message, with your response below. Click the quoted block to scroll to and highlight the original message."
 msgstr ""
@@ -2931,7 +2931,7 @@ msgstr "Fitur Keselamatan"
 msgid "Search"
 msgstr "Cari"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Search Filters"
 msgstr "Cari Filter"
@@ -2994,7 +2994,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:70
@@ -3006,9 +3006,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -3075,7 +3075,7 @@ msgstr ""
 "Operator server dapat mengirim pesan wallop kepada pengguna yang memilih "
 "masuk dengan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Session Memory"
 msgstr "Memori Sesi"
@@ -3117,7 +3117,7 @@ msgid "Shift+Enter"
 msgstr "Shift + Masuk"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:134
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "Pintas Cheatsheet"
@@ -3360,7 +3360,7 @@ msgstr "Pembersihan berjalan otomatis setiap 6 jam"
 msgid "The registration is permanently deleted"
 msgstr "Pendaftaran dihapus permanen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "The search bar remembers your last search term. When you reopen it, the previous query is restored and matches are re-highlighted."
 msgstr ""
@@ -3642,7 +3642,7 @@ msgstr "View and toggle channel modes (+m, +i, +t, +k, +l)."
 msgid "View, add, and remove ignores from the visual dialog."
 msgstr "Lihat, tambahkan, dan hapus mengabaikan dari dialog visual."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Visual Format"
 msgstr "Format Visual"
@@ -3835,7 +3835,7 @@ msgstr ""
 "tombol tersedia untuk berhenti mencoba kembali. Anda juga dapat menyegarkan "
 "halaman untuk memulai koneksi baru."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "buttons, or press"
 msgstr "tombol, atau tekan"
@@ -3860,7 +3860,7 @@ msgstr "recreat/maximum"
 msgid "dismisses the dialog."
 msgstr "membubarkan dialog."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "error|warn"
 msgstr "error 126; peringatkan"
@@ -3898,7 +3898,7 @@ msgstr ""
 "dalam sebuah masukan kosong bekerja seperti sebelumnya (riwayat server-"
 "side)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "in the search input to jump between matches. The chat scrolls to each match automatically."
 msgstr ""
@@ -3941,7 +3941,7 @@ msgstr "pesan."
 msgid "once per unique sender"
 msgstr "sekali setiap pengirim unik"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "or click the close button. All highlights are removed."
 msgstr "atau klik tombol tutup. Semua highlights dihapus."
@@ -4513,20 +4513,13 @@ msgstr "UI Menu Konteks"
 msgid "Desktop & Windows"
 msgstr "Desktop & Jendela"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Each chat message is laid out in two columns: a compact metadata column and the message text."
-msgstr ""
-"Setiap pesan obrolan ditata dalam dua kolom: kolom metadata kompak dan teks "
-"pesan."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Edit > Find"
 msgstr "Sunting > Cari"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:85
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Edit Menu"
 msgstr "Sunting Menu"
@@ -4663,11 +4656,6 @@ msgstr ""
 msgid "Routing Policy"
 msgstr "Kebijakan Routing"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Sender Icons"
-msgstr "Ikon Pengirim"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The Account dialog profile tab can start a nickname change. Registered target nicknames still require the NickServ password in the confirmation flow."
@@ -4675,11 +4663,6 @@ msgstr ""
 "Tab profil dialog Akun dapat memulai perubahan nama panggilan. Nama "
 "panggilan target terdaftar masih memerlukan sandi NickServ dalam aliran "
 "konfirmasi."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "The Metadata Column"
-msgstr "Kolom Metadata"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:31
 #, elixir-autogen, elixir-format
@@ -4705,26 +4688,6 @@ msgid "The current user mode is wallops (+w), which controls whether operator br
 msgstr ""
 "Mode pengguna saat ini adalah wallop (+ w), yang mengontrol apakah pesan "
 "siaran operator dikirimkan ke tab Status Anda."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "The message text gets the wider column and a slightly larger font, so it reads well on phones as well as desktop — without dropping the retro monospace identity. Nicknames are shown plainly, with no surrounding angle brackets, and the timestamp carries the full date and time in its hover tooltip."
-msgstr ""
-"Teks pesan mendapat kolom yang lebih luas dan fonta yang sedikit lebih "
-"besar, sehingga dibaca baik pada telepon serta desktop - tanpa menjatuhkan "
-"identitas monospace retro. Nama panggilan ditunjukkan dengan jelas, tanpa "
-"kurung sudut sekitarnya, dan penanda waktu membawa tanggal dan waktu penuh "
-"dalam tooltip hover nya."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The narrow left column shows the author's nickname — or, for system lines, an origin label such as System, Error, Service or MOTD — on the first line, with a smaller, muted timestamp beneath it. The nickname stays clickable for the hover card, private messages and the context menu."
-msgstr ""
-"Kolom kiri yang sempit menunjukkan nama panggilan penulis - atau, untuk "
-"baris sistem, label asal seperti Sistem, Error, Layanan, atau MOTD - pada "
-"baris pertama, dengan penanda waktu yang lebih kecil di bawahnya. Nama "
-"panggilan tetap dapat diklik untuk kartu hover, pesan pribadi dan menu "
-"konteks."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
 #, elixir-autogen, elixir-format
@@ -4795,11 +4758,6 @@ msgstr ""
 "termasuk saluran berbagi, waktu online, waktu menganggur, pendaftaran, "
 "status, bio, dan rincian klien ketika tersedia."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Why It Looks This Way"
-msgstr "Why It Looks Lewat sini"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Your bio is a short profile line shown in whois output. Registered users keep it across sessions; guests keep it for the current session. The Account dialog shows the 200-character limit while you type."
@@ -4842,17 +4800,6 @@ msgid "with no arguments. The dialog lists active timers and provides Add, Edit,
 msgstr ""
 "tanpa argumen. Dialog daftar penghitung waktu aktif dan menyediakan Tambah, "
 "Sunting, dan Stop tombol tanpa membutuhkan sintaks perintah mentah."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "A small pixel-art icon sits in front of each name to signal where the line came from at a glance: a user glyph for anything a person typed, and distinct glyphs for System, Service, Error, Server, Help and deleted lines. The nickname itself is shown a little larger and bolder, while the timestamp is smaller, so your eye lands on who spoke first."
-msgstr ""
-"Sebuah ikon pixel-art kecil duduk di depan setiap nama untuk memberi sinyal "
-"dimana baris berasal dari sekilas: seorang pengguna glyph untuk apapun yang "
-"diketik, dan glif yang berbeda untuk Sistem, Layanan, Galat, Server, Bantuan"
-" dan baris yang dihapus. Julukan itu sendiri menunjukkan sedikit lebih besar"
-" dan lebih berani, sedangkan timestamp lebih kecil, sehingga mata Anda "
-"mendarat pada yang berbicara pertama."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
 #, elixir-autogen, elixir-format
@@ -6185,7 +6132,7 @@ msgstr ""
 "sampai ke orang yang menulis baris itu, dan tidak pernah meminta siapa pun "
 "membaca apa pun."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
 msgstr ""
@@ -6193,12 +6140,12 @@ msgstr ""
 " dan tidak membangunkan perangkat apa pun. Itu disengaja: hal termurah yang "
 "bisa Anda katakan di sini juga harus tetap murah bagi yang menerimanya."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Click your own reaction again to take it back"
 msgstr "Klik lagi reaksi Anda sendiri untuk menariknya kembali"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker"
@@ -6209,12 +6156,12 @@ msgstr "Emoji Picker"
 msgid "How to React"
 msgstr "Cara bereaksi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "It Notifies Nobody"
 msgstr "Tidak memberi tahu siapa pun"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "What the Numbers Mean"
 msgstr "Arti angka-angka itu"
@@ -6472,7 +6419,7 @@ msgstr ""
 "terkumpul. Pilih baris itu untuk membaca seluruh percakapan bersama, sesuai "
 "urutan kejadiannya."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
 msgstr ""
@@ -6499,7 +6446,7 @@ msgstr ""
 "selalu cocok. Balasan yang ditulis sebelum fitur ini ada tetap mengutip "
 "pesan aslinya dan tidak dihitung di sini."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "If the original message was deleted, the quote shows that it is gone and the reply stays where it is. Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
 msgstr ""
@@ -6522,7 +6469,7 @@ msgstr "Membuka utas"
 msgid "Replying From the Window"
 msgstr "Membalas dari jendela"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Replying to a Reply"
 msgstr "Membalas sebuah balasan"
@@ -6539,7 +6486,7 @@ msgstr ""
 msgid "Saving a Message"
 msgstr "Menyimpan pesan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "Utas"
@@ -7929,22 +7876,82 @@ msgstr "Bahasa sebuah bot"
 msgid "A bot carries a flag too, for the language it speaks. An admin gives a bot its language with %{command} or in Bot Management. A bot nobody gave a language has no flag."
 msgstr "Sebuah bot membawa bendera juga, untuk bahasa itu berbicara. Sebuah admin memberikan bot bahasanya dengan %{command} atau di Bot Management. Sebuah bot tidak ada yang memberikan bahasa memiliki bendera."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "For any other emoji, right-click the message (on a phone, press and hold it) and choose %{item}"
 msgstr "Untuk emoji lainnya, klik kanan pesan (di telepon, tekan dan tahan) dan pilih %{item}"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "With the keyboard: from the message box press Shift+Tab until a message is selected, move to the one you want with the arrow keys and press Enter"
 msgstr "Dengan keyboard: dari kotak pesan tekan Shift+Tab sampai suatu pesan dipilih, pindahkan ke yang anda inginkan dengan tombol panah dan tekan Enter"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "The number beside an emoji shows how many people chose it. Point at it to see their names. In your own reactions the number uses bold text. Each person counts only once per emoji, even after many clicks."
 msgstr "Nomor di samping emoji menunjukkan berapa banyak orang yang memilihnya. Tunjukkan pada untuk melihat nama mereka. Dalam reaksi Anda sendiri jumlah menggunakan teks tebal. Setiap orang hanya menghitung sekali per emoji, bahkan setelah banyak klik."
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "A message with only one to three emoji is printed large. Pictures appear without a frame; point at one to see its file name and size, and click it to open it."
+msgstr "Pesan dengan hanya satu sampai tiga emoji dicetak besar. Gambar muncul tanpa bingkai; titik pada satu untuk melihat nama file dan ukuran, dan klik untuk membukanya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Notices From the Room"
+msgstr "Notices From the Room"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "On a phone you can also swipe the message to the right: the reply bar opens quoting it."
+msgstr "Di telepon Anda juga dapat menggesekkan pesan ke kanan: bilah jawaban membuka mengutipnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "On a phone, press and hold the message: the quick emoji are across the top of the menu that opens"
+msgstr "Di telepon, tekan dan tahan pesan: emoji cepat berada di atas menu yang terbuka"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Pictures and Emoji"
+msgstr "Foto dan Emoji"
+
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "Click the smiley under the message and choose one of the emoji it offers. Your reaction appears in the same place."
-msgstr "Klik senyum di bawah pesan dan pilih salah satu emoji yang ditawarkan. Reaksimu muncul di tempat yang sama."
+msgid "Point at the message and click the smiley that appears beside it, then choose one of the emoji it offers. Your reaction appears under the message."
+msgstr "Arahkan pada pesan dan klik senyum yang muncul di sampingnya, lalu pilih salah satu emoji yang ditawarkan. Reaksimu muncul di bawah pesan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The conversation is printed like continuous printer paper, the kind with green and white stripes."
+msgstr "Percakapan ini dicetak seperti kertas pencetak terus menerus, jenis dengan garis-garis hijau dan putih."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Where a Day Starts"
+msgstr "Where a day Starts"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "A dotted perforation with the date marks the first message of each day. Each message shows only the hour and minute. Point at the hour to see the full date."
+msgstr "Sebuah perforasi bertitik dengan tanggal menandai pesan pertama setiap hari. Setiap pesan menunjukkan hanya jam dan menit. Tunjukkan pada jam untuk melihat tanggal penuh."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "One Name Above Several Lines"
+msgstr "Satu Nama Di Atas Beberapa Baris"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Point at a message, or reach it with the keyboard, to see the hour it was written. Your own messages are printed on a light blue stripe."
+msgstr "Arahkan pada pesan, atau hubungi dengan keyboard, untuk melihat jam yang ditulis. Pesan Anda sendiri dicetak pada garis biru muda."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "When one person writes several messages in a row, their name and the hour appear once, above the first message. The messages under it share the same stripe. A new stripe starts when someone else speaks, after five minutes of silence, or on a new day."
+msgstr "Ketika satu orang menulis beberapa pesan berturut-turut, nama mereka dan jam muncul sekali, di atas pesan pertama. Pesan-pesan di bawahnya berbagi garis yang sama. Sebuah garis baru dimulai ketika orang lain berbicara, setelah lima menit keheningan, atau pada hari baru."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Some messages come from the room rather than from a person: /me actions, System, Service and Error messages, and deleted messages. They have no stripe and appear between the stripes, each with a small icon."
+msgstr "Beberapa pesan datang dari ruangan daripada dari seseorang: /me aksi, Sistem, Layanan dan Galat pesan, dan pesan yang dihapus. Mereka tidak memiliki garis-garis dan muncul antara garis-garis, masing-masing dengan ikon kecil."

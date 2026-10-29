@@ -47,17 +47,17 @@ msgstr "*!*@*.bad.isp"
 msgid "*!*@troll.host"
 msgstr "*!*@troll.host.com"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:90
 #, elixir-autogen, elixir-format
 msgid "*adjusts monocle* Reginald here — your server concierge."
 msgstr "*monocle* Reginaldは こちら — サーバーコンシェルジュ."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:81
 #, elixir-autogen, elixir-format
 msgid "*nods silently* Stay out of trouble, Troll."
 msgstr "*無声* トラブルに遭遇する, トロール."
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:35
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:84
 #, elixir-autogen, elixir-format
 msgid "*tips hat* Do return soon, Troll."
 msgstr "*tipsの帽子* すぐに戻りましょう。"
@@ -687,7 +687,7 @@ msgstr "チャネルをブラウズ"
 msgid "Browse available channels and join one to start chatting."
 msgstr "利用可能なチャネルをブラウズし、チャットを開始するために1つに参加します。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:174
 #, elixir-autogen, elixir-format
 msgid "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
 msgstr "ここのブルタス — 私は平和を保つ. 遊び場も充実。 あなたがリマインダーを必要とするならば、タイプ!rules。"
@@ -719,7 +719,7 @@ msgstr "カスタマイズできますか?"
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:117
 #, elixir-autogen, elixir-format
 msgid "Cannot send to channel: you are banned."
 msgstr "チャンネルに送信できません。禁止されています。"
@@ -751,7 +751,7 @@ msgstr "カードの説明はこちら"
 msgid "Center"
 msgstr "センター"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:74
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:123
 #, elixir-autogen, elixir-format
 msgid "ChanServ has set mode +o Troll."
 msgstr "ChanServ はモード +o Troll をセットしました。"
@@ -898,8 +898,8 @@ msgstr "チャット入力"
 msgid "Chat Layout"
 msgstr "チャットレイアウト"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:17
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:24
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:55
 #: lib/retro_hex_chat_web/showcase_catalog.ex:412
 #, elixir-autogen, elixir-format
 msgid "Chat Message"
@@ -1915,7 +1915,7 @@ msgstr "ゴースト"
 msgid "Got it"
 msgstr "Got it"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:108
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:157
 #, elixir-autogen, elixir-format
 msgid "Greetings, everyone."
 msgstr "みなさま、こんにちは。"
@@ -1941,7 +1941,7 @@ msgstr "ハードウェア"
 msgid "Has minimize, maximize, and close buttons."
 msgstr "ボタンを最小化、最大化、閉じます。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:108
 #, elixir-autogen, elixir-format
 msgid "Hello everyone!"
 msgstr "Hello everyone!"
@@ -1967,12 +1967,12 @@ msgstr "ヘルプ&クローズ"
 msgid "Hey everyone!"
 msgstr "Hey everyone!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:96
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:145
 #, elixir-autogen, elixir-format
 msgid "Hey!"
 msgstr "Hey!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:99
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:148
 #, elixir-autogen, elixir-format
 msgid "Hi Alice!"
 msgstr "こんにちはアリス!"
@@ -2381,7 +2381,7 @@ msgstr "ログアウト"
 msgid "Long Message"
 msgstr "ロングメッセージ"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:114
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:163
 #, elixir-autogen, elixir-format
 msgid "Long Messages & Wrapping"
 msgstr "長いメッセージとラッピング"
@@ -2429,7 +2429,7 @@ msgstr "メニュー"
 msgid "Message Menu"
 msgstr "メッセージメニュー"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:103
 #, elixir-autogen, elixir-format
 msgid "Message Types"
 msgstr "メッセージの種類"
@@ -2547,7 +2547,7 @@ msgstr "ニック・チェンジ"
 msgid "Nick Change Dialog"
 msgstr "Nick 変更ダイアログ"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:91
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:140
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:43
@@ -2634,7 +2634,7 @@ msgstr "非禁止"
 msgid "Normal"
 msgstr "標準"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:76
 #, elixir-autogen, elixir-format
 msgid "Normal Messages"
 msgstr "通常のメッセージ"
@@ -2644,7 +2644,7 @@ msgstr "通常のメッセージ"
 msgid "Not joined"
 msgstr "参加しない"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:105
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:154
 #, elixir-autogen, elixir-format
 msgid "Not much, you?"
 msgstr "Not much, you?"
@@ -3984,17 +3984,17 @@ msgstr "ツリービュー"
 msgid "Troll"
 msgstr "トロール"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:114
 #, elixir-autogen, elixir-format
 msgid "Troll has joined the channel."
 msgstr "Trollがチャンネルに参加しました。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:38
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:87
 #, elixir-autogen, elixir-format
 msgid "Troll heading out? Cool cool. The lobby will keep your seat warm."
 msgstr "Troll 見出し? クールなクール。 ロビーは、座席を温めておきます。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:168
 #, elixir-autogen, elixir-format
 msgid "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
 msgstr ""
@@ -4245,7 +4245,7 @@ msgstr "RetroHexChatへようこそ!"
 msgid "What is RetroHexChat?"
 msgstr "RetroHexChatとは?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:102
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:151
 #, elixir-autogen, elixir-format
 msgid "What's up?"
 msgstr "What's up?"
@@ -4438,7 +4438,7 @@ msgstr "Z-Index スケール"
 msgid "Zero Results"
 msgstr "ゼロ結果"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:71
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:120
 #, elixir-autogen, elixir-format
 msgid "[Server] Maintenance in 5 minutes."
 msgstr "[サーバー] 5分でメンテナンス"
@@ -4564,7 +4564,7 @@ msgstr "ユーザ名@example.com"
 msgid "vip!*@*.good.isp"
 msgstr "vip!*@*.good.isp"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:111
 #, elixir-autogen, elixir-format
 msgid "waves to the channel"
 msgstr "チャネルへの波"
@@ -5282,3 +5282,8 @@ msgstr "アーケードゲームロゴ/coverアート"
 #, elixir-autogen, elixir-format
 msgid "P2P multiplayer and arcade flow"
 msgstr "P2Pマルチプレイとアーケードフロー"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:58
+#, elixir-autogen, elixir-format
+msgid "Continuous Paper"
+msgstr "連続紙"

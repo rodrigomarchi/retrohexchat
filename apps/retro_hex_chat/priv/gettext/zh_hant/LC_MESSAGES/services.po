@@ -11,49 +11,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:418
+#: lib/retro_hex_chat/services/chan_serv.ex:440
 #: lib/retro_hex_chat/services/nick_serv.ex:532
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:385
+#: lib/retro_hex_chat/services/chan_serv.ex:407
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} added to %{level} list of %{channel_name}"
 msgstr "%{target_nick} 加入%{level} 列表%{channel_name}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:411
+#: lib/retro_hex_chat/services/chan_serv.ex:433
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} not found in access list"
 msgstr "%{target_nick} 在訪問列表中找不到"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:404
+#: lib/retro_hex_chat/services/chan_serv.ex:426
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} removed from access list of %{channel_name}"
 msgstr "%{target_nick} 從%{channel_name}的訪問列表中刪除"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:208
+#: lib/retro_hex_chat/services/chan_serv.ex:230
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped"
 msgstr "頻道 %{channel_name} 丟棄"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:267
+#: lib/retro_hex_chat/services/chan_serv.ex:289
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped by admin"
 msgstr "頻道 %{channel_name} 由管理員投放"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:220
-#: lib/retro_hex_chat/services/chan_serv.ex:335
+#: lib/retro_hex_chat/services/chan_serv.ex:242
+#: lib/retro_hex_chat/services/chan_serv.ex:357
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} is not registered"
 msgstr "頻道 %{channel_name} 未註冊"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:191
+#: lib/retro_hex_chat/services/chan_serv.ex:213
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} registered by %{founder_nick}"
 msgstr "頻道 %{channel_name} 由%{founder_nick}註冊 。"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:393
+#: lib/retro_hex_chat/services/chan_serv.ex:415
 #, elixir-autogen, elixir-format
 msgid "Failed to add %{target_nick} to %{level} list"
 msgstr "添加失敗 %{target_nick} 改爲: %{level} 列表"
@@ -68,7 +68,7 @@ msgstr "重設密碼失敗 %{nickname}"
 msgid "Failed to save MOTD."
 msgstr "保存 MOTD 失敗 。"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:288
+#: lib/retro_hex_chat/services/chan_serv.ex:310
 #, elixir-autogen, elixir-format
 msgid "Founder of %{channel_name} transferred to %{new_founder}"
 msgstr "%{channel_name}的創建者轉到%{new_founder}"
@@ -119,7 +119,7 @@ msgstr "註冊成功的暱稱 %{nickname}"
 msgid "Nickname %{target_nick} is not registered"
 msgstr "暱稱 %{target_nick} 未註冊"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:348
+#: lib/retro_hex_chat/services/chan_serv.ex:370
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel"
 msgstr "只有創建者才能丟棄頻道"
@@ -149,7 +149,7 @@ msgstr "登記目前由服務器管理員關閉"
 msgid "You are now identified as %{nickname}"
 msgstr "您現在被確認爲 %{nickname}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:316
+#: lib/retro_hex_chat/services/chan_serv.ex:338
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "您必須確定使用 ChanServ 的身份"

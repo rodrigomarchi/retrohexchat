@@ -11,49 +11,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:418
+#: lib/retro_hex_chat/services/chan_serv.ex:440
 #: lib/retro_hex_chat/services/nick_serv.ex:532
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:385
+#: lib/retro_hex_chat/services/chan_serv.ex:407
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} added to %{level} list of %{channel_name}"
 msgstr "%{target_nick} ajouté à la liste %{level} de %{channel_name}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:411
+#: lib/retro_hex_chat/services/chan_serv.ex:433
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} not found in access list"
 msgstr "%{target_nick} non trouvé dans la liste d'accès"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:404
+#: lib/retro_hex_chat/services/chan_serv.ex:426
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} removed from access list of %{channel_name}"
 msgstr "%{target_nick} supprimé de la liste d'accès de %{channel_name}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:208
+#: lib/retro_hex_chat/services/chan_serv.ex:230
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped"
 msgstr "Canal %{channel_name} abandonné"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:267
+#: lib/retro_hex_chat/services/chan_serv.ex:289
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped by admin"
 msgstr "Canal %{channel_name} supprimé par admin"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:220
-#: lib/retro_hex_chat/services/chan_serv.ex:335
+#: lib/retro_hex_chat/services/chan_serv.ex:242
+#: lib/retro_hex_chat/services/chan_serv.ex:357
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} is not registered"
 msgstr "Channel %{channel_name} n'est pas enregistré"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:191
+#: lib/retro_hex_chat/services/chan_serv.ex:213
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} registered by %{founder_nick}"
 msgstr "Canal %{channel_name} enregistré par %{founder_nick}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:393
+#: lib/retro_hex_chat/services/chan_serv.ex:415
 #, elixir-autogen, elixir-format
 msgid "Failed to add %{target_nick} to %{level} list"
 msgstr "Impossible d'ajouter %{target_nick} à la liste %{level}"
@@ -68,7 +68,7 @@ msgstr "Impossible de réinitialiser le mot de passe de %{nickname}"
 msgid "Failed to save MOTD."
 msgstr "Impossible de sauver MOTD."
 
-#: lib/retro_hex_chat/services/chan_serv.ex:288
+#: lib/retro_hex_chat/services/chan_serv.ex:310
 #, elixir-autogen, elixir-format
 msgid "Founder of %{channel_name} transferred to %{new_founder}"
 msgstr "Fondateur de %{channel_name} transféré à %{new_founder}"
@@ -119,7 +119,7 @@ msgstr "Pseudo %{nickname} enregistré avec succès"
 msgid "Nickname %{target_nick} is not registered"
 msgstr "Le Pseudo %{target_nick} n'est pas enregistré"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:348
+#: lib/retro_hex_chat/services/chan_serv.ex:370
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel"
 msgstr "Seul le fondateur peut laisser tomber une chaîne"
@@ -150,7 +150,7 @@ msgstr ""
 msgid "You are now identified as %{nickname}"
 msgstr "Vous êtes maintenant identifié comme %{nickname}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:316
+#: lib/retro_hex_chat/services/chan_serv.ex:338
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "Vous devez être identifié pour utiliser ChanServ"

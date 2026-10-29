@@ -83,7 +83,7 @@ msgstr ")只在該頻道觸發。"
 msgid "), a tooltip appears above the input showing the command syntax with the current parameter highlighted in bold."
 msgstr "),一個工具提示出現在顯示命令語法的輸入上方,以粗體突出顯示當前參數."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "). Invalid regex patterns show an inline error."
 msgstr ") (中文(簡體) ). 無效的 regex 模式顯示內含錯誤 。"
@@ -798,7 +798,7 @@ msgstr ":當有人給你派了PM,而對話已經不在你的列表中時,它會�
 msgid ": Your own joins/parts/nick changes never trigger your auto-respond rules."
 msgstr ": 您自己加入的 /parts/nick 更改不會觸發您的自動響應規則 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "A bar appears above the input showing the original author and a preview of their message. Click ✕ to cancel the reply."
 msgstr "顯示原作者的輸入上方有一個欄,並預覽他們的消息。 點擊QQ以取消回覆 。"
@@ -899,12 +899,12 @@ msgstr "套用"
 msgid "Argument Completion"
 msgstr "參數補全"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Arrow Down"
 msgstr "向下箭頭"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Arrow Up"
 msgstr "向上箭頭"
@@ -1063,12 +1063,12 @@ msgstr "取消"
 msgid "Cancel the edit and restore the input to its previous state."
 msgstr "取消編輯並恢復其先前狀態的輸入。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Case-sensitive matching (default: case-insensitive)."
 msgstr "區分大小寫匹配( 默認: 不區分大小寫) 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Case:"
 msgstr "案例 :"
@@ -1207,7 +1207,7 @@ msgstr "可點擊鏈接 :"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Closing"
 msgstr "閉幕"
@@ -1234,7 +1234,7 @@ msgstr "命令語法工具提示"
 msgid "Commands"
 msgstr "指令"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Compose Bar"
 msgstr "編曲欄"
@@ -1289,7 +1289,7 @@ msgstr "背景菜單 :"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -1542,7 +1542,7 @@ msgid "Each side of the diagram shows detailed information about the peer's brow
 msgstr ""
 "圖表的兩側都顯示對等者瀏覽器環境的詳細信息:瀏覽器名稱和版本,操作系統,屏幕分辨率,語言,時區,CPU核心,以及顏色深度. 觸摸設備顯示觸摸指標."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Edge Cases"
@@ -1602,7 +1602,7 @@ msgstr "輸入 :"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Escape"
 msgstr "越獄"
@@ -1632,7 +1632,7 @@ msgstr "豁免"
 msgid "Expert:"
 msgstr "專家:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Extend search into the database beyond currently loaded messages."
 msgstr "將搜索擴展到當前已裝入信件以外的數據庫 。"
@@ -1776,7 +1776,7 @@ msgstr "突出顯示單詞"
 msgid "Highlighting"
 msgstr "突出顯示"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "History:"
 msgstr "歷史:"
@@ -2004,8 +2004,8 @@ msgstr "鍵盤導航"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:57
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
@@ -2131,13 +2131,13 @@ msgid "Message"
 msgstr "消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Message Delete"
 msgstr "刪除信件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Message Edit"
@@ -2182,7 +2182,7 @@ msgstr "多腳"
 msgid "Mute"
 msgstr "靜音"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "My nick:"
 msgstr "我的暱稱:"
@@ -2357,7 +2357,7 @@ msgstr "一發"
 msgid "Only channel operators can send invites. The channel must have +i (invite-only) mode set. The target user must be online and not already in the channel."
 msgstr "只有頻道運營商可以發送邀請函. 頻道必須設置 +i (只邀請) 模式 。 目標用戶必須是在線的,而不是已經進入頻道的."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Only search messages that mention your nickname."
 msgstr "只有提到你暱稱的搜索信息 。"
@@ -2482,7 +2482,7 @@ msgstr "持久性 :"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Press"
@@ -2574,7 +2574,7 @@ msgstr "重新連線中"
 msgid "Recursion detection"
 msgstr "追溯檢測"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Regex:"
 msgstr "縮寫 :"
@@ -2604,7 +2604,7 @@ msgstr "註冊新暱稱( 立即啓動7天的時鐘)"
 msgid "Regular"
 msgstr "經常"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Regular expression matching (e.g.,"
 msgstr "正則表達式匹配(例如,"
@@ -2614,7 +2614,7 @@ msgstr "正則表達式匹配(例如,"
 msgid "Repeating"
 msgstr "重複"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Replies appear with a quoted block showing the original message, with your response below. Click the quoted block to scroll to and highlight the original message."
 msgstr "答覆以引用的塊顯示原始消息,下面是答覆。 單擊引用的塊滾動到並突出顯示原始信件。"
@@ -2724,7 +2724,7 @@ msgstr "安全特性"
 msgid "Search"
 msgstr "搜尋"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Search Filters"
 msgstr "搜索過濾器"
@@ -2786,7 +2786,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:70
@@ -2798,9 +2798,9 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -2860,7 +2860,7 @@ msgstr "服務器管理員可以設置一個所有用戶在連接時看到的MOT
 msgid "Server operators can send wallops messages to users who opt in with"
 msgstr "服務器操作員可以向選擇加入的用戶發送Wallops消息"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Session Memory"
 msgstr "會話內存"
@@ -2901,7 +2901,7 @@ msgid "Shift+Enter"
 msgstr "移動+ 輸入"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:134
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "快捷鍵計費表"
@@ -3108,7 +3108,7 @@ msgstr "清洗每6小時自動運行一次"
 msgid "The registration is permanently deleted"
 msgstr "登記被永久刪除"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "The search bar remembers your last search term. When you reopen it, the previous query is restored and matches are re-highlighted."
 msgstr "搜索欄會記住你上次的搜索術語. 當重新打開時,會恢復之前的查詢,並重新突出匹配."
@@ -3365,7 +3365,7 @@ msgstr "查看和切換通道模式(+m,+i,+t,+k,+l)."
 msgid "View, add, and remove ignores from the visual dialog."
 msgstr "從視覺對話框中查看、添加和刪除忽略。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Visual Format"
 msgstr "視覺格式"
@@ -3519,7 +3519,7 @@ msgstr "按鈕。"
 msgid "button is available to stop retrying. You can also refresh the page to start a fresh connection."
 msgstr "按鈕可以停止重試。 您也可以刷新頁面開始新的連接 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "buttons, or press"
 msgstr "按鈕,或按"
@@ -3544,7 +3544,7 @@ msgstr "當前 /maximum"
 msgid "dismisses the dialog."
 msgstr "放棄對話框 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "error|warn"
 msgstr "錯誤 QQwarn"
@@ -3575,7 +3575,7 @@ msgstr "爲目標暱稱。"
 msgid "in an empty input works as before (server-side history)."
 msgstr "在空輸入中和以前一樣工作(服務器側歷史)。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "in the search input to jump between matches. The chat scrolls to each match automatically."
 msgstr "在搜索輸入中跳轉到匹配之間。 聊天卷軸自動切換到每個匹配 。"
@@ -3615,7 +3615,7 @@ msgstr "留言。"
 msgid "once per unique sender"
 msgstr "每個唯一發送者一次"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "or click the close button. All highlights are removed."
 msgstr "或單擊關閉按鈕。 所有亮點都被刪除。"
@@ -4171,18 +4171,13 @@ msgstr "背景菜單UI"
 msgid "Desktop & Windows"
 msgstr "桌面窗口( W)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Each chat message is laid out in two columns: a compact metadata column and the message text."
-msgstr "每個聊天信息分爲兩欄:緊湊元數據欄和消息文本."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Edit > Find"
 msgstr "編輯 > 查找"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:85
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Edit Menu"
 msgstr "編輯菜單"
@@ -4298,20 +4293,10 @@ msgstr ""
 msgid "Routing Policy"
 msgstr "路線政策"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Sender Icons"
-msgstr "發件人圖標"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The Account dialog profile tab can start a nickname change. Registered target nicknames still require the NickServ password in the confirmation flow."
 msgstr "賬戶對話框配置標籤可以啓動暱稱更改 。 註冊的目標暱稱在確認流中仍然需要NickServ密碼."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "The Metadata Column"
-msgstr "元數據列"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:31
 #, elixir-autogen, elixir-format
@@ -4331,20 +4316,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "The current user mode is wallops (+w), which controls whether operator broadcast messages are delivered to your Status tab."
 msgstr "當前用戶模式是 wallops(+w),它控制操作員廣播消息是否發送到您的狀態標籤."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "The message text gets the wider column and a slightly larger font, so it reads well on phones as well as desktop — without dropping the retro monospace identity. Nicknames are shown plainly, with no surrounding angle brackets, and the timestamp carries the full date and time in its hover tooltip."
-msgstr ""
-"消息文本獲得更寬的列和稍大一點的字體,所以在手機和桌面上讀得都很好——而不降低復古單空間的特性. "
-"暱稱清晰顯示,沒有周圍角括號,時間戳在它的懸浮工具提示中帶有完整的日期和時間."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The narrow left column shows the author's nickname — or, for system lines, an origin label such as System, Error, Service or MOTD — on the first line, with a smaller, muted timestamp beneath it. The nickname stays clickable for the hover card, private messages and the context menu."
-msgstr ""
-"狹義的左欄顯示作者的暱稱——或者說,對於系統行來說,在第一行顯示System,Error,Service或MOTD等起源標籤,下面有一個較小的,變音的時間戳."
-" 暱稱保留可點擊的懸浮卡,私人信件和上下文菜單."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
 #, elixir-autogen, elixir-format
@@ -4399,11 +4370,6 @@ msgstr "誰是"
 msgid "Whois shows current information for an online user in a result card, including shared channels, online time, idle time, registration, away status, bio, and client details when available."
 msgstr "誰在結果卡中顯示在線用戶的當前信息,包括共享頻道,在線時間,閒置時間,註冊,離場狀態,生物,以及可獲得的客戶端細節."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Why It Looks This Way"
-msgstr "爲什麼看起來 這邊"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Your bio is a short profile line shown in whois output. Registered users keep it across sessions; guests keep it for the current session. The Account dialog shows the 200-character limit while you type."
@@ -4435,13 +4401,6 @@ msgstr "以顯示當前路由策略。 用戶通知被路由到活動窗口,頻�
 #, elixir-autogen, elixir-format
 msgid "with no arguments. The dialog lists active timers and provides Add, Edit, and Stop buttons without requiring raw command syntax."
 msgstr "沒有爭論。 對話框列出活動計時器,並提供添加,編輯和停止按鈕而不需要原始命令語法."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "A small pixel-art icon sits in front of each name to signal where the line came from at a glance: a user glyph for anything a person typed, and distinct glyphs for System, Service, Error, Server, Help and deleted lines. The nickname itself is shown a little larger and bolder, while the timestamp is smaller, so your eye lands on who spoke first."
-msgstr ""
-"一個小像素藝術圖標坐在每個名字前,以表示線條來自何方的一覽:一個用戶格萊弗用於任何輸入的人,一個用戶格萊弗用於系統,服務,錯誤,服務器,幫助和刪除的行."
-" 這個暱稱本身被顯示得更大更大膽,而時間戳則更小,所以你的眼睛就落在誰先說話的身上."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
 #, elixir-autogen, elixir-format
@@ -5530,17 +5489,17 @@ msgstr "你所在頻道中寫到的你的暱稱"
 msgid "A reaction is an answer to a message that costs one click. It reaches the person who wrote the line, and it never asks anybody to read anything."
 msgstr "回應是只需一次點擊的訊息答覆。它會送達寫下那行字的人，也從不要求任何人去讀什麼。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
 msgstr "回應不會播放聲音、不會標記未讀，也不會喚醒任何裝置。這是刻意的：你在這裡能說的最便宜的話，對收到它的人也該一樣便宜。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Click your own reaction again to take it back"
 msgstr "再次點擊你自己的回應即可撤回"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker"
@@ -5551,12 +5510,12 @@ msgstr "愛莫吉·皮克"
 msgid "How to React"
 msgstr "如何回應"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "It Notifies Nobody"
 msgstr "不會通知任何人"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "What the Numbers Mean"
 msgstr "數字的含義"
@@ -5768,7 +5727,7 @@ msgstr "「在此討論串中回覆」會把頻道自己的輸入框對準開啟
 msgid "A message somebody answered says how many replies it collected. Choose that line to read the whole exchange together, in the order it happened."
 msgstr "有人回覆過的訊息會說明它收到了多少則回覆。選擇那一行，就能按發生的順序一起閱讀整段對話。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
 msgstr ""
@@ -5786,7 +5745,7 @@ msgid "Everything that answers the first message, including replies somebody lat
 msgstr ""
 "所有回答第一則訊息的內容，包括後來被人刪除的回覆；它們會顯示為已刪除，這樣計數和清單始終一致。在此功能出現之前寫下的回覆會保留它們引用的訊息，不計入這裡。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "If the original message was deleted, the quote shows that it is gone and the reply stays where it is. Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
 msgstr "如果原始訊息被刪除，引用會顯示它已不在，而回覆仍留在原處。長訊息在回覆預覽中會被截斷。編輯原始訊息會更新所有回覆中的引用。"
@@ -5806,7 +5765,7 @@ msgstr "開啟討論串"
 msgid "Replying From the Window"
 msgstr "從視窗回覆"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Replying to a Reply"
 msgstr "回覆一則回覆"
@@ -5821,7 +5780,7 @@ msgstr "以右鍵點擊一則訊息並選擇「回覆」。在手機上，長按
 msgid "Saving a Message"
 msgstr "儲存一則訊息"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "討論串"
@@ -7186,22 +7145,82 @@ msgstr "機器人的語言"
 msgid "A bot carries a flag too, for the language it speaks. An admin gives a bot its language with %{command} or in Bot Management. A bot nobody gave a language has no flag."
 msgstr "機器人也帶着旗子,因爲它說話的語言。 管理員給一個bot語言與%{command}或Bot Management. 沒有人給的機器人沒有旗幟"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "For any other emoji, right-click the message (on a phone, press and hold it) and choose %{item}"
 msgstr "對於其他的emoji,請右鍵單擊消息(在電話上,按住並握住),選擇%{item}"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "With the keyboard: from the message box press Shift+Tab until a message is selected, move to the one you want with the arrow keys and press Enter"
 msgstr "鍵盤:從消息框按 Shift+Tab 鍵,直到選擇消息,移動到您想要的,然後按 Enter"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "The number beside an emoji shows how many people chose it. Point at it to see their names. In your own reactions the number uses bold text. Each person counts only once per emoji, even after many clicks."
 msgstr "數字旁邊的emoji 顯示有多少人選擇它。 指着它看他們的名字。 在你自己的反應中,數字使用粗體文字. 每個人每個emoji只計算一次,即使在多次點擊之後."
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "A message with only one to three emoji is printed large. Pictures appear without a frame; point at one to see its file name and size, and click it to open it."
+msgstr "一個只有1到3個emoji的信息是大字印刷的. 圖片出現時沒有框架;一點可以查看其文件名稱和大小,然後單擊以打開."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Notices From the Room"
+msgstr "Notices From the Room"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "On a phone you can also swipe the message to the right: the reply bar opens quoting it."
+msgstr "在電話中您也可以向右刷卡: 回覆欄打開引用它 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "On a phone, press and hold the message: the quick emoji are across the top of the menu that opens"
+msgstr "在電話中按下並保存信息:快速的emoji在打開的菜單的頂端"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Pictures and Emoji"
+msgstr "圖片和Emoji"
+
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "Click the smiley under the message and choose one of the emoji it offers. Your reaction appears in the same place."
-msgstr "點擊消息下的笑臉,並選擇它提供的一個emoji. 你的反應出現在同一個地方"
+msgid "Point at the message and click the smiley that appears beside it, then choose one of the emoji it offers. Your reaction appears under the message."
+msgstr "指向消息並點擊它旁邊出現的笑臉,然後選擇它提供的一個emoji. 你的反應出現在信息中"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The conversation is printed like continuous printer paper, the kind with green and white stripes."
+msgstr "對話像連續印刷紙一樣印刷,那種帶有綠色和白色條紋."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Where a Day Starts"
+msgstr "一天從哪裏開始"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "A dotted perforation with the date marks the first message of each day. Each message shows only the hour and minute. Point at the hour to see the full date."
+msgstr "A dotted perforation with the date marks the first message of each day. Each message shows only the hour and minute. Point at the hour to see the full date."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "One Name Above Several Lines"
+msgstr "數行之上的一個名稱"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Point at a message, or reach it with the keyboard, to see the hour it was written. Your own messages are printed on a light blue stripe."
+msgstr "指向一條消息,或者用鍵盤到達它,以查看它被寫入的時間. 你的信息被印在一條淺藍色的條紋上。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "When one person writes several messages in a row, their name and the hour appear once, above the first message. The messages under it share the same stripe. A new stripe starts when someone else speaks, after five minutes of silence, or on a new day."
+msgstr "When one person writes several messages in a row, their name and the hour appear once, above the first message. The messages under it share the same stripe. A new stripe starts when someone else speaks, after five minutes of silence, or on a new day."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Some messages come from the room rather than from a person: /me actions, System, Service and Error messages, and deleted messages. They have no stripe and appear between the stripes, each with a small icon."
+msgstr "一些消息來自房間而不是一個人:/me動作,系統,服務和錯誤消息,以及刪除的消息. 它們沒有條紋,出現在條紋之間,每個條紋都有一個小圖標."

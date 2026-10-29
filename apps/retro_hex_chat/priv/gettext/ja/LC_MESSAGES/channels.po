@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s と +p は相互に排他的です"
 
-#: lib/retro_hex_chat/channels/server.ex:1826
+#: lib/retro_hex_chat/channels/server.ex:1741
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "チャンネルで既に"
@@ -27,7 +27,7 @@ msgid "Bad channel key (+k)"
 msgstr "悪いチャンネルキー (+k)"
 
 #: lib/retro_hex_chat/channels/server.ex:847
-#: lib/retro_hex_chat/channels/server.ex:1445
+#: lib/retro_hex_chat/channels/server.ex:1360
 #, elixir-autogen, elixir-format
 msgid "Banned"
 msgstr "禁止事項"
@@ -62,12 +62,12 @@ msgstr "チャンネルは招待のみ(+i)"
 msgid "Channel is moderated (+m). You need voice (+v) to speak."
 msgstr "チャネルは適当な(+m)です。 音声(+v)が必要です。"
 
-#: lib/retro_hex_chat/channels/server.ex:1146
+#: lib/retro_hex_chat/channels/server.ex:1061
 #, elixir-autogen, elixir-format
 msgid "Channel is not invite-only"
 msgstr "チャネルは招待状ではありません"
 
-#: lib/retro_hex_chat/channels/server.ex:1849
+#: lib/retro_hex_chat/channels/server.ex:1764
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "チャネルは活動的なスロットルに参加します、すぐに試みて下さい"
@@ -88,9 +88,9 @@ msgstr "チャンネルが見つかりません"
 #: lib/retro_hex_chat/channels/policy.ex:145
 #: lib/retro_hex_chat/channels/policy.ex:170
 #: lib/retro_hex_chat/channels/policy.ex:171
-#: lib/retro_hex_chat/channels/server.ex:1190
-#: lib/retro_hex_chat/channels/server.ex:1209
-#: lib/retro_hex_chat/channels/server.ex:1212
+#: lib/retro_hex_chat/channels/server.ex:1105
+#: lib/retro_hex_chat/channels/server.ex:1124
+#: lib/retro_hex_chat/channels/server.ex:1127
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "十分な権限"
@@ -106,7 +106,7 @@ msgstr "チャンネルモードを設定するための十分な権限"
 msgid "Invalid mode string: must start with + or -"
 msgstr "無効モード文字列: + または -"
 
-#: lib/retro_hex_chat/channels/server.ex:1149
+#: lib/retro_hex_chat/channels/server.ex:1064
 #, elixir-autogen, elixir-format
 msgid "Knocking is disabled for this channel"
 msgstr "このチャネルのためにノックは無効です"
@@ -116,7 +116,7 @@ msgstr "このチャネルのためにノックは無効です"
 msgid "Not in channel"
 msgstr "チャネルではなく"
 
-#: lib/retro_hex_chat/channels/server.ex:1267
+#: lib/retro_hex_chat/channels/server.ex:1182
 #, elixir-autogen, elixir-format
 msgid "Only the channel owner can transfer ownership"
 msgstr "チャネル所有者だけが所有権を譲渡することができます"
@@ -126,23 +126,23 @@ msgstr "チャネル所有者だけが所有権を譲渡することができま
 msgid "User %{target} is not in channel"
 msgstr "ユーザ %{target} はチャンネルではありません"
 
+#: lib/retro_hex_chat/channels/server.ex:1102
 #: lib/retro_hex_chat/channels/server.ex:1187
-#: lib/retro_hex_chat/channels/server.ex:1272
 #, elixir-autogen, elixir-format
 msgid "User is not in channel"
 msgstr "ユーザはチャネルにない"
 
-#: lib/retro_hex_chat/channels/server.ex:1156
+#: lib/retro_hex_chat/channels/server.ex:1071
 #, elixir-autogen, elixir-format
 msgid "You are already in that channel"
 msgstr "あなたは既にそのチャンネルで"
 
-#: lib/retro_hex_chat/channels/server.ex:1153
+#: lib/retro_hex_chat/channels/server.ex:1068
 #, elixir-autogen, elixir-format
 msgid "You are banned from that channel"
 msgstr "そのチャンネルから禁止されています"
 
-#: lib/retro_hex_chat/channels/server.ex:1590
+#: lib/retro_hex_chat/channels/server.ex:1505
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "このチャンネルでミュートされます"
@@ -153,7 +153,7 @@ msgstr "このチャンネルでミュートされます"
 #: lib/retro_hex_chat/channels/server.ex:266
 #: lib/retro_hex_chat/channels/server.ex:271
 #: lib/retro_hex_chat/channels/server.ex:274
-#: lib/retro_hex_chat/channels/server.ex:1585
+#: lib/retro_hex_chat/channels/server.ex:1500
 #, elixir-autogen, elixir-format
 msgid "You are not in this channel"
 msgstr "このチャンネルではない場合"
@@ -163,10 +163,7 @@ msgstr "このチャンネルではない場合"
 msgid "You cannot ban yourself"
 msgstr "自分で禁止することはできません"
 
-#: lib/retro_hex_chat/channels/server.ex:972
-#: lib/retro_hex_chat/channels/server.ex:998
-#: lib/retro_hex_chat/channels/server.ex:1024
-#: lib/retro_hex_chat/channels/server.ex:1050
+#: lib/retro_hex_chat/channels/server.ex:1885
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator"
 msgstr "チャンネル演算子でなければなりません"
@@ -176,18 +173,18 @@ msgstr "チャンネル演算子でなければなりません"
 msgid "You must be a channel operator to change the topic"
 msgstr "トピックを変更するチャネル演算子でなければなりません"
 
-#: lib/retro_hex_chat/channels/server.ex:1069
-#: lib/retro_hex_chat/channels/server.ex:1461
+#: lib/retro_hex_chat/channels/server.ex:984
+#: lib/retro_hex_chat/channels/server.ex:1376
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to unban users"
 msgstr "あなたは、ユーザーを禁止するチャネル演算子でなければなりません"
 
-#: lib/retro_hex_chat/channels/server.ex:1194
+#: lib/retro_hex_chat/channels/server.ex:1109
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel mute"
 msgstr "チャンネルのミュートを保存できませんでした"
 
-#: lib/retro_hex_chat/channels/server.ex:1216
+#: lib/retro_hex_chat/channels/server.ex:1131
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel unmute"
 msgstr "チャンネルのミュート解除を保存できませんでした"
@@ -218,24 +215,24 @@ msgstr "このチャンネルはすでに %{count} 件を保持しています�
 msgid "You must be a channel operator to pin messages"
 msgstr "メッセージを固定できるのはチャンネル運営者だけです"
 
-#: lib/retro_hex_chat/channels/server.ex:2072
+#: lib/retro_hex_chat/channels/server.ex:2020
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "公開アーカイブを変更できるのはチャンネルの創設者だけです"
 
-#: lib/retro_hex_chat/channels/server.ex:1990
+#: lib/retro_hex_chat/channels/server.ex:1938
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} が予定しました: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:2022
+#: lib/retro_hex_chat/channels/server.ex:1970
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "そのイベントは別のチャンネルのものです。"
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:120
 #: lib/retro_hex_chat/channels/scheduled_events.ex:146
-#: lib/retro_hex_chat/channels/server.ex:2019
+#: lib/retro_hex_chat/channels/server.ex:1967
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "そのイベントが見つかりませんでした。"
@@ -275,7 +272,7 @@ msgstr "このチャンネルにはすでに %{count} 件の予定がありま�
 msgid "When does it start?"
 msgstr "いつ始まりますか？"
 
-#: lib/retro_hex_chat/channels/server.ex:2063
+#: lib/retro_hex_chat/channels/server.ex:2011
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "公開アーカイブを変更する前に NickServ で認証してください"
@@ -295,12 +292,12 @@ msgstr "同一または上位のランクを持つユーザーのロールを変
 msgid "You must identify with NickServ to join this channel"
 msgstr "このチャンネルに参加するためにNickServで識別する必要があります"
 
-#: lib/retro_hex_chat/channels/server.ex:2066
+#: lib/retro_hex_chat/channels/server.ex:2014
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the channel's language"
 msgstr "チャンネルの言語を変更する前に NickServ で認証してください"
 
-#: lib/retro_hex_chat/channels/server.ex:2075
+#: lib/retro_hex_chat/channels/server.ex:2023
 #, elixir-autogen, elixir-format
 msgid "Only the founder of a registered channel can set its language"
 msgstr "登録済みチャンネルの言語を設定できるのは創設者だけです"
@@ -341,7 +338,7 @@ msgstr "ゲーム"
 msgid "Help"
 msgstr "ヘルプ"
 
-#: lib/retro_hex_chat/channels/server.ex:2069
+#: lib/retro_hex_chat/channels/server.ex:2017
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the channel's category"
 msgstr "チャンネルのカテゴリーを変更する前に NickServ で認証してください"
@@ -356,7 +353,7 @@ msgstr "ライフスタイル"
 msgid "News"
 msgstr "ニュース"
 
-#: lib/retro_hex_chat/channels/server.ex:2078
+#: lib/retro_hex_chat/channels/server.ex:2026
 #, elixir-autogen, elixir-format
 msgid "Only the founder of a registered channel can set its category"
 msgstr "登録済みチャンネルのカテゴリーを設定できるのは創設者だけです"
@@ -401,7 +398,7 @@ msgstr "テクノロジー"
 msgid "Unknown category: %{code}"
 msgstr "不明なカテゴリー: %{code}"
 
-#: lib/retro_hex_chat/channels/server.ex:1578
+#: lib/retro_hex_chat/channels/server.ex:1493
 #, elixir-autogen, elixir-format
 msgid "Channel is moderated (+m). You need voice (+v) to react."
 msgstr "Channel is moderated (+m). You need voice (+v) to react."
