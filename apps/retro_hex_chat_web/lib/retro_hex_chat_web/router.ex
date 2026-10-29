@@ -72,6 +72,7 @@ defmodule RetroHexChatWeb.Router do
         live "/spaces", DesktopLive, :spaces
         live "/paint", DesktopLive, :paint
         live "/ascii-art", DesktopLive, :ascii_art
+        live "/radio", DesktopLive, :radio
         live "/mirc-commands", DesktopLive, :mirc_commands
         live "/mirc-online", DesktopLive, :mirc_online
         live "/irc-chat", DesktopLive, :irc_chat

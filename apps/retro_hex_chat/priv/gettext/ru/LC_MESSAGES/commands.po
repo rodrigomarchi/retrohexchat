@@ -1055,7 +1055,7 @@ msgstr "Добавьте пользователя в свой список ув�
 msgid "Add an auto-respond rule"
 msgstr "Добавить правило автоответа"
 
-#: lib/retro_hex_chat/commands/registry.ex:79
+#: lib/retro_hex_chat/commands/registry.ex:80
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "продвинутый"
@@ -1101,7 +1101,7 @@ msgstr "запрещать"
 msgid "Ban user from channel"
 msgstr "Запретить пользователю канал"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Основы"
@@ -1149,7 +1149,7 @@ msgstr ""
 "Разрешенные символы: буквы, цифры, [ ] \\ ^   { | } и дефисы.\n"
 "Не можете изменить свое текущее прозвище или уже используемое."
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Канал"
@@ -1227,7 +1227,7 @@ msgstr "Очистите весь список автосоединений"
 msgid "Command name to view detailed help"
 msgstr "Название команды для просмотра подробной помощи"
 
-#: lib/retro_hex_chat/commands/registry.ex:78
+#: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "конфигурация"
@@ -1685,12 +1685,12 @@ msgstr "Уведомления всегда направляются в акти
 #: lib/retro_hex_chat/commands/handlers/bot.ex:870
 #, elixir-autogen, elixir-format
 msgid "OFF"
-msgstr "вылет"
+msgstr "ВЫКЛ"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:870
 #, elixir-autogen, elixir-format
 msgid "ON"
-msgstr "ОН"
+msgstr "ВКЛ"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:66
 #, elixir-autogen, elixir-format
@@ -2618,7 +2618,7 @@ msgstr "Использование: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Использование: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:77
+#: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Пользователь"
@@ -3772,3 +3772,9 @@ msgstr "Откройте ASCII-арт, чтобы превратить слов�
 #, elixir-autogen, elixir-format
 msgid "Open Hex Paint, the pixel drawing program, to draw a picture and post it to a channel."
 msgstr "Откройте Hex Paint, программу рисования пикселей, чтобы нарисовать изображение и отправить его на канал."
+
+#: lib/retro_hex_chat/commands/handlers/radio.ex:15
+#: lib/retro_hex_chat/commands/handlers/radio.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open Hex Radio, the internet radio player, to listen to stations from around the world."
+msgstr "Open Hex Radio, интернет-радио плеер, для прослушивания радиостанций со всего мира."

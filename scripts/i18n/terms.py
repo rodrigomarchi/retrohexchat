@@ -46,6 +46,22 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("牌",),
         "zh_hant": ("牌",),
     },
+    # A radio station, never a train station: Japanese gave "駅" in Hex Radio's
+    # favourites ("駅の横にある星"). A fuel station is a game's, not the radio's.
+    r"(?<!fuel )\bstations?\b": {
+        "pt": ("estaç", "rádio", "emissora"),
+        "es": ("emisora", "estaci", "radio"),
+        "fr": ("station", "radio"),
+        "de": ("sender", "station", "radio"),
+        "it": ("stazion", "emittent", "radio"),
+        "nl": ("zender", "station", "radio"),
+        "pl": ("stacj", "radi", "rozgłośni"),
+        "ru": ("станци", "радио"),
+        "id": ("stasiun", "radio"),
+        "ja": ("局", "ステーション", "ラジオ", "放送"),
+        "zh_hans": ("电台", "台"),
+        "zh_hant": ("電台", "台"),
+    },
     # A tap of a finger on a screen: Chinese made it a kick ("踢打") and German
     # dropped what is tapped ("Tippen Sie auf zu spielen").
     r"\btap(?:s|ped)?\b": {
@@ -529,8 +545,10 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
     },
     # A player of a game, never a media player: French gave "un lecteur" in
     # "Right-click a player". Media, video and audio players, and a game's
-    # single-player mode, are the other words.
-    r"(?<!media )(?<!video )(?<!audio )(?<!native )(?<!single-)(?<!multi-)\bplayers?\b": {
+    # single-player mode, are the other words; so is Hex Radio, "the internet
+    # radio player" in "a retro player", which was kept English for want of a
+    # "jogador".
+    r"(?<!media )(?<!video )(?<!audio )(?<!radio )(?<!retro )(?<!native )(?<!single-)(?<!multi-)\bplayers?\b": {
         "pt": ("jogador",),
         "es": ("jugador",),
         "fr": ("joueur",),
@@ -912,6 +930,13 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         "pede-lhe",
         "registado",
         "registada",
+        # And on Hex Radio: the plural of registered ("membros registados"),
+        # which the singular's word boundary never matched, and the pre-1990
+        # "directório" of a station directory.
+        "registados",
+        "registadas",
+        "directório",
+        "directórios",
         # Measured on the Spaces page: "Um escritório com secretárias" — the
         # European word for a desk, which in Brazil is a secretary.
         "secretária",
@@ -988,6 +1013,12 @@ _BRAZILIAN_WORDS = {
     "activar": "ativar",
     "grelha": "grade",
     "grelhas": "grades",
+    "registado": "registrado",
+    "registada": "registrada",
+    "registados": "registrados",
+    "registadas": "registradas",
+    "directório": "diretório",
+    "directórios": "diretórios",
     "correcto": "correto",
     "correcta": "correta",
     "correctos": "corretos",

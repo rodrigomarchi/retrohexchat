@@ -1,12 +1,12 @@
 defmodule RetroHexChatWeb.AccessoryPagesTest do
   @moduledoc """
-  The public pages of Hex Paint and ASCII Art: each program shown in the
+  The public pages of Hex Paint, ASCII Art and Hex Radio: each program shown in the
   pictures the capture took, described to a search engine as the web
   application it is, and a way in — straight to the program for a member,
   through an account for a visitor.
 
   The generic landing checks — one h1, the taskbar, a unique title and
-  description — run over both from `Site.PagesTest`; what is asserted here is
+  description — run over all of them from `Site.PagesTest`; what is asserted here is
   what is particular to them.
   """
   use RetroHexChatWeb.ConnCase, async: true
@@ -18,13 +18,29 @@ defmodule RetroHexChatWeb.AccessoryPagesTest do
   alias RetroHexChatWeb.App.Paths
 
   @pages [
-    %{path: "/paint", key: "paint", window: "paint", feature: :paint, name: "Hex Paint"},
+    %{
+      path: "/paint",
+      key: "paint",
+      window: "paint",
+      feature: :paint,
+      name: "Hex Paint",
+      pictures: ~w(paint.webp in_chat.webp)
+    },
     %{
       path: "/ascii-art",
       key: "ascii_art",
       window: "ascii-art",
       feature: :ascii_art,
-      name: "ASCII Art"
+      name: "ASCII Art",
+      pictures: ~w(ascii_art.webp in_chat.webp)
+    },
+    %{
+      path: "/radio",
+      key: "radio",
+      window: "radio",
+      feature: :radio,
+      name: "Hex Radio",
+      pictures: ~w(radio.webp radio_equalizer.webp)
     }
   ]
 
@@ -49,7 +65,7 @@ defmodule RetroHexChatWeb.AccessoryPagesTest do
         |> Enum.uniq()
         |> Enum.sort()
 
-      assert sources == Enum.sort(["#{@page.key}.webp", "in_chat.webp"])
+      assert sources == Enum.sort(@page.pictures)
 
       for image <- images do
         assert [_width] = Floki.attribute(image, "width")

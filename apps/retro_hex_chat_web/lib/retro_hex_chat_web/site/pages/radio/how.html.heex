@@ -1,0 +1,16 @@
+<ol class="list-decimal space-y-retro-4 pl-retro-16 text-sm" data-testid="radio-steps">
+  <li>{dgettext("chat", "An account only needs a nickname and a password.")}</li>
+  <li>
+    {dgettext(
+      "landing",
+      "Open Start, then Accessories, then Hex Radio, or type /radio in the chat."
+    )}
+  </li>
+  <li>{dgettext("landing", "Pick a genre or search for a station, then click it to listen.")}</li>
+</ol>
+
+<ul class="text-sm mt-retro-8 space-y-retro-2" data-testid="radio-help">
+  <li :for={id <- ~w(ui-hex-radio cmd-radio keyboard-shortcuts)}>
+    <.link patch={@help[id].path} class="underline">{@help[id].title}</.link>
+  </li>
+</ul>

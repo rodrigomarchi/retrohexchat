@@ -644,4 +644,147 @@ defmodule RetroHexChatWeb.Icons.Media do
     </svg>
     """
   end
+
+  # -- Radio (a desktop radio with its dial and speaker, 32×32) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_radio(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_radio(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <line x1="9" y1="10" x2="24" y2="2" stroke="#000" stroke-width="1.5" />
+      <circle cx="24" cy="2" r="1.5" fill="#c0c0c0" stroke="#000" />
+      <rect x="3" y="10" width="27" height="19" fill="#000" transform="translate(1,1)" />
+      <rect x="3" y="10" width="27" height="19" fill="#c0c0c0" stroke="#000" />
+      <rect x="5" y="12" width="12" height="15" fill="#808080" stroke="#000" />
+      <line x1="6" y1="15" x2="16" y2="15" stroke="#000" />
+      <line x1="6" y1="18" x2="16" y2="18" stroke="#000" />
+      <line x1="6" y1="21" x2="16" y2="21" stroke="#000" />
+      <line x1="6" y1="24" x2="16" y2="24" stroke="#000" />
+      <rect x="19" y="12" width="9" height="6" fill="#002800" stroke="#000" />
+      <rect x="20" y="15" width="1" height="2" fill="#00fc00" />
+      <rect x="22" y="14" width="1" height="3" fill="#00fc00" />
+      <rect x="24" y="13" width="1" height="4" fill="#ffff00" />
+      <rect x="26" y="15" width="1" height="2" fill="#00fc00" />
+      <circle cx="21" cy="23" r="2.5" fill="#808080" stroke="#000" />
+      <circle cx="26" cy="23" r="2.5" fill="#808080" stroke="#000" />
+    </svg>
+    """
+  end
+
+  # -- Button: Stop (a square, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_stop(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_stop(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="4" y="4" width="8" height="8" fill="#555" transform="translate(0.5,0.5)" />
+      <rect x="4" y="4" width="8" height="8" fill="#c00000" stroke="#000" />
+    </svg>
+    """
+  end
+
+  # -- Equalizer (three sliders on their tracks, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_equalizer(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_equalizer(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="3" y="2" width="1" height="12" fill="#000" />
+      <rect x="8" y="2" width="1" height="12" fill="#000" />
+      <rect x="13" y="2" width="1" height="12" fill="#000" />
+      <rect x="1" y="9" width="5" height="3" fill="#00fc00" stroke="#000" />
+      <rect x="6" y="4" width="5" height="3" fill="#ffff00" stroke="#000" />
+      <rect x="11" y="7" width="4" height="3" fill="#ff0000" stroke="#000" />
+    </svg>
+    """
+  end
+
+  # -- Music note (a pair of quavers, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_music_note(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_music_note(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M6 3h8v2H8v7H6V3z M12 5h2v6h-2V5z" fill="#000080" />
+      <rect x="3" y="11" width="4" height="3" fill="#000080" />
+      <rect x="9" y="10" width="4" height="3" fill="#000080" />
+    </svg>
+    """
+  end
+
+  # -- Hex Radio, Play: a right triangle (16×16, in the colour of its text) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_radio_play(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_radio_play(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M4 2h2v1h2v1h2v1h2v1h1v4h-1v1h-2v1H8v1H6v1H4V2z" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  # -- Hex Radio, Stop: a square (16×16, in the colour of its text) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_radio_stop(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_radio_stop(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="3" y="3" width="10" height="10" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  # -- Hex Radio, Previous station: a bar and two triangles pointing left (16×16, in the colour of its text) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_radio_prev(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_radio_prev(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M2 3h2v10H2V3z M9 3v10L4 8l5-5z M15 3v10l-5-5 5-5z" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  # -- Hex Radio, Next station: two triangles pointing right and a bar (16×16, in the colour of its text) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_radio_next(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_radio_next(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M12 3h2v10h-2V3z M7 3v10l5-5-5-5z M1 3v10l5-5-5-5z" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  # -- Hex Radio, Volume: a speaker and its waves (16×16, in the colour of its text) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_radio_volume(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_radio_volume(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        d="M1 6h3l4-3v10l-4-3H1V6z M10 6h1v4h-1V6z M12 4h1v8h-1V4z M14 2h1v12h-1V2z"
+        fill="currentColor"
+      />
+    </svg>
+    """
+  end
 end

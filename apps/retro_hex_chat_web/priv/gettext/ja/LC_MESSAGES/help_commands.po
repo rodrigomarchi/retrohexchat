@@ -1933,6 +1933,7 @@ msgstr "チャットチャネルを入力してメッセージを読み、送信
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:80
@@ -2040,6 +2041,7 @@ msgstr "特定のユーザーからメッセージを隠す。 無視された�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:29
@@ -2591,6 +2593,7 @@ msgstr "ルート管理者は、コマンドを介してデモすることはで
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:56
@@ -2675,6 +2678,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:84
@@ -2861,6 +2865,7 @@ msgstr "サブコマンド"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:17
@@ -5765,6 +5770,7 @@ msgstr "16チャットカラーの32、64、128ピクセルのグリッド上に
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Needs an account: a visitor is asked to register first"
 msgstr "Needs an account: a visitor is asked to register first"
@@ -5826,6 +5832,7 @@ msgstr "ペンシル、ライン、長方形、楕円、塗りつぶし、消し
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "What You Can Do There"
 msgstr "できること"
@@ -5834,3 +5841,39 @@ msgstr "できること"
 #, elixir-autogen, elixir-format
 msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
 msgstr "ブロック、ハッシュ、またはシェードブロックで作られた大きな文字で単語を書いてください。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "/radio"
+msgstr "/radio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Closing the window stops the music"
+msgstr "ウィンドウを閉じると音楽が止まります"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Listen to the most played stations, a genre's stations, or find one by name"
+msgstr "ほとんどのプレイステーション、ジャンルのステーション、または名前で1つを見つける"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens Hex Radio, the internet radio player: thousands of stations from around the world, by genre or by name."
+msgstr "ジャンルや名前で、世界中の何千もの場所からヘックスラジオ、インターネットラジオプレーヤーを開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the Hex Radio window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Radio opens."
+msgstr "既に開いているとき、ヘックス・ラジオ・ウィンドウを開き、同じウィンドウ・スタート > アクセサリ > ヘックス・ラジオが開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Star the stations you like to find them again"
+msgstr "Star the stations you like to find them again"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Watch the spectrum or the oscilloscope and shape the sound with the equalizer"
+msgstr "スペクトルまたはオシロスコープを見て、イコライザーで音を形づける"

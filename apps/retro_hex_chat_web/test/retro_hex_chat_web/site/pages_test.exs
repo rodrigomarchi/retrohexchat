@@ -26,7 +26,8 @@ defmodule RetroHexChatWeb.Site.PagesTest do
     {"/mirc-online", "mirc-online-heading"},
     {"/irc-chat", "irc-chat-heading"},
     {"/paint", "paint-heading"},
-    {"/ascii-art", "ascii-art-heading"}
+    {"/ascii-art", "ascii-art-heading"},
+    {"/radio", "radio-heading"}
   ]
 
   describe "all landing pages" do

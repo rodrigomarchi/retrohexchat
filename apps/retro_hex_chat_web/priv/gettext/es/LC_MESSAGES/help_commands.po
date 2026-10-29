@@ -1997,6 +1997,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:80
@@ -2110,6 +2111,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:29
@@ -2736,6 +2738,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:56
@@ -2822,6 +2825,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:84
@@ -3034,6 +3038,7 @@ msgstr "Subcommands"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:17
@@ -6141,6 +6146,7 @@ msgstr "Dibuja sobre una cuadrícula de 32, 64 o 128 píxeles a un lado en los d
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Needs an account: a visitor is asked to register first"
 msgstr "Necesita una cuenta: se pide a un visitante que se registre primero"
@@ -6202,6 +6208,7 @@ msgstr "Use un lápiz, líneas, rectángulos, elipses, un relleno y un borrador,
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "What You Can Do There"
 msgstr "Lo que puedes hacer ahí"
@@ -6210,3 +6217,39 @@ msgstr "Lo que puedes hacer ahí"
 #, elixir-autogen, elixir-format
 msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
 msgstr "Escribe una palabra en letras grandes hechas de bloques, hashes o bloques sombreados, de un color, un arco iris o dos tonos"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "/radio"
+msgstr "/radio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Closing the window stops the music"
+msgstr "Cerrar la ventana detiene la música"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Listen to the most played stations, a genre's stations, or find one by name"
+msgstr "Escucha las estaciones más jugadas, las estaciones de un género, o encuentra una por nombre"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens Hex Radio, the internet radio player: thousands of stations from around the world, by genre or by name."
+msgstr "Abre Hex Radio, el reproductor de radio de Internet: miles de estaciones de todo el mundo, por género o por nombre."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the Hex Radio window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Radio opens."
+msgstr "Abre la ventana de Hex Radio, o la lleva al frente cuando ya está abierta, la misma ventana Inicio ⇩ Accesorios > Hex Radio se abre."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Star the stations you like to find them again"
+msgstr "Las estaciones que te gusta encontrarlas de nuevo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Watch the spectrum or the oscilloscope and shape the sound with the equalizer"
+msgstr "Mira el espectro o el osciloscopio y da forma al sonido con el ecualizador"

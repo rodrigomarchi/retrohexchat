@@ -62,12 +62,13 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
     ]
   end
 
-  # The programs that make pictures: the server opens them, so a visitor who
-  # asks for one is asked to register instead.
+  # The desktop's programs: the server opens them, so a visitor who asks for
+  # one is asked to register instead.
   def items(:accessories) do
     [
       action("open_paint", "Hex Paint", :icon_paint),
-      action("open_ascii_art", dgettext("ui", "ASCII Art"), :icon_ascii_art)
+      action("open_ascii_art", dgettext("ui", "ASCII Art"), :icon_ascii_art),
+      action("open_radio", "Hex Radio", :icon_radio)
     ]
   end
 

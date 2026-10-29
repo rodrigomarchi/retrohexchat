@@ -39,6 +39,7 @@ export const ZH_HANT = {
   "Click to join": "單擊加入",
   "Click to switch": "單擊以切換",
   "Connecting to space...": "正在連接到空間...",
+  "Connecting…": "正在連接...",
   "Copied!": "已複製！",
   "Could not access your microphone or camera.": "無法訪問您的麥克風或相機 。",
   "Could not access your microphone or camera. You can still watch and listen.":
@@ -109,6 +110,7 @@ export const ZH_HANT = {
   "KO!": "擊倒！",
   "LONG!": "出界！",
   Line: "行線",
+  "Live spectrum": "即時頻譜",
   "Loading the Space...": "正在裝入空間...",
   "MATCH OVER": "比賽結束",
   "MISSION COMPLETE": "任務完成",
@@ -134,6 +136,7 @@ export const ZH_HANT = {
   "No microphone or camera found. You can join without sending sound or video.":
     "沒有找到麥克風和相機 無需發送聲音或視頻即可加入.",
   "No screen video track was provided by the browser.": "瀏覽器沒有提供屏幕視頻軌道 。",
+  "No sound is coming from this radio.": "收音機裏沒有聲音",
   "Not speaking": "未在說話",
   OK: "確定",
   "OPEN SPACE": "開闊空域",
@@ -173,6 +176,7 @@ export const ZH_HANT = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "拒絕許可 在允許訪問或只加入接收後重試 。",
   "Pick colour": "滴管",
+  Playing: "正在播放",
   Poor: "窮",
   "Quick Draw": "快槍對決",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -211,10 +215,13 @@ export const ZH_HANT = {
   "Selected device is unavailable. Choose another device or retry.":
     "無法使用選中的設備 。 選擇其它設備或重試 。",
   "Sharing screen": "正在分享螢幕",
+  "Simulated spectrum": "模擬頻譜",
   "Sound and video did not come back in time. Try to connect them again.":
     "聲音和視頻沒有及時回來。 試着再次連接他們。",
+  "Sound muted": "已靜音",
   Speaker: "揚聲器",
   Speaking: "正在說話",
+  Stopped: "已停止",
   "Switching sides...": "正在切換側面...",
   "TIEBREAK!": "搶七！",
   "TOXIC DESCENT": "劇毒下墜",
@@ -232,6 +239,8 @@ export const ZH_HANT = {
   "The other side sent data that could not be read.":
     "The other side sent data that could not be read.",
   "The received file could not be checked.": "無法檢查收到的文件 。",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "此電臺不分享其聲音,因此平方無法改變.",
   Tip: "提示",
   "Type /help to see all commands": "鍵入 /help 以查看所有命令",
   Unknown: "未知",

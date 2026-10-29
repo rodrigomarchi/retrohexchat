@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
 
   @game_actions ~w(game_lfg)a
 
-  @accessory_actions ~w(open_paint open_ascii_art)a
+  @accessory_actions ~w(open_paint open_ascii_art open_radio)a
 
   @server_message_actions ~w(show_motd set_welcome clear_welcome set_user_mode)a
 

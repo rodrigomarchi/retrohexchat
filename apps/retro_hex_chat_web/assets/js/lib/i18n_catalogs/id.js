@@ -39,6 +39,7 @@ export const ID = {
   "Click to join": "Klik untuk bergabung",
   "Click to switch": "Klik untuk menukar",
   "Connecting to space...": "Menyambung ke ruang...",
+  "Connecting…": "Menyambung...",
   "Copied!": "Disalin!",
   "Could not access your microphone or camera.": "Tak bisa mengakses mikrofon atau kameramu.",
   "Could not access your microphone or camera. You can still watch and listen.":
@@ -110,6 +111,7 @@ export const ID = {
   "KO!": "KO!",
   "LONG!": "TERLALU JAUH!",
   Line: "Baris",
+  "Live spectrum": "Spektrum langsung",
   "Loading the Space...": "Memuat Ruang...",
   "MATCH OVER": "PERTANDINGAN SELESAI",
   "MISSION COMPLETE": "MISI SELESAI",
@@ -140,6 +142,7 @@ export const ID = {
     "Tidak ada mikrofon atau kamera ditemukan. Anda dapat bergabung tanpa mengirim suara atau video.",
   "No screen video track was provided by the browser.":
     "Tak ada trek video layar yang disediakan oleh peramban.",
+  "No sound is coming from this radio.": "Tidak ada suara yang berasal dari radio ini.",
   "Not speaking": "Tidak berbicara",
   OK: "OK",
   "OPEN SPACE": "RUANG TERBUKA",
@@ -180,6 +183,7 @@ export const ID = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "Izin ditolak. Coba lagi setelah mengijinkan akses atau bergabung hanya menerima.",
   "Pick colour": "Pengambil warna",
+  Playing: "Memutar",
   Poor: "Buruk",
   "Quick Draw": "Tembak cepat",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -222,10 +226,13 @@ export const ID = {
   "Selected device is unavailable. Choose another device or retry.":
     "Perangkat yang dipilih tidak tersedia. Pilih perangkat lain atau coba lagi.",
   "Sharing screen": "Berbagi layar",
+  "Simulated spectrum": "Spektrum simulasi",
   "Sound and video did not come back in time. Try to connect them again.":
     "Suara dan video tidak kembali dalam waktu. Coba hubungkan lagi.",
+  "Sound muted": "Suara dimatikan",
   Speaker: "Speaker",
   Speaking: "Berbicara",
+  Stopped: "Dihentikan",
   "Switching sides...": "Beralih sisi...",
   "TIEBREAK!": "TIEBREAK!",
   "TOXIC DESCENT": "TURUNAN BERACUN",
@@ -244,6 +251,8 @@ export const ID = {
   "The other side sent data that could not be read.":
     "Sisi lain mengirim data yang tidak dapat dibaca.",
   "The received file could not be checked.": "Berkas yang diterima tidak dapat diperiksa.",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "Radio ini tidak berbagi suaranya, sehingga equalizer tidak dapat mengubahnya.",
   Tip: "Tips",
   "Type /help to see all commands": "Tipe /help untuk melihat semua perintah",
   Unknown: "Tidak diketahui",

@@ -1990,6 +1990,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:80
@@ -2103,6 +2104,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:29
@@ -2711,6 +2713,7 @@ msgstr "Admin root tidak dapat diturunkan melalui perintah"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:56
@@ -2797,6 +2800,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:84
@@ -3008,6 +3012,7 @@ msgstr "Sub perintah"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:17
@@ -6095,6 +6100,7 @@ msgstr "Gambar pada kisi dari 32, 64 atau 128 piksel sisi dalam enam belas warna
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Needs an account: a visitor is asked to register first"
 msgstr "Perlu akun: pengunjung diminta untuk mendaftar pertama"
@@ -6156,6 +6162,7 @@ msgstr "Gunakan pensil, garis, persegi panjang, elips, isi dan penghapus, dengan
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "What You Can Do There"
 msgstr "What You Can Do There"
@@ -6164,3 +6171,39 @@ msgstr "What You Can Do There"
 #, elixir-autogen, elixir-format
 msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
 msgstr "Tulis sebuah kata dalam huruf besar yang terbuat dari blok, hashes atau berbayang blok, dalam satu warna, pelangi atau dua nada"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "/radio"
+msgstr "/radio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Closing the window stops the music"
+msgstr "Menutup jendela menghentikan musik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Listen to the most played stations, a genre's stations, or find one by name"
+msgstr "Dengarkan stasiun yang paling sering diputar, stasiun genre, atau cari satu dengan nama"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens Hex Radio, the internet radio player: thousands of stations from around the world, by genre or by name."
+msgstr "Buka Hex Radio, pemutar radio internet: ribuan stasiun dari seluruh dunia, dengan genre atau dengan nama."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the Hex Radio window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Radio opens."
+msgstr "Buka jendela Hex Radio, atau bawa ke depan ketika sudah terbuka - jendela yang sama Mulai > Aksesoris > Hex Radio terbuka."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Star the stations you like to find them again"
+msgstr "Bintang stasiun Anda ingin menemukan mereka lagi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Watch the spectrum or the oscilloscope and shape the sound with the equalizer"
+msgstr "Perhatikan spektrum atau osiloscope dan bentuk suara dengan equalizer"

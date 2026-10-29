@@ -40,6 +40,7 @@ export const FR = {
   "Click to join": "Cliquez pour rejoindre",
   "Click to switch": "Cliquez pour changer",
   "Connecting to space...": "Connexion à l'espace...",
+  "Connecting…": "Connexion...",
   "Copied!": "Copié !",
   "Could not access your microphone or camera.":
     "Impossible d'accéder à votre microphone ou caméra.",
@@ -113,6 +114,7 @@ export const FR = {
   "KO!": "K.-O. !",
   "LONG!": "TROP LONG !",
   Line: "Ligne",
+  "Live spectrum": "Spectre en direct",
   "Loading the Space...": "Chargement de l'Espace...",
   "MATCH OVER": "MATCH TERMINÉ",
   "MISSION COMPLETE": "MISSION ACCOMPLIE",
@@ -144,6 +146,7 @@ export const FR = {
     "Aucun microphone ou caméra trouvé. Vous pouvez vous joindre sans envoyer de son ou de vidéo.",
   "No screen video track was provided by the browser.":
     "Aucune piste vidéo d'écran n'a été fournie par le navigateur.",
+  "No sound is coming from this radio.": "Aucun son ne vient de cette radio.",
   "Not speaking": "Ne parle pas",
   OK: "OK",
   "OPEN SPACE": "ESPACE LIBRE",
@@ -184,6 +187,7 @@ export const FR = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "Autorisation refusée. Recommencer après avoir autorisé l'accès ou rejoindre uniquement réception.",
   "Pick colour": "Pipette",
+  Playing: "Lecture",
   Poor: "Pauvre",
   "Quick Draw": "Tir rapide",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -228,10 +232,13 @@ export const FR = {
   "Selected device is unavailable. Choose another device or retry.":
     "L'appareil sélectionné n'est pas disponible. Choisissez un autre appareil ou réessayez.",
   "Sharing screen": "Partage d'écran",
+  "Simulated spectrum": "Spectre simulé",
   "Sound and video did not come back in time. Try to connect them again.":
     "Le son et la vidéo ne sont pas revenus dans le temps. Essayez de les reconnecter.",
+  "Sound muted": "Son coupé",
   Speaker: "Haut-parleur",
   Speaking: "Parle",
+  Stopped: "Arrêts",
   "Switching sides...": "Des côtés qui changent...",
   "TIEBREAK!": "JEU DÉCISIF !",
   "TOXIC DESCENT": "DESCENTE TOXIQUE",
@@ -250,6 +257,8 @@ export const FR = {
   "The other side sent data that could not be read.":
     "L'autre côté a envoyé des données qui n'ont pas pu être lues.",
   "The received file could not be checked.": "Le dossier reçu n'a pas pu être vérifié.",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "Cette radio ne partage pas son son, donc l'égaliseur ne peut pas le changer.",
   Tip: "Astuce",
   "Type /help to see all commands": "Saisissez /help pour voir toutes les commandes",
   Unknown: "Inconnu",

@@ -39,6 +39,7 @@ export const ZH_HANS = {
   "Click to join": "单击加入",
   "Click to switch": "单击以切换",
   "Connecting to space...": "正在连接到空间...",
+  "Connecting…": "正在连接...",
   "Copied!": "已复制！",
   "Could not access your microphone or camera.": "无法访问您的麦克风或相机 。",
   "Could not access your microphone or camera. You can still watch and listen.":
@@ -109,6 +110,7 @@ export const ZH_HANS = {
   "KO!": "击倒！",
   "LONG!": "出界！",
   Line: "行线",
+  "Live spectrum": "实时频谱",
   "Loading the Space...": "正在装入空间...",
   "MATCH OVER": "比赛结束",
   "MISSION COMPLETE": "任务完成",
@@ -134,6 +136,7 @@ export const ZH_HANS = {
   "No microphone or camera found. You can join without sending sound or video.":
     "没有找到麦克风和相机 无需发送声音或视频即可加入.",
   "No screen video track was provided by the browser.": "浏览器没有提供屏幕视频轨道 。",
+  "No sound is coming from this radio.": "收音机里没有声音",
   "Not speaking": "未在说话",
   OK: "确定",
   "OPEN SPACE": "开阔空域",
@@ -173,6 +176,7 @@ export const ZH_HANS = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "拒绝许可 在允许访问或只加入接收后重试 。",
   "Pick colour": "取色器",
+  Playing: "正在播放",
   Poor: "穷",
   "Quick Draw": "快枪对决",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -211,10 +215,13 @@ export const ZH_HANS = {
   "Selected device is unavailable. Choose another device or retry.":
     "无法使用选中的设备 。 选择其它设备或重试 。",
   "Sharing screen": "正在共享屏幕",
+  "Simulated spectrum": "模拟频谱",
   "Sound and video did not come back in time. Try to connect them again.":
     "声音和视频没有及时回来。 试着再次连接他们。",
+  "Sound muted": "已静音",
   Speaker: "扬声器",
   Speaking: "正在说话",
+  Stopped: "已停止",
   "Switching sides...": "正在切换侧面...",
   "TIEBREAK!": "抢七！",
   "TOXIC DESCENT": "剧毒下坠",
@@ -232,6 +239,8 @@ export const ZH_HANS = {
   "The other side sent data that could not be read.":
     "The other side sent data that could not be read.",
   "The received file could not be checked.": "无法检查收到的文件 。",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "此电台不分享其声音,因此平方无法改变.",
   Tip: "提示",
   "Type /help to see all commands": "输入 /help 以查看所有命令",
   Unknown: "未知",

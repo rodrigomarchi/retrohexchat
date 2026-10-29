@@ -52,6 +52,7 @@ defmodule RetroHexChat.Commands.Registry do
     "perform" => RetroHexChat.Commands.Handlers.Perform,
     "query" => RetroHexChat.Commands.Handlers.Query,
     "quit" => RetroHexChat.Commands.Handlers.Quit,
+    "radio" => RetroHexChat.Commands.Handlers.Radio,
     "setmotd" => RetroHexChat.Commands.Handlers.SetMotd,
     "setwelcome" => RetroHexChat.Commands.Handlers.SetWelcome,
     "slow" => RetroHexChat.Commands.Handlers.Slow,

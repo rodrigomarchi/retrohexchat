@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.Site.Pages.Paint do
         alt: dgettext("landing", "Hex Paint open on a pixel-art heart over a starry night"),
         help: ~w(ui-hex-paint cmd-paint ui-ascii-art keyboard-shortcuts),
         intro: &intro/1,
-        chat: &chat/1,
+        panes: [{"chat", dgettext("landing", "In the chat"), :icon_chat, &chat/1}],
         how: &how/1
       },
       ctx

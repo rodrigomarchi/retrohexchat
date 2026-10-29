@@ -1988,6 +1988,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:80
@@ -2102,6 +2103,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:29
@@ -2723,6 +2725,7 @@ msgstr "Root-beheerders kunnen niet gedegradeerd worden via commando's"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:56
@@ -2809,6 +2812,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:84
@@ -3023,6 +3027,7 @@ msgstr "Subcommands"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:17
@@ -6129,6 +6134,7 @@ msgstr "Teken op een raster van 32, 64 of 128 pixels een zijde in de zestien cha
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Needs an account: a visitor is asked to register first"
 msgstr "Heeft een account nodig: een bezoeker moet zich eerst registreren"
@@ -6190,6 +6196,7 @@ msgstr "Gebruik een potlood, lijnen, rechthoeken, ellipsen, een vulling en een g
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "What You Can Do There"
 msgstr "Wat kun je daar doen?"
@@ -6198,3 +6205,39 @@ msgstr "Wat kun je daar doen?"
 #, elixir-autogen, elixir-format
 msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
 msgstr "Schrijf een woord in grote letters van blokken, hashes of schaduwblokken, in één kleur, een regenboog of twee tinten"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "/radio"
+msgstr "/radio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Closing the window stops the music"
+msgstr "Het venster sluiten stopt de muziek"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Listen to the most played stations, a genre's stations, or find one by name"
+msgstr "Luister naar de meest gespeelde stations, een genre's stations, of vind er een bij naam"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens Hex Radio, the internet radio player: thousands of stations from around the world, by genre or by name."
+msgstr "Opent Hex Radio, de internetradiospeler: duizenden stations uit de hele wereld, per genre of bij naam."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the Hex Radio window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Radio opens."
+msgstr "Opent het Hex Radio venster, of brengt het naar voren wanneer het al geopend is.In hetzelfde venster Start > Accessoires > Hex Radio opent."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Star the stations you like to find them again"
+msgstr "Star de stations die je graag weer vindt"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Watch the spectrum or the oscilloscope and shape the sound with the equalizer"
+msgstr "Bekijk het spectrum of de oscilloscoop en vorm het geluid met de equalizer"

@@ -40,6 +40,7 @@ export const NL = {
   "Click to join": "Klik om mee te doen",
   "Click to switch": "Klik om te wisselen",
   "Connecting to space...": "Verbinden met de ruimte...",
+  "Connecting…": "Verbinden...",
   "Copied!": "Gekopieerd!",
   "Could not access your microphone or camera.":
     "Kon geen toegang krijgen tot uw microfoon of camera.",
@@ -112,6 +113,7 @@ export const NL = {
   "KO!": "K.O.!",
   "LONG!": "TE LANG!",
   Line: "Regel",
+  "Live spectrum": "Live spectrum",
   "Loading the Space...": "De ruimte laden...",
   "MATCH OVER": "WEDSTRIJD VOORBIJ",
   "MISSION COMPLETE": "MISSIE VOLTOOID",
@@ -143,6 +145,7 @@ export const NL = {
     "Geen microfoon of camera gevonden. U kunt deelnemen zonder het verzenden van geluid of video.",
   "No screen video track was provided by the browser.":
     "De browser heeft geen schermvideotrack verstrekt.",
+  "No sound is coming from this radio.": "Er komt geen geluid van deze radio.",
   "Not speaking": "Spreekt niet",
   OK: "OK",
   "OPEN SPACE": "OPEN RUIMTE",
@@ -183,6 +186,7 @@ export const NL = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "Toestemming geweigerd. Probeer het na het toestaan van toegang of lid worden van alleen ontvangen.",
   "Pick colour": "Pipet",
+  Playing: "Speelt af",
   Poor: "Slecht",
   "Quick Draw": "Snelle trekker",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -225,10 +229,13 @@ export const NL = {
   "Selected device is unavailable. Choose another device or retry.":
     "Geselecteerd apparaat is niet beschikbaar. Kies een ander apparaat of probeer het opnieuw.",
   "Sharing screen": "Scherm wordt gedeeld",
+  "Simulated spectrum": "Gesimuleerd spectrum",
   "Sound and video did not come back in time. Try to connect them again.":
     "Geluid en video kwamen niet op tijd terug. Probeer ze weer te verbinden.",
+  "Sound muted": "Geluid uit",
   Speaker: "Luidspreker",
   Speaking: "Spreekt",
+  Stopped: "Gestopt",
   "Switching sides...": "Van zijde wisselen...",
   "TIEBREAK!": "TIEBREAK!",
   "TOXIC DESCENT": "GIFTIGE AFDALING",
@@ -247,6 +254,8 @@ export const NL = {
   "The other side sent data that could not be read.":
     "De andere kant verzonden gegevens die niet konden worden gelezen.",
   "The received file could not be checked.": "Het ontvangen bestand kon niet worden gecontroleerd.",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "Deze radio deelt zijn geluid niet, dus de equalizer kan het niet veranderen.",
   Tip: "Tip",
   "Type /help to see all commands": "Type /help om alle commando's te zien",
   Unknown: "Onbekend",

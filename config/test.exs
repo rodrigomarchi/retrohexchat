@@ -87,7 +87,10 @@ config :retro_hex_chat,
   # every 3s per bot, which a test publishing a feed page would sleep through.
   # bots/pace_test.exs covers the derived pace, and output_telemetry_test.exs
   # sets a short real gap to cover the waits.
-  bot_pace_interval_ms: 0
+  bot_pace_interval_ms: 0,
+  # Hex Radio's stations without the internet; radio_browser_test.exs drives
+  # the real client through Req.Test.
+  radio_catalog: RetroHexChat.Radio.Fixture
 
 # TURN server test overrides — disable listener, use random port, fixed secrets
 config :retro_hex_chat,

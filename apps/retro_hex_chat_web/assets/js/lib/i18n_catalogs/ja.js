@@ -39,6 +39,7 @@ export const JA = {
   "Click to join": "参加する",
   "Click to switch": "クリックしてスイッチ",
   "Connecting to space...": "空間への接続...",
+  "Connecting…": "接続...",
   "Copied!": "コピーしました！",
   "Could not access your microphone or camera.": "マイクやカメラにアクセスできません。",
   "Could not access your microphone or camera. You can still watch and listen.":
@@ -109,6 +110,7 @@ export const JA = {
   "KO!": "KO！",
   "LONG!": "アウト（ロング）！",
   Line: "ライン",
+  "Live spectrum": "ライブスペクトラム",
   "Loading the Space...": "スペースをロードする...",
   "MATCH OVER": "試合終了",
   "MISSION COMPLETE": "ミッション完了",
@@ -140,6 +142,7 @@ export const JA = {
     "マイクやカメラが見つかりません。 音声や動画を送らずに参加できます。",
   "No screen video track was provided by the browser.":
     "ブラウザでは画面の動画を配信していません。",
+  "No sound is coming from this radio.": "このラジオから音が出ません。",
   "Not speaking": "発言していません",
   OK: "OK",
   "OPEN SPACE": "オープンスペース",
@@ -180,6 +183,7 @@ export const JA = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "許可が拒否されました。 アクセスを許可するか、または受信専用の参加を許可した後に再試行してください。",
   "Pick colour": "スポイト",
+  Playing: "再生中",
   Poor: "ポアー",
   "Quick Draw": "早撃ち",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -221,10 +225,13 @@ export const JA = {
   "Selected device is unavailable. Choose another device or retry.":
     "選択された装置は利用できません。 別のデバイスまたは再試行を選択します。",
   "Sharing screen": "画面共有中",
+  "Simulated spectrum": "疑似スペクトラム",
   "Sound and video did not come back in time. Try to connect them again.":
     "音とビデオは時間内に戻ってきませんでした。 もう一度接続してください。",
+  "Sound muted": "消音中",
   Speaker: "スピーカー",
   Speaking: "発言中",
+  Stopped: "停止",
   "Switching sides...": "スイッチの側面...",
   "TIEBREAK!": "タイブレーク！",
   "TOXIC DESCENT": "毒の降下",
@@ -243,6 +250,8 @@ export const JA = {
   "The other side sent data that could not be read.":
     "別の側面は、読み取れないデータを送信しました。",
   "The received file could not be checked.": "受信したファイルはチェックできません。",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "このラジオは音を共有しませんので、イコライザーは変更できません。",
   Tip: "ヒント",
   "Type /help to see all commands": "すべてのコマンドを見るために/helpを入力します",
   Unknown: "不明",

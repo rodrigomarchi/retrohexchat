@@ -1055,7 +1055,7 @@ msgstr "在通知列表中添加一個用戶"
 msgid "Add an auto-respond rule"
 msgstr "添加自動對應的規則"
 
-#: lib/retro_hex_chat/commands/registry.ex:79
+#: lib/retro_hex_chat/commands/registry.ex:80
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "高級"
@@ -1099,7 +1099,7 @@ msgstr "禁止"
 msgid "Ban user from channel"
 msgstr "從頻道禁止用戶"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "基本情況"
@@ -1143,7 +1143,7 @@ msgstr ""
 "Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
 "Cannot change to your current nickname or one already in use."
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "頻道"
@@ -1219,7 +1219,7 @@ msgstr "清除全部自動連接列表"
 msgid "Command name to view detailed help"
 msgstr "查看詳細幫助的命令名稱"
 
-#: lib/retro_hex_chat/commands/registry.ex:78
+#: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "配置"
@@ -1666,12 +1666,12 @@ msgstr "通知總是被引導到活動窗口。"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:870
 #, elixir-autogen, elixir-format
 msgid "OFF"
-msgstr "關閉"
+msgstr "關"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:870
 #, elixir-autogen, elixir-format
 msgid "ON"
-msgstr "關閉"
+msgstr "開"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:66
 #, elixir-autogen, elixir-format
@@ -2550,7 +2550,7 @@ msgstr "用法:/whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "用法:/whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:77
+#: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "用戶"
@@ -3696,3 +3696,9 @@ msgstr "打開 ASCII 藝術,以mIRC顏色將一個字,一個圖片或一個Hex P
 #, elixir-autogen, elixir-format
 msgid "Open Hex Paint, the pixel drawing program, to draw a picture and post it to a channel."
 msgstr "打開Hex Paint,像素繪圖程序,繪製一張圖片並張貼到一個頻道."
+
+#: lib/retro_hex_chat/commands/handlers/radio.ex:15
+#: lib/retro_hex_chat/commands/handlers/radio.ex:20
+#, elixir-autogen, elixir-format
+msgid "Open Hex Radio, the internet radio player, to listen to stations from around the world."
+msgstr "Open Hex Radio, the internet radio player, to listen to stations from around the world."

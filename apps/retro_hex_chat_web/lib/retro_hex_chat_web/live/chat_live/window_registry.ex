@@ -312,8 +312,8 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
     ]
   end
 
-  # The programs that make pictures to post: managed, so closing one unmounts
-  # its island; the drawing waits in the browser as a draft.
+  # The desktop's programs: managed, so closing one unmounts its island; a
+  # drawing waits in the browser as a draft, and the radio stops playing.
   defp accessories do
     [
       window("paint", "Hex Paint", :icon_paint,
@@ -325,6 +325,11 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
         island: Components.AsciiArtWindow,
         opener: "open_ascii_art",
         geometry: geometry(180, 80, 760, 560, 420, 420)
+      ),
+      window("radio", "Hex Radio", :icon_radio,
+        island: Components.RadioWindow,
+        opener: "open_radio",
+        geometry: geometry(200, 40, 440, 640, 340, 420)
       )
     ]
   end

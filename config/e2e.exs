@@ -44,6 +44,11 @@ config :phoenix_live_view,
 config :retro_hex_chat,
   e2e_fault_injection?: true
 
+# Hex Radio lists a fixed set of stations whose streams the specs answer
+# themselves, so no browser test depends on the internet.
+config :retro_hex_chat,
+  radio_catalog: RetroHexChat.Radio.Fixture
+
 # The only page a browser test can ask the server to read is the server itself,
 # and `Net.URLGuard` refuses loopback everywhere else — correctly, since that is
 # the SSRF it exists to stop. Without this the link-preview specs assert on a

@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.Site.Pages.AsciiArt do
         alt: dgettext("landing", "The word RETRO as a rainbow banner made of text characters"),
         help: ~w(ui-ascii-art cmd-ascii ui-hex-paint formatting-colors),
         intro: &intro/1,
-        chat: &chat/1,
+        panes: [{"chat", dgettext("landing", "In the chat"), :icon_chat, &chat/1}],
         how: &how/1
       },
       ctx

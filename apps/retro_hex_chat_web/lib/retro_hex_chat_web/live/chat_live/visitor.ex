@@ -70,11 +70,21 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     "links" => :links,
     "paint" => :paint,
     "ascii_art" => :ascii_art,
+    "radio" => :radio,
     "feature" => :feature
   }
 
   @type feature ::
-          :chat | :games | :calls | :space | :p2p | :links | :paint | :ascii_art | :feature
+          :chat
+          | :games
+          | :calls
+          | :space
+          | :p2p
+          | :links
+          | :paint
+          | :ascii_art
+          | :radio
+          | :feature
 
   # Reading the conversation. These reach the chat's own handlers unchanged.
   @reading_events ~w(
@@ -200,6 +210,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   def feature_message(:links), do: dgettext("chat", "You need an account to open links.")
   def feature_message(:paint), do: dgettext("chat", "Hex Paint is for registered members.")
   def feature_message(:ascii_art), do: dgettext("chat", "ASCII Art is for registered members.")
+  def feature_message(:radio), do: dgettext("chat", "Hex Radio is for registered members.")
   def feature_message(_feature), do: dgettext("chat", "This feature needs an account.")
 
   @doc "The icon the sign-in window draws beside `feature_message/1`."
@@ -212,6 +223,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   def feature_icon(:links), do: :icon_link
   def feature_icon(:paint), do: :icon_paint
   def feature_icon(:ascii_art), do: :icon_ascii_art
+  def feature_icon(:radio), do: :icon_radio
   def feature_icon(_feature), do: :icon_lock
 
   defp maybe_watch(socket, channel, default) when is_binary(channel) and channel != default,
@@ -387,6 +399,9 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   defp gate("open_ascii_art", _params, socket),
     do: {:halt, ask_to_sign_in(socket, :ascii_art, Paths.chat_window_path("ascii-art"))}
 
+  defp gate("open_radio", _params, socket),
+    do: {:halt, ask_to_sign_in(socket, :radio, Paths.chat_window_path("radio"))}
+
   # A link of ours names where it led: signing in lands there.
   defp gate("visitor_link", %{"path" => path} = params, socket),
     do: {:halt, ask_to_sign_in(socket, feature_of("visitor_link", params), path)}
@@ -411,5 +426,6 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   defp feature_of("space_" <> _rest, _params), do: :space
   defp feature_of("paint_" <> _rest, _params), do: :paint
   defp feature_of("ascii_" <> _rest, _params), do: :ascii_art
+  defp feature_of("radio_" <> _rest, _params), do: :radio
   defp feature_of(_event, _params), do: :feature
 end

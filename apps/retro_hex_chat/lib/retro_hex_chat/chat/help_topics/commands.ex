@@ -431,6 +431,19 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description: dgettext("help", "Open ASCII Art, to make text art in mIRC colours.")
       },
       %{
+        id: "cmd-radio",
+        title: "/radio",
+        category: dgettext("help", "Chat & Messaging"),
+        keywords: [
+          "radio",
+          "hex radio",
+          dgettext("help", "music"),
+          dgettext("help", "internet radio")
+        ],
+        icon: :icon_radio,
+        description: dgettext("help", "Open Hex Radio, the internet radio player.")
+      },
+      %{
         id: "cmd-popups",
         title: "/popups",
         category: dgettext("help", "Automation"),

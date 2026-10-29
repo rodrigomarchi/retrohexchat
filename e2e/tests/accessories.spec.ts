@@ -1,5 +1,5 @@
 /**
- * @section AC - Accessories: Hex Paint And ASCII Art
+ * @section AC - Accessories: Hex Paint, ASCII Art And Hex Radio
  * @flow AC1 [done] Hex Paint opens from Start > Accessories, a drag draws a line, Ctrl+Z takes it back
  * @flow AC2 [done] A drawing posted from Hex Paint reaches another member of the channel as a picture with its line of text
  * @flow AC3 [done] ASCII Art turns a word into a banner and posts it as one block that another member sees whole, with no flood ignore

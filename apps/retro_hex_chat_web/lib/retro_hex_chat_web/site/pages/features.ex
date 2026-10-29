@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
        mirc_commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
        paint_path: PublicPages.localized_path(PublicPages.path(:paint)),
        ascii_art_path: PublicPages.localized_path(PublicPages.path(:ascii_art)),
+       radio_path: PublicPages.localized_path(PublicPages.path(:radio)),
        windows: [
          Window.intro(dgettext("landing", "Retro Hex Chat Features"), :icon_chat,
            taskbar_label: dgettext("landing", "Features"),

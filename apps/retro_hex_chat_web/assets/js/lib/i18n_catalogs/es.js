@@ -40,6 +40,7 @@ export const ES = {
   "Click to join": "Haga clic para unirse",
   "Click to switch": "Haga clic para cambiar",
   "Connecting to space...": "Conectarse al espacio...",
+  "Connecting…": "Conectando...",
   "Copied!": "¡Copiado!",
   "Could not access your microphone or camera.": "No podía acceder a su micrófono o cámara.",
   "Could not access your microphone or camera. You can still watch and listen.":
@@ -112,6 +113,7 @@ export const ES = {
   "KO!": "¡K.O.!",
   "LONG!": "¡LARGA!",
   Line: "Línea",
+  "Live spectrum": "Espectro en vivo",
   "Loading the Space...": "Cargando el Espacio...",
   "MATCH OVER": "FIN DEL PARTIDO",
   "MISSION COMPLETE": "MISIÓN COMPLETADA",
@@ -142,6 +144,7 @@ export const ES = {
     "No hay micrófono ni cámara. Puedes unirte sin enviar sonido o vídeo.",
   "No screen video track was provided by the browser.":
     "El navegador no proporciona ninguna pista de vídeo de pantalla.",
+  "No sound is coming from this radio.": "No hay sonido de esta radio.",
   "Not speaking": "No está hablando",
   OK: "OK",
   "OPEN SPACE": "ESPACIO ABIERTO",
@@ -182,6 +185,7 @@ export const ES = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "Permiso negado. Retroceder después de permitir el acceso o unirse sólo al recibir.",
   "Pick colour": "Cuentagotas",
+  Playing: "Reproduciendo",
   Poor: "Pobre",
   "Quick Draw": "Duelo rápido",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -226,10 +230,13 @@ export const ES = {
   "Selected device is unavailable. Choose another device or retry.":
     "El dispositivo seleccionado no está disponible. Elija otro dispositivo o reingrese.",
   "Sharing screen": "Compartiendo pantalla",
+  "Simulated spectrum": "Espectro simulado",
   "Sound and video did not come back in time. Try to connect them again.":
     "El sonido y el video no volvieron a tiempo. Intenta conectarlos de nuevo.",
+  "Sound muted": "Sonido silenciado",
   Speaker: "Altavoz",
   Speaking: "Hablando",
+  Stopped: "Detenido",
   "Switching sides...": "Cambiar los lados...",
   "TIEBREAK!": "¡DESEMPATE!",
   "TOXIC DESCENT": "DESCENSO TÓXICO",
@@ -248,6 +255,8 @@ export const ES = {
   "The other side sent data that could not be read.":
     "El otro lado envió datos que no podían leerse.",
   "The received file could not be checked.": "El archivo recibido no puede ser revisado.",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "Esta radio no comparte su sonido, por lo que el igualador no puede cambiarlo.",
   Tip: "Consejo",
   "Type /help to see all commands": "Tipo /help para ver todos los comandos",
   Unknown: "Desconocido",

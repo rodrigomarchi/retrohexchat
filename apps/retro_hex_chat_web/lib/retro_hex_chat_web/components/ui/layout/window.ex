@@ -10,10 +10,15 @@ defmodule RetroHexChatWeb.Components.UI.Window do
 
   # `retro` is the Win98 chrome every window wears. `pixel` is the Virtual
   # Space's wood-and-gold frame, drawn by `features/space-ui.css` inside a
-  # `.space-ui` page only.
-  @skins ~w(retro pixel)
+  # `.space-ui` page only. `device` is a program that is its own appliance —
+  # Hex Radio — with no Win98 frame, only a thin dark title strip
+  # (`features/hex-radio.css`).
+  @skins ~w(retro pixel device)
 
-  @doc "Renders a window frame: Win98's, or the space's pixel-art one (`skin=\"pixel\"`)."
+  @doc """
+  Renders a window frame: Win98's, the space's pixel-art one (`skin="pixel"`)
+  or an appliance's (`skin="device"`).
+  """
   attr :skin, :string, values: @skins, default: "retro"
   attr :class, :any, default: nil
   attr :rest, :global
@@ -25,10 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
     <div
       class={
         classes([
-          if(@skin == "pixel",
-            do: "window--pixel",
-            else: "shadow-retro-window bg-surface p-[3px]"
-          ),
+          frame_class(@skin),
           "flex flex-col",
           @class
         ])
@@ -88,10 +90,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
           {render_slot(@icon)}
         </span>
         <span class={[
-          if(@skin == "pixel",
-            do: "window-title-bar__title--pixel",
-            else: "font-bold text-white text-xs"
-          ),
+          title_class(@skin),
           "truncate",
           @meta == [] && "mr-6"
         ]}>
@@ -108,7 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
         <.tool_button
           :for={control <- @controls}
           label={control_label(control)}
-          variant={if @skin == "pixel", do: "pixel", else: "raised"}
+          variant={control_variant(@skin)}
           size="title"
           disabled={@inactive && is_nil(@on_close)}
           data-window-control={control}
@@ -187,7 +186,20 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   defp control_label(:help), do: dgettext("ui", "Help")
   defp control_label(other), do: to_string(other)
 
+  defp frame_class("pixel"), do: "window--pixel"
+  defp frame_class("device"), do: "window--device"
+  defp frame_class(_retro), do: "shadow-retro-window bg-surface p-[3px]"
+
+  defp title_class("pixel"), do: "window-title-bar__title--pixel"
+  defp title_class("device"), do: "window-title-bar__title--device"
+  defp title_class(_retro), do: "font-bold text-white text-xs"
+
+  defp control_variant("pixel"), do: "pixel"
+  defp control_variant("device"), do: "flat"
+  defp control_variant(_retro), do: "raised"
+
   defp title_bar_class("pixel", _inactive), do: "window-title-bar--pixel"
+  defp title_bar_class("device", _inactive), do: "window-title-bar--device"
 
   defp title_bar_class(_retro, true),
     do: "px-[3px] py-[3px] bg-gradient-to-r from-gray-500 to-gray-350"

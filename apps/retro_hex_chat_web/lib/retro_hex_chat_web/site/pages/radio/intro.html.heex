@@ -1,0 +1,34 @@
+<h1 id="radio-heading" class="text-lg font-bold mb-retro-8 text-text">
+  {dgettext("landing", "Listen to internet radio in a retro player")}
+</h1>
+<p class="text-sm max-w-3xl mb-retro-12">
+  {dgettext("landing", "Hex Radio is an internet radio player that opens on the chat's desktop.")}
+  {dgettext(
+    "landing",
+    "Choose from thousands of stations around the world: the most played, a genre from chiptune to jazz, or a station by its name."
+  )}
+  {dgettext(
+    "landing",
+    "Star the ones you like, and keep listening while you chat in another window."
+  )}
+</p>
+
+<div class="flex flex-wrap items-center gap-retro-8 mb-retro-12" data-testid="radio-actions">
+  <.button patch={@open_path} class="font-bold" data-testid="radio-open">
+    <:icon><Icons.icon_radio class="h-4 w-4" /></:icon>
+    {dgettext("landing", "Open Hex Radio")}
+  </.button>
+  <.button variant="outline" patch={@help["ui-hex-radio"].path} data-testid="radio-how">
+    <:icon><Icons.icon_question class="h-4 w-4" /></:icon>
+    {dgettext("landing", "How it works")}
+  </.button>
+</div>
+
+<.inset tone="screen" class="p-1">
+  <.screenshot
+    {@shots["radio"]}
+    alt={dgettext("landing", "Hex Radio playing a chiptune station, its spectrum lit in green")}
+    sizes="(min-width: 900px) 880px, 100vw"
+    main
+  />
+</.inset>

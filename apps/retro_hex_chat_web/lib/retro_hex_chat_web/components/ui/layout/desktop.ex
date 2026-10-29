@@ -276,9 +276,11 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         "active feature) instead of a client-side hide"
 
   attr :skin, :string,
-    values: ~w(retro pixel),
+    values: ~w(retro pixel device),
     default: "retro",
-    doc: "`pixel` is the Virtual Space's wood-and-gold frame, for a `.space-ui` page only"
+    doc:
+      "`pixel` is the Virtual Space's wood-and-gold frame, for a `.space-ui` page only; " <>
+        "`device` an appliance's frame, a program drawn as its own machine (Hex Radio)"
 
   attr :class, :any, default: nil
   attr :body_class, :any, default: nil

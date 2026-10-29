@@ -40,6 +40,7 @@ export const PT_BR = {
   "Click to join": "Clique para entrar",
   "Click to switch": "Clique para alternar",
   "Connecting to space...": "Ligando ao espaço...",
+  "Connecting…": "Conectando...",
   "Copied!": "Copiado!",
   "Could not access your microphone or camera.":
     "Não foi possível acessar seu microfone ou câmera.",
@@ -113,6 +114,7 @@ export const PT_BR = {
   "KO!": "NOCAUTE!",
   "LONG!": "LONGA!",
   Line: "Linha",
+  "Live spectrum": "Espectro ao vivo",
   "Loading the Space...": "Carregando o Espaço...",
   "MATCH OVER": "FIM DA PARTIDA",
   "MISSION COMPLETE": "MISSÃO CUMPRIDA",
@@ -144,6 +146,7 @@ export const PT_BR = {
     "Nenhum microfone ou câmera encontrado. Você pode participar sem enviar som ou vídeo.",
   "No screen video track was provided by the browser.":
     "O navegador não forneceu nenhuma faixa de vídeo da tela.",
+  "No sound is coming from this radio.": "Nenhum som vem deste rádio.",
   "Not speaking": "Não está falando",
   OK: "OK",
   "OPEN SPACE": "ESPAÇO ABERTO",
@@ -184,6 +187,7 @@ export const PT_BR = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "Permissão negada. Tente novamente depois de permitir o acesso ou junte-se somente ao recebimento.",
   "Pick colour": "Conta-gotas",
+  Playing: "Tocando",
   Poor: "Ruim",
   "Quick Draw": "Saque rápido",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -227,10 +231,13 @@ export const PT_BR = {
   "Selected device is unavailable. Choose another device or retry.":
     "O dispositivo selecionado não está disponível. Escolha outro dispositivo ou tente novamente.",
   "Sharing screen": "Compartilhando a tela",
+  "Simulated spectrum": "Espectro simulado",
   "Sound and video did not come back in time. Try to connect them again.":
     "O som e o vídeo não voltaram no tempo. Tente conectá-los novamente.",
+  "Sound muted": "Som desligado",
   Speaker: "Alto-falante",
   Speaking: "Falando",
+  Stopped: "Parado",
   "Switching sides...": "Trocando lados...",
   "TIEBREAK!": "TIEBREAK!",
   "TOXIC DESCENT": "DESCIDA TÓXICA",
@@ -249,6 +256,8 @@ export const PT_BR = {
   "The other side sent data that could not be read.":
     "O outro lado enviou dados que não puderam ser lidos.",
   "The received file could not be checked.": "O arquivo recebido não pôde ser verificado.",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "Este rádio não compartilha seu som, então o equalizador não pode mudá-lo.",
   Tip: "Dica",
   "Type /help to see all commands": "Digite /help para ver todos os comandos",
   Unknown: "Desconhecido",

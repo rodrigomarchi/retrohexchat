@@ -349,7 +349,7 @@ spaces.shots: ## Capture the pictures of the public Spaces page from the real sp
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) E2E_CAPTURE=1 npx playwright test --project=capture capture/spaces.capture.ts
 
-tools.shots: ## Capture the pictures of the public Hex Paint and ASCII Art pages from the real desktop (e2e server)
+tools.shots: ## Capture the pictures of the public Hex Paint, ASCII Art and Hex Radio pages from the real desktop (e2e server)
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) E2E_CAPTURE=1 npx playwright test --project=capture capture/tools.capture.ts
 

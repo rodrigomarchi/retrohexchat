@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.App.Paths do
 
   @doc "The programs a link may open on the desktop, by window id."
   @spec linkable_windows() :: [String.t()]
-  def linkable_windows, do: ~w(paint ascii-art)
+  def linkable_windows, do: ~w(paint ascii-art radio)
 
   @doc "The desktop with one of `linkable_windows/0` open."
   @spec chat_window_path(String.t()) :: String.t()

@@ -39,6 +39,7 @@ export const PT_PT = {
   "Click to join": "Clique para entrar",
   "Click to switch": "Clique para alternar",
   "Connecting to space...": "A ligar ao espaço...",
+  "Connecting…": "Conectando...",
   "Copied!": "Copiado!",
   "Could not access your microphone or camera.":
     "Não foi possível acessar seu microfone ou câmera.",
@@ -111,6 +112,7 @@ export const PT_PT = {
   "KO!": "KO!",
   "LONG!": "LONGA!",
   Line: "Linha",
+  "Live spectrum": "Espectro ao vivo",
   "Loading the Space...": "Carregando o Espaço...",
   "MATCH OVER": "FIM DO JOGO",
   "MISSION COMPLETE": "MISSÃO CUMPRIDA",
@@ -142,6 +144,7 @@ export const PT_PT = {
     "Nenhum microfone ou câmera encontrado. Você pode participar sem enviar som ou vídeo.",
   "No screen video track was provided by the browser.":
     "O navegador não forneceu nenhuma faixa de vídeo da tela.",
+  "No sound is coming from this radio.": "Nenhum som vem deste rádio.",
   "Not speaking": "Não está a falar",
   OK: "OK",
   "OPEN SPACE": "ESPAÇO ABERTO",
@@ -182,6 +185,7 @@ export const PT_PT = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "Permissão negada. Tente novamente depois de permitir o acesso ou junte-se somente ao recebimento.",
   "Pick colour": "Conta-gotas",
+  Playing: "A tocar",
   Poor: "Pobre",
   "Quick Draw": "Saque rápido",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -226,10 +230,13 @@ export const PT_PT = {
   "Selected device is unavailable. Choose another device or retry.":
     "O dispositivo seleccionado não está disponível. Escolha outro dispositivo ou tente novamente.",
   "Sharing screen": "A partilhar o ecrã",
+  "Simulated spectrum": "Espectro simulado",
   "Sound and video did not come back in time. Try to connect them again.":
     "O som e o vídeo não voltaram no tempo. Tente conectá-los novamente.",
+  "Sound muted": "Som desligado",
   Speaker: "Altifalante",
   Speaking: "A falar",
+  Stopped: "Parado",
   "Switching sides...": "Mudando de lado...",
   "TIEBREAK!": "DESEMPATE!",
   "TOXIC DESCENT": "DESCIDA TÓXICA",
@@ -248,6 +255,8 @@ export const PT_PT = {
   "The other side sent data that could not be read.":
     "O outro lado enviou dados que não puderam ser lidos.",
   "The received file could not be checked.": "O ficheiro recebido não pôde ser verificado.",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "Este rádio não compartilha seu som, então o equalizador não pode mudá-lo.",
   Tip: "Dica",
   "Type /help to see all commands": "Digite /help para ver todos os comandos",
   Unknown: "Desconhecido",

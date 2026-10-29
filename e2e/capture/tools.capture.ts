@@ -1,7 +1,8 @@
 /**
- * Captures the pictures of the public pages of Hex Paint (`/paint`) and ASCII
- * Art (`/ascii-art`): each program open on the desktop with something made
- * in it, and the channel those things were posted to.
+ * Captures the pictures of the public pages of Hex Paint (`/paint`), ASCII
+ * Art (`/ascii-art`) and Hex Radio (`/radio`): each program open on the
+ * desktop with something made in it, the channel those things were posted
+ * to, and the radio playing with its equalizer open.
  *
  *   make tools.shots
  *
@@ -13,7 +14,9 @@
  * The drawing is put in Hex Paint's draft before the window opens — the same
  * place the browser keeps somebody's drawing between visits — so the picture
  * is pixel art rather than a mouse's scribble. Each picture is written at full
- * size and halved to the pixel (`-half`); each program's share card,
+ * size and halved to the pixel (`-half`). The radio's station is one of
+ * `Radio.Fixture`'s; its stream is answered here with a chord the script
+ * makes, shared with the page, so the spectrum is the real one; each program's share card,
  * `og/<name>.jpg`, is cut from its picture's centre at 1200x630. The page
  * reads every size from `manifest.json` at compile time.
  *
@@ -81,7 +84,7 @@ function drawing(): string {
   return `${size}:${pixels.join("")}`;
 }
 
-test("captures the pictures of the Hex Paint and ASCII Art pages", async ({
+test("captures the pictures of the Hex Paint, ASCII Art and Hex Radio pages", async ({
   browser,
 }) => {
   test.setTimeout(3 * 60_000);
@@ -184,6 +187,59 @@ test("captures the pictures of the Hex Paint and ASCII Art pages", async ({
     ).toBeVisible();
     await save(page, "in_chat");
 
+    // Hex Radio, playing a chiptune station from the most played.
+    await page.route("https://radio.e2e.test/**", (route) =>
+      route.fulfill({
+        status: 200,
+        headers: {
+          "content-type": "audio/wav",
+          "access-control-allow-origin": "*",
+        },
+        body: chord(30),
+      }),
+    );
+    await ana.chat.sendMessage("/radio");
+    const radio = page.getByTestId("radio-window");
+    await expect(radio).toBeVisible();
+    // The most played, the list a member sees first.
+    await expect(page.getByTestId("hex-radio-station")).toHaveCount(6);
+    await page.getByTestId("hex-radio-station-e2e-pixel").click();
+    await expect(page.getByTestId("hex-radio-status-state")).toHaveText(
+      "Playing",
+    );
+    await page.getByTestId("hex-radio-star").click();
+    await expect(page.getByTestId("hex-radio-star")).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    // A moment of music, so the peaks have somewhere to fall from.
+    await page.waitForTimeout(1500);
+    const radioShot = await save(page, "radio");
+    writeFileSync(
+      path.join(OUT_DIR, "og", "radio.jpg"),
+      await toCard(page, radioShot, { ...CARD, fit: "crop" }),
+    );
+    manifest["og/radio"] = { width: CARD.width, height: CARD.height };
+
+    await page.getByTestId("hex-radio-equalizer-toggle").click();
+    for (const [band, value] of [
+      [0, 8],
+      [1, 6],
+      [2, 3],
+      [7, 4],
+      [8, 6],
+      [9, 7],
+    ]) {
+      await page
+        .getByTestId(`hex-radio-band-${band}`)
+        .evaluate((el: HTMLInputElement, next) => {
+          el.value = String(next);
+          el.dispatchEvent(new Event("input", { bubbles: true }));
+        }, value);
+    }
+    await page.waitForTimeout(800);
+    await save(page, "radio_equalizer");
+
     writeFileSync(
       path.join(OUT_DIR, "manifest.json"),
       JSON.stringify(sortKeys(manifest), null, 2) + "\n",
@@ -192,6 +248,40 @@ test("captures the pictures of the Hex Paint and ASCII Art pages", async ({
     await closeUsers([ana]);
   }
 });
+
+// A WAV of `seconds` of a chord that swells and fades, so every part of the
+// spectrum has something in it: a bass, a fifth, and a bright arpeggio.
+function chord(seconds: number): Buffer {
+  const rate = 22050;
+  const samples = rate * seconds;
+  const data = Buffer.alloc(44 + samples * 2);
+  data.write("RIFF", 0);
+  data.writeUInt32LE(36 + samples * 2, 4);
+  data.write("WAVEfmt ", 8);
+  data.writeUInt32LE(16, 16);
+  data.writeUInt16LE(1, 20);
+  data.writeUInt16LE(1, 22);
+  data.writeUInt32LE(rate, 24);
+  data.writeUInt32LE(rate * 2, 28);
+  data.writeUInt16LE(2, 32);
+  data.writeUInt16LE(16, 34);
+  data.write("data", 36);
+  data.writeUInt32LE(samples * 2, 40);
+  const notes = [110, 165, 220, 330, 440, 660, 880, 1320, 2640, 5280];
+  for (let i = 0; i < samples; i++) {
+    const time = i / rate;
+    const swell = 0.6 + 0.4 * Math.sin(time * Math.PI * 2);
+    const step = Math.floor(time * 8) % notes.length;
+    let value = 0;
+    notes.forEach((note, n) => {
+      const loud = n === step ? 1 : 0.25 / (1 + n * 0.3);
+      value += loud * Math.sin(2 * Math.PI * note * time);
+    });
+    const sample = Math.max(-1, Math.min(1, (value / 3) * swell));
+    data.writeInt16LE(Math.round(sample * 32767), 44 + i * 2);
+  }
+  return data;
+}
 
 // The desktop as the member sees it, at full size and halved, recorded in the
 // manifest; the full one is returned for the share card.

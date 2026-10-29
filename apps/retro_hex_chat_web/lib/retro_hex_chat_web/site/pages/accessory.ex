@@ -1,8 +1,9 @@
 defmodule RetroHexChatWeb.Site.Pages.Accessory do
   @moduledoc """
-  The public page of a picture program of the desktop — Hex Paint (`/paint`),
-  ASCII Art (`/ascii-art`) — built once: the program open on something made in
-  it, the same things posted in a channel, and how to get in.
+  The public page of a program of the desktop — Hex Paint (`/paint`), ASCII
+  Art (`/ascii-art`), Hex Radio (`/radio`) — built once: the program open on
+  something made in it, what else it does (the things posted in a channel, the
+  equalizer), and how to get in.
 
   The pictures are taken from the real desktop by `make tools.shots`; their
   sizes come from its `manifest.json`, read at compile time. Each page module
@@ -20,20 +21,22 @@ defmodule RetroHexChatWeb.Site.Pages.Accessory do
   alias RetroHexChatWeb.Site.{Shots, Window}
 
   @dir "/images/tools"
-  @pictures ~w(paint ascii_art in_chat)
+  @pictures ~w(paint ascii_art in_chat radio radio_equalizer)
+  @cards ~w(og/paint og/ascii_art og/radio)
 
   @manifest_path Path.expand("../../../../priv/static#{@dir}/manifest.json", __DIR__)
   @external_resource @manifest_path
   @manifest @manifest_path |> File.read!() |> Jason.decode!()
 
-  for name <- @pictures ++ ["og/paint", "og/ascii_art"], not Map.has_key?(@manifest, name) do
+  for name <- @pictures ++ @cards, not Map.has_key?(@manifest, name) do
     raise "#{@manifest_path} has no #{name}: run make tools.shots"
   end
 
   @typedoc """
   What a page is: its `key` (pictures and card), the visitor `feature` and
   desktop `window` it opens, its `path`, `name`, `description`, `title`, the
-  card's `alt`, its `help` topics and its three window bodies.
+  card's `alt`, its `help` topics, its first and last window bodies (`intro`,
+  `how`) and the `panes` between them, each `{key, title, icon, body}`.
   """
   @type page :: %{
           key: String.t(),
@@ -47,7 +50,7 @@ defmodule RetroHexChatWeb.Site.Pages.Accessory do
           alt: String.t(),
           help: [String.t()],
           intro: (map() -> Phoenix.LiveView.Rendered.t()),
-          chat: (map() -> Phoenix.LiveView.Rendered.t()),
+          panes: [{String.t(), String.t(), atom(), (map() -> Phoenix.LiveView.Rendered.t())}],
           how: (map() -> Phoenix.LiveView.Rendered.t())
         }
 
@@ -60,21 +63,23 @@ defmodule RetroHexChatWeb.Site.Pages.Accessory do
        open_path: open_path(page, ctx),
        shots: Shots.pictures(@manifest, @dir, @pictures),
        help: help(page.help),
-       windows: [
-         Window.new("intro", page.name, page.icon,
-           width: 900,
-           body: page.intro,
-           status: [dgettext("landing", "Free, in the browser")]
-         ),
-         Window.new("chat", dgettext("landing", "In the chat"), :icon_chat,
-           width: 760,
-           body: page.chat
-         ),
-         Window.new("how", dgettext("landing", "How to get in"), :icon_question,
-           width: 520,
-           body: page.how
-         )
-       ],
+       windows:
+         [
+           Window.new("intro", page.name, page.icon,
+             width: 900,
+             body: page.intro,
+             status: [dgettext("landing", "Free, in the browser")]
+           )
+         ] ++
+           for {key, title, icon, body} <- page.panes do
+             Window.new(key, title, icon, width: 760, body: body)
+           end ++
+           [
+             Window.new("how", dgettext("landing", "How to get in"), :icon_question,
+               width: 520,
+               body: page.how
+             )
+           ],
        canonical_path: page.path,
        og_image: Shots.card(@manifest, @dir, page.key, page.alt),
        json_ld: [

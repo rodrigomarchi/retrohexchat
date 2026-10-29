@@ -40,6 +40,7 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Surfaces,
       RetroHexChat.RateLimit.Table,
       RetroHexChat.Scraper.Cache,
+      RetroHexChat.Radio.Cache,
       RetroHexChat.Presence.WhowasCache,
       RetroHexChat.Services.NickServ,
       RetroHexChat.Services.ChanServ,

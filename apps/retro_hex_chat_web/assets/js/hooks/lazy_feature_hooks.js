@@ -127,6 +127,12 @@ export const lazyFeatureHooks = {
     serverEvents: [],
     reason: "ASCII Art's font, picture reader and preview are only needed once its window opens.",
   }),
+  RadioHook: lazyFeatureHook({
+    name: "RadioHook",
+    loader: () => import("./radio/radio_hook"),
+    serverEvents: [],
+    reason: "Hex Radio's player, equalizer and spectrum are only needed once its window opens.",
+  }),
   MetricChartHook: lazyFeatureHook({
     name: "MetricChartHook",
     loader: () => import("./system/metric_chart_hook"),

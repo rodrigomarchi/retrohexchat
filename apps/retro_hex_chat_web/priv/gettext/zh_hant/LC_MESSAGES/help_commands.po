@@ -1915,6 +1915,7 @@ msgstr "輸入要讀取和發送消息的聊天頻道 。 如果這個頻道還�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:80
@@ -2022,6 +2023,7 @@ msgstr "隱藏特定用戶的消息 。 被忽略的用戶沒有被通知——�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:29
@@ -2560,6 +2562,7 @@ msgstr "根管理員不能通過命令降級"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:56
@@ -2643,6 +2646,7 @@ msgstr "將命令排在延遲之後運行, 可在正常間隔中選擇重複 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:84
@@ -2826,6 +2830,7 @@ msgstr "子命令"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:17
@@ -5680,6 +5685,7 @@ msgstr "在十六個聊天顏色中繪製一個32、64或128像素的網格"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Needs an account: a visitor is asked to register first"
 msgstr "Needs an account: a visitor is asked to register first"
@@ -5741,6 +5747,7 @@ msgstr "使用鉛筆、線條、矩形、橢圓形、填充和擦除器,並帶�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "What You Can Do There"
 msgstr "你在那裏能做什麼嗎?"
@@ -5749,3 +5756,39 @@ msgstr "你在那裏能做什麼嗎?"
 #, elixir-autogen, elixir-format
 msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
 msgstr "用大字母寫一個字,用塊、散列或陰影塊組成,用一種顏色、彩虹或兩噸"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "/radio"
+msgstr "/radio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Closing the window stops the music"
+msgstr "關閉窗口停止音樂"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Listen to the most played stations, a genre's stations, or find one by name"
+msgstr "Listen to the most played stations, a genre's stations, or find one by name"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Opens Hex Radio, the internet radio player: thousands of stations from around the world, by genre or by name."
+msgstr "Opens Hex Radio, the internet radio player: thousands of stations from around the world, by genre or by name."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Opens the Hex Radio window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Radio opens."
+msgstr "打開Hex Radio窗口,或當它已經打開時將其帶往前方——同一窗口 Start > Accessories > Hex Radio打開."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Star the stations you like to find them again"
+msgstr "Star the stations you like to find them again"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Watch the spectrum or the oscilloscope and shape the sound with the equalizer"
+msgstr "注意光譜或示波器,用平衡器塑造聲音"

@@ -10,6 +10,22 @@ MODES = "+m lets only voiced users speak, +i lets in only who is invited."
 
 
 class MissingTermsTest(unittest.TestCase):
+    def test_a_radio_station_is_not_a_train_station(self):
+        source = "No favorites yet. Press the star beside a station to keep it here."
+        self.assertTrue(missing_terms(source, "駅の横にある星を押下して、ここを保ちましょう。", "ja"))
+        self.assertEqual(missing_terms(source, "局の横にある星を押して、ここに残しましょう。", "ja"), [])
+
+    def test_a_radio_player_is_not_a_game_player(self):
+        source = "Listen to internet radio for free in a retro player: thousands of stations."
+        self.assertEqual(
+            missing_terms(source, "Ouça rádio online grátis num tocador retrô: milhares de estações.", "pt_BR"),
+            [],
+        )
+
+    def test_a_fuel_station_is_the_games(self):
+        source = "An empty tank slows you to a crawl until you reach a fuel station"
+        self.assertEqual(missing_terms(source, "燃料スタンドに着くまで遅くなる", "ja"), [])
+
     def test_a_sung_user_is_not_a_voiced_one(self):
         # What the German model shipped for the guide's channel modes.
         translated = "+m lässt nur gesungene Benutzer sprechen, +i lässt nur Eingeladene herein."
@@ -622,6 +638,12 @@ class ForeignFormsTest(unittest.TestCase):
     def test_a_desk_is_not_a_secretary_in_brazil(self):
         self.assertTrue(foreign_forms("Um escritório com secretárias e uma mesa", "pt_BR"))
 
+    def test_the_plural_of_registered_is_european_too(self):
+        self.assertEqual(
+            foreign_forms("Hex Radio é para membros registados.", "pt_BR"), ["registados"]
+        )
+        self.assertEqual(foreign_forms("O directório não responde.", "pt_BR"), ["directório"])
+
     def test_brazilian_text_passes(self):
         self.assertEqual(foreign_forms("Escolha um apelido e pronto.", "pt_BR"), [])
 
@@ -644,6 +666,15 @@ class BrazilianFormsTest(unittest.TestCase):
         self.assertEqual(brazilian_forms("Erro ao ler o ficheiro."), "Erro ao ler o arquivo.")
         self.assertEqual(brazilian_forms("A reacção da conferência"), "A reação da conferência")
         self.assertEqual(brazilian_forms("A tua câmara"), "A sua câmera")
+        # Measured on Hex Radio's sign-in line and its catalog's error.
+        self.assertEqual(
+            brazilian_forms("Hex Radio é para membros registados."),
+            "Hex Radio é para membros registrados.",
+        )
+        self.assertEqual(
+            brazilian_forms("O directório da estação não está respondendo."),
+            "O diretório da estação não está respondendo.",
+        )
 
     def test_rewrites_the_sudoku_words_portugal_spells_its_own_way(self):
         self.assertEqual(

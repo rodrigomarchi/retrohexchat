@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **273 spec files** under `e2e/tests/`.
-- **688 Playwright `test()` cases**.
-- **632 documented flows**, 631 done, 1 not done.
+- **274 spec files** under `e2e/tests/`.
+- **690 Playwright `test()` cases**.
+- **636 documented flows**, 635 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -886,10 +886,10 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW32 | A trusted terminal set to Auto-login is signed in by the first page it opens after the browser restarts, with no sign-in window or form in between; Log out keeps it out until the browser closes; Log in beside a remembered nickname works before the chat's socket has joined — on a desktop and on a phone | `tests/trusted-terminal-return.spec.ts` | done |
 | PW33 | The public Spaces page shows the world in real pictures — the island, the Construct, the Game Room, the Office and the character creator — on a desktop and a phone, and its way in takes a visitor through creating an account straight into the #lobby Space, put in the channel on arrival | `tests/spaces-page.spec.ts` | done |
 | PW34 | A member's way in on the Spaces page opens the #lobby Space in a tab of its own, and the features window and the home page lead to the Spaces page | `tests/spaces-page.spec.ts` | done |
-| PW40 | /paint and /ascii-art show the program in real pictures, with its own title and share card | `tests/accessory-pages.spec.ts` | done |
+| PW40 | /paint, /ascii-art and /radio show the program in real pictures, with its own title and share card | `tests/accessory-pages.spec.ts` | done |
 | PW41 | A visitor's Open Hex Paint asks for an account; a member's opens Hex Paint on the desktop | `tests/accessory-pages.spec.ts` | done |
 
-### AC - Accessories: Hex Paint And ASCII Art
+### AC - Accessories: Hex Paint, ASCII Art And Hex Radio
 
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
@@ -899,6 +899,10 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | AC4 | Hex Paint's File > Open in ASCII Art opens ASCII Art on the drawing | `tests/accessories.spec.ts` | done |
 | AC5 | A visitor who picks Start > Accessories > Hex Paint is asked to register | `tests/accessories.spec.ts` | done |
 | AC6 | Both windows fit a phone, their menus on the rail | `tests/accessories.spec.ts` | done |
+| AC7 | Hex Radio opens from Start > Accessories on the most played stations; Play and Next walk the list; a genre from the footer menu and a search list theirs | `tests/hex-radio.spec.ts` | done |
+| AC8 | A station that shares its sound plays with the live spectrum; one that does not still plays, with the SIM lamp lit and the equalizer saying it cannot change it; the equalizer switches off and on | `tests/hex-radio.spec.ts` | done |
+| AC9 | A starred station is kept in the browser and listed under Favorites after the window is opened again; closing the window stops the music | `tests/hex-radio.spec.ts` | done |
+| AC10 | Hex Radio fits a phone, the transport and the stations in view | `tests/hex-radio.spec.ts` | done |
 
 ### Dialog Gallery
 

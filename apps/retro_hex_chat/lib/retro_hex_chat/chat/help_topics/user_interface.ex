@@ -576,6 +576,25 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-hex-radio",
+        title: "Hex Radio",
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "radio",
+          "/radio",
+          dgettext("help", "music"),
+          dgettext("help", "internet radio"),
+          dgettext("help", "equalizer"),
+          dgettext("help", "Accessories")
+        ],
+        icon: :icon_radio,
+        description:
+          dgettext(
+            "help",
+            "Listen to internet radio stations from around the world, with a spectrum and an equalizer."
+          )
+      },
+      %{
         id: "ui-timers-dialog",
         title: dgettext("help", "Timers Dialog"),
         category: dgettext("help", "User Interface"),

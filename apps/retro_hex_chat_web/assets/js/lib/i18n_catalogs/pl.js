@@ -40,6 +40,7 @@ export const PL = {
   "Click to join": "Kliknij, aby dołączyć",
   "Click to switch": "Kliknij, aby przełączyć",
   "Connecting to space...": "Łączenie z przestrzenią...",
+  "Connecting…": "Łączenie...",
   "Copied!": "Skopiowano!",
   "Could not access your microphone or camera.":
     "Nie można uzyskać dostępu do mikrofonu lub kamery.",
@@ -112,6 +113,7 @@ export const PL = {
   "KO!": "NOKAUT!",
   "LONG!": "ZA DŁUGA!",
   Line: "Linia",
+  "Live spectrum": "Widmo na żywo",
   "Loading the Space...": "Ładowanie przestrzeni...",
   "MATCH OVER": "KONIEC MECZU",
   "MISSION COMPLETE": "MISJA UKOŃCZONA",
@@ -142,6 +144,7 @@ export const PL = {
     "Nie znaleziono mikrofonu ani kamery. Możesz dołączyć bez wysyłania dźwięku lub wideo.",
   "No screen video track was provided by the browser.":
     "Przeglądarka nie udostępniła żadnych ekranów wideo.",
+  "No sound is coming from this radio.": "Żaden dźwięk nie pochodzi z tego radia.",
   "Not speaking": "Nie mówi",
   OK: "OK",
   "OPEN SPACE": "OTWARTA PRZESTRZEŃ",
@@ -182,6 +185,7 @@ export const PL = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "Odmawiam. Retry po zezwoleniu na dostęp lub dołączyć tylko receive.",
   "Pick colour": "Pipeta",
+  Playing: "Odtwarzanie",
   Poor: "Biedny",
   "Quick Draw": "Szybkie dobycie",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -227,10 +231,13 @@ export const PL = {
   "Selected device is unavailable. Choose another device or retry.":
     "Wybrane urządzenie jest niedostępne. Wybierz inne urządzenie lub ponownie spróbować.",
   "Sharing screen": "Udostępnianie ekranu",
+  "Simulated spectrum": "Symulowane widmo",
   "Sound and video did not come back in time. Try to connect them again.":
     "Dźwięk i wideo nie wróciły na czas. Spróbuj połączyć je jeszcze raz.",
+  "Sound muted": "Dźwięk wyciszony",
   Speaker: "Głośnik",
   Speaking: "Mówi",
+  Stopped: "Zatrzymany",
   "Switching sides...": "Przełączam boki...",
   "TIEBREAK!": "TIE-BREAK!",
   "TOXIC DESCENT": "TOKSYCZNY ZJAZD",
@@ -249,6 +256,8 @@ export const PL = {
   "The other side sent data that could not be read.":
     "Druga strona przesłała dane, których nie można odczytać.",
   "The received file could not be checked.": "Nie można było sprawdzić otrzymanego pliku.",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "To radio nie dzieli dźwięku, więc nie może go zmienić.",
   Tip: "Wskazówka",
   "Type /help to see all commands": "Type < ph0 > < / ph0 > aby zobaczyć wszystkie polecenia",
   Unknown: "Nieznany",

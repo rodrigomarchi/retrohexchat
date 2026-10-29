@@ -40,6 +40,7 @@ export const RU = {
   "Click to join": "Кликните, чтобы присоединиться",
   "Click to switch": "Нажмите, чтобы переключиться",
   "Connecting to space...": "Подключение к космосу...",
+  "Connecting…": "Подключение...",
   "Copied!": "Скопировано!",
   "Could not access your microphone or camera.":
     "Вы не можете получить доступ к микрофону или камере.",
@@ -113,6 +114,7 @@ export const RU = {
   "KO!": "Нокаут!",
   "LONG!": "Аут!",
   Line: "линия",
+  "Live spectrum": "Спектр в реальном времени",
   "Loading the Space...": "Загрузить пространство...",
   "MATCH OVER": "Матч окончен",
   "MISSION COMPLETE": "Задание выполнено",
@@ -143,6 +145,7 @@ export const RU = {
     "Ни микрофона, ни камеры не найдено. Вы можете присоединиться без отправки звука или видео.",
   "No screen video track was provided by the browser.":
     "Никаких экранных видеотреков браузером предоставлено не было.",
+  "No sound is coming from this radio.": "Никакого звука от этого радио не исходит.",
   "Not speaking": "Не говорит",
   OK: "OK",
   "OPEN SPACE": "Открытый космос",
@@ -183,6 +186,7 @@ export const RU = {
   "Permission denied. Retry after allowing access or join receive-only.":
     "Разрешение отказано. Повторяйте после предоставления доступа или присоединяйтесь только к приему.",
   "Pick colour": "Пипетка",
+  Playing: "Воспроизведение",
   Poor: "бедный",
   "Quick Draw": "Быстрый выстрел",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -223,10 +227,13 @@ export const RU = {
   "Selected device is unavailable. Choose another device or retry.":
     "Выбранное устройство недоступно. Выберите другое устройство или повторите.",
   "Sharing screen": "Демонстрация экрана",
+  "Simulated spectrum": "Имитация спектра",
   "Sound and video did not come back in time. Try to connect them again.":
     "Звук и видео не вернулись в прошлое. Попробуйте соединить их снова.",
+  "Sound muted": "Звук выключен",
   Speaker: "Динамик",
   Speaking: "Говорит",
+  Stopped: "остановлен",
   "Switching sides...": "Переключение сторон...",
   "TIEBREAK!": "Тай-брейк!",
   "TOXIC DESCENT": "Ядовитый спуск",
@@ -246,6 +253,8 @@ export const RU = {
   "The other side sent data that could not be read.":
     "Другая сторона отправляла данные, которые не могли быть прочитаны.",
   "The received file could not be checked.": "Полученный файл проверить не удалось.",
+  "This radio does not share its sound, so the equalizer cannot change it.":
+    "Это радио не разделяет его звук, поэтому эквалайзер не может его изменить.",
   Tip: "Совет",
   "Type /help to see all commands": "Тип /help для просмотра всех команд",
   Unknown: "Неизвестно",

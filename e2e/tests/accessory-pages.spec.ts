@@ -1,6 +1,6 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
- * @flow PW40 [done] /paint and /ascii-art show the program in real pictures, with its own title and share card
+ * @flow PW40 [done] /paint, /ascii-art and /radio show the program in real pictures, with its own title and share card
  * @flow PW41 [done] A visitor's Open Hex Paint asks for an account; a member's opens Hex Paint on the desktop
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -26,6 +26,7 @@ for (const page of [
     heading: "ascii-art-heading",
     card: "/images/tools/og/ascii_art",
   },
+  { path: "/radio", heading: "radio-heading", card: "/images/tools/og/radio" },
 ]) {
   test(`${page.path} shows the program in real pictures, with its own card (PW40)`, async ({
     page: tab,

@@ -685,6 +685,23 @@
         />
       </.desktop_window>
 
+      <%!-- Hex Radio — server-managed: the stream plays in the browser, and
+          closing the window stops it. An appliance of its own: no menu bar,
+          no status bar, a thin device title strip. --%>
+      <.desktop_window
+        :if={"radio" in @open_windows}
+        {WindowRegistry.attrs("radio")}
+        skin="device"
+        body_class="flex min-h-0 flex-col p-0"
+        data-testid="radio-window"
+      >
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.RadioWindow}
+          id={RetroHexChatWeb.ChatLive.Components.RadioWindow.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
       <%!-- Timers — server-managed: closing unmounts the island (draft state
           resets by design); reopening mounts a fresh one. --%>
       <.desktop_window
