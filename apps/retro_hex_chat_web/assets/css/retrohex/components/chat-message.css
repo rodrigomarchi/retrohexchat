@@ -1,8 +1,9 @@
 /* ── Chat message row ──────────────────────────────────────── */
-/* Every row opens with the same head — kind icon, author, timestamp. Speech
-   then drops to a full-width line of text behind a spine in the author's
-   colour (the ICQ/MSN shape); narration keeps flowing on the head's own line
-   and wraps back to the left margin (the way mIRC printed it).
+/* A row opens with a head — the author, or an origin with its kind icon, then
+   the time. Speech drops to a full-width line of text under it; narration keeps
+   flowing on the head's own line and wraps back to the left margin (the way
+   mIRC printed it). Speech is printed in runs on continuous paper: see
+   "Continuous paper" below.
 
    The point of the shape is that metadata costs height and never width: the
    two-column grid this replaced reserved 88px of a 314px phone line — 28% of
@@ -71,15 +72,6 @@
 .chat-message__body {
   display: flex;
   gap: 6px;
-}
-
-/* `currentColor` is the author's nick colour when the row carries one, and the
-   row's own type colour otherwise (grey for system, muted for a help card) —
-   so the spine is never a hardcoded second palette. */
-.chat-message__spine {
-  width: 2px;
-  flex: 0 0 2px;
-  background: currentColor;
 }
 
 .chat-message__text {
@@ -404,7 +396,7 @@
    — which is right for "the room said something about itself" and wrong for
    the object underneath it. The card is a thing you read and act on, so it
    takes back the upright body text the rest of the conversation uses. It has
-   no frame of its own (`ChatCard`): the row's spine sets it apart. */
+   no frame of its own (`ChatCard`): the run's band sets it apart. */
 .chat-card {
   @apply not-italic text-foreground;
 }
@@ -585,4 +577,295 @@
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
+}
+
+/* ── Continuous paper ───────────────────────────────────────────────────────
+   The conversation is printed like a dot-matrix log on green-bar paper: each
+   run of one speaker is a band, bands alternate green and white, and nothing
+   draws a border — the colour change is the separator. On a wide screen the
+   tractor-feed holes run down both margins and scroll with the paper. */
+.chat-paper {
+  --paper: #fdfdf8;
+  --paper-bar: #e3f0dc;
+  --paper-own: #e6edfa;
+  --paper-hole: #d9d9d9;
+  --paper-rule: #c9c9c9;
+  --paper-ink: #b3262d;
+  --paper-feed: 0px;
+  background-color: var(--paper);
+}
+
+@media (min-width: 641px) {
+  .chat-paper {
+    --paper-feed: 24px;
+    background-image:
+      radial-gradient(circle at 12px 12px, var(--paper-hole) 0 4.5px, transparent 5px),
+      radial-gradient(circle at 12px 12px, var(--paper-hole) 0 4.5px, transparent 5px),
+      linear-gradient(
+        90deg,
+        transparent 23px,
+        var(--paper-rule) 23px 24px,
+        transparent 24px calc(100% - 24px),
+        var(--paper-rule) calc(100% - 24px) calc(100% - 23px),
+        transparent calc(100% - 23px)
+      );
+    background-size:
+      24px 24px,
+      24px 24px,
+      100% 100%;
+    background-position:
+      0 0,
+      100% 0,
+      0 0;
+    background-repeat: repeat-y, repeat-y, no-repeat;
+    background-attachment: local;
+  }
+}
+
+/* A phone has no width to spare for the holes. */
+.desktop--stacked .chat-paper {
+  --paper-feed: 0px;
+  background-image: none;
+}
+
+/* Rows meet edge to edge so a run's band is one unbroken stripe; the air
+   between runs is padding inside the band, never a gap between rows. */
+.chat-paper .chat-message {
+  padding-inline: var(--paper-feed);
+}
+
+.chat-paper .chat-message__row {
+  position: relative;
+  padding: 1px 10px;
+}
+
+.chat-paper .chat-message__row[data-band="a"] {
+  background-color: var(--paper-bar);
+}
+
+.chat-paper .chat-message__row[data-band]:not([data-continuation]) {
+  padding-top: 6px;
+}
+
+.chat-paper .chat-message:has(+ .chat-message .chat-message__row:not([data-continuation]))
+  .chat-message__row[data-band],
+.chat-paper .chat-message:last-child .chat-message__row[data-band] {
+  padding-bottom: 6px;
+}
+
+.chat-paper .chat-message[data-own] .chat-message__row[data-band] {
+  background-color: var(--paper-own);
+}
+
+.chat-paper .chat-message__row[data-message-layout="inline"] {
+  padding-block: 3px;
+}
+
+/* The head of a run: the nickname printed in small caps with the time beside
+   it, without the brackets narration keeps. */
+[data-message-layout="stacked"] > .chat-message__head .chat-message__author {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.06em;
+  font-size: 16px;
+}
+
+[data-message-layout="stacked"] > .chat-message__head .chat-message__time::before,
+[data-message-layout="stacked"] > .chat-message__head .chat-message__time::after {
+  content: none;
+}
+
+/* A line continuing a run keeps its time for when it is pointed at or
+   reached by the keyboard, laid over the band's right edge so nothing moves. */
+.chat-message__time--margin {
+  display: none;
+  position: absolute;
+  top: 2px;
+  right: 40px;
+  padding-inline: 4px;
+  background-color: inherit;
+}
+
+.chat-message__time--margin::before,
+.chat-message__time--margin::after {
+  content: none;
+}
+
+.chat-message:hover .chat-message__time--margin,
+.chat-message:focus-visible .chat-message__time--margin {
+  display: inline-flex;
+}
+
+/* A touch screen keeps :hover on whatever was last tapped; the time would stay
+   stuck on that line. */
+@media (hover: none) {
+  .chat-message:hover:not(:focus-visible) .chat-message__time--margin {
+    display: none;
+  }
+}
+
+/* The quote a reply opens with belongs to the reply's band. */
+.chat-paper .chat-message > [data-testid="reply-block"] {
+  padding: 6px 10px 0 18px;
+}
+
+.chat-paper .chat-message:has(.chat-message__row[data-band="a"]) > [data-testid="reply-block"] {
+  background-color: var(--paper-bar);
+}
+
+.chat-paper .chat-message[data-own] > [data-testid="reply-block"] {
+  background-color: var(--paper-own);
+}
+
+.chat-paper [data-testid="reply-block"] + .chat-message__row[data-band] {
+  padding-top: 2px;
+}
+
+/* The smiley that adds a reaction is not printed on the paper: it shows where
+   the pointer or the keyboard is. A line nobody has reacted to spends no line
+   on it — the smiley floats at the band's right edge. On a touch screen it
+   stays hidden: a long press opens the line's menu, quick reactions on top. */
+.chat-paper .message-react:not([open]) > .message-react-trigger {
+  display: none;
+}
+
+.chat-paper .chat-message:hover .message-react > .message-react-trigger,
+.chat-paper .chat-message:focus .message-react > .message-react-trigger,
+.chat-paper .chat-message:focus-within .message-react > .message-react-trigger {
+  display: inline-flex;
+}
+
+@media (pointer: coarse) {
+  .chat-paper .chat-message:hover .message-react:not([open]) > .message-react-trigger {
+    display: none;
+  }
+}
+
+.chat-paper .message-reactions:not(:has(.message-reaction)) {
+  position: absolute;
+  right: 10px;
+  bottom: 1px;
+  margin: 0;
+}
+
+/* The quick reactions across the top of a line's menu. */
+.context-menu__react-picks {
+  @apply flex items-center gap-1 px-2 py-1;
+}
+
+.context-menu__react-picks .message-reaction > span:first-child {
+  width: 24px;
+  height: 24px;
+  font-size: 18px;
+}
+
+/* ── The perforation between two days ─────────────────────────────────────── */
+.day-break {
+  @apply flex items-center gap-2 text-muted-foreground;
+  padding: 12px 10px 6px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.day-break::before,
+.day-break::after {
+  content: "";
+  flex: 1;
+  border-top: 2px dotted var(--paper-rule, #c9c9c9);
+}
+
+.day-break__label::before {
+  content: "\2702\FE0E  ";
+}
+
+/* ── Reactions as ink stamps ───────────────────────────────────────────────
+   On paper an answer is a rubber stamp: ink outline, a slight tilt, a little
+   bleed. Yours is inked in. */
+.chat-paper .message-reactions > .message-reaction {
+  color: var(--paper-ink);
+  border: 2px solid var(--paper-ink);
+  border-radius: 2px;
+  padding: 0 4px;
+  opacity: 0.85;
+  transform: rotate(-4deg);
+}
+
+.chat-paper .message-reactions > .message-reaction.message-reaction--mine {
+  color: var(--paper-ink);
+  background-color: color-mix(in srgb, var(--paper-ink) 16%, transparent);
+  opacity: 1;
+}
+
+.chat-paper .message-reactions {
+  @apply gap-x-3;
+}
+
+/* ── A line that named you ─────────────────────────────────────────────────
+   A highlighter stroke over the words, in the highlight's own colour, instead
+   of painting the whole row: the band stays readable as the speaker's run. */
+.chat-paper .chat-message.chat-message--highlighted {
+  background-color: transparent;
+}
+
+/* The default highlight is a pale wash meant for a whole row; as a stroke over
+   words it needs the strength of a real highlighter. */
+.chat-paper .chat-message--highlighted.highlight-bg-default {
+  --irc-bg: #fff36b;
+}
+
+.chat-paper .chat-message--highlighted .chat-content {
+  background-image: linear-gradient(
+    transparent 10%,
+    var(--irc-bg, #fff36b) 10% 92%,
+    transparent 92%
+  );
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ── Swiping a line to answer it ───────────────────────────────────────────
+   The line follows the finger to the right (lib/chat/swipe_reply.js); vertical
+   drags stay the browser's scroll. */
+.desktop--stacked .chat-paper .chat-message {
+  touch-action: pan-y;
+}
+
+.chat-message--swiping .chat-message__row {
+  transform: translateX(var(--swipe-x, 0));
+}
+
+.chat-message:not(.chat-message--swiping) .chat-message__row {
+  transition: transform 120ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-message:not(.chat-message--swiping) .chat-message__row {
+    transition: none;
+  }
+}
+
+/* ── Pictures and emoji ────────────────────────────────────────────────────
+   A photo is printed on the paper with no frame and no title bar; two in one
+   line sit side by side, shrinking to share a phone's width. A line that is
+   only emoji is the whole message, so it is printed large. */
+.message-attachment-picture {
+  display: block;
+  flex: 0 1 240px;
+  min-width: 0;
+}
+
+.message-attachment-picture img {
+  display: block;
+  max-width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+}
+
+.message-attachment-picture:focus-visible {
+  outline: 1px dotted currentColor;
+  outline-offset: 2px;
+}
+
+.chat-content--jumbo {
+  font-size: 34px;
+  line-height: 1.15;
 }

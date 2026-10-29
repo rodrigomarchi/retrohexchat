@@ -86,55 +86,72 @@
 
 /* ── mIRC color palette: 16 background colors ────────────── */
 .irc-bg-0 {
-  background-color: #ffffff;
+  --irc-bg: #ffffff;
+  background-color: var(--irc-bg);
 }
 .irc-bg-1 {
-  background-color: #000000;
+  --irc-bg: #000000;
+  background-color: var(--irc-bg);
 }
 .irc-bg-2 {
-  background-color: #00007f;
+  --irc-bg: #00007f;
+  background-color: var(--irc-bg);
 }
 .irc-bg-3 {
-  background-color: #009300;
+  --irc-bg: #009300;
+  background-color: var(--irc-bg);
 }
 .irc-bg-4 {
-  background-color: #ff0000;
+  --irc-bg: #ff0000;
+  background-color: var(--irc-bg);
 }
 .irc-bg-5 {
-  background-color: #7f0000;
+  --irc-bg: #7f0000;
+  background-color: var(--irc-bg);
 }
 .irc-bg-6 {
-  background-color: #9c009c;
+  --irc-bg: #9c009c;
+  background-color: var(--irc-bg);
 }
 .irc-bg-7 {
-  background-color: #fc7f00;
+  --irc-bg: #fc7f00;
+  background-color: var(--irc-bg);
 }
 .irc-bg-8 {
-  background-color: #ffff00;
+  --irc-bg: #ffff00;
+  background-color: var(--irc-bg);
 }
 .irc-bg-9 {
-  background-color: #00fc00;
+  --irc-bg: #00fc00;
+  background-color: var(--irc-bg);
 }
 .irc-bg-10 {
-  background-color: #009393;
+  --irc-bg: #009393;
+  background-color: var(--irc-bg);
 }
 .irc-bg-11 {
-  background-color: #00ffff;
+  --irc-bg: #00ffff;
+  background-color: var(--irc-bg);
 }
 .irc-bg-12 {
-  background-color: #0000fc;
+  --irc-bg: #0000fc;
+  background-color: var(--irc-bg);
 }
 .irc-bg-13 {
-  background-color: #ff00ff;
+  --irc-bg: #ff00ff;
+  background-color: var(--irc-bg);
 }
 .irc-bg-14 {
-  background-color: #7f7f7f;
+  --irc-bg: #7f7f7f;
+  background-color: var(--irc-bg);
 }
 .irc-bg-15 {
-  background-color: #d2d2d2;
+  --irc-bg: #d2d2d2;
+  background-color: var(--irc-bg);
 }
 .highlight-bg-default {
-  background-color: #ffffd0;
+  --irc-bg: #ffffd0;
+  background-color: var(--irc-bg);
 }
 
 /* ── Compact formatting toolbar ─────────────────────────── */

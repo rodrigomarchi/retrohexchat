@@ -5,7 +5,8 @@
  * @flow MB7 [done] Message deletion confirms and cancels from the long-press menu
  * @flow MB8 [done] PM reply, edit, and delete work from touch message actions
  * @flow MB9 [done] Nicklist and conversation actions open by long press
- * @flow MB12 [done] A reaction is picked from the smiley every message shows, without hover
+ * @flow MB13 [done] Swiping a line to the right opens the reply bar quoting it
+ * @flow MB12 [done] A reaction is picked from the quick picks on top of the line's long-press menu; no smiley is printed on the line
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -157,7 +158,7 @@ test.describe("mobile chat message flow", () => {
     await chat.expectMessageVisible("🐶");
   });
 
-  test("reacts from the smiley every message shows, with no hover to reveal it", async ({
+  test("reacts from the line's long-press menu, with no smiley printed on the line", async ({
     page,
   }) => {
     const { chat } = await signedInUser(page, "mreact");
@@ -167,23 +168,63 @@ test.describe("mobile chat message flow", () => {
     await chat.sendMessage(line);
     await chat.expectMessageVisible(line);
 
+    // Nothing to tap at rest: the line spends no room on a smiley.
     const row = chat.messageRowByText(line);
-    const trigger = row.locator('[data-testid^="message-react-trigger-"]');
-    await expect(trigger).toBeVisible();
-    await shot(page, "mobile-reaction-trigger");
+    await expect(
+      row.locator('[data-testid^="message-react-trigger-"]'),
+    ).toBeHidden();
+    await shot(page, "mobile-line-at-rest");
 
-    await trigger.tap();
-    await expect(chat.reactionQuickPick(line, thumbs)).toBeVisible();
-    await shot(page, "mobile-reaction-picks-open");
+    await openMessageActionsByLongPress(chat, line);
+    const pick = page.getByTestId(`context-menu-react-pick-${thumbs}`);
+    await expect(pick).toBeInViewport({ ratio: 1 });
+    await shot(page, "mobile-reaction-picks-in-menu");
 
-    await chat.reactionQuickPick(line, thumbs).tap();
+    await pick.tap();
+    await expect(chat.chatContextMenu).toBeHidden();
     await expect(chat.messageReaction(line, thumbs)).toBeVisible();
     await expect(chat.messageReaction(line, thumbs)).toHaveAttribute(
       "aria-pressed",
       "true",
     );
-    await expect(chat.reactionQuickPick(line, thumbs)).toBeHidden();
-    await shot(page, "mobile-reaction-chip");
+    await shot(page, "mobile-reaction-stamp");
+  });
+
+  test("swiping a line to the right answers it", async ({ page }) => {
+    const { chat, nick } = await signedInUser(page, "mswipe");
+    const line = `mobile-swipe-${Date.now()}`;
+
+    await chat.sendMessage(line);
+    await chat.expectMessageVisible(line);
+
+    const target = chat.messageRowByText(line).locator(".chat-content").first();
+    const box = (await target.boundingBox())!;
+    const y = box.y + box.height / 2;
+    const at = (x: number) => ({
+      bubbles: true,
+      cancelable: true,
+      pointerId: 1,
+      pointerType: "touch",
+      isPrimary: true,
+      clientX: x,
+      clientY: y,
+      button: 0,
+    });
+
+    await target.dispatchEvent("pointerdown", { ...at(box.x + 4), buttons: 1 });
+    for (const dx of [12, 40, 80]) {
+      await target.dispatchEvent("pointermove", {
+        ...at(box.x + 4 + dx),
+        buttons: 1,
+      });
+    }
+    await shot(page, "mobile-line-swiped");
+    await target.dispatchEvent("pointerup", { ...at(box.x + 84), buttons: 0 });
+
+    await expect(chat.replyBar).toBeVisible();
+    await expect(chat.replyBar).toContainText(nick);
+    await expect(chat.replyBar).toContainText(line);
+    await shot(page, "mobile-swipe-reply-bar");
   });
 
   test("uses long press for reply and edit without a hardware keyboard", async ({

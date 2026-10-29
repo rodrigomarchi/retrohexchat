@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     <div
       class={
         classes([
-          "flex-1 overflow-y-auto px-2 py-1 bg-white shadow-retro-field font-mono text-sm",
+          "chat-paper flex-1 overflow-y-auto py-1 shadow-retro-field font-mono text-sm",
           @fill && "min-h-0",
           @hidden && "hidden",
           @class

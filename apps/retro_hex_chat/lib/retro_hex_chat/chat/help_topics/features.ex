@@ -776,18 +776,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         category: dgettext("help", "Chat Display"),
         keywords: [
           "nick",
-          "alignment",
-          "column",
           "layout",
           "timestamp",
           "readability",
-          dgettext("help", "message format")
+          "date",
+          dgettext("help", "message format"),
+          dgettext("help", "continuous paper")
         ],
         icon: :icon_tab_nicklist,
         description:
           dgettext(
             "help",
-            "Each message uses a compact metadata column — the author's nick (or the origin, like System or Error) above a smaller timestamp — beside the message text, which gets the wider column. This reads well on phones while keeping the retro monospace look."
+            "The conversation is printed like continuous printer paper: lines in a row from one person share one name and one stripe, and a perforation with the date marks where a new day starts."
           ),
         see_also: ["feature-session-cards"]
       },

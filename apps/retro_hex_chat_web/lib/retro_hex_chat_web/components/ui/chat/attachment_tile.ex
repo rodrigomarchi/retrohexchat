@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
     ~H"""
     <div
       :if={@attachments != []}
-      class="mt-1 flex max-w-full flex-wrap gap-1"
+      class="message-attachments mt-1 flex max-w-full flex-wrap gap-1"
       data-testid="message-attachments"
     >
       <.attachment_tile :for={attachment <- @attachments} attachment={attachment} />
@@ -47,7 +47,17 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
 
   attr :attachment, :map, required: true
 
+  # The picture is the content, so it is drawn alone: no title bar, no frame.
+  # Its name and size are what the file manager says about it, and they stay
+  # where they are looked for — the tooltip and the accessible name.
   defp image_tile(assigns) do
+    assigns =
+      assign(
+        assigns,
+        :label,
+        "#{filename(assigns.attachment)} · #{Format.bytes(attachment_byte_size(assigns.attachment))}"
+      )
+
     ~H"""
     <a
       href={attachment_href(@attachment)}
@@ -55,21 +65,18 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
       rel="noopener"
       data-confirm-tab="attachment"
       data-confirm-label={confirm_label(@attachment)}
-      class="block w-60 max-w-full border border-border bg-surface text-xs shadow-retro-field hover:bg-muted"
+      class="message-attachment-picture"
       data-testid="message-attachment"
       data-preview-kind={preview_kind(@attachment)}
-      title={logical_path(@attachment)}
+      title={@label}
+      aria-label={@label}
     >
-      <.tile_header attachment={@attachment} />
-      <div class="flex h-36 w-full items-center justify-center bg-white p-1">
-        <img
-          src={preview_href(@attachment)}
-          alt={filename(@attachment)}
-          loading="lazy"
-          class="max-h-full max-w-full object-contain"
-          data-testid="message-attachment-image-preview"
-        />
-      </div>
+      <img
+        src={preview_href(@attachment)}
+        alt={filename(@attachment)}
+        loading="lazy"
+        data-testid="message-attachment-image-preview"
+      />
     </a>
     """
   end

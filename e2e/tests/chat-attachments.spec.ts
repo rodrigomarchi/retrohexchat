@@ -111,7 +111,11 @@ test.describe("Chat attachments", () => {
 
     const row = chat.messageRowByText(message);
     const attachment = row.getByTestId("message-attachment");
-    await expect(attachment).toContainText(fileName);
+    // The picture is drawn without a title bar; its name is the tile's own.
+    await expect(attachment).toHaveAttribute(
+      "aria-label",
+      new RegExp(fileName),
+    );
     await expect(attachment).toHaveAttribute("data-preview-kind", "image");
 
     const image = attachment.getByTestId("message-attachment-image-preview");

@@ -70,4 +70,34 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachmentTest do
     refute html =~ ~s(data-testid="message-voice")
     assert html =~ "interview.mp3"
   end
+
+  describe "a picture" do
+    defp picture do
+      %{
+        id: 7,
+        filename: "night-city.png",
+        byte_size: 57_651,
+        directory_path: "/chat/channels/lobby/2026/10/29/Ana",
+        logical_path: "/chat/channels/lobby/2026/10/29/Ana/night-city.png",
+        preview_kind: "image",
+        preview_status: "ready"
+      }
+    end
+
+    # The picture is the content; its file name and size are what the file
+    # manager says about it. They stay for whoever points at it or reads it
+    # aloud, not as a title bar over every photo.
+    test "is drawn without a title bar, and still says its name and size" do
+      doc =
+        render_component(&attachment_tile/1, attachment: picture()) |> LazyHTML.from_fragment()
+
+      [tile] = doc |> LazyHTML.query("[data-testid=message-attachment]") |> Enum.to_list()
+
+      refute LazyHTML.text(tile) =~ "night-city.png"
+      assert [label] = LazyHTML.attribute(tile, "aria-label")
+      assert label =~ "night-city.png"
+      assert label =~ "56.3 KB"
+      assert doc |> LazyHTML.query("img[alt='night-city.png']") |> Enum.count() == 1
+    end
+  end
 end

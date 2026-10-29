@@ -50,6 +50,7 @@ import { createLongPress } from "../../lib/input/long_press.js";
 import { createMarkdownImageRevealer } from "../../lib/chat/markdown_images.js";
 import { createViewportScroller } from "../../lib/chat/viewport_scroll.js";
 import { createMessageKeyboard } from "../../lib/chat/message_keyboard.js";
+import { createSwipeReply } from "../../lib/chat/swipe_reply.js";
 
 const ChatViewportHook = {
   mounted() {
@@ -73,12 +74,17 @@ const ChatViewportHook = {
     this.keyboard = createMessageKeyboard(this.scroller, this.stream);
     this.markdownImages = createMarkdownImageRevealer(this.el.ownerDocument?.body || this.scroller);
     this.markdownImages.mount();
+    this.swipeReply = createSwipeReply(this.scroller, {
+      onReply: (row) => this.pushEvent("reply_to_message", { message_id: row.dataset.realId }),
+    });
+    this.swipeReply.mount();
     this.bindServerEvents();
     this.bindReaderInteractions();
   },
 
   destroyed() {
     this.longPress.cancel();
+    this.swipeReply.destroy();
     this.keyboard.destroy();
     this.markdownImages.destroy();
     this.viewport.destroy();

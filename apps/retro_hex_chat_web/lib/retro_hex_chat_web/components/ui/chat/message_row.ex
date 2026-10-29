@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           type="system"
           layout={card_layout(@msg)}
         >
-          * {raw(formatted_content(@msg, @strip_formatting))}
+          {narration_star(@msg)}{raw(formatted_content(@msg, @strip_formatting))}
           <%!-- What the channel agreed to do, under the line that said so. The
                 same reasoning as the session card: the line exists because of
                 the thing, and a line without it is an announcement of nothing. --%>
@@ -232,7 +232,10 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             <div :if={is_nil(card_of(@msg, @strip_formatting)) and text_art?(@msg)}>
               {raw(formatted_content(@msg, @strip_formatting))}
             </div>
-            <span :if={is_nil(card_of(@msg, @strip_formatting)) and not text_art?(@msg)}>
+            <span
+              :if={is_nil(card_of(@msg, @strip_formatting)) and not text_art?(@msg)}
+              class={ChatHelpers.emoji_only?(Map.get(@msg, :content)) && "chat-content--jumbo"}
+            >
               {raw(formatted_content(@msg, @strip_formatting))}
             </span>
             <%!-- A line the games service wrote about a match, in the game's
@@ -313,6 +316,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
     case Map.get(msg, :band) do
       band when band in [:a, :b] -> Atom.to_string(band)
       _none -> nil
+    end
+  end
+
+  # Narration opens with mIRC's star, unless the server already wrote one.
+  defp narration_star(msg) do
+    case Map.get(msg, :content) do
+      "*" <> _rest -> ""
+      _other -> "* "
     end
   end
 

@@ -45,6 +45,21 @@ defmodule RetroHexChatWeb.ChatLive.ReactionsTest do
     assert actor == ctx.nick
   end
 
+  # The line's menu carries the quick picks: on a phone a long press is the way
+  # to react, since the line draws no smiley at rest.
+  test "a quick pick from the line's menu stores the reaction", ctx do
+    message = last_message(ctx.channel)
+
+    render_click(ctx.view, "chat_context_action", %{
+      "action" => "ctx_chat_react_pick",
+      "message_id" => to_string(message.id),
+      "emoji" => @thumbs
+    })
+
+    assert %{@thumbs => %{count: 1, actors: [actor]}} = Reactions.summary_for(message)
+    assert actor == ctx.nick
+  end
+
   test "clicking it again takes the reaction away", ctx do
     message = last_message(ctx.channel)
     params = %{"message_id" => to_string(message.id), "emoji" => @thumbs}

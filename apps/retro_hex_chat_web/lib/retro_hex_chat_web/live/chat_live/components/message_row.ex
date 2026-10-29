@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   import RetroHexChatWeb.Components.UI.UnreadDivider
 
   alias RetroHexChat.Chat.Content
+  alias RetroHexChat.Nickname
   alias RetroHexChatWeb.App.ChatHelpers
 
   attr :dom_id, :string, required: true
@@ -62,6 +63,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
         )
       }
       data-real-id={Map.get(@msg, :id)}
+      data-own={if(own?(@msg, @viewer), do: "true")}
     >
       <%!-- Inside the row rather than beside it. A stream container requires an
             id on every child, and a synthetic sibling would also reorder with
@@ -80,6 +82,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
       />
     </div>
     """
+  end
+
+  # The reader's own speech, so its run is printed on a band of its own colour.
+  @spec own?(map(), String.t() | nil) :: boolean()
+  defp own?(_msg, nil), do: false
+
+  defp own?(msg, viewer) do
+    Map.get(msg, :type, :normal) in [:normal, :message, :arcade_link] and
+      is_nil(Map.get(msg, :deleted_at)) and Nickname.equal?(Map.get(msg, :author), viewer)
   end
 
   @spec boundary?(map(), term()) :: boolean()

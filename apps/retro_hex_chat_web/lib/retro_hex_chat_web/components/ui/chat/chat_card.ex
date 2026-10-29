@@ -4,8 +4,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatCard do
   a help topic, the greeting a visitor gets.
 
   **No frame.** A card hangs under the line that announced it, on the
-  conversation's own white, and the row's spine already sets it apart from the
-  lines around it. A sunken bevel around it drew a field nobody can type into,
+  conversation's own paper, and the line's band (or the narration's own space
+  between bands) already sets it apart from the lines around it. A sunken bevel around it drew a field nobody can type into,
   and made the one thing in the conversation meant to be read the one thing
   boxed off from it. What separates a card is its spacing, its bold title and
   its upright text — `.chat-card` takes back the body text a system line's grey

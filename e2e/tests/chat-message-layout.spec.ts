@@ -205,6 +205,31 @@ test.describe("Message layout", () => {
       await cid.chat.expectMessageVisible(last);
       await ana.chat.expectMessageVisible(last);
 
+      // Printed on continuous paper: a run shares one header and one band,
+      // the reader's own runs are marked, and the day opens the page.
+      const rowOf = (text: string) =>
+        bob.chat.messageRowByText(text).locator(".chat-message__row").first();
+      await expect(rowOf(first)).not.toHaveAttribute("data-continuation");
+      await expect(rowOf(second)).toHaveAttribute("data-continuation", "true");
+      await expect(rowOf(second)).toHaveAttribute(
+        "data-band",
+        (await rowOf(first).getAttribute("data-band"))!,
+      );
+      await expect(rowOf(mention)).not.toHaveAttribute(
+        "data-band",
+        (await rowOf(first).getAttribute("data-band"))!,
+      );
+      await expect(bob.chat.messageRowByText(first)).toHaveAttribute(
+        "data-own",
+        "true",
+      );
+      await expect(
+        bob.chat.messageList.getByTestId("day-break").first(),
+      ).toBeVisible();
+      await expect(
+        bob.chat.messageList.locator('[data-message-kind="user"]'),
+      ).toHaveCount(0);
+
       // The reader's desktop, then the phone of somebody who only watched.
       await bob.chat.page.mouse.move(0, 0);
       await shot(bob.chat.page, "desktop-window");
@@ -218,4 +243,35 @@ test.describe("Message layout", () => {
       await Promise.all([ana.ctx.close(), bob.ctx.close(), cid.ctx.close()]);
     }
   });
+
+  // Live rooms are all one day; three days of paper, perforations between
+  // them, come from the component catalogue.
+  for (const [name, profile] of [
+    ["desktop", DESKTOP],
+    ["phone", PHONE],
+  ] as const) {
+    test(`three days of paper on a ${name} (O34)`, async ({ browser }) => {
+      const ctx = await browser.newContext({
+        ...profile,
+        baseURL: e2eBaseURL(),
+      });
+      const page = await ctx.newPage();
+
+      try {
+        await page.goto("/showcase/chat-message");
+        // A phone opens the catalogue's navigator over the page.
+        const navigator = page.getByTestId("showcase-navigator-window");
+        if (name === "phone") {
+          await navigator.locator('[data-window-control="close"]').click();
+          await expect(navigator).toBeHidden();
+        }
+        const paper = page.getByTestId("showcase-paper");
+        await expect(paper.getByTestId("day-break")).toHaveCount(3);
+        await paper.scrollIntoViewIfNeeded();
+        await shot(paper, `${name}-three-days`);
+      } finally {
+        await ctx.close();
+      }
+    });
+  }
 });

@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   alias RetroHexChat.Chat.{Content, URLDetector}
   alias RetroHexChat.Chat.Content.Html
   alias RetroHexChat.Chat.CustomEmojis
+  alias RetroHexChat.Chat.EmojiData
   alias RetroHexChatWeb.Timezone
 
   @nick_color_count 12
@@ -167,6 +168,22 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   end
 
   def format_edit_timestamp(_, _tz), do: "--:--"
+
+  @doc """
+  Whether a line is nothing but one to three emoji, which the conversation
+  prints large: a lone 🙃 is the whole message, not a footnote to one.
+  """
+  @spec emoji_only?(String.t() | nil) :: boolean()
+  def emoji_only?(content) when is_binary(content) do
+    graphemes = content |> String.replace(~r/\s+/u, "") |> String.graphemes()
+
+    graphemes != [] and length(graphemes) <= 3 and Enum.all?(graphemes, &emoji?/1)
+  end
+
+  def emoji_only?(_content), do: false
+
+  defp emoji?(grapheme),
+    do: EmojiData.known?(grapheme) or EmojiData.known?(String.replace(grapheme, "\u{FE0F}", ""))
 
   @doc """
   The date a day of conversation is labelled with, already in the reader's

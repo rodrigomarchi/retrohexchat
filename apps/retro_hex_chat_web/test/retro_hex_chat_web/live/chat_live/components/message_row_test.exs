@@ -578,4 +578,47 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
       refute html =~ "data-continuation"
     end
   end
+
+  describe "the reader's own lines" do
+    test "are marked so their band can be told apart, whatever the nickname's case" do
+      msg = %{id: "o1", author: "Bob", content: "mine", type: :normal, timestamp: @ts}
+
+      assert row(msg, %{viewer: "bob"}) =~ ~s(data-own="true")
+      refute row(msg, %{viewer: "ana"}) =~ "data-own"
+      refute row(msg) =~ "data-own"
+    end
+
+    test "narration is never the reader's own" do
+      msg = %{id: "o2", author: "bob", content: "waves", type: :action, timestamp: @ts}
+
+      refute row(msg, %{viewer: "bob"}) =~ "data-own"
+    end
+  end
+
+  # The server writes some system lines with their own leading star; the row's
+  # narration star must not double it ("* * Auto-joining #jogos...").
+  test "a system line that already starts with a star prints one" do
+    html =
+      row(%{
+        id: "sys-star",
+        author: "System",
+        content: "* Auto-joining #jogos...",
+        type: :system,
+        timestamp: @ts
+      })
+
+    text = html |> LazyHTML.from_fragment() |> LazyHTML.text()
+
+    assert text =~ "* Auto-joining"
+    refute text =~ ~r/\*\s*\*/
+  end
+
+  test "a line that is only emoji is printed large" do
+    html = row(%{id: "j1", author: "ana", content: "\u{1F643}", type: :normal, timestamp: @ts})
+
+    assert html =~ "chat-content--jumbo"
+
+    refute row(%{id: "j2", author: "ana", content: "ok", type: :normal, timestamp: @ts}) =~
+             "chat-content--jumbo"
+  end
 end

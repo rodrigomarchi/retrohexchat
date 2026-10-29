@@ -4,7 +4,7 @@
  * @flow O9 [done] Edit last own message with ArrowUp; submit edit updates message (features P1)
  * @flow O10 [done] Delete own message marks deleted placeholder for both users (features P1)
  * @flow O11 [done] Retry failed pending message appears when send rejected by mode/mute (features P2)
- * @flow O28 [done] Reacting from the smiley on the line reaches the other person's screen, and clicking again removes it
+ * @flow O28 [done] Reacting from the smiley the pointed-at line shows reaches the other person's screen, and clicking again removes it
  * @flow O33 [done] The conversation is one Tab stop: arrows move between lines, Enter reacts, Shift+F10 opens the line's menu
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -84,12 +84,15 @@ test.describe("Message actions", () => {
       // been reacted to must take no room at all.
       await expect(alice.chat.messageReaction(line, THUMBS)).toHaveCount(0);
 
-      // The smiley is on the row without hovering anything.
+      // The smiley is not printed on the paper: it shows where the pointer is,
+      // and takes no line of its own.
       const row = alice.chat.messageRowByText(line);
       const trigger = row.locator('[data-testid^="message-react-trigger-"]');
       await row.page().mouse.move(0, 0);
-      await expect(trigger).toBeVisible();
-      await shot(row, "reaction-trigger-at-rest");
+      await expect(trigger).toBeHidden();
+      await row.hover();
+      await expect(trigger).toBeInViewport({ ratio: 1 });
+      await shot(row, "reaction-trigger-on-hover");
 
       await trigger.click();
       await expect(alice.chat.reactionQuickPick(line, THUMBS)).toBeVisible();

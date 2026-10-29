@@ -1146,11 +1146,11 @@ export class ChatPage {
       .first();
   }
 
-  // The quick picks open from the smiley that is always on the row's head line.
+  // The quick picks open from the smiley the row shows while it is pointed at.
   async reactTo(text: string, emoji: string) {
-    await this.messageRowByText(text)
-      .locator('[data-testid^="message-react-trigger-"]')
-      .click();
+    const row = this.messageRowByText(text);
+    await row.hover();
+    await row.locator('[data-testid^="message-react-trigger-"]').click();
     await this.reactionQuickPick(text, emoji).click();
   }
 

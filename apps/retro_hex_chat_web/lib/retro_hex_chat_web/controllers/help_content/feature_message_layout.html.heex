@@ -1,29 +1,42 @@
 <p>
   {dgettext(
     "help_features",
-    "Each chat message is laid out in two columns: a compact metadata column and the message text."
+    "The conversation is printed like continuous printer paper, the kind with green and white stripes."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "The Metadata Column")}</.help_h4>
-<p>
-  {dgettext(
-    "help_features",
-    "The narrow left column shows the author's nickname — or, for system lines, an origin label such as System, Error, Service or MOTD — on the first line, with a smaller, muted timestamp beneath it. The nickname stays clickable for the hover card, private messages and the context menu."
-  )}
-</p>
-<.help_h4 icon={:icon_status_user}>{dgettext("help_features", "Sender Icons")}</.help_h4>
-<p>
-  {dgettext(
-    "help_features",
-    "A small pixel-art icon sits in front of each name to signal where the line came from at a glance: a user glyph for anything a person typed, and distinct glyphs for System, Service, Error, Server, Help and deleted lines. The nickname itself is shown a little larger and bolder, while the timestamp is smaller, so your eye lands on who spoke first."
-  )}
-</p>
-<.help_h4 icon={:icon_document_alert}>
-  {dgettext("help_features", "Why It Looks This Way")}
+<.help_h4 icon={:icon_tab_nicklist}>
+  {dgettext("help_features", "One Name Above Several Lines")}
 </.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "The message text gets the wider column and a slightly larger font, so it reads well on phones as well as desktop — without dropping the retro monospace identity. Nicknames are shown plainly, with no surrounding angle brackets, and the timestamp carries the full date and time in its hover tooltip."
+    "When one person writes several messages in a row, their name and the hour appear once, above the first message. The messages under it share the same stripe. A new stripe starts when someone else speaks, after five minutes of silence, or on a new day."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_features",
+    "Point at a message, or reach it with the keyboard, to see the hour it was written. Your own messages are printed on a light blue stripe."
+  )}
+</p>
+<.help_h4 icon={:icon_clock}>{dgettext("help_features", "Where a Day Starts")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "A dotted perforation with the date marks the first message of each day. Each message shows only the hour and minute. Point at the hour to see the full date."
+  )}
+</p>
+<.help_h4 icon={:icon_status_user}>{dgettext("help_features", "Notices From the Room")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Some messages come from the room rather than from a person: /me actions, System, Service and Error messages, and deleted messages. They have no stripe and appear between the stripes, each with a small icon."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_features", "Pictures and Emoji")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "A message with only one to three emoji is printed large. Pictures appear without a frame; point at one to see its file name and size, and click it to open it."
   )}
 </p>

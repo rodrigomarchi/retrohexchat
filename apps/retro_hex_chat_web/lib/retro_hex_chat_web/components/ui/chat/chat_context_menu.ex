@@ -14,10 +14,13 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ContextMenu
 
   alias RetroHexChatWeb.Components.UI.Chat.CustomMenuItem
+  alias RetroHexChatWeb.Components.UI.MessageReactions
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Params
 
   attr :visible, :boolean, default: false
   attr :x, :integer, default: 0
@@ -53,6 +56,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       x={@x}
       y={@y}
       reposition
+      sheet={@type == :message}
+      sheet_title={@type == :message && Map.get(@target_message || %{}, :nick)}
       class={@class}
       on_close="close_chat_context_menu"
       {@rest}
@@ -285,8 +290,31 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       |> assign(:msg_pinned, Map.get(msg, :pinned, false))
       |> assign(:msg_saved, Map.get(msg, :saved, false))
       |> assign(:msg_replies, Map.get(msg, :replies, 0))
+      |> assign(:reactable, is_integer(Params.integer(Map.get(msg, :id))))
+      |> assign(:quick_picks, MessageReactions.quick_picks())
 
     ~H"""
+    <%!-- The quick reactions on top: the line draws no smiley at rest, so on
+          a phone this long-press menu is the way to react. A placeholder id
+          (a line that failed to send) has nothing to react to. --%>
+    <li :if={@reactable} class="context-menu__react-picks" role="none">
+      <.button
+        :for={emoji <- @quick_picks}
+        variant="link"
+        size="sm"
+        class="message-reaction"
+        title={dgettext("chat", "React with %{emoji}", emoji: emoji)}
+        aria-label={dgettext("chat", "React with %{emoji}", emoji: emoji)}
+        phx-click={@on_action}
+        phx-value-action="ctx_chat_react_pick"
+        phx-value-message_id={@msg_id}
+        phx-value-emoji={emoji}
+        data-testid={"context-menu-react-pick-#{emoji}"}
+      >
+        <:icon>{emoji}</:icon>
+      </.button>
+    </li>
+    <.context_menu_separator :if={@reactable} />
     <.context_menu_item
       on_click={@on_action}
       action="ctx_chat_copy_message"

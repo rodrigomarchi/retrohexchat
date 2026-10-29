@@ -170,4 +170,20 @@ defmodule RetroHexChatWeb.App.ChatHelpersTest do
       end
     end
   end
+
+  describe "emoji_only?/1" do
+    test "one to three emoji alone, spaces allowed" do
+      assert ChatHelpers.emoji_only?("\u{1F643}")
+      assert ChatHelpers.emoji_only?(" \u{1F602} \u{1F525} ")
+      assert ChatHelpers.emoji_only?("\u{2764}\u{FE0F}\u{1F44D}\u{1F440}")
+    end
+
+    test "anything with words, or more than three, is an ordinary line" do
+      refute ChatHelpers.emoji_only?("lol \u{1F602}")
+      refute ChatHelpers.emoji_only?(String.duplicate("\u{1F602}", 4))
+      refute ChatHelpers.emoji_only?("")
+      refute ChatHelpers.emoji_only?(nil)
+      refute ChatHelpers.emoji_only?(":)")
+    end
+  end
 end

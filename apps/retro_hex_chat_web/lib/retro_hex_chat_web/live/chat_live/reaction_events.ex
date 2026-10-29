@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.ReactionEvents do
   alias RetroHexChat.Chat.Service
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.ChatLive.Components.UserContextMenus
   alias RetroHexChatWeb.Params
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
@@ -41,6 +42,21 @@ defmodule RetroHexChatWeb.ChatLive.ReactionEvents do
         socket
       ) do
     {:halt, react(socket, message_id, emoji, source(params["source"], socket))}
+  end
+
+  # A quick pick from the line's own menu — the way to react on a phone, where
+  # the line draws no smiley. The menu closes with the pick.
+  def handle_event(
+        "ctx_chat_react_pick",
+        %{"message_id" => message_id, "emoji" => emoji},
+        socket
+      ) do
+    send_update(UserContextMenus,
+      id: UserContextMenus.id(),
+      chat_context_menu: UserContextMenus.chat_closed()
+    )
+
+    {:halt, react(socket, message_id, emoji, source(nil, socket))}
   end
 
   # The road to every emoji beyond the quick picks: the message's context menu,

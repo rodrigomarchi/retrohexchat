@@ -345,7 +345,7 @@ get fresh timers with the *remaining* duration.
 
   | Holds | Use |
   |---|---|
-  | A card in the conversation (event, shared room, help, greeting) | `ChatCard` — **no frame**: spacing, the row's spine and upright text set it apart |
+  | A card in the conversation (event, shared room, help, greeting) | `ChatCard` — **no frame**: spacing, the line's band on the paper and upright text set it apart |
   | A field of text, a list, a picture (Win98 sunken panel) | `Inset` |
   | A raised card on a page of the site (a game, a trusted device) | `Card` |
   | One measured figure | `MediaSession.SummaryCard` — no frame; the grid's gap separates them |
