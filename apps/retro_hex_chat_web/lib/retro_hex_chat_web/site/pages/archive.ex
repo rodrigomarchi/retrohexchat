@@ -44,6 +44,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
   alias RetroHexChat.Chat.Archive
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.BuildInfo
+  alias RetroHexChatWeb.ChatLive.MessageGrouping
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.SEO
 
@@ -79,6 +80,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
          cursor: cursor,
          first: first,
          entries: entries,
+         runs: runs(entries),
          locales: entries |> Enum.map(& &1.author) |> NickLocales.for_nicks(),
          has_more: page.has_more,
          path: page_path(day_path, cursor),
@@ -218,6 +220,31 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
 
   # The archive has no reader whose zone it could know, so it speaks UTC.
   @utc "Etc/UTC"
+
+  # Where each line sits in its speaker's run, keyed by line id: the same
+  # continuous paper as the chat, on the archive's own UTC day.
+  defp runs(entries) do
+    entries
+    |> Enum.map(
+      &%{
+        id: &1.id,
+        author: &1.author,
+        timestamp: &1.at,
+        type: if(&1.action?, do: :action, else: :message)
+      }
+    )
+    |> MessageGrouping.annotate_all(@utc)
+    |> Map.new(&{&1.id, &1})
+  end
+
+  defp band(runs, id) do
+    case runs[id] do
+      %{band: band} when band in [:a, :b] -> Atom.to_string(band)
+      _none -> nil
+    end
+  end
+
+  defp continuation?(runs, id), do: match?(%{group_start?: false}, runs[id])
 
   defp at(datetime), do: ChatHelpers.format_time(datetime, :hh_mm, @utc)
   defp at_full(datetime), do: ChatHelpers.format_datetime(datetime, @utc)

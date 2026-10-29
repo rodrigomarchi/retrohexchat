@@ -130,7 +130,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
   end
 
   describe "chat_message/1 kind icon" do
-    test "a nick-authored line shows the user glyph" do
+    # The portrait, flag and coloured nickname already say a person wrote it; a
+    # glyph meaning "a person" in front of them only repeats it.
+    test "a nick-authored line draws no kind glyph" do
       html =
         render_component(&chat_message/1,
           type: "normal",
@@ -138,7 +140,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
           inner_block: %{inner_block: fn _, _ -> "hi" end}
         )
 
-      assert html =~ ~s(data-message-kind="user")
+      refute html =~ "data-message-kind"
     end
 
     test "a system origin line shows the system glyph, not the user glyph" do
@@ -182,6 +184,50 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
 
       refute html =~ "<svg"
       refute html =~ "data-message-kind"
+    end
+  end
+
+  describe "chat_message/1 speaker runs" do
+    defp speech(extra) do
+      render_component(
+        &chat_message/1,
+        Keyword.merge(
+          [
+            type: "normal",
+            nick: "alice",
+            timestamp: "12:00",
+            inner_block: %{inner_block: fn _, _ -> "hi" end}
+          ],
+          extra
+        )
+      )
+    end
+
+    test "a line that continues a run draws no header, and still names its author" do
+      html = speech(continuation: true)
+      doc = LazyHTML.from_fragment(html)
+
+      assert html =~ ~s(data-continuation="true")
+      assert doc |> LazyHTML.query(".chat-message__head") |> Enum.count() == 0
+      # A screen reader and Copy Message still need who said it and when.
+      assert doc |> LazyHTML.query(".sr-only.chat-nick[data-nick=alice]") |> Enum.count() == 1
+      assert doc |> LazyHTML.query("time.chat-message__time") |> Enum.count() == 1
+      assert html =~ "hi"
+    end
+
+    test "the line that opens a run draws the header" do
+      doc = speech([]) |> LazyHTML.from_fragment()
+
+      assert doc |> LazyHTML.query(".chat-message__head .chat-nick") |> Enum.count() == 1
+    end
+
+    test "the band is carried on the row, and narration has none" do
+      assert speech(band: "a") =~ ~s(data-band="a")
+      refute speech([]) =~ "data-band"
+    end
+
+    test "speech has no coloured spine: the band sets the run apart" do
+      refute speech([]) =~ "chat-message__spine"
     end
   end
 end

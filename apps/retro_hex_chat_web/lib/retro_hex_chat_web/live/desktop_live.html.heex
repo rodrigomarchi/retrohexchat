@@ -244,7 +244,7 @@
                   <.live_component
                     module={RetroHexChatWeb.ChatLive.Components.StatusViewport}
                     id={RetroHexChatWeb.ChatLive.Components.StatusViewport.id()}
-                    timestamp_format={@timestamp_format}
+                    timestamp_format={:dd_mm_hh_mm}
                     timezone={@timezone}
                     show_status_tab={@show_status_tab}
                   />
@@ -564,7 +564,7 @@
           module={RetroHexChatWeb.ChatLive.Components.ThreadDialog}
           id={RetroHexChatWeb.ChatLive.Components.ThreadDialog.id()}
           nick_color_fn={@nick_color_fn}
-          timestamp_format={@timestamp_format}
+          timestamp_format={:dd_mm_hh_mm}
           timezone={@timezone}
           strip_formatting={@session.strip_formatting}
           viewer={@session.nickname}

@@ -530,4 +530,52 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert html =~ "answer"
     assert html =~ "question?"
   end
+
+  describe "speaker runs and days" do
+    test "a row continuing a run passes it on, with its band" do
+      html =
+        row(%{
+          id: "c1",
+          author: "bob",
+          content: "more",
+          type: :normal,
+          timestamp: @ts,
+          group_start?: false,
+          band: :b,
+          day_break: nil
+        })
+
+      assert html =~ ~s(data-continuation="true")
+      assert html =~ ~s(data-band="b")
+      refute html =~ ~s(data-testid="day-break")
+    end
+
+    test "the first row of a day draws the day above itself, outside the band" do
+      html =
+        row(%{
+          id: "c2",
+          author: "bob",
+          content: "first",
+          type: :normal,
+          timestamp: @ts,
+          group_start?: true,
+          band: :a,
+          day_break: ~D[2024-01-01]
+        })
+
+      doc = LazyHTML.from_fragment(html)
+
+      assert [label] =
+               doc |> LazyHTML.query("[data-testid=day-break]") |> LazyHTML.text() |> List.wrap()
+
+      assert label =~ "01/01/2024"
+      assert doc |> LazyHTML.query("[data-band] [data-testid=day-break]") |> Enum.count() == 0
+    end
+
+    test "a row with no run information draws its header as before" do
+      html = row(%{id: "c3", author: "bob", content: "x", type: :normal, timestamp: @ts})
+
+      refute html =~ "data-continuation"
+    end
+  end
 end

@@ -168,6 +168,14 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
 
   def format_edit_timestamp(_, _tz), do: "--:--"
 
+  @doc """
+  The date a day of conversation is labelled with, already in the reader's
+  calendar. Numeric, like every other date the chat prints: a "Today" label
+  would go stale in a tab left open past midnight.
+  """
+  @spec format_day(Date.t()) :: String.t()
+  def format_day(%Date{} = date), do: Calendar.strftime(date, "%d/%m/%Y")
+
   @spec format_datetime(DateTime.t() | any(), String.t()) :: String.t() | nil
   def format_datetime(%DateTime{} = dt, tz) do
     dt |> Timezone.shift(tz) |> Calendar.strftime("%d/%m/%Y %H:%M")

@@ -1037,7 +1037,10 @@ defmodule RetroHexChatWeb.DesktopLive do
       away_replied_to: MapSet.new(),
       quit_reason: nil,
       show_emoji_picker: false,
-      timestamp_format: :dd_mm_hh_mm,
+      # The conversation prints the day once, as a perforation between days, so
+      # a line carries only its time. The status tab and a thread have no day
+      # breaks and keep the date on every line (desktop_live.html.heex).
+      timestamp_format: :hh_mm,
       lag_ms: nil,
       lag_status: :normal,
       loading_channel: nil,

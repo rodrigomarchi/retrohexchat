@@ -153,6 +153,24 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
       assert second.resp_body == ""
     end
 
+    # The same continuous paper as the chat: one header per run of a speaker,
+    # runs on alternating bands.
+    test "a speaker's run is printed under one header, on one band", ctx do
+      message(ctx.channel, "and a second line from the same speaker")
+
+      doc =
+        build_conn()
+        |> get(~p"/archive/#{ctx.slug}/#{ctx.date}")
+        |> html_response(200)
+        |> LazyHTML.from_document()
+
+      rows = LazyHTML.query(doc, "[data-testid=archive-lines] .chat-message__row")
+
+      assert Enum.count(rows) == 2
+      assert rows |> LazyHTML.attribute("data-band") == ["a", "a"]
+      assert rows |> LazyHTML.attribute("data-continuation") == ["true"]
+    end
+
     test "the day draws each author's flag beside their name", ctx do
       {:ok, _} = NickServ.register("Speaker", "password123")
       :ok = NickLocales.remember("Speaker", "fr", store: true)

@@ -155,7 +155,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
        show_emoji_picker: false,
        pm_typing_from: nil,
        edit_mode_message_id: nil,
-       timestamp_format: :dd_mm_hh_mm,
+       timestamp_format: :hh_mm,
        timezone: "Etc/UTC",
        locked: false
      )}

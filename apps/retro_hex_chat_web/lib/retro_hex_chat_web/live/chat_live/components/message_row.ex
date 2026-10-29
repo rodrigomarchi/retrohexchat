@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   """
   use RetroHexChatWeb, :html
 
+  import RetroHexChatWeb.Components.UI.DayBreak
   import RetroHexChatWeb.Components.UI.MessageRow
   import RetroHexChatWeb.Components.UI.UnreadDivider
 
@@ -66,6 +67,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
             id on every child, and a synthetic sibling would also reorder with
             its neighbours and be pruned by the negative `limit:` — which is
             what removes the rows a prepend has just added. --%>
+      <.day_break :if={Map.get(@msg, :day_break)} date={@msg.day_break} />
       <.unread_divider :if={boundary?(@msg, @unread_boundary_id)} />
       <.message_row_body
         msg={@msg}

@@ -178,7 +178,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
        id: @id,
        chat_clear_token: 0,
        nick_color_fn: fn _nick -> nil end,
-       timestamp_format: :dd_mm_hh_mm,
+       timestamp_format: :hh_mm,
        timezone: "Etc/UTC",
        strip_formatting: false,
        edit_mode_message_id: nil,

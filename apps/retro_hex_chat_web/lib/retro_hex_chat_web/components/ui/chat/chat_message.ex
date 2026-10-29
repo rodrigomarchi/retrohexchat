@@ -52,27 +52,31 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   @doc """
   Renders a single chat message row.
 
-  Every row opens with the same head — kind icon, author or origin, timestamp —
-  and then goes one of two ways:
+  A row opens with a head — the author (portrait, flag, nickname) or an origin
+  with its kind icon, then the time — and goes one of two ways:
 
     * **stacked** (speech): the head is a line of its own and the text takes the
-      full width below it, behind a 2px spine in the author's colour. This is
-      the ICQ/MSN shape, and it is what makes a phone readable: metadata costs
-      height, never width.
+      full width below it. Metadata costs height, never width, which is what
+      makes a phone readable.
     * **inline** (actions, system, service, error, announcement): the text
       continues on the head's own line and wraps back to the left margin, the
-      way mIRC printed them. These lines are short and have no author to bind
-      the eye to, so a second line would be ceremony.
+      way mIRC printed them.
+
+  Speech is printed in runs, like a continuous-paper log: `band` (`"a"`/`"b"`)
+  is the stripe a run is printed on, and `continuation` marks a line that
+  continues the run above it. A continuation draws no head; its author and
+  time stay in the markup for a screen reader and for Copy Message, and the
+  time shows when the line is pointed at or focused.
 
   `nick` renders the interactive `.chat-nick[data-nick]` handle (click, hover
   card, PM, context menu). `source` renders a non-interactive origin label
   (e.g. "System", "Error", "MOTD") — never both. `meta_title` carries the full
   datetime for the timestamp's hover/accessibility label.
 
-  The kind icon signals the sender at a glance (a user glyph for any
-  nick-authored line; a wrench/shield/warning/etc. for origin lines). It is
-  derived from `type`/`nick`/`source`; pass `kind` to override it explicitly
-  (e.g. `"help"`, `"arcade"`, `"deleted"`).
+  The kind icon names an origin at a glance (a wrench/shield/warning/etc.). A
+  line a person wrote has none: the portrait, flag and coloured nickname already
+  say so. It is derived from `type`/`source`; pass `kind` to override it
+  explicitly (e.g. `"help"`, `"arcade"`, `"deleted"`).
   """
   attr :id, :string, default: nil, doc: "Message ID for stream compatibility"
   attr :timestamp, :string, default: nil
@@ -107,12 +111,23 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     default: "auto",
     doc: "Overrides the type-derived shape — e.g. a card body always needs stacked"
 
+  attr :band, :string, default: nil, doc: "The stripe the speaker's run is printed on"
+
+  attr :continuation, :boolean,
+    default: false,
+    doc: "The line continues the run above it and draws no head"
+
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
   @spec chat_message(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_message(assigns) do
-    assigns = assign(assigns, :stacked?, stacked?(assigns.layout, assigns.nick, assigns.type))
+    stacked? = stacked?(assigns.layout, assigns.nick, assigns.type)
+
+    assigns =
+      assigns
+      |> assign(:stacked?, stacked?)
+      |> assign(:continuation, stacked? and assigns.continuation and is_binary(assigns.nick))
 
     ~H"""
     <div
@@ -120,9 +135,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       class={classes(["chat-message__row min-w-0", type_class(@type), @class])}
       data-message-id={@id}
       data-message-layout={if(@stacked?, do: "stacked", else: "inline")}
+      data-band={@band}
+      data-continuation={if(@continuation, do: "true")}
       {@rest}
     >
-      <div class="chat-message__head">
+      <div :if={!@continuation} class="chat-message__head">
         <.message_kind_icon kind={resolve_kind(@kind, @nick, @source, @type)} />
         <.nick_portrait :if={@nick} avatar={@avatar} nickname={@nick} />
         <.nick_flag :if={@nick} locale={@locale} />
@@ -155,7 +172,17 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       </div>
 
       <div :if={@stacked?} class="chat-message__body">
-        <span class={["chat-message__spine", @nick_color]} aria-hidden="true"></span>
+        <span :if={@continuation} class="chat-nick chat-message__author sr-only" data-nick={@nick}>
+          {@nick}
+        </span>
+        <time
+          :if={@continuation && @timestamp && @timestamp != ""}
+          class="chat-message__time chat-message__time--margin"
+          data-testid="chat-message-timestamp"
+          title={@meta_title}
+        >
+          {@timestamp}
+        </time>
         <div class={["chat-message__text", message_body_class(@type)]}>
           {render_slot(@inner_block)}
         </div>
@@ -182,7 +209,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   """
   @known_kinds ~w(user system service error notice server help arcade deleted)
 
-  attr :kind, :string, required: true
+  attr :kind, :string, default: nil
   attr :class, :string, default: "h-3.5 w-3.5"
 
   @spec message_kind_icon(map()) :: Phoenix.LiveView.Rendered.t()
@@ -214,15 +241,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     """
   end
 
-  @spec known_kind?(String.t()) :: boolean()
+  @spec known_kind?(String.t() | nil) :: boolean()
   defp known_kind?(kind), do: kind in @known_kinds
 
-  # An explicit `kind` wins; otherwise any nick-authored line is a user, and
+  # An explicit `kind` wins; otherwise a nick-authored line has no icon, and
   # source/origin lines map to their type's icon.
   @spec resolve_kind(String.t() | nil, String.t() | nil, String.t() | nil, String.t()) ::
-          String.t()
+          String.t() | nil
   defp resolve_kind(kind, _nick, _source, _type) when is_binary(kind), do: kind
-  defp resolve_kind(_kind, nick, _source, _type) when is_binary(nick) and nick != "", do: "user"
+  defp resolve_kind(_kind, nick, _source, _type) when is_binary(nick) and nick != "", do: nil
   defp resolve_kind(_kind, _nick, _source, type), do: type_kind(type)
 
   @spec type_kind(String.t()) :: String.t()

@@ -11,10 +11,41 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
   import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.ShowcaseHelpers
 
+  alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.ChatLive.Components.MessageRow
+  alias RetroHexChatWeb.ChatLive.MessageGrouping
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: dgettext("showcase", "Chat Message"), active_page: "chat-message")}
+     assign(socket,
+       page_title: dgettext("showcase", "Chat Message"),
+       active_page: "chat-message",
+       paper: MessageGrouping.annotate_all(paper(), "Etc/UTC")
+     )}
+  end
+
+  # Three days of one room, the way the chat prints them: runs of a speaker,
+  # narration between them, a perforation where the day changes.
+  defp paper do
+    [
+      {1, "Troll", ~U[2026-10-20 17:03:00Z], :message, "hello"},
+      {2, "honzix_2009", ~U[2026-10-21 09:21:00Z], :message, "you are the owner right?"},
+      {3, "honzix_2009", ~U[2026-10-21 09:22:00Z], :message,
+       "why i cant talk to bots it says that they are not registred"},
+      {4, "Troll", ~U[2026-10-21 10:45:00Z], :message,
+       "honzix_2009: they are more like IRC bots than AI bots..."},
+      {5, "Troll", ~U[2026-10-21 10:46:00Z], :message,
+       "why do you want to talk with the bots in a private chat?"},
+      {6, "System", ~U[2026-10-21 11:51:00Z], :system, "* nikis8008 has joined #lobby"},
+      {7, "nikis8008", ~U[2026-10-21 11:52:00Z], :message, "hovno"},
+      {8, "Troll", ~U[2026-10-21 11:53:00Z], :action, "waves"},
+      {9, "Waterdownmayo", ~U[2026-10-25 18:40:00Z], :message, "emo spongebob"},
+      {10, "Waterdownmayo", ~U[2026-10-25 18:41:00Z], :message, "and another one"}
+    ]
+    |> Enum.map(fn {id, author, at, type, content} ->
+      %{id: id, author: author, timestamp: at, type: type, content: content}
+    end)
   end
 
   @impl true
@@ -22,6 +53,24 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
     ~H"""
     <.showcase_layout active_page={@active_page}>
       <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Chat Message")}</h2>
+
+      <.showcase_card
+        title={dgettext("showcase", "Continuous Paper")}
+        description="A conversation as the chat prints it: one header per run of a speaker, runs on alternating bands, a perforation between days."
+      >
+        <.chat_message_list class="min-h-[240px]" testid="showcase-paper">
+          <MessageRow.message_row
+            :for={msg <- @paper}
+            dom_id={"paper-#{msg.id}"}
+            msg={msg}
+            nick_color_fn={&ChatHelpers.default_nick_color/1}
+            timestamp_format={:hh_mm}
+            timezone="Etc/UTC"
+            strip_formatting={false}
+            edit_mode_message_id={nil}
+          />
+        </.chat_message_list>
+      </.showcase_card>
 
       <.showcase_card
         title={dgettext("showcase", "Normal Messages")}

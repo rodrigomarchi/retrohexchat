@@ -17,6 +17,8 @@
         nick={entry.author}
         nick_color={ChatHelpers.default_nick_color(entry.author)}
         locale={Map.get(@locales, entry.author)}
+        band={band(@runs, entry.id)}
+        continuation={continuation?(@runs, entry.id)}
       >
         <span :if={entry.action?}>*</span>
         {entry.text}

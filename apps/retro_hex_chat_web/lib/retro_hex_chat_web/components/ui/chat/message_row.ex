@@ -224,6 +224,8 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             locale={Map.get(@msg, :locale)}
             avatar={@show_avatars && Map.get(@msg, :avatar)}
             layout={card_layout(@msg)}
+            band={band(@msg)}
+            continuation={Map.get(@msg, :group_start?) == false}
           >
             <%!-- A block of text art is a block: it cannot sit inside the
                   line's span. --%>
@@ -304,6 +306,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
       {raw(ChatHelpers.format_content(@card, "markdown", false))}
     </div>
     """
+  end
+
+  # The stripe a speaker's run is printed on, set by `ChatLive.MessageGrouping`.
+  defp band(msg) do
+    case Map.get(msg, :band) do
+      band when band in [:a, :b] -> Atom.to_string(band)
+      _none -> nil
+    end
   end
 
   # Only a stored message can carry a reaction. A row that failed to send keeps
