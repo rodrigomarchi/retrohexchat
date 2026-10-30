@@ -36,7 +36,6 @@ msgstr "3D"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:323
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:43
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:198
 #, elixir-autogen, elixir-format
 msgid "Alice"
 msgstr "爱丽丝"
@@ -45,11 +44,6 @@ msgstr "爱丽丝"
 #, elixir-autogen, elixir-format
 msgid "Alice (you)"
 msgstr "爱丽丝(你)"
-
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:61
-#, elixir-autogen, elixir-format
-msgid "Alice wants to call Bob"
-msgstr "爱丽丝想给鲍勃打电话"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:176
 #, elixir-autogen, elixir-format
@@ -63,7 +57,6 @@ msgstr "Block Breakers 游戏屏幕:两扇划桨,中间有彩色块列"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:344
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:73
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:228
 #, elixir-autogen, elixir-format
 msgid "Bob"
 msgstr "鲍勃"
@@ -72,13 +65,6 @@ msgstr "鲍勃"
 #, elixir-autogen, elixir-format
 msgid "Bob (joined)"
 msgstr "鲍勃(合并)"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:64
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:221
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:254
-#, elixir-autogen, elixir-format
-msgid "Browser"
-msgstr "浏览器"
 
 #: lib/retro_hex_chat_web/components/diagrams/voice.ex:135
 #, elixir-autogen, elixir-format
@@ -100,12 +86,6 @@ msgstr "选择游戏"
 msgid "Close"
 msgstr "关闭"
 
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:209
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:239
-#, elixir-autogen, elixir-format
-msgid "Connected"
-msgstr "已连接"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_enduro.ex:77
 #, elixir-autogen, elixir-format
 msgid "DAY 1 2:15"
@@ -120,22 +100,6 @@ msgstr "多米尼克"
 #, elixir-autogen, elixir-format
 msgid "DOOM arcade logo: bold red angular letters on dark background"
 msgstr "DOOM 街机标志:暗背景上的粗体红角字母"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:293
-#, elixir-autogen, elixir-format
-msgid "DTLS / SRTP"
-msgstr "DTLS / SRTP 数据"
-
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:138
-#, elixir-autogen, elixir-format
-msgid "Direct P2P connection established"
-msgstr "建立直接P2P连接"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:235
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:268
-#, elixir-autogen, elixir-format
-msgid "E2E enc"
-msgstr "E2E 环境"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_wolfenstein.ex:91
 #, elixir-autogen, elixir-format
@@ -161,11 +125,6 @@ msgstr "给"
 #, elixir-autogen, elixir-format
 msgid "HALF-LIFE"
 msgstr "HALF-LIFE (韩语)"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:142
-#, elixir-autogen, elixir-format
-msgid "HTTPS / WSS"
-msgstr "HTTPS / WSS 软件"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:198
 #, elixir-autogen, elixir-format
@@ -241,16 +200,6 @@ msgstr "黑克斯网球比赛银幕:由两名球员和一个球组成的自上�
 #, elixir-autogen, elixir-format
 msgid "Hex Warlords game screen: two castles with brick walls and a fireball bouncing between them"
 msgstr "Hex 军阀游戏屏幕:两座有砖墙的城堡和两座之间的火球弹跳"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:42
-#, elixir-autogen, elixir-format
-msgid "LAYER 1 — Server Connection"
-msgstr "LAYER 1 — 服务器连接"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:202
-#, elixir-autogen, elixir-format
-msgid "LAYER 2 — P2P Calls (end-to-end)"
-msgstr "LAYER 2 — P2P呼叫( 端对端)"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:236
 #, elixir-autogen, elixir-format
@@ -384,11 +333,6 @@ msgstr "P2: 63"
 msgid "P2: 640"
 msgstr "P2: 640"
 
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:310
-#, elixir-autogen, elixir-format
-msgid "P2P calls encrypted end-to-end via WebRTC"
-msgstr "P2P通过WebRTC加密端对端呼叫"
-
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:18
 #, elixir-autogen, elixir-format
 msgid "Peer-to-peer connection diagram showing Alice and Bob connected directly via WebRTC, with the server only used for signaling"
@@ -418,11 +362,6 @@ msgstr "像素 坦克游戏屏幕:迷宫竞技场的两辆坦克"
 #, elixir-autogen, elixir-format
 msgid "PrBoom+ WebAssembly"
 msgstr "PrBoom+ 网络大会"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:116
-#, elixir-autogen, elixir-format
-msgid "Protected"
-msgstr "保护"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_quake2.ex:66
 #, elixir-autogen, elixir-format
@@ -520,30 +459,10 @@ msgstr "ScumVM 街机标志:用光标点和点击冒险场景"
 msgid "Send"
 msgstr "发送"
 
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:102
-#, elixir-autogen, elixir-format
-msgid "Server"
-msgstr "服务器"
-
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:176
 #, elixir-autogen, elixir-format
 msgid "Server (signaling)"
 msgstr "服务器( 信号)"
-
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:100
-#, elixir-autogen, elixir-format
-msgid "Server exchanges signaling (SDP/ICE)"
-msgstr "服务器交换信号( SDP/ICE)"
-
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:265
-#, elixir-autogen, elixir-format
-msgid "Server is out of the loop"
-msgstr "服务器脱离循环"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:320
-#, elixir-autogen, elixir-format
-msgid "Server never sees voice/video data"
-msgstr "服务器从未看到语音/video数据"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:214
 #, elixir-autogen, elixir-format
@@ -560,20 +479,10 @@ msgstr "星际决斗游戏屏幕:两艘太空飞船携带导弹"
 msgid "THE INVASION"
 msgstr "一、导 言"
 
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:80
-#, elixir-autogen, elixir-format
-msgid "TLS 1.3"
-msgstr "TLS 1."
-
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:125
 #, elixir-autogen, elixir-format
 msgid "Talk to"
 msgstr "说话"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:24
-#, elixir-autogen, elixir-format
-msgid "Two security layers: browser to server via HTTPS/WSS with TLS, and browser to browser via DTLS-SRTP for P2P calls"
-msgstr "两个安全层:浏览器通过HTTPS/WSS和TLS服务器,浏览器通过DTLS-SRTP为P2P呼叫浏览器"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:86
 #, elixir-autogen, elixir-format
@@ -585,20 +494,10 @@ msgstr "乌普林克·德莫"
 msgid "Use"
 msgstr "使用"
 
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:18
-#, elixir-autogen, elixir-format
-msgid "Vertical flowchart showing 4 steps: Alice calls Bob, server exchanges signaling, P2P connection established, then direct data flow with server out of the loop"
-msgstr "显示四个步骤的垂直流程图:爱丽丝呼叫鲍勃,服务器交换信号,建立P2P连接,然后与服务器直接数据流脱离循环"
-
 #: lib/retro_hex_chat_web/components/diagrams/voice.ex:47
 #, elixir-autogen, elixir-format
 msgid "Voice Call with Bob"
 msgstr "与鲍勃通话"
-
-#: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:178
-#, elixir-autogen, elixir-format
-msgid "Voice, video, and files flow directly"
-msgstr "语音、视频和文件直接流动"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_invaders.ex:83
 #, elixir-autogen, elixir-format
@@ -645,16 +544,6 @@ msgstr "Yamagi Quake II 网络大会"
 msgid "voice / video / files"
 msgstr "语音/视频/文件"
 
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:177
-#, elixir-autogen, elixir-format
-msgid "· CSRF protection"
-msgstr "· 企业社会责任基金保护"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:157
-#, elixir-autogen, elixir-format
-msgid "· bcrypt hashing"
-msgstr "· bcrypt hashing;"
-
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:197
 #, elixir-autogen, elixir-format
 msgid "· never sees data"
@@ -664,11 +553,6 @@ msgstr "从未看到数据"
 #, elixir-autogen, elixir-format
 msgid "· only connects them"
 msgstr "* 只连接它们"
-
-#: lib/retro_hex_chat_web/components/diagrams/security.ex:167
-#, elixir-autogen, elixir-format
-msgid "· rate limiting"
-msgstr "限制费率"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:70
 #, elixir-autogen, elixir-format

@@ -3,8 +3,10 @@ defmodule RetroHexChatWeb.GoneControllerTest do
 
   alias RetroHexChatWeb.SEO
 
-  describe "the retired public archive" do
-    for path <- ~w(/archive/lobby /archive/lobby/2026-10-10 /pt-BR/archive/lobby/2026-10-10) do
+  describe "pages removed for good" do
+    for path <-
+          ~w(/archive/lobby /archive/lobby/2026-10-10 /pt-BR/archive/lobby/2026-10-10
+             /how-it-works /pt-BR/how-it-works /privacy /pt-BR/privacy) do
       test "#{path} tells a search engine it is gone", %{conn: conn} do
         conn = get(conn, unquote(path))
 

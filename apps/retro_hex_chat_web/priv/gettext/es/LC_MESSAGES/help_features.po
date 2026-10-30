@@ -5811,21 +5811,6 @@ msgstr ""
 "mensajes destacados tienen fondo de color y la conversación parpadea en la "
 "barra lateral de conversaciones y en la barra de pestañas."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Anonymous Performance Monitoring"
-msgstr "Supervisión anónima del rendimiento"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "To keep the app fast and catch errors, your browser sends anonymous performance measurements (page load and responsiveness) and uncaught error reports to our own servers. No message content is collected, and the data is never shared with third parties."
-msgstr ""
-"Para mantener la aplicación rápida y detectar errores, tu navegador envía "
-"mediciones anónimas de rendimiento (carga de página y capacidad de "
-"respuesta) e informes de errores no capturados a nuestros propios "
-"servidores. No se recoge ningún contenido de los mensajes, y los datos nunca"
-" se comparten con terceros."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Your live session is reported in two places. The chat window's own status bar, along its bottom edge, shows what this conversation is doing: an active call or P2P session. The system tray, beside the clock, shows what the machine is doing: who is online from your notify list, how fast the server is answering, and whether sounds are muted."
@@ -7979,3 +7964,14 @@ msgstr "Los archivos adjuntos de imagen representan como miniaturas en línea. L
 #, elixir-autogen, elixir-format
 msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list and above the conversation. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
 msgstr "Un canal también puede tener bandera: el idioma que se habla en él, junto al nombre del canal en su pestaña, en la lista de conversaciones, en la lista de canales y encima de la conversación. Su fundador lo elige con /cs language seguido de un código como pt_BR, o en Canal Central ▸ Registro ▸ Idioma, y /cs language none la quita."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Performance and Usage Monitoring"
+msgstr "Supervisión del rendimiento y del uso"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "To keep the app fast and catch errors, your browser sends performance measurements (page load and responsiveness) and uncaught error reports to our own servers. Usage is measured with Google Analytics. No message content is collected."
+msgstr ""
+"Para mantener la aplicación rápida y detectar errores, tu navegador envía mediciones de rendimiento (carga de página y capacidad de respuesta) e informes de errores no capturados a nuestros propios servidores. El uso se mide con Google Analytics. No se recoge ningún contenido de los mensajes."

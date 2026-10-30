@@ -117,9 +117,9 @@ test("a page opens as its windows over the chat, without a reload (PW28)", async
 test("a page's address opens it straight away, help and archive as one window (PW28)", async ({
   page,
 }) => {
-  await openFresh(page, "/how-it-works");
+  await openFresh(page, "/features");
   await expect(page.getByTestId("site-window-intro")).toBeVisible();
-  await shot(page, "how-it-works-first-paint");
+  await shot(page, "features-first-paint");
 
   await page.goto("/chat/help");
   await expect(page.getByTestId("document-window-help")).toBeVisible();

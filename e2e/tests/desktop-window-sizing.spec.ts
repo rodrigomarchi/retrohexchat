@@ -102,15 +102,7 @@ function report(path: string, windows: WindowMetrics[]) {
   }
 }
 
-const LANDING_PAGES = [
-  "/",
-  "/how-it-works",
-  "/features",
-  "/privacy",
-  "/install",
-  "/community",
-  "/faq",
-];
+const LANDING_PAGES = ["/", "/features", "/install", "/community", "/faq"];
 
 test.describe("Desktop window sizing", () => {
   for (const path of LANDING_PAGES) {

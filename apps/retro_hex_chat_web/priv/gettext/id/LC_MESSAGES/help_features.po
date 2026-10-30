@@ -5743,20 +5743,6 @@ msgstr ""
 "latar berwarna dan percakapan berkedip di bilah sisi percakapan serta bilah "
 "tab."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Anonymous Performance Monitoring"
-msgstr "Pemantauan performa anonim"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "To keep the app fast and catch errors, your browser sends anonymous performance measurements (page load and responsiveness) and uncaught error reports to our own servers. No message content is collected, and the data is never shared with third parties."
-msgstr ""
-"Agar aplikasi tetap cepat dan kesalahan terdeteksi, peramban Anda mengirim "
-"pengukuran performa anonim (pemuatan halaman dan responsivitas) serta "
-"laporan kesalahan yang tak tertangani ke server kami sendiri. Tidak ada isi "
-"pesan yang dikumpulkan, dan datanya tidak pernah dibagikan ke pihak ketiga."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Your live session is reported in two places. The chat window's own status bar, along its bottom edge, shows what this conversation is doing: an active call or P2P session. The system tray, beside the clock, shows what the machine is doing: who is online from your notify list, how fast the server is answering, and whether sounds are muted."
@@ -7909,3 +7895,14 @@ msgstr "Lampiran gambar berubah sebagai miniatur inline. Lampiran audio dan vide
 #, elixir-autogen, elixir-format
 msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list and above the conversation. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
 msgstr "Saluran juga bisa punya bendera: bahasa yang dipakai di sana, di samping nama saluran pada tabnya, di daftar percakapan, di daftar saluran, dan di atas percakapan. Pendirinya memilih dengan /cs language diikuti kode seperti pt_BR, atau lewat Pusat Saluran ▸ Pendaftaran ▸ Bahasa, dan /cs language none menghapusnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Performance and Usage Monitoring"
+msgstr "Pemantauan performa dan penggunaan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "To keep the app fast and catch errors, your browser sends performance measurements (page load and responsiveness) and uncaught error reports to our own servers. Usage is measured with Google Analytics. No message content is collected."
+msgstr ""
+"Agar aplikasi tetap cepat dan kesalahan terdeteksi, peramban Anda mengirim pengukuran performa (pemuatan halaman dan responsivitas) serta laporan kesalahan yang tak tertangani ke server kami sendiri. Penggunaan diukur dengan Google Analytics. Tidak ada isi pesan yang dikumpulkan."

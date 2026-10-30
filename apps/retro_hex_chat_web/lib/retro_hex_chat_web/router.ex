@@ -55,9 +55,7 @@ defmodule RetroHexChatWeb.Router do
         pipe_through :desktop
 
         live "/", DesktopLive, :home
-        live "/how-it-works", DesktopLive, :how_it_works
         live "/features", DesktopLive, :features
-        live "/privacy", DesktopLive, :privacy
         live "/install", DesktopLive, :install
         live "/community", DesktopLive, :community
         live "/faq", DesktopLive, :faq
@@ -81,11 +79,13 @@ defmodule RetroHexChatWeb.Router do
     end
   end
 
-  # The public channel archive is gone for good: a search engine that still
-  # holds one of its addresses is told so, in every language they answered in.
+  # Pages gone for good: a search engine that still holds one of their addresses
+  # is told so, in every language they answered in.
   for prefix <- ["/" | Enum.map(@localized_locale_segments, &"/#{&1}")] do
     scope prefix, RetroHexChatWeb do
       get "/archive/*path", GoneController, :show
+      get "/how-it-works", GoneController, :show
+      get "/privacy", GoneController, :show
     end
   end
 

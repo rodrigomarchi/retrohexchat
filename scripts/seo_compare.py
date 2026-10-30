@@ -37,9 +37,7 @@ SITEMAP_NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
 # other locales, and the help pages search engines visit. Extend it when a page starts to matter.
 DEFAULT_PATHS = [
     "/",
-    "/how-it-works",
     "/features",
-    "/privacy",
     "/install",
     "/community",
     "/faq",

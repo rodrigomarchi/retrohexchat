@@ -5176,21 +5176,6 @@ msgstr "Только простые сообщения получают карт
 msgid "RetroHexChat highlights messages that mention your nickname or custom words, in channels and in private conversations alike. Highlighted messages have a colored background and the conversation flashes in the conversations sidebar and tab bar."
 msgstr "RetroHexChat выделяет сообщения, в которых упоминается ваш ник или заданные вами слова, как в каналах, так и в личных беседах. У выделенных сообщений цветной фон, а беседа мигает на боковой панели бесед и на панели вкладок."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Anonymous Performance Monitoring"
-msgstr "Анонимный мониторинг производительности"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "To keep the app fast and catch errors, your browser sends anonymous performance measurements (page load and responsiveness) and uncaught error reports to our own servers. No message content is collected, and the data is never shared with third parties."
-msgstr ""
-"Чтобы приложение оставалось быстрым и ошибки не оставались незамеченными, "
-"ваш браузер отправляет анонимные измерения производительности (загрузка "
-"страницы и отзывчивость) и отчёты о неперехваченных ошибках на наши "
-"собственные серверы. Содержимое сообщений не собирается, и данные никогда не"
-" передаются третьим лицам."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Your live session is reported in two places. The chat window's own status bar, along its bottom edge, shows what this conversation is doing: an active call or P2P session. The system tray, beside the clock, shows what the machine is doing: who is online from your notify list, how fast the server is answering, and whether sounds are muted."
@@ -7186,3 +7171,14 @@ msgstr "Вложения-изображения отображаются во в
 #, elixir-autogen, elixir-format
 msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list and above the conversation. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
 msgstr "У канала тоже может быть флаг: язык, на котором в нём общаются. Он показан рядом с названием канала на его вкладке, в списке разговоров, в списке каналов и над беседой. Основатель выбирает его командой /cs language с кодом вроде pt_BR или в разделе Центр канала ▸ Регистрация ▸ Язык, а /cs language none убирает его."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Performance and Usage Monitoring"
+msgstr "Мониторинг производительности и использования"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "To keep the app fast and catch errors, your browser sends performance measurements (page load and responsiveness) and uncaught error reports to our own servers. Usage is measured with Google Analytics. No message content is collected."
+msgstr ""
+"Чтобы приложение оставалось быстрым и ошибки не оставались незамеченными, ваш браузер отправляет измерения производительности (загрузка страницы и отзывчивость) и отчёты о неперехваченных ошибках на наши собственные серверы. Использование измеряется с помощью Google Analytics. Содержимое сообщений не собирается."

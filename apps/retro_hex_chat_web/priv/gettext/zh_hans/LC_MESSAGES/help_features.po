@@ -5111,17 +5111,6 @@ msgid "RetroHexChat highlights messages that mention your nickname or custom wor
 msgstr ""
 "RetroHexChat 会突出显示在频道和私聊中提到你的昵称或自定义词语的消息。突出显示的消息带有彩色背景，并且该会话会在会话侧边栏和标签栏中闪烁。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Anonymous Performance Monitoring"
-msgstr "匿名性能监控"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "To keep the app fast and catch errors, your browser sends anonymous performance measurements (page load and responsiveness) and uncaught error reports to our own servers. No message content is collected, and the data is never shared with third parties."
-msgstr ""
-"为了让应用保持快速并捕捉错误，你的浏览器会向我们自己的服务器发送匿名的性能测量（页面加载与响应速度）和未捕获的错误报告。不会收集任何消息内容，数据也绝不会共享给第三方。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Your live session is reported in two places. The chat window's own status bar, along its bottom edge, shows what this conversation is doing: an active call or P2P session. The system tray, beside the clock, shows what the machine is doing: who is online from your notify list, how fast the server is answering, and whether sounds are muted."
@@ -7112,3 +7101,14 @@ msgstr "图片附件会显示为内嵌缩略图。音频和视频附件直接在
 #, elixir-autogen, elixir-format
 msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list and above the conversation. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
 msgstr "频道也可以有旗帜:即频道中使用的语言,显示在频道名称旁边——频道标签、会话列表、频道列表以及会话上方。创建者可以用 /cs language 加上 pt_BR 这样的代码来选择,或在 频道中心 ▸ 注册 ▸ 语言 中选择;/cs language none 会移除它。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Performance and Usage Monitoring"
+msgstr "性能与使用情况监控"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "To keep the app fast and catch errors, your browser sends performance measurements (page load and responsiveness) and uncaught error reports to our own servers. Usage is measured with Google Analytics. No message content is collected."
+msgstr ""
+"为了让应用保持快速并捕捉错误，你的浏览器会向我们自己的服务器发送性能测量（页面加载与响应速度）和未捕获的错误报告。使用情况通过 Google Analytics 统计。不会收集任何消息内容。"

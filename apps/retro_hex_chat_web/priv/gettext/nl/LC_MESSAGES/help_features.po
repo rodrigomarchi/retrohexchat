@@ -5774,20 +5774,6 @@ msgstr ""
 "gekleurde achtergrond en het gesprek knippert in de gesprekkenzijbalk en de "
 "tabbalk."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Anonymous Performance Monitoring"
-msgstr "Anonieme prestatiemonitoring"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "To keep the app fast and catch errors, your browser sends anonymous performance measurements (page load and responsiveness) and uncaught error reports to our own servers. No message content is collected, and the data is never shared with third parties."
-msgstr ""
-"Om de app snel te houden en fouten op te sporen, stuurt je browser anonieme "
-"prestatiemetingen (laadtijd en responsiviteit) en rapporten van niet-"
-"afgevangen fouten naar onze eigen servers. Er wordt geen berichtinhoud "
-"verzameld en de gegevens worden nooit met derden gedeeld."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Your live session is reported in two places. The chat window's own status bar, along its bottom edge, shows what this conversation is doing: an active call or P2P session. The system tray, beside the clock, shows what the machine is doing: who is online from your notify list, how fast the server is answering, and whether sounds are muted."
@@ -7935,3 +7921,14 @@ msgstr "Afbeeldingsbijlagen weergeven als inline miniaturen. Audio- en videobijl
 #, elixir-autogen, elixir-format
 msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list and above the conversation. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
 msgstr "Ook een kanaal kan een vlag hebben: de taal die er gesproken wordt, naast de naam van het kanaal in zijn tabblad, in de gesprekkenlijst, in de kanalenlijst en boven het gesprek. De oprichter kiest hem met /cs language gevolgd door een code zoals pt_BR, of onder Kanaal centraal ▸ Registratie ▸ Taal, en /cs language none haalt hem weg."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Performance and Usage Monitoring"
+msgstr "Monitoring van prestaties en gebruik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "To keep the app fast and catch errors, your browser sends performance measurements (page load and responsiveness) and uncaught error reports to our own servers. Usage is measured with Google Analytics. No message content is collected."
+msgstr ""
+"Om de app snel te houden en fouten op te sporen, stuurt je browser prestatiemetingen (laadtijd en responsiviteit) en rapporten van niet-afgevangen fouten naar onze eigen servers. Het gebruik wordt gemeten met Google Analytics. Er wordt geen berichtinhoud verzameld."

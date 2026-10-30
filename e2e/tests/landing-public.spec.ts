@@ -153,7 +153,7 @@ test.describe("Landing public pages", () => {
   test("the public pages offer an installable app (PW19)", async ({ page }) => {
     const failures = watchBrowserFailures(page);
 
-    await page.goto("/how-it-works");
+    await page.goto("/features");
 
     // A manifest reachable at its URL but linked from no page installs nothing.
     const href = await page

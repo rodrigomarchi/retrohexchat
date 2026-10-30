@@ -15,9 +15,7 @@ defmodule RetroHexChatWeb.Components.Diagrams do
 
   | Module                 | Subject                                        |
   |------------------------|------------------------------------------------|
-  | `Diagrams.P2pFlow`         | P2P connection flow diagram                |
   | `Diagrams.P2pArchitecture` | P2P architecture diagram                   |
-  | `Diagrams.Security`        | Encryption layers and protocol diagram     |
   | `Diagrams.Voice`           | Voice/video call mockup                    |
   | `Diagrams.ChatWorkspace`   | Persistent chat workspace diagram          |
   | `Diagrams.ConferenceTopology` | Channel conference topology diagram      |
@@ -33,13 +31,9 @@ defmodule RetroHexChatWeb.Components.Diagrams do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   # ── P2P ───────────────────────────────────────────
-  defdelegate diagram_p2p_flow(assigns), to: RetroHexChatWeb.Components.Diagrams.P2pFlow
 
   defdelegate diagram_p2p_architecture(assigns),
     to: RetroHexChatWeb.Components.Diagrams.P2pArchitecture
-
-  # ── Security ──────────────────────────────────────
-  defdelegate diagram_security_layers(assigns), to: RetroHexChatWeb.Components.Diagrams.Security
 
   # ── Voice ─────────────────────────────────────────
   defdelegate diagram_voice_call_mockup(assigns), to: RetroHexChatWeb.Components.Diagrams.Voice

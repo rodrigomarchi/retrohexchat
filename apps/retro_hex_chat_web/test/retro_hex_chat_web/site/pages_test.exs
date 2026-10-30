@@ -13,12 +13,10 @@ defmodule RetroHexChatWeb.Site.PagesTest do
 
   @landing_pages [
     {"/", "hero-heading"},
-    {"/how-it-works", "how-it-works-heading"},
     {"/features", "features-heading"},
     {"/games", "games-heading"},
     {"/games/doom-shareware", "game-heading"},
     {"/spaces", "spaces-heading"},
-    {"/privacy", "privacy-heading"},
     {"/install", "install-heading"},
     {"/community", "community-heading"},
     {"/faq", "faq-heading"},
@@ -106,7 +104,7 @@ defmodule RetroHexChatWeb.Site.PagesTest do
     assert "/faq" in hrefs
     assert "/chat/help" in hrefs
 
-    for page <- ["/", "/features", "/privacy", "/community"] do
+    for page <- ["/", "/features", "/community"] do
       assert page in hrefs, "the Start menu lost the link to #{page}"
     end
   end

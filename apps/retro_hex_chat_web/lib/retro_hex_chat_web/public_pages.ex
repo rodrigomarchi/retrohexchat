@@ -32,11 +32,9 @@ defmodule RetroHexChatWeb.PublicPages do
 
   @pages [
     {:home, "/", :icon_hex_stone, Pages.Index},
-    {:how_it_works, "/how-it-works", :icon_server, Pages.HowItWorks},
     {:features, "/features", :icon_chat, Pages.Features},
     {:games, "/games", :icon_joystick, Pages.Games},
     {:spaces, "/spaces", :icon_group_view, Pages.Spaces},
-    {:privacy, "/privacy", :icon_lock, Pages.Privacy},
     {:install, "/install", :icon_terminal, Pages.Install},
     {:community, "/community", :icon_code, Pages.Community},
     {:faq, "/faq", :icon_question, Pages.Faq}
@@ -105,11 +103,9 @@ defmodule RetroHexChatWeb.PublicPages do
   defp title(page), do: label(page)
 
   defp label(:home), do: dgettext("landing", "Home")
-  defp label(:how_it_works), do: dgettext("landing", "How It Works")
   defp label(:features), do: dgettext("landing", "Features")
   defp label(:games), do: dgettext("landing", "Games")
   defp label(:spaces), do: dgettext("landing", "Spaces")
-  defp label(:privacy), do: dgettext("landing", "Privacy")
   defp label(:install), do: dgettext("landing", "Install")
   defp label(:community), do: dgettext("landing", "Community")
   defp label(:faq), do: dgettext("landing", "FAQ")
