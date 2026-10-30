@@ -11,8 +11,8 @@
 #   elixir scripts/deploy_all.exs --rollout-timeout 600
 #
 # After the deploy it waits until production answers /version with the new
-# release on every backend (DeployRollout), then asks Google to read the
-# sitemap again when GOOGLE_SERVICE_ACCOUNT_FILE is configured on this machine.
+# release on every backend (DeployRollout), then asks Google and Bing to
+# read the sitemap again, each when its credential is configured on this machine.
 
 Code.require_file("deploy_rollout.exs", __DIR__)
 
@@ -228,7 +228,7 @@ defmodule DeployAll do
   # --- Announce ---
 
   # Runs here, on the machine that deploys, and only when this machine holds
-  # the Google service account: the server never carries that credential. A
+  # the engines' credentials: the server never carries them. A
   # failure is a warning — the release is live either way.
   defp submit_sitemap(project_root) do
     {output, _exit} = run_cmd("python3", ["scripts/seo_sitemap_submit.py"], project_root)
@@ -241,7 +241,7 @@ defmodule DeployAll do
         true -> "#{c(:yellow)}⚠"
       end
 
-    IO.puts("  #{c(:cyan)}Google#{c(:reset)}\n    #{icon}#{c(:reset)} #{line}\n")
+    IO.puts("  #{c(:cyan)}Sitemap#{c(:reset)}\n    #{icon}#{c(:reset)} #{line}\n")
   end
 
   defp run_cmd(cmd, args, project_root) do

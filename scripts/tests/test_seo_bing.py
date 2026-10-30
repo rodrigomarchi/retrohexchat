@@ -278,5 +278,24 @@ class BuildReportTest(unittest.TestCase):
         self.assertTrue(any("Bing kept failing URL inspection: 1 of 2 URL(s) left uninspected" in n for n in report["notes"]))
 
 
+class SubmitSitemapTest(unittest.TestCase):
+    def test_posts_the_feed_for_the_site(self):
+        calls = []
+
+        def post(url, payload):
+            calls.append((url, payload))
+            return 200, '{"d": null}'
+
+        bing.submit_sitemap(post, "k3y", SITE, f"{SITE}sitemap.xml")
+
+        self.assertEqual(calls, [(f"{bing.API_BASE}SubmitFeed?apikey=k3y", {"siteUrl": SITE, "feedUrl": f"{SITE}sitemap.xml"})])
+
+    def test_a_refusal_raises(self):
+        refused = json.dumps({"ErrorCode": 14, "Message": "ERROR!!! NotAuthorized"})
+
+        with self.assertRaises(bing.BingError):
+            bing.submit_sitemap(lambda _url, _payload: (400, refused), "k3y", SITE, f"{SITE}sitemap.xml")
+
+
 if __name__ == "__main__":
     unittest.main()

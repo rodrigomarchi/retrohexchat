@@ -27,12 +27,6 @@ defmodule RetroHexChatWeb.Router do
     plug RetroHexChatWeb.Plugs.RobotsHeader
   end
 
-  # The archive is read by robots that send `If-None-Match`: its conditional
-  # answer and its cache headers are decided before the LiveView renders.
-  pipeline :archive_http do
-    plug RetroHexChatWeb.Plugs.ArchiveConditional
-  end
-
   scope "/api", RetroHexChatWeb do
     pipe_through :api
 
@@ -84,13 +78,14 @@ defmodule RetroHexChatWeb.Router do
         # and `chat`: none of them may ever be a locale tag.
         live "/c/:channel", DesktopLive, :channel
       end
+    end
+  end
 
-      scope prefix, RetroHexChatWeb do
-        pipe_through [:desktop, :archive_http]
-
-        live "/archive/:channel", DesktopLive, :archive_index
-        live "/archive/:channel/:date", DesktopLive, :archive_day
-      end
+  # The public channel archive is gone for good: a search engine that still
+  # holds one of its addresses is told so, in every language they answered in.
+  for prefix <- ["/" | Enum.map(@localized_locale_segments, &"/#{&1}")] do
+    scope prefix, RetroHexChatWeb do
+      get "/archive/*path", GoneController, :show
     end
   end
 

@@ -112,30 +112,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
   # ── ChanServ Registration / Access ───────────────────────────────
 
-  # The founder opening or closing the channel's public archive. The refusal is
-  # the channel's, checked again where the membership lives — the switch is
-  # only drawn for somebody who looks like the founder.
-  def handle_event("cc_cs_archive_toggle", %{"enabled" => enabled}, socket) do
-    channel = socket.assigns.channel_central_channel
-    nickname = socket.assigns.session.nickname
-
-    case Server.set_public_archive(channel, nickname, enabled == "true") do
-      :ok ->
-        {:noreply,
-         socket
-         |> assign(
-           channel_central_cs_error: nil,
-           channel_central_registration: ChanServ.registration_snapshot(channel, nickname)
-         )
-         |> put_locales()}
-
-      {:error, reason} ->
-        {:noreply, chanserv_error(socket, reason)}
-    end
-  end
-
-  # The founder naming the language the channel is spoken in. As with the
-  # archive, the channel checks again that it is the founder asking.
+  # The founder naming the language the channel is spoken in. The channel
+  # checks again that it is the founder asking.
   def handle_event("cc_cs_language", params, socket) do
     channel = socket.assigns.channel_central_channel
     nickname = socket.assigns.session.nickname
@@ -558,7 +536,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         on_list_add="cc_open_add_list_entry"
         on_list_remove="cc_remove_list_entry"
         on_cs_register="cc_cs_register"
-        on_cs_archive_toggle="cc_cs_archive_toggle"
         on_cs_language="cc_cs_language"
         on_cs_category="cc_cs_category"
         on_cs_drop_request="cc_cs_drop_request"

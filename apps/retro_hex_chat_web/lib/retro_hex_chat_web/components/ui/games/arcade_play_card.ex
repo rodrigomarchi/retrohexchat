@@ -3,8 +3,8 @@ defmodule RetroHexChatWeb.Components.UI.ArcadePlayCard do
   Somebody started an arcade game: drawn under the line that said so, in the
   game's channel and in `#arcade`.
 
-  The line above it is plain text in the server's language, for search and the
-  public archive; this card is the same news in the reader's language, with the
+  The line above it is plain text in the server's language, for search;
+  this card is the same news in the reader's language, with the
   two ways onward a reader wants: play it too, or go where it is talked about.
   There is no score and no time — an arcade game never reports back.
 

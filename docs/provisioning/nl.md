@@ -26,7 +26,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #nederland
 /cs register
-/cs archive on
 /cs language nl
 /cs category social
 /topic Nederlandstalig kanaal — kom binnen, ga zitten, er wordt gepraat. Koffie van het huis.
@@ -34,7 +33,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #nieuws
 /cs register
-/cs archive on
 /cs language nl
 /cs category news
 /topic Nieuws — AD, Volkskrant en Trouw, rechtstreeks uit de feed. !Sanne bronnen toont de lijst.
@@ -42,7 +40,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #vlaanderen
 /cs register
-/cs archive on
 /cs language nl
 /cs category news
 /topic Vlaanderen — VRT NWS, De Morgen en HLN. Andere voorpagina, zelfde taal.
@@ -50,7 +47,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #achtergrond
 /cs register
-/cs archive on
 /cs language nl
 /cs category news
 /topic Achtergrond — NRC, Het Parool en RTL Nieuws. Het verhaal achter de kop.
@@ -58,7 +54,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #techniek
 /cs register
-/cs archive on
 /cs language nl
 /cs category tech
 /topic Techniek — Tweakers en Bright. Support voor een project hoort bij het project; hier wordt gepraat.
@@ -66,7 +61,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #beveiliging
 /cs register
-/cs archive on
 /cs language nl
 /cs category security
 /topic Beveiliging — Security.NL aan de lijn. Lezen voordat je patcht, niet erna.
@@ -74,7 +68,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #voetbal
 /cs register
-/cs archive on
 /cs language nl
 /cs category sports
 /topic Voetbal — VI, VoetbalPrimeur en HLN Sport. Stand, transfers en het gebruikelijke gelijk.
@@ -82,7 +75,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #wetenschap
 /cs register
-/cs archive on
 /cs language nl
 /cs category science
 /topic Wetenschap — Scientias en New Scientist. Domme vragen bestaan niet, ongestelde wel.
@@ -90,7 +82,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #ondernemen
 /cs register
-/cs archive on
 /cs language nl
 /cs category money
 /topic Ondernemen — Emerce aan de lijn. Een kop is geen advies.
@@ -98,7 +89,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #auto
 /cs register
-/cs archive on
 /cs language nl
 /cs category life
 /topic Auto — Autoblog aan de lijn. Rijden, sleutelen en meningen van wie de trein neemt.
@@ -394,8 +384,7 @@ that matters after a paste.
 | `#ondernemen` | `money` | **Daan** | Emerce |
 | `#auto` | `life` | **Kees** | Autoblog |
 
-**Poortwachter** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Dutch (`/cs language nl`).
+**Poortwachter** stands in all ten and greets in none of them. All channels are `+tn` and are marked Dutch (`/cs language nl`).
 Every bot is marked Dutch too: `/bot set <Bot> language nl` follows its
 `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

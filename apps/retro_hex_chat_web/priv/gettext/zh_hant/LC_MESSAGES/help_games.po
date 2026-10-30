@@ -4041,11 +4041,6 @@ msgstr "A bot in each game channel announces a match between two people played i
 msgid "The bot that announces"
 msgstr "宣佈的機器人"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic, the modes and the archive."
-msgstr "一個管理員把機器人的公告和%{on}打開,然後和%{off}關閉. 沒有這種機器人的頻道不會宣佈什麼 遊戲頻道爲普通頻道:其創始人更改話題,模式和存檔."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Asking the bot"
@@ -4896,3 +4891,8 @@ msgstr "文件夾中的遊戲打開遊戲的頁面,放在聊天的頂端."
 #, elixir-autogen, elixir-format
 msgid "Double-click the Retro Games desktop icon. The folder holds a folder per category, as in the list above; open one to see its games, each with a screenshot."
 msgstr "雙擊復古遊戲桌面圖標。 如上列表,文件夾每個類別都有一個文件夾;打開一個來查看其遊戲,每個遊戲都有截圖."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic and the modes."
+msgstr "一個管理員把機器人的公告和%{on}打開,然後和%{off}關閉. 沒有這種機器人的頻道不會宣佈什麼 遊戲頻道爲普通頻道:其創始人更改話題和模式."

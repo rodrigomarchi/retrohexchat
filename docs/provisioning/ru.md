@@ -29,7 +29,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #russkiy
 /cs register
-/cs archive on
 /cs language ru
 /cs category social
 /topic Русскоязычный канал — заходи, садись, разговариваем. Кофе за счёт заведения.
@@ -37,7 +36,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #novosti
 /cs register
-/cs archive on
 /cs language ru
 /cs category news
 /topic Новости — ТАСС, «Интерфакс», «Коммерсантъ» и «Медуза», прямо из лент. !Grisha istochniki покажет список.
@@ -45,7 +43,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tehnologii
 /cs register
-/cs archive on
 /cs language ru
 /cs category tech
 /topic Технологии — 3DNews и CNews. Поддержка проекта живёт у проекта; здесь просто разговор.
@@ -53,7 +50,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #zhelezo
 /cs register
-/cs archive on
 /cs language ru
 /cs category tech
 /topic Железо — iXBT и Overclockers. Платы, корпуса, разгон и то, что из этого выходит.
@@ -61,7 +57,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #razrabotka
 /cs register
-/cs archive on
 /cs language ru
 /cs category dev
 /topic Разработка — «Хабр» и «Код». Байки, разборы и чужие коммиты.
@@ -69,7 +64,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #opensource
 /cs register
-/cs archive on
 /cs language ru
 /cs category dev
 /topic Открытый код — OpenNET на проводе. Релизы, ядра, дистрибутивы.
@@ -77,7 +71,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #igry
 /cs register
-/cs archive on
 /cs language ru
 /cs category news
 /topic Игры — DTF и StopGame. А поиграть по-настоящему — меню Games: 18 классических игр прямо в браузере.
@@ -85,7 +78,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #nauchpop
 /cs register
-/cs archive on
 /cs language ru
 /cs category science
 /topic Научпоп — N+1, «Элементы» и Naked Science. Глупых вопросов не бывает, бывают незаданные.
@@ -93,7 +85,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #ekonomika
 /cs register
-/cs archive on
 /cs language ru
 /cs category money
 /topic Экономика — РБК и vc.ru. Заголовок — это не рекомендация.
@@ -101,7 +92,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #futbol
 /cs register
-/cs archive on
 /cs language ru
 /cs category sports
 /topic Футбол — «Чемпионат» на проводе. Таблица, трансферы и обычный спор.
@@ -399,8 +389,7 @@ matters after a paste.
 | `#ekonomika` | `money` | **Larisa** | РБК, vc.ru |
 | `#futbol` | `sports` | **Valera** | Чемпионат |
 
-**Storozh** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Russian (`/cs language ru`).
+**Storozh** stands in all ten and greets in none of them. All channels are `+tn` and are marked Russian (`/cs language ru`).
 Every bot is marked Russian too: `/bot set <Bot> language ru` follows its
 `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

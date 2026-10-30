@@ -3,8 +3,8 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
   A finished Retro Games match, drawn under the line that announced it — in
   the game's channel and in the two players' conversation alike.
 
-  The line above it is plain text in the server's language, for search and the
-  public archive; this card is the same match in the reader's language, with
+  The line above it is plain text in the server's language, for search;
+  this card is the same match in the reader's language, with
   the two ways onward a reader wants: play it yourself, or go where it is
   talked about.
 

@@ -68,16 +68,10 @@ which lints all fourteen files against the handlers that have to run them.
   `/help` — the same thing whichever door somebody comes through. They are
   written once per language and repeated verbatim per room, which is a
   duplication the lint checks rather than tolerates.
-- **Every room publishes its archive.** `/cs archive on` follows every
-  `/cs register`, so each room gets its public page per day
-  (`/archive/<room>/<day>`) from the moment the script runs. The archive is
-  founder-only and the founder is whoever pasted the script, so it must be
-  pasted by an identified admin.
 - **Every room says its language.** `/cs language <code>` follows every
-  `/cs archive on`, with the script's own file name as the code — every room in
+  `/cs register`, with the script's own file name as the code — every room in
   `pt_BR.md` is `/cs language pt_BR`. It draws the language's flag beside the
-  room's name in tabs, the channel list and the archive. Like the archive it is
-  founder-only, so it takes effect only when pasted by the identified admin who
+  room's name in tabs and the channel list. It is founder-only, so it takes effect only when pasted by the identified admin who
   registered the room. The code is written exactly as `config/i18n_locales.exs`
   spells it, even though the command would accept `pt-br`.
 - **Every room says what it is about.** `/cs category <code>` follows every

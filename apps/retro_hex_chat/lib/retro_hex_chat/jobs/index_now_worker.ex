@@ -2,18 +2,13 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
   @moduledoc """
   Announces the public pages that changed, so search engines fetch them now.
 
-  Two scopes, each with its own trigger in the cron table:
+  It runs at every boot, for the pages whose content changed in the last two
+  days. A page's day comes from the files it is written in, so the release that
+  ships an edit carries a recent day and is announced by the boot that starts
+  it. A restart re-announces the same short list, which engines take without
+  complaint.
 
-    * `"deploy"`, at every boot: the pages whose content changed in the last
-      two days. A page's day comes from the files it is written in, so the
-      release that ships an edit carries a recent day and is announced by the
-      boot that starts it. A restart re-announces the same short list, which
-      engines take without complaint.
-    * `"archive"`, every night: yesterday's page of each published channel and
-      the channel's index, the two pages a day of conversation adds.
-
-  `"since"` (deploy) and `"date"` (archive) may be passed as ISO dates to
-  announce another window by hand.
+  `"since"` may be passed as an ISO date to announce another window by hand.
 
   Refusals (400, 403, 422 — a bad key, a URL off the host) are cancelled, since
   resending the same list gets the same answer; throttling and server errors
@@ -77,12 +72,6 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
   defp urls(%{"scope" => "deploy"} = args) do
     with {:ok, since} <- date(args, "since", -@deploy_window_days) do
       {:ok, source().pages_changed_since(since)}
-    end
-  end
-
-  defp urls(%{"scope" => "archive"} = args) do
-    with {:ok, day} <- date(args, "date", -1) do
-      {:ok, source().archive_day(day)}
     end
   end
 

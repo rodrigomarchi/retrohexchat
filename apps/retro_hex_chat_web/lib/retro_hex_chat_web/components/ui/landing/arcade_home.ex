@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.ArcadeHome do
   `visitor`, `play_path`, `how_to_play_path`, `register_path`, `identified`,
   `recent` (plays, newest first), `week` and `all_time` (who plays it most),
   `you` (the reader's `Arcade.player_plays/2`, nil without a proved
-  nickname), `channel`, `channel_path`, `chatter`, `week_count`, and
+  nickname), `channel`, `channel_path`, `week_count`, and
   `nick_locales` for the flag before each name.
   """
   use RetroHexChatWeb.Component

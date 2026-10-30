@@ -4514,11 +4514,6 @@ msgstr "A bot in each game channel announces a match between two people played i
 msgid "The bot that announces"
 msgstr "Le robot qui annonce"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic, the modes and the archive."
-msgstr "Un administrateur allume les annonces d'un bot avec %{on}, et éteint avec %{off}. Un canal sans tel bot n'annonce rien. Les canaux de jeu sont des canaux ordinaires : leur fondateur change le sujet, les modes et l'archive."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Asking the bot"
@@ -5369,3 +5364,8 @@ msgstr "Un jeu dans le dossier ouvre la page du jeu, en plus du chat."
 #, elixir-autogen, elixir-format
 msgid "Double-click the Retro Games desktop icon. The folder holds a folder per category, as in the list above; open one to see its games, each with a screenshot."
 msgstr "Double-cliquez sur l'icône de bureau Retro Games. Le dossier contient un dossier par catégorie, comme dans la liste ci-dessus; ouvrez-en un pour voir ses jeux, chacun avec une capture d'écran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic and the modes."
+msgstr "Un administrateur allume les annonces d'un bot avec %{on}, et éteint avec %{off}. Un canal sans tel bot n'annonce rien. Les canaux de jeu sont des canaux ordinaires : leur fondateur change le sujet et les modes."

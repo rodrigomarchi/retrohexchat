@@ -26,7 +26,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #italia
 /cs register
-/cs archive on
 /cs language it
 /cs category social
 /topic Canale italiano — entra, siediti, si chiacchiera. Il caffè lo offre la casa.
@@ -34,7 +33,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cronaca
 /cs register
-/cs archive on
 /cs language it
 /cs category news
 /topic Cronaca — Corriere e Adnkronos, direttamente dal feed. !Vittorio fonti mostra l'elenco.
@@ -42,7 +40,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #attualita
 /cs register
-/cs archive on
 /cs language it
 /cs category news
 /topic Attualità — Il Fatto Quotidiano e Open. Il commento, dopo che la cronaca è passata.
@@ -50,7 +47,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #digitale
 /cs register
-/cs archive on
 /cs language it
 /cs category tech
 /topic Digitale — DDay, HDblog e Wired Italia. Prodotti, servizi e il mondo che ci gira intorno.
@@ -58,7 +54,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tecnologie
 /cs register
-/cs archive on
 /cs language it
 /cs category tech
 /topic Tecnologie — Punto Informatico, Il Software e Tom's Hardware. Il supporto di un progetto sta nel progetto; qui si parla.
@@ -66,7 +61,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #telefonini
 /cs register
-/cs archive on
 /cs language it
 /cs category tech
 /topic Telefonini — AndroidWorld e SmartWorld. Telefoni, orologi e caricabatterie che non entrano da nessuna parte.
@@ -74,7 +68,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #videogiochi
 /cs register
-/cs archive on
 /cs language it
 /cs category news
 /topic Videogiochi — Everyeye e SpazioGames. Per giocare davvero apri il menu Games: 18 classici nel browser.
@@ -82,7 +75,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #calcio
 /cs register
-/cs archive on
 /cs language it
 /cs category sports
 /topic Calcio — la Gazzetta sul filo. Classifica, mercato e la discussione di sempre.
@@ -90,7 +82,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #spazio
 /cs register
-/cs archive on
 /cs language it
 /cs category science
 /topic Spazio — Media INAF. Astrofisica, missioni e cielo osservato per mestiere.
@@ -98,7 +89,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #finanza
 /cs register
-/cs archive on
 /cs language it
 /cs category money
 /topic Finanza — Il Sole 24 Ore. Un titolo non è un consiglio.
@@ -392,8 +382,7 @@ matters after a paste.
 | `#spazio` | `science` | **Galileo** | Media INAF |
 | `#finanza` | `money` | **Piero** | Il Sole 24 Ore |
 
-**Guardiano** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Italian (`/cs language it`).
+**Guardiano** stands in all ten and greets in none of them. All channels are `+tn` and are marked Italian (`/cs language it`).
 Every bot is marked Italian too: `/bot set <Bot> language it` follows its
 `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

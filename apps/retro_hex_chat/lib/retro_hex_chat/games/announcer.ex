@@ -14,11 +14,11 @@ defmodule RetroHexChat.Games.Announcer do
   game's channel at most once every few minutes: rematch after rematch, or a
   best climbing a point at a time, stays in the conversation and the ledger.
 
-  Every line about a match is written by `line/1`, so the sentence a
-  conversation keeps and the one a channel archives are the same sentence.
+  Every line about a match is written by `line/1`, so every
+  conversation keeps the same sentence.
 
-  The line is plain text in the server's language: it is what search, the
-  public archive and a reader who turned formatting off see. Everyone else
+  The line is plain text in the server's language: it is what search and a
+  reader who turned formatting off see. Everyone else
   sees the card drawn under it, in their own language.
   """
 

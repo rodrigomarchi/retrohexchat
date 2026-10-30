@@ -34,13 +34,8 @@
           a share link in the index is an invitation nobody extended. --%>
     <meta name="robots" content={head.robots} />
     <link rel="canonical" href={canonical_url} />
-    <%!-- A page that is one of a run — an archive day too long for one page —
-          names its neighbours, so a crawler can walk the day in order. --%>
-    <link :if={head.prev_url} rel="prev" href={head.prev_url} />
-    <link :if={head.next_url} rel="next" href={head.next_url} />
-    <%!-- hreflang is a claim that the same page exists in another language.
-          For a conversation it is false, so the archive emits none rather than
-          pointing a search engine at the same text fourteen times. --%>
+    <%!-- hreflang is a claim that the same page exists in another language,
+          so an address with no translated version emits none. --%>
     <link
       :for={
         alternate <-

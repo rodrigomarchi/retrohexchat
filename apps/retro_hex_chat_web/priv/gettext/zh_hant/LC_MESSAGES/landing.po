@@ -1556,7 +1556,7 @@ msgid "34 multiplayer games via WebRTC."
 msgstr "34次多人遊戲通過WebRTC."
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:77
-#: lib/retro_hex_chat_web/site/pages/game.ex:293
+#: lib/retro_hex_chat_web/site/pages/game.ex:288
 #: lib/retro_hex_chat_web/site/pages/games.ex:29
 #: lib/retro_hex_chat_web/site/pages/index.ex:94
 #, elixir-autogen, elixir-format
@@ -1564,7 +1564,7 @@ msgid "Arcade"
 msgstr "街機"
 
 #: lib/retro_hex_chat_web/public_pages.ex:110
-#: lib/retro_hex_chat_web/site/pages/game.ex:69
+#: lib/retro_hex_chat_web/site/pages/game.ex:68
 #: lib/retro_hex_chat_web/site/pages/games.ex:21
 #: lib/retro_hex_chat_web/site/pages/games.ex:41
 #, elixir-autogen, elixir-format
@@ -1576,7 +1576,7 @@ msgstr "遊戲"
 #: lib/retro_hex_chat_web/site/pages/community.ex:66
 #: lib/retro_hex_chat_web/site/pages/faq.ex:226
 #: lib/retro_hex_chat_web/site/pages/features.ex:111
-#: lib/retro_hex_chat_web/site/pages/game.ex:68
+#: lib/retro_hex_chat_web/site/pages/game.ex:67
 #: lib/retro_hex_chat_web/site/pages/games.ex:40
 #: lib/retro_hex_chat_web/site/pages/guides.ex:89
 #: lib/retro_hex_chat_web/site/pages/how_it_works.ex:89
@@ -2188,46 +2188,6 @@ msgid "Your browser is given a random name so the server can tell your phone fro
 msgstr ""
 "你的瀏覽器會拿到一個隨機名稱，好讓伺服器分清手機和電腦。它標示的是一個瀏覽器，而不是一個人：除了那個螢幕開過哪些頻道、讀到哪裡之外不會存別的；同一台機器上的另一個瀏覽器會拿到另一個名稱。它不會跟著你到任何地方，因為它只存在於這台伺服器上。"
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:293
-#, elixir-autogen, elixir-format
-msgid "%{channel} archive"
-msgstr "%{channel} 的封存"
-
-#: lib/retro_hex_chat_web/site/pages/archive.ex:307
-#, elixir-autogen, elixir-format
-msgid "%{channel} on %{date}: %{opening}"
-msgstr "%{date} 的 %{channel}：%{opening}"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:52
-#, elixir-autogen, elixir-format
-msgid "All days"
-msgstr "全部日期"
-
-#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
-msgstr "自從頻道開啟封存以來這裡說過的一切，每天一頁。開啟之前的內容一概不公開。"
-
-#: lib/retro_hex_chat_web/site/pages/archive.ex:161
-#, elixir-autogen, elixir-format
-msgid "Everything said in %{channel} since it opened its archive, one page per day."
-msgstr "自從 %{channel} 開啟封存以來說過的一切，每天一頁。"
-
-#: lib/retro_hex_chat_web/site/pages/archive.ex:215
-#, elixir-autogen, elixir-format
-msgid "Join %{channel}"
-msgstr "加入 %{channel}"
-
-#: lib/retro_hex_chat_web/site/pages/archive.ex:276
-#, elixir-autogen, elixir-format
-msgid "%{title} — from %{time}"
-msgstr "%{title} — 從 %{time} 起"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "Pages of this day"
-msgstr "這一天的頁面"
-
 #: lib/retro_hex_chat_web/site/pages/features.ex:82
 #: lib/retro_hex_chat_web/site/pages/games.ex:69
 #: lib/retro_hex_chat_web/site/pages/index.ex:85
@@ -2248,7 +2208,7 @@ msgid "DOOM, Quake, Wolfenstein 3D, Half-Life and classic adventures in the brow
 msgstr "在瀏覽器中玩 DOOM、Quake、Wolfenstein 3D、Half-Life 和經典冒險遊戲，還有可與朋友對戰的多人街機遊戲 — 免費，無需安裝。"
 
 #: lib/retro_hex_chat_web/site/pages/accessory.ex:71
-#: lib/retro_hex_chat_web/site/pages/game.ex:167
+#: lib/retro_hex_chat_web/site/pages/game.ex:165
 #: lib/retro_hex_chat_web/site/pages/spaces.ex:61
 #, elixir-autogen, elixir-format
 msgid "Free, in the browser"
@@ -2260,17 +2220,17 @@ msgstr "免費，在瀏覽器中"
 msgid "How to play"
 msgstr "玩法"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:190
+#: lib/retro_hex_chat_web/site/pages/game.ex:187
 #, elixir-autogen, elixir-format
 msgid "More games"
 msgstr "更多遊戲"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:306
+#: lib/retro_hex_chat_web/site/pages/game.ex:301
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser"
 msgstr "在瀏覽器中玩 %{name}"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:305
+#: lib/retro_hex_chat_web/site/pages/game.ex:300
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser — Retro Hex Chat"
 msgstr "在瀏覽器中玩 %{name} — Retro Hex Chat"
@@ -2294,7 +2254,7 @@ msgid "Retro games you can play in your browser — Retro Hex Chat"
 msgstr "可在瀏覽器中玩的復古遊戲 — Retro Hex Chat"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:52
-#: lib/retro_hex_chat_web/site/pages/game.ex:341
+#: lib/retro_hex_chat_web/site/pages/game.ex:336
 #, elixir-autogen, elixir-format
 msgid "Screenshot of %{name}"
 msgstr "%{name} 的截圖"
@@ -2340,17 +2300,17 @@ msgstr "異名、 定時器、 每個連接上運行的表演列表, 以及右�
 msgid "Can I connect my mIRC to it?"
 msgstr "我能把我的mIRC連接起來嗎?"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:26
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:18
 #, elixir-autogen, elixir-format
 msgid "Can I open my own channel?"
 msgstr "我能打開自己的頻道嗎?"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:31
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:23
 #, elixir-autogen, elixir-format
 msgid "Can I run my own server?"
 msgstr "我能運行我自己的服務器嗎?"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:82
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:60
 #, elixir-autogen, elixir-format
 msgid "Channels whose names start with #, operators who keep order, and nicknames you can register — the way IRC has always worked, in a browser tab, free and with nothing to install."
 msgstr "其名稱以#開頭的頻道,保持秩序的操作員,以及您可以註冊的暱稱—— IRC 一直以瀏覽器標籤的方式工作,是免費的,沒有安裝的."
@@ -2396,17 +2356,17 @@ msgid "Here"
 msgstr "這裡"
 
 #: lib/retro_hex_chat_web/public_pages.ex:118
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:79
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:57
 #, elixir-autogen, elixir-format
 msgid "IRC chat"
 msgstr "IRC 聊天"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:63
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:43
 #, elixir-autogen, elixir-format
 msgid "IRC chat rooms in your browser — Retro Hex Chat"
 msgstr "您瀏覽器中的 IRC 聊天室 — Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:77
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:55
 #, elixir-autogen, elixir-format
 msgid "IRC-style chat rooms in your browser"
 msgstr "您瀏覽器中的 IRC 風格聊天室"
@@ -2416,7 +2376,7 @@ msgstr "您瀏覽器中的 IRC 風格聊天室"
 msgid "In mIRC"
 msgstr "在 mIRC 中"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:21
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:13
 #, elixir-autogen, elixir-format
 msgid "Is this an IRC server?"
 msgstr "這是IRC服務器嗎?"
@@ -2436,7 +2396,7 @@ msgstr "NickServ用於保留您的暱稱,ChanServ用於保留您的頻道."
 msgid "No. It runs in any modern browser, on a computer or a phone. Pick a nickname and you are in."
 msgstr "No. It runs in any modern browser, on a computer or a phone. Pick a nickname and you are in."
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:22
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:14
 #, elixir-autogen, elixir-format
 msgid "No. It works the way IRC does — channels, operators, modes, NickServ and ChanServ — but in the browser, on its own server. IRC clients such as mIRC cannot connect to it."
 msgstr "No. It works the way IRC does — channels, operators, modes, NickServ and ChanServ — but in the browser, on its own server. IRC clients such as mIRC cannot connect to it."
@@ -2503,7 +2463,7 @@ msgstr "須知"
 msgid "Which mIRC commands work here, one by one"
 msgstr "哪個 mIRC 命令在這裏工作, 一個接一個"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:32
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:24
 #, elixir-autogen, elixir-format
 msgid "Yes. The software is open source under the MIT license, and the install guide shows how to run it on your own machine."
 msgstr "是。軟件在麻省理工學院許可下是開源,安裝指南顯示如何在自己的機器上運行."
@@ -2513,7 +2473,7 @@ msgstr "是。軟件在麻省理工學院許可下是開源,安裝指南顯示�
 msgid "Your mIRC commands, in the browser"
 msgstr "您的 mIRC 命令, 在瀏覽器中"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:96
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:74
 #: lib/retro_hex_chat_web/site/pages/irc_chat/keep_your_nickname.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Your nickname"
@@ -2556,12 +2516,12 @@ msgstr "否。Retro Hex Chat外觀類似mIRC並帶走其命令,但它不是IRC�
 msgid "A chat room is a channel, and its name starts with #. /list shows every public channel with its topic and how many people are in it; /join enters one, and creates it when nobody has yet. Whoever creates a channel owns it."
 msgstr "聊天室是一個頻道,它的名字始於#. /list播放每個公共頻道的話題以及其中有多少人;/join進入一個頻道,並在還沒有人時創建. 誰創建的頻道擁有它。"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:86
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:64
 #, elixir-autogen, elixir-format
 msgid "Chat rooms open to anyone"
 msgstr "聊天室對任何人開放"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:88
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:66
 #: lib/retro_hex_chat_web/site/pages/irc_chat/rooms.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "How a chat room works"
@@ -2572,18 +2532,7 @@ msgstr "聊天室如何運作"
 msgid "Modes shape the chat room: +m lets only users with voice speak, +i lets in only who is invited, +k asks for a key, +t keeps the topic for operators. ChanServ remembers who gets operator or voice when they come back."
 msgstr "模式塑造聊天室:+m只允許有語音說話的用戶,+i只允許被邀請的用戶進入,+k請求鍵,+t爲操作員保留話題. ChanServ在返回時記得誰得到接線員或聲音."
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:109
-#: lib/retro_hex_chat_web/site/pages/irc_chat/open_rooms.html.heex:1
-#, elixir-autogen, elixir-format
-msgid "Read a chat room first"
-msgstr "先看一個聊天室"
-
-#: lib/retro_hex_chat_web/site/pages/irc_chat/open_rooms.html.heex:3
-#, elixir-autogen, elixir-format
-msgid "These chat rooms publish what is said in them, so you can read the conversation before you join."
-msgstr "這些聊天室發佈裏面所講的內容,這樣你就可以在加入之前閱讀談話內容."
-
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:92
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:70
 #: lib/retro_hex_chat_web/site/pages/irc_chat/who_runs.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Who runs a chat room"
@@ -2594,7 +2543,7 @@ msgstr "誰開的聊天室"
 msgid "No. A nickname is enough to chat. To keep it yours, register it with NickServ and a password, the way it worked on IRC."
 msgstr "No. A nickname is enough to chat. To keep it yours, register it with NickServ and a password, the way it worked on IRC."
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:27
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:19
 #, elixir-autogen, elixir-format
 msgid "Yes. Type /join and a name that starts with #. If the channel does not exist yet, it is created and you are its owner. Register it with ChanServ to keep it."
 msgstr "是。/join型和一個以#開頭的名稱. 如果頻道尚未存在,則該頻道將被創建,您是頻道的擁有者。 與ChanServ註冊保存."
@@ -2639,7 +2588,7 @@ msgstr "當你回來時,識別與%{identify}。"
 msgid "Free of charge, nothing to install"
 msgstr "免費,不用安裝"
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:65
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:45
 #, elixir-autogen, elixir-format
 msgid "IRC-style chat rooms in the browser: #channels, operators and voice, channel modes, NickServ and ChanServ. Free of charge, with nothing to install."
 msgstr "瀏覽器中的IRC風格聊天室:#channels,操作員和語音,頻道模式,NickServ和ChanServ. 免費,沒有安裝。"
@@ -2680,7 +2629,7 @@ msgstr "關於本站"
 msgid "Create an account"
 msgstr "創建賬戶"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:269
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:259
 #, elixir-autogen, elixir-format
 msgid "%{count} win"
 msgid_plural "%{count} wins"
@@ -2690,11 +2639,6 @@ msgstr[0] "%{count}勝1負"
 #, elixir-autogen, elixir-format
 msgid "Against the computer on hard"
 msgstr "硬着電腦"
-
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:170
-#, elixir-autogen, elixir-format
-msgid "In the channel"
-msgstr "在頻道"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:123
 #, elixir-autogen, elixir-format
@@ -2710,12 +2654,12 @@ msgstr "還沒有匹配。 彈第一首."
 #: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:109
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:40
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:100
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:204
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:194
 #, elixir-autogen, elixir-format
 msgid "Nobody yet."
 msgstr "還沒有人"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:181
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:171
 #, elixir-autogen, elixir-format
 msgid "Open the channel"
 msgstr "打開頻道"
@@ -2725,7 +2669,7 @@ msgstr "打開頻道"
 msgid "This week, between players"
 msgstr "這周,玩家之間"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:272
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:262
 #, elixir-autogen, elixir-format
 msgid "best score: %{score}"
 msgstr "最佳分數: %{score}"
@@ -2761,15 +2705,15 @@ msgstr "現在活着"
 msgid "Play now"
 msgstr "立即遊玩"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:260
-#: lib/retro_hex_chat_web/site/pages/game.ex:98
-#: lib/retro_hex_chat_web/site/pages/game.ex:168
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:250
+#: lib/retro_hex_chat_web/site/pages/game.ex:97
+#: lib/retro_hex_chat_web/site/pages/game.ex:166
 #, elixir-autogen, elixir-format
 msgid "%{count} game played this week"
 msgid_plural "%{count} games played this week"
 msgstr[0] "這周玩了%{count}場"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:105
+#: lib/retro_hex_chat_web/site/pages/game.ex:104
 #, elixir-autogen, elixir-format
 msgid "%{count} playing now"
 msgid_plural "%{count} playing now"
@@ -2857,7 +2801,7 @@ msgstr "玩得最多的人"
 msgid "You have not started this game yet."
 msgstr "您尚未啓動此遊戲 。"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:276
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:266
 #, elixir-autogen, elixir-format
 msgid "started %{count} time"
 msgid_plural "started %{count} times"
@@ -3063,16 +3007,6 @@ msgstr "頻道里每個人都可以一起走"
 msgid "Walk with the arrow keys, WASD or the pad on the screen. Press Enter to write a message."
 msgstr "隨箭鍵走,WASD或屏幕上的墊. 按 Enter 鍵寫入信件 。"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:43
-#, elixir-autogen, elixir-format
-msgid "Earlier"
-msgstr "更早"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "Later"
-msgstr "更晚"
-
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:88
 #, elixir-autogen, elixir-format
 msgid "Best scores"
@@ -3084,32 +3018,32 @@ msgstr "最高分"
 msgid "Retro Games"
 msgstr "復古遊戲"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:315
+#: lib/retro_hex_chat_web/site/pages/game.ex:310
 #, elixir-autogen, elixir-format
 msgid "Klondike solitaire"
 msgstr "紙牌接龍"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:317
+#: lib/retro_hex_chat_web/site/pages/game.ex:312
 #, elixir-autogen, elixir-format
 msgid "FreeCell solitaire"
 msgstr "空當接龍"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:320
+#: lib/retro_hex_chat_web/site/pages/game.ex:315
 #, elixir-autogen, elixir-format
 msgid "Spider solitaire"
 msgstr "蜘蛛紙牌"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:323
+#: lib/retro_hex_chat_web/site/pages/game.ex:318
 #, elixir-autogen, elixir-format
 msgid "Minesweeper"
 msgstr "踩地雷"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:326
+#: lib/retro_hex_chat_web/site/pages/game.ex:321
 #, elixir-autogen, elixir-format
 msgid "Sudoku"
 msgstr "數獨"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:329
+#: lib/retro_hex_chat_web/site/pages/game.ex:324
 #, elixir-autogen, elixir-format
 msgid "Falling blocks puzzle"
 msgstr "下落方塊遊戲"

@@ -282,7 +282,6 @@ test.describe("Language flags beside nicknames", () => {
   }) => {
     const alice = await signedInIn(browser, "w21a", "pt_BR");
     const channel = uniqueChannel("idioma");
-    const slug = channel.slice(1);
     const page = alice.page;
     const channelFlag = (
       scope: Page | ReturnType<Page["locator"]>,
@@ -293,7 +292,6 @@ test.describe("Language flags beside nicknames", () => {
       await alice.chat.sendMessage(`/join ${channel}`);
       await alice.chat.expectTabVisible(channel);
       await alice.chat.sendMessage("/cs register");
-      await alice.chat.sendMessage("/cs archive on");
 
       // Nobody chose yet: no flag beside the name.
       await expect(
@@ -352,16 +350,6 @@ test.describe("Language flags beside nicknames", () => {
       ).toBeVisible();
       await shot(alice.chat.channelListDialog, "channel-list-flag");
       await alice.chat.closeChannelList();
-
-      // The public archive's heading.
-      await alice.chat.sendMessage("said in a room that speaks Japanese");
-      const reader = await alice.ctx.newPage();
-      await reader.goto(`/archive/${slug}`);
-      await expect(
-        channelFlag(reader.locator("#archive-heading"), "ja"),
-      ).toBeVisible();
-      await shot(reader, "archive-index-flag");
-      await reader.close();
     } finally {
       await closeUsers([alice]);
     }
@@ -385,7 +373,6 @@ test.describe("Language flags beside nicknames", () => {
   }) => {
     const alice = await signedInIn(browser, "w22a", "en");
     const channel = uniqueChannel("assunto");
-    const slug = channel.slice(1);
     const page = alice.page;
     const badges = (scope: ReturnType<Page["locator"]>) =>
       scope.locator(
@@ -396,7 +383,6 @@ test.describe("Language flags beside nicknames", () => {
       await alice.chat.sendMessage(`/join ${channel}`);
       await alice.chat.expectTabVisible(channel);
       await alice.chat.sendMessage("/cs register");
-      await alice.chat.sendMessage("/cs archive on");
       await alice.chat.sendMessage("/cs language pt_BR");
       await alice.chat.sendMessage("/cs category news");
 
@@ -441,12 +427,7 @@ test.describe("Language flags beside nicknames", () => {
       await shot(alice.chat.channelListDialog, "channel-list-badges");
       await alice.chat.closeChannelList();
 
-      // The public archive's heading.
-      await alice.chat.sendMessage("a line for the archive");
       const reader = await alice.ctx.newPage();
-      await reader.goto(`/archive/${slug}`);
-      await expect(badges(reader.locator("#archive-heading"))).toHaveCount(2);
-      await shot(reader, "archive-heading-badges");
 
       // Every plaque, side by side, in the help topic that lists them.
       await reader.goto("/chat/help/channel-categories");

@@ -26,7 +26,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #portugal
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category social
 /topic Canal português — conversa à portuguesa. Entra, senta-te, o café é por conta da casa.
@@ -34,7 +33,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #actualidade
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category news
 /topic Actualidade — Observador e SAPO 24 directamente do feed. !Duarte fontes mostra de onde vem.
@@ -42,7 +40,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #ultimahora
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category news
 /topic Última hora — Notícias ao Minuto e TVI. Chega primeiro aqui, contexto vem depois no #actualidade.
@@ -50,7 +47,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #informatica
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category tech
 /topic Informática — SAPO Tek e Pplware no fio. Suporte de projecto é com o projecto; aqui é conversa.
@@ -58,7 +54,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #gadgets
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category tech
 /topic Gadgets — 4gnews e Leak. Telemóveis, relógios e coisas que não precisas mas queres.
@@ -66,7 +61,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #negocios
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category money
 /topic Negócios — ECO e Jornal de Negócios. !Afonso fontes lista os feeds.
@@ -74,7 +68,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #bolsa
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category money
 /topic Bolsa — Dinheiro Vivo no fio. Manchete não é conselho de investimento.
@@ -82,7 +75,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #desporto
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category sports
 /topic Desporto — Record e Mais Futebol. Bola, tabela e a discussão do costume.
@@ -90,7 +82,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cultura
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category culture
 /topic Cultura — Visão e Sábado. Livros, cinema, exposições e o que anda a dar.
@@ -98,7 +89,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #natureza
 /cs register
-/cs archive on
 /cs language pt_PT
 /cs category science
 /topic Natureza — Wilder no fio. Aves, plantas, bichos e o território que os aguenta.
@@ -385,8 +375,7 @@ that matters after a paste.
 | `#cultura` | `culture` | **Amalia** | Visão, Sábado |
 | `#natureza` | `science` | **Ines** | Wilder |
 
-**Sentinela** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked European Portuguese (`/cs language pt_PT`).
+**Sentinela** stands in all ten and greets in none of them. All channels are `+tn` and are marked European Portuguese (`/cs language pt_PT`).
 Every bot is marked European Portuguese too: `/bot set <Bot> language pt_PT`
 follows its `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

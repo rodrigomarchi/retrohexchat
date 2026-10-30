@@ -26,7 +26,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #deutschland
 /cs register
-/cs archive on
 /cs language de
 /cs category social
 /topic Deutschsprachiger Raum — reinkommen, hinsetzen, reden. Der Kaffee geht aufs Haus.
@@ -34,7 +33,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #nachrichten
 /cs register
-/cs archive on
 /cs language de
 /cs category news
 /topic Nachrichten — Spiegel, SZ, FAZ und Deutschlandfunk, direkt aus dem Feed. !Greta quellen zeigt die Liste.
@@ -42,7 +40,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #dach
 /cs register
-/cs archive on
 /cs language de
 /cs category news
 /topic Österreich und Schweiz — Der Standard und NZZ. Deutschsprachig ist nicht dasselbe wie deutsch.
@@ -50,7 +47,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #technik
 /cs register
-/cs archive on
 /cs language de
 /cs category tech
 /topic Technik — heise und Golem. Projekt-Support gehört zum Projekt; hier wird geredet.
@@ -58,7 +54,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #netz
 /cs register
-/cs archive on
 /cs language de
 /cs category tech
 /topic Netz — netzpolitik.org und t3n. Digitalpolitik, Plattformen, das Kleingedruckte.
@@ -66,7 +61,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #computer
 /cs register
-/cs archive on
 /cs language de
 /cs category tech
 /topic Computer — ComputerBase am Draht. Hardware, Bauteile, Bastelei.
@@ -74,7 +68,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #wirtschaft
 /cs register
-/cs archive on
 /cs language de
 /cs category money
 /topic Wirtschaft — Handelsblatt und WirtschaftsWoche. Eine Schlagzeile ist keine Empfehlung.
@@ -82,7 +75,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #wissenschaft
 /cs register
-/cs archive on
 /cs language de
 /cs category science
 /topic Wissenschaft — Spektrum und wissenschaft.de. Dumme Fragen gibt es nicht, nur ungestellte.
@@ -90,7 +82,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #sport
 /cs register
-/cs archive on
 /cs language de
 /cs category sports
 /topic Sport — kicker und Sportschau. Tabelle, Transfers und die übliche Diskussion.
@@ -98,7 +89,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #spiele
 /cs register
-/cs archive on
 /cs language de
 /cs category news
 /topic Spiele — Eurogamer.de am Draht. Wer wirklich spielen will: Menü Games, 18 Klassiker im Browser.
@@ -394,8 +384,7 @@ that matters after a paste.
 | `#sport` | `sports` | **Uwe** | kicker, Sportschau |
 | `#spiele` | `games` | **Jonas** | Eurogamer.de |
 
-**Wachtmeister** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked German (`/cs language de`).
+**Wachtmeister** stands in all ten and greets in none of them. All channels are `+tn` and are marked German (`/cs language de`).
 Every bot is marked German too: `/bot set <Bot> language de` follows its
 `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

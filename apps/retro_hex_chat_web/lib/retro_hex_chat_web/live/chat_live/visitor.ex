@@ -177,14 +177,14 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
 
   @doc """
   The paths a visitor's links may still follow: the addresses of the one
-  desktop — the pages of the site, help, the archive, a channel, an
+  desktop — the pages of the site, help, a channel, an
   invitation, the sign-in window — and the language switch, in the reader's
   language and without it. A path ending in `/` opens everything below it, any
   other only itself. Anything else asks them to sign in (`VisitorLinkGuardHook`).
   """
   @spec open_paths() :: [String.t()]
   def open_paths do
-    pages = ["/chat/help", "/c", "/connect", "/join", "/archive", "/watch" | PublicPages.paths()]
+    pages = ["/chat/help", "/c", "/connect", "/join", "/watch" | PublicPages.paths()]
     localized = Enum.uniq(pages ++ Enum.map(pages, &PublicPages.localized_path/1))
 
     Enum.uniq(["/chat", "/locale/" | Enum.flat_map(localized, &with_subpaths/1)])

@@ -188,7 +188,7 @@ msgstr "Permissões"
 msgid "Prevents users from sending"
 msgstr "Impede que usuários enviem"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Private (+p)"
 msgstr "Privado (+p)"
@@ -221,7 +221,7 @@ msgstr "Segredo (+s)"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:57
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:56
@@ -814,7 +814,7 @@ msgstr "Termo do Canal"
 #: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "Lista de canais"
@@ -979,7 +979,7 @@ msgstr "Notas Importantes"
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:77
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Invite Only"
 msgstr "Apenas Convidar"
@@ -1815,11 +1815,6 @@ msgstr "Uma pessoa que se junta sem a chave, ou com a chave errada, é recusada 
 msgid "A regular member who tries to speak gets an error that says they need voice."
 msgstr "Um membro regular que tenta falar recebe um erro que diz que precisa de voz."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "A secret channel cannot have a public archive. A published archive stops being public when the channel becomes secret."
-msgstr "Um canal secreto não pode ter um arquivo público. Um arquivo publicado deixa de ser público quando o canal se torna secreto."
-
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Add a second owner when you run a channel together with someone, so both of you have full control. A channel can have more than one owner at the same time. To hand the channel over and step down yourself, use a transfer instead."
@@ -2092,7 +2087,7 @@ msgstr "Em um canal registrado, o modo e as exceções de convite são salvos e 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "In a registered channel the mode is saved and comes back after a restart."
 msgstr "Em um canal registrado, o modo é salvo e retorna após uma reinicialização."
@@ -2261,7 +2256,7 @@ msgstr "Somente operadores de canal e proprietários podem definir ou remover o 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Only channel operators and owners can set or remove this mode."
 msgstr "Somente operadores de canal e proprietários podem definir ou remover este modo."
@@ -2346,11 +2341,6 @@ msgstr "O modo privado não esconde o canal do whois ou da carta hover. Use o mo
 msgid "Private mode does not stop anyone from joining. A person who types the name can still enter."
 msgstr "O modo privado não impede ninguém de aderir. Uma pessoa que digita o nome ainda pode entrar."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:81
-#, elixir-autogen, elixir-format
-msgid "Public Archive"
-msgstr "Arquivo Público"
-
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Ranks last while people stay in the channel. In an unregistered channel, if you leave after the transfer while others are still inside, you come back as a regular member."
@@ -2429,7 +2419,7 @@ msgstr "Remover voz de Alice"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Rules and limits"
@@ -2445,7 +2435,7 @@ msgstr "Salvar um campo vazio também remove a mensagem."
 msgid "Secret channels are not listed for people outside them. Private channels are listed without their name."
 msgstr "Canais secretos não estão listados para pessoas fora deles. Os canais privados estão listados sem o seu nome."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Secret mode does not stop anyone from joining. A person who types the name can still enter."
 msgstr "O modo secreto não impede ninguém de aderir. Uma pessoa que digita o nome ainda pode entrar."
@@ -2768,7 +2758,7 @@ msgstr "Você pode estar em um número limitado de canais ao mesmo tempo. O padr
 msgid "A channel cannot be private and secret at the same time. To switch, remove secret mode first, then set private mode:"
 msgstr "Um canal não pode ser privado e secreto ao mesmo tempo. Para alternar, remova primeiro o modo secreto e depois defina o modo privado:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "A channel cannot be secret and private at the same time. To switch, remove private mode first, then set secret mode:"
 msgstr "Um canal não pode ser secreto e privado ao mesmo tempo. Para alternar, remova primeiro o modo privado e depois defina o modo secreto:"
@@ -2829,11 +2819,6 @@ msgstr "/cs"
 msgid "/cs category news"
 msgstr "/cs category news"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A channel can carry a small coloured plaque beside its name that says what it is about — news, games, sport — so a list of rooms can be read at a glance. It sits ahead of the channel's language flag in its tab, the conversations list, the channel list, above the conversation and in its public archive."
-msgstr "Um canal pode ter um pequeno selo colorido ao lado do nome que diz qual é o assunto dele — notícias, jogos, esportes —, para dar para entender uma lista de salas num relance. Ele fica antes da bandeira de idioma do canal na aba, na lista de conversas, na lista de canais, acima da conversa e no arquivo público."
-
 #: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "A channel nobody gave a category shows no plaque."
@@ -2883,3 +2868,8 @@ msgstr "Os canais dos Jogos Retro são sobre jogos."
 #, elixir-autogen, elixir-format
 msgid "The founder of a registered channel chooses it with /cs category followed by one of the names below, or under Channel Central ▸ Registration ▸ Category. /cs category none takes it away, and /cs category alone shows the current one."
 msgstr "O fundador de um canal registrado escolhe com /cs category seguido de um dos nomes abaixo, ou em Central do canal ▸ Registro ▸ Categoria. /cs category none a remove, e /cs category sozinho mostra a atual."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can carry a small coloured plaque beside its name that says what it is about — news, games, sport — so a list of rooms can be read at a glance. It sits ahead of the channel's language flag in its tab, the conversations list, the channel list and above the conversation."
+msgstr "Um canal pode ter um pequeno selo colorido ao lado do nome que diz qual é o assunto dele — notícias, jogos, esportes —, para dar para entender uma lista de salas num relance. Ele fica antes da bandeira de idioma do canal na aba, na lista de conversas, na lista de canais e acima da conversa."

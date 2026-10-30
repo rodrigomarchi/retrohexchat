@@ -81,13 +81,11 @@ included, is joined explicitly.
 # holds 14 people, so a split crowd is an empty crowd.
 # Joined explicitly rather than assumed: the console starts on whatever channel
 # the admin happens to be in, and /cs register acts on the active one.
-# Every room then publishes its archive, says its language and says what it is
-# about: /cs language en draws the English flag beside the name, /cs category a
-# subject plaque beside the flag. All three are founder-only, and the founder is
-# whoever pasted this.
+# Every room then says its language and what it is about: /cs language en draws
+# the English flag beside the name, /cs category a subject plaque beside the
+# flag. Both are founder-only, and the founder is whoever pasted this.
 /join #lobby
 /cs register
-/cs archive on
 /cs language en
 /cs category social
 /topic The lobby — one room, everyone in it. Pull up a chair, the pixels are warm.
@@ -97,7 +95,6 @@ included, is joined explicitly.
 # the rest of IRC still runs this on eggdrop from 1997.
 /join #trivia
 /cs register
-/cs archive on
 /cs language en
 /cs category games
 /topic Trivia — !Wanda trivia start to begin, !Wanda answer <guess> to play, !Wanda trivia score for the board. Six categories.
@@ -107,7 +104,6 @@ included, is joined explicitly.
 # The largest #arcade on IRC has 15 people. No network offers this.
 /join #arcade
 /cs register
-/cs archive on
 /cs language en
 /cs category games
 /topic Arcade — 18 classics running in your browser, and who just started one. Each game has its own room too. Open the Games menu, or ask !Pixel games for the catalogue.
@@ -117,7 +113,6 @@ included, is joined explicitly.
 # the biggest retro room of any name holds 83. Amiga, C64, DOS, demoscene, BBS.
 /join #retro
 /cs register
-/cs archive on
 /cs language en
 /cs category retro
 /topic Retro computing — Amiga, C64, Atari, DOS, demoscene, BBS. If it booted from a floppy, it belongs here.
@@ -127,7 +122,6 @@ included, is joined explicitly.
 # those rooms are worth what their maintainers make them.
 /join #tech
 /cs register
-/cs archive on
 /cs language en
 /cs category tech
 /topic Tech talk — hardware, self-hosting, sysadmin war stories. Project support lives upstream; this is the pub.
@@ -137,7 +131,6 @@ included, is joined explicitly.
 # largest room holds 450 and the p90 is 77. Driven by feeds, not opinion.
 /join #news
 /cs register
-/cs archive on
 /cs language en
 /cs category news
 /topic News — headlines pulled from feeds by Gazeta. !Gazeta rss list to see the sources.
@@ -147,7 +140,6 @@ included, is joined explicitly.
 # that answered the census.
 /join #help
 /cs register
-/cs archive on
 /cs language en
 /cs category help
 /topic Lost? Ask here. !Harold faq for the basics, or /help for the manual.
@@ -168,7 +160,6 @@ included, is joined explicitly.
 # the census found no live #foss room on any network.
 /join #foss
 /cs register
-/cs archive on
 /cs language en
 /cs category dev
 /topic Free software news — releases, kernels, distros. Fed by LWN, Phoronix and It's FOSS.
@@ -179,7 +170,6 @@ included, is joined explicitly.
 # incident writeups are archetypal feed content.
 /join #security
 /cs register
-/cs archive on
 /cs language en
 /cs category security
 /topic Security advisories — Krebs, The Hacker News, BleepingComputer and research feeds. Read before you patch.
@@ -189,7 +179,6 @@ included, is joined explicitly.
 # emptiest subject measured and the busiest one outside IRC. Nobody has claimed it.
 /join #ai
 /cs register
-/cs archive on
 /cs language en
 /cs category ai
 /topic Machine learning — arXiv preprints and model releases as they land.
@@ -199,7 +188,6 @@ included, is joined explicitly.
 # Distributed demand, no owner.
 /join #science
 /cs register
-/cs archive on
 /cs language en
 /cs category science
 /topic Science — arXiv astrophysics, NASA, Live Science and discovery feeds. Bring questions.
@@ -209,7 +197,6 @@ included, is joined explicitly.
 # room holds only 279. A familiar name with a weak incumbent.
 /join #anime
 /cs register
-/cs archive on
 /cs language en
 /cs category culture
 /topic Anime — news and episode releases via Anime News Network and LiveChart.
@@ -221,208 +208,183 @@ included, is joined explicitly.
 # Every in-page Retro Game has a room named after it, where its matches are
 # announced and people find someone to play; the strip under the topic offers
 # a seat. #retro-games carries every game's results at once. They are ordinary
-# rooms: whoever pastes this founds them, and their topic, modes and archive are
+# rooms: whoever pastes this founds them, and their topic and modes are
 # the founder's to change. Scoreboard (below) announces the matches in them.
 # A game added to the catalogue later needs its room added here and pasted.
 
 /join #hex-pong
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Pong, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Pong, and people to play with.
 /mode +tn
 
 /join #light-trails
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Light Trails, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Light Trails, and people to play with.
 /mode +tn
 
 /join #pixel-tanks
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Pixel Tanks, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Pixel Tanks, and people to play with.
 /mode +tn
 
 /join #star-duel
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Star Duel, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Star Duel, and people to play with.
 /mode +tn
 
 /join #gravity-well
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Gravity Well, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Gravity Well, and people to play with.
 /mode +tn
 
 /join #debris-field
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Debris Field, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Debris Field, and people to play with.
 /mode +tn
 
 /join #block-breakers
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Block Breakers, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Block Breakers, and people to play with.
 /mode +tn
 
 /join #hex-warlords
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Warlords, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Warlords, and people to play with.
 /mode +tn
 
 /join #hex-raid
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Raid, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Raid, and people to play with.
 /mode +tn
 
 /join #hex-boxing
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Boxing, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Boxing, and people to play with.
 /mode +tn
 
 /join #hex-outlaw
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Outlaw, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Outlaw, and people to play with.
 /mode +tn
 
 /join #hex-invaders
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Invaders, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Invaders, and people to play with.
 /mode +tn
 
 /join #hex-enduro
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Enduro, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Enduro, and people to play with.
 /mode +tn
 
 /join #hex-tennis
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Tennis, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Tennis, and people to play with.
 /mode +tn
 
 /join #hex-skiing
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Skiing, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Skiing, and people to play with.
 /mode +tn
 
 /join #hex-frost
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Frost, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Frost, and people to play with.
 /mode +tn
 
 /join #hex-hockey
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Hockey, and people to play with. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Hockey, and people to play with.
 /mode +tn
 
 /join #hex-jungle
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Jungle, a game for one player. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Jungle, a game for one player.
 /mode +tn
 
 /join #hex-solitaire
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Solitaire, Klondike for one player. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Solitaire, Klondike for one player.
 /mode +tn
 
 /join #hex-freecell
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex FreeCell, FreeCell for one player. Everything said here is published in a public archive.
+/topic Results and rankings of Hex FreeCell, FreeCell for one player.
 /mode +tn
 
 /join #hex-spider
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Spider, Spider for one player in one, two or four suits. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Spider, Spider for one player in one, two or four suits.
 /mode +tn
 
 /join #hex-mines
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Mines, Minesweeper for one player in three levels. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Mines, Minesweeper for one player in three levels.
 /mode +tn
 
 /join #hex-sudoku
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Sudoku, Sudoku for one player in three levels. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Sudoku, Sudoku for one player in three levels.
 /mode +tn
 
 /join #hex-blocks
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Results and rankings of Hex Blocks, falling blocks made of hexagons: the Marathon and the 40-row Sprint. Everything said here is published in a public archive.
+/topic Results and rankings of Hex Blocks, falling blocks made of hexagons: the Marathon and the 40-row Sprint.
 /mode +tn
 
 /join #retro-games
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Every Retro Games match as it finishes. Each game has its own channel too. This channel is archived publicly.
+/topic Every Retro Games match as it finishes. Each game has its own channel too.
 /mode +tn
 
 
@@ -439,146 +401,128 @@ included, is joined explicitly.
 
 /join #doom-shareware
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic DOOM: Knee-Deep in the Dead in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic DOOM: Knee-Deep in the Dead in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #freedoom1
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Freedoom: Phase 1 in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Freedoom: Phase 1 in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #freedoom2
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Freedoom: Phase 2 in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Freedoom: Phase 2 in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #freedm
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic FreeDM in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic FreeDM in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #chex-quest
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Chex Quest in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Chex Quest in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #hacx
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic HacX: Twitch 'n Kill in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic HacX: Twitch 'n Kill in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #rekkr
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic REKKR: Sunken Land in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic REKKR: Sunken Land in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #quake-shareware
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Quake: Dimension of the Doomed in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Quake: Dimension of the Doomed in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #librequake
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic LibreQuake in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic LibreQuake in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #quake2-shareware
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Quake II: The Invasion in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Quake II: The Invasion in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #wolfenstein-3d
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Wolfenstein 3D: Escape from Castle in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Wolfenstein 3D: Escape from Castle in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #halflife-uplink
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Half-Life: Uplink in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Half-Life: Uplink in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #scummvm-bass
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Beneath a Steel Sky in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Beneath a Steel Sky in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #scummvm-drascula
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Drascula: The Vampire Strikes Back in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Drascula: The Vampire Strikes Back in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #scummvm-dreamweb
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Dreamweb in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Dreamweb in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #scummvm-fotaq
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Flight of the Amazon Queen in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Flight of the Amazon Queen in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #scummvm-lure
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Lure of the Temptress in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Lure of the Temptress in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 /join #scummvm-soltys
 /cs register
-/cs archive on
 /cs language en
 /cs category games
-/topic Soltys in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/topic Soltys in your browser: press Play under the topic. Whoever starts it is announced here.
 /mode +tn
 
 
@@ -1302,7 +1246,7 @@ the capability is created by that first `/bot set`:
 | `#scummvm-lure` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
 | `#scummvm-soltys` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
 
-All channels are `+tn`, publish their archive and are marked English
+All channels are `+tn` and are marked English
 (`/cs language en`), and each says what it is about with the `category` above
 (`/cs category`). Rules live in `!Brutus rules` and the `#lobby` topic rather than
 a moderated `#rules` nobody reads.
@@ -1383,7 +1327,7 @@ copies nothing.
 
 ## Adding a channel later
 
-`/join #new`, `/cs register`, `/cs archive on`, `/cs language en`,
+`/join #new`, `/cs register`, `/cs language en`,
 `/cs category <code>` (one of `RetroHexChat.Channels.Categories.codes()`), `/topic`,
 `/mode +tn`, then `/bot join Brutus #new` and whichever channel bot fits. Before
 adding one, check the census: if the room cannot plausibly hold fourteen people, it

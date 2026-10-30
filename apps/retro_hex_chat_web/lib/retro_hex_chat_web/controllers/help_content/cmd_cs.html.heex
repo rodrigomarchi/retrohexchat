@@ -29,13 +29,6 @@
   </code>
   {dgettext("help_commands", "- View current-channel registration details.")}<br />
   <code>
-    {dgettext("help_commands", "archive on/off")}
-  </code>
-  {dgettext(
-    "help_commands",
-    "- Publish the channel's public archive, a page per day anybody can read (founder only). Without on or off it shows whether the archive is on."
-  )}<br />
-  <code>
     {dgettext("help_commands", "language <code>/none")}
   </code>
   {dgettext(
@@ -67,9 +60,7 @@
   <li>{dgettext("help_commands", "You must be a registered user to use ChanServ")}</li>
   <li>{dgettext("help_commands", "You must be a channel operator to register a channel")}</li>
   <li>{dgettext("help_commands", "Access hierarchy: Owner > SOP > AOP > VOP")}</li>
-  <li>
-    {dgettext("help_commands", "Only the founder can drop the channel or switch its archive")}
-  </li>
+  <li>{dgettext("help_commands", "Only the founder can drop the channel")}</li>
   <li>{dgettext("help_commands", "Only the founder can set the channel's language")}</li>
   <li>{dgettext("help_commands", "Only the founder can set the channel's category")}</li>
 </ul>
@@ -87,10 +78,6 @@
   ·
   <.help_link topic="channel-permissions">
     {dgettext("help_commands", "Channel Permissions")}
-  </.help_link>
-  ·
-  <.help_link topic="feature-public-archive">
-    {dgettext("help_commands", "Public Channel Archive")}
   </.help_link>
   ·
   <.help_link topic="feature-language-flags">

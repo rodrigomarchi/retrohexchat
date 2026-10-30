@@ -686,7 +686,7 @@ a move that renames one is caught before commit.
   `/showcase`). `PutLocale` resolves
   the locale from route params/assigns before the session / Accept-Language fallback.
 - **The reserved first segments may not collide with a locale tag**: `c`, `connect`,
-  `chat`, `join`, `archive`, `games`, `call`, `space`, `p2p`, `play` (`Site.RegistryTest`). Adding a surface adds one, and the check is
+  `chat`, `join`, `archive` (gone for good, answers 410), `games`, `call`, `space`, `p2p`, `play` (`Site.RegistryTest`). Adding a surface adds one, and the check is
   against `config/i18n_locales.exs`, which is the only list of locale segments.
 - **Every *public* route goes inside the locale loop, not only in the unprefixed scope.**
   `/join/:slug` shipped registered once and answered `NoRouteError` on `/pt-BR/join/…`. Sixteen
@@ -701,10 +701,10 @@ a move that renames one is caught before commit.
   page reciprocally; `x-default` points at the English unprefixed URL. Canonical URLs on
   localized pages are self-referencing clean paths.
 - **Every public address is a window of the one desktop.** `DesktopLive` answers `/`, every
-  page of the site, help, the archive, `/join`, `/connect` and `/c/:channel` in one
+  page of the site, help, `/join`, `/connect` and `/c/:channel` in one
   `live_session`; `Site.Registry` maps the route's action to a `Site.Page`, and
   `Site.Documents` opens it over the chat — a page of the site as a group of windows, one per
-  section (`Site.Window` entries, island bodies), help, the archive, an invitation and sign-in
+  section (`Site.Window` entries, island bodies), help, an invitation and sign-in
   as one window each ([windowed-desktop §7.0.1](guide/windowed-desktop.md)). A visitor's home is
   the chat itself, the home's windows closed on the desk behind it. Moving between pages is a
   patch; the page in front owns the address (`window_focused` replaces it, closing its last
@@ -731,7 +731,7 @@ a move that renames one is caught before commit.
   literal `/chat/help/…` on a localized page sends the crawler to the English version, and the
   localized one is then reachable only from the sitemap: Bing had never seen most localized help
   topics while the topic tree linked all 300 of them in English. Only the language menu (with
-  `hreflang`) and the single-address surfaces — the app, the showcase, the archive — link
+  `hreflang`) and the single-address surfaces — the app and the showcase — link
   unprefixed; `Site.PagesTest` and `help_live_test` fail on any other.
 - **A help topic's first HTML carries the topic, not the whole help.** Before the socket
   connects, the contents tree lists only the open category's topics (the help home keeps all of
@@ -742,9 +742,10 @@ a move that renames one is caught before commit.
 - **Changed pages are announced, not waited for.** `RetroHexChatWeb.SEO.PublicUrls` is the one
   list of public pages: the sitemap renders it and IndexNow (`RetroHexChat.SEO.IndexNow`, key at
   `/indexnow.txt`) announces it to Bing and Yandex. `Jobs.IndexNowWorker` runs at every boot for
-  the pages whose day is recent and every night for yesterday's archive pages. A page's day comes
+  the pages whose day is recent. A page's day comes
   from its own content files, so a change to a shared component or a translation moves none: after
   one, run `make seo.indexnow` to announce the whole sitemap.
+  `make deploy` then asks Google and Bing to read the sitemap (`make seo.sitemap.submit`).
 - **What the engines themselves see is read, not guessed.** `make seo.console SOURCE=bing|google` reads
   the webmaster console's API into `reports/seo/<UTC stamp>-<source>.{md,json}` (gitignored): sitemaps,
   crawl issues, a spread sample of sitemap URLs inspected one by one, search performance, and
@@ -758,7 +759,7 @@ a move that renames one is caught before commit.
   game's help topic. Duplicated paragraphs leave a search engine to pick one URL, quite possibly
   the wrong one.
 - **The public pages are one list**, `RetroHexChatWeb.PublicPages`: the menus, the sitemap and each
-  page's own path read it. A page that is not on it — a game, an archive day — loads its own
+  page's own path read it. A page that is not on it — a game — loads its own
   `canonical_path`, or its language links lead to the wrong page.
 
 ---

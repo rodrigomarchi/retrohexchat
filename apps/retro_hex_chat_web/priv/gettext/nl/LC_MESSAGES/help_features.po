@@ -1179,7 +1179,6 @@ msgstr "Kanaal automatisch aanvullen"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Kanaal centraal"
@@ -3032,7 +3031,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6356,67 +6354,6 @@ msgstr ""
 "gesprek. Je kunt er tot 500 bewaren; elk kan een korte notitie dragen over "
 "waarom."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "A secret channel cannot have a public archive"
-msgstr "Een geheim kanaal kan geen openbaar archief hebben"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "Deleted messages are absent; edited ones are marked as edited"
-msgstr ""
-"Verwijderde berichten ontbreken; bewerkte worden als bewerkt gemarkeerd"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
-msgstr ""
-"Alles wat een groep weet, sterft meestal in de ruimte waarin het is gezegd. "
-"Een kanaal kan anders kiezen: de oprichter kan een openbaar archief openen, "
-"en vanaf dat moment krijgt het kanaal één pagina per dag die iedereen kan "
-"lezen en een zoekmachine kan indexeren."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "Joins, parts and other channel notices are not published"
-msgstr ""
-"Binnenkomen, vertrekken en andere kanaalmeldingen worden niet gepubliceerd"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Only what is said from the moment the switch goes on. Nothing already in the channel is ever published, however long it has been there — whoever wrote it wrote it into a room, not onto the internet. Everyone present is told when the switch changes, so nobody learns it from a search engine."
-msgstr ""
-"Alleen wat wordt gezegd vanaf het moment dat de schakelaar aangaat. Niets "
-"wat al in het kanaal staat wordt ooit gepubliceerd, hoe lang het er ook "
-"staat — wie het schreef, schreef het in een ruimte, niet op het internet. "
-"Iedereen die aanwezig is wordt verteld wanneer de schakelaar verandert, "
-"zodat niemand het van een zoekmachine hoeft te horen."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:55
-#, elixir-autogen, elixir-format
-msgid "Registering a channel"
-msgstr "Een kanaal registreren"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "Rules & Limits"
-msgstr "Regels en limieten"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "Switching it off takes every page down straight away"
-msgstr "Het uitzetten haalt elke pagina direct offline"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "What is published"
-msgstr "Wat wordt gepubliceerd"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Who can"
-msgstr "Wie kan"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "\"Reply in this thread\" aims the channel's own input at the message that started it. You write where you always write, and what you send lands in the room and in the thread at once."
@@ -6699,31 +6636,6 @@ msgstr "Er een opnemen"
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "Waar het wordt aangeboden"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:57
-#, elixir-autogen, elixir-format
-msgid "/cs"
-msgstr "/cs"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
-#, elixir-autogen, elixir-format
-msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
-msgstr "Een drukke dag wordt opgedeeld in pagina's van 200 regels, met de links Eerder en Later ertussen"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Attachments are never published — the page only notes that one was there"
-msgstr "Bijlagen worden nooit gepubliceerd — de pagina vermeldt alleen dat er een was"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
-msgstr "De oprichter, en niemand anders. Een operator modereert de ruimte; beslissen dat wat daar gezegd wordt van buitenaf leesbaar wordt, is een ander soort beslissing en hoort bij wie voor het kanaal instaat. De schakelaar zit in Channel Central, op het tabblad Registratie, of je typt /cs archive on en /cs archive off; alleen een geregistreerd kanaal heeft er een."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
-msgstr "De oprichter moet bij NickServ geïdentificeerd zijn om het om te zetten; alleen de bijnaam gebruiken is niet genoeg"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
 #, elixir-autogen, elixir-format
@@ -7874,11 +7786,6 @@ msgstr "Jouw vlag is de taal die je kiest onder Starten ▸ Taal. Kies een ander
 msgid "A Channel's Language"
 msgstr "De taal van een kanaal"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list, above the conversation and in its public archive. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
-msgstr "Ook een kanaal kan een vlag hebben: de taal die er gesproken wordt, naast de naam van het kanaal in zijn tabblad, in de gesprekkenlijst, in de kanalenlijst, boven het gesprek en in zijn openbare archief. De oprichter kiest hem met /cs language gevolgd door een code zoals pt_BR, of onder Kanaal centraal ▸ Registratie ▸ Taal, en /cs language none haalt hem weg."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "A channel whose founder has not chosen one has no flag. The Retro Games channels are English."
@@ -8023,3 +7930,8 @@ msgstr "De stomme knop zet het geluid uit zonder het te stoppen"
 #, elixir-autogen, elixir-format
 msgid "Image attachments render as inline thumbnails. Audio and video attachments are played back in the message, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
 msgstr "Afbeeldingsbijlagen weergeven als inline miniaturen. Audio- en videobijlagen worden teruggespeeld in het bericht, PDF-bestanden bloot een voorbeeld actie, en andere bestanden renderen als veilige bestandskaarten met type, grootte en pad metadata."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list and above the conversation. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
+msgstr "Ook een kanaal kan een vlag hebben: de taal die er gesproken wordt, naast de naam van het kanaal in zijn tabblad, in de gesprekkenlijst, in de kanalenlijst en boven het gesprek. De oprichter kiest hem met /cs language gevolgd door een code zoals pt_BR, of onder Kanaal centraal ▸ Registratie ▸ Taal, en /cs language none haalt hem weg."

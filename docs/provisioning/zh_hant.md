@@ -25,7 +25,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #fanti
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category social
 /topic 正體中文頻道 — 進來坐，聊聊天。咖啡算店裡的。
@@ -33,7 +32,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tw-news
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category news
 /topic 新聞 — 聯合新聞網、Yahoo 奇摩、中央廣播電臺，直接來自訂閱來源。!Chunhua sources 顯示清單。
@@ -41,7 +39,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #hongkong
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category news
 /topic 香港 — 獨立媒體在線上。另一座城市的頭條，同一種文字。
@@ -49,7 +46,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tw-world
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category news
 /topic 國際 — 中央社國際新聞與 BBC 中文網。世界的事，用自己的字看。
@@ -57,7 +53,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tw-tech
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category tech
 /topic 科技 — TechNews、iThome、中央社科技、INSIDE。專案的技術支援在專案那邊；這裡是聊天。
@@ -65,7 +60,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tw-games
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category news
 /topic 遊戲 — 巴哈姆特 GNN 與 4Gamers。真要玩的話，打開 Games 選單：18 款經典直接在瀏覽器裡跑。
@@ -73,7 +67,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tw-sports
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category sports
 /topic 體育 — 中央社體育與自由時報體育。戰績、轉隊，還有老掉牙的爭論。
@@ -81,7 +74,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tw-money
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category money
 /topic 財經 — 中央社財經與自由時報財經。標題不是投資建議。
@@ -89,7 +81,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tw-science
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category science
 /topic 科學 — 泛科學在線上。沒有笨問題，只有沒問出口的問題。
@@ -97,7 +88,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tw-life
 /cs register
-/cs archive on
 /cs language zh_hant
 /cs category life
 /topic 生活 — 中央社生活與自由時報娛樂。吃飯、看戲、身體健康。
@@ -389,8 +379,7 @@ matters after a paste.
 | `#tw-science` | `science` | **Kexue** | 泛科學 |
 | `#tw-life` | `life` | **Shenghuo** | 中央社生活, 自由時報娛樂 |
 
-**Baoan** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Traditional Chinese (`/cs language zh_hant`).
+**Baoan** stands in all ten and greets in none of them. All channels are `+tn` and are marked Traditional Chinese (`/cs language zh_hant`).
 Every bot is marked Traditional Chinese too: `/bot set <Bot> language zh_hant`
 follows its `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

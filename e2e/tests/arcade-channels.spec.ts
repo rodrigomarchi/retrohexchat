@@ -137,8 +137,8 @@ test.describe("Arcade channels", () => {
 
       await ana.page.getByTestId("game-home-tab-channel").click();
       await expect(
-        ana.page.getByTestId("game-community-chatter"),
-      ).toContainText("started the game");
+        ana.page.getByTestId("game-community-channel"),
+      ).toBeVisible();
       await shot(home, "arcade-home-channel");
     } finally {
       await closeUsers([ana]);

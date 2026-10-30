@@ -21,13 +21,8 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
   alias RetroHexChatWeb.LiveMatchPages
 
   setup do
-    # As `docs/provisioning/en.md` leaves it: registered, archived, announced in.
-    insert(:registered_channel,
-      name: "#hex-pong",
-      founder_nickname: "Admin",
-      public_archive: true,
-      archive_since: DateTime.utc_now()
-    )
+    # As `docs/provisioning/en.md` leaves it: registered, announced in.
+    insert(:registered_channel, name: "#hex-pong", founder_nickname: "Admin")
 
     insert_game_announcer(["#hex-pong"])
 
@@ -195,12 +190,7 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
 
   describe "an arcade game's channel" do
     setup do
-      insert(:registered_channel,
-        name: "#doom-shareware",
-        founder_nickname: "Admin",
-        public_archive: true,
-        archive_since: DateTime.utc_now()
-      )
+      insert(:registered_channel, name: "#doom-shareware", founder_nickname: "Admin")
 
       insert_game_announcer(["#doom-shareware", "#arcade"], name: "Pixel", nickname: "Pixel")
 

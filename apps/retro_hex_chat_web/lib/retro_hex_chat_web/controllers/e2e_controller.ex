@@ -7,7 +7,6 @@ defmodule RetroHexChatWeb.E2EController do
   alias RetroHexChat.Bots.Server, as: BotServer
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
-  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.ContextualTips
   alias RetroHexChat.Games.Catalog, as: GameCatalog
@@ -72,7 +71,7 @@ defmodule RetroHexChatWeb.E2EController do
   been played — so a spec sees its card in the game's channel and in the two
   players' conversation without driving a whole match on a canvas. The game's
   room and the feed are set up first with what `docs/provisioning/en.md` gives
-  them that the spec relies on — registered by the host, archived, with the
+  them that the spec relies on — registered by the host, with the
   Scoreboard bot announcing in them — so the spec does not depend on a pasted
   script.
   """
@@ -118,7 +117,7 @@ defmodule RetroHexChatWeb.E2EController do
 
   @doc """
   Sets an arcade game's room and `#arcade` up as `docs/provisioning/en.md`
-  leaves them — registered by `founder`, archived, with Pixel announcing in
+  leaves them — registered by `founder`, with Pixel announcing in
   them — so a spec that starts the game sees the line and its card.
   """
   @spec provision_arcade_rooms(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -149,7 +148,6 @@ defmodule RetroHexChatWeb.E2EController do
     if is_nil(ServiceQueries.find_registered_channel(channel)) do
       {:ok, _row} = ServiceQueries.insert_registered_channel(channel, founder)
       {:ok, _access} = ServiceQueries.add_access(channel, founder, "founder", founder)
-      {:ok, _published} = Archive.publish(channel)
       _ = ChannelServer.mark_registered(channel)
     end
 

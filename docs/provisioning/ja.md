@@ -30,7 +30,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #nihon
 /cs register
-/cs archive on
 /cs language ja
 /cs category social
 /topic 日本語チャンネル — どうぞお入りください。座って、話しましょう。コーヒーは店のおごりです。
@@ -38,7 +37,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-tech
 /cs register
-/cs archive on
 /cs language ja
 /cs category tech
 /topic テクノロジー — GIGAZINE、ITmedia、ASCII をフィードから直接。!Ken sources で一覧が出ます。
@@ -46,7 +44,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-gadgets
 /cs register
-/cs archive on
 /cs language ja
 /cs category tech
 /topic ガジェット — ギズモード・ジャパン、ITmedia NEWS、Mogura VR。製品、レビュー、そして VR の話。
@@ -54,7 +51,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-dev
 /cs register
-/cs archive on
 /cs language ja
 /cs category dev
 /topic 開発 — Publickey、Zenn、Qiita。プロジェクトのサポートはプロジェクトへ。ここは雑談です。
@@ -62,7 +58,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-games
 /cs register
-/cs archive on
 /cs language ja
 /cs category news
 /topic ゲーム — AUTOMATON と電ファミニコゲーマー。実際に遊ぶなら Games メニュー、18本の名作がブラウザで動きます。
@@ -70,7 +65,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-soccer
 /cs register
-/cs archive on
 /cs language ja
 /cs category sports
 /topic サッカー — サッカーキングとフットボールチャンネル。順位表、移籍、いつもの議論。
@@ -78,7 +72,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-yakyu
 /cs register
-/cs archive on
 /cs language ja
 /cs category sports
 /topic 野球 — ベースボールチャンネル。順位、開幕から日本シリーズまで。
@@ -86,7 +79,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-science
 /cs register
-/cs archive on
 /cs language ja
 /cs category science
 /topic 科学 — sorae とナゾロジー。宇宙開発と、まだ答えの出ていない話。
@@ -94,7 +86,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-money
 /cs register
-/cs archive on
 /cs language ja
 /cs category money
 /topic 経済 — 東洋経済、ダイヤモンド、Business Insider Japan。見出しは推奨ではありません。
@@ -102,7 +93,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #jp-life
 /cs register
-/cs archive on
 /cs language ja
 /cs category life
 /topic 暮らし — ライフハッカー・ジャパン。道具、習慣、少しだけ楽をする方法。
@@ -398,8 +388,7 @@ matters after a paste.
 | `#jp-money` | `money` | **Akira** | 東洋経済, ダイヤモンド, Business Insider Japan |
 | `#jp-life` | `life` | **Yui** | ライフハッカー・ジャパン |
 
-**Kuma** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Japanese (`/cs language ja`).
+**Kuma** stands in all ten and greets in none of them. All channels are `+tn` and are marked Japanese (`/cs language ja`).
 Every bot is marked Japanese too: `/bot set <Bot> language ja` follows its
 `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

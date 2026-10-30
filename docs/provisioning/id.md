@@ -28,7 +28,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #indonesia
 /cs register
-/cs archive on
 /cs language id
 /cs category social
 /topic Kanal berbahasa Indonesia — masuk, duduk, ngobrol. Kopinya gratis.
@@ -36,7 +35,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #berita
 /cs register
-/cs archive on
 /cs language id
 /cs category news
 /topic Berita — Tempo, CNN Indonesia dan Republika, langsung dari feed. !Rina sumber menampilkan daftarnya.
@@ -44,7 +42,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #politik
 /cs register
-/cs archive on
 /cs language id
 /cs category news
 /topic Politik — Antara, Sindonews dan Okezone. Kabar dari Senayan dan sekitarnya.
@@ -52,7 +49,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #dunia
 /cs register
-/cs archive on
 /cs language id
 /cs category news
 /topic Dunia — BBC Indonesia dan CNN Indonesia Internasional. Kabar luar negeri, bahasa sendiri.
@@ -60,7 +56,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #teknologi
 /cs register
-/cs archive on
 /cs language id
 /cs category tech
 /topic Teknologi — detikInet, Antara Tekno, CNN Indonesia Teknologi dan Hybrid. Dukungan proyek ada di proyeknya; di sini kita ngobrol.
@@ -68,7 +63,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #olahraga
 /cs register
-/cs archive on
 /cs language id
 /cs category sports
 /topic Olahraga — detikSport, Antara, CNN Indonesia dan Tempo Bola. Klasemen, transfer, dan debat biasa.
@@ -76,7 +70,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #ekonomi
 /cs register
-/cs archive on
 /cs language id
 /cs category money
 /topic Ekonomi — CNBC Indonesia, Katadata, Antara, Tempo Bisnis dan CNN Indonesia. Judul berita bukan rekomendasi.
@@ -84,7 +77,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #hiburan
 /cs register
-/cs archive on
 /cs language id
 /cs category culture
 /topic Hiburan — Antara, CNN Indonesia dan Tempo Seleb. Film, musik, dan gosip yang sudah terverifikasi.
@@ -92,7 +84,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #gayahidup
 /cs register
-/cs archive on
 /cs language id
 /cs category life
 /topic Gaya hidup — CNN Indonesia dan Tempo Gaya. Makan, jalan, kesehatan, kebiasaan.
@@ -100,7 +91,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #gim
 /cs register
-/cs archive on
 /cs language id
 /cs category news
 /topic Gim — Gamebrott di saluran. Mau benar-benar main? Buka menu Games: 18 klasik langsung di peramban.
@@ -407,8 +397,7 @@ ceiling, so a sixth address silently refused would show up there first.
 | `#gayahidup` | `life` | **Intan** | CNN Indonesia, Tempo Gaya |
 | `#gim` | `games` | **Rizky** | Gamebrott |
 
-**Satpam** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Indonesian (`/cs language id`).
+**Satpam** stands in all ten and greets in none of them. All channels are `+tn` and are marked Indonesian (`/cs language id`).
 Every bot is marked Indonesian too: `/bot set <Bot> language id` follows its
 `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

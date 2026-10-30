@@ -5,7 +5,6 @@ defmodule RetroHexChat.Services.ChanServ do
 
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Channels.Server, as: ChannelServer
-  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Nickname
   alias RetroHexChat.Observability
   alias RetroHexChat.Services.NickServ
@@ -95,7 +94,6 @@ defmodule RetroHexChat.Services.ChanServ do
           registered_at: info.registered_at,
           viewer_role: viewer_role(channel_name, viewer_nick, server),
           access: access_by_level(channel_name),
-          public_archive?: Archive.published?(channel_name),
           locale: Map.get(info, :locale),
           category: Map.get(info, :category)
         }
@@ -108,7 +106,6 @@ defmodule RetroHexChat.Services.ChanServ do
           registered_at: nil,
           viewer_role: nil,
           access: empty_access(),
-          public_archive?: false,
           locale: nil,
           category: nil
         }

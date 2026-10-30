@@ -17,12 +17,6 @@ defmodule RetroHexChat.Jobs.IndexNowWorkerTest do
       send(self(), {:pages_changed_since, since})
       ["https://example.app/pt-BR/faq"]
     end
-
-    @impl true
-    def archive_day(day) do
-      send(self(), {:archive_day, day})
-      ["https://example.app/archive/lobby", "https://example.app/archive/lobby/#{day}"]
-    end
   end
 
   setup do
@@ -76,32 +70,6 @@ defmodule RetroHexChat.Jobs.IndexNowWorkerTest do
 
       assert {:ok, _} = perform(%{"scope" => "deploy", "since" => "2026-01-01"})
       assert_received {:pages_changed_since, ~D[2026-01-01]}
-    end
-  end
-
-  describe "the archive scope" do
-    test "announces yesterday's pages" do
-      accept_and_capture()
-      yesterday = Date.add(Date.utc_today(), -1)
-
-      assert {:ok, %{submitted: 2}} = perform(%{"scope" => "archive"})
-      assert_received {:archive_day, ^yesterday}
-    end
-
-    test "takes another day by hand" do
-      accept_and_capture()
-
-      assert {:ok, _} = perform(%{"scope" => "archive", "date" => "2026-10-05"})
-
-      assert_received {:sent,
-                       [
-                         "https://example.app/archive/lobby",
-                         "https://example.app/archive/lobby/2026-10-05"
-                       ]}
-    end
-
-    test "an unreadable date is cancelled, not retried" do
-      assert {:cancel, "invalid_date"} = perform(%{"scope" => "archive", "date" => "yesterday"})
     end
   end
 

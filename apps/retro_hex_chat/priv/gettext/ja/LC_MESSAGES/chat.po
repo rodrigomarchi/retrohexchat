@@ -495,7 +495,7 @@ msgstr "トグル会議カメラ"
 msgid "Toggle Conference Microphone"
 msgstr "トグル会議マイク"
 
-#: lib/retro_hex_chat/channels/server.ex:1796
+#: lib/retro_hex_chat/channels/server.ex:1747
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -592,22 +592,6 @@ msgstr "その保存済みメッセージはあなたのものではありませ
 #, elixir-autogen, elixir-format
 msgid "You have already saved %{count} messages. Remove one first."
 msgstr "すでに %{count} 件のメッセージを保存しています。まず 1 件削除してください。"
-
-#: lib/retro_hex_chat/chat/archive.ex:350
-#, elixir-autogen, elixir-format
-msgid "A secret channel cannot have a public archive."
-msgstr "秘密チャンネルは公開アーカイブを持てません。"
-
-#: lib/retro_hex_chat/chat/archive.ex:373
-#, elixir-autogen, elixir-format
-msgid "That change could not be saved."
-msgstr "その変更は保存できませんでした。"
-
-#: lib/retro_hex_chat/chat/archive.ex:357
-#: lib/retro_hex_chat/chat/archive.ex:363
-#, elixir-autogen, elixir-format
-msgid "That channel is not registered."
-msgstr "そのチャンネルは登録されていません。"
 
 #: lib/retro_hex_chat/jobs/event_reminder_worker.ex:90
 #, elixir-autogen, elixir-format

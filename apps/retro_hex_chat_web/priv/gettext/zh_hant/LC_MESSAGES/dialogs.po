@@ -72,9 +72,9 @@ msgstr "行動"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:694
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:749
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:802
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:709
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:791
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1513
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:680
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:762
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1484
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:308
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:211
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:316
@@ -98,12 +98,12 @@ msgstr "添加別名"
 msgid "Add Auto-Join Channel"
 msgstr "添加自動join 頻道"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1569
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1540
 #, elixir-autogen, elixir-format
 msgid "Add Ban"
 msgstr "添加禁區"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1570
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1541
 #, elixir-autogen, elixir-format
 msgid "Add Ban Exception"
 msgstr "添加例外"
@@ -133,7 +133,7 @@ msgstr "添加突出顯示單詞"
 msgid "Add Ignore Entry"
 msgstr "添加忽略條目"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1571
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1542
 #, elixir-autogen, elixir-format
 msgid "Add Invite Exception"
 msgstr "添加邀請例外"
@@ -193,7 +193,7 @@ msgstr "反垃圾(重複檢測)"
 msgid "Apply"
 msgstr "套用"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1338
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1309
 #, elixir-autogen, elixir-format
 msgid "Apply Modes"
 msgstr "應用模式"
@@ -239,12 +239,12 @@ msgstr "背景顏色( 可選) :"
 msgid "Background Color:"
 msgstr "背景顏色 :"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1558
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1529
 #, elixir-autogen, elixir-format
 msgid "Ban Exc."
 msgstr "禁止執行。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1557
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1528
 #, elixir-autogen, elixir-format
 msgid "Bans"
 msgstr "禁令"
@@ -282,10 +282,10 @@ msgstr "巴迪在線"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:240
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:293
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:366
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:605
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:802
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:864
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:935
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:576
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:773
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:835
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:906
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:92
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:237
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:237
@@ -364,8 +364,8 @@ msgstr "頻道邀請"
 msgid "Channel Message"
 msgstr "頻道消息"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1264
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1344
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1235
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Channel Modes"
 msgstr "頻道模式"
@@ -458,7 +458,7 @@ msgid "Create New Bot"
 msgstr "建立新機器人"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:472
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1003
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:974
 #, elixir-autogen, elixir-format
 msgid "Created"
 msgstr "創建"
@@ -638,7 +638,7 @@ msgid "Flood Protection"
 msgstr "防洪"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:338
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:148
 #, elixir-autogen, elixir-format
 msgid "General"
 msgstr "常規"
@@ -686,13 +686,13 @@ msgstr "突出顯示/Mention"
 msgid "Ignore"
 msgstr "忽略"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1559
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1530
 #, elixir-autogen, elixir-format
 msgid "Invite Exc."
 msgstr "邀請Exc."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1283
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1354
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1254
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1325
 #, elixir-autogen, elixir-format
 msgid "Invite Only (+i)"
 msgstr "只邀請 (+i)"
@@ -715,8 +715,8 @@ msgstr "加入"
 msgid "Key"
 msgstr "按鍵"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1304
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1366
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1275
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1337
 #, elixir-autogen, elixir-format
 msgid "Key (+k)"
 msgstr "鍵 (+k)"
@@ -744,19 +744,19 @@ msgstr "最後看見"
 msgid "Leave empty if no key"
 msgstr "如果沒有密鑰, 請留空"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1322
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1373
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1293
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1344
 #, elixir-autogen, elixir-format
 msgid "Limit (+l)"
 msgstr "限制 (+l)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1448
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1464
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1419
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1435
 #, elixir-autogen, elixir-format
 msgid "Mask"
 msgstr "遮罩"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1007
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:978
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "成員"
@@ -786,8 +786,8 @@ msgstr "消息淹沒"
 msgid "Messages"
 msgstr "信件"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1274
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1348
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1245
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1319
 #, elixir-autogen, elixir-format
 msgid "Moderated (+m)"
 msgstr "調製( +m)"
@@ -799,7 +799,7 @@ msgstr "調製( +m)"
 msgid "Moderation"
 msgstr "管理"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:159
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:158
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_modes_dialog.ex:61
 #, elixir-autogen, elixir-format
 msgid "Modes"
@@ -838,7 +838,7 @@ msgstr "新設"
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:124
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:246
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:358
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:762
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:733
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:118
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:139
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:252
@@ -858,8 +858,8 @@ msgstr "暱稱列表"
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:200
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:82
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:445
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:645
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:663
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:616
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:634
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:199
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:131
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:197
@@ -893,12 +893,12 @@ msgstr "未配置別名 。 點擊“ 添加” 創建 。"
 msgid "No auto-join channels. Click Add to create one."
 msgstr "沒有自動連接通道。 單擊添加以創建一個。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1563
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1534
 #, elixir-autogen, elixir-format
 msgid "No ban exceptions set."
 msgstr "未設定禁止例外 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1562
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1533
 #, elixir-autogen, elixir-format
 msgid "No bans set on this channel."
 msgstr "此頻道沒有設置禁止 。"
@@ -949,7 +949,7 @@ msgstr "沒有自定義命令"
 msgid "No ignored users. Click Add to ignore a nickname."
 msgstr "沒有被忽略的用戶 。 單擊添加以忽略暱稱 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1564
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1535
 #, elixir-autogen, elixir-format
 msgid "No invite exceptions set."
 msgstr "未設定邀請例外 。"
@@ -964,8 +964,8 @@ msgstr "沒有待決邀請。"
 msgid "No shortcuts defined."
 msgstr "未定義快捷鍵 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1030
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1054
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1001
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1025
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:236
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:237
 #, elixir-autogen, elixir-format
@@ -1007,7 +1007,7 @@ msgstr "通知名單"
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:227
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:247
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:335
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:853
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:824
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:91
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:377
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:240
@@ -1100,8 +1100,8 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:680
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:735
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:794
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:651
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1456
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:622
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1427
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:149
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:149
 #, elixir-autogen, elixir-format
@@ -1143,7 +1143,7 @@ msgstr "運行"
 msgid "Save"
 msgstr "儲存"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1044
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1015
 #, elixir-autogen, elixir-format
 msgid "Save Topic"
 msgstr "保存主題"
@@ -1177,27 +1177,27 @@ msgstr "正在搜索中..."
 msgid "Send All"
 msgstr "全部發送"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1453
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1477
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1424
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1448
 #, elixir-autogen, elixir-format
 msgid "Set At"
 msgstr "設定爲"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1450
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1470
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1421
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1441
 #, elixir-autogen, elixir-format
 msgid "Set By"
 msgstr "設定"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1038
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1063
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1009
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1034
 #, elixir-autogen, elixir-format
 msgid "Set by %{nick}"
 msgstr "設定爲 %{nick}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:262
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:293
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:384
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:380
 #, elixir-autogen, elixir-format
 msgid "Since"
 msgstr "從"
@@ -1220,7 +1220,7 @@ msgstr "聲音設置"
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_motd_dialog.ex:59
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:112
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:723
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:368
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:364
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:132
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:131
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:73
@@ -1246,13 +1246,13 @@ msgstr "此暱稱已註冊 。 請輸入 NickServ 密碼以識別 。"
 msgid "Time"
 msgstr "時間"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1014
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:985
 #, elixir-autogen, elixir-format
 msgid "Topic"
 msgstr "主題"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1292
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1360
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1263
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1331
 #, elixir-autogen, elixir-format
 msgid "Topic Lock (+t)"
 msgstr "主題鎖定 (+t)"
@@ -1286,8 +1286,8 @@ msgstr "網址"
 msgid "URL Catcher"
 msgstr "URL 捕捉器"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:387
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1005
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:383
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:976
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
@@ -1354,17 +1354,17 @@ msgstr "您即將發送文本的%{count} 。"
 msgid "You have been invited to join the following channels:"
 msgstr "請您加入以下頻道:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1378
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1349
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change modes."
 msgstr "您必須是改變模式的頻道操作員 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1067
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1038
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to edit the topic."
 msgstr "您必須是編輯話題的頻道操作員 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1518
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1489
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to manage this list."
 msgstr "您必須是管理此列表的頻道操作員 。"
@@ -1395,8 +1395,8 @@ msgid "identical msgs"
 msgstr "相同的毫秒數"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1094
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1612
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1618
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1583
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1589
 #, elixir-autogen, elixir-format
 msgid "joined"
 msgstr "已加入"
@@ -1406,8 +1406,8 @@ msgstr "已加入"
 msgid "messages"
 msgstr "信件"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1039
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1064
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1010
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1035
 #, elixir-autogen, elixir-format
 msgid "on %{date}"
 msgstr "打開 %{date}"
@@ -1424,7 +1424,7 @@ msgstr "分離"
 msgid "seconds"
 msgstr "秒數"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1367
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1338
 #, elixir-autogen, elixir-format
 msgid "set"
 msgstr "設定"
@@ -1466,13 +1466,13 @@ msgstr "添加計時器"
 msgid "Add access"
 msgstr "添加訪問"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:648
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:670
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:619
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:641
 #, elixir-autogen, elixir-format
 msgid "Added By"
 msgstr "添加爲"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:787
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:758
 #, elixir-autogen, elixir-format
 msgid "Adding..."
 msgstr "正在添加..."
@@ -1488,12 +1488,12 @@ msgstr "撥款"
 msgid "Announce"
 msgstr "發佈"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1163
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1134
 #, elixir-autogen, elixir-format
 msgid "Apply Throttle"
 msgstr "應用旋律"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:577
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:548
 #, elixir-autogen, elixir-format
 msgid "Are you sure you want to drop %{channel}? This cannot be undone."
 msgstr "確定要放棄 %{channel} 嗎？此操作無法復原。"
@@ -1568,12 +1568,12 @@ msgstr "清除生物"
 msgid "Clear MOTD"
 msgstr "清除 MOTD"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1108
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1079
 #, elixir-autogen, elixir-format
 msgid "Clear Welcome"
 msgstr "清除歡迎"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:594
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:565
 #, elixir-autogen, elixir-format
 msgid "Confirm Drop"
 msgstr "確認丟棄"
@@ -1644,7 +1644,7 @@ msgid "Destructive actions"
 msgstr "破壞行動"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:201
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:569
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:540
 #, elixir-autogen, elixir-format
 msgid "Drop Registration"
 msgstr "丟棄註冊"
@@ -1658,7 +1658,7 @@ msgstr "丟棄註冊"
 msgid "Drop registration"
 msgstr "放棄註冊"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:590
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:561
 #, elixir-autogen, elixir-format
 msgid "Dropping..."
 msgstr "正在丟棄..."
@@ -1705,7 +1705,7 @@ msgstr "每"
 msgid "File transfers stop"
 msgstr "文件傳輸停止"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:377
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:373
 #, elixir-autogen, elixir-format
 msgid "Founder"
 msgstr "創建者"
@@ -1854,7 +1854,7 @@ msgstr "NickServ 管理員"
 msgid "NickServ info"
 msgstr "NickServ 資訊"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:693
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:664
 #, elixir-autogen, elixir-format
 msgid "No %{level} entries"
 msgstr "無 %{level} 條目"
@@ -1869,13 +1869,13 @@ msgstr "沒有設定 MOTD 。"
 msgid "No active timers. Click Add to schedule one."
 msgstr "沒有活動定時器 。 點擊添加到調度 1 。"
 
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1061
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1090
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1119
 #, elixir-autogen, elixir-format
 msgid "No welcome message set."
 msgstr "未設定歡迎信息 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:373
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:369
 #, elixir-autogen, elixir-format
 msgid "Not registered"
 msgstr "未登記"
@@ -1885,7 +1885,7 @@ msgstr "未登記"
 msgid "Online only"
 msgstr "僅在線"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:396
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:392
 #, elixir-autogen, elixir-format
 msgid "Only channel operators can register this channel."
 msgstr "只有頻道運營商可以註冊此頻道."
@@ -1958,8 +1958,8 @@ msgstr "刷新預覽"
 msgid "Register"
 msgstr "註冊"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:541
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:551
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:512
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:522
 #, elixir-autogen, elixir-format
 msgid "Register Channel"
 msgstr "註冊頻道"
@@ -1969,18 +1969,18 @@ msgstr "註冊頻道"
 msgid "Register this nickname"
 msgstr "註冊此暱稱"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:372
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:368
 #, elixir-autogen, elixir-format
 msgid "Registered"
 msgstr "已登記"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:537
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:508
 #, elixir-autogen, elixir-format
 msgid "Registering..."
 msgstr "正在註冊..."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:129
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:179
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:178
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "註冊"
@@ -2032,7 +2032,7 @@ msgstr "重置密碼"
 msgid "Save Bio"
 msgstr "保存生物"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1097
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1068
 #, elixir-autogen, elixir-format
 msgid "Save Welcome"
 msgstr "保存歡迎"
@@ -2042,8 +2042,8 @@ msgstr "保存歡迎"
 msgid "Save settings"
 msgstr "保存設置"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1149
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1170
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1120
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1141
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:341
 #, elixir-autogen, elixir-format
 msgid "Seconds"
@@ -2121,7 +2121,7 @@ msgstr "停止"
 msgid "TURN"
 msgstr "土耳其"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:916
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:887
 #, elixir-autogen, elixir-format
 msgid "This cannot be undone without the new owner's cooperation."
 msgstr "沒有新主人的合作,這一點是無法消除的。"
@@ -2131,13 +2131,13 @@ msgstr "沒有新主人的合作,這一點是無法消除的。"
 msgid "Timers are session-only and will be lost on disconnect."
 msgstr "計時器只用於會話, 斷開會丟失 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:924
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:895
 #, elixir-autogen, elixir-format
 msgid "Transfer"
 msgstr "轉讓"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:892
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1218
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:863
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1189
 #, elixir-autogen, elixir-format
 msgid "Transfer Ownership"
 msgstr "轉讓所有權"
@@ -2148,7 +2148,7 @@ msgstr "轉讓所有權"
 msgid "Transfer founder"
 msgstr "傳輸創建者"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:902
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:873
 #, elixir-autogen, elixir-format
 msgid "Transfer ownership of %{channel} to:"
 msgstr "將 %{channel} 的所有權轉給："
@@ -2189,7 +2189,7 @@ msgstr "用戶查詢"
 msgid "Wallops"
 msgstr "Wallops"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1073
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1044
 #, elixir-autogen, elixir-format
 msgid "Welcome Message"
 msgstr "歡迎留言"
@@ -2224,23 +2224,23 @@ msgstr "誰被保留"
 msgid "You are identified with NickServ."
 msgstr "你和NickServ有聯繫"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:715
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:686
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to manage this list."
 msgstr "您沒有權限管理此列表 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1183
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1154
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change the join throttle."
 msgstr "您必須是頻道操作員來改變聯合節流閥 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1125
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1096
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to edit the welcome message."
 msgstr "您必須是編輯歡迎消息的頻道操作員 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:393
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:717
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:389
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:688
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr "你必須和NickServ確認身份才能使用ChanServ."
@@ -2514,7 +2514,7 @@ msgstr "無"
 msgid "the channel"
 msgstr "新頻道"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:169
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:168
 #, elixir-autogen, elixir-format
 msgid "Access Lists"
 msgstr "訪問列表"
@@ -2765,8 +2765,8 @@ msgstr "格蘭特身份證"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:100
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:457
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:428
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:454
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:399
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:425
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "語言"
@@ -3736,17 +3736,6 @@ msgstr "你還沒有儲存任何內容。"
 msgid "with %{nickname}"
 msgstr "與 %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:413
-#, elixir-autogen, elixir-format
-msgid "Public archive"
-msgstr "公開封存"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:415
-#, elixir-autogen, elixir-format
-msgid "Publish a page per day that anybody can read and a search engine can index. Only what is said from the moment you switch this on — nothing already in the channel is ever published. Switching it off takes the pages down."
-msgstr ""
-"發布每天一頁、任何人都能讀、搜尋引擎也能索引的內容。只有你打開它之後說的話才會發布——頻道裡已有的內容永遠不會被公開。關掉它會撤下這些頁面。"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "A message that somebody answered shows how many replies it collected. Choose that to read them together."
@@ -3889,13 +3878,13 @@ msgstr "這將開啟附件 %{name}。"
 msgid "This opens the attachment."
 msgstr "這將開啟附件。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1485
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1456
 #, elixir-autogen, elixir-format
 msgid "Remove %{mask}"
 msgstr "移除 %{mask}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:310
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:679
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:650
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:160
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:294
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:209
@@ -3976,22 +3965,22 @@ msgstr "斷開一個仍然持有註冊暱稱的僵硬會話,這樣就可以收�
 msgid "Ghost session"
 msgstr "幽靈會話"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1196
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1167
 #, elixir-autogen, elixir-format
 msgid "Hands the channel to somebody else. You keep operator status; they get everything that is founder-only, including this tab."
 msgstr "把頻道交給別人 您保留操作員狀態; 他們得到的只是創建者, 包括這個標籤 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1133
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1104
 #, elixir-autogen, elixir-format
 msgid "How long someone must wait between joins, which is what stops a join flood. Zero turns it off."
 msgstr "人們必須在接合之間等待多久, 也就是阻止接合的洪水。 零關."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:973
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:944
 #, elixir-autogen, elixir-format
 msgid "How this channel greets people"
 msgstr "這個頻道怎麼歡迎大家"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1131
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1102
 #, elixir-autogen, elixir-format
 msgid "Join throttle"
 msgstr "加入油門"
@@ -4001,12 +3990,12 @@ msgstr "加入油門"
 msgid "NickServ recognises this session, so the nickname is held for you and channel access lists that name it apply."
 msgstr "NickServ 承認此會話, 因此此暱稱會爲您保留, 並頻道訪問列表中它所應用的名稱 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1016
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:987
 #, elixir-autogen, elixir-format
 msgid "One line describing what the channel is for. Everyone already in the channel sees it change."
 msgstr "一行描述頻道的用途. 頻道里的人都看到它變了"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1194
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1165
 #, elixir-autogen, elixir-format
 msgid "Ownership"
 msgstr "所有權"
@@ -4016,7 +4005,7 @@ msgstr "所有權"
 msgid "Same as"
 msgstr "與"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1075
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1046
 #, elixir-autogen, elixir-format
 msgid "Sent privately to each person the moment they join — the house rules, the link, whatever they need before they speak."
 msgstr "在他們加入時私下發給每個人——房子規則,聯繫,無論他們說話前需要什麼."
@@ -4026,7 +4015,7 @@ msgstr "在他們加入時私下發給每個人——房子規則,聯繫,無論�
 msgid "The nickname is registered but this session has not proved it owns it. Identify to hold it and to use the access it was granted."
 msgstr "此暱稱已註冊, 但此會話尚未證明它擁有此暱稱 。 確定持有和使用它獲准的訪問。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:984
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:955
 #, elixir-autogen, elixir-format
 msgid "The topic rides above every message for everyone in the channel; the welcome message is written once to each person as they arrive, and nobody else sees it."
 msgstr "這個話題超越了頻道里每個人的每一個信息;歡迎信息在到達時寫給每個人一次,沒有人看到它."
@@ -4066,7 +4055,7 @@ msgstr "一條小規則在頻道內開火"
 msgid "A miniature of a timer firing its command"
 msgstr "定時器發射命令的小型"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:344
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:340
 #, elixir-autogen, elixir-format
 msgid "A miniature of the ChanServ record for this channel"
 msgstr "此頻道的 ChanServ 記錄的小型"
@@ -4096,7 +4085,7 @@ msgstr "運行在連接上的命令的微型"
 msgid "A miniature of the joins that run on connect"
 msgstr "連接上運行的連接的微型"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1414
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1385
 #, elixir-autogen, elixir-format
 msgid "A miniature of the masks this list is holding"
 msgstr "這張名單裏裝着一個迷你面具"
@@ -4106,7 +4095,7 @@ msgstr "這張名單裏裝着一個迷你面具"
 msgid "A miniature of the reply somebody messaging you receives"
 msgstr "一個小答覆 有人給你發短信"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1252
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1223
 #, elixir-autogen, elixir-format
 msgid "A miniature of what a newcomer meets at the door"
 msgstr "新來者在門口遇到的迷你"
@@ -4116,7 +4105,7 @@ msgstr "新來者在門口遇到的迷你"
 msgid "A miniature showing an alias expanding as it is sent"
 msgstr "在發送時顯示一個擴展的化名的微型"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1256
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1227
 #, elixir-autogen, elixir-format
 msgid "A mode changes the channel for everybody at once and takes effect the moment you apply it — people already inside are affected too, not just the next person through the door."
 msgstr "一個模式會立刻改變每個人的頻道,並在你應用時生效——已經在裏面的人也會受到影響,而不只是通過門的下一個人."
@@ -4156,12 +4145,12 @@ msgstr "生物"
 msgid "Both of these show up when somebody runs Whois on you, and nowhere else. The nickname is also what channels grant access to, so changing it can cost you the access the old one had."
 msgstr "當有人在操縱你時 這兩樣東西都出現了 但沒有別的地方 這個綽號也是頻道允許訪問的,所以改變它會花費你舊的頻道。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:342
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:338
 #, elixir-autogen, elixir-format
 msgid "ChanServ"
 msgstr "ChanServ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1630
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1601
 #, elixir-autogen, elixir-format
 msgid "ChanServ is holding this channel"
 msgstr "ChanServ 持有此頻道"
@@ -4181,7 +4170,7 @@ msgstr "作曲家"
 msgid "Connect"
 msgstr "連線"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1418
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1389
 #, elixir-autogen, elixir-format
 msgid "Each entry is a mask rather than a nickname, so it keeps matching after somebody renames. An exception outranks a ban, which is how you bar a range and still let one person through."
 msgstr "每個條目都是一個面具而不是暱稱,因此在某人重命名後,它繼續匹配. 一個例外會超越禁令, 這就是你如何禁止範圍,仍然讓一個人通過。"
@@ -4207,7 +4196,7 @@ msgstr "將信息空空地留下仍然印着你的身影——答案是毫無理
 msgid "Query"
 msgstr "查詢"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:348
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:344
 #, elixir-autogen, elixir-format
 msgid "Registering hands the channel to ChanServ, which keeps the founder, the access lists and the settings even when nobody is inside. An unregistered channel stops existing the moment its last member leaves."
 msgstr "註冊將頻道交給ChanServ,即使沒有人在裏面,它也保留了創建者,訪問列表和設置. 一個未註冊的頻道在最後一個成員離開時停止存在。"
@@ -4222,7 +4211,7 @@ msgstr "五分鐘後重新開始"
 msgid "Shorthand you type in the composer"
 msgstr "在作曲中直接輸入"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1408
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1379
 #, elixir-autogen, elixir-format
 msgid "The names the door checks"
 msgstr "門牌名"
@@ -4232,7 +4221,7 @@ msgstr "門牌名"
 msgid "These channels are joined for you as soon as the connection is up, in this order, before you type anything."
 msgstr "這些頻道在連接開始後立即被加入,按此順序,在您輸入任何信息之前."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1631
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1602
 #, elixir-autogen, elixir-format
 msgid "This channel is not registered"
 msgstr "此頻道沒有註冊"
@@ -4282,7 +4271,7 @@ msgstr "哪些機器可以跳過密碼"
 msgid "While you are away, anybody who messages you privately gets this back once, and your nickname is marked away in every channel you are in."
 msgstr "當你不在時,任何人 誰給你留言 私下得到這個回來一次, 你的暱稱被標記走 在你的每一個頻道。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1246
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1217
 #, elixir-autogen, elixir-format
 msgid "Who gets in, and who gets to talk"
 msgstr "誰進來誰說話"
@@ -4297,17 +4286,17 @@ msgstr "你來了"
 msgid "You are marked away"
 msgstr "你被標記走了"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1613
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1584
 #, elixir-autogen, elixir-format
 msgid "cannot speak"
 msgstr "無法說話"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1639
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1610
 #, elixir-autogen, elixir-format
 msgid "founder"
 msgstr "建立者"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1619
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1590
 #, elixir-autogen, elixir-format
 msgid "hello everyone"
 msgstr "你們好"
@@ -4318,12 +4307,12 @@ msgstr "你們好"
 msgid "hey, got a minute?"
 msgstr "嘿,有空嗎?"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1607
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1578
 #, elixir-autogen, elixir-format
 msgid "invite only"
 msgstr "只邀請"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1606
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1577
 #, elixir-autogen, elixir-format
 msgid "cannot join"
 msgstr "無法加入"
@@ -4974,7 +4963,7 @@ msgstr "新增頻道 — %{bot}"
 msgid "Add Feed — %{bot}"
 msgstr "新增訂閱來源 — %{bot}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:747
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:718
 #, elixir-autogen, elixir-format
 msgid "Add to %{level}"
 msgstr "新增至 %{level}"
@@ -4989,7 +4978,7 @@ msgstr "訂閱來源網址"
 msgid "/notice $nick Welcome!"
 msgstr "/notice $nick Welcome!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:839
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:810
 #, elixir-autogen, elixir-format
 msgid "Nickname mask"
 msgstr "暱稱掩碼"
@@ -5004,7 +4993,7 @@ msgstr "連結：%{count}"
 msgid "No language"
 msgstr "無語言"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:430
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:401
 #, elixir-autogen, elixir-format
 msgid "The language people speak here. Its flag is shown beside the channel's name, so visitors know what to expect before they join."
 msgstr "這裡使用的語言。它的旗幟顯示在頻道名稱旁邊，讓訪客在加入前就知道會遇到什麼。"
@@ -5014,22 +5003,22 @@ msgstr "這裡使用的語言。它的旗幟顯示在頻道名稱旁邊，讓訪
 msgid "Its flag is shown beside the bot's nickname."
 msgstr "它的旗幟顯示在機器人暱稱旁邊。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:465
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:521
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:436
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:492
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:94
 #, elixir-autogen, elixir-format
 msgid "Category"
 msgstr "分類"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:486
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:496
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:499
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1598
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:457
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:467
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:470
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1569
 #, elixir-autogen, elixir-format
 msgid "No category"
 msgstr "無分類"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:467
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:438
 #, elixir-autogen, elixir-format
 msgid "What the channel is about. Its plaque is shown beside the channel's name, so a list of rooms can be read at a glance."
 msgstr "頻道的主題。它的標籤顯示在頻道名稱旁邊，讓人一眼就能看懂房間清單。"

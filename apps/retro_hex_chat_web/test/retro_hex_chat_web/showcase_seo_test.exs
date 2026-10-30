@@ -13,12 +13,14 @@ defmodule RetroHexChatWeb.ShowcaseSEOTest do
     do: doc |> Floki.find(selector) |> Floki.attribute(name) |> List.first()
 
   describe "indexability" do
-    test "every showcase page invites indexing and names its own canonical URL", %{conn: conn} do
+    test "every showcase page stays out of the index and names its own canonical URL", %{
+      conn: conn
+    } do
       for path <- ShowcaseCatalog.paths() do
         doc = document(conn, path)
 
-        assert attribute(doc, "meta[name=robots]", "content") == "index, follow",
-               "#{path} is not indexable"
+        assert attribute(doc, "meta[name=robots]", "content") == SEO.noindex_content(),
+               "#{path} invites indexing"
 
         assert attribute(doc, "link[rel=canonical]", "href") == SEO.site_url(path),
                "#{path} points its canonical elsewhere"
@@ -56,26 +58,8 @@ defmodule RetroHexChatWeb.ShowcaseSEOTest do
   end
 
   describe "sitemap" do
-    test "lists every showcase path exactly once", %{conn: conn} do
-      locations =
-        conn
-        |> get("/sitemap.xml")
-        |> response(200)
-        |> then(&Regex.scan(~r|/sitemaps/([\w.-]+)|, &1))
-        |> Enum.map(&List.last/1)
-        |> Enum.filter(&String.starts_with?(&1, "showcase"))
-        |> Enum.flat_map(fn name ->
-          Phoenix.ConnTest.build_conn()
-          |> get("/sitemaps/#{name}")
-          |> response(200)
-          |> then(&Regex.scan(~r|<loc>([^<]+)</loc>|, &1))
-          |> Enum.map(&List.last/1)
-        end)
-
-      expected = Enum.map(ShowcaseCatalog.paths(), &SEO.site_url/1)
-
-      assert Enum.sort(locations) == Enum.sort(expected)
-      assert locations == Enum.uniq(locations)
+    test "offers no showcase chunk", %{conn: conn} do
+      refute conn |> get("/sitemap.xml") |> response(200) =~ "showcase"
     end
   end
 

@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.Site.Document do
   inside it (`RetroHexChatWeb.Site.WindowBody`). A page of the site opens as a
   group of windows, one per section, all in the `site` group — the window
   manager lays the group out together when the page opens, and the page closes
-  when the last of them does (`Site.Documents`). Help, the archive, an
+  when the last of them does (`Site.Documents`). Help, an
   invitation and sign-in are one window each, with the menus and status their
   page declares.
 
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.Components.UI.Site.Document do
   attr :doc, :map, required: true, doc: "a one-window `Site.Documents.doc/0`"
   attr :focused, :boolean, required: true
 
-  # A page that is one window — help, the archive, an invitation, sign-in —
+  # A page that is one window — help, an invitation, sign-in —
   # rendered on the first response, whole, so a reader and a search engine get
   # it before any script runs; `data-window-initial-focus` tells the window
   # manager it is the window in front.

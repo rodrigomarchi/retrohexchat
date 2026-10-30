@@ -23,7 +23,6 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
 
   alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Arcade
-  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Challenges
@@ -145,7 +144,6 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
                   )
               ),
             recent: Results.recent(game_id, 6),
-            chatter: Archive.recent(channel, 5),
             week_count: week_count
           })
       )
@@ -183,7 +181,6 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
             recent: Arcade.recent_plays(game_id, @recent_plays),
             week: Arcade.most_played(game_id, week_ago, 5),
             all_time: Arcade.most_played(game_id, ~U[2000-01-01 00:00:00Z], 5),
-            chatter: Archive.recent(channel, 5),
             week_count: week_count
           })
       ),
@@ -200,15 +197,14 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
     ]
   end
 
-  # Every nickname the home names — standings, ratings, matches, the channel's
-  # last lines, who is playing — in one lookup, for the flag before each name.
+  # Every nickname the home names — standings, ratings, matches, who is
+  # playing — in one lookup, for the flag before each name.
   defp put_nick_locales(assigns) do
     cards = assigns.recent ++ ((assigns.you && assigns.you.recent) || [])
 
     nicks =
       Enum.map(assigns.week ++ assigns.computer ++ assigns.ratings, & &1.nickname) ++
         Enum.flat_map(cards, &[&1.p1_nickname, &1.p2_nickname]) ++
-        Enum.map(assigns.chatter, & &1.author) ++
         assigns.playing_now ++
         List.wrap(assigns.challenge_leader && assigns.challenge_leader.nickname)
 
@@ -217,8 +213,7 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
 
   defp put_play_locales(assigns) do
     nicks =
-      Enum.map(assigns.recent ++ assigns.week ++ assigns.all_time, & &1.nickname) ++
-        Enum.map(assigns.chatter, & &1.author)
+      Enum.map(assigns.recent ++ assigns.week ++ assigns.all_time, & &1.nickname)
 
     Map.put(assigns, :nick_locales, NickLocales.for_nicks(nicks))
   end

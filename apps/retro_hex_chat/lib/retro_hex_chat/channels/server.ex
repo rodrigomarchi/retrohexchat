@@ -29,7 +29,7 @@ defmodule RetroHexChat.Channels.Server do
 
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat
-  alias RetroHexChat.Chat.{Archive, Attachments, Content, SendOptions}
+  alias RetroHexChat.Chat.{Attachments, Content, SendOptions}
   alias RetroHexChat.Locales
   alias RetroHexChat.Nickname
   alias RetroHexChat.Notifications
@@ -277,40 +277,6 @@ defmodule RetroHexChat.Channels.Server do
     :exit, reason ->
       Logger.error("Reaction check failed for #{channel_name}: #{inspect(reason)}")
       {:error, dgettext("channels", "The channel did not answer. Try again.")}
-  end
-
-  @doc """
-  Opens or closes the channel's public archive. Founder only.
-
-  Goes through the channel process rather than straight to the table because
-  everybody in the room has to be told: a decision to publish what they say
-  next is not one they should find out about from a search engine.
-  """
-  @spec set_public_archive(String.t(), String.t(), boolean()) :: :ok | {:error, String.t()}
-  def set_public_archive(channel_name, nickname, enabled?) do
-    Observability.span(
-      [:retro_hex_chat, :channels, :archive, :set],
-      %{"chat.channel" => channel_name},
-      fn ->
-        case Registry.lookup(channel_name) do
-          {:ok, pid} -> GenServer.call(pid, {:set_public_archive, nickname, enabled?})
-          {:error, :not_found} -> {:error, dgettext("channels", "Channel not found")}
-        end
-      end
-    )
-  catch
-    # The room stopped between the lookup and the call: it is gone, as above.
-    :exit, {:noproc, _call} ->
-      {:error, dgettext("channels", "Channel not found")}
-
-    # A timeout or a crash is not a missing room. The switch may even have
-    # flipped after the caller stopped waiting, so the founder is told to look
-    # rather than told something false.
-    :exit, reason ->
-      Logger.error("Public archive switch failed for #{channel_name}: #{inspect(reason)}")
-
-      {:error,
-       dgettext("channels", "The archive switch did not answer. Check its state and try again.")}
   end
 
   @doc """
@@ -888,21 +854,6 @@ defmodule RetroHexChat.Channels.Server do
 
       broadcast(state.name, {:event_cancelled, card})
       reply({:ok, card}, state)
-    else
-      {:error, reason} -> reply({:error, reason}, state)
-    end
-  end
-
-  def handle_call({:set_public_archive, nickname, enabled?}, _from, state) do
-    with :ok <- identified?(nickname, :archive),
-         :ok <- founder?(state.name, nickname, :archive),
-         {:ok, _channel} <- toggle_archive(state.name, enabled?) do
-      broadcast(
-        state.name,
-        {:public_archive_changed, %{channel: state.name, nickname: nickname, enabled: enabled?}}
-      )
-
-      reply(:ok, state)
     else
       {:error, reason} -> reply({:error, reason}, state)
     end
@@ -2007,17 +1958,11 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
-  defp unidentified_message(:archive),
-    do: dgettext("channels", "Identify with NickServ before changing the public archive")
-
   defp unidentified_message(:locale),
     do: dgettext("channels", "Identify with NickServ before changing the channel's language")
 
   defp unidentified_message(:category),
     do: dgettext("channels", "Identify with NickServ before changing the channel's category")
-
-  defp not_founder_message(:archive),
-    do: dgettext("channels", "Only the channel founder can change the public archive")
 
   defp not_founder_message(:locale),
     do: dgettext("channels", "Only the founder of a registered channel can set its language")
@@ -2044,9 +1989,6 @@ defmodule RetroHexChat.Channels.Server do
 
   defp badge_changed(:category, channel, nickname, category),
     do: {:channel_category_changed, %{channel: channel, nickname: nickname, category: category}}
-
-  defp toggle_archive(channel_name, true), do: Archive.publish(channel_name)
-  defp toggle_archive(channel_name, false), do: Archive.unpublish(channel_name)
 
   defp announce_pins(channel_name) do
     broadcast(

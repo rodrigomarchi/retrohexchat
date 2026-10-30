@@ -224,23 +224,6 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
     end
   end
 
-  # Every room a script opens publishes its archive, and the switch only takes
-  # on a registered channel, so it belongs right after the registration.
-  test "every registered room switches its archive on", %{scripts: scripts} do
-    for path <- scripts do
-      {_body, _lines, parsed} = read(path)
-
-      missing =
-        parsed
-        |> Enum.chunk_every(2, 1, [[]])
-        |> Enum.filter(&match?([["cs", "register" | _], _next], &1))
-        |> Enum.reject(&match?([_register, ["cs", "archive", "on"]], &1))
-
-      assert missing == [],
-             "#{Path.basename(path)} registers #{length(missing)} room(s) without /cs archive on"
-    end
-  end
-
   # The language draws the flag beside the room's name. Every room a script
   # opens is in that script's language, so the code is the file's own name — and
   # it has to be one `/cs language` accepts as written, not merely one it can
@@ -287,11 +270,11 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
       misplaced =
         parsed
         |> Enum.chunk_every(2, 1, [[]])
-        |> Enum.filter(&match?([["cs", "archive", "on"], _next], &1))
-        |> Enum.reject(&match?([_archive, ["cs", "language", ^locale]], &1))
+        |> Enum.filter(&match?([["cs", "register" | _], _next], &1))
+        |> Enum.reject(&match?([_register, ["cs", "language", ^locale]], &1))
 
       assert misplaced == [],
-             "#{file}: /cs language #{locale} belongs right after each /cs archive on, " <>
+             "#{file}: /cs language #{locale} belongs right after each /cs register, " <>
                "#{length(misplaced)} room(s) do not have it there"
     end
   end

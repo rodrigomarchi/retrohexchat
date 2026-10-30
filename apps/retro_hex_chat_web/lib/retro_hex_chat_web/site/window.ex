@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.Site.Window do
 
   A page lists its windows in `load/2` (under `:windows`, built with `new/4`),
   in the order they open — the first is the one in front. A page of the site
-  opens as a group of them, one per section; help, the archive, an invitation
+  opens as a group of them, one per section; help, an invitation
   and sign-in declare one. Everything else reads that list: the desktop draws
   each window from its entry (`Components.UI.Site.Document`), the window's
   island renders its `body` (`RetroHexChatWeb.Site.WindowBody`), the taskbar

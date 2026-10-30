@@ -10,13 +10,11 @@ defmodule RetroHexChatWeb.SEO.PublicUrls do
 
   @behaviour RetroHexChat.SEO.IndexNow.UrlSource
 
-  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChat.Games.Results
   alias RetroHexChatWeb.ContentDates
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.SEO
-  alias RetroHexChatWeb.ShowcaseCatalog
 
   @type entry :: {path :: String.t(), lastmod :: String.t() | nil}
 
@@ -55,27 +53,6 @@ defmodule RetroHexChatWeb.SEO.PublicUrls do
 
   defp game_lastmod(game), do: ContentDates.game_page(game.slug)
 
-  @doc "The showcase pages: English only, one URL each, and no known day."
-  @spec showcase_paths() :: [String.t()]
-  def showcase_paths, do: ShowcaseCatalog.paths()
-
-  @doc """
-  Every published archive page: each channel's index, dated by its most
-  recent day, and each day's page, dated by the day it is. A conversation has
-  no translated version, so these are one URL for every reader.
-  """
-  @spec archive_paths() :: [entry()]
-  def archive_paths do
-    for channel <- Archive.published_channels(),
-        slug = archive_slug(channel),
-        days = Archive.days_for(channel),
-        entry <- [
-          {"/archive/#{slug}", List.first(days)} | Enum.map(days, &{"/archive/#{slug}/#{&1}", &1})
-        ] do
-      entry
-    end
-  end
-
   @impl RetroHexChat.SEO.IndexNow.UrlSource
   @spec pages_changed_since(Date.t()) :: [String.t()]
   def pages_changed_since(%Date{} = since) do
@@ -85,22 +62,6 @@ defmodule RetroHexChatWeb.SEO.PublicUrls do
       url.href
     end
   end
-
-  @impl RetroHexChat.SEO.IndexNow.UrlSource
-  @spec archive_day(Date.t()) :: [String.t()]
-  def archive_day(%Date{} = day) do
-    iso = Date.to_iso8601(day)
-
-    for channel <- Archive.published_channels(),
-        iso in Archive.days_for(channel),
-        slug = archive_slug(channel),
-        path <- ["/archive/#{slug}", "/archive/#{slug}/#{iso}"] do
-      SEO.site_url(path)
-    end
-  end
-
-  @spec archive_slug(String.t()) :: String.t()
-  defp archive_slug(channel), do: String.trim_leading(channel, "#")
 
   # A page with no known day is never "changed": announcing it on every boot
   # would announce the whole site on every deploy.

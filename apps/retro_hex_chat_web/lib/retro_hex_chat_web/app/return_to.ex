@@ -25,11 +25,11 @@ defmodule RetroHexChatWeb.App.ReturnTo do
   """
 
   # The desktop's home, the channels and invitations, the pages of the site and
-  # their games and archive, and the surfaces. Never the sign-in window itself,
+  # their games, and the surfaces. Never the sign-in window itself,
   # which a connect would only reopen. `/chat` stays because links carrying it
   # still arrive, and it redirects to the desktop.
   @default "/"
-  @prefixes ~w(/c/ /chat /join/ /games /archive/ /play /call/ /space/ /p2p/) ++
+  @prefixes ~w(/c/ /chat /join/ /games /play /call/ /space/ /p2p/) ++
               (RetroHexChatWeb.PublicPages.paths() -- ["/"])
   @max_length 512
 

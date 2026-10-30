@@ -12,8 +12,8 @@ defmodule RetroHexChat.Arcade.Announcer do
   a player is said in a game's channel at most once every few minutes, the
   same interval the Retro Games keep.
 
-  The line is plain text in the server's language — what search, the public
-  archive and a reader who turned formatting off see. Everyone else sees the
+  The line is plain text in the server's language — what search and a reader
+  who turned formatting off see. Everyone else sees the
   card drawn under it, in their own language.
   """
 

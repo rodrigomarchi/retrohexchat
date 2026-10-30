@@ -26,7 +26,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #hispano
 /cs register
-/cs archive on
 /cs language es
 /cs category social
 /topic Sala en español — de Madrid a Montevideo. Pasa, siéntate, aquí se charla.
@@ -34,7 +33,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #noticias
 /cs register
-/cs archive on
 /cs language es
 /cs category news
 /topic Noticias de España — 20minutos, elDiario.es y El Mundo, directo del feed. !Elena fuentes para la lista.
@@ -42,7 +40,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #latinoamerica
 /cs register
-/cs archive on
 /cs language es
 /cs category news
 /topic Latinoamérica — Clarín, La Nación e Infobae. La portada de allá, que no es la de aquí.
@@ -50,7 +47,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #internacional
 /cs register
-/cs archive on
 /cs language es
 /cs category news
 /topic Internacional — BBC Mundo, ABC, El Confidencial y La Vanguardia. El mundo, en español.
@@ -58,7 +54,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #tecno
 /cs register
-/cs archive on
 /cs language es
 /cs category tech
 /topic Tecnología — Xataka, Genbeta, Hipertextual, Microsiervos y Applesfera. !Nacho fuentes para la lista.
@@ -66,7 +61,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #videojuegos
 /cs register
-/cs archive on
 /cs language es
 /cs category news
 /topic Videojuegos — Vida Extra en el cable. Para jugar de verdad, abre el menú Games: 18 clásicos en el navegador.
@@ -74,7 +68,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #deportes
 /cs register
-/cs archive on
 /cs language es
 /cs category sports
 /topic Deportes — Marca y Mundo Deportivo. Liga, fichajes y la discusión de siempre.
@@ -82,7 +75,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cine
 /cs register
-/cs archive on
 /cs language es
 /cs category culture
 /topic Cine y series — Espinof en el cable. Estrenos, temporadas y spoilers avisados.
@@ -90,7 +82,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #divulgacion
 /cs register
-/cs archive on
 /cs language es
 /cs category science
 /topic Divulgación — Muy Interesante. Preguntas tontas no hay; hay preguntas sin hacer.
@@ -98,7 +89,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cocina
 /cs register
-/cs archive on
 /cs language es
 /cs category life
 /topic Cocina — Directo al Paladar. Recetas, técnica y discusiones sobre la tortilla.
@@ -106,7 +96,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #motor
 /cs register
-/cs archive on
 /cs language es
 /cs category life
 /topic Motor — Motorpasión. Coches, motos y opiniones de quien va en metro.
@@ -114,7 +103,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #mercados
 /cs register
-/cs archive on
 /cs language es
 /cs category money
 /topic Mercados — Expansión en el cable. Un titular no es una recomendación.
@@ -456,8 +444,7 @@ ceiling, so a sixth address silently refused would show up there first.
 | `#motor` | `life` | **Manolo** | Motorpasión |
 | `#mercados` | `money` | **Alonso** | Expansión |
 
-**Cerbero** stands in all twelve and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Spanish (`/cs language es`).
+**Cerbero** stands in all twelve and greets in none of them. All channels are `+tn` and are marked Spanish (`/cs language es`).
 Every bot is marked Spanish too: `/bot set <Bot> language es` follows its
 `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

@@ -79,14 +79,6 @@ defmodule RetroHexChatWeb.App.Paths do
   def localized(path), do: SEO.localized_path(path, I18n.current_locale())
 
   @doc """
-  A channel's public archive. The `#` cannot travel in a URL — everything
-  after it belongs to the browser — so the address carries the name without it.
-  """
-  @spec archive_path(String.t()) :: String.t()
-  def archive_path("#" <> slug), do: ~p"/archive/#{slug}"
-  def archive_path(slug), do: ~p"/archive/#{slug}"
-
-  @doc """
   A Retro Game's own page — its home in the desktop: how to play it, who is
   playing it now and who is winning. A mode's id leads to its game's page.
   """

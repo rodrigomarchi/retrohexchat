@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **275 spec files** under `e2e/tests/`.
-- **695 Playwright `test()` cases**.
-- **641 documented flows**, 640 done, 1 not done.
+- **274 spec files** under `e2e/tests/`.
+- **693 Playwright `test()` cases**.
+- **639 documented flows**, 638 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -876,8 +876,6 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW17 | A remembered terminal signs back in with one click from the sign-in window | `tests/sign-in-window.spec.ts` | done |
 | PW18 | The sign-in window opens fully on screen at every desktop size | `tests/sign-in-window.spec.ts` | done |
 | PW19 | The public pages declare an installable web app: a linked manifest whose icons and service worker are actually served | `tests/landing-public.spec.ts` | done |
-| PW20 | A channel's public archive is reachable, indexable, and disappears when the founder switches it off (features P1) | `tests/archive-public.spec.ts` | done |
-| PW21 | The founder switches the archive with /cs archive on\|off, and another member of the room sees the notice (features P1) | `tests/archive-public.spec.ts` | done |
 | PW22 | The public games catalogue leads from a game's page, through the sign-in window over the same desktop, into the game | `tests/games-catalog.spec.ts` | done |
 | PW23 | The mIRC commands guide answers a mIRC habit row by row, and its links lead into the matching help topic and the other guides | `tests/irc-guides.spec.ts` | done |
 | PW24 | Without an account a channel's address (/c/<name>) opens read-only: a visitor watches it live under a Guest name, members see them under Visitors, and any action opens the sign-in window at /connect | `tests/chat-public-visitor.spec.ts` | done |

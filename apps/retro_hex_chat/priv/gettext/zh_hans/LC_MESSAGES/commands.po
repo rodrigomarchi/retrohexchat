@@ -23,12 +23,12 @@ msgstr ""
 msgid "  %{name} [%{status}] — %{description}"
 msgstr "%{name} [%{status}] — %{description} (英语)."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:458
+#: lib/retro_hex_chat/commands/handlers/cs.ex:397
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr "%{nickname} [%{level}] (由%{added_by}添加)."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:454
+#: lib/retro_hex_chat/commands/handlers/cs.ex:393
 #, elixir-autogen, elixir-format
 msgid "  (empty)"
 msgstr "(空着)"
@@ -348,44 +348,44 @@ msgstr "/bot list"
 msgid "/bot set GreeterBot greeting Welcome, {nickname}!"
 msgstr "/bot set GreeterBot greeting Welcome, {nickname}!"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:26
-#: lib/retro_hex_chat/commands/handlers/cs.ex:26
+#: lib/retro_hex_chat/commands/handlers/cs.ex:25
+#: lib/retro_hex_chat/commands/handlers/cs.ex:25
 #, elixir-autogen, elixir-format
 msgid "/cs <subcommand> [args]"
 msgstr "/cs <subcommand> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:42
-#: lib/retro_hex_chat/commands/handlers/cs.ex:42
+#: lib/retro_hex_chat/commands/handlers/cs.ex:40
+#: lib/retro_hex_chat/commands/handlers/cs.ex:40
 #, elixir-autogen, elixir-format
 msgid "/cs aop del nick"
 msgstr "/cs aop del nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:36
-#: lib/retro_hex_chat/commands/handlers/cs.ex:36
+#: lib/retro_hex_chat/commands/handlers/cs.ex:35
+#: lib/retro_hex_chat/commands/handlers/cs.ex:35
 #, elixir-autogen, elixir-format
 msgid "/cs drop"
 msgstr "/cs drop"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:37
-#: lib/retro_hex_chat/commands/handlers/cs.ex:37
+#: lib/retro_hex_chat/commands/handlers/cs.ex:36
+#: lib/retro_hex_chat/commands/handlers/cs.ex:36
 #, elixir-autogen, elixir-format
 msgid "/cs info"
 msgstr "/cs info"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:35
-#: lib/retro_hex_chat/commands/handlers/cs.ex:35
+#: lib/retro_hex_chat/commands/handlers/cs.ex:34
+#: lib/retro_hex_chat/commands/handlers/cs.ex:34
 #, elixir-autogen, elixir-format
 msgid "/cs register"
 msgstr "/cs register"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:41
-#: lib/retro_hex_chat/commands/handlers/cs.ex:41
+#: lib/retro_hex_chat/commands/handlers/cs.ex:39
+#: lib/retro_hex_chat/commands/handlers/cs.ex:39
 #, elixir-autogen, elixir-format
 msgid "/cs sop add nick"
 msgstr "/cs sop add nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:43
-#: lib/retro_hex_chat/commands/handlers/cs.ex:43
+#: lib/retro_hex_chat/commands/handlers/cs.ex:41
+#: lib/retro_hex_chat/commands/handlers/cs.ex:41
 #, elixir-autogen, elixir-format
 msgid "/cs vop list"
 msgstr "/cs vop list"
@@ -1300,7 +1300,7 @@ msgstr ""
 msgid "Disconnect from the server and return to the connect screen. Other users see your optional quit message."
 msgstr "从服务器上断开连接并返回连接屏幕. 其他用户查看您的可选退出消息 。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:58
+#: lib/retro_hex_chat/commands/handlers/cs.ex:56
 #, elixir-autogen, elixir-format
 msgid "Drop channel registration"
 msgstr "丢弃频道注册"
@@ -1507,22 +1507,22 @@ msgstr "MOTD已经清除。"
 msgid "MOTD has been updated."
 msgstr "MOTD已经更新."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:77
+#: lib/retro_hex_chat/commands/handlers/cs.ex:71
 #, elixir-autogen, elixir-format
 msgid "Manage auto-operator access list"
 msgstr "管理自动操作访问列表"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:78
+#: lib/retro_hex_chat/commands/handlers/cs.ex:72
 #, elixir-autogen, elixir-format
 msgid "Manage auto-voice access list"
 msgstr "管理自动语音访问列表"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:28
+#: lib/retro_hex_chat/commands/handlers/cs.ex:27
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ."
 msgstr "通过ChanServ管理频道注册和访问列表."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:76
+#: lib/retro_hex_chat/commands/handlers/cs.ex:70
 #, elixir-autogen, elixir-format
 msgid "Manage super-operator access list"
 msgstr "管理超级操作访问列表"
@@ -1785,7 +1785,7 @@ msgstr "收件人(昵称或频道)"
 msgid "Register and protect your nickname with a password through NickServ, the nickname services bot."
 msgstr "通过昵称服务机器人NickServe的密码注册并保护您的昵称."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:57
+#: lib/retro_hex_chat/commands/handlers/cs.ex:55
 #, elixir-autogen, elixir-format
 msgid "Register the current channel"
 msgstr "注册当前频道"
@@ -2076,7 +2076,7 @@ msgstr ""
 "常用: /perform 添加 /ns 识别我的密码字\n"
 "位置为基于0的索引编号. 密码在列表显示中蒙上面具."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:79
+#: lib/retro_hex_chat/commands/handlers/cs.ex:73
 #, elixir-autogen, elixir-format
 msgid "Show ChanServ help"
 msgstr "显示 ChanServ 帮助"
@@ -2137,7 +2137,7 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/alias.ex:34
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:42
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:36
-#: lib/retro_hex_chat/commands/handlers/cs.ex:54
+#: lib/retro_hex_chat/commands/handlers/cs.ex:52
 #: lib/retro_hex_chat/commands/handlers/notify.ex:35
 #: lib/retro_hex_chat/commands/handlers/ns.ex:54
 #: lib/retro_hex_chat/commands/handlers/perform.ex:43
@@ -2635,7 +2635,7 @@ msgstr "解密用户"
 msgid "View audit log"
 msgstr "查看审计日志"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:59
+#: lib/retro_hex_chat/commands/handlers/cs.ex:57
 #, elixir-autogen, elixir-format
 msgid "View channel registration info"
 msgstr "查看频道注册信息"
@@ -2850,17 +2850,17 @@ msgstr "[BotService] 无法创建机器人：%{message}"
 msgid "[BotService] No bots configured."
 msgstr "第[BotService]号 没有配置 bots 。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:193
+#: lib/retro_hex_chat/commands/handlers/cs.ex:175
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{message}"
 msgstr "[ChanServ] %{message} (韩语)."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:222
+#: lib/retro_hex_chat/commands/handlers/cs.ex:204
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
 msgstr "[ChanServ] %{name}:创始人Q%{founder},注册公司Q%{registered_at}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:445
+#: lib/retro_hex_chat/commands/handlers/cs.ex:384
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Access list for %{channel} (%{level})"
 msgstr "[ChanServ] %{channel}(%{level})的访问列表"
@@ -3239,37 +3239,6 @@ msgstr "什么时候？请给出距离现在的时长，例如 2h、30m 或 3d�
 msgid "Which one? Use /event cancel <id>."
 msgstr "哪一个？请使用 /event cancel <id>。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:38
-#: lib/retro_hex_chat/commands/handlers/cs.ex:38
-#, elixir-autogen, elixir-format
-msgid "/cs archive on"
-msgstr "/cs archive on"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:62
-#, elixir-autogen, elixir-format
-msgid "Publish the channel's public archive (on|off)"
-msgstr "发布频道的公开存档（on|off）"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:252
-#, elixir-autogen, elixir-format
-msgid "Usage: /cs archive <on|off>"
-msgstr "用法：/cs archive <on|off>"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:277
-#, elixir-autogen, elixir-format
-msgid "[ChanServ] The public archive of %{channel} is off."
-msgstr "[ChanServ] %{channel} 的公开存档已关闭。"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:263
-#, elixir-autogen, elixir-format
-msgid "[ChanServ] The public archive of %{channel} is on: what is said from now on is published."
-msgstr "[ChanServ] %{channel} 的公开存档已开启：从现在起说的话都会被公开。"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:273
-#, elixir-autogen, elixir-format
-msgid "[ChanServ] The public archive of %{channel} is on."
-msgstr "[ChanServ] %{channel} 的公开存档已开启。"
-
 #: lib/retro_hex_chat/commands/mirc_parity.ex:50
 #, elixir-autogen, elixir-format
 msgid "Asks you to confirm before the change takes effect."
@@ -3421,7 +3390,7 @@ msgstr ""
 "描述你在做什么,显示为'*你的尼克做一些事情'。 它在频道和私人聊天中发挥作用。\n"
 "需要行动案文。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:103
+#: lib/retro_hex_chat/commands/handlers/cs.ex:97
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register the channel"
 msgstr "您必须是频道操作员才能注册频道"
@@ -3538,44 +3507,44 @@ msgstr "机器人会用%{greeting}迎接来访者."
 msgid "The bot will not greet visitors."
 msgstr "机器人不会迎接访客的"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:39
-#: lib/retro_hex_chat/commands/handlers/cs.ex:39
+#: lib/retro_hex_chat/commands/handlers/cs.ex:37
+#: lib/retro_hex_chat/commands/handlers/cs.ex:37
 #, elixir-autogen, elixir-format
 msgid "/cs language pt_BR"
 msgstr "/cs language pt_BR"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:319
+#: lib/retro_hex_chat/commands/handlers/cs.ex:258
 #, elixir-autogen, elixir-format
 msgid "Languages: %{codes}"
 msgstr "语言：%{codes}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:66
+#: lib/retro_hex_chat/commands/handlers/cs.ex:60
 #, elixir-autogen, elixir-format
 msgid "Set the language the channel is spoken in (code|none)"
 msgstr "设置频道使用的语言（代码|none）"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:483
-#: lib/retro_hex_chat/commands/handlers/cs.ex:331
+#: lib/retro_hex_chat/commands/handlers/cs.ex:270
 #, elixir-autogen, elixir-format
 msgid "Unknown language: %{code}. Languages: %{codes}"
 msgstr "未知语言：%{code}。语言：%{codes}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:318
+#: lib/retro_hex_chat/commands/handlers/cs.ex:257
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs language <code|none>"
 msgstr "用法：/cs language <code|none>"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:342
+#: lib/retro_hex_chat/commands/handlers/cs.ex:281
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} has no language set."
 msgstr "[ChanServ] %{channel} 尚未设置语言。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:346
+#: lib/retro_hex_chat/commands/handlers/cs.ex:285
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} is spoken in %{language} (%{code})."
 msgstr "[ChanServ] %{channel} 使用的语言是 %{language}（%{code}）。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:288
+#: lib/retro_hex_chat/commands/handlers/cs.ex:227
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} no longer has a language."
 msgstr "[ChanServ] %{channel} 已不再设置语言。"
@@ -3605,62 +3574,58 @@ msgstr "无法保存语言。"
 msgid "none"
 msgstr "无"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:40
-#: lib/retro_hex_chat/commands/handlers/cs.ex:40
+#: lib/retro_hex_chat/commands/handlers/cs.ex:38
+#: lib/retro_hex_chat/commands/handlers/cs.ex:38
 #, elixir-autogen, elixir-format
 msgid "/cs category news"
 msgstr "/cs category news"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:398
+#: lib/retro_hex_chat/commands/handlers/cs.ex:337
 #, elixir-autogen, elixir-format
 msgid "Categories: %{codes}"
 msgstr "分类：%{codes}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:30
+#: lib/retro_hex_chat/commands/handlers/cs.ex:29
 #, elixir-autogen, elixir-format
-msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive, language and category require being the channel founder."
-msgstr ""
-"通过 ChanServ 管理频道注册和访问列表。\n"
-"子命令：register、drop、info、archive on|off、language <code|none>、category <name|none>、sop/aop/vop add|del|list、help。必须在频道中使用。\n"
-"访问等级：SOP（超级操作员）> AOP（自动操作员）> VOP（自动发言权）。\n"
-"register 需要频道操作员权限。drop、archive、language 和 category 需要是频道创建者。"
+msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, language and category require being the channel founder."
+msgstr "通过 ChanServ 管理频道注册和访问列表。\n子命令：register、drop、info、language <code|none>、category <name|none>、sop/aop/vop add|del|list、help。必须在频道中使用。\n访问等级：SOP（超级操作员）> AOP（自动操作员）> VOP（自动发言权）。\nregister 需要频道操作员权限。drop、language 和 category 需要是频道创建者。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:71
+#: lib/retro_hex_chat/commands/handlers/cs.ex:65
 #, elixir-autogen, elixir-format
 msgid "Set what the channel is about, such as news or games (name|none)"
 msgstr "设置频道的主题，例如 news 或 games（名称|none）"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:49
+#: lib/retro_hex_chat/commands/handlers/cs.ex:47
 #, elixir-autogen, elixir-format
-msgid "Subcommand: register, drop, info, archive, language, category, sop, aop, vop"
-msgstr "子命令：register、drop、info、archive、language、category、sop、aop、vop"
+msgid "Subcommand: register, drop, info, language, category, sop, aop, vop"
+msgstr "子命令：register、drop、info、language、category、sop、aop、vop"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:88
+#: lib/retro_hex_chat/commands/handlers/cs.ex:82
 #, elixir-autogen, elixir-format
-msgid "Usage: /cs <register|drop|info|archive|language|category|sop|aop|vop|help> [args]"
-msgstr "用法：/cs <register|drop|info|archive|language|category|sop|aop|vop|help> [args]"
+msgid "Usage: /cs <register|drop|info|language|category|sop|aop|vop|help> [args]"
+msgstr "用法：/cs <register|drop|info|language|category|sop|aop|vop|help> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:397
+#: lib/retro_hex_chat/commands/handlers/cs.ex:336
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs category <name|none>"
 msgstr "用法：/cs category <name|none>"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:407
+#: lib/retro_hex_chat/commands/handlers/cs.ex:346
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} has no category set."
 msgstr "[ChanServ] %{channel} 尚未设置分类。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:411
+#: lib/retro_hex_chat/commands/handlers/cs.ex:350
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} is about %{category} (%{code})."
 msgstr "[ChanServ] %{channel} 的分类是 %{category}（%{code}）。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:359
+#: lib/retro_hex_chat/commands/handlers/cs.ex:298
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} no longer has a category."
 msgstr "[ChanServ] %{channel} 已不再设置分类。"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:373
+#: lib/retro_hex_chat/commands/handlers/cs.ex:312
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Unknown category: %{code}. Categories: %{codes}"
 msgstr "[ChanServ] 未知分类：%{code}。分类：%{codes}"

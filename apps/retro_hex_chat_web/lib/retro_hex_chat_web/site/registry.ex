@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.Site.Registry do
 
   The router names a `live_action` for every address of the one desktop. An
   action listed here opens a page — the group of windows of a page of the site,
-  or the one window of help, the archive, an invitation or sign-in; any other —
+  or the one window of help, an invitation or sign-in; any other —
   a channel, a member's home — is the chat's own. The public pages and guides
   come from `RetroHexChatWeb.PublicPages`, the one list the menus, the desktop's
   icons and the sitemap read too; the rest are addresses no menu names.
@@ -17,8 +17,6 @@ defmodule RetroHexChatWeb.Site.Registry do
            game: Pages.Game,
            help_index: Pages.Help,
            help_topic: Pages.Help,
-           archive_index: Pages.Archive,
-           archive_day: Pages.Archive,
            join: Pages.Join,
            connect: Pages.Connect
          })
@@ -27,7 +25,6 @@ defmodule RetroHexChatWeb.Site.Registry do
   # its own declaring (`Site.Window`), in the `:site` slot.
   @windows %{
     help: "doc-help",
-    archive: "doc-archive",
     join: "doc-join",
     connect: "connect"
   }

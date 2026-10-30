@@ -500,7 +500,7 @@ msgstr "Włączenie / wyłączenie kamery konferencyjnej"
 msgid "Toggle Conference Microphone"
 msgstr "Włączenie / wyłączenie mikrofonu konferencji"
 
-#: lib/retro_hex_chat/channels/server.ex:1796
+#: lib/retro_hex_chat/channels/server.ex:1747
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -603,22 +603,6 @@ msgstr "Ta zapisana wiadomość nie należy do ciebie."
 #, elixir-autogen, elixir-format
 msgid "You have already saved %{count} messages. Remove one first."
 msgstr "Zapisano już %{count} wiadomości. Najpierw usuń jedną."
-
-#: lib/retro_hex_chat/chat/archive.ex:350
-#, elixir-autogen, elixir-format
-msgid "A secret channel cannot have a public archive."
-msgstr "Tajny kanał nie może mieć publicznego archiwum."
-
-#: lib/retro_hex_chat/chat/archive.ex:373
-#, elixir-autogen, elixir-format
-msgid "That change could not be saved."
-msgstr "Nie udało się zapisać tej zmiany."
-
-#: lib/retro_hex_chat/chat/archive.ex:357
-#: lib/retro_hex_chat/chat/archive.ex:363
-#, elixir-autogen, elixir-format
-msgid "That channel is not registered."
-msgstr "Ten kanał nie jest zarejestrowany."
 
 #: lib/retro_hex_chat/jobs/event_reminder_worker.ex:90
 #, elixir-autogen, elixir-format

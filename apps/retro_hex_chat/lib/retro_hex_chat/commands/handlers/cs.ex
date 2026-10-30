@@ -6,7 +6,6 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
 
@@ -29,13 +28,12 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     description:
       dgettext(
         "commands",
-        "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive, language and category require being the channel founder."
+        "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, language and category require being the channel founder."
       ),
     examples: [
       dgettext("commands", "/cs register"),
       dgettext("commands", "/cs drop"),
       dgettext("commands", "/cs info"),
-      dgettext("commands", "/cs archive on"),
       dgettext("commands", "/cs language pt_BR"),
       dgettext("commands", "/cs category news"),
       dgettext("commands", "/cs sop add nick"),
@@ -48,7 +46,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         "subcommand",
         dgettext(
           "commands",
-          "Subcommand: register, drop, info, archive, language, category, sop, aop, vop"
+          "Subcommand: register, drop, info, language, category, sop, aop, vop"
         )
       ),
       Parameter.optional(:text, "args", dgettext("commands", "Subcommand arguments"))
@@ -57,10 +55,6 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
       %{name: "register", description: dgettext("commands", "Register the current channel")},
       %{name: "drop", description: dgettext("commands", "Drop channel registration")},
       %{name: "info", description: dgettext("commands", "View channel registration info")},
-      %{
-        name: "archive",
-        description: dgettext("commands", "Publish the channel's public archive (on|off)")
-      },
       %{
         name: "language",
         description: dgettext("commands", "Set the language the channel is spoken in (code|none)")
@@ -87,7 +81,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     {:error,
      dgettext(
        "commands",
-       "Usage: /cs <register|drop|info|archive|language|category|sop|aop|vop|help> [args]"
+       "Usage: /cs <register|drop|info|language|category|sop|aop|vop|help> [args]"
      )}
   end
 
@@ -113,18 +107,6 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   def execute(["info" | _], context) do
     call_info(context.active_channel, server(context))
-  end
-
-  def execute(["archive", state | _], context) when state in ~w(on off) do
-    with {:ok, _channel} <- require_channel(context) do
-      call_set_archive(context.active_channel, context.nickname, state == "on")
-    end
-  end
-
-  def execute(["archive" | _], context) do
-    with {:ok, _channel} <- require_channel(context) do
-      call_archive_status(context.active_channel)
-    end
   end
 
   def execute(["language", code | _], context) do
@@ -234,51 +216,8 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     end
   end
 
-  defp call_set_archive(channel, nickname, enabled?) do
-    case Server.set_public_archive(channel, nickname, enabled?) do
-      :ok ->
-        {:ok, :system, %{content: archive_switched(channel, enabled?)}}
-
-      {:error, msg} ->
-        {:error, chanserv_message(msg)}
-    end
-  end
-
-  defp call_archive_status(channel) do
-    text =
-      Enum.join(
-        [
-          archive_state(channel, Archive.published?(channel)),
-          dgettext("commands", "Usage: /cs archive <on|off>")
-        ],
-        "\n"
-      )
-
-    {:ok, :system, %{content: text}}
-  end
-
-  # Switching it on is the moment "from now on" means something; asked later,
-  # the archive has simply been on since whenever that was.
-  defp archive_switched(channel, true) do
-    dgettext(
-      "commands",
-      "[ChanServ] The public archive of %{channel} is on: what is said from now on is published.",
-      channel: channel
-    )
-  end
-
-  defp archive_switched(channel, false), do: archive_state(channel, false)
-
-  defp archive_state(channel, true) do
-    dgettext("commands", "[ChanServ] The public archive of %{channel} is on.", channel: channel)
-  end
-
-  defp archive_state(channel, false) do
-    dgettext("commands", "[ChanServ] The public archive of %{channel} is off.", channel: channel)
-  end
-
-  # `none` and `off` clear it, as the archive switch reads `off`; anything else
-  # has to name a language the chat speaks, written however the reader likes.
+  # `none` and `off` clear it; anything else has
+  # to name a language the chat speaks, written however the reader likes.
   defp call_set_language(channel, nickname, code) when code in ~w(none off) do
     case Server.set_locale(channel, nickname, nil) do
       :ok ->

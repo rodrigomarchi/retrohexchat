@@ -328,7 +328,7 @@ seo.console: ## Read a webmaster console into reports/seo/<UTC stamp>-<source>.{
 seo.indexnow: ## Announce every sitemap URL to IndexNow, after a change that moves no page's date (ARGS=--dry-run)
 	python3 scripts/seo_indexnow.py $(ARGS)
 
-seo.sitemap.submit: ## Ask Google to read the sitemap again (needs GOOGLE_SERVICE_ACCOUNT_FILE; make deploy runs it after the rollout)
+seo.sitemap.submit: ## Ask Google and Bing to read the sitemap again (needs GOOGLE_SERVICE_ACCOUNT_FILE or BING_WEBMASTER_API_KEY; make deploy runs it after the rollout)
 	python3 scripts/seo_sitemap_submit.py
 
 seo.test: ## Run the SEO tooling tests (no network)

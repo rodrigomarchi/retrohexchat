@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from typing import Callable
 
 from seo import report as rpt
-from seo.transport import Fetch, FetchError
+from seo.transport import Fetch, FetchError, Post
 
 API_BASE = "https://ssl.bing.com/webmaster/api.svc/json/"
 SOURCE = "bing"
@@ -99,6 +99,14 @@ class Client:
         if not isinstance(body, dict) or "d" not in body:
             raise BingError(f"{method}: unexpected response {str(body)[:200]}")
         return body["d"]
+
+
+def submit_sitemap(post: Post, api_key: str, site: str, sitemap_url: str) -> None:
+    """Asks Bing to read ``sitemap_url`` again; it left a sitemap unread for weeks when not asked."""
+    query = urllib.parse.urlencode({"apikey": api_key})
+    status, body = post(f"{API_BASE}SubmitFeed?{query}", {"siteUrl": site, "feedUrl": sitemap_url})
+    if status >= 400:
+        raise _error("SubmitFeed", status, body)
 
 
 def _error(method: str, status: int, body: str) -> BingError:

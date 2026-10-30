@@ -48,7 +48,7 @@ defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
             "help",
             "Open the chat before you have an account: read the public channels live, then sign in to take part."
           ),
-        see_also: ["connecting", "channels", "feature-public-archive"]
+        see_also: ["connecting", "channels"]
       },
       %{
         id: "channels",

@@ -71,9 +71,9 @@ into it*).
 ### 7.0.1 The pages of the site: window groups
 
 A page of the site opens over the chat as a **group of windows**, one per
-section, the way the chat's features each have a window of their own. Help, the
-archive, an invitation and sign-in are one window each (ids `doc-help`,
-`doc-archive`, `doc-join`, `connect`). Every page lives in a slot
+section, the way the chat's features each have a window of their own. Help, an
+invitation and sign-in are one window each (ids `doc-help`, `doc-join`,
+`connect`). Every page lives in a slot
 (`Site.Registry`): all pages of the site share `:site`, the way a browser shows
 one page at a time, so help and sign-in open beside the page, not instead of it.
 

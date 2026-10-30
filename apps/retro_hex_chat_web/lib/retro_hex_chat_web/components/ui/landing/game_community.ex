@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   @moduledoc """
   The people around a Retro Game, on its home (`Landing.GameHome`): who is
-  playing it now, who is winning, and what is said in its channel — one
+  playing it now, who is winning, and the way to its channel — one
   component per tab.
 
   It is the part of the page that changes every day, which is what makes the
@@ -12,8 +12,8 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   (`:wins` or `:best`), `week` and `computer` (standings), `ratings` (Elo,
   shown for a versus game), `playing_now` (nicknames in a match right now),
   `live` (the matches among them anybody may watch), `challenge` and
-  `challenge_leader` (the week's challenge), `recent` (match cards), `chatter`
-  (archived lines) and `week_count` — and `nick_locales`, the language of
+  `challenge_leader` (the week's challenge), `recent` (match cards) and
+  `week_count` — and `nick_locales`, the language of
   every nickname among them (`nickname => locale`), looked up once by the page,
   for the flag drawn before each name.
   """
@@ -156,7 +156,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   end
 
   @doc """
-  The game's channel: how busy it is, its last lines, and the way in. The
+  The game's channel: how busy it is and the way in. The
   same corner closes an arcade game's home, where a game played is a game
   somebody started.
   """
@@ -165,16 +165,6 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     ~H"""
     <h2 id="game-community-heading" class="text-sm font-bold mb-1">{@channel}</h2>
     <p class="text-sm mb-3" data-testid="game-community-count">{week_count(@week_count)}</p>
-
-    <div :if={@chatter != []} class="mb-3" data-testid="game-community-chatter">
-      <h3 class="text-sm font-bold mb-1">{dgettext("landing", "In the channel")}</h3>
-      <ul class="text-sm space-y-1">
-        <li :for={line <- @chatter} class="break-words">
-          <.nick_flag locale={Map.get(@nick_locales, line.author)} />
-          <strong>{line.author}</strong>: {line.text}
-        </li>
-      </ul>
-    </div>
 
     <.button patch={@channel_path} data-testid="game-community-channel">
       <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>

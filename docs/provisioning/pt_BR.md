@@ -30,7 +30,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 # 273 pessoas somadas, o maior com 57. Demanda distribuida, sem dono.
 /join #brasil
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category social
 /topic Canal brasileiro — bate-papo em português. Chega aí, senta e fica à vontade.
@@ -39,7 +38,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 # #jornal — manchetes por feed, não por opinião.
 /join #jornal
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category news
 /topic Jornal — manchetes de Folha, BBC Brasil e Poder360, direto do feed. !Zeca fontes lista tudo.
@@ -47,7 +45,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 /join #tecnologia
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category tech
 /topic Tecnologia — Tecnoblog, Canaltech, Olhar Digital e Manual do Usuário. !Bento fontes para a lista.
@@ -55,7 +52,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 /join #hardware
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category tech
 /topic Hardware — placa, gabinete, gambiarra e upgrade. Fofoca de silício por conta do !Juca.
@@ -63,7 +59,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 /join #programacao
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category dev
 /topic Programação — TabNews e Meio Bit no fio. Dúvida de linguagem é com o projeto dela; aqui é o boteco.
@@ -71,7 +66,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 /join #economia
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category money
 /topic Economia — InfoMoney, Exame e Valor. !Iara fontes mostra de onde vem cada manchete.
@@ -79,7 +73,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 /join #futebol
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category sports
 /topic Futebol — ge e Trivela no ar. Tabela, bola rolando e opinião de quem não joga há vinte anos.
@@ -87,7 +80,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 /join #ciencia
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category science
 /topic Ciência — Superinteressante e Galileu. Pergunta idiota não existe, existe pergunta não feita.
@@ -95,7 +87,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 /join #musica
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category culture
 /topic Música — POPline e TMDQA no fio. Lançamento, show e briga de fandom.
@@ -103,7 +94,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 /join #jogos
 /cs register
-/cs archive on
 /cs language pt_BR
 /cs category news
 /topic Jogos — Adrenaline no fio. Para jogar de verdade, abre o menu Games: 18 clássicos rodando no navegador.
@@ -404,8 +394,7 @@ and nowhere else.
 | `#musica` | `culture` | **Tuca** | POPline, TMDQA |
 | `#jogos` | `games` | **Vito** | Adrenaline |
 
-**Sansao** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Brazilian Portuguese (`/cs language pt_BR`).
+**Sansao** stands in all ten and greets in none of them. All channels are `+tn` and are marked Brazilian Portuguese (`/cs language pt_BR`).
 Every bot is marked Brazilian Portuguese too: `/bot set <Bot> language pt_BR`
 follows its `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

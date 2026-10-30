@@ -25,7 +25,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #polska
 /cs register
-/cs archive on
 /cs language pl
 /cs category social
 /topic Kanał polski — wchodź, siadaj, rozmawiamy. Kawa na koszt firmy.
@@ -33,7 +32,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #wiadomosci
 /cs register
-/cs archive on
 /cs language pl
 /cs category news
 /topic Wiadomości — Interia, Polsat News i Wprost, prosto z kanału RSS. !Zofia zrodla pokazuje listę.
@@ -41,7 +39,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #technologie
 /cs register
-/cs archive on
 /cs language pl
 /cs category tech
 /topic Technologie — Spider's Web i Antyweb. Wsparcie projektu jest w projekcie; tutaj się rozmawia.
@@ -49,7 +46,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #komputery
 /cs register
-/cs archive on
 /cs language pl
 /cs category tech
 /topic Komputery — Benchmark, PurePC i Komputer Świat. Podzespoły, składanie i modyfikacje.
@@ -57,7 +53,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #bezpieczenstwo
 /cs register
-/cs archive on
 /cs language pl
 /cs category security
 /topic Bezpieczeństwo — Niebezpiecznik i Sekurak. Czytaj przed łataniem, nie po.
@@ -65,7 +60,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #gry
 /cs register
-/cs archive on
 /cs language pl
 /cs category news
 /topic Gry — CD-Action i Eurogamer Polska. Żeby naprawdę zagrać, otwórz menu Games: 18 klasyków w przeglądarce.
@@ -73,7 +67,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #kibic
 /cs register
-/cs archive on
 /cs language pl
 /cs category sports
 /topic Kibic — Przegląd Sportowy, Sportowe Fakty i TVP Sport. Tabela, transfery i wiadomo co.
@@ -81,7 +74,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #nauka
 /cs register
-/cs archive on
 /cs language pl
 /cs category science
 /topic Nauka — Crazy Nauka i National Geographic Polska. Głupich pytań nie ma, są niezadane.
@@ -89,7 +81,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #gospodarka
 /cs register
-/cs archive on
 /cs language pl
 /cs category money
 /topic Gospodarka — Bankier, Money.pl i Business Insider Polska. Nagłówek to nie rekomendacja.
@@ -97,7 +88,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #film
 /cs register
-/cs archive on
 /cs language pl
 /cs category culture
 /topic Film — Filmweb na łączach. Premiery, seriale i spory o zakończenia.
@@ -397,8 +387,7 @@ matters after a paste.
 | `#gospodarka` | `money` | **Halina** | Bankier, Money.pl, Business Insider Polska |
 | `#film` | `culture` | **Ewa** | Filmweb |
 
-**Stroz** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Polish (`/cs language pl`).
+**Stroz** stands in all ten and greets in none of them. All channels are `+tn` and are marked Polish (`/cs language pl`).
 Every bot is marked Polish too: `/bot set <Bot> language pl` follows its
 `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

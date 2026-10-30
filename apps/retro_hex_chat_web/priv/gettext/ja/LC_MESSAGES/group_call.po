@@ -258,76 +258,76 @@ msgstr "グループコールを使用するには、NickServに登録する必�
 msgid "%{active}/%{total} active"
 msgstr "%{active}/%{total} アクティブ"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:568
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:544
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{count} conference camera."
 msgid_plural "%{actor} allowed %{count} conference cameras."
 msgstr[0] "%{actor} 許可 %{count} 会議用カメラ。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:554
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:530
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{count} conference microphone."
 msgid_plural "%{actor} allowed %{count} conference microphones."
 msgstr[0] "%{actor} 許可 %{count} 会議のマイクロフォン。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:651
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:627
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target} to share a screen again."
 msgstr "%{actor} は %{target} を許しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:662
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:638
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target} to speak."
 msgstr "%{actor}が%{target}の発言を許可しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:615
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:591
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target}'s conference camera."
 msgstr "%{actor} は %{target} の会議のカメラを許可しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:593
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:569
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target}'s conference microphone."
 msgstr "%{actor} は %{target} の会議のマイクロフォンを許可しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:680
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:656
 #, elixir-autogen, elixir-format
 msgid "%{actor} locked the conference."
 msgstr "%{actor}は会議を締めました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:526
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:502
 #, elixir-autogen, elixir-format
 msgid "%{actor} muted %{count} conference microphone."
 msgid_plural "%{actor} muted %{count} conference microphones."
 msgstr[0] "%{actor} ミュート %{count} 会議用マイク。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:582
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:558
 #, elixir-autogen, elixir-format
 msgid "%{actor} muted %{target}'s conference microphone."
 msgstr "%{actor} ミュート %{target} の会議用マイク。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:673
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:649
 #, elixir-autogen, elixir-format
 msgid "%{actor} removed %{target} from the conference."
 msgstr "%{actor} 会議から %{target} を削除しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:640
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:616
 #, elixir-autogen, elixir-format
 msgid "%{actor} stopped %{target}'s screen share."
 msgstr "%{actor} は %{target} の画面共有を停止しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:540
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:516
 #, elixir-autogen, elixir-format
 msgid "%{actor} turned off %{count} conference camera."
 msgid_plural "%{actor} turned off %{count} conference cameras."
 msgstr[0] "%{actor}が%{count}台の会議カメラをオフにしました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:604
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:580
 #, elixir-autogen, elixir-format
 msgid "%{actor} turned off %{target}'s conference camera."
 msgstr "%{actor} は %{target} の会議カメラをオフにしました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:684
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:660
 #, elixir-autogen, elixir-format
 msgid "%{actor} unlocked the conference."
 msgstr "%{actor} 会議を解除しました。"
@@ -448,12 +448,12 @@ msgstr "%{status}/max %{max}"
 msgid "%{subs} subs / %{routes} routes"
 msgstr "%{subs} サブ/ %{routes} ルート"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:625
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:601
 #, elixir-autogen, elixir-format
 msgid "%{target} started sharing a screen."
 msgstr "%{target} 画面共有を開始"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:632
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:608
 #, elixir-autogen, elixir-format
 msgid "%{target} stopped sharing a screen."
 msgstr "%{target} は画面共有を停止しました。"
@@ -641,7 +641,7 @@ msgstr "コンパクトな会議制御"
 msgid "Conference connection closes"
 msgstr "会議の接続は閉まります"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:488
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:464
 #, elixir-autogen, elixir-format
 msgid "Conference ended in %{channel}."
 msgstr "会議は %{channel} で終了しました。"
@@ -656,7 +656,7 @@ msgstr "会議のレイアウト制御"
 msgid "Conference media"
 msgstr "会議媒体"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:688
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:664
 #, elixir-autogen, elixir-format
 msgid "Conference moderation updated."
 msgstr "会議のモデレーションが更新されました。"
@@ -676,7 +676,7 @@ msgstr "会議参加者"
 msgid "Conference reactions"
 msgstr "会議の反応"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:455
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:431
 #, elixir-autogen, elixir-format
 msgid "Conference started in %{channel}."
 msgstr "%{channel} で始まる会議。"

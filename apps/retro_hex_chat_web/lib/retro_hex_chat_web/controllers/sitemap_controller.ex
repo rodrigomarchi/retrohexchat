@@ -17,9 +17,6 @@ defmodule RetroHexChatWeb.SitemapController do
   # inside the protocol's fifty, and small enough that a failed fetch retries
   # two megabytes rather than eight.
   @chunk_size 100
-  # A showcase entry is one URL, not one per locale, so far more fit per file.
-  @showcase_chunk_size 50
-  @archive_chunk "archive.xml"
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -27,15 +24,6 @@ defmodule RetroHexChatWeb.SitemapController do
   end
 
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  # The archive chunk is built per request while every other chunk is built
-  # once. It has to be: a channel publishes a new day every day it is used, and
-  # turning the archive off has to remove the pages from here too. A chunk
-  # cached in `:persistent_term` would keep offering a page that stopped
-  # answering, which is the one failure this feature cannot have.
-  def show(conn, %{"name" => @archive_chunk}) do
-    send_xml(conn, xml_resource(build_archive_urlset()))
-  end
-
   def show(conn, %{"name" => name}) do
     case Map.fetch(sitemaps().chunks, name) do
       {:ok, xml} -> send_xml(conn, xml)
@@ -97,18 +85,9 @@ defmodule RetroHexChatWeb.SitemapController do
   @spec build_sitemaps([map()]) :: %{index: map(), chunks: %{String.t() => map()}}
   defp build_sitemaps(topics) do
     chunk_entries =
-      chunks(PublicUrls.localized_paths(topics), "public", @chunk_size, &build_urlset/1) ++
-        chunks(
-          PublicUrls.showcase_paths(),
-          "showcase",
-          @showcase_chunk_size,
-          &build_canonical_urlset/1
-        )
+      chunks(PublicUrls.localized_paths(topics), "public", @chunk_size, &build_urlset/1)
 
-    # The archive's name is in the index but its body is not built here: the
-    # index is a list of names and those do not change, while what the archive
-    # chunk contains changes every day.
-    names = Enum.map(chunk_entries, &elem(&1, 0)) ++ [@archive_chunk]
+    names = Enum.map(chunk_entries, &elem(&1, 0))
 
     %{
       index: names |> build_sitemap_index() |> xml_resource(),
@@ -155,25 +134,6 @@ defmodule RetroHexChatWeb.SitemapController do
     |> IO.iodata_to_binary()
   end
 
-  # One canonical URL per archived day, and no hreflang at all: a conversation
-  # has no translated version, so the archive's pages are the same URL for
-  # every reader.
-  defp build_archive_urlset, do: build_canonical_urlset(PublicUrls.archive_paths())
-
-  # One canonical URL per path, no hreflang: the showcase ships in English only.
-  defp build_canonical_urlset(entries) do
-    [
-      ~s(<?xml version="1.0" encoding="UTF-8"?>\n),
-      ~s(<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n),
-      Enum.map(entries, fn
-        {path, lastmod} -> url_entry(SEO.site_url(path), [], lastmod)
-        path -> url_entry(SEO.site_url(path), [])
-      end),
-      "</urlset>\n"
-    ]
-    |> IO.iodata_to_binary()
-  end
-
   defp localized_url_entries({path, lastmod}) do
     alternate_links =
       path
@@ -185,7 +145,7 @@ defmodule RetroHexChatWeb.SitemapController do
     |> Enum.map(&url_entry(&1.href, alternate_links, lastmod))
   end
 
-  defp url_entry(loc, alternate_links, lastmod \\ nil) do
+  defp url_entry(loc, alternate_links, lastmod) do
     [
       "  <url>\n",
       "    <loc>",

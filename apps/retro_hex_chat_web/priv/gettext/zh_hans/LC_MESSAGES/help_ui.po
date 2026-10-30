@@ -3431,11 +3431,6 @@ msgstr "——网站的页面,文档和设计系统,加上通过帮助查看器�
 msgid "Bringing one of a page's windows forward gives the address bar that page's address. Closing a page's last window takes you back to the chat, at the address of the conversation in front."
 msgstr "将一个页面窗口向前移动给该页面地址的地址栏。 关闭一个页面的最后一个窗口 让你回到聊天, 在前面的谈话地址。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site. A page opens as a set of windows over the chat, one for each of its sections, laid out in a cascade with the page's first window in front; the help, a public archive, an invitation and the Connect window open as one window each. Moving between them never reloads the page — the chat keeps running behind whatever you are reading."
-msgstr "RetroHexChat有一个桌面. 聊天就靠它,网站的每一页都这样。 一个页面作为一组窗口在聊天时打开,每个部分各一个,放在一个级联中,页面的第一个窗口放在前面;帮助,公共档案,邀请和连接窗口各作为一个窗口打开. 在他们之间移动永远不会重新装入页面——聊天会一直运行在您正在读到的任何内容后面."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "The Home"
@@ -3781,3 +3776,8 @@ msgstr "The slider sets the volume, which is kept for next time; the speaker bes
 #, elixir-autogen, elixir-format
 msgid "Hex Radio is switched off when a sound or a video from a message starts"
 msgstr "当消息中的声音或视频开始时, Hex 电台会关闭"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site. A page opens as a set of windows over the chat, one for each of its sections, laid out in a cascade with the page's first window in front; the help, an invitation and the Connect window open as one window each. Moving between them never reloads the page — the chat keeps running behind whatever you are reading."
+msgstr "RetroHexChat有一个桌面. 聊天就靠它,网站的每一页都这样。 一个页面作为一组窗口在聊天时打开,每个部分各一个,放在一个级联中,页面的第一个窗口放在前面;帮助,邀请和连接窗口各作为一个窗口打开. 在他们之间移动永远不会重新装入页面——聊天会一直运行在您正在读到的任何内容后面."

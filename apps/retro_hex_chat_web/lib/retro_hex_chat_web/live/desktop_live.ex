@@ -3,10 +3,10 @@ defmodule RetroHexChatWeb.DesktopLive do
   The one desktop: the chat, and every page of the site as a window over it.
 
   It answers the home (`/`), a channel's address (`/c/:channel`), every page
-  of the site, help, the archive, invitations and the sign-in window — in
+  of the site, help, invitations and the sign-in window — in
   every locale, in one `live_session`. `Site.Documents` opens the page an
   address names (`Site.Registry`) as the windows it declares — a group for a
-  page of the site, one window for help, the archive, an invitation or
+  page of the site, one window for help, an invitation or
   sign-in; the chat is composed
   from `components/ui/` and the `ChatLive.*` handlers, and a visitor sees the
   same screen through `ChatLive.Visitor`'s gate.

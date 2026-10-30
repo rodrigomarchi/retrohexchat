@@ -15,14 +15,14 @@ defmodule RetroHexChatWeb.Site.Page do
 
   `slot/0` says where a page opens. Every page of the site shares the `:site`
   slot, the way a browser shows one page at a time, and opens as a group of
-  windows, one per section; help, the archive, an invitation and sign-in each
+  windows, one per section; help, an invitation and sign-in each
   have a window of their own, so reading the help does not close the page it
   was opened from.
 
   `use RetroHexChatWeb.Site.Page` brings what every page and its bodies need.
   """
 
-  @type slot :: :site | :help | :archive | :join | :connect
+  @type slot :: :site | :help | :join | :connect
 
   @typedoc "What the desktop knows about the reader a page is loaded for."
   @type ctx :: %{
@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.Site.Page do
   end
 
   defmodule NotFoundError do
-    @moduledoc "An address that names no page — an unknown game, a day the archive does not publish: a real 404."
+    @moduledoc "An address that names no page — an unknown game: a real 404."
     defexception message: "no such page", plug_status: 404
   end
 end

@@ -179,7 +179,7 @@ msgstr "パーミッション"
 msgid "Prevents users from sending"
 msgstr "ユーザーの送信を防止"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Private (+p)"
 msgstr "プライベート (+p)"
@@ -212,7 +212,7 @@ msgstr "シークレット (+s)"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:57
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:56
@@ -785,7 +785,7 @@ msgstr "チャネルの調査"
 #: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "チャンネルリスト"
@@ -939,7 +939,7 @@ msgstr "重要な注意事項"
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:77
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Invite Only"
 msgstr "招待のみ"
@@ -1747,11 +1747,6 @@ msgstr "キーなしで参加する人、または間違ったキーで、悪い
 msgid "A regular member who tries to speak gets an error that says they need voice."
 msgstr "A regular member who tries to speak gets an error that says they need voice."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "A secret channel cannot have a public archive. A published archive stops being public when the channel becomes secret."
-msgstr "秘密のチャンネルは公開アーカイブを持たない。 公開されたアーカイブは、チャネルが秘密になったときに公開される。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Add a second owner when you run a channel together with someone, so both of you have full control. A channel can have more than one owner at the same time. To hand the channel over and step down yourself, use a transfer instead."
@@ -2024,7 +2019,7 @@ msgstr "登録されたチャンネルでは、モードと招待例外が保存
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "In a registered channel the mode is saved and comes back after a restart."
 msgstr "登録されたチャンネルでは、モードが保存され、再起動後に戻ってきます。"
@@ -2193,7 +2188,7 @@ msgstr "Only channel operators and owners can set or remove the throttle."
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Only channel operators and owners can set or remove this mode."
 msgstr "Only channel operators and owners can set or remove this mode."
@@ -2278,11 +2273,6 @@ msgstr "プライベートモードは whois または hover カードからチ�
 msgid "Private mode does not stop anyone from joining. A person who types the name can still enter."
 msgstr "プライベートモードは、誰が参加しても停止しません。 お名前を入力した方は、まだ入力可能です。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:81
-#, elixir-autogen, elixir-format
-msgid "Public Archive"
-msgstr "パブリックアーカイブ"
-
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Ranks last while people stay in the channel. In an unregistered channel, if you leave after the transfer while others are still inside, you come back as a regular member."
@@ -2361,7 +2351,7 @@ msgstr "Remove voice from Alice"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Rules and limits"
@@ -2377,7 +2367,7 @@ msgstr "空のフィールドを保存すると、メッセージが削除され
 msgid "Secret channels are not listed for people outside them. Private channels are listed without their name."
 msgstr "秘密のチャンネルは、それら以外の人々のためにリストされていない。 プライベートチャンネルは名前を付けずにリストされています。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Secret mode does not stop anyone from joining. A person who types the name can still enter."
 msgstr "秘密モードは、誰が参加しても止まらない。 お名前を入力した方は、まだ入力可能です。"
@@ -2700,7 +2690,7 @@ msgstr "一度に限られた数のチャンネルにすることができます
 msgid "A channel cannot be private and secret at the same time. To switch, remove secret mode first, then set private mode:"
 msgstr "チャンネルはプライベートで、同時に秘密にすることはできません。 モードを切り替えるには、シークレットモードを最初に削除し、プライベートモードを設定します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "A channel cannot be secret and private at the same time. To switch, remove private mode first, then set secret mode:"
 msgstr "チャンネルは秘密と秘密を同時にすることはできません。 モードを切り替えるには、プライベートモードを最初に削除し、シークレットモードを設定します。"
@@ -2761,11 +2751,6 @@ msgstr "/cs"
 msgid "/cs category news"
 msgstr "/cs category news"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A channel can carry a small coloured plaque beside its name that says what it is about — news, games, sport — so a list of rooms can be read at a glance. It sits ahead of the channel's language flag in its tab, the conversations list, the channel list, above the conversation and in its public archive."
-msgstr "チャンネル名の横には、そのチャンネルの話題（ニュース、ゲーム、スポーツなど）を示す小さな色付きラベルを付けられ、ルームの一覧をひと目で把握できます。ラベルはチャンネルの言語の旗の前に置かれ、タブ、会話リスト、チャンネルリスト、会話の上部、公開アーカイブに表示されます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "A channel nobody gave a category shows no plaque."
@@ -2815,3 +2800,8 @@ msgstr "レトロゲームのチャンネルはゲームがテーマです。"
 #, elixir-autogen, elixir-format
 msgid "The founder of a registered channel chooses it with /cs category followed by one of the names below, or under Channel Central ▸ Registration ▸ Category. /cs category none takes it away, and /cs category alone shows the current one."
 msgstr "登録済みチャンネルの創設者が /cs category に下の名前のどれかを付けて選ぶか、チャンネルセントラル ▸ 登録 ▸ カテゴリー で選びます。/cs category none で解除し、/cs category だけなら現在のカテゴリーを表示します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can carry a small coloured plaque beside its name that says what it is about — news, games, sport — so a list of rooms can be read at a glance. It sits ahead of the channel's language flag in its tab, the conversations list, the channel list and above the conversation."
+msgstr "チャンネル名の横には、そのチャンネルの話題（ニュース、ゲーム、スポーツなど）を示す小さな色付きラベルを付けられ、ルームの一覧をひと目で把握できます。ラベルはチャンネルの言語の旗の前に置かれ、タブ、会話リスト、チャンネルリスト、会話の上部に表示されます。"

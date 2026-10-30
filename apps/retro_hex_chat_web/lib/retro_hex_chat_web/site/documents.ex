@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.Site.Documents do
   to the front.
 
   A page of the site is a group of windows, one per section (`Site.Window`),
-  laid out together by the window manager; help, the archive, an invitation
+  laid out together by the window manager; help, an invitation
   and sign-in are one window each. Each lives in a slot (`Page.slot/0`): every
   page of the site shares the `:site` slot, the way a browser shows one page
   at a time, while the others keep their own.
@@ -132,13 +132,13 @@ defmodule RetroHexChatWeb.Site.Documents do
 
   @doc """
   Whether the desktop carries the site's About window: beside a page of the
-  site or the archive — the pages that are read and indexed, whose language
-  links it holds — and always once the chat is live. The chat's own addresses
+  site — the pages that are read and indexed, whose language links it holds —
+  and always once the chat is live. The chat's own addresses
   get it with the chat.
   """
   @spec carries_about?(%{atom() => doc()}, boolean()) :: boolean()
   def carries_about?(_docs, true), do: true
-  def carries_about?(docs, _live_ready), do: is_map_key(docs, :site) or is_map_key(docs, :archive)
+  def carries_about?(docs, _live_ready), do: is_map_key(docs, :site)
 
   @doc """
   What the taskbar shows for the pages on screen, in the order they came to the
@@ -198,8 +198,7 @@ defmodule RetroHexChatWeb.Site.Documents do
       {:redirect, to} ->
         redirect(socket, to: to)
 
-      # Reached by a patch — a pager to a day since withdrawn — the address is
-      # loaded whole, so the reader gets the same 404 a robot does.
+      # Reached by a patch, the address is loaded whole, so the reader gets the same 404 a robot does.
       :not_found ->
         if connected?(socket), do: redirect(socket, to: address), else: raise(NotFoundError)
     end

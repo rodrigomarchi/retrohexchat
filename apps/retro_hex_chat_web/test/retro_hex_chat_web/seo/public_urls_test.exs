@@ -6,7 +6,6 @@ defmodule RetroHexChatWeb.SEO.PublicUrlsTest do
 
   @moduletag :integration
 
-  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Repo
   alias RetroHexChat.SEO.IndexNow
@@ -37,46 +36,6 @@ defmodule RetroHexChatWeb.SEO.PublicUrlsTest do
       urls = PublicUrls.pages_changed_since(Date.from_iso8601!(String.slice(lastmod, 0, 10)))
 
       assert SEO.site_url(path) in urls
-    end
-  end
-
-  describe "archive_day/1" do
-    setup do
-      channel = "#idx#{System.unique_integer([:positive])}"
-
-      {:ok, _} =
-        Repo.insert(%RegisteredChannel{
-          name: channel,
-          founder_nickname: "Founder",
-          registered_at: DateTime.utc_now(),
-          last_activity_at: DateTime.utc_now()
-        })
-
-      {:ok, _} = Archive.publish(channel)
-
-      {:ok, message} =
-        Queries.insert_message(%{
-          channel_name: channel,
-          author_nickname: "Speaker",
-          content: "worth finding",
-          plain_content: "worth finding",
-          type: "message"
-        })
-
-      %{slug: String.trim_leading(channel, "#"), day: DateTime.to_date(message.inserted_at)}
-    end
-
-    test "names the channel's index and the day's page", ctx do
-      urls = PublicUrls.archive_day(ctx.day)
-
-      assert "https://retrohexchat.app/archive/#{ctx.slug}" in urls
-      assert "https://retrohexchat.app/archive/#{ctx.slug}/#{ctx.day}" in urls
-    end
-
-    test "a day the channel was quiet adds nothing for it", ctx do
-      urls = PublicUrls.archive_day(Date.add(ctx.day, -3))
-
-      refute Enum.any?(urls, &String.contains?(&1, "/archive/#{ctx.slug}"))
     end
   end
 

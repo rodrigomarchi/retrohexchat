@@ -31,7 +31,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #zhongwen
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category social
 /topic 中文频道 — 进来坐，聊聊天。咖啡算店里的。
@@ -39,7 +38,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-tech
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category tech
 /topic 科技 — cnBeta、IT之家、Solidot，直接来自订阅源。!Lifeng sources 显示清单。
@@ -47,7 +45,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-digital
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category tech
 /topic 数码 — 爱范儿和极客公园。产品、评测，以及围绕它们的生意。
@@ -55,7 +52,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-apps
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category tech
 /topic 软件 — 少数派和小众软件。工具、玩法、值得装的东西。
@@ -63,7 +59,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-blog
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category tech
 /topic 博客 — 月光博客、阮一峰、酷壳。比任何平台都活得久的独立写作。
@@ -71,7 +66,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-dev
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category dev
 /topic 开发 — InfoQ 中文站在线上。项目的支持在项目那边；这里是闲聊。
@@ -79,7 +73,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-open
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category dev
 /topic 开源 — 开源中国。发布、内核、发行版。
@@ -87,7 +80,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-ai
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category ai
 /topic 人工智能 — 雷锋网和量子位。模型、论文、落地和吹牛。
@@ -95,7 +87,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-games
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category news
 /topic 游戏 — 机核和游研社。真要玩的话，打开 Games 菜单：18 款经典直接在浏览器里跑。
@@ -103,7 +94,6 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #cn-money
 /cs register
-/cs archive on
 /cs language zh_hans
 /cs category money
 /topic 商业 — 钛媒体在线上。标题不是投资建议。
@@ -393,8 +383,7 @@ matters after a paste.
 | `#cn-games` | `games` | **Youxi** | 机核, 游研社 |
 | `#cn-money` | `money` | **Qianbao** | 钛媒体 |
 
-**Weishi** stands in all ten and greets in none of them. All channels are `+tn`,
-publish their archive and are marked Simplified Chinese (`/cs language zh_hans`).
+**Weishi** stands in all ten and greets in none of them. All channels are `+tn` and are marked Simplified Chinese (`/cs language zh_hans`).
 Every bot is marked Simplified Chinese too: `/bot set <Bot> language zh_hans`
 follows its `/bot create` and draws the same flag beside its nickname.
 Every room also says what it is about: the `category` column is the

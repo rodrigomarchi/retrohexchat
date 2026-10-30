@@ -24,9 +24,7 @@ defmodule RetroHexChatWeb.Site.Head do
           robots: String.t(),
           og_image: map(),
           og_type: String.t(),
-          json_ld: [String.t()],
-          prev_url: String.t() | nil,
-          next_url: String.t() | nil
+          json_ld: [String.t()]
         }
 
   @doc "The head a page describes itself with, from the map it loaded."
@@ -44,9 +42,7 @@ defmodule RetroHexChatWeb.Site.Head do
       robots: page[:robots] || "index, follow",
       og_image: page[:og_image] || SEO.social_image(),
       og_type: page[:og_type] || "website",
-      json_ld: page[:json_ld] || [SEO.software_application_json_ld(description)],
-      prev_url: page[:prev_url],
-      next_url: page[:next_url]
+      json_ld: page[:json_ld] || [SEO.software_application_json_ld(description)]
     }
   end
 

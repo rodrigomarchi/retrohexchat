@@ -11,7 +11,6 @@ defmodule RetroHexChatWeb.IrcGuidesTest do
 
   @moduletag :liveview
 
-  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Commands.MircParity
   alias RetroHexChat.Repo
@@ -85,77 +84,6 @@ defmodule RetroHexChatWeb.IrcGuidesTest do
         end
       end
     end
-  end
-
-  describe "/irc-chat rooms" do
-    test "a server with no published room shows no window for them", %{conn: conn} do
-      assert conn |> document("/irc-chat") |> Floki.find("#site-open-rooms") == []
-    end
-
-    test "lists a room that publishes its archive, linking to it", %{conn: conn} do
-      channel = "#guide#{System.unique_integer([:positive])}"
-
-      {:ok, _} =
-        Repo.insert(%RegisteredChannel{
-          name: channel,
-          founder_nickname: "Founder",
-          registered_at: DateTime.utc_now(),
-          last_activity_at: DateTime.utc_now()
-        })
-
-      {:ok, _} = Archive.publish(channel)
-
-      {:ok, _} =
-        Queries.insert_message(%{
-          channel_name: channel,
-          author_nickname: "Speaker",
-          content: "hello",
-          plain_content: "hello",
-          type: "message"
-        })
-
-      document = document(conn, "/irc-chat")
-
-      assert ("/archive/" <> String.trim_leading(channel, "#")) in hrefs(document)
-      assert document |> Floki.find("#site-open-rooms") |> Floki.text() =~ channel
-    end
-
-    test "draws the language of a room whose founder named one", %{conn: conn} do
-      spoken = published_room("#falado", "pt_BR")
-      unsaid = published_room("#mudo", nil)
-
-      rooms = conn |> document("/irc-chat") |> Floki.find(~s([data-testid="open-rooms"] li))
-
-      assert [flag] = rooms |> room(spoken) |> Floki.find(~s([data-testid="channel-flag"]))
-      assert Floki.attribute(flag, "data-locale") == ["pt_BR"]
-      assert rooms |> room(unsaid) |> Floki.find(~s([data-testid="channel-flag"])) == []
-    end
-  end
-
-  defp published_room(prefix, locale) do
-    channel = prefix <> Integer.to_string(System.unique_integer([:positive]))
-
-    {:ok, _} =
-      Repo.insert(%RegisteredChannel{
-        name: channel,
-        founder_nickname: "Founder",
-        registered_at: DateTime.utc_now(),
-        last_activity_at: DateTime.utc_now(),
-        locale: locale
-      })
-
-    {:ok, _} = Archive.publish(channel)
-
-    {:ok, _} =
-      Queries.insert_message(%{
-        channel_name: channel,
-        author_nickname: "Speaker",
-        content: "hello",
-        plain_content: "hello",
-        type: "message"
-      })
-
-    channel
   end
 
   defp room(rooms, channel), do: Enum.filter(rooms, &(Floki.text(&1) =~ channel))

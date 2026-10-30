@@ -3953,11 +3953,6 @@ msgstr "— Les pages du site, la documentation et le système de conception, ai
 msgid "Bringing one of a page's windows forward gives the address bar that page's address. Closing a page's last window takes you back to the chat, at the address of the conversation in front."
 msgstr "L'ajout d'une des fenêtres d'une page donne la barre d'adresse de cette page. La fermeture de la dernière fenêtre d'une page vous ramène à la conversation, à l'adresse de la conversation en face."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site. A page opens as a set of windows over the chat, one for each of its sections, laid out in a cascade with the page's first window in front; the help, a public archive, an invitation and the Connect window open as one window each. Moving between them never reloads the page — the chat keeps running behind whatever you are reading."
-msgstr "RetroHexChat a un bureau. Le chat vit dessus, et chaque page du site aussi. Une page s'ouvre comme un ensemble de fenêtres sur le chat, une pour chacune de ses sections, disposée dans une cascade avec la première fenêtre de la page devant; l'aide, une archive publique, une invitation et la fenêtre Connect ouverte comme une fenêtre chacun. Se déplacer entre eux ne recharge jamais la page — le chat continue à courir derrière tout ce que vous lisez."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "The Home"
@@ -4303,3 +4298,8 @@ msgstr "Le curseur fixe le volume, qui est conservé pour la prochaine fois; l'e
 #, elixir-autogen, elixir-format
 msgid "Hex Radio is switched off when a sound or a video from a message starts"
 msgstr "Hex Radio est éteint quand un son ou une vidéo d'un message commence"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site. A page opens as a set of windows over the chat, one for each of its sections, laid out in a cascade with the page's first window in front; the help, an invitation and the Connect window open as one window each. Moving between them never reloads the page — the chat keeps running behind whatever you are reading."
+msgstr "RetroHexChat a un bureau. Le chat vit dessus, et chaque page du site aussi. Une page s'ouvre comme un ensemble de fenêtres sur le chat, une pour chacune de ses sections, disposée dans une cascade avec la première fenêtre de la page devant; l'aide, une invitation et la fenêtre Connect ouverte comme une fenêtre chacun. Se déplacer entre eux ne recharge jamais la page — le chat continue à courir derrière tout ce que vous lisez."

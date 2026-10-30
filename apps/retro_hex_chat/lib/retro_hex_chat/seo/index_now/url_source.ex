@@ -10,7 +10,4 @@ defmodule RetroHexChat.SEO.IndexNow.UrlSource do
 
   @doc "Absolute URLs of the public pages whose content changed on or after `since`."
   @callback pages_changed_since(since :: Date.t()) :: [String.t()]
-
-  @doc "Absolute URLs of the archive pages that a published channel gained on `day`."
-  @callback archive_day(day :: Date.t()) :: [String.t()]
 end

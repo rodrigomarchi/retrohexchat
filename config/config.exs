@@ -80,9 +80,7 @@ config :retro_hex_chat, Oban,
       # Yesterday in each game's channel, once its day is complete.
       {"10 0 * * *", RetroHexChat.Jobs.GameDigestWorker},
       # Monday, after the digest: last week's challenge closes, this week's opens.
-      {"15 0 * * 1", RetroHexChat.Jobs.GameChallengeWorker},
-      # Shortly after midnight UTC, once yesterday's archive pages are complete.
-      {"20 0 * * *", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "archive"}}
+      {"15 0 * * 1", RetroHexChat.Jobs.GameChallengeWorker}
     ]
   ],
   lifeline: [rescue_after: {6, :minutes}],

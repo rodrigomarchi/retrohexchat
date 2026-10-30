@@ -1,18 +1,10 @@
 defmodule RetroHexChatWeb.Site.Pages.IrcChat do
   @moduledoc """
   The page for someone looking for IRC chat rooms: how a room works here —
-  channels, who runs them, how a nickname is kept — and the rooms whose
-  conversation can be read before joining.
-
-  The rooms are the channels that publish their archive. Each one links to a
-  page a search engine can already read, which is the point of listing them.
+  channels, who runs them, how a nickname is kept.
   """
   use RetroHexChatWeb.Site.Page
 
-  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_badges: 1]
-
-  alias RetroHexChat.Chat.Archive
-  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
   alias RetroHexChatWeb.Site.Pages.Guides
@@ -40,24 +32,12 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
     path = PublicPages.path(:irc_chat)
     questions = Guides.questions(@questions)
 
-    rooms =
-      Enum.map(
-        Archive.published_rooms(),
-        &%{
-          name: &1.name,
-          locale: &1.locale,
-          category: &1.category,
-          path: Paths.archive_path(&1.name)
-        }
-      )
-
     {:ok,
      %{
        active_page: :irc_chat,
        questions: questions,
-       rooms: rooms,
        links: Guides.links(:irc_chat),
-       windows: windows(rooms),
+       windows: windows(),
        canonical_path: path,
        json_ld: [Guides.breadcrumb(:irc_chat), SEO.faq_page_json_ld(questions, path)],
        page_title: dgettext("landing", "IRC chat rooms in your browser — Retro Hex Chat"),
@@ -69,9 +49,7 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
      }}
   end
 
-  # A server with no published room has no window to show for them, and no
-  # taskbar button pointing at one.
-  defp windows(rooms) do
+  defp windows do
     [
       Window.intro(
         dgettext("landing", "IRC-style chat rooms in your browser"),
@@ -97,20 +75,8 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
         width: 480,
         body: &keep_your_nickname/1
       )
-    ] ++
-      open_rooms_window(rooms) ++
-      [Guides.questions_window(), Guides.read_next_window()]
+    ] ++ [Guides.questions_window(), Guides.read_next_window()]
   end
-
-  defp open_rooms_window([]), do: []
-
-  defp open_rooms_window(_rooms),
-    do: [
-      Window.new("open-rooms", dgettext("landing", "Read a chat room first"), :icon_chat,
-        width: 420,
-        body: &open_rooms/1
-      )
-    ]
 
   embed_templates "irc_chat/*"
 end

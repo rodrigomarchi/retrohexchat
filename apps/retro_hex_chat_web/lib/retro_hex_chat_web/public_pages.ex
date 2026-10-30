@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.PublicPages do
 
   @doc """
   The canonical path of a page by its name. A page that is not one of these —
-  an archive day, a game — names its own path to the layout instead.
+  a game — names its own path to the layout instead.
   """
   @spec path(atom()) :: String.t()
   def path(page) do

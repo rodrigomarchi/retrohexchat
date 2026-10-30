@@ -117,8 +117,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "cs register",
           "cs drop",
           "cs info",
-          "cs archive",
-          dgettext("help", "public archive"),
           "cs language",
           dgettext("help", "channel language"),
           "cs category",
@@ -138,7 +136,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "chanserv-register",
           "chanserv-access",
           "chanserv-ui",
-          "feature-public-archive",
           "feature-language-flags",
           "channel-categories"
         ]
