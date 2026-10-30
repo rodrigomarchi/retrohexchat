@@ -5,9 +5,9 @@
     make seo.indexnow ARGS=--dry-run          # what would be sent, nothing sent
     python3 scripts/seo_indexnow.py --url https://retrohexchat.app/pt-BR/faq
 
-The server already announces what each release changed and each new archive
-day. Run this after a change that moves no page's date — a shared component, a
-translation — so the engines refetch everything.
+The server already announces what each release changed. Run this after a
+change that moves no page's date — a shared component, a translation — so the
+engines refetch everything.
 
 Stdlib only, like every gate.
 """
