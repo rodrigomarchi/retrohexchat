@@ -29,7 +29,7 @@ msgstr "  %{prefix}%{trigger} — %{description}"
 #: lib/retro_hex_chat/bots/capabilities/help.ex:66
 #, elixir-autogen, elixir-format
 msgid "  %{prefix}help — Show this help message"
-msgstr "%{prefix} 幫助 — 顯示此幫助消息"
+msgstr "  %{prefix}help — 顯示此說明訊息"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:273
 #, elixir-autogen, elixir-format
@@ -44,7 +44,7 @@ msgstr "%{base} = %{sum}"
 #: lib/retro_hex_chat/bots/capabilities/help.ex:50
 #, elixir-autogen, elixir-format
 msgid "%{bot_name} — Available Commands:"
-msgstr "%{bot_name} - 可用的命令 :"
+msgstr "%{bot_name} — 可用指令:"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:214
 #, elixir-autogen, elixir-format
@@ -55,13 +55,13 @@ msgstr "%{message} (%{reason})"
 #, elixir-autogen, elixir-format
 msgid "%{prefix}\nRound over! %{scores}"
 msgstr ""
-"%{prefix} (英語).\n"
-"回合! %{scores}"
+"%{prefix}\n"
+"本回合結束!%{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:350
 #, elixir-autogen, elixir-format
 msgid "%{rank}. %{name}: %{points}pts"
-msgstr "%{rank}. %{name}: %{points}點"
+msgstr "%{rank}. %{name}:%{points} 分"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:638
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:123
@@ -83,12 +83,12 @@ msgstr "15世紀"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:51
 #, elixir-autogen, elixir-format
 msgid "4th from sun"
-msgstr "太陽4號"
+msgstr "離太陽第 4 近"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:205
 #, elixir-autogen, elixir-format
 msgid "A flower"
-msgstr "一個花"
+msgstr "一種花"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:46
 #, elixir-autogen, elixir-format
@@ -98,22 +98,22 @@ msgstr "寶石"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:153
 #, elixir-autogen, elixir-format
 msgid "A single letter"
-msgstr "單字母"
+msgstr "單一字母"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:168
 #, elixir-autogen, elixir-format
 msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
-msgstr "三角回合已經開始了! 用\"特里維亞停止\"來結束它。"
+msgstr "問答回合已在進行中!使用「trivia stop」來結束。"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:147
 #, elixir-autogen, elixir-format
 msgid "Active schedules:"
-msgstr "活動時間表 :"
+msgstr "啟用中的排程:"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:110
 #, elixir-autogen, elixir-format
 msgid "Add a scheduled message"
-msgstr "添加預定的消息"
+msgstr "新增排程訊息"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:196
 #, elixir-autogen, elixir-format
@@ -123,7 +123,7 @@ msgstr "添加一個 RSS 訂閱源"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:465
 #, elixir-autogen, elixir-format
 msgid "Aladdin"
-msgstr "阿拉丁語Name"
+msgstr "阿拉丁"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:239
 #, elixir-autogen, elixir-format
@@ -143,12 +143,12 @@ msgstr "阿爾及利亞"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:76
 #, elixir-autogen, elixir-format
 msgid "Alias for roll"
-msgstr "滾吧"
+msgstr "roll 的別名"
 
 #: lib/retro_hex_chat/bots/server.ex:159
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
-msgstr "已經在頻道中"
+msgstr "已在頻道中"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:292
 #, elixir-autogen, elixir-format
@@ -158,7 +158,7 @@ msgstr "也是一個國家"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:359
 #, elixir-autogen, elixir-format
 msgid "And Paul Allen"
-msgstr "還有保羅·艾倫"
+msgstr "以及保羅·艾倫"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:220
 #, elixir-autogen, elixir-format
@@ -168,12 +168,12 @@ msgstr "阿波羅11號"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:398
 #, elixir-autogen, elixir-format
 msgid "Application Programming Interface"
-msgstr "應用程序編程接口"
+msgstr "應用程式介面"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:60
 #, elixir-autogen, elixir-format
 msgid "Au"
-msgstr "歐"
+msgstr "金"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:291
 #, elixir-autogen, elixir-format
@@ -183,7 +183,7 @@ msgstr "澳大利亞"
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:25
 #, elixir-autogen, elixir-format
 msgid "Auto-moderation — blocked words, spam/flood detection, caps filter"
-msgstr "自動修改——屏蔽的單詞,垃圾郵件/flood檢測,蓋過濾器"
+msgstr "自動管理——封鎖字詞、垃圾訊息/flood 偵測、大寫過濾"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:420
 #, elixir-autogen, elixir-format
@@ -193,12 +193,12 @@ msgstr "阿凡達"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:374
 #, elixir-autogen, elixir-format
 msgid "BEAM VM"
-msgstr "鋼琴VM"
+msgstr "BEAM 虛擬機器"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:225
 #, elixir-autogen, elixir-format
 msgid "Bastille"
-msgstr "巴士底爾"
+msgstr "巴士底監獄"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:384
 #, elixir-autogen, elixir-format
@@ -223,7 +223,7 @@ msgstr "黑白兩色"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:451
 #, elixir-autogen, elixir-format
 msgid "Blocks"
-msgstr "塊"
+msgstr "方塊"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:421
 #, elixir-autogen, elixir-format
@@ -233,27 +233,27 @@ msgstr "藍色外星人"
 #: lib/retro_hex_chat/bots/lifecycle.ex:176
 #, elixir-autogen, elixir-format
 msgid "Bot destroyed"
-msgstr "機器人已銷毀"
+msgstr "機器人已刪除"
 
 #: lib/retro_hex_chat/bots/server.ex:1002
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
-msgstr "炸彈離開"
+msgstr "機器人離開"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:344
 #, elixir-autogen, elixir-format
 msgid "Brain of computer"
-msgstr "計算機大腦"
+msgstr "電腦的大腦"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:426
 #, elixir-autogen, elixir-format
 msgid "British author"
-msgstr "英國作者"
+msgstr "英國作家"
 
 #: lib/retro_hex_chat/bots/capabilities/help.ex:15
 #, elixir-autogen, elixir-format
 msgid "Built-in !help command listing available commands"
-msgstr "內建!幫助命令列出可用的命令"
+msgstr "內建 !help 指令,列出可用的指令"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:321
 #, elixir-autogen, elixir-format
@@ -268,12 +268,12 @@ msgstr "堪培拉"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:191
 #, elixir-autogen, elixir-format
 msgid "Cannot keep %{keep} dice when only rolling %{count}."
-msgstr "無法保存 %{keep} 僅滾動時骰子 %{count}."
+msgstr "只擲 %{count} 顆骰子時,無法保留 %{keep} 顆。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:343
 #, elixir-autogen, elixir-format
 msgid "Central Processing Unit"
-msgstr "中央處理股"
+msgstr "中央處理器"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:21
 #, elixir-autogen, elixir-format
@@ -283,27 +283,27 @@ msgstr "光之城"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:242
 #, elixir-autogen, elixir-format
 msgid "Correct, %{author}! (+%{points} points)"
-msgstr "沒錯 %{author}! (+%{points} 點數)"
+msgstr "答對了,%{author}!(+%{points} 分)"
 
 #: lib/retro_hex_chat/bots/capabilities/custom_commands.ex:18
 #, elixir-autogen, elixir-format
 msgid "Custom bot commands (!prefix trigger)"
-msgstr "自定義bot 命令 (! 前綴觸發)"
+msgstr "自訂機器人指令(!前綴觸發)"
 
 #: lib/retro_hex_chat/bots/capabilities/script.ex:7
 #, elixir-autogen, elixir-format
 msgid "Custom script engine (Coming soon)"
-msgstr "自定義腳本引擎( 很快開始)"
+msgstr "自訂腳本引擎(即將推出)"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:312
 #, elixir-autogen, elixir-format
 msgid "Danish territory"
-msgstr "丹麥領土"
+msgstr "丹麥領地"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:379
 #, elixir-autogen, elixir-format
 msgid "Databases"
-msgstr "數據庫"
+msgstr "資料庫"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:30
 #, elixir-autogen, elixir-format
@@ -313,7 +313,7 @@ msgstr "用於RPG遊戲的Dice滾動(如2d6,d20+5,4d6kh3)"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:180
 #, elixir-autogen, elixir-format
 msgid "Dollar bill"
-msgstr "美元賬單"
+msgstr "美元紙鈔"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:456
 #, elixir-autogen, elixir-format
@@ -333,27 +333,27 @@ msgstr "小學"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:373
 #, elixir-autogen, elixir-format
 msgid "Erlang"
-msgstr "爾朗"
+msgstr "Erlang"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:120
 #, elixir-autogen, elixir-format
 msgid "Error: Dice must have at least 2 sides."
-msgstr "錯誤: 骰子必須至少有兩個邊 。"
+msgstr "錯誤:骰子至少要有 2 面。"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:114
 #, elixir-autogen, elixir-format
 msgid "Error: Maximum %{max} dice allowed."
-msgstr "錯誤:最大值 %{max} 允許骰子。"
+msgstr "錯誤:骰子最多只能有 %{max} 個。"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:117
 #, elixir-autogen, elixir-format
 msgid "Error: Maximum %{max} sides allowed."
-msgstr "錯誤:最大值 %{max} 各方允許。"
+msgstr "錯誤:骰子最多只能有 %{max} 面。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:103
 #, elixir-autogen, elixir-format
 msgid "Famous for rings"
-msgstr "爲戒指而聞名"
+msgstr "以戒指聞名"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:255
 #, elixir-autogen, elixir-format
@@ -374,7 +374,7 @@ msgstr "Feed '%{id}' 已刪除 。"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:340
 #, elixir-autogen, elixir-format
 msgid "Final scores: %{ranked}"
-msgstr "最後得分: %{ranked}"
+msgstr "最終得分:%{ranked}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:334
 #, elixir-autogen, elixir-format
@@ -389,7 +389,7 @@ msgstr "強制檢查 訂閱源 現在"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:416
 #, elixir-autogen, elixir-format
 msgid "Freddie Mercury"
-msgstr "弗雷迪·水星號"
+msgstr "佛萊迪·墨裘瑞"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:224
 #, elixir-autogen, elixir-format
@@ -404,7 +404,7 @@ msgstr "來自拉丁語aurum"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:435
 #, elixir-autogen, elixir-format
 msgid "Game of Thrones"
-msgstr "寶座遊戲"
+msgstr "權力遊戲"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:179
 #, elixir-autogen, elixir-format
@@ -424,7 +424,7 @@ msgstr "格陵蘭"
 #: lib/retro_hex_chat/bots/capabilities/greeter.ex:51
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
-msgstr "歡呼用戶加入, 說再見"
+msgstr "使用者加入時打招呼,離開時說再見"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:209
 #, elixir-autogen, elixir-format
@@ -434,17 +434,17 @@ msgstr "古騰堡"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:436
 #, elixir-autogen, elixir-format
 msgid "HBO"
-msgstr "衛生局"
+msgstr "HBO"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:498
 #, elixir-autogen, elixir-format
 msgid "HTTP %{status}"
-msgstr "HTTP 軟件 %{status}"
+msgstr "HTTP %{status}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:56
 #, elixir-autogen, elixir-format
 msgid "Hex = six"
-msgstr "十六歲=六歲"
+msgstr "Hex = 六"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:80
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:211
@@ -465,53 +465,53 @@ msgstr "提示: %{hint}"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:441
 #, elixir-autogen, elixir-format
 msgid "Hollywood legend"
-msgstr "好萊塢傳說"
+msgstr "好萊塢傳奇"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:79
 #, elixir-autogen, elixir-format
 msgid "How many bones in the adult human body?"
-msgstr "成人體內有多少骨頭?"
+msgstr "成年人體內有多少塊骨頭?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:39
 #, elixir-autogen, elixir-format
 msgid "How many colors in a rainbow?"
-msgstr "彩虹裏有多少顏色?"
+msgstr "彩虹有多少種顏色?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:24
 #, elixir-autogen, elixir-format
 msgid "How many continents are there?"
-msgstr "有多少大陸?"
+msgstr "地球上有幾大洲?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:131
 #, elixir-autogen, elixir-format
 msgid "How many planets in our solar system?"
-msgstr "我們太陽系有多少顆行星?"
+msgstr "太陽系有幾顆行星?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:54
 #, elixir-autogen, elixir-format
 msgid "How many sides does a hexagon have?"
-msgstr "六邊形有多少邊?"
+msgstr "六邊形有幾條邊?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:328
 #, elixir-autogen, elixir-format
 msgid "HyperText Markup Language"
-msgstr "超文本標記語言"
+msgstr "超文字標記語言"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:353
 #, elixir-autogen, elixir-format
 msgid "HyperText Transfer Protocol"
-msgstr "超文本傳輸協議"
+msgstr "超文字傳輸協定"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:252
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:267
 #, elixir-autogen, elixir-format
 msgid "In Africa"
-msgstr "非洲"
+msgstr "在非洲"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:200
 #, elixir-autogen, elixir-format
 msgid "In Italy"
-msgstr "在意大利"
+msgstr "在義大利"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:257
 #, elixir-autogen, elixir-format
@@ -526,17 +526,17 @@ msgstr "在羅馬"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:163
 #, elixir-autogen, elixir-format
 msgid "In the nucleus"
-msgstr "在覈內"
+msgstr "在細胞核內"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:173
 #, elixir-autogen, elixir-format
 msgid "In what year did World War II end?"
-msgstr "二戰是哪一年結束的?"
+msgstr "二戰是在哪一年結束的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:244
 #, elixir-autogen, elixir-format
 msgid "Inca"
-msgstr "印加語"
+msgstr "印加人"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:261
 #, elixir-autogen, elixir-format
@@ -546,27 +546,27 @@ msgstr "印度"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:399
 #, elixir-autogen, elixir-format
 msgid "Integration"
-msgstr "一體化"
+msgstr "整合"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:24
 #, elixir-autogen, elixir-format
 msgid "Interactive quiz and trivia with scoring"
-msgstr "交互式問答和帶評分的三角"
+msgstr "互動式問答與知識競賽,附計分功能"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:151
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
-msgstr "無效的骰子標記“ %{notation} ” 。 使用格式:NDS、NDS+M、NDSkh/klN"
+msgstr "無效的骰子表示法「%{notation}」。請使用格式:NdS、NdS+M、NdSkh/klN"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:236
 #, elixir-autogen, elixir-format
 msgid "Invalid time format. Use HH:MM (24h UTC)."
-msgstr "無效的時間格式 。 使用HH:MM(協調世界時24日)."
+msgstr "無效的時間格式。請使用 HH:MM(24 小時制 UTC)。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:425
 #, elixir-autogen, elixir-format
 msgid "J.K. Rowling"
-msgstr "J.K. 羅林"
+msgstr "J.K. 羅琳"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:210
 #, elixir-autogen, elixir-format
@@ -581,7 +581,7 @@ msgstr "卡爾·馬克思"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:187
 #, elixir-autogen, elixir-format
 msgid "Keep count must be at least 1."
-msgstr "保持計數必須至少爲 1 。"
+msgstr "保留數量必須至少為 1。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:476
 #, elixir-autogen, elixir-format
@@ -591,7 +591,7 @@ msgstr "流行音樂之王"
 #: lib/retro_hex_chat/bots/capabilities/llm.ex:7
 #, elixir-autogen, elixir-format
 msgid "LLM-powered intelligent responses (Coming soon)"
-msgstr "LLM的智能反應(即將開始)"
+msgstr "LLM 驅動的智慧回應(即將推出)"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:190
 #, elixir-autogen, elixir-format
@@ -606,7 +606,7 @@ msgstr "1990年代後期"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:339
 #, elixir-autogen, elixir-format
 msgid "Late 2000s"
-msgstr "2000年代末"
+msgstr "2000年代後期"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:229
 #, elixir-autogen, elixir-format
@@ -636,22 +636,22 @@ msgstr "列表 RSS 訂閱源"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:111
 #, elixir-autogen, elixir-format
 msgid "List active schedules"
-msgstr "列出活動時間表"
+msgstr "列出使用中的排程"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:66
 #, elixir-autogen, elixir-format
 msgid "Lives in the ocean"
-msgstr "生活在大海中 生活在海洋中"
+msgstr "生活在海洋中"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:118
 #, elixir-autogen, elixir-format
 msgid "Look up"
-msgstr "抬頭看"
+msgstr "向上看"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:276
 #, elixir-autogen, elixir-format
 msgid "Mariana Trench"
-msgstr "馬裏亞納海溝"
+msgstr "馬里亞納海溝"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:50
 #, elixir-autogen, elixir-format
@@ -666,12 +666,12 @@ msgstr "達到最大%{max} 訂閱源."
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:165
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} schedules reached."
-msgstr "達到最大 %{max} 調度 。"
+msgstr "已達到上限 %{max} 個排程。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:204
 #, elixir-autogen, elixir-format
 msgid "Mayflower"
-msgstr "紅花"
+msgstr "五月花號"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:296
 #, elixir-autogen, elixir-format
@@ -681,62 +681,62 @@ msgstr "地中海"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:475
 #, elixir-autogen, elixir-format
 msgid "Michael Jackson"
-msgstr "邁克爾·傑克遜"
+msgstr "麥可·傑克森"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:297
 #, elixir-autogen, elixir-format
 msgid "Middle earth"
-msgstr "中土地區"
+msgstr "中土世界"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:450
 #, elixir-autogen, elixir-format
 msgid "Minecraft"
-msgstr "礦產品"
+msgstr "當個創世神"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:188
 #, elixir-autogen, elixir-format
 msgid "Minimum interval is %{minutes} minutes."
-msgstr "最小間隔爲 %{minutes}分鐘."
+msgstr "最小間隔為 %{minutes} 分鐘。"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:237
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
-msgstr "頻道不見了 用法:rs 添加 <url> <#channel>"
+msgstr "缺少頻道。用法:rss add <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
 #, elixir-autogen, elixir-format
 msgid "Monopoly"
-msgstr "壟斷"
+msgstr "大富翁"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:26
 #, elixir-autogen, elixir-format
 msgid "More than 5"
-msgstr "超過5人"
+msgstr "超過 5 人"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:256
 #, elixir-autogen, elixir-format
 msgid "Mount Everest"
-msgstr "珠穆朗瑪峯"
+msgstr "聖母峰"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:168
 #, elixir-autogen, elixir-format
 msgid "Myco-"
-msgstr "麥可..."
+msgstr "黴菌"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:137
 #, elixir-autogen, elixir-format
 msgid "NaCl"
-msgstr "納克勒"
+msgstr "氯化鈉"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:307
 #, elixir-autogen, elixir-format
 msgid "Named after Vitus"
-msgstr "以 Vitus 命名"
+msgstr "以聖維特斯命名"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:219
 #, elixir-autogen, elixir-format
 msgid "Neil Armstrong"
-msgstr "尼爾·阿姆斯特朗"
+msgstr "尼爾·阿姆斯壯"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:123
 #, elixir-autogen, elixir-format
@@ -766,12 +766,12 @@ msgstr "沒有配置 RSS 訂閱源 。"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:146
 #, elixir-autogen, elixir-format
 msgid "No active schedules."
-msgstr "沒有活動的時間表 。"
+msgstr "沒有進行中的排程。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:177
 #, elixir-autogen, elixir-format
 msgid "No questions available for category '%{category}'."
-msgstr "類別無問題 \"%{category}'."
+msgstr "類別「%{category}」沒有可用的問題。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:336
 #, elixir-autogen, elixir-format
@@ -782,7 +782,7 @@ msgstr "沒有記錄得分。"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:221
 #, elixir-autogen, elixir-format
 msgid "No trivia round in progress."
-msgstr "沒有三維葉回合正在進行中。"
+msgstr "目前沒有進行中的問答回合。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:317
 #, elixir-autogen, elixir-format
@@ -792,7 +792,7 @@ msgstr "北非"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:287
 #, elixir-autogen, elixir-format
 msgid "Not Sydney"
-msgstr "雪梨沒有"
+msgstr "不是雪梨"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:302
 #, elixir-autogen, elixir-format
@@ -807,7 +807,7 @@ msgstr "不在頻道中"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:349
 #, elixir-autogen, elixir-format
 msgid "Now Oracle"
-msgstr "現在甲骨文"
+msgstr "現在是甲骨文"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:322
 #, elixir-autogen, elixir-format
@@ -817,12 +817,12 @@ msgstr "在尼羅河畔"
 #: lib/retro_hex_chat/bots/policy.ex:62
 #, elixir-autogen, elixir-format
 msgid "Only admins and server operators can manage bots"
-msgstr "只有管理員和服務器操作員才能管理 bots"
+msgstr "只有管理員/操作員和伺服器操作員才能管理機器人"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:108
 #, elixir-autogen, elixir-format
 msgid "Organelle"
-msgstr "有機物"
+msgstr "細胞器"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:301
 #, elixir-autogen, elixir-format
@@ -832,12 +832,12 @@ msgstr "渥太華"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:158
 #, elixir-autogen, elixir-format
 msgid "Outside"
-msgstr "外邊"
+msgstr "外面"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:81
 #, elixir-autogen, elixir-format
 msgid "Over 200"
-msgstr "200多歲"
+msgstr "超過 200 歲"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:30
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:277
@@ -853,7 +853,7 @@ msgstr "巴黎"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:471
 #, elixir-autogen, elixir-format
 msgid "Pass Go"
-msgstr "傳球"
+msgstr "經過起點"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:31
 #, elixir-autogen, elixir-format
@@ -863,7 +863,7 @@ msgstr "和平"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:185
 #, elixir-autogen, elixir-format
 msgid "Pharos"
-msgstr "法羅"
+msgstr "法洛斯"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:389
 #, elixir-autogen, elixir-format
@@ -888,12 +888,12 @@ msgstr "Queen"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:411
 #, elixir-autogen, elixir-format
 msgid "RDJ"
-msgstr "區域司"
+msgstr "RDJ"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:41
 #, elixir-autogen, elixir-format
 msgid "ROY G BIV"
-msgstr "Roy G BIV (英語)."
+msgstr "ROY G BIV"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:221
 #, elixir-autogen, elixir-format
@@ -908,7 +908,7 @@ msgstr "RSS 訂閱源 讀取器將更新發布到頻道"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:368
 #, elixir-autogen, elixir-format
 msgid "Random Access Memory"
-msgstr "隨機訪問內存"
+msgstr "隨機存取記憶體"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:406
 #, elixir-autogen, elixir-format
@@ -918,7 +918,7 @@ msgstr "紅藥丸"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:112
 #, elixir-autogen, elixir-format
 msgid "Remove a schedule"
-msgstr "刪除時間表"
+msgstr "移除排程"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:198
 #, elixir-autogen, elixir-format
@@ -933,17 +933,17 @@ msgstr "文藝復興"
 #: lib/retro_hex_chat/bots/capabilities/mention.ex:19
 #, elixir-autogen, elixir-format
 msgid "Respond when mentioned by name"
-msgstr "名字提及時回覆"
+msgstr "被點名時回覆"
 
 #: lib/retro_hex_chat/bots/capabilities/mention.ex:52
 #, elixir-autogen, elixir-format
 msgid "Response must be a non-empty string"
-msgstr "響應必須是非空字符串"
+msgstr "回應必須是非空字串"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:410
 #, elixir-autogen, elixir-format
 msgid "Robert Downey Jr"
-msgstr "小羅伯特·唐尼"
+msgstr "小勞勃·道尼"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:75
 #, elixir-autogen, elixir-format
@@ -953,72 +953,72 @@ msgstr "擲骰子(例如,2d6,d20+5,4d6kh3)"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:237
 #, elixir-autogen, elixir-format
 msgid "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
-msgstr "滾動 %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
+msgstr "擲骰 %{notation}:%{rolls} %{sign} %{modifier} = %{total}"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:229
 #, elixir-autogen, elixir-format
 msgid "Rolling %{notation}: %{rolls} = %{sum}"
-msgstr "滾動%{notation}:%{rolls}=%{sum}"
+msgstr "擲骰 %{notation}:%{rolls} = %{sum}"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:262
 #, elixir-autogen, elixir-format
 msgid "Rolling %{notation}: %{rolls} → keeping %{kept}"
-msgstr "滾動%{notation}:%{rolls} 保持%{kept}"
+msgstr "擲骰 %{notation}:%{rolls} → 保留 %{kept}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:199
 #, elixir-autogen, elixir-format
 msgid "Roman"
-msgstr "羅馬語"
+msgstr "羅馬人"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:266
 #, elixir-autogen, elixir-format
 msgid "Sahara"
-msgstr "津巴布韋"
+msgstr "撒哈拉沙漠"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:102
 #, elixir-autogen, elixir-format
 msgid "Saturn"
-msgstr "土星號"
+msgstr "土星"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:230
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
-msgstr "附表\"%{id}增加:每日在%{time} UTC在%{channel}."
+msgstr "已新增排程「%{id}」:每天 UTC %{time} 在 %{channel}。"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:204
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
-msgstr "附表\"%{id}\"增加:在%{channel}中,每%{minutes}min."
+msgstr "已新增排程「%{id}」:每 %{minutes} 分鐘在 %{channel}。"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:247
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' not found."
-msgstr "時間表 '%{id}'未見."
+msgstr "找不到排程「%{id}」。"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:245
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' removed."
-msgstr "時間表 '%{id}已刪除。"
+msgstr "已移除排程「%{id}」。"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:33
 #, elixir-autogen, elixir-format
 msgid "Scheduled and periodic messages"
-msgstr "排定和定期發送的信息"
+msgstr "排程與定期訊息"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:327
 #, elixir-autogen, elixir-format
 msgid "Scores (Q%{number}/%{total}): %{ranked}"
-msgstr "分數(Q)%{number}/%{total}): %{ranked}"
+msgstr "分數(第 %{number}/%{total} 題):%{ranked}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:323
 #, elixir-autogen, elixir-format
 msgid "Scores (Q%{number}/%{total}): No scores yet."
-msgstr "分數(Q)%{number}/%{total}:還沒有得分."
+msgstr "分數(第 %{number}/%{total} 題):目前還沒有得分。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:240
 #, elixir-autogen, elixir-format
 msgid "Scottish"
-msgstr "蘇格蘭語"
+msgstr "蘇格蘭人"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:460
 #, elixir-autogen, elixir-format
@@ -1028,12 +1028,12 @@ msgstr "夏洛克·福爾摩斯"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:135
 #, elixir-autogen, elixir-format
 msgid "Show current scores"
-msgstr "顯示當前分數"
+msgstr "顯示目前分數"
 
 #: lib/retro_hex_chat/bots/capabilities/help.ex:43
 #, elixir-autogen, elixir-format
 msgid "Show this help message"
-msgstr "顯示此幫助消息"
+msgstr "顯示此說明訊息"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:138
 #, elixir-autogen, elixir-format
@@ -1059,22 +1059,22 @@ msgstr "南半球"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:133
 #, elixir-autogen, elixir-format
 msgid "Start a trivia round"
-msgstr "開始三角回合"
+msgstr "開始一輪益智問答"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
 #, elixir-autogen, elixir-format
 msgid "Starts with T"
-msgstr "從 T 開始"
+msgstr "以 T 開頭"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:440
 #, elixir-autogen, elixir-format
 msgid "Steven Spielberg"
-msgstr "史蒂文·斯皮爾伯格(英語:"
+msgstr "史蒂芬·史匹柏"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:134
 #, elixir-autogen, elixir-format
 msgid "Stop the current round"
-msgstr "停止當前回合"
+msgstr "停止目前回合"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:378
 #, elixir-autogen, elixir-format
@@ -1084,7 +1084,7 @@ msgstr "結構化查詢語言"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:136
 #, elixir-autogen, elixir-format
 msgid "Submit a trivia answer"
-msgstr "提交三維答覆"
+msgstr "提交問答答案"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:117
 #, elixir-autogen, elixir-format
@@ -1094,17 +1094,17 @@ msgstr "太陽"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:348
 #, elixir-autogen, elixir-format
 msgid "Sun Microsystems"
-msgstr "太陽微系統"
+msgstr "昇陽電腦"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:445
 #, elixir-autogen, elixir-format
 msgid "Super Mario Bros"
-msgstr "超級馬里奧兄弟"
+msgstr "超級瑪利歐兄弟"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:405
 #, elixir-autogen, elixir-format
 msgid "The Matrix"
-msgstr "矩陣"
+msgstr "駭客任務"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:76
 #, elixir-autogen, elixir-format
@@ -1119,17 +1119,17 @@ msgstr "三個願望"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:364
 #, elixir-autogen, elixir-format
 msgid "Tim Berners-Lee"
-msgstr "蒂姆·伯納斯-李"
+msgstr "提姆·柏納斯-李"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:88
 #, elixir-autogen, elixir-format
 msgid "Time's up! Nobody got it."
-msgstr "時間到了! 沒人知道"
+msgstr "時間到!沒有人答對。"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:86
 #, elixir-autogen, elixir-format
 msgid "Time's up! The answer was: %{answer}"
-msgstr "時間到了! 答案是: %{answer}"
+msgstr "時間到!答案是:%{answer}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:271
 #, elixir-autogen, elixir-format
@@ -1140,28 +1140,28 @@ msgstr "東京"
 #, elixir-autogen, elixir-format
 msgid "Trivia started! (%{category}, %{count} questions)\n%{question}"
 msgstr ""
-"特里維亞開始! (%{category},%{count}問題)\n"
+"問答開始!(%{category},%{count} 個問題)\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:213
 #, elixir-autogen, elixir-format
 msgid "Trivia stopped! %{scores}"
-msgstr "特里維亞停止! %{scores}"
+msgstr "問答已停止!%{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:98
 #, elixir-autogen, elixir-format
 msgid "Two elements"
-msgstr "兩個要素"
+msgstr "兩種元素"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:388
 #, elixir-autogen, elixir-format
 msgid "Universal Serial Bus"
-msgstr "通用串行總線"
+msgstr "通用序列匯流排"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:121
 #, elixir-autogen, elixir-format
 msgid "Unknown category '%{category}'. Available: %{categories}"
-msgstr "未知類別 '%{category}'. 現有: %{categories}"
+msgstr "未知類別「%{category}」。可用類別:%{categories}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:55
 #, elixir-autogen, elixir-format
@@ -1171,13 +1171,12 @@ msgstr "未知的 訂閱源 格式( 預期爲 RSS 2.0 或 Atom)"
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:238
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
-msgstr "用法:rs 添加 <url> <#channel>"
+msgstr "用法:rss add <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:176
 #, elixir-autogen, elixir-format
 msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
-msgstr ""
-"用法:計劃增加間隔<min> <#channel> <message> OR計劃增加每日<HH:MM> <#channel> <message>"
+msgstr "用法:schedule add interval <min> <#channel> <message> 或 schedule add daily <HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format
@@ -1187,22 +1186,22 @@ msgstr "梵蒂岡城"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:148
 #, elixir-autogen, elixir-format
 msgid "Very cold"
-msgstr "很冷的,很冷的"
+msgstr "非常冷"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:455
 #, elixir-autogen, elixir-format
 msgid "Vincent van Gogh"
-msgstr "文森特·梵高"
+msgstr "文森·梵谷"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:369
 #, elixir-autogen, elixir-format
 msgid "Volatile"
-msgstr "揮發"
+msgstr "揮發性"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:354
 #, elixir-autogen, elixir-format
 msgid "Web"
-msgstr "網頁"
+msgstr "網路"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:329
 #, elixir-autogen, elixir-format
@@ -1217,162 +1216,162 @@ msgstr "歡迎,{暱稱}!"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:464
 #, elixir-autogen, elixir-format
 msgid "What Disney movie features a genie?"
-msgstr "什麼迪士尼電影的特色是精靈?"
+msgstr "哪部迪士尼電影裡有精靈?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:434
 #, elixir-autogen, elixir-format
 msgid "What TV show features dragons and an iron throne?"
-msgstr "什麼電視劇的特色是龍和鐵王座?"
+msgstr "哪部電視劇裡有龍和鐵王座?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:183
 #, elixir-autogen, elixir-format
 msgid "What ancient wonder was in Alexandria?"
-msgstr "亞歷山德里亞有什麼古老的奇蹟?"
+msgstr "亞歷山卓有哪一項古代奇蹟?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:414
 #, elixir-autogen, elixir-format
 msgid "What band wrote 'Bohemian Rhapsody'?"
-msgstr "什麼樂隊寫的\"波希米亞Rhapsody\"?"
+msgstr "〈波希米亞狂想曲〉是哪個樂團寫的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:469
 #, elixir-autogen, elixir-format
 msgid "What board game has properties like Boardwalk?"
-msgstr "什麼棋盤遊戲有像\"板行\"這樣的屬性?."
+msgstr "哪種桌遊裡有像「木板路」這樣的地產?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:243
 #, elixir-autogen, elixir-format
 msgid "What civilization built Machu Picchu?"
-msgstr "何文明造馬丘比丘."
+msgstr "馬丘比丘是哪個文明建造的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:347
 #, elixir-autogen, elixir-format
 msgid "What company created Java?"
-msgstr "什麼公司創造了Java?"
+msgstr "Java 是哪家公司創造的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:280
 #, elixir-autogen, elixir-format
 msgid "What continent is Brazil in?"
-msgstr "巴西在哪個大陸?"
+msgstr "巴西位於哪一個洲?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:260
 #, elixir-autogen, elixir-format
 msgid "What country has the most people?"
-msgstr "哪個國家的人最多?"
+msgstr "哪個國家的人口最多?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:315
 #, elixir-autogen, elixir-format
 msgid "What country is the Sahara Desert mostly in?"
-msgstr "撒哈拉沙漠主要在哪個國家?"
+msgstr "撒哈拉沙漠主要位於哪個國家?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:397
 #, elixir-autogen, elixir-format
 msgid "What does API stand for?"
-msgstr "API代表什麼?"
+msgstr "API 是什麼的縮寫?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:342
 #, elixir-autogen, elixir-format
 msgid "What does CPU stand for?"
-msgstr "CPU代表什麼?"
+msgstr "CPU 是什麼的縮寫?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:327
 #, elixir-autogen, elixir-format
 msgid "What does HTML stand for?"
-msgstr "HTML代表什麼?"
+msgstr "HTML 是什麼的縮寫?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:352
 #, elixir-autogen, elixir-format
 msgid "What does HTTP stand for?"
-msgstr "HTTP代表着什麼?"
+msgstr "HTTP 是什麼的縮寫?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:367
 #, elixir-autogen, elixir-format
 msgid "What does RAM stand for?"
-msgstr "內存代表什麼?"
+msgstr "RAM 是什麼的縮寫?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:377
 #, elixir-autogen, elixir-format
 msgid "What does SQL stand for?"
-msgstr "SQL代表什麼?"
+msgstr "SQL 是什麼的縮寫?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:387
 #, elixir-autogen, elixir-format
 msgid "What does USB stand for?"
-msgstr "USB代表着什麼?"
+msgstr "USB 是什麼的縮寫?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:111
 #, elixir-autogen, elixir-format
 msgid "What element has atomic number 1?"
-msgstr "原子1號是什麼元素?"
+msgstr "原子序為 1 的元素是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:198
 #, elixir-autogen, elixir-format
 msgid "What empire built the Colosseum?"
-msgstr "哪個帝國建造了Colosseum?"
+msgstr "羅馬競技場是哪個帝國建造的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:459
 #, elixir-autogen, elixir-format
 msgid "What fictional detective lived at 221B Baker Street?"
-msgstr "什麼虛構偵探住在貝克街221B號?"
+msgstr "哪位虛構偵探住在貝克街 221B 號?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:141
 #, elixir-autogen, elixir-format
 msgid "What force keeps planets in orbit?"
-msgstr "是什麼力量使行星進入軌道?"
+msgstr "是什麼力量讓行星保持在軌道上?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:444
 #, elixir-autogen, elixir-format
 msgid "What game features a plumber named Mario?"
-msgstr "什麼遊戲的特色是水管工馬里奧?"
+msgstr "哪款遊戲的主角是水管工人瑪利歐?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:69
 #, elixir-autogen, elixir-format
 msgid "What gas do plants absorb?"
-msgstr "植物吸收什麼氣體?"
+msgstr "植物會吸收什麼氣體?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:126
 #, elixir-autogen, elixir-format
 msgid "What gas makes up 78% of Earth's atmosphere?"
-msgstr "什麼氣體佔地球大氣層的78%?"
+msgstr "什麼氣體佔地球大氣層的 78%?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:429
 #, elixir-autogen, elixir-format
 msgid "What instrument has 88 keys?"
-msgstr "什麼樂器有88把鑰匙?"
+msgstr "什麼樂器有 88 個琴鍵?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:146
 #, elixir-autogen, elixir-format
 msgid "What is absolute zero in Celsius?"
-msgstr "攝氏零度是多少?"
+msgstr "絕對零度是攝氏幾度?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:449
 #, elixir-autogen, elixir-format
 msgid "What is the best-selling video game of all time?"
-msgstr "什麼是有史以來最暢銷的電子遊戲?"
+msgstr "有史以來最暢銷的電子遊戲是哪一款?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:74
 #, elixir-autogen, elixir-format
 msgid "What is the boiling point of water in Celsius?"
-msgstr "攝氏水的沸點是什麼?"
+msgstr "水的沸點是攝氏幾度?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:285
 #, elixir-autogen, elixir-format
 msgid "What is the capital of Australia?"
-msgstr "澳大利亞的首都是什麼?"
+msgstr "澳洲的首都是哪裡?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:300
 #, elixir-autogen, elixir-format
 msgid "What is the capital of Canada?"
-msgstr "加拿大的首都是什麼?"
+msgstr "加拿大的首都是哪裡?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:320
 #, elixir-autogen, elixir-format
 msgid "What is the capital of Egypt?"
-msgstr "埃及首都是什麼?"
+msgstr "埃及的首都是哪裡?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:19
 #, elixir-autogen, elixir-format
 msgid "What is the capital of France?"
-msgstr "法國首都是什麼?"
+msgstr "法國的首都是哪裡?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:270
 #, elixir-autogen, elixir-format
@@ -1382,7 +1381,7 @@ msgstr "日本的首都是什麼?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:136
 #, elixir-autogen, elixir-format
 msgid "What is the chemical formula for table salt?"
-msgstr "桌鹽的化學式是什麼?"
+msgstr "食鹽的化學式是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:59
 #, elixir-autogen, elixir-format
@@ -1402,22 +1401,22 @@ msgstr "距離地球最近的恆星是什麼?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:275
 #, elixir-autogen, elixir-format
 msgid "What is the deepest ocean trench?"
-msgstr "什麼是最深的海溝?"
+msgstr "最深的海溝是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:44
 #, elixir-autogen, elixir-format
 msgid "What is the hardest natural substance?"
-msgstr "最難的天然物質是什麼?"
+msgstr "最硬的天然物質是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:419
 #, elixir-autogen, elixir-format
 msgid "What is the highest-grossing film of all time?"
-msgstr "什麼是有史以來最令人毛骨悚然的電影?"
+msgstr "有史以來票房最高的電影是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:265
 #, elixir-autogen, elixir-format
 msgid "What is the largest desert?"
-msgstr "什麼是最大的沙漠?"
+msgstr "最大的沙漠是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:310
 #, elixir-autogen, elixir-format
@@ -1427,12 +1426,12 @@ msgstr "最大的島嶼是什麼?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:64
 #, elixir-autogen, elixir-format
 msgid "What is the largest mammal?"
-msgstr "什麼是最大的哺乳動物?"
+msgstr "最大的哺乳動物是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:29
 #, elixir-autogen, elixir-format
 msgid "What is the largest ocean?"
-msgstr "什麼是最大的海洋嗎?"
+msgstr "最大的海洋是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:156
 #, elixir-autogen, elixir-format
@@ -1452,17 +1451,17 @@ msgstr "純水的pH值是什麼?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:106
 #, elixir-autogen, elixir-format
 msgid "What is the powerhouse of the cell?"
-msgstr "手機的電源是什麼?"
+msgstr "細胞的能量工廠是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:290
 #, elixir-autogen, elixir-format
 msgid "What is the smallest continent?"
-msgstr "什麼是最小的大陸?"
+msgstr "最小的大陸是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:89
 #, elixir-autogen, elixir-format
 msgid "What is the smallest country by area?"
-msgstr "按地區劃分的最小國家是什麼?"
+msgstr "面積最小的國家是什麼?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:84
 #, elixir-autogen, elixir-format
@@ -1482,7 +1481,7 @@ msgstr "最高的山是什麼?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:404
 #, elixir-autogen, elixir-format
 msgid "What movie features a character named Neo?"
-msgstr "什麼電影的主角叫尼歐?"
+msgstr "哪部電影有一個名叫尼歐的角色?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:161
 #, elixir-autogen, elixir-format
@@ -1492,37 +1491,37 @@ msgstr "什麼粒子有正電荷?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:101
 #, elixir-autogen, elixir-format
 msgid "What planet has the most moons?"
-msgstr "什麼星球擁有最多的月球?"
+msgstr "哪顆行星擁有最多衛星?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:49
 #, elixir-autogen, elixir-format
 msgid "What planet is known as the Red Planet?"
-msgstr "什麼星球叫紅星球?"
+msgstr "哪顆行星被稱為紅色星球?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:372
 #, elixir-autogen, elixir-format
 msgid "What programming language is Elixir built on?"
-msgstr "Elixir的編程語言是什麼?"
+msgstr "Elixir 是建立在什麼程式語言上?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:223
 #, elixir-autogen, elixir-format
 msgid "What revolution started in 1789?"
-msgstr "1789年什麼革命開始?"
+msgstr "哪場革命始於 1789 年?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:295
 #, elixir-autogen, elixir-format
 msgid "What sea is between Europe and Africa?"
-msgstr "歐洲與非洲之間是什麼海洋?"
+msgstr "歐洲與非洲之間是什麼海?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:203
 #, elixir-autogen, elixir-format
 msgid "What ship brought Pilgrims to America?"
-msgstr "什麼船把朝聖者帶到美國?"
+msgstr "哪艘船把清教徒帶到了美洲?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:305
 #, elixir-autogen, elixir-format
 msgid "What strait separates Asia and North America?"
-msgstr "什麼樣的海峽將亞洲和北美隔開?"
+msgstr "哪個海峽分隔了亞洲和北美洲?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:151
 #, elixir-autogen, elixir-format
@@ -1532,12 +1531,12 @@ msgstr "太陽能提供什麼維生素?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:213
 #, elixir-autogen, elixir-format
 msgid "What year did Columbus reach America?"
-msgstr "哥倫布到美國是哪年?"
+msgstr "哥倫布是哪一年抵達美洲的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:188
 #, elixir-autogen, elixir-format
 msgid "What year did the Berlin Wall fall?"
-msgstr "柏林牆幾年倒塌?"
+msgstr "柏林圍牆是哪一年倒塌的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:34
 #, elixir-autogen, elixir-format
@@ -1557,12 +1556,12 @@ msgstr "《獨立宣言》是哪一年簽署的?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:362
 #, elixir-autogen, elixir-format
 msgid "What year was the World Wide Web invented?"
-msgstr "環球網是哪一年發明的?."
+msgstr "全球資訊網是哪一年發明的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:337
 #, elixir-autogen, elixir-format
 msgid "What year was the first iPhone released?"
-msgstr "首個iPhone發佈年份是何年?."
+msgstr "第一代 iPhone 是哪一年發佈的?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:332
 #, elixir-autogen, elixir-format
@@ -1572,7 +1571,7 @@ msgstr "誰創造了Linux?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:439
 #, elixir-autogen, elixir-format
 msgid "Who directed Jurassic Park?"
-msgstr "誰指揮侏羅紀公園?"
+msgstr "誰執導了侏羅紀公園?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:238
 #, elixir-autogen, elixir-format
@@ -1592,22 +1591,22 @@ msgstr "誰發明了印刷機?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:382
 #, elixir-autogen, elixir-format
 msgid "Who invented the telephone?"
-msgstr "誰發明的電話?"
+msgstr "誰發明了電話?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:228
 #, elixir-autogen, elixir-format
 msgid "Who painted the Mona Lisa?"
-msgstr "誰畫的蒙娜麗莎?"
+msgstr "誰畫了蒙娜麗莎?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:454
 #, elixir-autogen, elixir-format
 msgid "Who painted the Starry Night?"
-msgstr "誰畫了星際之夜?"
+msgstr "誰畫了星夜?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:409
 #, elixir-autogen, elixir-format
 msgid "Who played Iron Man in the MCU?"
-msgstr "誰在MCU中扮演鐵人?"
+msgstr "誰在 MCU 中飾演鋼鐵人?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:474
 #, elixir-autogen, elixir-format
@@ -1627,12 +1626,12 @@ msgstr "誰是美國第一任總統?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:424
 #, elixir-autogen, elixir-format
 msgid "Who wrote Harry Potter?"
-msgstr "誰寫的哈利波特?"
+msgstr "誰寫了哈利波特?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:193
 #, elixir-autogen, elixir-format
 msgid "Who wrote the Communist Manifesto?"
-msgstr "誰寫的共產黨宣言?"
+msgstr "誰寫了共產黨宣言?"
 
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:59
 #, elixir-autogen, elixir-format
@@ -1642,7 +1641,7 @@ msgstr "XML 解析錯誤: %{reason}"
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:93
 #, elixir-autogen, elixir-format
 msgid "action must be one of: warn, mute, kick"
-msgstr "行動必須是: 警告、啞巴、踢"
+msgstr "action 必須是下列其中之一:warn、mute、kick"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:65
 #, elixir-autogen, elixir-format
@@ -1657,27 +1656,27 @@ msgstr "二氧化碳"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:344
 #, elixir-autogen, elixir-format
 msgid "daily@%{time}"
-msgstr "日報@%{time}"
+msgstr "每日@%{time}"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:174
 #, elixir-autogen, elixir-format
 msgid "excessive caps lock"
-msgstr "過度封頂鎖定"
+msgstr "過度使用大寫鎖定"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:156
 #, elixir-autogen, elixir-format
 msgid "flooding (%{count} messages in %{window}s)"
-msgstr "洪水( 0)%{count} 信件輸入 %{window}s)"
+msgstr "洗版(%{window} 秒內發送 %{count} 則訊息)"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:61
 #, elixir-autogen, elixir-format
 msgid "max_dice must be between 1 and 1000"
-msgstr "最大位數必須在 1 到 1000 之間"
+msgstr "max_dice 必須介於 1 到 1000 之間"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:64
 #, elixir-autogen, elixir-format
 msgid "max_sides must be between 2 and 10_000"
-msgstr "最大邊數必須在 2 到 10 000 之間"
+msgstr "最大邊數必須介於 2 到 10,000 之間"
 
 #: lib/retro_hex_chat/bots/bot.ex:60
 #, elixir-autogen, elixir-format
@@ -1688,7 +1687,7 @@ msgstr "必須以字母開頭"
 #: lib/retro_hex_chat/bots/bot_custom_command.ex:32
 #, elixir-autogen, elixir-format
 msgid "only letters, numbers, _ and -"
-msgstr "只有字母,數字,  和 -"
+msgstr "只能使用字母、數字、_ 和 -"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:341
 #, elixir-autogen, elixir-format
@@ -1698,12 +1697,12 @@ msgstr "q/%{minutes} 分鐘"
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:140
 #, elixir-autogen, elixir-format
 msgid "spamming (%{count} identical messages)"
-msgstr "垃圾郵件(%{count} 相同信件)"
+msgstr "洗版(%{count} 則相同訊息)"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:122
 #, elixir-autogen, elixir-format
 msgid "using blocked words"
-msgstr "使用被封鎖的單詞"
+msgstr "使用被封鎖的字詞"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:213
 #, elixir-autogen, elixir-format
@@ -1713,7 +1712,7 @@ msgstr "[暱稱]"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:86
 #, elixir-autogen, elixir-format
 msgid "~3 x 10^5 km/s"
-msgstr "~3 x 10^5 km /s"
+msgstr "~3 x 10^5 km/s"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:305
 #, elixir-autogen, elixir-format
@@ -1738,7 +1737,7 @@ msgstr "拒絕 %{url}：%{reason}"
 #: lib/retro_hex_chat/bots/capabilities/greeter.ex:121
 #, elixir-autogen, elixir-format
 msgid "Repeat window must be a non-negative number of seconds"
-msgstr "重複視窗必須是非負的秒數"
+msgstr "重複間隔必須是非負數的秒數"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:162
 #, elixir-autogen, elixir-format
@@ -1753,12 +1752,12 @@ msgstr "只有伺服器管理員可以管理定時任務。"
 #: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:71
 #, elixir-autogen, elixir-format
 msgid "redirect without location"
-msgstr "無位置重定向"
+msgstr "重新導向缺少位置"
 
 #: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:68
 #, elixir-autogen, elixir-format
 msgid "too many redirects"
-msgstr "改變方向太多"
+msgstr "重新導向次數過多"
 
 #: lib/retro_hex_chat/scraper/card.ex:236
 #, elixir-autogen, elixir-format
@@ -1793,7 +1792,7 @@ msgstr "%{field} 必須是 public、channel_notice、private_notice 或 silent"
 #: lib/retro_hex_chat/bots/capabilities/game.ex:126
 #, elixir-autogen, elixir-format
 msgid "The game's ranking"
-msgstr "遊戲排名"
+msgstr "遊戲排行榜"
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:131
 #, elixir-autogen, elixir-format
@@ -1803,27 +1802,27 @@ msgstr "最新公開比賽"
 #: lib/retro_hex_chat/bots/capabilities/game.ex:129
 #, elixir-autogen, elixir-format
 msgid "This week's challenge and who leads it"
-msgstr "本週的挑戰和誰領導"
+msgstr "本週的挑戰和領先者"
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:132
 #, elixir-autogen, elixir-format
 msgid "Controls and how to start"
-msgstr "控制和如何開始"
+msgstr "控制和開始方式"
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:44
 #, elixir-autogen, elixir-format
 msgid "Announces Retro Games matches and arcade games as they start, rankings and the weekly challenge"
-msgstr "宣佈復古遊戲比賽和街機遊戲的開始、排名和每週挑戰"
+msgstr "在復古遊戲比賽和街機遊戲開始時發布公告,並提供排行榜和每週挑戰"
 
 #: lib/retro_hex_chat/bots/feeds.ex:138
 #, elixir-autogen, elixir-format
 msgid "%{bot} has not joined %{channel}. Add %{channel} to the bot first."
-msgstr "%{bot}沒有加入%{channel}. 先將%{channel}添加到機器人上."
+msgstr "%{bot} 尚未加入 %{channel}。請先將 %{channel} 新增到機器人。"
 
 #: lib/retro_hex_chat/bots/feeds.ex:124
 #, elixir-autogen, elixir-format
 msgid "Write the channel name after the #."
-msgstr "將頻道名稱寫在 #之後."
+msgstr "請在 # 後面寫上頻道名稱。"
 
 #: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:84
 #, elixir-autogen, elixir-format

@@ -26,11 +26,11 @@ msgstr "не может быть пустым"
 
 # From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr "уже был взят"
+msgstr "уже занято"
 
 # From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr "является недействительным"
+msgstr "недопустимое значение"
 
 # From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
@@ -38,81 +38,81 @@ msgstr "должен быть принят"
 
 # From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr "Недействительный формат"
+msgstr "неверный формат"
 
 # From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr "имеет недействительный вход"
+msgstr "содержит недопустимый элемент"
 
 # From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr "резервируется"
+msgstr "зарезервировано"
 
 # From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr "Не соответствует подтверждению"
+msgstr "не совпадает с подтверждением"
 
 # From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr "До сих пор ассоциируется с этой записью"
+msgstr "всё ещё связано с этой записью"
 
 msgid "are still associated with this entry"
-msgstr "Все еще ассоциируется с этой записью"
+msgstr "всё ещё связаны с этой записью"
 
 # From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] "должен был иметь %{count} пункт(ы)"
-msgstr[1] "должен был иметь %{count} пункт(ы)"
-msgstr[2] "должен был иметь %{count} пункт(ы)"
+msgstr[0] "должен содержать %{count} элемент"
+msgstr[1] "должен содержать %{count} элемента"
+msgstr[2] "должен содержать %{count} элементов"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] "должен быть %{count} характер(ы)"
-msgstr[1] "должен быть %{count} характер(ы)"
-msgstr[2] "должен быть %{count} характер(ы)"
+msgstr[0] "должен быть %{count} символ"
+msgstr[1] "должно быть %{count} символа"
+msgstr[2] "должно быть %{count} символов"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] "должен быть %{count} байт(ы)"
-msgstr[1] "должен быть %{count} байт(ы)"
-msgstr[2] "должен быть %{count} байт(ы)"
+msgstr[0] "должен быть %{count} байт"
+msgstr[1] "должно быть %{count} байта"
+msgstr[2] "должно быть %{count} байт"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "должны иметь хотя бы %{count} пункт(ы)"
-msgstr[1] "должны иметь хотя бы %{count} пункт(ы)"
-msgstr[2] "должны иметь хотя бы %{count} пункт(ы)"
+msgstr[0] "должен быть хотя бы %{count} элемент"
+msgstr[1] "должно быть хотя бы %{count} элемента"
+msgstr[2] "должно быть хотя бы %{count} элементов"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "должен быть по крайней мере %{count} характер(ы)"
-msgstr[1] "должен быть по крайней мере %{count} характер(ы)"
-msgstr[2] "должен быть по крайней мере %{count} характер(ы)"
+msgstr[0] "должен быть не менее %{count} символа"
+msgstr[1] "должно быть не менее %{count} символов"
+msgstr[2] "должно быть не менее %{count} символов"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] "должен быть по крайней мере %{count} байт(ы)"
-msgstr[1] "должен быть по крайней мере %{count} байт(ы)"
-msgstr[2] "должен быть по крайней мере %{count} байт(ы)"
+msgstr[0] "должен быть не менее %{count} байта"
+msgstr[1] "должно быть не менее %{count} байт"
+msgstr[2] "должно быть не менее %{count} байт"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "должны иметь в большинстве %{count} пункт(ы)"
-msgstr[1] "должны иметь в большинстве %{count} пункт(ы)"
-msgstr[2] "должны иметь в большинстве %{count} пункт(ы)"
+msgstr[0] "должен быть не более %{count} элемента"
+msgstr[1] "должно быть не более %{count} элементов"
+msgstr[2] "должно быть не более %{count} элементов"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "должно быть в лучшем случае %{count} характер(ы)"
-msgstr[1] "должно быть в лучшем случае %{count} характер(ы)"
-msgstr[2] "должно быть в лучшем случае %{count} характер(ы)"
+msgstr[0] "должен быть не более %{count} символа"
+msgstr[1] "должно быть не более %{count} символов"
+msgstr[2] "должно быть не более %{count} символов"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] "должно быть в лучшем случае %{count} байт(ы)"
-msgstr[1] "должно быть в лучшем случае %{count} байт(ы)"
-msgstr[2] "должно быть в лучшем случае %{count} байт(ы)"
+msgstr[0] "должен быть не более %{count} байта"
+msgstr[1] "должно быть не более %{count} байт"
+msgstr[2] "должно быть не более %{count} байт"
 
 # From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
@@ -125,12 +125,12 @@ msgid "must be less than or equal to %{number}"
 msgstr "должно быть меньше или равно %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr "должна быть больше или равна %{number}"
+msgstr "должно быть больше или равно %{number}"
 
 msgid "must be equal to %{number}"
-msgstr "должны быть равны %{number}"
+msgstr "должно быть равно %{number}"
 
 #: lib/retro_hex_chat_web/components/ui/helpers.ex:348
 #, elixir-autogen, elixir-format
 msgid "invalid value"
-msgstr "недействительная стоимость"
+msgstr "недопустимое значение"

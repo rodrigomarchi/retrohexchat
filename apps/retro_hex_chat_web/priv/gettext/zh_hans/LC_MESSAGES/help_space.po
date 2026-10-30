@@ -29,12 +29,12 @@ msgstr "打开空间"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "A landed hit staggers the target and deals damage. Hurt characters show a slim health bar under their name; it disappears once they are back at full health."
-msgstr "一个被击中的人将目标错开 并处理破坏 受伤的人物以他们的名字显示一个瘦小的健康酒吧;一旦他们完全恢复健康就消失了."
+msgstr "被击中的目标会踉跄后退并受到伤害。受伤的角色名字下方会显示一条细细的血条；恢复满血后血条就会消失。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "At zero HP a character is knocked down and stays on the ground for a few seconds — they cannot move, attack or be attacked while down. They then get back up on their own with full health, ready for the next round."
-msgstr "在零时HP时,一个字符被击倒,在地面上停留几秒钟——他们不能移动,攻击或者在下降时被攻击. 然后他们自己恢复健康,准备下一轮。"
+msgstr "生命值降到零时，角色会被击倒，并在地上躺几秒——倒下期间无法移动、攻击，也不会被攻击。随后他们会自行起身并恢复满血，准备迎接下一回合。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:7
 #, elixir-autogen, elixir-format
@@ -49,19 +49,19 @@ msgstr "击倒"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Taking hits and health"
-msgstr "接受打击和健康"
+msgstr "受击与生命值"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "A Space in Its Own Tab"
-msgstr "在独立标签页中打开空间"
+msgstr "在独立标签页中的空间"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Inviting Someone to a Space"
-msgstr "邀请别人来空间"
+msgstr "邀请别人加入空间"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:17
@@ -73,7 +73,7 @@ msgstr "另请参阅："
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "The address stays good"
-msgstr "地址一直有效"
+msgstr "地址始终有效"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:19
@@ -85,22 +85,22 @@ msgstr "虚拟空间"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "What the link carries"
-msgstr "链接携带什么"
+msgstr "链接包含什么"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Which space it is, and never permission to be in it. A channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people — so a link is an invitation to somewhere you can already reach, not a way around the door. Only a registered nickname can mint one, because the link records who made it."
-msgstr "只有「这是哪个空间」，而绝不是待在里面的权限。频道的空间依旧要求跟随链接的人身在该频道，私人空间依旧属于它的两个人——所以链接是通往你本来就能去的地方的邀请，而不是绕开门的办法。只有注册过的昵称才能生成链接，因为链接会记录是谁生成的。"
+msgstr "只包含“这是哪个空间”，绝不包含进入其中的权限。频道的空间依旧要求跟随链接的人身在该频道，私人空间依旧只属于它的两个人——所以链接是通往你本来就能去的地方的邀请，而不是绕开门禁的办法。只有注册过的昵称才能生成链接，因为链接会记录是谁生成的。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Why a tab of its own"
-msgstr "为什么要用独立标签页"
+msgstr "为什么要有独立标签页"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "A space has no beginning and no end: it is a place, so bookmarking its address takes you back to it later. Opening it asks the same questions either way — a channel's space wants you in that channel, and a private space belongs to its two people. The tab always shows a way back to the chat along its bottom edge."
-msgstr "空间没有开始也没有结束：它是一个地方，所以把它的地址加入书签，以后还能回去。打开它问的还是同样的问题 —— 频道的空间要求你在那个频道里，私密空间属于它的两个人。标签页底边始终显示一条返回聊天的路。"
+msgstr "空间没有开始，也没有结束：它是一个地方，所以把它的地址加入书签，以后还能回去。无论怎样打开，都会问同样的问题——频道的空间要求你在该频道里，私人空间只属于它的两个人。标签页底边始终有一条返回聊天的路径。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
 #, elixir-autogen, elixir-format
@@ -115,7 +115,7 @@ msgstr "地图是持续绘制的，在聊天里它要和聊天正在做的一切
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "The world itself is runtime state: it wakes when the first person walks in and stops when the last one leaves. What outlives it is the card that walking into an empty one posts in the conversation, which becomes the record of how long the gathering ran and how many people came. The address is a place and never expires."
-msgstr "世界本身是运行时状态：第一个人走进来时它醒来，最后一个人离开时它停下。比它活得更久的，是走进一个空空间时在对话里发布的那张卡片 —— 它会成为这次聚会持续了多久、来了多少人的记录。地址是一个地方，永远不会过期。"
+msgstr "世界本身是运行时状态：第一个人走进来时它启动，最后一个人离开时它停止。比它存在得更久的，是有人走进空空间时在对话里发布的那张卡片——它会成为这次聚会持续了多久、来了多少人的记录。地址是一个地方，永远不会过期。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:41
 #, elixir-autogen, elixir-format
@@ -125,7 +125,7 @@ msgstr "现在谁在空间里"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Once everybody has gone"
-msgstr "所有人散去之后"
+msgstr "所有人离开之后"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:26
 #, elixir-autogen, elixir-format
@@ -140,12 +140,12 @@ msgstr "卡片会数着谁在里面，并列出其中几个人，而且会随着
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to. It is how everybody reading finds out that something is happening in there, and it is a message like any other: it stays in the scrollback, and somebody scrolling past tomorrow still sees it."
-msgstr "走进一个空空间会在它所属的对话里发布一张卡片。所有在读的人就是这样知道那里正在发生什么的，而它和别的消息一样：留在历史记录里，明天滚动经过的人依然看得到。"
+msgstr "走进一个空空间时，会在它所属的对话里发布一张卡片。所有在看的人就是这样得知那里正在发生什么的，而它和其他消息一样：会保留在聊天记录里，明天翻到的人依然看得到。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "While it lasts"
-msgstr "在聚会持续期间"
+msgstr "聚会持续期间"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:24
 #, elixir-autogen, elixir-format
@@ -155,32 +155,32 @@ msgstr "谁会发布"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, does not open it: it puts the space's card in the conversation, and Join on that card is what opens the tab. The map gets the whole window, and the conversation stays exactly where it was."
-msgstr "space 总是在自己的浏览器标签页里运行。对话标签旁边的「Space」并不会打开它：它把 space 的卡片放进对话，由那张卡片上的「加入」来打开标签页。地图占据整个窗口，而对话仍然停在原处。"
+msgstr "空间总是在自己的浏览器标签页里运行。对话标签旁边的“空间”并不会直接打开它：它会把空间的卡片发到对话里，由卡片上的“加入”来打开标签页。地图占据整个窗口，而对话仍停留在原处。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "One door, and it is the card"
-msgstr "一扇门，就是那张卡片"
+msgstr "只有一扇门，就是那张卡片"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Pressing Space a second time does not post a second card: the conversation already has the one that matters, and the answer says so. Everything that leads into a space leads through that card, so nobody walks into a place the conversation was never told about."
-msgstr "再按一次「Space」并不会贴出第二张卡片：对话里已经有那张要紧的了，回应也会这样说。通往 space 的一切都要经过那张卡片，所以没有人会走进一个对话从未被告知的地方。"
+msgstr "再按一次“空间”并不会发布第二张卡片：对话里已经有那张关键的卡片了，系统的回应也会这样说明。通往空间的一切都要经过那张卡片，所以没有人会走进一个对话从未被告知的地方。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The same card becomes the record of what happened: how long the gathering ran, and how many different people came. The address itself does not expire — a space is a place — so the entry beside the tabs still posts a card for it, and the next person in starts a new gathering."
-msgstr "同一张卡片会变成发生过什么的记录：这场聚会持续了多久，来过多少不同的人。地址本身不会过期 —— 空间是一个地方 —— 所以标签旁边的入口照样能打开它，下一个走进去的人会带着自己的卡片开始一次新的聚会。"
+msgstr "同一张卡片会变成发生过什么的记录：这场聚会持续了多久，来过多少不同的人。地址本身不会过期——空间是一个地方——所以标签旁边的入口仍会为它发布一张卡片，下一个走进去的人会开启一次新的聚会。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "%{join} on the card asks first, then opens the map in a browser tab of its own."
-msgstr "卡片上的%{join}先问,然后在自己的浏览器标签中打开地图."
+msgstr "卡片上的“%{join}”会先询问，然后在独立的浏览器标签页中打开地图。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "The conversation stays exactly where it was, and %{chat} at the bottom of the space returns to it."
-msgstr "对话保持原点,空间底部的%{chat}返回."
+msgstr "对话仍停留在原处，点击空间底部的“%{chat}”即可返回。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:24
 #, elixir-autogen, elixir-format
@@ -200,27 +200,27 @@ msgstr "/me works there too. Every other command is typed in the chat, where its
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A Space has a line along its bottom edge for talking. What you type there is said in the conversation the space belongs to, and pops up as a speech bubble over your character for everyone standing in the space."
-msgstr "A Space有一条线沿着它的底端 说话。 在谈话中你输入的内容是 空间属于的, 弹出一个演讲泡泡 在你的性格上,每个人站在空间。"
+msgstr "空间底部边缘有一条用于聊天的输入行。你在那里输入的内容会发送到该空间所属的对话中,并在空间内所有人的眼中,以对话气泡的形式显示在你的角色头顶。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Changing inside"
-msgstr "内部更改"
+msgstr "在空间内更换"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Characters in a Space can spar with each other. Combat is friendly by design: a knockout never has any lasting effect."
-msgstr "空格中的字符可以相互分隔 。 战斗从设计上来说是友好的:淘汰决不会有任何持久的效果."
+msgstr "空间中的角色可以相互切磋。战斗在设计上是友好的:被击倒不会产生任何持久影响。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Choose a character and you are in. Move with the arrow keys, WASD or the on-screen pad; the server validates every step, so the edges of the islands and the things standing on them block movement for everyone equally."
-msgstr "选择一个角色,你就加入。 与箭头键,WASD或屏幕垫一起移动;服务器验证每个步骤,因此岛屿的边缘和它们上的东西都平等地阻断了每个人的运动."
+msgstr "选择一个角色,你就进来了。用方向键、WASD 或屏幕上的方向键盘移动;服务器会验证每一步,因此岛屿的边缘和上面的物件会同等地阻挡所有人的移动。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Saying something"
-msgstr "说话"
+msgstr "发言"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:46
 #, elixir-autogen, elixir-format
@@ -235,39 +235,39 @@ msgstr "在空间中说话"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "The channel's own rules still apply: in a moderated channel only voiced people and operators are heard, and a line that is refused stays in the field with the reason under it."
-msgstr "The channel's own rules still apply: in a moderated channel only voiced people and operators are heard, and a line that is refused stays in the field with the reason under it."
+msgstr "频道自身的规则仍然适用:在受管制的频道中,只有拥有发言权限的用户和管理员才能被听到,被拒绝的内容会保留在输入框中,并在下方显示原因。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "The line along the bottom of the space is where you talk: what you type there is said in the conversation and pops up over your character."
-msgstr "沿着空间底部的线条是您说话的地方:您在谈话中输入的内容会浮出水面。"
+msgstr "空间底部的那一行就是你聊天的地方:你在那里输入的内容会发送到对话中,并显示在你的角色头顶。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Type a line and press Enter, or click %{say}. In a channel's space the line goes to the channel; in a private space it goes to the other person. Either way it is in the conversation afterwards, like anything typed in the chat — and a line typed in the chat pops up over its author in the space the same way."
-msgstr "键入一行并按 Enter,或点击 %{say}. 在一个频道的空间里,线通到频道;在一个私人空间里,线通到另一个人. 无论是哪种方式,它都出现在之后的谈话中,就像聊天中输入的任何东西一样——聊天中输入的一行都会以同样的方式弹出在它的作者身上."
+msgstr "输入一行并按 Enter,或点击%{say}。在频道的空间中,这一行会发送到频道;在私人空间中,会发送给对方。无论哪种方式,之后它都会出现在对话中,就像在聊天中输入的任何内容一样——在聊天中输入的内容同样会在空间里显示在其作者头顶。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Typing and walking"
-msgstr "打字和走路"
+msgstr "输入与行走"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "While the cursor is in the line, the arrow keys and WASD type instead of walking. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map."
-msgstr "当光标在行中时,箭头键和WASD类型代替行走. 在空间的任意位置输入将光标放入行中;ESC将键盘放回地图中."
+msgstr "当光标位于输入行时,方向键和 WASD 会输入文字而不是移动。在空间内任意位置按 Enter 会把光标放进输入行;按 Esc 则把键盘交还给地图。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "Who is there"
-msgstr "谁在那儿?"
+msgstr "谁在这里"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Going in and out"
-msgstr "进进出出"
+msgstr "进出空间"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:58
@@ -282,17 +282,17 @@ msgstr "Construct"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Together"
-msgstr "一起来"
+msgstr "一起布置"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Drag a placed piece to move it. Click a piece to select it: %{turn} or R turns it, and %{remove} or Delete removes it. A right-click removes a piece at once. On a touch screen, a tap places or selects a piece, and dragging moves it."
-msgstr "拖动放置的棋子 点击一块来选择它: %{turn} 或 R 转动它, %{remove} 或 删除它. 右键点击会立即删除一块 。 在触摸屏上,一个水龙头放置或选择一块,拖动它."
+msgstr "拖动已放置的物件即可移动。点击物件将其选中:%{turn}或 R 可旋转它,%{remove}或 Delete 可移除它。右键点击会立即移除物件。在触摸屏上,点按可放置或选中物件,拖动可移动它。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Placing pieces"
-msgstr "放置棋子"
+msgstr "放置物件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:2
 #, elixir-autogen, elixir-format
@@ -304,7 +304,7 @@ msgstr "每个空间都有一个Construct:一个空的白色房间,对话中的�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Everyone inside sees each change at once."
-msgstr "里面每个人都看到每个变化一次。"
+msgstr "里面的每个人都会立即看到每一处改动。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:62
 #, elixir-autogen, elixir-format
@@ -316,32 +316,32 @@ msgstr "Construct是一个空房间,对话中的人们一起装饰."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "On a touch screen, the hand button of the on-screen controls does the same as E."
-msgstr "在触摸屏上,屏幕上控件的手按钮与E相同."
+msgstr "在触摸屏上,屏幕控制中的手形按钮与 E 键的作用相同。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "On a touch screen, the hand button of the on-screen controls does what E and F do."
-msgstr "在触摸屏幕上,屏幕上控制器的手按钮会做E和F做的."
+msgstr "在触摸屏上,屏幕控制中的手形按钮具有 E 键和 F 键的作用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:126
 #, elixir-autogen, elixir-format
 msgid "Painting the floor"
-msgstr "画地板"
+msgstr "铺设地板"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Pieces that do something"
-msgstr "做点什么的"
+msgstr "有功能的物件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:139
 #, elixir-autogen, elixir-format
 msgid "Press F next to a chair or an armchair to sit down."
-msgstr "按F键在椅子或扶手椅旁边坐下."
+msgstr "站在椅子或扶手椅旁边,按 F 键坐下。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Stand next to one of these pieces and press E, or the hand button on a touch screen."
-msgstr "站在其中一块旁边,按下E,或触摸屏上的手扣."
+msgstr "站在其中一件物件旁边,按 E 键,或在触摸屏上点按手形按钮。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:138
 #, elixir-autogen, elixir-format
@@ -351,37 +351,37 @@ msgstr "Construct保持原样."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Walls and corners turn like any other piece. A door in a wall lets people through."
-msgstr "墙壁和角落像其他的碎片一样转动. 墙上的一扇门让人通过。"
+msgstr "墙和墙角可以像其他物件一样旋转。墙上的门可以让人通过。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:128
 #, elixir-autogen, elixir-format
 msgid "In the %{floor} tab, pick a floor, then press and drag: the whole rectangle is painted. %{erase} makes it white again. You can walk on a painted floor and put pieces on it."
-msgstr "在%{floor}标签中,选择一个地板,然后按下并拖动:整个矩形被涂上. %{erase}使它再次白化. 你可以走在被涂过的地板上,并在上面放置碎片."
+msgstr "在%{floor}标签中选择一种地板,然后按住并拖动:整个矩形区域都会被铺上。%{erase}可将其恢复为白色。你可以在铺好的地板上行走,也可以在上面放置物件。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "Lists the games, and each one opens in a new tab."
-msgstr "列出游戏,每个游戏在新标签中打开。"
+msgstr "列出所有游戏,每个游戏都会在新标签页中打开。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Press E on one teleporter to arrive at the other one of its pair."
-msgstr "按E键一个传送器 到达另一对"
+msgstr "在一个传送器上按 E 键,即可到达与它成对的另一个传送器。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Press E to open the door, and again to close it. It stays open while someone is in the doorway."
-msgstr "按E打开门,然后再次关闭. 当有人在门口时,它会一直开着"
+msgstr "按 E 打开门,再按一次关闭。有人站在门口时,门会一直开着。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:89
 #, elixir-autogen, elixir-format
 msgid "Press E. The result appears on the piece and in the chat."
-msgstr "请按E. 结果出现在作品和聊天中."
+msgstr "按 E。结果会显示在物件上,也会出现在聊天中。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:101
 #, elixir-autogen, elixir-format
 msgid "Shows a short text above it. Whoever put it up can change it, and the moderators can too."
-msgstr "显示上方的短文。 无论谁提出,都可以改变,主持人也可以改变."
+msgstr "在上方显示一小段文字。放置它的人可以修改,版主也可以修改。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:113
 #, elixir-autogen, elixir-format
@@ -391,109 +391,109 @@ msgstr "显示频道的主题及其 %{pinned} 列表中的消息. 只有频道�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:120
 #, elixir-autogen, elixir-format
 msgid "Shows the last picture posted in the conversation."
-msgstr "显示对话中公布的最后一张图片 。"
+msgstr "显示对话中发布的最后一张图片。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Switches its light on or off."
-msgstr "开或关灯"
+msgstr "打开或关闭它的灯。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Some pieces, like a sofa or a long table, take up more floor than a chair. Turning one turns all of it, and only where it fits."
-msgstr "一些片段,如沙发或长桌,比椅子占据更多的地板. 转一转一切,唯在合处."
+msgstr "有些物件,比如沙发或长桌,比椅子占用更多地板。旋转时整体一起旋转,而且只能旋转到放得下的位置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "A see-through copy shows where it would go: green where it fits, red where it does not."
-msgstr "一个透视的拷贝会显示它去的地方:绿色的,适合的,红色的,不适合的。"
+msgstr "一个半透明的副本会显示它将放置的位置:能放下的地方显示绿色,放不下的地方显示红色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Choose one and click the floor to place it."
-msgstr "选择一个并点击地板放置."
+msgstr "选择一件物件,然后点击地板放置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "It stays in your hand, so you can place a row of chairs with a row of clicks."
-msgstr "它留在你手中,这样你就可以把一排椅子用一排点击."
+msgstr "物件会一直留在你手中,所以连续点击几下就能摆出一排椅子。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Press %{build} in the top-left corner, or B, to see the pieces."
-msgstr "按 %{build} 在左上角, 或 B, 可以看到碎片。"
+msgstr "按左上角的 %{build},或按 B,即可查看物件。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "The piece in your hand is shown next to %{build}. %{drop} or Esc puts the piece away."
-msgstr "手中的棋子显示在%{build}旁边. %{drop} 或 Esc 将棋子收起来."
+msgstr "你手中的物件显示在 %{build} 旁边。按 %{drop} 或 Esc 可收起物件。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "The pieces are in tabs, one for each theme and one for the End of Time."
-msgstr "棋子以标签形式,每个主题各一个,End of Time各一个."
+msgstr "物件分在不同标签页中,每个主题一页,另有一页是 End of Time。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:148
 #, elixir-autogen, elixir-format
 msgid "When a piece cannot go somewhere, a note at the top of the screen says why."
-msgstr "当一块无法去某处时,屏幕顶端的一张纸条会说出原因."
+msgstr "当某件物件无法放在某处时,屏幕顶部会显示一条提示说明原因。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:144
 #, elixir-autogen, elixir-format
 msgid "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair stays where it is while somebody sits in it. A piece that would leave somebody with no way back to the gate is refused."
-msgstr "有些地方保持清晰:大门和前面的地面,人们到达的地方,以及有人站在的地方。 有人坐在椅子上的时候 椅子就留在原地 一块会让一个人无路回城门的石头被拒绝了"
+msgstr "有些地方必须保持空出:大门及其前方的地面、人们到达的位置,以及有人站立的位置。有人坐在椅子上时,椅子会留在原处。如果某件物件会让某人无法回到大门,则不能放置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "%{change} is next to the box you type in, under the map."
-msgstr "%{change}位于您输入的盒子旁边,在地图下."
+msgstr "%{change} 位于地图下方、你输入内容的输入框旁边。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Cancel keeps the character you have."
-msgstr "取消保留您拥有的字符 。"
+msgstr "取消会保留你当前的角色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Everybody sees the change at once."
-msgstr "每个人都看到 变化一次。"
+msgstr "所有人会立即看到这个变化。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "In the chat, the new character appears beside your nickname."
-msgstr "在聊天中,新角色出现在你的昵称旁边."
+msgstr "在聊天中,新角色会显示在你的昵称旁边。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "On a small screen, it shows only the face of your character."
-msgstr "在小屏幕上,它只显示你的角色的面孔."
+msgstr "在小屏幕上,只会显示你角色的脸。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Change what you like, then press %{wear}."
-msgstr "改变你喜欢的,然后按%{wear}。"
+msgstr "随意修改,然后按 %{wear}。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Entering"
-msgstr "输入"
+msgstr "进入"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Press it to open the creator over the map."
-msgstr "按它打开地图上的创造者。"
+msgstr "按它即可在地图上方打开创建器。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Share, on the character creator, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting the address into a conversation draws a card instead of a bare address, and the card says what the link leads to."
-msgstr "分享,在角色创造者上,薄荷一个链接,并在一个小窗口中打开,旁边有副本和背书. 将地址粘贴到对话中会抽出一张卡而不是一个赤裸的地址,卡片会说出链接带来什么."
+msgstr "在角色创建器中,分享会生成一个链接,并在一个小窗口中打开,旁边有复制和撤销按钮。把地址粘贴到对话中时,会显示一张卡片而不是一串单纯的地址,卡片会说明该链接指向什么。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "The Parts"
-msgstr "各部分"
+msgstr "各个部分"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:5
 #, elixir-autogen, elixir-format
@@ -503,182 +503,182 @@ msgstr "预览"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Under a piece that can be dyed, its colours are shown."
-msgstr "在能够染色的一块下,其颜色被显示."
+msgstr "可染色的部件下方会显示它的颜色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "You can change any part of it afterwards."
-msgstr "之后你可以改变它的任何部分。"
+msgstr "之后你可以修改它的任何部分。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "%{bald} removes the hair. %{none} removes the hat."
-msgstr "%{bald}除发. %{none}去掉帽子."
+msgstr "%{bald} 会去掉头发。%{none} 会去掉帽子。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "%{enter} takes you into the map."
-msgstr "%{enter}带你进入地图。"
+msgstr "%{enter} 会带你进入地图。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "%{surprise} picks every part at random."
-msgstr "%{surprise}随机选择每个部分."
+msgstr "%{surprise}会随机选择每个部分。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "An outfit and a hat each have a %{main} and a %{trim}."
-msgstr "一套服装和帽子各有一个%{main}和一个%{trim}."
+msgstr "服装和帽子各有一个%{main}和一个%{trim}。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Choose a piece to wear it."
-msgstr "选一块穿它。"
+msgstr "选择一件来穿上。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Each tab is one part: %{parts}."
-msgstr "每个分页都是一个部分: %{parts}."
+msgstr "每个标签页对应一个部分:%{parts}。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Here you put together who you will be in the Space."
-msgstr "在这里,你汇集了你将在太空中是谁。"
+msgstr "在这里,你可以设计自己在空间里的形象。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "In the chat, its face is shown beside your nickname."
-msgstr "在聊天中,它的脸被显示在你昵称旁边."
+msgstr "在聊天中,它的脸会显示在你的昵称旁边。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Next time, the creator opens with this character."
-msgstr "下一次,创作者以这个角色开始."
+msgstr "下次,创建器会以这个角色打开。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "When you open a Space, you see the character creator first."
-msgstr "当打开一个空间时,先看到角色创造者."
+msgstr "打开一个空间时,你会先看到角色创建器。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "You see the preview walk and turn."
-msgstr "你看到预览会走动然后转身"
+msgstr "你会看到预览角色走动并转身。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "%{left} and %{right} rotate the preview."
-msgstr "%{left}和%{right}旋转预览."
+msgstr "%{left}和%{right}可旋转预览。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Everybody in the channel stands in its space, even the members who have not opened it."
-msgstr "频道里的每个人都站在它的空间里,甚至没有打开频道的成员."
+msgstr "频道里的每个人都站在它的空间里,连没有打开它的成员也在其中。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "In a private space only the people who walked in are there."
-msgstr "在一个私人空间 只有走进来的人在那里。"
+msgstr "在私人空间里,只有走进来的人在场。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "They count among the people inside."
-msgstr "他们算在内的人。"
+msgstr "他们也算在里面的人数之内。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Stand next to another character and press Space — or tap the sword button on the on-screen pad — to swing your weapon. The swing connects with the character on the tile you are facing, or with whoever is standing beside you."
-msgstr "站在另一个角色旁边,按下Space——或者按下屏幕垫上的剑按钮——挥动你的武器. 摇摆与你面对的瓷砖上的角色有关 或与站在你旁边的人有关"
+msgstr "站在另一个角色旁边,按空格键(Space),或点按屏幕方向盘上的剑按钮,即可挥动武器。这一击会命中你面朝的那一格上的角色,或站在你身旁的人。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Dancing does not stop you from greeting or attacking."
-msgstr "跳舞并不妨碍你问候或攻击。"
+msgstr "跳舞不会妨碍你打招呼或攻击。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Everybody in the space can see it."
-msgstr "太空中的每个人都能看到它。"
+msgstr "空间里的每个人都能看到。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "People who arrive later also see you dance."
-msgstr "后来来的人也会看到你跳舞"
+msgstr "之后才到的人也会看到你在跳舞。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Press Q to raise a hand and say hello."
-msgstr "按Q举手问好."
+msgstr "按 Q 举手打招呼。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Press Z to start dancing, and Z again to stop."
-msgstr "按Z开始跳舞,Z再次停止."
+msgstr "按 Z 开始跳舞,再按一次 Z 停止。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The dance goes on until you stop it."
-msgstr "舞蹈一直持续 直到你停止。"
+msgstr "舞蹈会一直持续,直到你停止。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Walking or sitting down ends the dance."
-msgstr "走路或坐下 舞蹈结束。"
+msgstr "走动或坐下会结束舞蹈。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "A seated character cannot say hello."
-msgstr "一个坐着的角色不能打招呼。"
+msgstr "坐着的角色不能打招呼。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "In a space, Q raises a hand to say hello. Z starts or stops a dance. Each one also has a button on the screen."
-msgstr "在一个空间里,Q举手打招呼. Z开始或停止跳舞。 每个屏幕上也有一个按钮."
+msgstr "在空间里,按 Q 举手打招呼,按 Z 开始或停止跳舞。它们在屏幕上也各有一个按钮。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "There is also a button for it on the screen."
-msgstr "屏幕上还有一个按钮"
+msgstr "屏幕上也有对应的按钮。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "%{beard} and %{moustache} use the hair colours."
-msgstr "%{beard}和%{moustache}使用发色."
+msgstr "%{beard}和%{moustache}使用发色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "%{glasses} and %{patch} use the cloth colours."
-msgstr "%{glasses}和%{patch}使用布色."
+msgstr "%{glasses}和%{patch}使用布料颜色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "On the %{tab} tab, %{none} removes %{beard}, %{moustache}, %{glasses} or %{patch}."
-msgstr "在%{tab}标签上,%{none}移除了%{beard},%{moustache},%{glasses}或%{patch}."
+msgstr "在“%{tab}”标签页中,选择%{none}可移除%{beard}、%{moustache}、%{glasses}或%{patch}。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Each option shows how your character looks with it."
-msgstr "Each option shows how your character looks with it."
+msgstr "每个选项都会显示你的角色穿上它之后的样子。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Answer %{yes} to go in."
-msgstr "回答%{yes} 进去。"
+msgstr "回答%{yes}即可进入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Inside, the white gate in the far corner asks the same way and brings you back."
-msgstr "里面,远角的白门 问同样的方式,并带你回来。"
+msgstr "进去之后,远处角落里的白色门会以同样的方式询问,并带你回来。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "It asks if you want to enter."
-msgstr "其问欲入否."
+msgstr "它会询问你是否想进入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:37
 #, elixir-autogen, elixir-format
@@ -688,7 +688,7 @@ msgstr "可以使用的东西"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Walk up to the gate and press E."
-msgstr "上门按E."
+msgstr "走到门前,按 E。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:58
 #, elixir-autogen, elixir-format
@@ -698,28 +698,28 @@ msgstr "中心岛的绿门通往Construct."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "The green gate stands on the central island of the End of Time, a few steps from where you arrive."
-msgstr "绿门站位于End of Time中心岛,离你到达的地方还有几步."
+msgstr "绿色门位于End of Time的中央岛上,离你到达的地方只有几步。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "A label above it shows what will happen."
-msgstr "上面的标签显示会发生什么。"
+msgstr "上方的标签会显示将要发生什么。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "The hand button on the screen shines at the same time."
-msgstr "屏幕上的手扣同时闪耀."
+msgstr "屏幕上的手形按钮会同时亮起。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "When you stand next to a gate, an empty seat or a piece you can use, it gets a gold outline."
-msgstr "站在大门旁边,空座或者一块可以使用的,就得到金质轮廓."
+msgstr "当你站在大门、空座位或可使用的物件旁边时,它会显示金色轮廓。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Adding pieces"
-msgstr "添加块"
+msgstr "添加家具"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:2
 #, elixir-autogen, elixir-format
@@ -729,41 +729,41 @@ msgstr "每个空间都有一个办公室。"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Press E next to the screen to see the last picture posted."
-msgstr "按 E 键在屏幕旁边查看上一张图片。"
+msgstr "在屏幕旁按 E 键查看最近发布的图片。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Press F next to a chair to sit down."
-msgstr "按F键在椅子旁边坐下。"
+msgstr "在椅子旁按 F 键坐下。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "There is a reception by the door, desks with computers, a meeting table and a small kitchen."
-msgstr "门口有一个接待处,有电脑的桌子,一个会议桌和一个小厨房."
+msgstr "门口有一个接待处、几张带电脑的办公桌、一张会议桌和一个小厨房。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "They are placed, moved and painted the same way."
-msgstr "他们被安置、移动和绘画的方式相同。"
+msgstr "它们的摆放、移动和涂色方式都相同。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "This furniture is part of the office."
-msgstr "这家具是办公室的一部分"
+msgstr "这件家具是办公室的一部分。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Walk up to the door and press E."
-msgstr "上门按E."
+msgstr "走到门前,按 E。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "What is already there"
-msgstr "里面已经有什么"
+msgstr "已有的内容"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:81
@@ -775,7 +775,7 @@ msgstr "办公室"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "The office keeps everything that was added to it."
-msgstr "办公室保存着所有添加到里面的东西."
+msgstr "办公室会保留所有添加到其中的内容。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:52
 #, elixir-autogen, elixir-format
@@ -785,7 +785,7 @@ msgstr "Construct的任何作品也可以放置在办公室."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "It already has furniture, and everyone in the conversation can add more."
-msgstr "它已经有家具了, 谈话中的每个人都可以添加更多。"
+msgstr "这里已经有家具了,对话中的每个人都可以添加更多。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:65
 #, elixir-autogen, elixir-format
@@ -795,54 +795,54 @@ msgstr "和Construct一样,办公室也是空间集合的一部分."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Press E next to a lamp to turn its light on or off."
-msgstr "按 E 键于一盏灯旁,以打开或关闭灯光."
+msgstr "在灯旁按 E 键可打开或关闭灯光。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "The Build menu shows the office pieces first."
-msgstr "Build菜单首先显示办公室的部件。"
+msgstr "“建造”菜单会优先显示办公室的物件。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "The office already has furniture, and everyone in the conversation can add more."
-msgstr "办公室已经有家具,谈话中的每个人都可以增加更多的家具."
+msgstr "办公室已经有家具了,对话中的每个人都可以添加更多。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Only the people of the conversation can go in."
-msgstr "只有谈话的人才能进去"
+msgstr "只有对话中的人才能进入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "This furniture cannot be moved, turned or removed."
-msgstr "这种家具不能移动、翻转或移走。"
+msgstr "这件家具不能移动、旋转或移除。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Press E next to a glass door to open it, and again to close it."
-msgstr "按E在玻璃门旁边打开,然后再次关闭."
+msgstr "在玻璃门旁按 E 打开,再按一次关闭。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "The meeting table and the kitchen are behind glass walls."
-msgstr "会议桌和厨房在玻璃墙后面."
+msgstr "会议桌和厨房在玻璃墙后面。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The way out is the wooden door by the reception."
-msgstr "出路是接待处旁的木门."
+msgstr "出口是接待处旁的木门。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "A wooden door next to the green gate leads to the office."
-msgstr "绿门旁边有一个木门通往办公室."
+msgstr "绿色大门旁边有一扇木门,通往办公室。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "The wooden door stands on the central island of the End of Time, next to the green gate."
-msgstr "木门站在End of Time中心岛,绿门旁边."
+msgstr "木门位于 End of Time 的中心岛上,就在绿色大门旁边。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:47
 #, elixir-autogen, elixir-format
@@ -852,7 +852,7 @@ msgstr "Construct的任何作品也可以放在游戏室."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Every space also has a game room."
-msgstr "每个空间也有一个游戏室."
+msgstr "每个空间也有一个游戏房间。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:60
 #, elixir-autogen, elixir-format
@@ -863,17 +863,17 @@ msgstr "和Construct一样,游戏室也是空间集合的一部分."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "The game room already has arcade machines and tables to play, and everyone in the conversation can add more."
-msgstr "游戏室已经设有街机和桌子可以玩,谈话中的每个人都可以加入更多."
+msgstr "游戏房间里已经有街机和可以玩的桌子了,对话中的每个人都可以添加更多。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "The game room keeps everything that was added to it."
-msgstr "游戏室保留了所有被添加的内容."
+msgstr "游戏房间会保留所有添加到其中的内容。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "This furniture is part of the game room."
-msgstr "这些家具是游戏室的一部分."
+msgstr "这些家具是游戏房间的一部分。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:97
@@ -885,12 +885,12 @@ msgstr "游戏房间"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "The Build menu opens on the %{tab} tab."
-msgstr "Build菜单在%{tab}标签上打开."
+msgstr "“建造”菜单会在“%{tab}”标签页打开。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "There are arcade machines, a pool table, a ping-pong table and computers with gaming chairs."
-msgstr "有拱廊机,台球台,乒乓球台和带有游戏椅的电脑."
+msgstr "这里有街机、一张台球桌、一张乒乓球桌,以及配有电竞椅的电脑。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:140
 #, elixir-autogen, elixir-format
@@ -900,39 +900,39 @@ msgstr "构造空间,办公室和游戏室是空间聚会的一部分,在其中�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The way out is the neon door next to where you arrive."
-msgstr "出路是你到达的地方旁边的霓虹门."
+msgstr "出口是你到达处旁边的霓虹门。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "A neon door next to the wooden door of the office leads to the game room."
-msgstr "办公室的木门旁边有一个霓虹门通往游戏室."
+msgstr "办公室木门旁边有一扇霓虹门,通往游戏房间。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "The neon door stands on the central island of the End of Time, next to the wooden door of the office."
-msgstr "霓虹门站位于End of Time中心岛,办公室木门旁."
+msgstr "霓虹门位于 End of Time 的中心岛上,就在办公室的木门旁边。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Press E next to an arcade machine to see which game it plays."
-msgstr "按E键在街机旁边,看它玩哪款游戏."
+msgstr "在街机旁按 E 键,可查看它玩的是哪款游戏。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "The other games are listed below it."
-msgstr "其他游戏列表如下."
+msgstr "其他游戏列在它的下方。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Watching opens in a tab of its own."
-msgstr "观看打开自己的标签。"
+msgstr "观看会在单独的标签页中打开。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "Pictures of every place:"
-msgstr "每个地方的照片:"
+msgstr "每个地方的图片:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:119
 #, elixir-autogen, elixir-format
 msgid "the Spaces page"
-msgstr "空格页面"
+msgstr "“空间”页面"

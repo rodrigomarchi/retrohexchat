@@ -26,28 +26,28 @@ msgstr "找不到频道"
 #: lib/retro_hex_chat/group_call.ex:72
 #, elixir-autogen, elixir-format
 msgid "Could not create group call"
-msgstr "无法创建分组呼叫"
+msgstr "无法创建群组通话"
 
 #: lib/retro_hex_chat/group_call.ex:76
 #, elixir-autogen, elixir-format
 msgid "Could not start group call"
-msgstr "无法启动分组呼叫"
+msgstr "无法开始群组通话"
 
 #: lib/retro_hex_chat/group_call/policy.ex:110
 #, elixir-autogen, elixir-format
 msgid "Group call is no longer active"
-msgstr "组呼叫已停止"
+msgstr "群组通话已不再活动"
 
 #: lib/retro_hex_chat/group_call.ex:85
 #, elixir-autogen, elixir-format
 msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
-msgstr[0] "已达到分组呼叫率限制 。 再来一次 %{count} 秒数。"
+msgstr[0] "群组通话频率已达上限。请在 %{count} 秒后重试。"
 
 #: lib/retro_hex_chat/group_call.ex:639
 #, elixir-autogen, elixir-format
 msgid "Group calls are disabled"
-msgstr "组呼叫已禁用"
+msgstr "群组通话已禁用"
 
 #: lib/retro_hex_chat/group_call/policy.ex:148
 #: lib/retro_hex_chat/group_call/policy.ex:151
@@ -58,7 +58,7 @@ msgstr "权限不足"
 #: lib/retro_hex_chat/group_call/policy.ex:102
 #, elixir-autogen, elixir-format
 msgid "This channel already has an active group call"
-msgstr "此频道已经有一个活动组呼叫"
+msgstr "此频道已有一个正在进行的群组通话"
 
 #: lib/retro_hex_chat/group_call/policy.ex:96
 #, elixir-autogen, elixir-format
@@ -69,9 +69,9 @@ msgstr "你不在这频道里"
 #: lib/retro_hex_chat/group_call/policy.ex:88
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use group calls"
-msgstr "您必须注册才能使用分组呼叫"
+msgstr "你必须先注册才能使用群组通话"
 
 #: lib/retro_hex_chat/group_call/policy.ex:121
 #, elixir-autogen, elixir-format
 msgid "Group call is locked"
-msgstr "分组呼叫已锁定"
+msgstr "群组通话已锁定"

@@ -19,7 +19,7 @@ msgstr "Назад"
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:176
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
-msgstr "Выберите пароль (мин. 5 символов)"
+msgstr "Выберите пароль (мин. 5 символов)..."
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:182
 #, elixir-autogen, elixir-format
@@ -34,7 +34,7 @@ msgstr "Подключиться"
 #: lib/retro_hex_chat_web/site/pages/connect.ex:41
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
-msgstr "Обсуждение RetroHexChat"
+msgstr "Подключение - RetroHexChat"
 
 #: lib/retro_hex_chat_web/site/pages/connect.ex:35
 #, elixir-autogen, elixir-format
@@ -44,7 +44,7 @@ msgstr "Подключение к RetroHexChat"
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:304
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
-msgstr "Введите свое прозвище..."
+msgstr "Введите свой ник..."
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:140
 #, elixir-autogen, elixir-format
@@ -59,7 +59,7 @@ msgstr "Неправильный пароль"
 #: lib/retro_hex_chat_web/live/connect_form.ex:232
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
-msgstr "Имя не может быть пустым"
+msgstr "Ник не может быть пустым"
 
 #: lib/retro_hex_chat_web/live/connect_form.ex:241
 #, elixir-autogen, elixir-format
@@ -69,17 +69,17 @@ msgstr "Прозвища не могут содержать пространст
 #: lib/retro_hex_chat_web/live/connect_form.ex:229
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
-msgstr "Имя должно быть строкой"
+msgstr "Ник должен быть строкой"
 
 #: lib/retro_hex_chat_web/live/connect_form.ex:235
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
-msgstr "Имя должно быть максимум 16 символов"
+msgstr "Ник должен быть не длиннее 16 символов"
 
 #: lib/retro_hex_chat_web/live/connect_form.ex:238
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
-msgstr "Имя должно начинаться с буквы или специального символа."
+msgstr "Ник должен начинаться с буквы или специального символа"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:138
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:174
@@ -111,34 +111,32 @@ msgstr "Повторите свой пароль..."
 #: lib/retro_hex_chat_web/site/pages/connect.ex:107
 #, elixir-autogen, elixir-format
 msgid "Server banned"
-msgstr "Сервер запрещен"
+msgstr "Сервер заблокировал вас"
 
 #: lib/retro_hex_chat_web/site/pages/connect.ex:106
 #, elixir-autogen, elixir-format
 msgid "Session ended"
-msgstr "Заседание завершилось"
+msgstr "Сеанс завершён"
 
 #: lib/retro_hex_chat_web/site/pages/connect.ex:105
 #, elixir-autogen, elixir-format
 msgid "Session expired"
-msgstr "Сессия закончилась"
+msgstr "Сеанс истёк"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:164
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is available! Choose a password to register it."
-msgstr "прозвище %{nickname} Доступно! Выберите пароль для его регистрации."
+msgstr "Ник %{nickname} свободен! Выберите пароль, чтобы зарегистрировать его."
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:128
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
-msgstr ""
-"прозвище %{nickname} Зарегистрирована. Пожалуйста, введите пароль, чтобы "
-"продолжить."
+msgstr "Ник %{nickname} зарегистрирован. Введите пароль, чтобы продолжить."
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:482
 #, elixir-autogen, elixir-format
 msgid "Remember this terminal"
-msgstr "Запомните этот терминал"
+msgstr "Запомнить этот терминал"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:491
 #, elixir-autogen, elixir-format
@@ -148,8 +146,7 @@ msgstr "Метка терминала:"
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:191
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for %{window} are automatically released."
-msgstr ""
-"Прозвища, не используемые в течение %{window}, выпускаются автоматически."
+msgstr "Ники, не используемые в течение %{window}, освобождаются автоматически."
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:343
 #, elixir-autogen, elixir-format
@@ -159,7 +156,7 @@ msgstr "Продолжить"
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:339
 #, elixir-autogen, elixir-format
 msgid "How sessions work"
-msgstr "Как работают сессии"
+msgstr "Как работают сеансы"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:329
 #, elixir-autogen, elixir-format
@@ -174,7 +171,7 @@ msgstr "Войти или создать аккаунт"
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:269
 #, elixir-autogen, elixir-format
 msgid "Log in with another nickname"
-msgstr "Войдите с другим прозвищем"
+msgstr "Войти с другим ником"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:314
 #, elixir-autogen, elixir-format

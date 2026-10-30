@@ -19,7 +19,7 @@ msgstr "戻る"
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:176
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
-msgstr "パスワード(半角5文字)を選択してください。"
+msgstr "パスワードを決めてください(5文字以上)..."
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:182
 #, elixir-autogen, elixir-format
@@ -34,27 +34,27 @@ msgstr "接続"
 #: lib/retro_hex_chat_web/site/pages/connect.ex:41
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
-msgstr "連絡方法 - RetroHexChat"
+msgstr "接続 - RetroHexChat"
 
 #: lib/retro_hex_chat_web/site/pages/connect.ex:35
 #, elixir-autogen, elixir-format
 msgid "Connect to RetroHexChat"
-msgstr "RetroHexChatに接続する"
+msgstr "RetroHexChat に接続"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:304
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
-msgstr "ニックネームを入力してください。"
+msgstr "ニックネームを入力してください..."
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:140
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
-msgstr "パスワードを入力してください。"
+msgstr "パスワードを入力してください..."
 
 #: lib/retro_hex_chat_web/live/connect_form.ex:152
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
-msgstr "パスワードが間違っている"
+msgstr "パスワードが正しくありません"
 
 #: lib/retro_hex_chat_web/live/connect_form.ex:232
 #, elixir-autogen, elixir-format
@@ -64,7 +64,7 @@ msgstr "ニックネームは空にすることはできません"
 #: lib/retro_hex_chat_web/live/connect_form.ex:241
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
-msgstr "ニックネームはスペースを含まない"
+msgstr "ニックネームにスペースを含めることはできません"
 
 #: lib/retro_hex_chat_web/live/connect_form.ex:229
 #, elixir-autogen, elixir-format
@@ -74,12 +74,12 @@ msgstr "ニックネームは文字列でなければなりません"
 #: lib/retro_hex_chat_web/live/connect_form.ex:235
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
-msgstr "Nickname は 16 文字以上"
+msgstr "ニックネームは16文字以内にしてください"
 
 #: lib/retro_hex_chat_web/live/connect_form.ex:238
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
-msgstr "ニックネームは、文字や特殊文字から始める必要があります"
+msgstr "ニックネームは文字または特殊文字で始める必要があります"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:138
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:174
@@ -95,7 +95,7 @@ msgstr "パスワードは5文字以上でなければなりません"
 #: lib/retro_hex_chat_web/live/connect_form.ex:179
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
-msgstr "パスワードは一致しません"
+msgstr "パスワードが一致しません"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:199
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:33
@@ -106,12 +106,12 @@ msgstr "登録&接続"
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:184
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
-msgstr "パスワードを繰り返します。"
+msgstr "パスワードをもう一度入力..."
 
 #: lib/retro_hex_chat_web/site/pages/connect.ex:107
 #, elixir-autogen, elixir-format
 msgid "Server banned"
-msgstr "サーバー禁止"
+msgstr "サーバーから接続禁止されています"
 
 #: lib/retro_hex_chat_web/site/pages/connect.ex:106
 #, elixir-autogen, elixir-format
@@ -121,32 +121,32 @@ msgstr "セッション終了"
 #: lib/retro_hex_chat_web/site/pages/connect.ex:105
 #, elixir-autogen, elixir-format
 msgid "Session expired"
-msgstr "セッション終了"
+msgstr "セッションの有効期限が切れました"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:164
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is available! Choose a password to register it."
-msgstr "ニックネーム %{nickname} が使えます! 登録するパスワードを選択します。"
+msgstr "ニックネーム %{nickname} は使用できます! 登録するパスワードを設定してください。"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:128
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
-msgstr "%{nickname} のニックネームが登録されています。 パスワードを入力してください。"
+msgstr "ニックネーム %{nickname} は登録済みです。続けるにはパスワードを入力してください。"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:482
 #, elixir-autogen, elixir-format
 msgid "Remember this terminal"
-msgstr "このターミナルを忘れないでください"
+msgstr "この端末を記憶する"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:491
 #, elixir-autogen, elixir-format
 msgid "Terminal label:"
-msgstr "ターミナル ラベル:"
+msgstr "端末ラベル:"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:191
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for %{window} are automatically released."
-msgstr "%{window}使用しないニックネームは自動的にリリースされます。"
+msgstr "%{window}使用されていないニックネームは自動的に解放されます。"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:343
 #, elixir-autogen, elixir-format
@@ -176,7 +176,7 @@ msgstr "別のニックネームでログイン"
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:314
 #, elixir-autogen, elixir-format
 msgid "Use 1 to 16 characters. Start with A–Z. No spaces."
-msgstr "1文字から16文字まで A-Z. スペースなし"
+msgstr "1〜16文字で入力してください。先頭はA〜Zです。スペースは使えません。"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:254
 #, elixir-autogen, elixir-format

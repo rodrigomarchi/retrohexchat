@@ -20,27 +20,27 @@ msgstr "%{field}: %{errors}"
 #: lib/retro_hex_chat/services/chan_serv.ex:404
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} added to %{level} list of %{channel_name}"
-msgstr "%{target_nick} dodane do %{level} wykaz %{channel_name}"
+msgstr "Dodano %{target_nick} do listy %{level} kanału %{channel_name}"
 
 #: lib/retro_hex_chat/services/chan_serv.ex:430
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} not found in access list"
-msgstr "%{target_nick} nie znaleziono na liście dostępu"
+msgstr "Nie znaleziono %{target_nick} na liście dostępu"
 
 #: lib/retro_hex_chat/services/chan_serv.ex:423
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} removed from access list of %{channel_name}"
-msgstr "%{target_nick} usunięty z listy dostępu %{channel_name}"
+msgstr "Usunięto %{target_nick} z listy dostępu kanału %{channel_name}"
 
 #: lib/retro_hex_chat/services/chan_serv.ex:227
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped"
-msgstr "Kanał %{channel_name} upuszczony"
+msgstr "Kanał %{channel_name} został porzucony"
 
 #: lib/retro_hex_chat/services/chan_serv.ex:286
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped by admin"
-msgstr "Kanał %{channel_name} upuszczony przez admin"
+msgstr "Kanał %{channel_name} został usunięty przez admina"
 
 #: lib/retro_hex_chat/services/chan_serv.ex:239
 #: lib/retro_hex_chat/services/chan_serv.ex:354
@@ -51,12 +51,12 @@ msgstr "Kanał %{channel_name} nie jest zarejestrowany"
 #: lib/retro_hex_chat/services/chan_serv.ex:210
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} registered by %{founder_nick}"
-msgstr "Kanał %{channel_name} Zarejestrowany przez %{founder_nick}"
+msgstr "Kanał %{channel_name} zarejestrowany przez %{founder_nick}"
 
 #: lib/retro_hex_chat/services/chan_serv.ex:412
 #, elixir-autogen, elixir-format
 msgid "Failed to add %{target_nick} to %{level} list"
-msgstr "Nie można dodać %{target_nick} do %{level} wykaz"
+msgstr "Nie udało się dodać %{target_nick} do listy %{level}"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:265
 #, elixir-autogen, elixir-format
@@ -71,22 +71,22 @@ msgstr "Nie udało się zapisać MOTD."
 #: lib/retro_hex_chat/services/chan_serv.ex:307
 #, elixir-autogen, elixir-format
 msgid "Founder of %{channel_name} transferred to %{new_founder}"
-msgstr "Założyciel %{channel_name} przeniesiony do %{new_founder}"
+msgstr "Założyciel kanału %{channel_name} zmieniony na %{new_founder}"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:174
 #, elixir-autogen, elixir-format
 msgid "Ghost command sent for %{target_nick}"
-msgstr "Polecenie Ghost wysłane dla %{target_nick}"
+msgstr "Wysłano polecenie Ghost dla %{target_nick}"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:525
 #, elixir-autogen, elixir-format
 msgid "Ghosted by %{requester_nick}"
-msgstr "Ghost by %{requester_nick}"
+msgstr "Rozłączono przez %{requester_nick} (Ghost)"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:456
 #, elixir-autogen, elixir-format
 msgid "Identify timeout (60s)"
-msgstr "Identyfikacja czasu (60)"
+msgstr "Przekroczono czas identyfikacji (60 s)"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:123
 #: lib/retro_hex_chat/services/nick_serv.ex:176
@@ -107,37 +107,37 @@ msgstr "NickExpiry"
 #: lib/retro_hex_chat/services/nick_serv.ex:251
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} is not registered"
-msgstr "Nickname %{nickname} nie jest zarejestrowany"
+msgstr "Nick %{nickname} nie jest zarejestrowany"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:85
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} registered successfully"
-msgstr "Nickname %{nickname} zarejestrowane pomyślnie"
+msgstr "Nick %{nickname} został pomyślnie zarejestrowany"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:165
 #, elixir-autogen, elixir-format
 msgid "Nickname %{target_nick} is not registered"
-msgstr "Nickname %{target_nick} nie jest zarejestrowany"
+msgstr "Nick %{target_nick} nie jest zarejestrowany"
 
 #: lib/retro_hex_chat/services/chan_serv.ex:367
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel"
-msgstr "Tylko założyciel może upuścić kanał"
+msgstr "Tylko założyciel może usunąć kanał"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:261
 #, elixir-autogen, elixir-format
 msgid "Password for %{nickname} has been reset"
-msgstr "Hasło dla %{nickname} został zresetowany"
+msgstr "Hasło dla %{nickname} zostało zresetowane"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:203
 #, elixir-autogen, elixir-format
 msgid "Registration for %{nickname} dropped"
-msgstr "Rejestracja %{nickname} upuszczony"
+msgstr "Rejestracja %{nickname} została usunięta"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:233
 #, elixir-autogen, elixir-format
 msgid "Registration for %{nickname} dropped by admin"
-msgstr "Rejestracja %{nickname} upuszczony przez admin"
+msgstr "Rejestracja %{nickname} została usunięta przez administratora"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:62
 #, elixir-autogen, elixir-format
@@ -152,14 +152,14 @@ msgstr "Jesteś teraz zidentyfikowany jako %{nickname}"
 #: lib/retro_hex_chat/services/chan_serv.ex:335
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
-msgstr "Pacjent musi być zidentyfikowany do stosowania leku ChanServ"
+msgstr "Musisz być zidentyfikowany, aby używać ChanServ"
 
 #: lib/retro_hex_chat/services/nick_serv.ex:66
 #, elixir-autogen, elixir-format
 msgid "Visitor names like %{nickname} cannot be registered."
-msgstr "Nazwy gości jak %{nickname} nie mogą być zarejestrowane."
+msgstr "Nazwy gości, takie jak %{nickname}, nie mogą być rejestrowane."
 
 #: lib/retro_hex_chat/services/nick_serv.ex:72
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is a service's name and cannot be registered."
-msgstr "%{nickname} to nazwa usługi i nie może być zarejestrowany."
+msgstr "%{nickname} to nazwa usługi i nie może zostać zarejestrowana."

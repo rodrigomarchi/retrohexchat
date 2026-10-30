@@ -26,7 +26,7 @@ msgstr "nie może być puste"
 
 # From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr "zostało już pobrane"
+msgstr "jest już zajęte"
 
 # From Ecto.Changeset.put_change/3
 msgid "is invalid"
@@ -34,7 +34,7 @@ msgstr "jest nieprawidłowy"
 
 # From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr "muszą zostać przyjęte"
+msgstr "musi zostać zaakceptowane"
 
 # From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
@@ -42,7 +42,7 @@ msgstr "ma nieprawidłowy format"
 
 # From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr "posiada nieprawidłowy wpis"
+msgstr "zawiera nieprawidłowy wpis"
 
 # From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
@@ -54,83 +54,83 @@ msgstr "nie pasuje do potwierdzenia"
 
 # From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr "jest nadal powiązany z tym wpisem"
+msgstr "jest nadal powiązane z tym wpisem"
 
 msgid "are still associated with this entry"
-msgstr "są nadal związane z tym wpisem"
+msgstr "są nadal powiązane z tym wpisem"
 
 # From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] "W przypadku %{count} pozycja (-y)"
-msgstr[1] "W przypadku %{count} pozycja (-y)"
-msgstr[2] "W przypadku %{count} pozycja (-y)"
+msgstr[0] "powinno mieć %{count} element"
+msgstr[1] "powinno mieć %{count} elementy"
+msgstr[2] "powinno mieć %{count} elementów"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] "powinno być %{count} znak (-y)"
-msgstr[1] "powinno być %{count} znak (-y)"
-msgstr[2] "powinno być %{count} znak (-y)"
+msgstr[0] "powinno mieć %{count} znak"
+msgstr[1] "powinno mieć %{count} znaki"
+msgstr[2] "powinno mieć %{count} znaków"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] "powinno być %{count} bajt (-y)"
-msgstr[1] "powinno być %{count} bajt (-y)"
-msgstr[2] "powinno być %{count} bajt (-y)"
+msgstr[0] "powinno mieć %{count} bajt"
+msgstr[1] "powinno mieć %{count} bajty"
+msgstr[2] "powinno mieć %{count} bajtów"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "co najmniej %{count} pozycja (-y)"
-msgstr[1] "co najmniej %{count} pozycja (-y)"
-msgstr[2] "co najmniej %{count} pozycja (-y)"
+msgstr[0] "powinno mieć co najmniej %{count} pozycję"
+msgstr[1] "powinno mieć co najmniej %{count} pozycje"
+msgstr[2] "powinno mieć co najmniej %{count} pozycji"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "powinno być co najmniej %{count} znak (-y)"
-msgstr[1] "powinno być co najmniej %{count} znak (-y)"
-msgstr[2] "powinno być co najmniej %{count} znak (-y)"
+msgstr[0] "powinno mieć co najmniej %{count} znak"
+msgstr[1] "powinno mieć co najmniej %{count} znaki"
+msgstr[2] "powinno mieć co najmniej %{count} znaków"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] "powinno być co najmniej %{count} bajt (-y)"
-msgstr[1] "powinno być co najmniej %{count} bajt (-y)"
-msgstr[2] "powinno być co najmniej %{count} bajt (-y)"
+msgstr[0] "powinno mieć co najmniej %{count} bajt"
+msgstr[1] "powinno mieć co najmniej %{count} bajty"
+msgstr[2] "powinno mieć co najmniej %{count} bajtów"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "co najwyżej %{count} pozycja (-y)"
-msgstr[1] "co najwyżej %{count} pozycja (-y)"
-msgstr[2] "co najwyżej %{count} pozycja (-y)"
+msgstr[0] "powinno mieć co najwyżej %{count} pozycję"
+msgstr[1] "powinno mieć co najwyżej %{count} pozycje"
+msgstr[2] "powinno mieć co najwyżej %{count} pozycji"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "powinno być co najwyżej %{count} znak (-y)"
-msgstr[1] "powinno być co najwyżej %{count} znak (-y)"
-msgstr[2] "powinno być co najwyżej %{count} znak (-y)"
+msgstr[0] "powinno mieć co najwyżej %{count} znak"
+msgstr[1] "powinno mieć co najwyżej %{count} znaki"
+msgstr[2] "powinno mieć co najwyżej %{count} znaków"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] "powinno być co najwyżej %{count} bajt (-y)"
-msgstr[1] "powinno być co najwyżej %{count} bajt (-y)"
-msgstr[2] "powinno być co najwyżej %{count} bajt (-y)"
+msgstr[0] "powinno mieć co najwyżej %{count} bajt"
+msgstr[1] "powinno mieć co najwyżej %{count} bajty"
+msgstr[2] "powinno mieć co najwyżej %{count} bajtów"
 
 # From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr "musi być mniejsza niż %{number}"
+msgstr "musi być mniejsze niż %{number}"
 
 msgid "must be greater than %{number}"
-msgstr "musi być większa niż %{number}"
+msgstr "musi być większe niż %{number}"
 
 msgid "must be less than or equal to %{number}"
-msgstr "musi być mniejsza lub równa %{number}"
+msgstr "musi być mniejsze lub równe %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr "musi być większa lub równa %{number}"
+msgstr "musi być większe lub równe %{number}"
 
 msgid "must be equal to %{number}"
-msgstr "musi być równa %{number}"
+msgstr "musi być równe %{number}"
 
 #: lib/retro_hex_chat_web/components/ui/helpers.ex:348
 #, elixir-autogen, elixir-format
 msgid "invalid value"
-msgstr "wartość niepoprawna"
+msgstr "nieprawidłowa wartość"

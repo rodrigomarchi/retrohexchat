@@ -245,6 +245,11 @@ class FindSharedHeadingsTest(unittest.TestCase):
 
 
 class FindCollapsesTest(unittest.TestCase):
+    def test_forms_of_one_word_are_not_a_collapse(self):
+        entries = [(word, "游戏") for word in ("GAMES", "Game", "Games", "A game", "game")]
+
+        self.assertEqual(find_collapses(entries), {})
+
     def test_flags_one_translation_serving_many_sources(self):
         # ko: 275 distinct msgids all became "이름 *"
         entries = [(f"source {index}", "이름 *") for index in range(6)]

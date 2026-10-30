@@ -28,12 +28,12 @@ msgstr "閉じる"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "End Session"
-msgstr "終了セッション"
+msgstr "セッションを終了"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:241
 #, elixir-autogen, elixir-format
 msgid "Play time:"
-msgstr "演劇の時間:"
+msgstr "プレイ時間:"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:170
 #, elixir-autogen, elixir-format
@@ -48,7 +48,7 @@ msgstr "セッション完了"
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:174
 #, elixir-autogen, elixir-format
 msgid "Started %{time}"
-msgstr "%{time} を開始"
+msgstr "%{time} に開始"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:683
 #, elixir-autogen, elixir-format
@@ -281,7 +281,7 @@ msgstr "90秒"
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
 #, elixir-autogen, elixir-format
 msgid "Best of 3 days"
-msgstr "3日間勝負"
+msgstr "3日勝負"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:638
 #, elixir-autogen, elixir-format
@@ -321,7 +321,7 @@ msgstr "1 ラウンド"
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
 #, elixir-autogen, elixir-format
 msgid "Best of 5 rounds"
-msgstr "5 ラウンド先取"
+msgstr "5ラウンド制"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:370
 #, elixir-autogen, elixir-format
@@ -346,7 +346,7 @@ msgstr "すべてのブロックを消す"
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:347
 #, elixir-autogen, elixir-format
 msgid "Last king standing"
-msgstr "最後まで残った王"
+msgstr "最後まで生き残った王"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:561
 #, elixir-autogen, elixir-format
@@ -377,7 +377,7 @@ msgstr "バージョン情報"
 #: lib/retro_hex_chat_web/components/ui/games/game_sheet.ex:76
 #, elixir-autogen, elixir-format
 msgid "Action"
-msgstr "操作"
+msgstr "アクション"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_sheet.ex:73
 #, elixir-autogen, elixir-format
@@ -414,7 +414,7 @@ msgstr "ゲームのタブを開く"
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:181
 #, elixir-autogen, elixir-format
 msgid "The game runs in a tab of its own, with its own address. Closing that tab does not end the session — End Session does, and so does leaving it alone for a while."
-msgstr "ゲームは自分のアドレスを持つ専用のタブで動きます。そのタブを閉じてもセッションは終わりません。終わらせるのは「セッション終了」と、しばらく放置することです。"
+msgstr "ゲームは専用のアドレスを持つ別のタブで動きます。そのタブを閉じてもセッションは終了しません。セッションを終了するには「セッション終了」を押してください。しばらく放置した場合も終了します。"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:108
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:157
@@ -440,12 +440,12 @@ msgstr "コンピューター"
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:190
 #, elixir-autogen, elixir-format
 msgid "Computer (easy)"
-msgstr "コンピュータ(簡単)"
+msgstr "コンピューター(簡単)"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:191
 #, elixir-autogen, elixir-format
 msgid "Computer (hard)"
-msgstr "コンピュータ(ハード)"
+msgstr "コンピューター(難しい)"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:209
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:684
@@ -477,13 +477,13 @@ msgstr "試合終了"
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:146
 #, elixir-autogen, elixir-format
 msgid "Offer a seat to this channel: whoever presses Join first plays you"
-msgstr "Offer a seat to this channel: whoever presses Join first plays you"
+msgstr "このチャンネルに席を提供します。最初に「参加」を押した人があなたと対戦します"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:211
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:686
 #, elixir-autogen, elixir-format
 msgid "Out of lives"
-msgstr "生活から"
+msgstr "ライフ切れ"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:57
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:272
@@ -504,17 +504,17 @@ msgstr "記録に保存されます。"
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:199
 #, elixir-autogen, elixir-format
 msgid "Somebody left before the end"
-msgstr "Somebody left before the end"
+msgstr "終了前に誰かが退出しました"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/games.ex:41
 #, elixir-autogen, elixir-format
 msgid "You cannot open a seat right now."
-msgstr "今すぐ座席を開いたりすることはできません。"
+msgstr "今は席を開くことができません。"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/games.ex:37
 #, elixir-autogen, elixir-format
 msgid "Your seat is the line below."
-msgstr "座席は下記の通りです。"
+msgstr "あなたの席は下の行です。"
 
 #: lib/retro_hex_chat_web/components/ui/games/arcade_play_card.ex:78
 #: lib/retro_hex_chat_web/components/ui/games/game_channel_bar.ex:81
@@ -558,7 +558,7 @@ msgstr "その他のゲーム"
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Play %{game} yourself"
-msgstr "%{game}を自分で再生する"
+msgstr "%{game}を自分で遊ぶ"
 
 #: lib/retro_hex_chat_web/space_panels.ex:139
 #, elixir-autogen, elixir-format
@@ -568,7 +568,7 @@ msgstr "プレイ中: %{names}"
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "The players have left."
-msgstr "プレイヤーは残っています。"
+msgstr "プレイヤーは退出しました。"
 
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:262
 #, elixir-autogen, elixir-format
@@ -578,12 +578,12 @@ msgstr "この試合は観戦できません。"
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Waiting"
-msgstr "待ち合わせ"
+msgstr "待機中"
 
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Waiting for the first frame..."
-msgstr "最初のフレームを待って..."
+msgstr "最初のフレームを待っています..."
 
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:265
 #, elixir-autogen, elixir-format
@@ -593,7 +593,7 @@ msgstr "次のゲームを待っています。"
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Watching %{game}"
-msgstr "%{game} を見る"
+msgstr "%{game} を観戦中"
 
 #: lib/retro_hex_chat_web/components/ui/games/live_match.ex:49
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:57
@@ -621,7 +621,7 @@ msgstr "ライブ"
 #, elixir-autogen, elixir-format
 msgid "%{count} watching"
 msgid_plural "%{count} watching"
-msgstr[0] "%{count} 観戦"
+msgstr[0] "%{count} 人が観戦中"
 
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:206
 #: lib/retro_hex_chat_web/space_panels.ex:116
@@ -632,7 +632,7 @@ msgstr "いまライブ中"
 #: lib/retro_hex_chat_web/space_panels.ex:114
 #, elixir-autogen, elixir-format
 msgid "No one is playing this game now."
-msgstr "今、このゲームをプレイしている人はいません。"
+msgstr "今、このゲームで遊んでいる人はいません。"
 
 #: lib/retro_hex_chat_web/components/ui/games/live_match.ex:82
 #, elixir-autogen, elixir-format
@@ -732,7 +732,7 @@ msgstr "あなた"
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:250
 #, elixir-autogen, elixir-format
 msgid "Only registered nicknames appear in the ranking."
-msgstr "登録されたニックネームのみがランキングに表示されます。"
+msgstr "登録済みのニックネームのみがランキングに表示されます。"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:137
 #: lib/retro_hex_chat_web/controllers/help_content/helpers.ex:85
@@ -753,7 +753,7 @@ msgstr "今すぐ遊ぶ"
 #: lib/retro_hex_chat_web/components/ui/games/arcade_play_card.ex:62
 #, elixir-autogen, elixir-format
 msgid "%{nickname} started the game"
-msgstr "%{nickname}がゲームを開始"
+msgstr "%{nickname}がゲームを開始しました"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:249
 #, elixir-autogen, elixir-format
@@ -840,7 +840,7 @@ msgstr "4つの山、エースからキング"
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:501
 #, elixir-autogen, elixir-format
 msgid "Deal a row"
-msgstr "行の処理"
+msgstr "列を配る"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:380
 #, elixir-autogen, elixir-format
@@ -850,17 +850,17 @@ msgstr "Eight スート、王からエース"
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:383
 #, elixir-autogen, elixir-format
 msgid "Clear every square without a mine"
-msgstr "Clear every square without a mine"
+msgstr "地雷のないマスをすべて開こう"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:453
 #, elixir-autogen, elixir-format
 msgid "Click"
-msgstr "クリック"
+msgstr "クリック:"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:464
 #, elixir-autogen, elixir-format
 msgid "Flag with a tap, on a phone"
-msgstr "タップでフラグ, 電話で"
+msgstr "スマホではタップで旗を立てる"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:457
 #, elixir-autogen, elixir-format
@@ -870,17 +870,17 @@ msgstr "長押し"
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:452
 #, elixir-autogen, elixir-format
 msgid "Open a square"
-msgstr "広場を開く"
+msgstr "マスを開く"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:460
 #, elixir-autogen, elixir-format
 msgid "Open around a flagged number"
-msgstr "フラグ番号の周りを開く"
+msgstr "旗を立てた数字の周りを開く"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:456
 #, elixir-autogen, elixir-format
 msgid "Plant or lift a flag"
-msgstr "旗を植えるか、または持ち上げて下さい"
+msgstr "旗を立てる/外す"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:457
 #, elixir-autogen, elixir-format
@@ -890,7 +890,7 @@ msgstr "右クリック"
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:461
 #, elixir-autogen, elixir-format
 msgid "Tap the number"
-msgstr "番号をタップ"
+msgstr "数字をタップ"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:465
 #, elixir-autogen, elixir-format
@@ -1041,9 +1041,9 @@ msgstr "Escを押してゲームに戻ります。"
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:350
 #, elixir-autogen, elixir-format
 msgid "3 lives — top score wins"
-msgstr "3 命 - トップスコアが勝ちます"
+msgstr "ライフ3 — 最高スコアの勝ち"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:51
 #, elixir-autogen, elixir-format
 msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
-msgstr "休診日は無休となります。 アクティブに保つためにゲームを選択します。"
+msgstr "操作がないため、まもなくセッションが終了します。ゲームを選択すると維持されます。"

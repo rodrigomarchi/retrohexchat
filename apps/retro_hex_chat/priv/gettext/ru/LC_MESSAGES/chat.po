@@ -19,32 +19,33 @@ msgstr "%{name} (%{type}, %{interval}s) → %{command}"
 #: lib/retro_hex_chat/chat/timer_manager.ex:173
 #, elixir-autogen, elixir-format
 msgid "Active timers:\n"
-msgstr "Активные таймеры:"
+msgstr ""
+"Активные таймеры:\n"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:37
 #, elixir-autogen, elixir-format
 msgid "Alert"
-msgstr "Предупреждение"
+msgstr "Оповещение"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:447
 #, elixir-autogen, elixir-format
 msgid "Alt"
-msgstr "Альт"
+msgstr "Alt"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:30
 #, elixir-autogen, elixir-format
 msgid "Beep"
-msgstr "бип"
+msgstr "Бип"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:42
 #, elixir-autogen, elixir-format
 msgid "Blip"
-msgstr "Щелчок"
+msgstr "Блип"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:38
 #, elixir-autogen, elixir-format
 msgid "Buzz"
-msgstr "Базз"
+msgstr "Гудок"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:278
 #, elixir-autogen, elixir-format
@@ -54,32 +55,32 @@ msgstr "Чат"
 #: lib/retro_hex_chat/chat/sound_settings.ex:35
 #, elixir-autogen, elixir-format
 msgid "Chime High"
-msgstr "Высокая температура"
+msgstr "Высокий звон"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:34
 #, elixir-autogen, elixir-format
 msgid "Chime Long"
-msgstr "Длинный чайник"
+msgstr "Длинный звон"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:36
 #, elixir-autogen, elixir-format
 msgid "Chime Low"
-msgstr "Низкий уровень"
+msgstr "Низкий звон"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:33
 #, elixir-autogen, elixir-format
 msgid "Chime Short"
-msgstr "Короткометражный"
+msgstr "Короткий звон"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:39
 #, elixir-autogen, elixir-format
 msgid "Click"
-msgstr "щелкнуть"
+msgstr "Нажмите"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:371
 #, elixir-autogen, elixir-format
 msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
-msgstr "Конфликт: %{first_action} и %{second_action} оба связаны %{combo}"
+msgstr "Конфликт: %{first_action} и %{second_action} назначены на одну комбинацию %{combo}"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:448
 #, elixir-autogen, elixir-format
@@ -89,42 +90,38 @@ msgstr "Ctrl"
 #: lib/retro_hex_chat/chat/policy.ex:94
 #, elixir-autogen, elixir-format
 msgid "Delete window has expired."
-msgstr "Удаление окна истекло."
+msgstr "Время на удаление истекло."
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:32
 #, elixir-autogen, elixir-format
 msgid "Ding High"
-msgstr "Высокий Дин"
+msgstr "Высокий динь"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:31
 #, elixir-autogen, elixir-format
 msgid "Ding Low"
-msgstr "Низкий уровень"
+msgstr "Низкий динь"
 
 #: lib/retro_hex_chat/chat/policy.ex:51
 #: lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
-msgstr "Окно редактирования истекло."
+msgstr "Время на редактирование истекло."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
 msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
-msgstr ""
-"Расширение не должно содержать символы цепочек команд ( |, & & ; или новые "
-"линии)"
+msgstr "Расширение не должно содержать символы объединения команд (|, &&, ; или переводы строки)"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:280
 #, elixir-autogen, elixir-format
 msgid "Formatting"
-msgstr "форматирование"
+msgstr "Форматирование"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
-msgstr ""
-"Недействительное имя таймера. Используйте только буквы, цифры, дефисы, "
-"подчеркивания (макс) %{max_name_length} колесницы."
+msgstr "Недопустимое имя таймера. Используйте только буквы, цифры, дефисы и подчёркивания (макс. %{max_name_length} симв.)."
 
 #: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
@@ -161,12 +158,12 @@ msgstr "Следующее окно"
 #: lib/retro_hex_chat/chat/timer_manager.ex:157
 #, elixir-autogen, elixir-format
 msgid "No active timers."
-msgstr "Никаких активных таймеров."
+msgstr "Нет активных таймеров."
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:29
 #, elixir-autogen, elixir-format
 msgid "None"
-msgstr "Никто"
+msgstr "Нет"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:41
 #, elixir-autogen, elixir-format
@@ -176,37 +173,37 @@ msgstr "Уведомить"
 #: lib/retro_hex_chat/chat/key_bindings.ex:63
 #, elixir-autogen, elixir-format
 msgid "Open Address Book"
-msgstr "Открытая адресная книга"
+msgstr "Открыть адресную книгу"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:124
 #, elixir-autogen, elixir-format
 msgid "Open Help"
-msgstr "Открытая помощь"
+msgstr "Открыть справку"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:75
 #, elixir-autogen, elixir-format
 msgid "Open Highlight Dialog"
-msgstr "Диалог Open Highlight"
+msgstr "Открыть диалог подсветки"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:69
 #, elixir-autogen, elixir-format
 msgid "Open Ignore List"
-msgstr "Открытый список игнорирующих"
+msgstr "Открыть список игнорируемых"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:87
 #, elixir-autogen, elixir-format
 msgid "Open Perform Dialog"
-msgstr "Диалог Open Perform"
+msgstr "Открыть диалог автовыполнения"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:81
 #, elixir-autogen, elixir-format
 msgid "Open URL Catcher"
-msgstr "Открытый URL Catcher"
+msgstr "Открыть ловец URL"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:125
 #, elixir-autogen, elixir-format
 msgid "Open the help dialog (menu only)"
-msgstr "Откройте диалог помощи (только меню)"
+msgstr "Открыть диалог справки (только меню)"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:88
 #, elixir-autogen, elixir-format
@@ -246,14 +243,13 @@ msgstr "Открыть/close Читы для ярлыков на клавиат�
 #: lib/retro_hex_chat/chat/service.ex:299
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
-msgstr "Оригинал сообщения не найден."
+msgstr "Исходное сообщение не найдено."
 
 #: lib/retro_hex_chat/chat/policy.ex:54
 #: lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
-msgstr ""
-"Пожалуйста, подождите несколько секунд, прежде чем редактировать снова."
+msgstr "Пожалуйста, подождите несколько секунд, прежде чем снова редактировать."
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:143
 #, elixir-autogen, elixir-format
@@ -263,17 +259,17 @@ msgstr "Предыдущее окно"
 #: lib/retro_hex_chat/chat/timer_manager.ex:148
 #, elixir-autogen, elixir-format
 msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
-msgstr "Повторный интервал сжат до минимума %{min_repeat_interval} секунды."
+msgstr "Интервал повтора увеличен до минимального значения: %{min_repeat_interval} сек."
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:40
 #, elixir-autogen, elixir-format
 msgid "Ring"
-msgstr "Кольцо"
+msgstr "Звонок"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:449
 #, elixir-autogen, elixir-format
 msgid "Shift"
-msgstr "сдвиг"
+msgstr "Shift"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:130
 #, elixir-autogen, elixir-format
@@ -283,57 +279,57 @@ msgstr "Шпаргалка по сочетаниям клавиш"
 #: lib/retro_hex_chat/chat/key_bindings.ex:138
 #, elixir-autogen, elixir-format
 msgid "Switch to the next channel or PM"
-msgstr "Переключение на следующий канал или PM"
+msgstr "Переключиться на следующий канал или личное сообщение"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:144
 #, elixir-autogen, elixir-format
 msgid "Switch to the previous channel or PM"
-msgstr "Переключение на предыдущий канал или PM"
+msgstr "Переключиться на предыдущий канал или личное сообщение"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:150
 #, elixir-autogen, elixir-format
 msgid "Switch to window 1"
-msgstr "Переключитесь на окно 1"
+msgstr "Переключиться на окно 1"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:156
 #, elixir-autogen, elixir-format
 msgid "Switch to window 2"
-msgstr "Переключитесь на окно 2"
+msgstr "Переключиться на окно 2"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:162
 #, elixir-autogen, elixir-format
 msgid "Switch to window 3"
-msgstr "Переключитесь на окно 3"
+msgstr "Переключиться на окно 3"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:168
 #, elixir-autogen, elixir-format
 msgid "Switch to window 4"
-msgstr "Переключитесь на окно 4"
+msgstr "Переключиться на окно 4"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:174
 #, elixir-autogen, elixir-format
 msgid "Switch to window 5"
-msgstr "Переключитесь на окно 5"
+msgstr "Переключиться на окно 5"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:180
 #, elixir-autogen, elixir-format
 msgid "Switch to window 6"
-msgstr "Переключитесь на окно 6"
+msgstr "Переключиться на окно 6"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:186
 #, elixir-autogen, elixir-format
 msgid "Switch to window 7"
-msgstr "Переключитесь на окно 7"
+msgstr "Переключиться на окно 7"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:192
 #, elixir-autogen, elixir-format
 msgid "Switch to window 8"
-msgstr "Переключитесь на окно 8"
+msgstr "Переключиться на окно 8"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:198
 #, elixir-autogen, elixir-format
 msgid "Switch to window 9"
-msgstr "Переключитесь на окно 9"
+msgstr "Переключиться на окно 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
 #: lib/retro_hex_chat/chat/service.ex:241
@@ -344,7 +340,7 @@ msgstr "Система"
 #: lib/retro_hex_chat/chat/key_bindings.ex:57
 #, elixir-autogen, elixir-format
 msgid "Toggle Search"
-msgstr "Объединить поиск"
+msgstr "Переключить поиск"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:88
 #: lib/retro_hex_chat/chat/timer_manager.ex:92
@@ -355,23 +351,23 @@ msgstr "Использование: /timer <name> <seconds> <command>"
 #: lib/retro_hex_chat/chat/timer_manager.ex:29
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> [repeat] <seconds> <command>"
-msgstr "Использование: /timer <name> [повторить] <seconds> <command>"
+msgstr "Использование: /timer <name> [repeat] <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:63
 #: lib/retro_hex_chat/chat/timer_manager.ex:67
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> repeat <seconds> <command>"
-msgstr "Использование: /timer <name> повторять <seconds> <command>"
+msgstr "Использование: /timer <name> repeat <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:37
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer stop <name>"
-msgstr "Использование: /timer останавливаться <name>"
+msgstr "Использование: /timer stop <name>"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:43
 #, elixir-autogen, elixir-format
 msgid "Whoosh"
-msgstr "Ух ты!"
+msgstr "Вжух"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:149
 #, elixir-autogen, elixir-format
@@ -432,7 +428,7 @@ msgstr "Вы не можете редактировать сообщения д�
 #: lib/retro_hex_chat/chat/time_formatter.ex:55
 #, elixir-autogen, elixir-format
 msgid "just now"
-msgstr "Только сейчас"
+msgstr "только что"
 
 #: lib/retro_hex_chat/chat/time_formatter.ex:11
 #: lib/retro_hex_chat/chat/time_formatter.ex:23
@@ -443,7 +439,7 @@ msgstr "меньше минуты"
 #: lib/retro_hex_chat/chat/timer_manager.ex:139
 #, elixir-autogen, elixir-format
 msgid "Command is required"
-msgstr "Командование требуется"
+msgstr "Необходимо указать команду"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:279
 #, elixir-autogen, elixir-format
@@ -453,17 +449,17 @@ msgstr "Конференция"
 #: lib/retro_hex_chat/chat/key_bindings.ex:113
 #, elixir-autogen, elixir-format
 msgid "Cycle the active conference layout"
-msgstr "Цикл активной конференции макет"
+msgstr "Переключить макет активной конференции"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:118
 #, elixir-autogen, elixir-format
 msgid "Focus Next Conference Participant"
-msgstr "Сосредоточьтесь на следующей конференции Участник"
+msgstr "Фокус на следующем участнике конференции"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:106
 #, elixir-autogen, elixir-format
 msgid "Leave Conference"
-msgstr "Оставить конференцию"
+msgstr "Покинуть конференцию"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:119
 #, elixir-autogen, elixir-format
@@ -473,53 +469,53 @@ msgstr "Переместить фокус конференции на следу
 #: lib/retro_hex_chat/chat/key_bindings.ex:95
 #, elixir-autogen, elixir-format
 msgid "Mute or unmute your active conference microphone"
-msgstr "Выключите или отключите свой активный микрофон"
+msgstr "Отключить или включить звук микрофона в активной конференции"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:112
 #, elixir-autogen, elixir-format
 msgid "Next Conference Layout"
-msgstr "Следующая конференция Layout"
+msgstr "Следующий макет конференции"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:107
 #, elixir-autogen, elixir-format
 msgid "Open the leave confirmation for the active conference"
-msgstr "Откройте подтверждение отпуска для активной конференции"
+msgstr "Открыть подтверждение выхода из активной конференции"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:101
 #, elixir-autogen, elixir-format
 msgid "Start or stop your active conference camera"
-msgstr "Начните или остановите активную конференц-камеру"
+msgstr "Включить или выключить вашу активную камеру конференции"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:100
 #, elixir-autogen, elixir-format
 msgid "Toggle Conference Camera"
-msgstr "Камера конференции Toggle"
+msgstr "Включить/выключить камеру конференции"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:94
 #, elixir-autogen, elixir-format
 msgid "Toggle Conference Microphone"
-msgstr "Микрофон конференции Toggle"
+msgstr "Включить/выключить микрофон конференции"
 
 #: lib/retro_hex_chat/channels/server.ex:1747
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
-msgstr "Привязка не может быть прикреплена к сообщению"
+msgstr "Не удалось прикрепить вложение к сообщению"
 
 #: lib/retro_hex_chat/chat/attachments.ex:276
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
-msgstr "Привязка превышает лимит %{mb} MB"
+msgstr "Вложение превышает лимит %{mb} MB"
 
 #: lib/retro_hex_chat/chat/attachments.ex:271
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
-msgstr "Привязанность пуста"
+msgstr "Вложение пусто"
 
 #: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
-msgstr "Неподдерживаемый формат сообщений"
+msgstr "Неподдерживаемый формат сообщения"
 
 #: lib/retro_hex_chat/chat/attachments.ex:316
 #: lib/retro_hex_chat/chat/attachments.ex:398
@@ -632,7 +628,7 @@ msgstr "Не удалось сохранить это эмодзи."
 #: lib/retro_hex_chat/chat/custom_emojis.ex:190
 #, elixir-autogen, elixir-format
 msgid "This server already answers to that name."
-msgstr "Этот сервер уже отвечает на это имя."
+msgstr "Этот сервер уже использует это имя."
 
 #: lib/retro_hex_chat/chat/custom_emojis.ex:182
 #, elixir-autogen, elixir-format
@@ -647,7 +643,7 @@ msgstr "Запись нельзя отправить как %{type}"
 #: lib/retro_hex_chat/virtual_space/speech.ex:44
 #, elixir-autogen, elixir-format
 msgid "Only /me works in a space. Other commands go in the chat."
-msgstr "В космосе работает только /me. Другие команды идут в чате."
+msgstr "В пространстве работает только /me. Остальные команды вводятся в чате."
 
 #: lib/retro_hex_chat/virtual_space/speech.ex:70
 #, elixir-autogen, elixir-format
@@ -658,30 +654,30 @@ msgstr "Это личное пространство принадлежит дв
 #: lib/retro_hex_chat/virtual_space/speech.ex:38
 #, elixir-autogen, elixir-format
 msgid "Type something to say first."
-msgstr "Сначала наберите что-нибудь сказать."
+msgstr "Сначала введите, что хотите сказать."
 
 #: lib/retro_hex_chat/chat/service.ex:182
 #: lib/retro_hex_chat/virtual_space/speech.ex:50
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
-msgstr "Вы приглушены администратором"
+msgstr "Администратор отключил вам возможность писать"
 
 #: lib/retro_hex_chat/virtual_space.ex:341
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed gold side up"
-msgstr "бросил монету, и она высадила золото"
+msgstr "подбросил монету, и она упала золотой стороной вверх"
 
 #: lib/retro_hex_chat/virtual_space.ex:344
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed silver side up"
-msgstr "бросил монету, и она высадила серебро"
+msgstr "подбросил монету, и она упала серебряной стороной вверх"
 
 #: lib/retro_hex_chat/virtual_space.ex:337
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
-msgstr "выкинул кости и получил %{face}"
+msgstr "бросил кубики и получил %{face}"
 
 #: lib/retro_hex_chat/chat/content.ex:154
 #, elixir-autogen, elixir-format
 msgid "Text art can have at most %{lines} lines of %{columns} characters"
-msgstr "Текстовое искусство может иметь не более %{lines} строк символов %{columns}"
+msgstr "Текстовое искусство может содержать не более %{lines} строк по %{columns} символов"

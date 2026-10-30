@@ -19,47 +19,47 @@ msgstr "%{inet_ntoa_ip}:%{port}</ph/ph0>"
 #: lib/retro_hex_chat/p2p/turn/allocation_handler.ex:72
 #, elixir-autogen, elixir-format
 msgid "(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)"
-msgstr "(%{inet_ntoa_c_ip}:%{c_port},%{inet_ntoa_s_ip}:%{s_port},UDP)."
+msgstr "(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:57
 #, elixir-autogen, elixir-format
 msgid ", rejected"
-msgstr ",拒絕"
+msgstr ", 已拒絕"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:152
 #, elixir-autogen, elixir-format
 msgid "Address is already bound to channel"
-msgstr "地址已綁定在頻道"
+msgstr "位址已綁定到頻道"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:72
 #, elixir-autogen, elixir-format
 msgid "Allocation mismatch: allocation already exists"
-msgstr "分配不匹配: 分配已經存在"
+msgstr "配置不符：配置已存在"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:69
 #, elixir-autogen, elixir-format
 msgid "Allocation mismatch: allocation does not exist"
-msgstr "分配不匹配: 分配不存在"
+msgstr "配置不符：配置不存在"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:110
 #, elixir-autogen, elixir-format
 msgid "Auth failed, invalid MESSAGE-INTEGRITY"
-msgstr "Auth 失敗, 無效 MessAGE-INTEGRITY"
+msgstr "驗證失敗，MESSAGE-INTEGRITY 無效"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:149
 #, elixir-autogen, elixir-format
 msgid "Channel number is already bound"
-msgstr "頻道號碼已經綁定"
+msgstr "頻道編號已被綁定"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:146
 #, elixir-autogen, elixir-format
 msgid "Channel number is out of allowed range"
-msgstr "頻道號碼超出允許的範圍"
+msgstr "頻道編號超出允許範圍"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:101
 #, elixir-autogen, elixir-format
 msgid "EVEN-PORT unsupported"
-msgstr "Even-port 不支持"
+msgstr "不支援 EVEN-PORT"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:143
 #, elixir-autogen, elixir-format
@@ -74,7 +74,7 @@ msgstr "解碼 DATA 失敗"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:81
 #, elixir-autogen, elixir-format
 msgid "Failed to decode EVEN-PORT"
-msgstr "解碼 Even- Port 失敗"
+msgstr "解碼 EVEN-PORT 失敗"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:107
 #, elixir-autogen, elixir-format
@@ -84,17 +84,17 @@ msgstr "解碼 LIFETIME 失敗"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:84
 #, elixir-autogen, elixir-format
 msgid "Failed to decode REQUESTED-ADDRESS-FAMILY"
-msgstr "解碼請求解碼失敗"
+msgstr "解碼 REQUESTED-ADDRESS-FAMILY 失敗"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:95
 #, elixir-autogen, elixir-format
 msgid "Failed to decode RESERVATION-TOKEN"
-msgstr "解碼保存系統失敗"
+msgstr "解碼 RESERVATION-TOKEN 失敗"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:131
 #, elixir-autogen, elixir-format
 msgid "Failed to decode XOR-PEER-ADDRESS"
-msgstr "解碼 XOR- PEER- ADRESS 失敗"
+msgstr "解碼 XOR-PEER-ADDRESS 失敗"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:140
 #, elixir-autogen, elixir-format
@@ -104,52 +104,52 @@ msgstr "無 CHANNEL - 數字屬性"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:134
 #, elixir-autogen, elixir-format
 msgid "No DATA attribute"
-msgstr "無 DATA 屬性"
+msgstr "沒有 DATA 屬性"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:128
 #, elixir-autogen, elixir-format
 msgid "No XOR-PEER-ADDRESS attribute"
-msgstr "無 XOR- PEER- ADADSES 屬性"
+msgstr "沒有 XOR-PEER-ADDRESS 屬性"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:104
 #, elixir-autogen, elixir-format
 msgid "No available ports left"
-msgstr "沒有可用的端口"
+msgstr "沒有可用的連接埠了"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:113
 #, elixir-autogen, elixir-format
 msgid "No message integrity attribute"
-msgstr "無信件完整性屬性"
+msgstr "缺少訊息完整性屬性"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:78
 #, elixir-autogen, elixir-format
 msgid "No or malformed REQUESTED-TRANSPORT"
-msgstr "沒有或不符合要求的運輸"
+msgstr "缺少 REQUESTED-TRANSPORT 或格式不正確"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:116
 #, elixir-autogen, elixir-format
 msgid "No username, nonce or realm attribute"
-msgstr "沒有用戶名、 非ce 或域屬性"
+msgstr "缺少使用者名稱、nonce 或 realm 屬性"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:98
 #, elixir-autogen, elixir-format
 msgid "REQUESTED-ADDRESS-FAMILY with IPv6 unsupported"
-msgstr "請求解決IPv6不支持"
+msgstr "不支援 REQUESTED-ADDRESS-FAMILY 使用 IPv6"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:88
 #, elixir-autogen, elixir-format
 msgid "RESERVATION-TOKEN and (EVEN-PORT|REQUESTED-FAMILY) in the message"
-msgstr "電文中的 \" 保留 \" (Even-ported-Family)"
+msgstr "訊息中同時包含 RESERVATION-TOKEN 與 (EVEN-PORT|REQUESTED-FAMILY)"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:92
 #, elixir-autogen, elixir-format
 msgid "RESERVATION-TOKEN unsupported"
-msgstr "不支持的保留"
+msgstr "不支援 RESERVATION-TOKEN"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:125
 #, elixir-autogen, elixir-format
 msgid "Stale nonce"
-msgstr "Stale 諾斯"
+msgstr "nonce 已過期"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:156
 #, elixir-autogen, elixir-format
@@ -159,14 +159,14 @@ msgstr "未知錯誤"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:75
 #, elixir-autogen, elixir-format
 msgid "Unsupported REQUESTED-TRANSPORT: TCP"
-msgstr "不支持的要求-運輸:TCP"
+msgstr "不支援的 REQUESTED-TRANSPORT:TCP"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:122
 #, elixir-autogen, elixir-format
 msgid "Username differs from the one used previously"
-msgstr "用戶名不同於先前使用的用戶名"
+msgstr "使用者名稱與先前使用的不同"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:119
 #, elixir-autogen, elixir-format
 msgid "Username timestamp expired"
-msgstr "用戶名時間戳過期"
+msgstr "使用者名稱時間戳已過期"

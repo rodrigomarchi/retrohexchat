@@ -19,7 +19,7 @@ msgstr "%{inet_ntoa_ip}:%{port}/UDP (英语)."
 #: lib/retro_hex_chat/p2p/turn/allocation_handler.ex:72
 #, elixir-autogen, elixir-format
 msgid "(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)"
-msgstr "(%{inet_ntoa_c_ip}:%{c_port},%{inet_ntoa_s_ip}:%{s_port},UDP)."
+msgstr "(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:57
 #, elixir-autogen, elixir-format
@@ -44,7 +44,7 @@ msgstr "分配不匹配: 分配不存在"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:110
 #, elixir-autogen, elixir-format
 msgid "Auth failed, invalid MESSAGE-INTEGRITY"
-msgstr "Auth 失败, 无效 MessAGE-INTEGRITY"
+msgstr "认证失败,MESSAGE-INTEGRITY 无效"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:149
 #, elixir-autogen, elixir-format
@@ -59,7 +59,7 @@ msgstr "频道号码超出允许的范围"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:101
 #, elixir-autogen, elixir-format
 msgid "EVEN-PORT unsupported"
-msgstr "Even-port 不支持"
+msgstr "不支持 EVEN-PORT"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:143
 #, elixir-autogen, elixir-format
@@ -74,7 +74,7 @@ msgstr "解码 DATA 失败"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:81
 #, elixir-autogen, elixir-format
 msgid "Failed to decode EVEN-PORT"
-msgstr "解码 Even- Port 失败"
+msgstr "解码 EVEN-PORT 失败"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:107
 #, elixir-autogen, elixir-format
@@ -84,17 +84,17 @@ msgstr "解码 LIFETIME 失败"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:84
 #, elixir-autogen, elixir-format
 msgid "Failed to decode REQUESTED-ADDRESS-FAMILY"
-msgstr "解码请求解码失败"
+msgstr "解码 REQUESTED-ADDRESS-FAMILY 失败"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:95
 #, elixir-autogen, elixir-format
 msgid "Failed to decode RESERVATION-TOKEN"
-msgstr "解码保存系统失败"
+msgstr "解码 RESERVATION-TOKEN 失败"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:131
 #, elixir-autogen, elixir-format
 msgid "Failed to decode XOR-PEER-ADDRESS"
-msgstr "解码 XOR- PEER- ADRESS 失败"
+msgstr "解码 XOR-PEER-ADDRESS 失败"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:140
 #, elixir-autogen, elixir-format
@@ -104,52 +104,52 @@ msgstr "无 CHANNEL - 数字属性"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:134
 #, elixir-autogen, elixir-format
 msgid "No DATA attribute"
-msgstr "无 DATA 属性"
+msgstr "没有 DATA 属性"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:128
 #, elixir-autogen, elixir-format
 msgid "No XOR-PEER-ADDRESS attribute"
-msgstr "无 XOR- PEER- ADADSES 属性"
+msgstr "没有 XOR-PEER-ADDRESS 属性"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:104
 #, elixir-autogen, elixir-format
 msgid "No available ports left"
-msgstr "没有可用的端口"
+msgstr "没有剩余的可用端口"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:113
 #, elixir-autogen, elixir-format
 msgid "No message integrity attribute"
-msgstr "无信件完整性属性"
+msgstr "缺少消息完整性属性"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:78
 #, elixir-autogen, elixir-format
 msgid "No or malformed REQUESTED-TRANSPORT"
-msgstr "没有或不符合要求的运输"
+msgstr "缺少 REQUESTED-TRANSPORT 或其格式错误"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:116
 #, elixir-autogen, elixir-format
 msgid "No username, nonce or realm attribute"
-msgstr "没有用户名、 非ce 或域属性"
+msgstr "缺少用户名、nonce 或 realm 属性"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:98
 #, elixir-autogen, elixir-format
 msgid "REQUESTED-ADDRESS-FAMILY with IPv6 unsupported"
-msgstr "请求解决IPv6不支持"
+msgstr "不支持带 IPv6 的 REQUESTED-ADDRESS-FAMILY"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:88
 #, elixir-autogen, elixir-format
 msgid "RESERVATION-TOKEN and (EVEN-PORT|REQUESTED-FAMILY) in the message"
-msgstr "电文中的 \" 保留 \" (Even-ported-Family)"
+msgstr "消息中同时包含 RESERVATION-TOKEN 和 (EVEN-PORT|REQUESTED-FAMILY)"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:92
 #, elixir-autogen, elixir-format
 msgid "RESERVATION-TOKEN unsupported"
-msgstr "不支持的保留"
+msgstr "不支持 RESERVATION-TOKEN"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:125
 #, elixir-autogen, elixir-format
 msgid "Stale nonce"
-msgstr "Stale 诺斯"
+msgstr "nonce 已过期"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:156
 #, elixir-autogen, elixir-format
@@ -159,7 +159,7 @@ msgstr "未知错误"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:75
 #, elixir-autogen, elixir-format
 msgid "Unsupported REQUESTED-TRANSPORT: TCP"
-msgstr "不支持的要求-运输:TCP"
+msgstr "不支持的 REQUESTED-TRANSPORT:TCP"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:122
 #, elixir-autogen, elixir-format

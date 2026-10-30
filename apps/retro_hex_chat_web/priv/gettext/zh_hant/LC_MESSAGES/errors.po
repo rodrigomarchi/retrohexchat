@@ -22,11 +22,11 @@ msgstr ""
 # effect: edit them in PO (`.po`) files instead.
 # From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr "不會是空的"
+msgstr "不能留空"
 
 # From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr "已經取用"
+msgstr "已被使用"
 
 # From Ecto.Changeset.put_change/3
 msgid "is invalid"
@@ -38,76 +38,76 @@ msgstr "必須接受"
 
 # From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr "有無效的格式"
+msgstr "格式無效"
 
 # From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr "有無效的條目"
+msgstr "包含無效的項目"
 
 # From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr "保留"
+msgstr "為保留字"
 
 # From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr "不匹配確認"
+msgstr "與確認內容不符"
 
 # From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr "仍然與本條目相關"
+msgstr "仍與此項目有關聯"
 
 msgid "are still associated with this entry"
-msgstr "仍然與本條目相關"
+msgstr "仍與此項目有關聯"
 
 # From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] "應有 %{count}項"
+msgstr[0] "應有 %{count} 項"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] "應爲 %{count} 字符"
+msgstr[0] "應為 %{count} 個字元"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] "應該 %{count} 字節"
+msgstr[0] "應為 %{count} 位元組"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "應至少有 %{count}項"
+msgstr[0] "應至少有 %{count} 項"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "應至少爲 %{count} 字符"
+msgstr[0] "應至少為 %{count} 個字元"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] "應爲 %{count}字節"
+msgstr[0] "應至少為 %{count} 位元組"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "最多應有 %{count}項"
+msgstr[0] "最多應有 %{count} 項"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "應該最多 %{count} 字符"
+msgstr[0] "應該最多 %{count} 個字元"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] "應該最多 %{count} 字節"
+msgstr[0] "應該最多 %{count} 位元組"
 
 # From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr "必須是小於 %{number}"
+msgstr "必須小於 %{number}"
 
 msgid "must be greater than %{number}"
-msgstr "必須是大於 %{number}"
+msgstr "必須大於 %{number}"
 
 msgid "must be less than or equal to %{number}"
-msgstr "必須是小於或等於 %{number}"
+msgstr "必須小於或等於 %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr "必須是大於或等於 %{number}"
+msgstr "必須大於或等於 %{number}"
 
 msgid "must be equal to %{number}"
 msgstr "必須等於 %{number}"

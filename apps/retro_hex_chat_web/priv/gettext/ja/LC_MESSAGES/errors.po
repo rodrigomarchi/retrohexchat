@@ -26,88 +26,88 @@ msgstr "空白にすることはできません"
 
 # From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr "既に取られた"
+msgstr "すでに使用されています"
 
 # From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr "無効"
+msgstr "無効です"
 
 # From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr "must be accepted"
+msgstr "承認されている必要があります"
 
 # From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr "無効な形式"
+msgstr "形式が無効です"
 
 # From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr "無効なエントリを持っている"
+msgstr "無効な項目が含まれています"
 
 # From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr "is reserved"
+msgstr "予約されています"
 
 # From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr "確認に一致しない"
+msgstr "確認の入力と一致しません"
 
 # From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr "このエントリにはまだ関連付けられています。"
+msgstr "この項目にはまだ関連付けられています"
 
 msgid "are still associated with this entry"
-msgstr "このエントリにはまだ関連付けられています。"
+msgstr "この項目にはまだ関連付けられています"
 
 # From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] "%{count} アイテムを持っている必要があります。"
+msgstr[0] "項目数は%{count}個である必要があります"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] "%{count} 文字でなければなりません"
+msgstr[0] "%{count}文字である必要があります"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] "%{count}バイトでなければなりません"
+msgstr[0] "%{count}バイトである必要があります"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "少なくとも%{count}項目を持っている必要があります。"
+msgstr[0] "項目は%{count}個以上である必要があります"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "少なくとも%{count}文字でなければなりません"
+msgstr[0] "%{count}文字以上である必要があります"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] "少なくとも%{count}バイトでなければなりません"
+msgstr[0] "%{count}バイト以上である必要があります"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "ほとんどの%{count}項目に持っている必要があります。"
+msgstr[0] "項目は%{count}個以下である必要があります"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "ほとんどの%{count}文字でなければならない"
+msgstr[0] "%{count}文字以下でなければなりません"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] "ほとんどの%{count}バイト(s)"
+msgstr[0] "%{count}バイト以下でなければなりません"
 
 # From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr "%{number} よりも少ない"
+msgstr "%{number}より小さくなければなりません"
 
 msgid "must be greater than %{number}"
-msgstr "%{number}よりも大きい"
+msgstr "%{number}より大きくなければなりません"
 
 msgid "must be less than or equal to %{number}"
-msgstr "%{number} と同等のものでなければなりません"
+msgstr "%{number}以下でなければなりません"
 
 msgid "must be greater than or equal to %{number}"
-msgstr "%{number} より大きいか、または等しいです"
+msgstr "%{number}以上でなければなりません"
 
 msgid "must be equal to %{number}"
 msgstr "%{number} に等しくなければなりません"
@@ -115,4 +115,4 @@ msgstr "%{number} に等しくなければなりません"
 #: lib/retro_hex_chat_web/components/ui/helpers.ex:348
 #, elixir-autogen, elixir-format
 msgid "invalid value"
-msgstr "無効な値"
+msgstr "無効な値です"

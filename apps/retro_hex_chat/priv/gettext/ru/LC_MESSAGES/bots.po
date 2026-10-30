@@ -29,7 +29,7 @@ msgstr "%{prefix}%{trigger} — %{description}"
 #: lib/retro_hex_chat/bots/capabilities/help.ex:66
 #, elixir-autogen, elixir-format
 msgid "  %{prefix}help — Show this help message"
-msgstr "  %{prefix}Помощь - Покажите это сообщение помощи"
+msgstr "  %{prefix}help — показать эту справку"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:273
 #, elixir-autogen, elixir-format
@@ -44,7 +44,7 @@ msgstr "%{base} = %{sum}"
 #: lib/retro_hex_chat/bots/capabilities/help.ex:50
 #, elixir-autogen, elixir-format
 msgid "%{bot_name} — Available Commands:"
-msgstr "%{bot_name} Доступные команды:"
+msgstr "%{bot_name} — доступные команды:"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:214
 #, elixir-autogen, elixir-format
@@ -56,12 +56,12 @@ msgstr "%{message} (%{reason})"
 msgid "%{prefix}\nRound over! %{scores}"
 msgstr ""
 "%{prefix}\n"
-"Закругляйтесь! %{scores}"
+"Раунд окончен! %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:350
 #, elixir-autogen, elixir-format
 msgid "%{rank}. %{name}: %{points}pts"
-msgstr "%{rank}. %{name}: %{points}pts"
+msgstr "%{rank}. %{name}: %{points} очк."
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:638
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:123
@@ -98,19 +98,17 @@ msgstr "драгоценный камень"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:153
 #, elixir-autogen, elixir-format
 msgid "A single letter"
-msgstr "Одно письмо"
+msgstr "Одна буква"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:168
 #, elixir-autogen, elixir-format
 msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
-msgstr ""
-"Путешествие уже идет! Используйте «тривиальный стоп», чтобы положить этому "
-"конец."
+msgstr "Раунд викторины уже идёт! Чтобы завершить его, используйте «trivia stop»."
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:147
 #, elixir-autogen, elixir-format
 msgid "Active schedules:"
-msgstr "Активные графики:"
+msgstr "Активные расписания:"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:110
 #, elixir-autogen, elixir-format
@@ -145,12 +143,12 @@ msgstr "Алжир"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:76
 #, elixir-autogen, elixir-format
 msgid "Alias for roll"
-msgstr "Алиас для ролла"
+msgstr "Псевдоним для roll"
 
 #: lib/retro_hex_chat/bots/server.ex:159
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
-msgstr "Уже в канале"
+msgstr "Уже на канале"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:292
 #, elixir-autogen, elixir-format
@@ -175,7 +173,7 @@ msgstr "Интерфейс прикладного программировани
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:60
 #, elixir-autogen, elixir-format
 msgid "Au"
-msgstr "А."
+msgstr "Au"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:291
 #, elixir-autogen, elixir-format
@@ -197,7 +195,7 @@ msgstr "Аватар"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:374
 #, elixir-autogen, elixir-format
 msgid "BEAM VM"
-msgstr "БИМ ВМ"
+msgstr "BEAM VM"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:225
 #, elixir-autogen, elixir-format
@@ -222,7 +220,7 @@ msgstr "Билл Гейтс"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:431
 #, elixir-autogen, elixir-format
 msgid "Black and white"
-msgstr "Черный и белый"
+msgstr "Чёрный и белый"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:451
 #, elixir-autogen, elixir-format
@@ -232,7 +230,7 @@ msgstr "Блоки"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:421
 #, elixir-autogen, elixir-format
 msgid "Blue aliens"
-msgstr "Голубые пришельцы"
+msgstr "Синие пришельцы"
 
 #: lib/retro_hex_chat/bots/lifecycle.ex:176
 #, elixir-autogen, elixir-format
@@ -257,7 +255,7 @@ msgstr "Британский писатель"
 #: lib/retro_hex_chat/bots/capabilities/help.ex:15
 #, elixir-autogen, elixir-format
 msgid "Built-in !help command listing available commands"
-msgstr "Встроенный список команд !help"
+msgstr "Встроенная команда !help со списком доступных команд"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:321
 #, elixir-autogen, elixir-format
@@ -272,7 +270,7 @@ msgstr "Канберра"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:191
 #, elixir-autogen, elixir-format
 msgid "Cannot keep %{keep} dice when only rolling %{count}."
-msgstr "Нельзя держать %{keep} Кости, когда только катятся %{count}."
+msgstr "Нельзя оставить %{keep} кубиков, когда бросается только %{count}."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:343
 #, elixir-autogen, elixir-format
@@ -287,17 +285,17 @@ msgstr "Город света"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:242
 #, elixir-autogen, elixir-format
 msgid "Correct, %{author}! (+%{points} points)"
-msgstr "Правильно. %{author}! (+%{points} пункты)"
+msgstr "Правильно, %{author}! (+%{points} очков)"
 
 #: lib/retro_hex_chat/bots/capabilities/custom_commands.ex:18
 #, elixir-autogen, elixir-format
 msgid "Custom bot commands (!prefix trigger)"
-msgstr "Командный бот (!prefix trigger)"
+msgstr "Пользовательские команды бота (триггер с префиксом !)"
 
 #: lib/retro_hex_chat/bots/capabilities/script.ex:7
 #, elixir-autogen, elixir-format
 msgid "Custom script engine (Coming soon)"
-msgstr "Custom script engine (скоро выйдет)"
+msgstr "Пользовательский скриптовый движок (скоро)"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:312
 #, elixir-autogen, elixir-format
@@ -322,12 +320,12 @@ msgstr "Долларовая купюра"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:456
 #, elixir-autogen, elixir-format
 msgid "Dutch painter"
-msgstr "голландский художник"
+msgstr "Голландский художник"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:36
 #, elixir-autogen, elixir-format
 msgid "Early 20th century"
-msgstr "В начале 20 века"
+msgstr "Начало 20 века"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:461
 #, elixir-autogen, elixir-format
@@ -342,22 +340,22 @@ msgstr "Эрланг"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:120
 #, elixir-autogen, elixir-format
 msgid "Error: Dice must have at least 2 sides."
-msgstr "Ошибка: У риса должно быть не менее 2 сторон."
+msgstr "Ошибка: у кубика должно быть не менее 2 граней."
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:114
 #, elixir-autogen, elixir-format
 msgid "Error: Maximum %{max} dice allowed."
-msgstr "Ошибка: максимальная %{max} Кости разрешены."
+msgstr "Ошибка: разрешено не более %{max} кубиков."
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:117
 #, elixir-autogen, elixir-format
 msgid "Error: Maximum %{max} sides allowed."
-msgstr "Ошибка: максимальная %{max} стороны допускаются."
+msgstr "Ошибка: разрешено не более %{max} граней."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:103
 #, elixir-autogen, elixir-format
 msgid "Famous for rings"
-msgstr "Знаменитые кольца"
+msgstr "Известен кольцами"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:255
 #, elixir-autogen, elixir-format
@@ -383,7 +381,7 @@ msgstr "Итоговые баллы: %{ranked}"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:334
 #, elixir-autogen, elixir-format
 msgid "Finnish"
-msgstr "финский"
+msgstr "Финский"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:199
 #, elixir-autogen, elixir-format
@@ -428,7 +426,7 @@ msgstr "Гренландия"
 #: lib/retro_hex_chat/bots/capabilities/greeter.ex:51
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
-msgstr "Приветствуйте пользователей, попрощайтесь с частью"
+msgstr "Приветствовать пользователей при входе и прощаться при выходе"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:209
 #, elixir-autogen, elixir-format
@@ -448,7 +446,7 @@ msgstr "HTTP %{status}"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:56
 #, elixir-autogen, elixir-format
 msgid "Hex = six"
-msgstr "Шесть = шесть"
+msgstr "Hex = шесть"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:80
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:211
@@ -499,12 +497,12 @@ msgstr "Сколько сторон у шестиугольника?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:328
 #, elixir-autogen, elixir-format
 msgid "HyperText Markup Language"
-msgstr "Язык разметки HyperText"
+msgstr "HyperText Markup Language (язык гипертекстовой разметки)"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:353
 #, elixir-autogen, elixir-format
 msgid "HyperText Transfer Protocol"
-msgstr "Протокол передачи HyperText"
+msgstr "HyperText Transfer Protocol (протокол передачи гипертекста)"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:252
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:267
@@ -550,29 +548,27 @@ msgstr "Индия"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:399
 #, elixir-autogen, elixir-format
 msgid "Integration"
-msgstr "интеграция"
+msgstr "Интеграция"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:24
 #, elixir-autogen, elixir-format
 msgid "Interactive quiz and trivia with scoring"
-msgstr "Интерактивная викторина и мелочи с забиванием"
+msgstr "Интерактивная викторина с подсчётом очков"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:151
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
-msgstr ""
-"Недействительная запись кости%{notation}Формат использования: NdS, NdS+M, "
-"NdSkh/klN"
+msgstr "Неверная запись кубиков '%{notation}'. Используйте формат: NdS, NdS+M, NdSkh/klN"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:236
 #, elixir-autogen, elixir-format
 msgid "Invalid time format. Use HH:MM (24h UTC)."
-msgstr "Недействительный формат времени. HH:MM (24h UTC)."
+msgstr "Неверный формат времени. Используйте ЧЧ:ММ (24 ч, UTC)."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:425
 #, elixir-autogen, elixir-format
 msgid "J.K. Rowling"
-msgstr "Джоан Роулинг"
+msgstr "Дж. К. Роулинг"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:210
 #, elixir-autogen, elixir-format
@@ -587,7 +583,7 @@ msgstr "Карл Маркс"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:187
 #, elixir-autogen, elixir-format
 msgid "Keep count must be at least 1."
-msgstr "Счет должен быть не менее 1."
+msgstr "Число сохраняемых кубиков должно быть не менее 1."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:476
 #, elixir-autogen, elixir-format
@@ -602,17 +598,17 @@ msgstr "Интеллектуальные ответы на основе LLM (с�
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:190
 #, elixir-autogen, elixir-format
 msgid "Late 1980s"
-msgstr "Конец 1980-х годов"
+msgstr "Конец 1980-х"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:394
 #, elixir-autogen, elixir-format
 msgid "Late 1990s"
-msgstr "Конец 1990-х годов"
+msgstr "Конец 1990-х"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:339
 #, elixir-autogen, elixir-format
 msgid "Late 2000s"
-msgstr "Поздние 2000-е"
+msgstr "Конец 2000-х"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:229
 #, elixir-autogen, elixir-format
@@ -622,7 +618,7 @@ msgstr "Леонардо да Винчи"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:113
 #, elixir-autogen, elixir-format
 msgid "Lightest"
-msgstr "Самый легкий"
+msgstr "Самый лёгкий"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:184
 #, elixir-autogen, elixir-format
@@ -642,7 +638,7 @@ msgstr "Список RSS фиды"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:111
 #, elixir-autogen, elixir-format
 msgid "List active schedules"
-msgstr "Список активных графиков"
+msgstr "Список активных расписаний"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:66
 #, elixir-autogen, elixir-format
@@ -652,7 +648,7 @@ msgstr "Живет в океане"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:118
 #, elixir-autogen, elixir-format
 msgid "Look up"
-msgstr "Смотри."
+msgstr "Посмотри"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:276
 #, elixir-autogen, elixir-format
@@ -672,7 +668,7 @@ msgstr "Максимум %{max} фиды достигнут."
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:165
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} schedules reached."
-msgstr "максимум %{max} Графики достигнуты."
+msgstr "Достигнут максимум расписаний: %{max}."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:204
 #, elixir-autogen, elixir-format
@@ -682,7 +678,7 @@ msgstr "Мейфлауэр"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:296
 #, elixir-autogen, elixir-format
 msgid "Mediterranean"
-msgstr "Средиземноморье"
+msgstr "Средиземное море"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:475
 #, elixir-autogen, elixir-format
@@ -692,7 +688,7 @@ msgstr "Майкл Джексон"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:297
 #, elixir-autogen, elixir-format
 msgid "Middle earth"
-msgstr "Средняя земля"
+msgstr "Средиземье"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:450
 #, elixir-autogen, elixir-format
@@ -702,17 +698,17 @@ msgstr "Minecraft"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:188
 #, elixir-autogen, elixir-format
 msgid "Minimum interval is %{minutes} minutes."
-msgstr "Минимальный интервал – это %{minutes} минуты."
+msgstr "Минимальный интервал: %{minutes} мин."
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:237
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
-msgstr "Пропавший канал. Использование: rss add <url> <#channel>"
+msgstr "Не указан канал. Использование: rss add <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
 #, elixir-autogen, elixir-format
 msgid "Monopoly"
-msgstr "монополия"
+msgstr "Монополия"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:26
 #, elixir-autogen, elixir-format
@@ -732,7 +728,7 @@ msgstr "Мико-"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:137
 #, elixir-autogen, elixir-format
 msgid "NaCl"
-msgstr "Накл"
+msgstr "NaCl"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:307
 #, elixir-autogen, elixir-format
@@ -747,7 +743,7 @@ msgstr "Нил Армстронг"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:123
 #, elixir-autogen, elixir-format
 msgid "Neutral"
-msgstr "нейтральный"
+msgstr "Нейтральный"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:143
 #, elixir-autogen, elixir-format
@@ -772,7 +768,7 @@ msgstr "RSS фиды не настроен."
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:146
 #, elixir-autogen, elixir-format
 msgid "No active schedules."
-msgstr "Никаких активных графиков."
+msgstr "Нет активных расписаний."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:177
 #, elixir-autogen, elixir-format
@@ -782,13 +778,13 @@ msgstr "Нет вопросов для категории '%{category}'."
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:336
 #, elixir-autogen, elixir-format
 msgid "No scores recorded."
-msgstr "Никаких записей."
+msgstr "Результатов пока нет."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:208
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:221
 #, elixir-autogen, elixir-format
 msgid "No trivia round in progress."
-msgstr "Никаких мелочей."
+msgstr "Раунд викторины сейчас не идёт."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:317
 #, elixir-autogen, elixir-format
@@ -828,7 +824,7 @@ msgstr "Только администраторы и серверные опер
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:108
 #, elixir-autogen, elixir-format
 msgid "Organelle"
-msgstr "органический"
+msgstr "Органелла"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:301
 #, elixir-autogen, elixir-format
@@ -859,12 +855,12 @@ msgstr "Париж"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:471
 #, elixir-autogen, elixir-format
 msgid "Pass Go"
-msgstr "Проходите."
+msgstr "Пройти старт"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:31
 #, elixir-autogen, elixir-format
 msgid "Peaceful"
-msgstr "мирный"
+msgstr "Мирный"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:185
 #, elixir-autogen, elixir-format
@@ -874,12 +870,12 @@ msgstr "Фарос"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:389
 #, elixir-autogen, elixir-format
 msgid "Plug it in"
-msgstr "Подключи его."
+msgstr "Включить в розетку"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:133
 #, elixir-autogen, elixir-format
 msgid "Pluto was demoted"
-msgstr "Плутон был понижен в должности"
+msgstr "Плутон лишили статуса планеты"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:314
 #, elixir-autogen, elixir-format
@@ -914,7 +910,7 @@ msgstr "RSS фид Reader, который публикует обновлени�
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:368
 #, elixir-autogen, elixir-format
 msgid "Random Access Memory"
-msgstr "Случайный доступ к памяти"
+msgstr "Память с произвольным доступом"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:406
 #, elixir-autogen, elixir-format
@@ -939,7 +935,7 @@ msgstr "Ренессанс"
 #: lib/retro_hex_chat/bots/capabilities/mention.ex:19
 #, elixir-autogen, elixir-format
 msgid "Respond when mentioned by name"
-msgstr "Отвечайте, когда упоминается имя"
+msgstr "Отвечать при упоминании по имени"
 
 #: lib/retro_hex_chat/bots/capabilities/mention.ex:52
 #, elixir-autogen, elixir-format
@@ -959,17 +955,17 @@ msgstr "Кости (например, 2d6, d20+5, 4d6kh3)"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:237
 #, elixir-autogen, elixir-format
 msgid "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
-msgstr "роллинг %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
+msgstr "Бросок %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:229
 #, elixir-autogen, elixir-format
 msgid "Rolling %{notation}: %{rolls} = %{sum}"
-msgstr "роллинг %{notation}: %{rolls} = %{sum}"
+msgstr "Бросок %{notation}: %{rolls} = %{sum}"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:262
 #, elixir-autogen, elixir-format
 msgid "Rolling %{notation}: %{rolls} → keeping %{kept}"
-msgstr "роллинг %{notation}: %{rolls} держать %{kept}"
+msgstr "Бросок %{notation}: %{rolls} → оставляем %{kept}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:199
 #, elixir-autogen, elixir-format
@@ -989,37 +985,37 @@ msgstr "Сатурн"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:230
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
-msgstr "Расписание%{id}Добавлено: ежедневно в %{time} в UTC %{channel}."
+msgstr "Расписание '%{id}' добавлено: ежедневно в %{time} UTC в %{channel}."
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:204
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
-msgstr "Расписание%{id}И добавил: Каждый %{minutes}мин. %{channel}."
+msgstr "Расписание '%{id}' добавлено: каждые %{minutes} мин в %{channel}."
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:247
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' not found."
-msgstr "Расписание%{id}Не найдено."
+msgstr "Расписание '%{id}' не найдено."
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:245
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' removed."
-msgstr "Расписание%{id}Убрали."
+msgstr "Расписание '%{id}' удалено."
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:33
 #, elixir-autogen, elixir-format
 msgid "Scheduled and periodic messages"
-msgstr "Плановые и периодические сообщения"
+msgstr "Запланированные и периодические сообщения"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:327
 #, elixir-autogen, elixir-format
 msgid "Scores (Q%{number}/%{total}): %{ranked}"
-msgstr "Счета (Q)%{number}/%{total}): %{ranked}"
+msgstr "Счёт (вопрос %{number}/%{total}): %{ranked}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:323
 #, elixir-autogen, elixir-format
 msgid "Scores (Q%{number}/%{total}): No scores yet."
-msgstr "Счета (Q)%{number}/%{total}): Пока нет баллов."
+msgstr "Счёт (вопрос %{number}/%{total}): пока нет очков."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:240
 #, elixir-autogen, elixir-format
@@ -1034,12 +1030,12 @@ msgstr "Шерлок Холмс"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:135
 #, elixir-autogen, elixir-format
 msgid "Show current scores"
-msgstr "Показать текущие баллы"
+msgstr "Показать текущий счёт"
 
 #: lib/retro_hex_chat/bots/capabilities/help.ex:43
 #, elixir-autogen, elixir-format
 msgid "Show this help message"
-msgstr "Покажите это сообщение помощи"
+msgstr "Показать это справочное сообщение"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:138
 #, elixir-autogen, elixir-format
@@ -1065,7 +1061,7 @@ msgstr "Южное полушарие"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:133
 #, elixir-autogen, elixir-format
 msgid "Start a trivia round"
-msgstr "Начните раунд мелочей"
+msgstr "Начать раунд викторины"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
 #, elixir-autogen, elixir-format
@@ -1080,7 +1076,7 @@ msgstr "Стивен Спилберг"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:134
 #, elixir-autogen, elixir-format
 msgid "Stop the current round"
-msgstr "Остановите текущий раунд"
+msgstr "Остановить текущий раунд"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:378
 #, elixir-autogen, elixir-format
@@ -1090,7 +1086,7 @@ msgstr "Структурированный язык запросов"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:136
 #, elixir-autogen, elixir-format
 msgid "Submit a trivia answer"
-msgstr "Отправить ответ Trivia"
+msgstr "Отправить ответ в викторине"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:117
 #, elixir-autogen, elixir-format
@@ -1100,12 +1096,12 @@ msgstr "Солнце"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:348
 #, elixir-autogen, elixir-format
 msgid "Sun Microsystems"
-msgstr "Солнечные микросистемы"
+msgstr "Sun Microsystems"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:445
 #, elixir-autogen, elixir-format
 msgid "Super Mario Bros"
-msgstr "Super Mario Bros."
+msgstr "Super Mario Bros"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:405
 #, elixir-autogen, elixir-format
@@ -1146,13 +1142,13 @@ msgstr "Токио"
 #, elixir-autogen, elixir-format
 msgid "Trivia started! (%{category}, %{count} questions)\n%{question}"
 msgstr ""
-"Тривиация началась!%{category}, %{count} вопросы)\n"
+"Викторина началась! (%{category}, вопросов: %{count})\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:213
 #, elixir-autogen, elixir-format
 msgid "Trivia stopped! %{scores}"
-msgstr "Тривиа остановилась! %{scores}"
+msgstr "Викторина остановлена! %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:98
 #, elixir-autogen, elixir-format
@@ -1162,12 +1158,12 @@ msgstr "Два элемента"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:388
 #, elixir-autogen, elixir-format
 msgid "Universal Serial Bus"
-msgstr "Универсальный серийный автобус"
+msgstr "Универсальная последовательная шина"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:121
 #, elixir-autogen, elixir-format
 msgid "Unknown category '%{category}'. Available: %{categories}"
-msgstr "Неизвестная категория%{category}Доступно: %{categories}"
+msgstr "Неизвестная категория «%{category}». Доступные: %{categories}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:55
 #, elixir-autogen, elixir-format
@@ -1182,19 +1178,17 @@ msgstr "Использование: rss add <url> <#channel>"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:176
 #, elixir-autogen, elixir-format
 msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
-msgstr ""
-"Использование: расписание добавляет интервал <min> <#channel> <message> "
-"Расписание Добавить ежедневно <HH:MM> <#channel> <message>"
+msgstr "Использование: schedule add interval <min> <#channel> <message> ИЛИ schedule add daily <HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format
 msgid "Vatican City"
-msgstr "Ватиканский город"
+msgstr "Ватикан"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:148
 #, elixir-autogen, elixir-format
 msgid "Very cold"
-msgstr "Очень холодно."
+msgstr "Очень холодно"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:455
 #, elixir-autogen, elixir-format
@@ -1204,12 +1198,12 @@ msgstr "Винсент Ван Гог"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:369
 #, elixir-autogen, elixir-format
 msgid "Volatile"
-msgstr "изменчивый"
+msgstr "Энергозависимая"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:354
 #, elixir-autogen, elixir-format
 msgid "Web"
-msgstr "Интернет"
+msgstr "Всемирная паутина"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:329
 #, elixir-autogen, elixir-format
@@ -1224,7 +1218,7 @@ msgstr "Добро пожаловать!"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:464
 #, elixir-autogen, elixir-format
 msgid "What Disney movie features a genie?"
-msgstr "В каком диснеевском фильме изображен джинн?"
+msgstr "В каком диснеевском фильме есть джинн?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:434
 #, elixir-autogen, elixir-format
@@ -1244,12 +1238,12 @@ msgstr "Какая группа написала «Bohemian Rhapsody»?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:469
 #, elixir-autogen, elixir-format
 msgid "What board game has properties like Boardwalk?"
-msgstr "Какая настольная игра имеет такие свойства, как Boardwalk?"
+msgstr "Какая настольная игра включает такие участки, как Boardwalk?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:243
 #, elixir-autogen, elixir-format
 msgid "What civilization built Machu Picchu?"
-msgstr "Какую цивилизацию построил Мачу-Пикчу?"
+msgstr "Какая цивилизация построила Мачу-Пикчу?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:347
 #, elixir-autogen, elixir-format
@@ -1269,7 +1263,7 @@ msgstr "В какой стране больше всего людей?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:315
 #, elixir-autogen, elixir-format
 msgid "What country is the Sahara Desert mostly in?"
-msgstr "В какой стране находится пустыня Сахара?"
+msgstr "В какой стране находится бо́льшая часть пустыни Сахара?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:397
 #, elixir-autogen, elixir-format
@@ -1279,7 +1273,7 @@ msgstr "Что означает API?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:342
 #, elixir-autogen, elixir-format
 msgid "What does CPU stand for?"
-msgstr "Что означает CPU?"
+msgstr "Что означает CPU (ЦП)?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:327
 #, elixir-autogen, elixir-format
@@ -1354,7 +1348,7 @@ msgstr "Что такое абсолютный ноль по Цельсию?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:449
 #, elixir-autogen, elixir-format
 msgid "What is the best-selling video game of all time?"
-msgstr "Какая самая продаваемая видеоигра всех времен?"
+msgstr "Какая видеоигра является самой продаваемой за всё время?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:74
 #, elixir-autogen, elixir-format
@@ -1394,12 +1388,12 @@ msgstr "Какова химическая формула поваренной с
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:59
 #, elixir-autogen, elixir-format
 msgid "What is the chemical symbol for gold?"
-msgstr "Что такое химический символ золота?"
+msgstr "Каков химический символ золота?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:96
 #, elixir-autogen, elixir-format
 msgid "What is the chemical symbol for water?"
-msgstr "Что такое химический символ воды?"
+msgstr "Каков химический символ воды?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:116
 #, elixir-autogen, elixir-format
@@ -1459,7 +1453,7 @@ msgstr "Каков pH чистой воды?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:106
 #, elixir-autogen, elixir-format
 msgid "What is the powerhouse of the cell?"
-msgstr "Что такое электростанция клетки?"
+msgstr "Что является энергетической станцией клетки?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:290
 #, elixir-autogen, elixir-format
@@ -1479,7 +1473,7 @@ msgstr "Какова скорость света (км)/s)?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:166
 #, elixir-autogen, elixir-format
 msgid "What is the study of fungi called?"
-msgstr "Как называется исследование грибов?"
+msgstr "Как называется наука о грибах?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:255
 #, elixir-autogen, elixir-format
@@ -1524,7 +1518,7 @@ msgstr "Какое море находится между Европой и Аф
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:203
 #, elixir-autogen, elixir-format
 msgid "What ship brought Pilgrims to America?"
-msgstr "Какой корабль привез пилигримов в Америку?"
+msgstr "Какой корабль привёз пилигримов в Америку?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:305
 #, elixir-autogen, elixir-format
@@ -1579,7 +1573,7 @@ msgstr "Кто создал Linux?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:439
 #, elixir-autogen, elixir-format
 msgid "Who directed Jurassic Park?"
-msgstr "Кто руководил Парком Юрского периода?"
+msgstr "Кто снял «Парк Юрского периода»?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:238
 #, elixir-autogen, elixir-format
@@ -1609,17 +1603,17 @@ msgstr "Кто нарисовал Мону Лизу?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:454
 #, elixir-autogen, elixir-format
 msgid "Who painted the Starry Night?"
-msgstr "Кто написал «Звездную ночь»?"
+msgstr "Кто написал «Звёздную ночь»?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:409
 #, elixir-autogen, elixir-format
 msgid "Who played Iron Man in the MCU?"
-msgstr "Кто играл Железного человека в MCU?"
+msgstr "Кто сыграл Железного человека в MCU?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:474
 #, elixir-autogen, elixir-format
 msgid "Who sang 'Thriller'?"
-msgstr "Кто спел «Триллер»?"
+msgstr "Кто спел «Thriller»?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:218
 #, elixir-autogen, elixir-format
@@ -1634,22 +1628,22 @@ msgstr "Кто был первым президентом США?"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:424
 #, elixir-autogen, elixir-format
 msgid "Who wrote Harry Potter?"
-msgstr "Кто написал Гарри Поттера?"
+msgstr "Кто написал «Гарри Поттера»?"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:193
 #, elixir-autogen, elixir-format
 msgid "Who wrote the Communist Manifesto?"
-msgstr "Кто написал коммунистический манифест?"
+msgstr "Кто написал «Манифест Коммунистической партии»?"
 
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:59
 #, elixir-autogen, elixir-format
 msgid "XML parse error: %{reason}"
-msgstr "XML ошибка разбора: %{reason}"
+msgstr "Ошибка разбора XML: %{reason}"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:93
 #, elixir-autogen, elixir-format
 msgid "action must be one of: warn, mute, kick"
-msgstr "Действие должно быть одним из: предупреждать, молчать, пинать"
+msgstr "действие должно быть одним из: warn, mute, kick"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:65
 #, elixir-autogen, elixir-format
@@ -1664,53 +1658,53 @@ msgstr "двуокись углерода"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:344
 #, elixir-autogen, elixir-format
 msgid "daily@%{time}"
-msgstr "Daily@%{time}"
+msgstr "ежедневно в %{time}"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:174
 #, elixir-autogen, elixir-format
 msgid "excessive caps lock"
-msgstr "чрезмерная блокировка крышек"
+msgstr "чрезмерное использование заглавных букв"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:156
 #, elixir-autogen, elixir-format
 msgid "flooding (%{count} messages in %{window}s)"
-msgstr "наводнение%{count} сообщения в %{window}s)"
+msgstr "флуд (%{count} сообщений за %{window} с)"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:61
 #, elixir-autogen, elixir-format
 msgid "max_dice must be between 1 and 1000"
-msgstr "max dice должно быть от 1 до 1000"
+msgstr "max_dice должно быть от 1 до 1000"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:64
 #, elixir-autogen, elixir-format
 msgid "max_sides must be between 2 and 10_000"
-msgstr "max sides должно быть от 2 до 10 000"
+msgstr "max_sides должно быть от 2 до 10 000"
 
 #: lib/retro_hex_chat/bots/bot.ex:60
 #, elixir-autogen, elixir-format
 msgid "must start with a letter"
-msgstr "Начинать надо с письма"
+msgstr "должно начинаться с буквы"
 
 #: lib/retro_hex_chat/bots/bot.ex:57
 #: lib/retro_hex_chat/bots/bot_custom_command.ex:32
 #, elixir-autogen, elixir-format
 msgid "only letters, numbers, _ and -"
-msgstr "только буквы, цифры,   и -"
+msgstr "только буквы, цифры, _ и -"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:341
 #, elixir-autogen, elixir-format
 msgid "q/%{minutes}min"
-msgstr "q/%{minutes}мин."
+msgstr "q/%{minutes}min"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:140
 #, elixir-autogen, elixir-format
 msgid "spamming (%{count} identical messages)"
-msgstr "спам ()%{count} идентичные сообщения"
+msgstr "спам (%{count} одинаковых сообщений)"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:122
 #, elixir-autogen, elixir-format
 msgid "using blocked words"
-msgstr "Использование заблокированных слов"
+msgstr "использование запрещённых слов"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:213
 #, elixir-autogen, elixir-format
@@ -1760,7 +1754,7 @@ msgstr "Управлять расписаниями могут только ад
 #: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:71
 #, elixir-autogen, elixir-format
 msgid "redirect without location"
-msgstr "Перенаправление без местоположения"
+msgstr "перенаправление без адреса"
 
 #: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:68
 #, elixir-autogen, elixir-format
@@ -1810,27 +1804,27 @@ msgstr "Последние публичные матчи"
 #: lib/retro_hex_chat/bots/capabilities/game.ex:129
 #, elixir-autogen, elixir-format
 msgid "This week's challenge and who leads it"
-msgstr "Проблемы этой недели и кто их решает"
+msgstr "Испытание этой недели и кто в нём лидирует"
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:132
 #, elixir-autogen, elixir-format
 msgid "Controls and how to start"
-msgstr "Контроль и как начать"
+msgstr "Управление и как начать"
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:44
 #, elixir-autogen, elixir-format
 msgid "Announces Retro Games matches and arcade games as they start, rankings and the weekly challenge"
-msgstr "Анонсирует матчи Retro Games и аркадные игры по мере их запуска, рейтинга и еженедельного вызова"
+msgstr "Анонсирует матчи Ретро-игр и аркадные игры по мере их запуска, рейтинги и еженедельное испытание"
 
 #: lib/retro_hex_chat/bots/feeds.ex:138
 #, elixir-autogen, elixir-format
 msgid "%{bot} has not joined %{channel}. Add %{channel} to the bot first."
-msgstr "%{bot} не присоединяется к %{channel}. Сначала добавьте %{channel} в бот."
+msgstr "%{bot} не присоединился к %{channel}. Сначала добавьте %{channel} боту."
 
 #: lib/retro_hex_chat/bots/feeds.ex:124
 #, elixir-autogen, elixir-format
 msgid "Write the channel name after the #."
-msgstr "Напишите название канала после #."
+msgstr "Напишите имя канала после #."
 
 #: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:84
 #, elixir-autogen, elixir-format

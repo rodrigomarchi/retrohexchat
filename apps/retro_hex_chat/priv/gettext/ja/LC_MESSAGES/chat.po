@@ -19,7 +19,8 @@ msgstr "%{name} (%{type}、%{interval}) → %{command}"
 #: lib/retro_hex_chat/chat/timer_manager.ex:173
 #, elixir-autogen, elixir-format
 msgid "Active timers:\n"
-msgstr "活動的なタイマー:"
+msgstr ""
+"有効なタイマー:\n"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:37
 #, elixir-autogen, elixir-format
@@ -39,7 +40,7 @@ msgstr "ビープ"
 #: lib/retro_hex_chat/chat/sound_settings.ex:42
 #, elixir-autogen, elixir-format
 msgid "Blip"
-msgstr "バリップ"
+msgstr "ブリップ"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:38
 #, elixir-autogen, elixir-format
@@ -54,63 +55,63 @@ msgstr "チャット"
 #: lib/retro_hex_chat/chat/sound_settings.ex:35
 #, elixir-autogen, elixir-format
 msgid "Chime High"
-msgstr "チームハイ"
+msgstr "チャイム 高"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:34
 #, elixir-autogen, elixir-format
 msgid "Chime Long"
-msgstr "チームロング"
+msgstr "チャイム ロング"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:36
 #, elixir-autogen, elixir-format
 msgid "Chime Low"
-msgstr "チーム・ロー"
+msgstr "チャイム 低"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:33
 #, elixir-autogen, elixir-format
 msgid "Chime Short"
-msgstr "チームショート"
+msgstr "チャイム ショート"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:39
 #, elixir-autogen, elixir-format
 msgid "Click"
-msgstr "クリック"
+msgstr "クリック:"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:371
 #, elixir-autogen, elixir-format
 msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
-msgstr "Conflict: %{first_action} と %{second_action} は両方 %{combo} にバインド"
+msgstr "競合: %{first_action} と %{second_action} の両方が %{combo} に割り当てられています"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:448
 #, elixir-autogen, elixir-format
 msgid "Ctrl"
-msgstr "Ctrlキー"
+msgstr "Ctrl"
 
 #: lib/retro_hex_chat/chat/policy.ex:94
 #, elixir-autogen, elixir-format
 msgid "Delete window has expired."
-msgstr "削除ウィンドウが期限切れになりました。"
+msgstr "削除可能な期間が終了しました。"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:32
 #, elixir-autogen, elixir-format
 msgid "Ding High"
-msgstr "Ding 高い"
+msgstr "ディング 高"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:31
 #, elixir-autogen, elixir-format
 msgid "Ding Low"
-msgstr "低いDing"
+msgstr "ディング 低"
 
 #: lib/retro_hex_chat/chat/policy.ex:51
 #: lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
-msgstr "編集ウィンドウが無効になっています。"
+msgstr "編集可能な期間が終了しました。"
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
 msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
-msgstr "拡張には、コマンドチェーン文字(|、&&、;、または newlines)が含まれていません。"
+msgstr "展開内容にコマンド連結文字(|、&&、;、または改行)を含めることはできません"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:280
 #, elixir-autogen, elixir-format
@@ -120,7 +121,7 @@ msgstr "フォーマット"
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
-msgstr "無効なタイマー名。 文字、数字、ハイフン、アンダースコア(最大%{max_name_length}文字)のみを使用してください。"
+msgstr "無効なタイマー名です。使用できるのは文字、数字、ハイフン、アンダースコアのみです(最大%{max_name_length}文字)。"
 
 #: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
@@ -147,7 +148,7 @@ msgstr "メッセージが見つかりません。"
 #: lib/retro_hex_chat/chat/key_bindings.ex:277
 #, elixir-autogen, elixir-format
 msgid "Navigation"
-msgstr "ナビゲーション"
+msgstr "移動"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:137
 #, elixir-autogen, elixir-format
@@ -167,7 +168,7 @@ msgstr "なし"
 #: lib/retro_hex_chat/chat/sound_settings.ex:41
 #, elixir-autogen, elixir-format
 msgid "Notify"
-msgstr "Notify"
+msgstr "通知"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:63
 #, elixir-autogen, elixir-format
@@ -177,7 +178,7 @@ msgstr "アドレス帳を開く"
 #: lib/retro_hex_chat/chat/key_bindings.ex:124
 #, elixir-autogen, elixir-format
 msgid "Open Help"
-msgstr "オープンヘルプ"
+msgstr "ヘルプを開く"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:75
 #, elixir-autogen, elixir-format
@@ -192,7 +193,7 @@ msgstr "無視リストを開く"
 #: lib/retro_hex_chat/chat/key_bindings.ex:87
 #, elixir-autogen, elixir-format
 msgid "Open Perform Dialog"
-msgstr "開演ダイアログ"
+msgstr "Perform ダイアログを開く"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:81
 #, elixir-autogen, elixir-format
@@ -248,7 +249,7 @@ msgstr "元のメッセージが見つかりませんでした。"
 #: lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
-msgstr "もう一度編集する前に数秒待ってください。"
+msgstr "再度編集する前に、数秒お待ちください。"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:143
 #, elixir-autogen, elixir-format
@@ -258,12 +259,12 @@ msgstr "前のウィンドウ"
 #: lib/retro_hex_chat/chat/timer_manager.ex:148
 #, elixir-autogen, elixir-format
 msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
-msgstr "最小%{min_repeat_interval}秒にクランプされた間隔を繰り返します。"
+msgstr "繰り返し間隔は最小値の%{min_repeat_interval}秒に調整されました。"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:40
 #, elixir-autogen, elixir-format
 msgid "Ring"
-msgstr "リング"
+msgstr "呼び出し音"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:449
 #, elixir-autogen, elixir-format
@@ -288,47 +289,47 @@ msgstr "前のチャンネルまたはPMに切り替える"
 #: lib/retro_hex_chat/chat/key_bindings.ex:150
 #, elixir-autogen, elixir-format
 msgid "Switch to window 1"
-msgstr "ウィンドウに切り替える 1"
+msgstr "ウィンドウ1に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:156
 #, elixir-autogen, elixir-format
 msgid "Switch to window 2"
-msgstr "ウィンドウに切り替える 2"
+msgstr "ウィンドウ2に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:162
 #, elixir-autogen, elixir-format
 msgid "Switch to window 3"
-msgstr "ウィンドウに切り替える 3"
+msgstr "ウィンドウ3に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:168
 #, elixir-autogen, elixir-format
 msgid "Switch to window 4"
-msgstr "ウィンドウに切り替える 4"
+msgstr "ウィンドウ4に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:174
 #, elixir-autogen, elixir-format
 msgid "Switch to window 5"
-msgstr "ウィンドウに切り替える 5"
+msgstr "ウィンドウ5に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:180
 #, elixir-autogen, elixir-format
 msgid "Switch to window 6"
-msgstr "ウィンドウに切り替える 6"
+msgstr "ウィンドウ6に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:186
 #, elixir-autogen, elixir-format
 msgid "Switch to window 7"
-msgstr "ウィンドウに切り替える 7"
+msgstr "ウィンドウ7に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:192
 #, elixir-autogen, elixir-format
 msgid "Switch to window 8"
-msgstr "ウィンドウへの切り替え 8"
+msgstr "ウィンドウ8に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:198
 #, elixir-autogen, elixir-format
 msgid "Switch to window 9"
-msgstr "ウィンドウに切り替える 9"
+msgstr "ウィンドウ9に切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
 #: lib/retro_hex_chat/chat/service.ex:241
@@ -339,29 +340,29 @@ msgstr "システム"
 #: lib/retro_hex_chat/chat/key_bindings.ex:57
 #, elixir-autogen, elixir-format
 msgid "Toggle Search"
-msgstr "トグル検索"
+msgstr "検索の切り替え"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:88
 #: lib/retro_hex_chat/chat/timer_manager.ex:92
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> <seconds> <command>"
-msgstr "使用法: /timer <name> <seconds> <command>"
+msgstr "使い方: /timer <name> <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:29
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> [repeat] <seconds> <command>"
-msgstr "使用法: /timer <name> [repeat] <seconds> <command>"
+msgstr "使い方: /timer <name> [repeat] <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:63
 #: lib/retro_hex_chat/chat/timer_manager.ex:67
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> repeat <seconds> <command>"
-msgstr "使用法: /timer <name>は<seconds> <command>を繰り返します"
+msgstr "使い方: /timer <name> repeat <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:37
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer stop <name>"
-msgstr "使用法: /timerは<name>を停止します"
+msgstr "使い方: /timer stop <name>"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:43
 #, elixir-autogen, elixir-format
@@ -371,17 +372,17 @@ msgstr "Whoosh"
 #: lib/retro_hex_chat/chat/key_bindings.ex:149
 #, elixir-autogen, elixir-format
 msgid "Window 1"
-msgstr "窓 1"
+msgstr "ウィンドウ 1"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:155
 #, elixir-autogen, elixir-format
 msgid "Window 2"
-msgstr "ウィンドウ2"
+msgstr "ウィンドウ 2"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:161
 #, elixir-autogen, elixir-format
 msgid "Window 3"
-msgstr "ウィンドウ3"
+msgstr "ウィンドウ 3"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:167
 #, elixir-autogen, elixir-format
@@ -448,27 +449,27 @@ msgstr "会議"
 #: lib/retro_hex_chat/chat/key_bindings.ex:113
 #, elixir-autogen, elixir-format
 msgid "Cycle the active conference layout"
-msgstr "アクティブな会議レイアウトをサイクル"
+msgstr "アクティブな会議のレイアウトを切り替える"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:118
 #, elixir-autogen, elixir-format
 msgid "Focus Next Conference Participant"
-msgstr "焦点 次会議参加者"
+msgstr "次の会議参加者にフォーカス"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:106
 #, elixir-autogen, elixir-format
 msgid "Leave Conference"
-msgstr "会議を残す"
+msgstr "会議から退出"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:119
 #, elixir-autogen, elixir-format
 msgid "Move conference focus to the next participant"
-msgstr "会議を次の参加者に集中させる"
+msgstr "会議のフォーカスを次の参加者に移動する"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:95
 #, elixir-autogen, elixir-format
 msgid "Mute or unmute your active conference microphone"
-msgstr "アクティブな会議マイクをミュートまたはアンミュート"
+msgstr "アクティブな会議のマイクをミュートまたはミュート解除する"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:112
 #, elixir-autogen, elixir-format
@@ -478,43 +479,43 @@ msgstr "次の会議レイアウト"
 #: lib/retro_hex_chat/chat/key_bindings.ex:107
 #, elixir-autogen, elixir-format
 msgid "Open the leave confirmation for the active conference"
-msgstr "アクティブな会議の退場確認を開く"
+msgstr "アクティブな会議の退出確認を開く"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:101
 #, elixir-autogen, elixir-format
 msgid "Start or stop your active conference camera"
-msgstr "アクティブな会議カメラの起動または停止"
+msgstr "アクティブな会議のカメラを開始または停止する"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:100
 #, elixir-autogen, elixir-format
 msgid "Toggle Conference Camera"
-msgstr "トグル会議カメラ"
+msgstr "会議カメラの切り替え"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:94
 #, elixir-autogen, elixir-format
 msgid "Toggle Conference Microphone"
-msgstr "トグル会議マイク"
+msgstr "会議マイクの切り替え"
 
 #: lib/retro_hex_chat/channels/server.ex:1747
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
-msgstr "添付ファイルがメッセージに添付できません"
+msgstr "添付ファイルをメッセージに添付できませんでした"
 
 #: lib/retro_hex_chat/chat/attachments.ex:276
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
-msgstr "付属品は%{mb} MBの限界を超過します"
+msgstr "添付ファイルが上限の%{mb} MBを超えています"
 
 #: lib/retro_hex_chat/chat/attachments.ex:271
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
-msgstr "付属品は空です"
+msgstr "添付ファイルが空です"
 
 #: lib/retro_hex_chat/chat/content.ex:160
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
-msgstr "サポートされていないメッセージ形式"
+msgstr "サポートされていないメッセージ形式です"
 
 #: lib/retro_hex_chat/chat/attachments.ex:316
 #: lib/retro_hex_chat/chat/attachments.ex:398
@@ -636,34 +637,34 @@ msgstr "録音を %{type} として送ることはできません"
 #: lib/retro_hex_chat/virtual_space/speech.ex:44
 #, elixir-autogen, elixir-format
 msgid "Only /me works in a space. Other commands go in the chat."
-msgstr "/me はスペースで動作します。 他のコマンドはチャットで行きます。"
+msgstr "スペースでは /me のみ使えます。その他のコマンドはチャットで入力してください。"
 
 #: lib/retro_hex_chat/virtual_space/speech.ex:70
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
-msgstr "このプライベートな空間は、他の2人に帰属します。"
+msgstr "このプライベートスペースは他の2人専用です。"
 
 #: lib/retro_hex_chat/virtual_space/speech.ex:34
 #: lib/retro_hex_chat/virtual_space/speech.ex:38
 #, elixir-autogen, elixir-format
 msgid "Type something to say first."
-msgstr "最初に言うべき何かをタイプして下さい。"
+msgstr "まず話したい内容を入力してください。"
 
 #: lib/retro_hex_chat/chat/service.ex:182
 #: lib/retro_hex_chat/virtual_space/speech.ex:50
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
-msgstr "あなたは管理者によってミュートされます"
+msgstr "あなたは管理者によってミュートされています"
 
 #: lib/retro_hex_chat/virtual_space.ex:341
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed gold side up"
-msgstr "コインを投げ、金面を上げて"
+msgstr "コインを投げました。金の面が上になりました"
 
 #: lib/retro_hex_chat/virtual_space.ex:344
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed silver side up"
-msgstr "threw the coin, and it landed silver side up"
+msgstr "コインを投げました。銀の面が上になりました"
 
 #: lib/retro_hex_chat/virtual_space.ex:337
 #, elixir-autogen, elixir-format
@@ -673,4 +674,4 @@ msgstr "ダイスを投げ、%{face}を得ました"
 #: lib/retro_hex_chat/chat/content.ex:154
 #, elixir-autogen, elixir-format
 msgid "Text art can have at most %{lines} lines of %{columns} characters"
-msgstr "%{columns} 文字のほとんどの %{lines} 線でテキストアートができる"
+msgstr "テキストアートは最大%{lines}行、1行あたり%{columns}文字までです"

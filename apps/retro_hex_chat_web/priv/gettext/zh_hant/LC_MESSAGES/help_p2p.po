@@ -24,7 +24,7 @@ msgstr "接受"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "After the transfer, the SHA-256 hash is verified automatically. If it fails, you can try again."
-msgstr "轉會後,SHA-256散列自動覈實. 如果失敗 你可以再試一次"
+msgstr "傳輸完成後,會自動驗證 SHA-256 雜湊值。如果驗證失敗,你可以重試。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:103
@@ -32,7 +32,7 @@ msgstr "轉會後,SHA-256散列自動覈實. 如果失敗 你可以再試一次"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Audio Call"
-msgstr "音頻調用"
+msgstr "語音通話"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:75
 #, elixir-autogen, elixir-format
@@ -42,8 +42,7 @@ msgstr "自動調整"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Blocked extensions: .exe, .bat, .cmd, .com, .msi, .scr, .pif, .vbs, .js, among others. Maximum size is configurable by the server (default: 500 MB)."
-msgstr ""
-"屏蔽擴展:.exe,.bat,.cmd,.com,.msi,.scr,.pif,.vbs,.js等. 最大大小由服務器配置( 默認: 500 MB) 。"
+msgstr "封鎖的副檔名:.exe、.bat、.cmd、.com、.msi、.scr、.pif、.vbs、.js 等。大小上限可由伺服器設定(預設:500 MB)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:99
@@ -51,77 +50,77 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Call Quality"
-msgstr "調用質量"
+msgstr "通話品質"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Click"
-msgstr "單擊"
+msgstr "點擊聲"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Click the"
-msgstr "單擊"
+msgstr "點擊"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Device Disconnection"
-msgstr "設備斷開連接"
+msgstr "裝置中斷連線"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Device switching happens without interrupting the call."
-msgstr "設備切換時不會中斷通話."
+msgstr "切換裝置時不會中斷通話。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "End Call"
-msgstr "結束調用"
+msgstr "結束通話"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "File Transfer"
-msgstr "文件傳輸"
+msgstr "檔案傳輸"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "If a device is disconnected during a call, the system automatically falls back to the default device and displays a notification."
-msgstr "如果一個設備在調用時被斷開,系統會自動倒回默認設備,並顯示一個通知."
+msgstr "如果通話期間裝置中斷連線,系統會自動切換回預設裝置,並顯示通知。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "If the connection drops briefly, the transfer pauses automatically and resumes when the connection is re-established."
-msgstr "如果連接短暫下降,傳輸會自動暫停,並在連接重建時恢復."
+msgstr "如果連線短暫中斷,傳輸會自動暫停,並在連線恢復後繼續。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "In the P2P session, click"
-msgstr "在P2P會話中,單擊"
+msgstr "在 P2P 工作階段中,點擊"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Indicators"
-msgstr "指標"
+msgstr "指示燈"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Integrity Check"
-msgstr "誠信檢查"
+msgstr "完整性檢查"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Layout"
-msgstr "版式"
+msgstr "版面配置"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Live Switching"
-msgstr "實時切換"
+msgstr "即時切換"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:110
@@ -129,7 +128,7 @@ msgstr "實時切換"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Media Devices"
-msgstr "媒體設備"
+msgstr "媒體裝置"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:13
 #, elixir-autogen, elixir-format
@@ -144,43 +143,43 @@ msgstr "Mute/Unmute 麥克風"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Or in the P2P session, click"
-msgstr "在P2P會話中,單擊"
+msgstr "或在 P2P 工作階段中,按一下"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Pause and Resume"
-msgstr "暫停和恢復"
+msgstr "暫停與繼續"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "PiP"
-msgstr "輔助程序"
+msgstr "子母畫面"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
-msgstr "圖片"
+msgstr "子母畫面"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Privacy Settings"
-msgstr "隱私設置"
+msgstr "隱私設定"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Progress"
-msgstr "進展"
+msgstr "進度"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Quality Indicator"
-msgstr "質量指標"
+msgstr "品質指示器"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Receiving"
-msgstr "接收"
+msgstr "接收中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:20
 #, elixir-autogen, elixir-format
@@ -207,47 +206,47 @@ msgstr "另請參閱"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Selecting Devices"
-msgstr "選擇設備"
+msgstr "選擇裝置"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Send File"
-msgstr "發送文件"
+msgstr "傳送檔案"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Send files directly to another user via a peer-to-peer connection (WebRTC DataChannel)."
-msgstr "通過對等連接(WebRTC DataChannel)直接向另一個用戶發送文件."
+msgstr "透過點對點連線(WebRTC DataChannel)直接向另一位使用者傳送檔案。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Sending a File"
-msgstr "發送文件"
+msgstr "傳送檔案"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Start peer-to-peer audio calls with another user in a P2P session."
-msgstr "在 P2P 會話中與另一個用戶啓動對等音頻呼叫."
+msgstr "在 P2P 工作階段中與另一位使用者開始點對點語音通話。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Starting a Call"
-msgstr "開始呼叫"
+msgstr "開始通話"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Starting a Video Call"
-msgstr "開始視頻呼叫"
+msgstr "開始視訊通話"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "The progress bar shows: percentage, speed, and estimated time. You can cancel at any time."
-msgstr "進度欄顯示:百分比、速度和估計時間。 您可隨時取消 。"
+msgstr "進度列會顯示百分比、速度和預估時間。你可以隨時取消。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Turn Camera Off"
-msgstr "關閉相機"
+msgstr "關閉攝影機"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:54
 #, elixir-autogen, elixir-format
@@ -261,37 +260,37 @@ msgstr "關閉相機/On"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Video Call"
-msgstr "視頻呼叫"
+msgstr "視訊通話"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "WebRTC automatically adjusts the resolution and framerate based on network conditions."
-msgstr "WebRTC根據網絡條件自動調整分辨率和幀率."
+msgstr "WebRTC 會根據網路狀況自動調整解析度和畫面更新率。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "When you receive an offer, you see the file name and size. Click"
-msgstr "當收到報價時,可以看到文件名稱和大小. 單擊"
+msgstr "收到傳送請求時,你會看到檔案名稱和大小。按一下"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "and select the file."
-msgstr "並選擇文件。"
+msgstr "並選擇檔案。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "button to mute your microphone. The other user will see an indication that you are muted."
-msgstr "按鈕可以關閉你的麥克風。 另一個用戶會看到顯示您已失聲 。"
+msgstr "按鈕可將你的麥克風靜音。對方會看到你已靜音的提示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "to pause the video. The peer will see a placeholder."
-msgstr "暫停錄像。 同行會看到一個佔位符 。"
+msgstr "可暫停視訊。對方會看到預留位置畫面。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "to pop the remote video into a floating window that stays visible while navigating other tabs."
-msgstr "將遠程視頻彈出到一個浮動窗口中,在瀏覽其他標籤時保持可見。"
+msgstr "可將遠端視訊彈出為浮動視窗,切換到其他分頁時仍會保持顯示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:43
@@ -303,17 +302,17 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
-msgstr "連接圖"
+msgstr "連線圖"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Download / Upload"
-msgstr "下載/ 上傳"
+msgstr "下載 / 上傳"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Health & MOS"
-msgstr "衛生和衛生部"
+msgstr "連線品質與 MOS"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:31
 #, elixir-autogen, elixir-format
@@ -328,29 +327,27 @@ msgstr "延遲"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Limited by"
-msgstr "受限制"
+msgstr "限制原因"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Metrics"
-msgstr "計量"
+msgstr "指標"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
-msgstr "包損失"
+msgstr "封包遺失"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Self-Controlled Media"
-msgstr "自控媒體"
+msgstr "自主控制媒體"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "The header shows an overall health rating (Excellent / Good / Fair / Poor) and a MOS score. MOS (Mean Opinion Score) is a 1–5 estimate of call quality derived from latency, jitter and packet loss: 5 is excellent, and anything below 3.5 usually feels uncomfortable."
-msgstr ""
-"標題顯示整體健康評級(優秀/好/公平/差)和MOS分數. MOS(Mean opinions "
-"Score)是一個1–5的呼叫質量估計,來源於空閒,緊張和包丟失:5是優異的,3.5以下的任何東西通常都會感到不舒服."
+msgstr "標題顯示整體品質評級(優秀/良好/普通/不佳)和 MOS 分數。MOS(Mean Opinion Score,平均意見分數)是根據延遲、抖動和封包遺失推算出的 1–5 分通話品質估計值:5 分為優秀,低於 3.5 通常會感到不舒服。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:52
 #, elixir-autogen, elixir-format
@@ -360,42 +357,42 @@ msgstr "視訊"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "— how much media you are currently receiving and sending, in kilobits per second."
-msgstr "——您目前接收和發送的媒體數量,單位爲千位/秒。"
+msgstr "——你目前接收和傳送的媒體量,單位為每秒千位元。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "— percentage of packets that never arrived. Above ~3% noticeably degrades quality."
-msgstr "——未到貨包的百分比. 高於~3%會明顯地降低質量."
+msgstr "——從未送達的封包百分比。高於約 3% 會明顯降低品質。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "— round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
-msgstr "——數據到達對等方並返回的往返時間. 低點更好;低於~150 ms 感覺瞬間。"
+msgstr "——資料傳到對等端並返回的往返時間。越低越好;低於約 150 ms 感覺即時。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "— variation in packet arrival timing. High jitter causes choppy audio and video."
-msgstr "——包運到達時間變化. 高熱度導致音頻和視頻不暢。"
+msgstr "——封包到達時間的變化。高抖動會造成音訊和視訊斷斷續續。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "— why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
-msgstr "——爲什麼質量被封蓋:CPU表示你的設備太忙;Bandwidth表示網絡太慢."
+msgstr "——品質被限制的原因:CPU 表示你的裝置太忙;Bandwidth 表示網路太慢。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid ". P2P media is self-controlled: either peer can start camera or microphone independently, and the other side joins the media surface automatically."
-msgstr ". P2P媒體是自控的:無論是對等方都可以獨立啓動相機還是麥克風,對方則自動加入媒體表面."
+msgstr ". P2P 媒體由各自控制:任一方都可以獨立開啟攝影機或麥克風,另一方會自動加入媒體畫面。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Audio and video are self-controlled: each peer turns their own microphone and camera on or off independently, like a modern video call. File transfers and games still ask the other side to accept."
-msgstr "音頻和視頻都是自控的:每個對等方像現代視頻通話一樣,獨立地打開或關閉自己的麥克風和相機. 文件傳輸和遊戲仍然要求對方接受."
+msgstr "音訊和視訊由各自控制:如同現代視訊通話,每位對等端獨立開啟或關閉自己的麥克風和攝影機。檔案傳輸和遊戲仍需對方接受。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Channel Indicator"
-msgstr "頻道指標"
+msgstr "頻道指示器"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:82
 #, elixir-autogen, elixir-format
@@ -410,17 +407,17 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Click Share Screen to replace your camera feed with a browser display-capture track. Stopping from the browser or from the button restores the previous camera when possible; the peer sees a screen badge."
-msgstr "點擊共享屏幕以瀏覽器顯示-抓取軌道替換您的相機種子 。 從瀏覽器或按鈕中停止,可能時會恢復先前的相機;對等點會看到屏幕徽章."
+msgstr "點擊分享螢幕,以瀏覽器的螢幕擷取軌道取代你的攝影機畫面。從瀏覽器或按鈕停止後,會盡可能恢復先前的攝影機;對方會看到螢幕標誌。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "Conversations"
-msgstr "談話"
+msgstr "對話"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Empty and Failure States"
-msgstr "空的和失敗的國家"
+msgstr "空白與失敗狀態"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:32
 #, elixir-autogen, elixir-format
@@ -430,7 +427,7 @@ msgstr "鍵盤"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Layouts"
-msgstr "佈局"
+msgstr "版面配置"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:80
 #, elixir-autogen, elixir-format
@@ -440,7 +437,7 @@ msgstr "管理"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "One Connection, Every Feature"
-msgstr "一個連接, 每個特性"
+msgstr "一個連線,所有功能"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:27
@@ -452,44 +449,43 @@ msgstr "P2P 聊天對話"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Participant tiles and the participant panel highlight the current speaker when browser audio levels are available. Quality badges summarize recent browser connection stats such as RTT, packet loss, bitrate, frame rate and freezes for each remote participant."
-msgstr ""
-"當有瀏覽器音頻關卡時,參與者牌和參與者面板會突出當前發言者。 質量徽章概括了最近的瀏覽器連接統計,如RTT,包丟失,比特率,幀率和凍結每個遠程參與者."
+msgstr "有瀏覽器音訊音量資料時,參與者圖塊和參與者面板會醒目標示目前的發言者。品質標誌會彙總每位遠端參與者近期的瀏覽器連線統計,例如 RTT、封包遺失、位元率、影格率和畫面凍結。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Peer-to-peer video calls with rich 1:1 layouts, self-view control, screen sharing, PiP, reactions and live quality indicators."
-msgstr "對等視頻通話內容豐富1:1佈局,自視控制,屏幕共享,PiP,反應和直播質量指標."
+msgstr "點對點視訊通話,具備豐富的 1:1 版面、自我檢視控制、螢幕分享、子母畫面、回應和即時品質指示器。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Pre-join and Devices"
-msgstr "預加入和裝置"
+msgstr "加入前與裝置"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Reaction buttons send short visual effects over the active P2P session. They appear on the call tiles and do not create private-message rows."
-msgstr "反應按鈕在活動 P2P 會話上發送短視效果. 它們在調用牌匾上出現,不創建私人信息行."
+msgstr "回應按鈕會透過目前的 P2P 工作階段傳送簡短的視覺效果。它們會顯示在通話圖塊上,不會建立私人訊息列。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Reactions"
-msgstr "反應"
+msgstr "回應"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Recovery"
-msgstr "恢復"
+msgstr "復原"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Screen Share"
-msgstr "屏幕共享"
+msgstr "螢幕分享"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Screen Sharing"
-msgstr "屏幕共享"
+msgstr "螢幕分享"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:97
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:17
@@ -504,22 +500,22 @@ msgstr "另見:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Session Header"
-msgstr "會話標題"
+msgstr "工作階段標題"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Speaker and Quality"
-msgstr "揚聲器和質量"
+msgstr "發言者與品質"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Statistics"
-msgstr "統計"
+msgstr "統計資料"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "The header and status bar show call duration, quality, active facets and relay privacy. The peer list is intentionally compact because P2P is always one-to-one."
-msgstr "標題和狀態欄顯示調用持續時間,質量,活動側面和中繼隱私. 同行名單是有意緊湊的,因爲P2P總是一對一."
+msgstr "標題和狀態列會顯示通話時長、品質、使用中的功能面向和中繼隱私。對等端清單刻意保持精簡,因為 P2P 永遠是一對一。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:9
 #, elixir-autogen, elixir-format
@@ -529,59 +525,52 @@ msgstr "頁眉顯示對等者、 會話狀態、 瀏覽器/WebRTC 狀態、 對�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Use the reaction buttons in the conference toolbar to send a short visual reaction. Reactions are ephemeral, appear on participant tiles and rows, are not stored as chat messages, and are lightly rate limited to avoid spam."
-msgstr "使用會議工具欄中的反應按鈕發送一個短視反應. 反應爲麻黃,出現在參與者的瓦片和行上,不作爲聊天信息存儲,並且爲避免垃圾郵件而限制微速."
+msgstr "使用會議工具列中的回應按鈕傳送簡短的視覺回應。回應是暫時性的,會顯示在參與者圖塊和列上,不會儲存為聊天訊息,並有輕度頻率限制以避免洗版。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Use the screen share button in the conference toolbar to publish your selected screen or window. The shared screen replaces your outgoing camera video while it is active, becomes the focused conference tile, and returns to camera when you stop sharing or the browser ends capture."
-msgstr ""
-"使用會議工具欄中的屏幕共享按鈕來發布您選中的屏幕或窗口 。 共享屏幕在您正在運行時替換您的相機視頻, 成爲焦點會議瓦, "
-"當您停止共享或瀏覽器結束捕獲時返回到相機中 。"
+msgstr "使用會議工具列中的螢幕分享按鈕,發布你所選的螢幕或視窗。分享期間,共享螢幕會取代你送出的攝影機視訊,成為焦點會議圖塊;當你停止分享或瀏覽器結束擷取時,會切換回攝影機。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "When a channel has an active conference, the Call control shows a live badge with state, participant count and elapsed time. The info button opens a summary with participants, current speaker when available, media icons and a Join/Open action. Channel tabs and the conversations sidebar also show a compact conference glyph."
-msgstr ""
-"當一個頻道有活躍的會話時,呼叫控制顯示一個有狀態,參與者數和時間的活徽章. "
-"信息按鈕打開一個摘要,參與者、可用時的當前發言者、媒體圖標和一個聯合/Open 行動。 頻道標籤和對話的側邊欄也顯示一個緊湊的會議glyph."
+msgstr "當頻道有進行中的會議時,「通話」控制項會顯示直播徽章,內含狀態、參與者人數與已經過的時間。資訊按鈕會開啟摘要,內容包括參與者、目前的發言者(若有)、媒體圖示,以及「加入」/Open 動作。頻道分頁與對話側邊欄也會顯示精簡的會議圖示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "When a conference is active, use Ctrl+Shift+ArrowUp to mute or unmute your microphone, Ctrl+Shift+ArrowLeft to start or stop your camera, Ctrl+Shift+ArrowRight to cycle layouts, Ctrl+Shift+ArrowDown to focus the next participant, and Ctrl+Shift+Q to open the leave confirmation. Hold Ctrl+Shift+Z for push-to-talk while muted. Conference shortcuts do not fire from editable text fields."
-msgstr ""
-"會議活動時,請使用 Ctrl+ 移動+ Arrow up to mute 或解密您的麥克風 Ctrl+Shift+ 啓動或停止相機的箭頭, Ctrl+ "
-"移動+ 箭頭右轉週期佈局, Ctrl+Shift+ ArrowDown以聚焦下一個參與者,而Ctrl+ShiftQQQ則打開請假確認. 靜音時按住 "
-"Ctrl+Shift+Z 進行推向說話. 會議快捷鍵不會從可編輯的文本字段開火 。"
+msgstr "會議進行中時,按 Ctrl+Shift+ArrowUp 可將麥克風靜音或取消靜音,按 Ctrl+Shift+ArrowLeft 可開啟或關閉攝影機,按 Ctrl+Shift+ArrowRight 可切換版面配置,按 Ctrl+Shift+ArrowDown 可聚焦下一位參與者,按 Ctrl+Shift+Q 可開啟離開確認。靜音時按住 Ctrl+Shift+Z 可使用按鍵發話。在可編輯的文字欄位中,會議快捷鍵不會生效。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "to stop your media call. The P2P session remains available for private messages, files, games and statistics until you end the session itself."
-msgstr "阻止你的媒體電話。 P2P 會話仍然可供私人信件、文件、遊戲和統計使用,直到會議本身結束。"
+msgstr "來停止你的媒體通話。P2P 工作階段仍可用於私人訊息、檔案、遊戲與統計,直到你自行結束該工作階段為止。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "— resolution and frame rate of the received video or screen stream."
-msgstr "——接收視頻或屏幕流的分辨率和幀率."
+msgstr "— 所接收視訊或螢幕串流的解析度與影格率。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Calls use conservative audio and video limits by default to favor stability over maximum image quality."
-msgstr "電話默認使用保守的音頻和視頻限制,以偏好穩定性而不是最大圖像質量."
+msgstr "通話預設採用保守的音訊與視訊限制,以穩定性優先於最高畫質。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Monitor connection quality during calls."
-msgstr "監控通話時的連接質量."
+msgstr "監控通話期間的連線品質。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Stable Defaults"
-msgstr "穩定默認"
+msgstr "穩定的預設值"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
 #, elixir-autogen, elixir-format
 msgid ". Either peer can start or stop their own microphone independently; if your peer starts media first, your Call section opens and you join automatically."
-msgstr "。任一對等點可以獨立啓動或停止自己的麥克風;如果對等點首先啓動媒體,則您的呼叫部分打開並自動加入。"
+msgstr "。任何一方都可以獨立開啟或停止自己的麥克風;如果對方先開始媒體通話,你的「通話」區段會自動開啟並自動加入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
@@ -600,7 +589,7 @@ msgstr "頻道會議是附屬於目前頻道的音訊/視訊通話。頻道主�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
-msgstr "在獨立分頁中的會議"
+msgstr "在獨立分頁中開啟會議"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
@@ -618,9 +607,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:90
 #, elixir-autogen, elixir-format
 msgid "The conference Stats section lives inside the same call window and shows both server-side SFU state and live browser connection metrics. Use the Stats tab in the conference header to inspect diagnostics without leaving the call surface."
-msgstr ""
-"會議的「統計」區塊就在同一個通話視窗內，同時顯示伺服器端 SFU "
-"的狀態與瀏覽器的即時連線指標。使用會議標題列的「統計」分頁即可查看診斷資訊，而不必離開通話。"
+msgstr "會議的「統計」區段位於同一個通話視窗內,同時顯示伺服器端 SFU 狀態與瀏覽器的即時連線指標。使用會議標題列的「統計」分頁即可查看診斷資訊,而不必離開通話畫面。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:19
@@ -641,15 +628,12 @@ msgstr "連結不能做什麼"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "A link says which room it is; it never says you may be in it. Whoever follows it still has to be registered with NickServ and a member of the channel, and a locked conference still refuses everyone but its moderators. Only a registered nickname can mint one, because the link records who made it."
-msgstr ""
-"連結說明的是哪個房間，從不表示你有權進入。跟隨連結的人仍然需要在 NickServ "
-"註冊並且是該頻道的成員，被鎖定的會議依然只放行主持人。只有註冊過的暱稱才能產生連結，因為連結會記錄是誰建立的。"
+msgstr "連結只說明是哪個聊天室,從不表示你有權進入。跟隨連結的人仍然需要在 NickServ 註冊並且是該頻道的成員,被鎖定的會議依然只放行主持人。只有已註冊的暱稱才能產生連結,因為連結會記錄是誰建立的。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr ""
-"決定誰在通話中的是房間，而不是分頁。關閉通話的分頁只會開啟重新連線的時段，並不會結束你的參與；再次開啟同一位址就會回到原處。只要通話還開著，關閉聊天的分頁同樣不會把你踢出頻道——你是在最後一個視窗關閉時才離開頻道的。只有會先詢問的「離開」才是最終的。分頁底部始終顯示回到聊天的入口：通話裡面沒有對話。"
+msgstr "決定誰在通話中的是聊天室,而不是分頁。關閉通話的分頁只會啟動重新連線的時段,並不會結束你的參與;再次開啟同一位址就會回到原處。只要通話還開著,關閉聊天的分頁同樣不會讓你退出頻道——當你最後一個視窗關閉時,才會離開頻道。只有會先詢問的「離開」才是最終的。分頁底部始終顯示返回聊天的入口:通話裡面沒有對話。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:2
 #, elixir-autogen, elixir-format
@@ -668,14 +652,14 @@ msgstr "一次只能有一個視窗"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "P2P Session in Its Own Tab"
-msgstr "獨立分頁中的 P2P 工作階段"
+msgstr "在獨立分頁中開啟 P2P 工作階段"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "P2P Starting Room"
-msgstr "P2P 起始房間"
+msgstr "P2P 起始聊天室"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:10
 #, elixir-autogen, elixir-format
@@ -696,13 +680,12 @@ msgstr "路由與隱私"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Share mints a link you can paste anywhere. The link names the session and never grants access to it: only the two people already in it can enter, and anyone else who follows it gets a card explaining that."
-msgstr ""
-"「分享」會產生一個可貼到任何地方的連結。連結只是指明這個工作階段，從不授予存取權：只有已經在其中的兩個人能進入，其他人開啟後會看到一張說明卡片。"
+msgstr "「分享」會產生一個可貼到任何地方的連結。連結只是指明這個工作階段,從不授予存取權:只有已經在其中的兩個人能進入,其他人開啟後會看到一張說明卡片。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Sharing the address"
-msgstr "分享網址"
+msgstr "分享位址"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:17
 #, elixir-autogen, elixir-format
@@ -712,13 +695,12 @@ msgstr "「開始」屬於發出邀請的人"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The person who sent the invite is the host, and only they have Start. It stays disabled until both sides are ready, and the line under the roster says who is being waited for. If the host cancels before starting, the session ends and any link to it stops working."
-msgstr ""
-"發出邀請的人是主持人，也只有他擁有「開始」。在雙方都就緒之前按鈕一直無法使用，名單下方那行會說明正在等誰。若主持人在開始前取消，工作階段即結束，指向它的任何連結也隨之失效。"
+msgstr "發出邀請的人是房主/主持,也只有他能按「開始」。在雙方都就緒之前,該按鈕一直處於停用狀態,名單下方那一行會說明正在等誰。若房主/主持在開始前取消,工作階段即結束,指向它的任何連結也隨之失效。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "One address per room"
-msgstr "每個房間一個位址"
+msgstr "每個聊天室一個位址"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:41
 #, elixir-autogen, elixir-format
@@ -728,7 +710,7 @@ msgstr "分享空間"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "The room is untouched"
-msgstr "房間不受影響"
+msgstr "聊天室不受影響"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:26
 #, elixir-autogen, elixir-format
@@ -738,20 +720,17 @@ msgstr "誰可以撤銷"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Whoever is already inside stays inside, and anybody who can reach the room another way still can. Only the address dies. A card already sitting in a conversation stops offering a way in, and following the old link from anywhere else says the link is no longer active."
-msgstr ""
-"已經在裡面的人繼續在裡面，能透過其他方式進入房間的人依然可以。消失的只是位址。已經貼在對話裡的卡片不再提供入口，從別處點開舊連結會顯示該連結已失效。"
+msgstr "已經在裡面的人會繼續留在裡面,能透過其他方式進入聊天室的人依然可以。失效的只有位址。已經貼在對話裡的卡片不再提供入口,從別處開啟舊連結會顯示該連結已失效。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Your own links are yours. A channel operator can also revoke a link that leads into their channel — a conference in it, or its space — because an address people keep arriving through is the channel's business as much as the room itself is."
-msgstr ""
-"你自己的連結歸你。頻道管理員也可以撤銷通往自己頻道的連結——頻道裡的會議，或頻道的空間——因為一個人們不斷由此進入的位址，和房間本身一樣是頻道的事。"
+msgstr "你自己的連結歸你管理。頻道管理員也可以撤銷通往自己頻道的連結——頻道裡的會議，或頻道的空間——因為人們不斷由此進入的位址，和聊天室本身一樣是頻道的事。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
-msgstr ""
-"P2P 工作階段始終在獨立的瀏覽器分頁中執行 —— 聊天裡沒有為它準備的視窗。私訊中的卡片就是那道門；點開它，工作階段就擁有整個視窗，而對話留在原處。"
+msgstr "P2P 工作階段一律在獨立的瀏覽器分頁中執行——聊天裡沒有為它準備的視窗。私訊中的卡片就是入口；點開它，工作階段會佔用整個視窗，而對話仍停留在原處。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
 #, elixir-autogen, elixir-format
@@ -761,17 +740,17 @@ msgstr "P2P 工作階段是兩個人之間的直接連線，同時承載通話�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Choose your microphone, camera and speaker in the starting room before a session begins, then switch them during a call without interrupting it."
-msgstr "在工作階段開始之前，先在起始房間裡選好麥克風、攝影機和喇叭；通話中也可以隨時更換，不會中斷通話。"
+msgstr "在工作階段開始之前，先在起始房間裡選好麥克風、攝影機和揚聲器；通話中也可以隨時更換，不會中斷通話。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Ending it, and merely leaving"
-msgstr "結束它，還是只是離開"
+msgstr "結束工作階段，還是只是離開"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Following it opens a tab"
-msgstr "點開它會開啟一個分頁"
+msgstr "點開它會開啟新分頁"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:74
 #, elixir-autogen, elixir-format
@@ -781,7 +760,7 @@ msgstr "如果媒體連線中斷，會議會嘗試一小段自動復原流程。
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Inside the conference, use the layout buttons to switch between automatic, grid, focus and speaker layouts, show or hide the participant panel, pin important participants, cycle your self-view between tile, picture-in-picture and hidden, or switch to compact mode when you want the call to take less of the page. Larger calls automatically use a denser grid while focus and speaker layouts keep a filmstrip for the remaining participants."
-msgstr "在會議裡，用版面按鈕在自動、網格、聚焦和主講版面之間切換，顯示或隱藏參與者面板，釘選重要的參與者，讓自己的畫面在並排、子母畫面和隱藏之間輪換，或者在你希望通話少佔些頁面時切到精簡模式。人多的通話會自動改用更密的網格，而聚焦和主講版面會為其餘參與者保留一條膠片帶。"
+msgstr "在會議裡，用版面按鈕在自動、格線、焦點和主講版面之間切換，顯示或隱藏參與者面板，釘選重要的參與者，讓自己的畫面在並排、子母畫面和隱藏之間輪流切換，或者在你希望通話少佔些頁面時切到精簡模式。人多的通話會自動改用更密的格線，而焦點和主講版面會為其餘參與者保留一條縮圖列。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:30
 #, elixir-autogen, elixir-format
@@ -791,12 +770,12 @@ msgstr "可以有多個，每個各佔一個分頁"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Open Route and privacy to force the connection through the relay, which hides your IP address from the other side at the cost of some latency. It is only available when this server has a relay configured, and the starting room is where it is decided: once the session begins, the route is fixed for it. The choice is remembered for the next one."
-msgstr "開啟「路由與隱私」可以強制連線走中繼，這會對另一方隱藏你的 IP 位址，代價是增加一些延遲。只有這台伺服器設定了中繼時才可用，而決定它的地方是起始房間：工作階段一旦開始，這一次的路由就固定了。這個選擇會為下一次記住。"
+msgstr "開啟「路由與隱私」可以強制連線走中繼，這會對另一方隱藏你的 IP 位址，代價是增加一些延遲。只有這台伺服器設定了中繼時才可使用，而決定的地方是起始房間：工作階段一旦開始，這一次的路由就固定了。這個選擇會被記住，供下一次使用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The P2P Session is the connection behind /p2p: one direct link between two people that hosts a call, file transfers and games all at the same time. It lives at an address of its own, and the console on that page is where every part of it is operated."
-msgstr "P2P 工作階段是 /p2p 背後的那條連線：兩個人之間的一條直連，同時承載通話、檔案傳輸和遊戲。它住在自己的位址上，而那個頁面上的主控台，就是操作它每一部分的地方。"
+msgstr "P2P 工作階段是 /p2p 背後的那條連線：兩個人之間的一條直接連線，同時承載通話、檔案傳輸和遊戲。它有自己獨立的位址，而那個頁面上的主控台，就是操作它各個部分的地方。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
 #, elixir-autogen, elixir-format
@@ -811,17 +790,17 @@ msgstr "卡片就是入口"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "The card opens the session beside the conversation, never on top of it, so the chat you were reading stays exactly where it is. You arrive in the starting room, where both of you pick devices and press Ready before anything is negotiated."
-msgstr "卡片把工作階段開在對話旁邊，而不是蓋在上面，所以你正在讀的聊天原封不動。你會抵達起始房間，在任何協商開始之前，兩個人在那裡各自挑選裝置並按下「準備好」。"
+msgstr "卡片會把工作階段開在對話旁邊，而不是蓋在上面，所以你正在讀的聊天內容原封不動。你會進入起始房間，在任何協商開始之前，你們兩人先在那裡各自選好裝置並按下「準備好」。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "The conference shows explicit states while waiting for participants, joining receive-only, recovering media, or handling a failed connection. Recoverable failures keep the call open and expose Retry; leaving from a warning or error still uses the confirmation dialog so microphone, camera and SFU cleanup stay predictable."
-msgstr "會議在等待參與者、以只接收方式加入、復原媒體或處理失敗連線時，都會明確顯示狀態。可復原的故障會讓通話保持開啟並給出「重試」；從警告或錯誤中離開仍然要經過確認對話框，好讓麥克風、攝影機和 SFU 的清理保持可預期。"
+msgstr "會議在等待參與者、以僅接收方式加入、復原媒體或處理連線失敗時，都會明確顯示狀態。可復原的故障會讓通話保持開啟並提供「重試」；從警告或錯誤狀態離開仍然要經過確認對話框，好讓麥克風、攝影機和 SFU 的清理保持可預期。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "The console has four sections — Call, Files, Games and Stats — and everything runs concurrently over the same connection: share your screen, send a file during the call, start a game without hanging up. Ending any one activity never drops the others. The console opens on activity too: an incoming file offer selects Files, and a game proposal selects Games."
-msgstr "主控台有四個部分——通話、檔案、遊戲和統計——一切都在同一條連線上同時執行：分享螢幕、在通話中傳檔案、不掛斷就開一局遊戲。結束其中一項從不會帶倒其他項。主控台也會因活動而開啟：收到檔案邀約就選中「檔案」，收到遊戲提議就選中「遊戲」。"
+msgstr "主控台有四個區段——通話、檔案、遊戲和統計——一切都在同一條連線上同時執行：分享螢幕、在通話中傳檔案、不掛斷就開始一局遊戲。結束其中一項活動，不會影響其他項目。主控台也會依活動自動切換：收到檔案邀請就切到「檔案」，收到遊戲提議就切到「遊戲」。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:39
 #, elixir-autogen, elixir-format
@@ -831,37 +810,37 @@ msgstr "對話就是那則私訊"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "The starting room lists Microphone, Camera and Speaker beside the camera preview, and Ready saves what you picked. A channel conference asks the same question in its arrival room, before Join. During a call, open Devices from the Call toolbar to change any of the three."
-msgstr "起始房間會在攝影機預覽旁列出麥克風、攝影機和喇叭，「準備好」會儲存你的選擇。頻道會議在它的抵達房間裡、在「加入」之前問同樣的問題。通話中，從通話工具列開啟「裝置」即可更換其中任何一項。"
+msgstr "起始房間會在攝影機預覽旁列出麥克風、攝影機和揚聲器，「準備好」會儲存你的選擇。頻道會議在它的抵達房間裡、「加入」之前會問同樣的問題。通話中，從通話工具列開啟「裝置」即可更換其中任何一項。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Type /p2p <nick>, or press P2P Session in a private message, and the request goes into that conversation straight away. Nothing is asked of you first. The line it writes carries the session's own address and draws a card, and that card is the way in for both of you: the person who asked opens the same door as the person who was asked."
-msgstr "輸入 /p2p <暱稱>，或在私訊裡按下「P2P 工作階段」，請求會立刻進入那段對話。事先不會問你任何事。它寫下的那一行帶著工作階段自己的位址並畫出一張卡片，而這張卡片就是你們兩人的入口：發起的人和被邀請的人開的是同一扇門。"
+msgstr "輸入 /p2p <nick>，或在私訊裡按下「P2P 工作階段」，請求會立刻送進那段對話。事先不會問你任何事。它寫下的那一行帶著工作階段自己的位址並顯示一張卡片，而這張卡片就是你們兩人的入口：發起的人和被邀請的人走的是同一個入口。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "What you type during a session is an ordinary private message, saved like any other. What the session does — request sent, connected, file received, game score, who ended it — is written into the conversation as P2P lines, so the story of it survives the session without turning the transcript into a control surface."
-msgstr "你在工作階段期間打的字是普通的私訊，和其他訊息一樣被儲存。工作階段本身做的事——發出請求、已連線、收到檔案、遊戲比分、由誰結束——會以 P2P 行寫進對話裡，這樣它的故事比工作階段本身活得更久，又不至於把記錄變成一塊操作面板。"
+msgstr "你在工作階段期間輸入的內容是普通的私訊，和其他訊息一樣會被儲存。工作階段本身的動作——發出請求、已連線、收到檔案、遊戲比分、由誰結束——會以 P2P 行寫進對話裡，這樣工作階段結束後仍留有完整紀錄，又不至於把對話紀錄變成一塊操作面板。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "While a session exists, the conversation shows a badge for it: how far along it is, and whether you already have its tab open. If you do, the badge takes you to that tab rather than opening a second one, because a second tab of a session moves the session into it."
-msgstr "只要工作階段還在，對話裡就會為它顯示一個標記：它進行到哪一步，以及你是否已經開著它的分頁。如果開著，這個標記會把你帶到那個分頁，而不是再開一個，因為工作階段的第二個分頁會把它搬過去。"
+msgstr "只要工作階段還在，對話中就會為它顯示一個標記：顯示進行到哪一步，以及你是否已經開啟它的分頁。如果已開啟，點選標記會帶你前往那個分頁，而不是再開一個，因為同一個工作階段若開第二個分頁，工作階段會被移到新分頁。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "You can hold a session with several people at the same time, each in a tab of its own. The only session refused is a second one with somebody you already have one with. Nothing has to be ended to start another."
-msgstr "你可以同時和好幾個人保持工作階段，每個各佔一個分頁。唯一會被拒絕的，是與已經有工作階段的同一個人再開第二個。開始另一個不需要先結束什麼。"
+msgstr "你可以同時與好幾個人進行工作階段，每個都在各自的分頁中。唯一會被拒絕的，是與已經有工作階段的同一個人再開第二個。開始另一個工作階段不需要先結束任何一個。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here — which is why the conversation offers a way to the tab you already have instead of a second one. Closing the tab is not the same as ending the session: you have about half a minute to come back to the address before it closes itself. Only End session, which asks first, is final straight away."
-msgstr "一個工作階段只能在你的一個視窗裡活著。在別處開啟它就會把它搬過去，而失去它的那個視窗會這麼說，並提供「把它帶回這裡」——這也是為什麼對話給的是通往你已有分頁的路，而不是再開一個。關閉分頁和結束工作階段不是一回事：你大約有半分鐘回到那個位址，之後它會自己關閉。只有會先詢問的「結束工作階段」才是立刻不可逆的。"
+msgstr "一個工作階段只能在你的一個視窗中進行。在別處開啟它就會把它移到那裡，而失去它的那個視窗會顯示提示，並提供「在這裡取回」——這也是為什麼對話提供的是前往你已開啟分頁的入口，而不是再開一個。關閉分頁和結束工作階段不是一回事：你大約有半分鐘的時間可以回到那個位址，之後它會自行關閉。只有會先詢問確認的「結束工作階段」才會立刻結束且無法復原。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+. toggles screen sharing when the P2P Session Console is focused. A shared screen automatically favors the focus layout."
-msgstr "Ctrl+Shift+. 當P2P會話控制檯被聚焦時切換屏幕共享. 共享屏幕自動偏向焦點佈局."
+msgstr "當 P2P 工作階段主控台處於焦點時，按 Ctrl+Shift+. 可切換螢幕分享。分享螢幕時會自動優先採用焦點版面配置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:34
 #, elixir-autogen, elixir-format
@@ -876,144 +855,144 @@ msgstr "「結束通話」只停下媒體，工作階段仍然立著，供檔案
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowUp toggles microphone state and Ctrl+Shift+ArrowLeft toggles camera state."
-msgstr "隨着P2P會話控制檯的聚焦,Ctrl+Shift+ArrowUp切換麥克風狀態和Ctrl+Shift+ArrowLeft切換相機狀態."
+msgstr "當 P2P 工作階段主控台處於焦點時，Ctrl+Shift+ArrowUp 可切換麥克風狀態，Ctrl+Shift+ArrowLeft 可切換攝影機狀態。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Opening the Share link window again shows the address you already have, rather than minting a second one. That is what makes revoking it a whole answer: there is one link to close, not an unknown number of them. After revoking, Share mints a fresh address — so a link pasted in the wrong place is fixable rather than permanent."
-msgstr "再次開啟「分享連結」視窗，顯示的是你已經有的那個位址，而不是第二個。這正是撤銷能成為完整答案的原因：要關的只有一個連結，而不是不知道有多少個。撤銷之後，「分享」會產生一個新位址——所以貼錯地方的連結是可以補救的，而不是永久的。"
+msgstr "再次開啟「分享連結」視窗，顯示的是你已經有的那個位址，而不是另外產生第二個。這正是撤銷能徹底解決問題的原因：只有一個連結需要關閉，而不是不知道有多少個。撤銷之後，「分享」會產生新的位址——所以貼錯地方的連結是可以補救的，而不是永久有效。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Revoke sits in the Share link window, beside the address — a conference, a space, a P2P session, a game. It stops the link working, and it stops nothing else."
-msgstr "「撤銷」在「分享連結」視窗裡，就在位址旁邊——會議、space、P2P 工作階段、遊戲都一樣。它只讓連結失效，別的什麼都不動。"
+msgstr "「撤銷」位於「分享連結」視窗中，就在位址旁邊——會議、空間、P2P 工作階段、遊戲都一樣。它只會讓連結失效，不會影響其他任何東西。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
-msgstr "「分享」會鑄出一個通話連結，並在一個帶有位址、「複製」和「撤銷」的小視窗裡開啟它。加入之前的前廳裡有它，加入之後的會議列裡也有，所以你可以先邀請別人再走進去。關閉視窗後按鈕會留下「分享連結」的字樣，點它就再開啟一次。把位址貼進頻道或私訊會畫出一張卡片，而不是一個裸位址——任何這樣的連結都會變成卡片，包括別人從外面傳給你的。"
+msgstr "「分享」會產生通話連結，並在一個小視窗中顯示位址，以及「複製」和「撤銷」按鈕。加入之前的前廳裡有它，加入之後的會議列中也有，所以你可以先邀請別人再進入。關閉視窗後，按鈕仍會顯示「分享連結」，點選即可再次開啟。把位址貼進頻道或私訊會顯示成卡片，而不是單純的位址——任何這類連結都會變成卡片，包括別人從外部傳給你的。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and the only one: Group Call in the conversation's toolbar opens the room and writes that card rather than going anywhere itself. The call gets the whole window and the conversation stays where it was."
-msgstr "會議總是在自己的瀏覽器分頁裡執行——聊天沒有容納它的視窗。貼進頻道的那張卡片就是門，而且是唯一的門：對話列上的「Group Call」會開出房間並寫下那張卡片，自己並不去任何地方。通話占據整個視窗，而對話仍然停在原處。"
+msgstr "會議一律在獨立的瀏覽器分頁中進行——聊天視窗中沒有容納它的位置。貼在頻道中的那張卡片就是入口，而且是唯一的入口：對話工具列上的「群組通話」會建立聊天室並寫入那張卡片，本身並不會前往任何地方。通話會佔據整個視窗，而對話則留在原處。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar and ends the invitation without entering anything. Nothing in that toolbar is a door: the invite card in the private message is the way in, for both of you."
-msgstr "被邀請的人也可以拒絕。「拒絕」在對話列上那條工作階段的入口處，它會結束邀請，而不讓任何人進入任何地方。那條列裡沒有門：私訊裡的邀請卡片才是入口，對你們兩個都一樣。「拒絕」在對話工具列上那條工作階段的項目裡——這裡唯一一個是按鈕而不是門的控制項——它結束邀請，不會進入任何地方。"
+msgstr "被邀請的人也可以拒絕。「拒絕」位於對話工具列上該工作階段的項目中，它會結束邀請，不會進入任何地方。那條工具列裡沒有任何入口：私訊中的邀請卡片才是進入的途徑，對你們兩個都一樣。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Camera video asks for %{size} at up to %{fps} frames per second."
-msgstr "相機視頻以每秒高達%{fps}幀要求%{size}."
+msgstr "攝影機視訊要求 %{size}，每秒最高 %{fps} 格。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Close downloads, uploads and video streams on the same network."
-msgstr "在同一網絡上關閉下載,上傳和視頻流."
+msgstr "關閉同一網路上的下載、上傳和影片串流。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "During a call, the quality appears as a word in the top right corner of the other person's video: Excellent, Good, Fair or Poor. Excellent and Good are green, Fair is yellow, and Poor is red. The connection diagram shows the same word."
-msgstr "在一次通話中,質量作爲單詞出現在對方視頻的右上角:優秀,好,公平或貧窮. 妙和善是綠色的,公平是黃色的,可憐的是紅色的. 連接圖顯示了同一個詞."
+msgstr "通話期間，品質會以一個詞顯示在對方視訊畫面的右上角：極佳、良好、普通或不佳。極佳和良好為綠色，普通為黃色，不佳為紅色。連線圖顯示的也是同一個詞。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Echo cancellation, noise suppression and automatic gain control are on for the microphone."
-msgstr "麥克風的回聲取消 噪音壓制和自動控制"
+msgstr "麥克風已啟用回音消除、雜訊抑制和自動增益控制。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Every 3 seconds, your browser reads the connection statistics of the call. It looks at three numbers:"
-msgstr "每3秒,你的瀏覽器會讀取通話的連接統計. 它看三個數字:"
+msgstr "你的瀏覽器每 3 秒會讀取一次通話的連線統計資料，並查看三個數值："
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "How it is measured"
-msgstr "如何衡量"
+msgstr "測量方式"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Jitter: how much that delay changes from one packet to the next."
-msgstr "Jitter: 從一個數據包到下一個數據包的延遲時間有多長 。"
+msgstr "抖動：封包之間的延遲變化有多大。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Move closer to your Wi-Fi router, or use a wired connection."
-msgstr "移動到您的 Wi-Fi 路由器, 或者使用有線連接 。"
+msgstr "靠近 Wi-Fi 路由器，或改用有線連線。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:109
 #, elixir-autogen, elixir-format
 msgid "Network Stats"
-msgstr "網絡Stats"
+msgstr "網路統計"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Packet loss: the share of data that never arrives."
-msgstr "包丟失:數據從未到來的份額."
+msgstr "封包遺失：從未送達的資料所占的比例。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Round-trip time: how long data takes to reach the other person and come back."
-msgstr "Round-trip time: how long data takes to reach the other person and come back."
+msgstr "來回時間：資料傳到對方並返回所需的時間。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Screen sharing is limited to %{size} at up to %{fps} frames per second, which keeps text sharp."
-msgstr "屏幕共享僅限於%{size},每秒最高爲%{fps}幀,這保持了文本的銳度."
+msgstr "螢幕分享限制為 %{size}，每秒最高 %{fps} 格，以保持文字清晰。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Stop sharing your screen if you no longer need it."
-msgstr "如果你不再需要的話, 停止共享屏幕 。"
+msgstr "如果不再需要，請停止分享螢幕。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "The quality word describes the connection between you and the other person. It does not measure your camera or microphone."
-msgstr "質量單詞描述你和他人之間的聯繫. 它不測量你的相機或麥克風。"
+msgstr "品質詞描述的是你與對方之間的連線，並不衡量你的攝影機或麥克風。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "There is no manual quality setting. Every call starts with these limits."
-msgstr "沒有手工設置質量。 每一次通話都從這些限制開始."
+msgstr "沒有手動品質設定。每一通通話都從這些限制開始。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "These numbers become a single call score, and the score sets the word. High delay, unstable delay or lost packets lower the score. The word appears after the first measurement."
-msgstr "These numbers become a single call score, and the score sets the word. High delay, unstable delay or lost packets lower the score. The word appears after the first measurement."
+msgstr "這些數字會合成一個通話分數,再由分數決定用語。延遲過高、延遲不穩或封包遺失都會降低分數。第一次測量後就會顯示用語。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:91
 #, elixir-autogen, elixir-format
 msgid "Turn off your camera. An audio-only call needs much less bandwidth."
-msgstr "關掉相機 只有音頻的通話需要的帶寬要少得多."
+msgstr "關閉你的攝影機。僅語音的通話所需頻寬少得多。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Video is sent at up to %{video}, and audio at up to %{audio}."
-msgstr "視頻發送最高爲%{video},音頻發送最高爲%{audio}."
+msgstr "視訊最高以 %{video} 傳送,音訊最高以 %{audio} 傳送。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "When the quality is Fair or Poor"
-msgstr "當質量公平或貧窮的時候,"
+msgstr "當品質為「一般」或「不佳」時"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Leave ends the call for you only. Your peer stays in it and is told you left; start audio or video again to rejoin. End P2P session closes everything for both of you."
-msgstr "離開結束的電話只給你。 您的同伴留在裏面並被告知您離開; 再次啓動音頻或視頻以重新加入 。 結束P2P會話 結束對你們倆的一切。"
+msgstr "離開只會結束你這一端的通話。對方仍留在通話中,並會收到你已離開的通知;再次開啟音訊或視訊即可重新加入。結束 P2P 工作階段則會為你們雙方關閉所有內容。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Leaving the Call"
-msgstr "離開呼叫"
+msgstr "離開通話"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Two layouts: Focus puts your peer's picture in front with yours in a corner, and Split puts the two of you side by side. Click the remote tile to switch between them. The self-view button moves your own video between tile, picture-in-picture and hidden; side by side, it shows or hides it."
-msgstr "兩種佈局: 專心點把同伴的照片放在前面, 和你的角落, 和Split把你們兩個並肩。 單擊遠程瓷磚在它們之間切換。 自視按鈕將自己的視頻移動到瓷磚,圖片中和隱藏之間;並肩顯示或隱藏."
+msgstr "兩種版面配置:「焦點」會把對方的畫面放在前方,你的畫面在角落;「分割」則讓你們兩人並排顯示。按一下遠端畫面即可在兩者間切換。自我檢視按鈕會讓你自己的視訊在圖塊、子母畫面和隱藏之間切換;並排顯示時則是顯示或隱藏。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight switches layout and Ctrl+Shift+ArrowDown cycles self-view."
-msgstr "隨着P2P會話控制檯的聚焦,Ctrl+Shift+ArrowRight開關佈局和Ctrl+Shift+ArrowDown週期自視."
+msgstr "焦點位於 P2P 工作階段主控台時,Ctrl+Shift+ArrowRight 切換版面配置,Ctrl+Shift+ArrowDown 循環切換自我檢視。"

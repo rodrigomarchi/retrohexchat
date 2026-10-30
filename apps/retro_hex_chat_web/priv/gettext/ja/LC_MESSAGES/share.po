@@ -14,7 +14,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:187
 #, elixir-autogen, elixir-format
 msgid "%{nickname} shared this with you."
-msgstr "%{nickname} さんがあなたに共有しました。"
+msgstr "%{nickname} さんがこれをあなたに共有しました。"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:163
 #, elixir-autogen, elixir-format
@@ -44,7 +44,7 @@ msgstr "チャットを開く"
 #: lib/retro_hex_chat_web/live/share_control.ex:137
 #, elixir-autogen, elixir-format
 msgid "Register your nickname to share a link."
-msgstr "リンクを共有するにはニックネームを登録してください。"
+msgstr "リンクを共有するには、ニックネームを登録してください。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:162
 #: lib/retro_hex_chat_web/live/share_control.ex:118
@@ -62,12 +62,12 @@ msgstr "共有リンク"
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:189
 #, elixir-autogen, elixir-format
 msgid "Someone shared this with you."
-msgstr "誰かがあなたに共有しました。"
+msgstr "誰かがこれをあなたに共有しました。"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:179
 #, elixir-autogen, elixir-format
 msgid "%{nickname} shared this with you. Pick a nickname to join."
-msgstr "%{nickname} さんがあなたに共有しました。ニックネームを選んで参加してください。"
+msgstr "%{nickname} さんがこれをあなたに共有しました。ニックネームを選んで参加してください。"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:184
 #, elixir-autogen, elixir-format
@@ -77,7 +77,7 @@ msgstr "ニックネームを選んで参加してください。"
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:170
 #, elixir-autogen, elixir-format
 msgid "This link is no longer active. The chat is still there."
-msgstr "このリンクは無効になりました。チャットはそのままあります。"
+msgstr "このリンクは無効になりました。チャットは引き続きご利用いただけます。"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:108
 #, elixir-autogen, elixir-format
@@ -97,12 +97,12 @@ msgstr "招待"
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:303
 #, elixir-autogen, elixir-format
 msgid "shared by %{nickname}"
-msgstr "%{nickname} が共有"
+msgstr "%{nickname} さんが共有"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:305
 #, elixir-autogen, elixir-format
 msgid "shared with this conversation"
-msgstr "この会話で共有"
+msgstr "この会話に共有されました"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:191
 #, elixir-autogen, elixir-format
@@ -181,7 +181,7 @@ msgstr "1 対 1、ブラウザーからブラウザーへ。"
 #: lib/retro_hex_chat_web/site/pages/join.ex:308
 #, elixir-autogen, elixir-format
 msgid "1 seat open"
-msgstr "空席 1"
+msgstr "空席 1 席"
 
 #: lib/retro_hex_chat_web/site/pages/join.ex:311
 #, elixir-autogen, elixir-format
@@ -273,17 +273,17 @@ msgstr "ライブ"
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:274
 #, elixir-autogen, elixir-format
 msgid "One seat open"
-msgstr "空き 1 席"
+msgstr "空席 1"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:220
 #, elixir-autogen, elixir-format
 msgid "Over"
-msgstr "終了済み"
+msgstr "終了"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:320
 #, elixir-autogen, elixir-format
 msgid "Play"
-msgstr "プレイ"
+msgstr "再生"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:318
 #, elixir-autogen, elixir-format
@@ -346,7 +346,7 @@ msgstr "閉じる"
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:166
 #, elixir-autogen, elixir-format
 msgid "A room on RetroHexChat"
-msgstr "RetroHexChat の部屋"
+msgstr "RetroHexChat のルーム"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:101
 #, elixir-autogen, elixir-format
@@ -356,17 +356,17 @@ msgstr "終了 %{when}"
 #: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:52
 #, elixir-autogen, elixir-format
 msgid "A miniature of the room a shared link opens into"
-msgstr "共有リンクが開く部屋のミニチュア"
+msgstr "共有リンクを開いたときに表示されるルームのミニチュア"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:56
 #, elixir-autogen, elixir-format
 msgid "The link goes straight into the room, with no account and nothing to fill in. Revoking it closes that door without touching anybody already inside."
-msgstr "リンクは部屋にまっすぐに行き、アカウントがないと記入するものではありません。 すでに内部に触れずにドアを閉じる。"
+msgstr "リンクはアカウントも入力も不要で、そのままルームに入れます。リンクを無効にすると、すでに中にいる人に影響を与えることなく、そのドアを閉じます。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:46
 #, elixir-autogen, elixir-format
 msgid "What somebody sees when they follow it"
-msgstr "誰かがそれをフォローするときに見る"
+msgstr "リンクを開いたときに相手に表示される内容"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:158
 #, elixir-autogen, elixir-format

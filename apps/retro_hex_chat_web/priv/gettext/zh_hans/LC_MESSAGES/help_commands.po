@@ -28,67 +28,67 @@ msgstr "昵称"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "(/me messages only),"
-msgstr "(只有/me消息),"
+msgstr "（仅 /me 消息），"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "(1 day). No duration means permanent until you"
-msgstr "(1天) (中文(简体) ). 在你之前,没有永久期限"
+msgstr "（1 天）。不指定时长则永久忽略，直到你"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "(2 hours),"
-msgstr "(2小时),"
+msgstr "（2 小时），"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "(5 minutes),"
-msgstr "(5分钟),"
+msgstr "（5 分钟），"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "(auto op),"
-msgstr "(自动操作),"
+msgstr "（自动授予管理员权限），"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "(auto voice)"
-msgstr "(自动声音)"
+msgstr "（自动授予发言/语音权限）"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "(ban) — Ban or unban a user from the channel."
-msgstr "(ban)——禁止或解除频道用户的禁令."
+msgstr "（ban）——封禁或解除封禁频道中的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "(channel invites only)."
-msgstr "(只有频道邀请)."
+msgstr "（仅频道邀请）。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "(channel only),"
-msgstr "(仅频道),"
+msgstr "（仅频道），"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "(default) or"
-msgstr "(违约)或"
+msgstr "（默认）或"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "(default),"
-msgstr "(违约),"
+msgstr "（默认），"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "(half-operator) — Give or remove half-op status (can kick and set +v)."
-msgstr "(半操作)——给予或取消半操作状态(可以踢和设置+v)."
+msgstr "（半管理员）——授予或移除半管理员状态（可以踢出用户并设置 +v）。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "(invite-only) — Users must be invited to join the channel."
-msgstr "(只邀请)——必须邀请用户加入频道."
+msgstr "（仅限邀请）——用户必须受到邀请才能加入频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:57
 #, elixir-autogen, elixir-format
@@ -98,112 +98,112 @@ msgstr "——限制用户加入的速度(例如,"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "(keyed) — Requires a password to join the channel."
-msgstr "(键)——需要密码才能加入频道."
+msgstr "（密钥）——需要密码才能加入频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "(moderated) — Only voiced (+v) users and operators can send messages."
-msgstr "(modedated)——只有表达的(+v)用户和操作员才能发送消息."
+msgstr "（受限发言）——只有拥有发言/语音权限（+v）的用户和管理员才能发送消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "(no external messages) — Only channel members can send messages to the channel."
-msgstr "(无外部消息) - 只有频道成员才能向频道发送消息."
+msgstr "（禁止外部消息）——只有频道成员才能向频道发送消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "(no knock) — Disables"
-msgstr "(不敲门)——禁用"
+msgstr "（禁止敲门）——禁用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "(notice messages only),"
-msgstr "(只发通知),"
+msgstr "（仅通知消息），"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "(operator) — Give or remove full operator status (can manage all modes)."
-msgstr "(操作员)——给予或删除完整的操作员状态(可以管理所有模式)."
+msgstr "（管理员）——授予或移除完整的管理员状态（可以管理所有模式）。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "(private messages only),"
-msgstr "(仅限私人信息),"
+msgstr "（仅私信），"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "(removes role)"
-msgstr "(删除角色)"
+msgstr "（移除角色）"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "(someone joins),"
-msgstr "(有人会加入)"
+msgstr "(有人加入时),"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "(someone leaves), or"
-msgstr "(某叶),或"
+msgstr "(有人离开时),或"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "(someone renames)."
-msgstr "(有人改名)."
+msgstr "(有人更改昵称时)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "(super op),"
-msgstr "(超级行动),"
+msgstr "(超级管理员),"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "(topic protected) — Only operators can change the channel topic."
-msgstr "(主题保护)——只有操作员才能改变频道主题."
+msgstr "(主题保护)——只有管理员/操作员才能更改频道主题。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "(user limit) — Sets the maximum number of users allowed in the channel."
-msgstr "(用户限制) - 设置频道允许的最大用户数。"
+msgstr "(用户限制)——设置频道允许的最大用户数。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "(voice) — Give or remove voice (allows speaking in +m channels)."
-msgstr "(voice)——给予或删除语音(允许在+m频道发言)."
+msgstr "(发言/语音)——授予或移除发言/语音权限(允许在 +m 频道中发言)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "(wallops), which opts you in to receiving operator broadcast messages sent via"
-msgstr "(wallops),它选择您接收通过"
+msgstr "(wallops),它会让你接收通过以下方式发送的管理员/操作员广播消息:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:62
 #, elixir-autogen, elixir-format
 msgid ") is not allowed in expansions"
-msgstr ")在扩展中不允许"
+msgstr "”)在展开内容中不被允许"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:30
 #, elixir-autogen, elixir-format
 msgid ") shows detailed help for that specific command. Use Help Topics from the menu bar to browse and search all help topics."
-msgstr ") 显示该特定命令的详细帮助。 使用菜单栏中的帮助主题浏览和搜索所有帮助主题 。"
+msgstr ")会显示该特定命令的详细帮助。使用菜单栏中的“帮助主题”可浏览和搜索所有帮助主题。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "). The message appears in each recipient's Status tab. Unlike"
-msgstr ") (中文(简体) ). 消息出现在每个收件人的状态标签中 。 与"
+msgstr ")。消息会显示在每个接收者的“状态”标签页中。与"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "). They are designed for automated messages and informational announcements that shouldn't interrupt the recipient. Channel notices always appear in the channel window. User notices appear according to the recipient's"
-msgstr ") (中文(简体) ). 它们是为自动信息和信息通告设计的,不应该打断接收者. 频道通知总是出现在频道窗口中. 用户通知按照收件人的"
+msgstr ")。它们专为自动消息和信息公告设计,不应打断接收者。频道通知始终显示在频道窗口中。用户通知则根据接收者的"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "* YourNick does something"
-msgstr "\"你的尼克做点什么\""
+msgstr "* 你的昵称 做了某事"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "* YourNick waves hello"
-msgstr "*你的尼克波波*"
+msgstr "* 你的昵称 挥手问好"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:11
 #, elixir-autogen, elixir-format
@@ -281,13 +281,12 @@ msgstr "+w"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
 #, elixir-autogen, elixir-format
 msgid ", a confirmation dialog appears asking you to confirm the change. If the target nickname is registered with NickServ, you'll also need to enter the password. Once confirmed, all users in your channels see an announcement that you changed your name."
-msgstr ""
-",一个确认对话框似乎要求您确认变化。 如果目标昵称在NickServ注册,你还需要输入密码. 一旦确认,您频道中的所有用户都会看到您更改名称的公告."
+msgstr ",会弹出确认对话框,要求你确认此更改。如果目标昵称已在 NickServ 注册,你还需要输入密码。确认后,你所在频道中的所有用户都会看到你更改昵称的公告。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ", an action message appears as"
-msgstr ",一个动作信息显示为"
+msgstr ",动作消息会显示为"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:25
 #, elixir-autogen, elixir-format
@@ -297,12 +296,12 @@ msgstr ",最多为50个字符,没有空格"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:2
 #, elixir-autogen, elixir-format
 msgid ", making their messages visible to you again."
-msgstr "让你再次看到他们的信息"
+msgstr ",让你再次看到他们的消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:2
 #, elixir-autogen, elixir-format
 msgid ", notices don't open a PM window on the recipient's side and don't trigger notification sounds."
-msgstr ",通知不要打开PM窗口 在接收方一边,不要触发通知的声音。"
+msgstr ",通知不会在接收者一侧打开私信窗口,也不会触发通知提示音。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:44
 #, elixir-autogen, elixir-format
@@ -312,77 +311,77 @@ msgstr ",或"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:2
 #, elixir-autogen, elixir-format
 msgid ", the kicked user can rejoin immediately unless a ban is also set."
-msgstr ",脚踢的用户可以立即重新加入,除非也设置了禁令."
+msgstr ",被踢出的用户可以立即重新加入,除非同时设置了封禁。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:5
 #, elixir-autogen, elixir-format
 msgid ", this just creates the conversation window."
-msgstr "这只创造了对话窗口。"
+msgstr ",这只会创建对话窗口。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:29
 #, elixir-autogen, elixir-format
 msgid ", typing"
-msgstr "输入"
+msgstr ",输入"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ", wallops can be opted out of — users who haven't enabled"
-msgstr ", wallop 可以选择退出——没有启用的用户"
+msgstr ",wallops 可以选择不接收——未启用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "--duration 1h"
-msgstr "1小时"
+msgstr "--duration 1h"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "--from @nick"
-msgstr "- 从@nick 调用"
+msgstr "--from @nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "--last N"
-msgstr "最后一个 N"
+msgstr "--last N"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "--reason text"
-msgstr "-- 理由文本"
+msgstr "--reason text"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "--user nick"
-msgstr "-- 用户昵称"
+msgstr "--user nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "-YourNick-"
-msgstr "-你的尼克... -对"
+msgstr "-你的昵称-"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:38
 #, elixir-autogen, elixir-format
 msgid ". By default, wallops are disabled."
-msgstr "。默认情况下, wallop 被禁用。"
+msgstr "。默认情况下,wallops 处于禁用状态。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:22
 #, elixir-autogen, elixir-format
 msgid ". Other channel members see that the user was banned. For registered channels, bans are persisted and survive channel restarts."
-msgstr "。其他频道成员看到用户被禁止。 对于已登记的频道,继续实行禁令,并重新启动频道。"
+msgstr "。其他频道成员会看到该用户已被封禁。对于已注册的频道,封禁会被保存,并在频道重启后继续有效。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:26
 #, elixir-autogen, elixir-format
 msgid ". Think of it as ringing the doorbell of a private room."
-msgstr "把它当成是私人房间的门铃"
+msgstr "。可以把它看作是按响私人房间的门铃。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:43
 #, elixir-autogen, elixir-format
 msgid ". Timer commands run in the window that was active when the timer was created and do not switch your current window when they fire. Creating a timer with the same name as an existing one replaces the old timer."
-msgstr "。定时器命令运行在创建定时器时正在运行的窗口中,并且当当前窗口开火时不会切换。 创建一个与现有名称相同的定时器,取代旧定时器."
+msgstr "。定时器命令会在创建定时器时处于活动状态的窗口中运行,触发时不会切换你当前的窗口。创建与现有定时器同名的定时器会替换旧的定时器。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:5
 #, elixir-autogen, elixir-format
 msgid ". Voiced users can speak in moderated (+m) channels."
-msgstr ". 语音用户可以使用主持人(+m)频道发言."
+msgstr "。拥有发言权限的用户可以在被审核(+m)的频道中发言。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:73
@@ -1497,22 +1496,22 @@ msgstr "/whowas Bob /whowas Alice"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "1 to 16 characters long"
-msgstr "1至16个字符长"
+msgstr "长度为 1 到 16 个字符"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "= max 3 joins per 10 seconds)."
-msgstr "= 最大值 3 每10秒加入。"
+msgstr "= 每 10 秒最多 3 次加入)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
-msgstr "访问等级: 所有者 > SOP > AOP > VOP"
+msgstr "权限等级:所有者 > SOP > AOP > VOP"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Access levels:"
-msgstr "访问级别 :"
+msgstr "访问级别:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:58
 #, elixir-autogen, elixir-format
@@ -1522,24 +1521,22 @@ msgstr "管理员绕过正常创建者/rank检查"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "After creating an alias, type"
-msgstr "创建化名后, 类型"
+msgstr "创建别名后,输入"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "After setting a welcome message, any user who joins the channel sees it once per session. If they leave and rejoin, they won't see it again during the same session. The person who set the welcome message does not see it themselves. Each channel has its own independent welcome message."
-msgstr ""
-"在设置欢迎消息后,任何加入频道的用户每个会话都会看到一次. 如果他们离开和重新加入,他们不会再在同一期中看到它. 发出欢迎信的人自己看不到。 "
-"每个频道都有自己的独立欢迎信息。"
+msgstr "设置欢迎消息后,任何加入该频道的用户在每个会话中会看到一次。如果他们离开后又重新加入,在同一会话中不会再次看到。设置欢迎消息的人自己看不到。每个频道都有各自独立的欢迎消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Aliases Feature"
-msgstr "别名特性"
+msgstr "别名功能"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Aliases that shadow built-in commands will override them (with a warning)"
-msgstr "假称内置的阴影命令将覆盖( 有警告) 。"
+msgstr "与内置命令同名的别名会覆盖内置命令(并给出警告)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:59
@@ -1562,17 +1559,17 @@ msgstr "操作员不能踢另一个操作员——只有所有者可以"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Auto-Join Channels"
-msgstr "自动连接通道"
+msgstr "自动加入频道"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Auto-Respond Feature"
-msgstr "自动响应特性"
+msgstr "自动响应功能"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Automatically run a command when someone joins a channel, leaves, or changes their nickname. Useful for auto-greeting new users or reacting to events."
-msgstr "当有人加入一个频道,离开,或更改他们的昵称时自动运行一个命令. 用于自动发光新用户或对事件作出反应."
+msgstr "当有人加入频道、离开或更改昵称时自动运行命令。可用于自动问候新用户或对事件做出反应。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1587,17 +1584,17 @@ msgstr "可用设置"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Both nickname and message are required"
-msgstr "需要昵称和信件"
+msgstr "昵称和消息都是必填项"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Both target and message are required"
-msgstr "既需要目标,也需要信息"
+msgstr "目标和消息都是必填项"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Both you and the target must be registered and identified (via"
-msgstr "您与目标都必须注册和识别(通过"
+msgstr "你和目标都必须已注册并已验证身份(通过"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:2
 #, elixir-autogen, elixir-format
@@ -1607,7 +1604,7 @@ msgstr "在可排序、可过滤的对话窗口中浏览服务器上的所有公
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Can be blocked if the recipient has you on their ignore list"
-msgstr "如果收件人在他们的忽略列表中包含您, 可以被屏蔽"
+msgstr "如果收件人将你加入了忽略列表,消息可能会被屏蔽"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1617,22 +1614,22 @@ msgstr "可包含字母、数字、特殊字符和连字符"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Cannot ban users with equal or higher rank (operators cannot ban the owner)"
-msgstr "无法禁止级别相同或更高的用户( 操作者不能禁止所有者)"
+msgstr "无法封禁级别相同或更高的用户(操作员不能封禁所有者)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Cannot ban yourself"
-msgstr "无法禁足自己"
+msgstr "无法封禁自己"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Cannot be filtered or ignored by recipients"
-msgstr "无法被收件人过滤或忽略"
+msgstr "收件人无法过滤或忽略"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Cannot change to your current nickname"
-msgstr "无法更改您的当前昵称"
+msgstr "无法更改为你当前的昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:35
 #, elixir-autogen, elixir-format
@@ -1642,27 +1639,27 @@ msgstr "无法忽略自己"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Cannot kick users with equal or higher rank than you"
-msgstr "无法踢出与您相同或更高等级的用户"
+msgstr "无法踢出等级与你相同或高于你的用户"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Cannot knock if you are already a member"
-msgstr "已经是会员的不能敲门"
+msgstr "已经是成员的用户不能敲门"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Cannot knock if you are banned from the channel"
-msgstr "禁用频道时无法敲门"
+msgstr "被禁止进入该频道时无法敲门"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Cannot mute users with equal or higher rank"
-msgstr "无法对等或更高等级的用户进行哑音"
+msgstr "无法禁言等级相同或更高的用户"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Cannot rejoin a channel you're already in"
-msgstr "无法重新加入您已经进入的频道"
+msgstr "无法重新加入你已经在其中的频道"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:31
 #, elixir-autogen, elixir-format
@@ -1687,19 +1684,17 @@ msgstr "ChanServ 概览"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "ChanServ is an automated service that manages channel ownership and access. When you register a channel, ChanServ remembers who owns it and who has operator privileges, automatically restoring them when those users join. This prevents channels from becoming \"ownerless\" when operators disconnect."
-msgstr ""
-"ChanServ是管理频道所有权和接入的自动化服务. "
-"注册一个频道时,ChanServ会记住谁拥有频道,谁拥有操作员权限,当这些用户加入时会自动恢复频道. 这防止了在操作员断开时频道成为\"无主\"."
+msgstr "ChanServ 是管理频道所有权和访问权限的自动化服务。注册频道后,ChanServ 会记住谁是频道所有者、谁拥有管理员/操作员权限,并在这些用户加入时自动恢复其权限。这可以防止管理员/操作员断开连接时频道变成“无主”状态。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Change channel settings and user privileges using mode flags. Modes control who can speak, who can join, and who has special powers in the channel."
-msgstr "使用模式旗更改频道设置和用户权限 。 模式控制谁能说话,谁能加入,谁在频道中拥有特殊权力."
+msgstr "使用模式标志更改频道设置和用户权限。模式控制谁可以发言、谁可以加入,以及谁在频道中拥有特殊权限。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Change your display name in the chat. A confirmation dialog appears before the change takes effect, since changing your nickname starts a new session."
-msgstr "更改聊天中的显示名称 。 更改生效前会出现确认对话框, 因为更改您的昵称开始一个新的会话 。"
+msgstr "更改你在聊天中的显示名称。更改生效前会弹出确认对话框,因为更改昵称会开始一个新的会话。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:90
@@ -1733,114 +1728,112 @@ msgstr "频道权限"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Channel deletion broadcasts to all members before closing"
-msgstr "在关闭前向所有成员播放频道删除内容"
+msgstr "频道删除前会向所有成员广播通知"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Channel names must start with"
-msgstr "频道名称必须从"
+msgstr "频道名称必须以以下字符开头"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Channel operator or owner only"
-msgstr "频道操作员或所有者"
+msgstr "仅限频道管理员/操作员或所有者"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Clear all messages from the current chat window, giving you a fresh screen. This cannot be undone."
-msgstr "从当前聊天窗口清除所有消息, 并给您一个新屏幕 。 这一点是无法消除的。"
+msgstr "清除当前聊天窗口中的所有消息,给你一个全新的屏幕。此操作无法撤销。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Clears the server MOTD that is normally displayed to users when they connect. After clearing, the MOTD section is simply skipped during connection. You can set a new MOTD at any time with"
-msgstr "清除通常在用户连接时显示的服务器MOTD. 清除后, MOTD 部分在连接时被跳过 。 您可以在任何时间设置一个新的 MOTD 功能"
+msgstr "清除用户连接时通常显示的服务器 MOTD。清除后,连接时将直接跳过 MOTD 部分。你可以随时使用以下命令设置新的 MOTD:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Clears the welcome message that is shown to users when they join the current channel. After clearing, no welcome message is displayed until a new one is set with"
-msgstr "清除用户加入当前频道时向用户显示的欢迎消息。 清除后,在设置新信件之前不显示欢迎信息"
+msgstr "清除用户加入当前频道时显示的欢迎消息。清除后,在设置新的欢迎消息之前不会显示任何欢迎消息,可使用以下命令设置:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Command chaining ("
-msgstr "命令链条"
+msgstr "命令链("
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Commands Reference"
-msgstr "引用"
+msgstr "命令参考"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Common action types include:"
-msgstr "共同行动类型包括:"
+msgstr "常见的操作类型包括:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
-msgstr "连接认证"
+msgstr "连接验证"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Create short command shortcuts that expand into longer commands or messages. For example, create"
-msgstr "创建可扩展为较长命令或消息的短命令快捷键. 例如,创建"
+msgstr "创建可展开为较长命令或消息的简短命令快捷方式。例如,创建"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Creates or switches to a PM conversation tab with the specified user. No message is sent — it simply opens the window so you can start typing. If you already have a PM tab open with that user, it switches to it. If you want to open the tab"
-msgstr ""
-"创建或切换到指定的用户的 PM 对话标签 。 没有发送消息——它只是打开窗口就可以开始打字. 如果您已经有一个 PM 标签打开与该用户, 它切换到它。 "
-"如果你想打开标签"
+msgstr "创建或切换到与指定用户的私信会话标签页。不会发送消息,只是打开窗口,方便你开始输入。如果你已经打开了与该用户的私信标签页,则直接切换过去。如果你想在后台打开标签页"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Custom Menus Feature"
-msgstr "自定义菜单特性"
+msgstr "自定义菜单功能"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "DESTRUCTIVE"
-msgstr "破坏性"
+msgstr "破坏性操作"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Data is cached for up to the configured retention period after disconnect (default: 1 hour)"
-msgstr "数据被缓存到已配置的断开后保留期( 默认:1 hour)"
+msgstr "断开连接后,数据会被缓存至设定的保留期限(默认:1 小时)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Disabled if the channel has +K (no knock) mode set"
-msgstr "如果频道有 +K( 无敲门) 模式设置, 则禁用"
+msgstr "如果频道设置了 +K(禁止敲门)模式,则此功能被禁用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Disconnect from the server and return to the connect screen. Other users see your optional quit message in all channels you were in."
-msgstr "从服务器上断开连接并返回连接屏幕. 其他用户在您所在的所有频道中看到您可选的退出消息 。"
+msgstr "断开与服务器的连接并返回连接界面。其他用户会在你所在的所有频道中看到你的退出消息(可选)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Does not create PM windows or conversations sidebar entries"
-msgstr "不创建 PM 窗口或对话框侧边栏条目"
+msgstr "不会创建私信窗口或在侧边栏会话列表中添加条目"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Does not trigger notification sounds or highlights"
-msgstr "不触发通知声音或亮度"
+msgstr "不会触发通知提示音或高亮"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Dropping a nick disconnects the user with a notice"
-msgstr "丢弃昵称与用户断开通知"
+msgstr "放弃昵称会通过通知将该用户断开连接"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Duration format:"
-msgstr "持续时间格式 :"
+msgstr "时长格式:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Duration must be a positive number"
-msgstr "期限必须是正数"
+msgstr "时长必须是正数"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:37
 #, elixir-autogen, elixir-format
@@ -1850,17 +1843,17 @@ msgstr "每个条目显示:"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Enable or disable slow mode (join throttle) in the current channel. This is a shorthand for"
-msgstr "启用或禁用当前信道中的慢模式( join prottle) 。 这是简写"
+msgstr "在当前频道中启用或禁用慢速模式(加入限流)。这是以下命令的简写形式:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Enforcement"
-msgstr "执行"
+msgstr "执行方式"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Enter a chat channel to read and send messages. If the channel doesn't exist yet, it is created and you become its operator."
-msgstr "输入要读取和发送消息的聊天频道 。 如果这个频道还没有存在,它就是创建的,你成为它的操作员."
+msgstr "进入一个聊天频道以阅读和发送消息。如果该频道尚不存在,则会创建它,你将成为该频道的管理员/操作员。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:70
@@ -1933,7 +1926,7 @@ msgstr "输入要读取和发送消息的聊天频道 。 如果这个频道还�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Examples"
-msgstr "实例"
+msgstr "示例"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:53
 #, elixir-autogen, elixir-format
@@ -1943,42 +1936,42 @@ msgstr "文件传输"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "For +i channels, you must be a channel operator"
-msgstr "对于 +i 频道, 您必须是频道操作员"
+msgstr "对于 +i 频道,你必须是频道管理员/操作员"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Ghost requires the registered nickname's password"
-msgstr "鬼需要注册昵称的密码"
+msgstr "Ghost 需要已注册昵称的密码"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Give operator status to a user in the current channel. This is a shorthand for"
-msgstr "在当前频道中给予用户操作员状态 。 这是简写"
+msgstr "在当前频道中授予用户管理员/操作员身份。这是以下命令的简写形式:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Give voice status to a user in the current channel. This is a shorthand for"
-msgstr "在当前频道中给予用户语音状态 。 这是简写"
+msgstr "在当前频道中授予用户发言/语音权限。这是以下命令的简写形式:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Guests: bio lasts only for the current session"
-msgstr "嘉宾:仅供本届会议使用。"
+msgstr "访客:个人简介仅在当前会话中有效"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Guests: list lasts only for the current session"
-msgstr "嘉宾:名单仅供本届会议使用"
+msgstr "访客:列表仅在当前会话中有效"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "Half-operators (%) can only set +v and -v"
-msgstr "半操作人员 (%) 只能设置 +v 和 -v"
+msgstr "半管理员/半操作员 (%) 只能设置 +v 和 -v"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Hide messages from a specific user. The ignored user is not notified — their messages are silently hidden from your view."
-msgstr "隐藏特定用户的消息 。 被忽略的用户没有被通知——他们的信息被默默地隐藏在您的视图中."
+msgstr "隐藏特定用户的消息。被忽略的用户不会收到通知,他们的消息只是在你的视图中被悄悄隐藏。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:63
@@ -2046,22 +2039,22 @@ msgstr "如何运作"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "If the channel has +i mode, you must be invited first"
-msgstr "如果频道有 +i 模式,必须先邀请您"
+msgstr "如果频道设置了 +i 模式,必须先被邀请才能加入"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "If the channel has +k mode, you must provide the correct key"
-msgstr "如果频道有+k模式,则必须提供正确的密钥"
+msgstr "如果频道设置了 +k 模式,必须提供正确的密钥"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "If the channel has +t mode (topic lock), only operators and owners can change the topic"
-msgstr "如果频道有 +t 模式(专题锁定),则只有操作者和所有者可以更改话题"
+msgstr "如果频道设置了 +t 模式(主题锁定),则只有管理员/操作员和所有者可以更改主题"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "If the nickname is registered, you need its password"
-msgstr "如果昵称已注册, 您需要密码"
+msgstr "如果该昵称已注册,你需要提供其密码"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:62
@@ -2072,22 +2065,22 @@ msgstr "忽略列表"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Ignore list persists for registered users"
-msgstr "注册用户的忽略列表持续"
+msgstr "已注册用户的忽略列表会被保留"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Instead of a regular chat message like"
-msgstr "而不是像普通聊天信息那样"
+msgstr "而不是像下面这样的普通聊天消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Invitations expire after 5 minutes"
-msgstr "5分钟后到期的邀请"
+msgstr "邀请将在 5 分钟后过期"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Leave the current channel or a specified channel, with an optional parting message that other members will see."
-msgstr "保留当前频道或指定频道,并带有其他成员会看到的可选的分页消息."
+msgstr "离开当前频道或指定频道,并可附带一条其他成员会看到的告别消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:35
 #, elixir-autogen, elixir-format
@@ -2097,22 +2090,22 @@ msgstr "日志条目格式"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Look up detailed information about an online user, including their channels, idle time, bio, and registration status."
-msgstr "寻找一个在线用户的详细信息,包括其渠道、闲暇时间、生物和注册状况。"
+msgstr "查询在线用户的详细信息,包括其所在频道、空闲时间、个人简介和注册状态。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Look up information about a user who recently disconnected, such as when they were last seen and what channels they were in."
-msgstr "查查最近断开连接的用户的信息, 例如他们最后一次被看到时, 以及他们的频道。"
+msgstr "查询最近断开连接的用户的信息,例如最后一次出现的时间以及所在的频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ, the channel services bot. ChanServ keeps your channel settings safe even when no operators are online."
-msgstr "通过ChanServ管理频道注册和访问列表,频道服务bot. ChanServ 即使没有操作员在线, 您的频道设置仍保持安全 。"
+msgstr "通过频道服务机器人 ChanServ 管理频道注册和访问列表。即使没有管理员/操作员在线,ChanServ 也能保障你的频道设置安全。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Mark yourself as temporarily unavailable, with an optional message explaining why. Other users will see your away status when they look you up."
-msgstr "将自己标为暂时无法使用,并附带一个可选的信息解释原因. 其他用户会看到你的离开状态 当他们调查你。"
+msgstr "将自己标记为暂时无法响应,并可附带一条说明原因的消息。其他用户查询你时会看到你的离开状态。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:30
 #, elixir-autogen, elixir-format
@@ -2127,7 +2120,7 @@ msgstr "最多 200 个字符"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Maximum 5 concurrent timers per session"
-msgstr "每届最多5次同时计时"
+msgstr "每个会话最多同时运行 5 个计时器"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:48
 #, elixir-autogen, elixir-format
@@ -2138,12 +2131,12 @@ msgstr "每个用户最多50个别名"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Message text is required"
-msgstr "需要信件文本"
+msgstr "需要消息文本"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Mode +j (Join Throttle)"
-msgstr "模式 +j( Join Throttle)"
+msgstr "模式 +j(加入限流)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:11
 #, elixir-autogen, elixir-format
@@ -2164,12 +2157,12 @@ msgstr "必须在频道内使用"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Must start with a letter or one of these special characters:"
-msgstr "必须从字母或这些特殊字符中的一个开始:"
+msgstr "必须以字母或以下特殊字符之一开头:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Mute a user in the current channel, preventing them from sending messages. Unlike"
-msgstr "在当前频道中关闭一个用户,使其无法发送消息. 与"
+msgstr "在当前频道中将用户禁言,使其无法发送消息。与"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:49
 #, elixir-autogen, elixir-format
@@ -2179,19 +2172,17 @@ msgstr "尼克塞尔"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "NickServ administration: drop nick registrations, view info, and reset passwords. Requires server administrator role."
-msgstr "NickServ管理:放下昵称注册,查看信息,并重置密码. 需要服务器管理员角色 。"
+msgstr "NickServ 管理:删除昵称注册、查看信息以及重置密码。需要服务器管理员角色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "NickServ manages nickname ownership. After registering, you \"identify\" (log in) each session to prove the nickname is yours. This unlocks features like saved preferences, auto-join lists, and channel access lists. If someone else tries to use your registered nickname, they'll be asked for the password."
-msgstr ""
-"NickServ管理昵称所有权. 注册后,您会\"识别\"(login in)每个会话以证明这个昵称属于您. "
-"这解锁了保存的首选项,自动连接列表,以及频道访问列表等功能. 如果有人试图使用你的注册昵称,他们会被问到密码."
+msgstr "NickServ 管理昵称所有权。注册后,你需要在每次会话中“识别”(登录)以证明该昵称属于你。这将解锁保存的偏好设置、自动加入列表和频道访问列表等功能。如果有人试图使用你已注册的昵称,他们会被要求输入密码。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "Nickname length is a compile-time constant (16 characters) and cannot be changed at runtime"
-msgstr "昵称长度是一个编译时常数( 16 个字符) , 运行时无法更改"
+msgstr "昵称长度是编译时常量(16 个字符),无法在运行时更改"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:28
 #, elixir-autogen, elixir-format
@@ -2207,7 +2198,7 @@ msgstr "Notices"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Notices appear with a distinctive"
-msgstr "通知中出现了一个独特的"
+msgstr "通知会以醒目的"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:41
@@ -2219,13 +2210,12 @@ msgstr "通知列表"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "One-shot timers run the command once after the specified delay. Repeating timers run the command every <seconds> indefinitely until stopped. Timer commands support alias expansion, so you can use variables like"
-msgstr ""
-"一发定时器在指定延迟后运行命令一次. 重复计时器会无限期地运行每个<seconds>的指令,直到停止. 定时器命令支持别名扩展,所以您可以使用诸如"
+msgstr "一次性计时器在指定延迟后运行一次命令。重复计时器会每隔 <seconds> 秒无限期地运行命令,直到停止。计时器命令支持别名展开,因此你可以使用诸如"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "One-shot: 1 to 86,400 seconds (1 second to 24 hours)"
-msgstr "1至86 400秒(1秒至24小时)"
+msgstr "一次性:1 至 86,400 秒(1 秒至 24 小时)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:99
 #, elixir-autogen, elixir-format
@@ -2235,12 +2225,12 @@ msgstr "只有所有者可以设置 +q( grant/revoke 拥有者身份)"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Only root admins (env var) can promote users to admin"
-msgstr "只有根管理员( env var) 才能促进用户管理员"
+msgstr "只有根管理员(环境变量)才能将用户提升为管理员"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Only root admins can promote new admins"
-msgstr "只有根管理员可以促进新的管理员"
+msgstr "只有根管理员可以提升新的管理员"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:29
 #, elixir-autogen, elixir-format
@@ -2255,17 +2245,17 @@ msgstr "只有使用 +w 模式的用户才会看到消息"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Open a private message tab with a user without sending any message. Unlike"
-msgstr "用用户打开私人信件标签而不发送任何消息 。 与"
+msgstr "与用户打开私信标签页而不发送任何消息。与"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list, channels, and chat messages."
-msgstr "打开自定义菜单对话框以添加、编辑或删除自定义右键单击昵称列表、频道和聊天消息的菜单项。"
+msgstr "打开自定义菜单对话框,为昵称列表、频道和聊天消息添加、编辑或移除自定义右键菜单项。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Opens a dialog where you can customize the right-click context menus. You can add menu items that execute any command when clicked — for example, adding a \"Whois\" item to the nick list that runs"
-msgstr "打开对话框,您可以自定义右键上下文菜单。 您可以在单击时添加执行任何命令的菜单项, 例如, 在运行的昵称列表中添加“ Whois” 项"
+msgstr "打开一个对话框,你可以在其中自定义右键菜单。你可以添加点击时执行任意命令的菜单项,例如在昵称列表中添加一个“Whois”项,运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:19
 #, elixir-autogen, elixir-format
@@ -2326,27 +2316,27 @@ msgstr "参数"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Password is required for register, identify, and drop"
-msgstr "登记、识别和删除需要密码"
+msgstr "注册、识别和删除都需要密码"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Password resets are audited but the new password is never stored in logs"
-msgstr "密码重置被审计, 但新密码从未存储在日志中"
+msgstr "密码重置会被审计,但新密码绝不会存储在日志中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Perform / Auto-Commands"
-msgstr "执行/ 自动命令"
+msgstr "执行 / 自动命令"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Perform commands execute sequentially when you connect, before auto-join channels are joined. This ensures that commands like"
-msgstr "连接时按顺序执行命令, 在自动连接通道连接之前执行 。 这样可以确保命令像"
+msgstr "执行命令会在你连接时按顺序运行,早于自动加入的频道被加入。这样可以确保像"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Permanently block a user from the current channel. The banned user is immediately removed and cannot rejoin until the ban is lifted."
-msgstr "永久封锁当前频道的用户 。 被禁用户立即被移除,在禁令解除前不能重新加入."
+msgstr "永久屏蔽用户进入当前频道。被封禁的用户会立即被移除,在封禁解除前无法重新加入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:86
 #, elixir-autogen, elixir-format
@@ -2357,12 +2347,12 @@ msgstr "隐私模式"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Private Messages"
-msgstr "私人信件"
+msgstr "私聊消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Purge only affects stored messages (already-rendered messages stay until page reload)"
-msgstr "清除只影响存储信件( 已经发送信件直到重新装入页面)"
+msgstr "清除只影响已保存的消息(已显示的消息会保留,直到重新加载页面)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:36
 #, elixir-autogen, elixir-format
@@ -2372,109 +2362,107 @@ msgstr "限速率:每频道每60秒一次"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Recursive aliases (A calls B calls A) are detected and rejected (max 5 levels)"
-msgstr "递归别名(A calls B calls A)被检测和拒绝(最大5级)"
+msgstr "系统会检测并拒绝递归别名(A 调用 B,B 又调用 A),最多 5 层"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Register and protect your nickname with a password through NickServ, the nickname services bot. Once registered, nobody else can use your name."
-msgstr "通过昵称服务机器人NickServe的密码注册并保护您的昵称. 一旦注册, 没有人可以使用你的名字。"
+msgstr "通过昵称服务机器人 NickServ 用密码注册并保护你的昵称。注册后,其他人就无法使用你的名字。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Registered users only — guests cannot save auto-join lists"
-msgstr "只有注册用户——客人不能保存自动连接列表"
+msgstr "仅限注册用户——访客无法保存自动加入列表"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Registered users only — rules are persisted across sessions"
-msgstr "仅登记用户——各届均坚持规则"
+msgstr "仅限注册用户——规则会在多次会话间保留"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Registered users: aliases are saved across sessions. Guests: session-only"
-msgstr "注册用户:在会话中保存别名. 来宾:只开会"
+msgstr "注册用户:别名会跨会话保存。访客:仅限当前会话"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Registered users: bio is saved across sessions"
-msgstr "注册用户:在会话中保存生物"
+msgstr "注册用户:个人简介会跨会话保存"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Registered users: custom menus are saved across sessions"
-msgstr "注册用户:自定义菜单在会话中保存"
+msgstr "注册用户:自定义菜单会跨会话保存"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Registered users: list is saved across sessions"
-msgstr "注册用户: 列表保存到会话中"
+msgstr "注册用户:列表会跨会话保存"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove a ban from a user, allowing them to rejoin the channel."
-msgstr "从用户中删除一个禁止,让他们重新加入频道."
+msgstr "解除对用户的封禁,允许其重新加入频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove a channel mute from a user, allowing them to send messages again."
-msgstr "从用户中删除一个频道哑音, 允许他们再次发送消息 。"
+msgstr "解除用户在频道中的禁言,允许其再次发送消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove a user from the channel. Unlike"
-msgstr "从频道中删除一个用户。 与"
+msgstr "将用户踢出频道。与"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove operator status from a user in the current channel. This is a shorthand for"
-msgstr "从当前频道的用户中删除操作员状态 。 这是简写"
+msgstr "移除当前频道中某用户的管理员/操作员身份。这是以下命令的简写:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove the server's Message of the Day so that new users connecting won't see any MOTD."
-msgstr "删除服务器的每日信件, 这样连接的新用户不会看到任何 MOTD 。"
+msgstr "移除服务器的每日消息,这样新连接的用户就不会看到任何 MOTD。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove the welcome message from the current channel so that new users joining won't see one."
-msgstr "从当前频道删除欢迎消息, 这样新用户不会看到一个 。"
+msgstr "移除当前频道的欢迎消息,这样新加入的用户就不会看到。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove voice status from a user in the current channel. This is a shorthand for"
-msgstr "从当前频道的用户中删除语音状态 。 这是简写"
+msgstr "移除当前频道中某用户的发言/语音状态。这是以下命令的简写:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Removes all visible messages from whichever window you're currently viewing — a channel, a PM conversation, or the Status tab. This only affects your screen; other users' windows are not changed. The messages are gone permanently and cannot be recovered by scrolling up."
-msgstr ""
-"从您目前查看的窗口中移除所有可见消息——一个频道,一个PM对话,或者状态标签. 这只影响您的屏幕; 其他用户的窗口没有更改 。 信件已永久消失, "
-"无法通过滚动回收 。"
+msgstr "清除你当前正在查看的窗口中的所有可见消息——频道、私聊会话或状态标签页。这只影响你自己的屏幕,其他用户的窗口不会改变。消息将被永久清除,无法通过向上滚动找回。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Removes the ban entry for the specified user. Once unbanned, the user can rejoin the channel normally. For registered channels, the unban is persisted. You can also unban using"
-msgstr "删除指定用户的禁止项。 一旦解除封禁,用户可以正常地重新加入频道. 对于已注册的渠道,继续实行禁令。 您还可以取消禁用"
+msgstr "移除指定用户的封禁条目。解除封禁后,该用户可以正常重新加入频道。对于已注册的频道,解除封禁会被保存。你也可以使用以下方式解除封禁:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Removes the user from your ignore list. Their messages, PMs, actions, and invites (whichever were being blocked) will be visible again immediately. To see who you're currently ignoring, run"
-msgstr "从忽略列表中删除用户。 他们的讯息、首相、行动、邀请(无论何时被封杀), 看看你现在忽略了谁,快跑"
+msgstr "将用户从你的忽略列表中移除。他们的消息、私聊、动作和邀请(无论之前屏蔽了哪些)会立即重新可见。要查看你目前忽略了谁,请运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Repeating: 10 to 86,400 seconds minimum interval"
-msgstr "重复: 10至86 400秒最小间隔"
+msgstr "重复:最小间隔 10 至 86,400 秒"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Request to be let into an invite-only (+i) channel. Channel operators see your knock and can choose to invite you in."
-msgstr "请求被允许进入只邀请的(+i)频道. 频道操作员看到你的敲门,可以选择邀请你进来."
+msgstr "请求进入仅限邀请(+i)的频道。频道管理员/操作员会看到你的敲门请求,并可以选择邀请你进入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Requires channel operator (@) or owner (~) status to set most modes"
-msgstr "要求频道操作员 (@) 或所有者 (~) 状态设置大多数模式"
+msgstr "设置大多数模式需要频道管理员/操作员 (@) 或所有者 (~) 身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:34
@@ -2482,25 +2470,25 @@ msgstr "要求频道操作员 (@) 或所有者 (~) 状态设置大多数模式"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Requires channel operator or owner status"
-msgstr "需要频道操作员或所有者身份"
+msgstr "需要频道管理员/操作员或所有者身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Requires half-operator (%) status or higher"
-msgstr "需要半操作人员(%)地位或更高"
+msgstr "需要半管理员/半操作员 (%) 或更高身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Requires operator (@) or owner (~) status"
-msgstr "需要运算符 (@) 或所有者 (~) 状态"
+msgstr "需要管理员/操作员 (@) 或所有者 (~) 身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Requires operator (@) or owner (~) status in the channel"
-msgstr "需要运算符 (@) 或频道中的所有者 (~) 状态"
+msgstr "需要在频道中拥有管理员/操作员 (@) 或所有者 (~) 身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:52
 #, elixir-autogen, elixir-format
@@ -2510,7 +2498,7 @@ msgstr "需要服务器管理员或服务器操作员角色"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Root admins (configured via environment) cannot be demoted"
-msgstr "根管理员( 通过环境配置) 无法降级"
+msgstr "根管理员(通过环境配置)无法被降级"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:72
 #, elixir-autogen, elixir-format
@@ -2588,12 +2576,12 @@ msgstr "规则和限制"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Running"
-msgstr "运行"
+msgstr "运行中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Schedule a command to run after a delay, optionally repeating at a regular interval. Useful for reminders, periodic announcements, and automated tasks."
-msgstr "将命令排在延迟之后运行, 可在正常间隔中选择重复 。 可用于提醒、定期通知和自动化任务。"
+msgstr "安排命令在延迟后运行,也可按固定间隔重复执行。适用于提醒、定期公告和自动化任务。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:73
@@ -2670,53 +2658,53 @@ msgstr "另请参阅"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Send a channel invitation to another user. This is required for invite-only (+i) channels where users cannot join on their own."
-msgstr "向另一个用户发送频道邀请 。 对于用户不能自行加入的只邀请(+i)频道,需要这样做."
+msgstr "向另一个用户发送频道邀请。对于仅限邀请(+i)的频道,用户无法自行加入,因此需要使用此命令。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Send a lightweight notice to a user or channel. Unlike"
-msgstr "向用户或频道发送轻量级通知. 与"
+msgstr "向用户或频道发送轻量级通知。与"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Send a message to all users who have opted in to receive operator announcements by enabling +w user mode."
-msgstr "向所有选择通过启用 +w 用户模式接收操作员通知的用户发送消息 。"
+msgstr "向所有已通过启用 +w 用户模式选择接收管理员公告的用户发送消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Send a private message to another user. This opens a PM conversation tab for both of you."
-msgstr "向另一个用户发送私人消息 。 这为你们俩打开了首相谈话的标签"
+msgstr "向另一个用户发送私聊消息。这会为你们双方打开一个私聊标签页。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Send an action message that describes what you're doing. It appears to everyone in the channel as"
-msgstr "发送一个动作信息 描述你在做什么。 频道里的每个人都觉得"
+msgstr "发送一条描述你正在做什么的动作消息。频道里的每个人看到的是"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Send an urgent broadcast message to every connected user. This is for critical server-wide announcements that everyone must see."
-msgstr "向每个连接的用户发送紧急广播信息. 这是为大家必须看到的关键的全服务器公告。"
+msgstr "向每个已连接的用户发送紧急广播消息。用于所有人都必须看到的重要的全服务器公告。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Server administration commands for managing users, channels, services, and settings. Only available to server administrators and operators."
-msgstr "管理用户、频道、服务和设置的服务器管理命令。 仅供服务器管理员和操作员使用."
+msgstr "用于管理用户、频道、服务和设置的服务器管理命令。仅限服务器管理员和操作员使用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Server administrator only"
-msgstr "只有服务器管理员"
+msgstr "仅限服务器管理员"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Server administrator only — regular users cannot send announcements"
-msgstr "只有服务器管理员——普通用户不能发送通知"
+msgstr "仅限服务器管理员——普通用户不能发送公告"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Server debug tools for viewing runtime information about the BEAM VM. Requires server administrator role. Read-only, no side effects."
-msgstr "用于查看BEAM VM运行时信息的服务器调试工具. 需要服务器管理员角色 。 只读,没有副作用."
+msgstr "用于查看 BEAM VM 运行时信息的服务器调试工具。需要服务器管理员权限。只读,无副作用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:30
 #, elixir-autogen, elixir-format
@@ -2726,27 +2714,27 @@ msgstr "仅限服务器操作员或管理员"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Set a message shown once to each user when they join the current channel. Great for posting rules or helpful information for newcomers."
-msgstr "设定每个用户加入当前频道时显示一次的消息 。 给新来者张贴规则或有用信息真好。"
+msgstr "设置一条消息,每位用户加入当前频道时会显示一次。适合为新人发布规则或实用信息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Set a short \"about me\" text that appears when others look you up with"
-msgstr "设置一个简短的“关于我”的文本,当别人在查你时出现"
+msgstr "设置一段简短的“关于我”文字,当别人用以下命令查询你时会显示"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Set channels to join automatically every time you connect, so you never have to manually rejoin your favorite rooms."
-msgstr "设置频道,每次连接时自动加入,所以你不必手动重新加入你最喜欢的房间."
+msgstr "设置每次连接时自动加入的频道,这样你就不必手动重新加入常去的房间了。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Set the server's Message of the Day — a welcome message shown to all users when they connect."
-msgstr "设置服务器的当日信件——当所有用户连接时向它们显示的欢迎信件."
+msgstr "设置服务器的每日消息(MOTD)——用户连接时向所有人显示的欢迎消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Set up commands that automatically run every time you connect, like identifying with NickServ or joining channels."
-msgstr "设置每次连接时自动运行的命令,例如识别与NickServ或加入频道."
+msgstr "设置每次连接时自动运行的命令,例如向 NickServ 验证身份或加入频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:63
@@ -2757,12 +2745,12 @@ msgstr "设置每次连接时自动运行的命令,例如识别与NickServ或加
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Special Messages"
-msgstr "特殊信件"
+msgstr "特殊消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Stop ignoring a user you previously blocked with"
-msgstr "停止忽略您先前封锁过的用户"
+msgstr "取消忽略你之前屏蔽的用户,使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:11
@@ -2853,34 +2841,32 @@ msgstr "语法"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "THIS CANNOT BE UNDONE."
-msgstr "这不可能是孤独的。"
+msgstr "此操作无法撤销。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The announcement appears in each user's currently active window with distinctive bold styling. Unlike regular messages, announcements bypass all ignore filters — every connected user will see it regardless of their ignore settings. Use this for important server-wide notices like scheduled maintenance or rule changes."
-msgstr ""
-"该公告以鲜明的粗体样式出现在每个用户当前活跃的窗口中. 与正则消息不同,公告绕过所有被忽略的过滤器——无论被忽略的设置如何,每个连接的用户都会看到. "
-"用于重要的全服务器通知, 如预定维护或规则更改 。"
+msgstr "公告会以醒目的粗体样式显示在每位用户当前活动的窗口中。与普通消息不同,公告会绕过所有忽略过滤器——无论用户如何设置忽略,每位已连接的用户都会看到。可用于重要的全服务器通知,如计划维护或规则变更。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "The channel must be invite-only (+i)"
-msgstr "频道必须只邀请( +i)"
+msgstr "频道必须是仅限邀请(+i)的"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "The command must be a valid slash command"
-msgstr "命令必须是有效的斜线命令"
+msgstr "命令必须是有效的斜杠命令"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "The current channel owner gives up ownership to the specified user. The previous owner is automatically set as an operator. If the channel is registered, the ChanServ access list is updated accordingly."
-msgstr "当前的频道所有者将所有权放弃给指定的用户. 上一个所有者被自动设定为运算符 。 如果频道注册,ChanServ访问列表会相应更新."
+msgstr "当前频道所有者将所有权移交给指定用户。原所有者会自动成为频道管理员。如果该频道已注册,ChanServ 访问列表会相应更新。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The muted user cannot send messages in the channel but can still read them. If a duration is specified, the mute automatically expires after that time. Channel operators and above can mute users with lower rank."
-msgstr "哑音用户无法在频道中发送消息,但仍可以读取. 如果指定了期限,哑音在此之后自动失效. 频道运营商及以上可以对排名较低的用户进行哑音."
+msgstr "被禁言的用户无法在频道中发送消息,但仍可阅读消息。如果指定了时长,禁言会在该时间后自动解除。频道管理员及以上级别可以禁言级别较低的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:31
 #, elixir-autogen, elixir-format
@@ -2896,34 +2882,32 @@ msgstr "接收者必须在线"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "The target must be in the channel"
-msgstr "目标必须在频道里"
+msgstr "目标必须在该频道中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "The user is immediately removed from the channel. All channel members see the kick along with the optional reason message. The kicked user can rejoin the channel immediately unless they are also banned. If you want to permanently prevent someone from returning, use"
-msgstr ""
-"用户立即从频道中移除. 所有频道成员都可以看到踢球和可选的理由信息. 被踢的用户可以立即重新加入频道,除非他们也被禁播. "
-"如果你想永久阻止某人返回,请使用"
+msgstr "用户会立即被移出频道。所有频道成员都会看到踢出通知及可选的原因。被踢出的用户可以立即重新加入频道,除非同时被封禁。如果你想永久阻止某人返回,请使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "The user is kicked from the channel and a ban is set, preventing them from rejoining. The ban stays in effect until a channel operator removes it using"
-msgstr "用户被踢出频道并设定禁播,阻止他们重新加入. 在频道操作员使用它删除之前, 禁令仍然有效"
+msgstr "用户会被踢出频道并被封禁,无法重新加入。封禁会一直有效,直到频道管理员使用以下命令将其解除"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The user must be online (for offline users, use"
-msgstr "用户必须在线(对于离线用户,使用"
+msgstr "用户必须在线(对于离线用户,请使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The user must have been online recently"
-msgstr "用户最近一定上网了"
+msgstr "用户最近必须上过线"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "This action cannot be undone without the new owner's cooperation"
-msgstr "如果没有新主人的合作,这一行动是无法解除的"
+msgstr "未经新所有者配合,此操作无法撤销"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:64
 #, elixir-autogen, elixir-format
@@ -2933,27 +2917,27 @@ msgstr "计时器特性"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Timers are session-only — they do not survive page reload or disconnect"
-msgstr "计时器只是会话——它们无法在页面重载或断开后幸存"
+msgstr "计时器仅限当前会话——页面重新加载或断开连接后不会保留"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "To remove a ban, use"
-msgstr "要取消禁令,请使用"
+msgstr "要解除封禁,请使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Toggle personal user modes that affect what messages you receive. User modes are settings that apply to you, not to a channel."
-msgstr "切换影响您收到消息的个人用户模式 。 用户模式是适用于您的设置,而不是频道。"
+msgstr "切换影响你接收哪些消息的个人用户模式。用户模式是适用于你自己的设置,而不是频道的设置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Track when specific users come online or go offline. Build a buddy list so you never miss when your friends connect."
-msgstr "跟踪特定用户上线或下线时。 建立一个好友名单 这样你就不会错过朋友的连接"
+msgstr "跟踪特定用户何时上线或下线。建立一个好友列表,这样你就不会错过朋友的连接。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Transfer channel ownership to another user. The current owner is demoted to operator and the target becomes the new owner."
-msgstr "将频道所有权转移给另一个用户 。 目前所有者被降级为操作员,目标成为新的所有者."
+msgstr "将频道所有权转移给另一个用户。当前所有者将降级为操作员,目标用户成为新的所有者。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:100
 #, elixir-autogen, elixir-format
@@ -2968,129 +2952,122 @@ msgstr "用户特权模式"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "User modes are personal settings that only affect you. Currently, the only available user mode is"
-msgstr "用户模式是只影响您的个人设置 。 目前,唯一可用的用户模式是"
+msgstr "用户模式是只影响你自己的个人设置。目前,唯一可用的用户模式是"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "User modes are session-scoped — they reset when you disconnect"
-msgstr "用户模式为会话范围——当您断开时重设"
+msgstr "用户模式仅限当前会话——断开连接时会重置"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "View help for any command, or browse all available commands. Your gateway to learning how RetroHexChat works."
-msgstr "查看任何命令的帮助, 或浏览所有可用的命令 。 你了解RetroHexChat如何工作的网关。"
+msgstr "查看任何命令的帮助,或浏览所有可用命令。带你了解 RetroHexChat 如何使用的入口。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "View or change the channel topic — the text displayed in the topic bar at the top of the channel window."
-msgstr "查看或更改频道主题——在频道窗口顶端的话题栏中显示的文本."
+msgstr "查看或更改频道主题——显示在频道窗口顶部主题栏中的文本。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "View the server's Message of the Day — a welcome message from the server administrators that is also shown automatically when you first connect."
-msgstr "查看服务器的每日信件——服务器管理员的欢迎信,在您第一次连接时也会自动显示."
+msgstr "查看服务器的每日消息——来自服务器管理员的欢迎消息,首次连接时也会自动显示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Wallops messages are delivered to all users who have enabled the"
-msgstr "Wallops 消息发送给所有已启用的用户"
+msgstr "Wallops 消息会发送给所有已启用该模式的用户"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "What is Preserved"
-msgstr "预留的是什么"
+msgstr "保留的内容"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "When enabled, new joins are throttled to prevent flooding. The mode allows a limited number of joins per time window. Use"
-msgstr "启用时, 新的加盟被节制以防止洪灾 。 模式允许每个时间窗口有限的加入次数. 使用"
+msgstr "启用后,新用户加入会受到限流,以防止刷屏式加入。该模式在每个时间窗口内只允许有限次数的加入。使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "When someone on your notify list connects or disconnects, you receive a notification in the Status tab. You can add personal notes to help remember who each person is. Running"
-msgstr "当您通知列表中的人连接或断开时, 您会在状态标签中收到通知 。 你可以加入个人笔记来帮助记住每个人是谁. 运行"
+msgstr "当通知列表中的用户连接或断开时,你会在状态标签页中收到通知。你可以添加个人备注,帮助记住每个人是谁。运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "When the specified event occurs (and optionally in the specified channel), the command is executed automatically. For example, you can greet anyone who joins #welcome with a notice. Running"
-msgstr "当指定事件发生(并在指定频道中可选择)时,命令会自动执行. 例如,你可以给加入#welcome的人打个招呼。 运行"
+msgstr "当指定事件发生时(也可以限定在指定频道中),命令会自动执行。例如,你可以用一条通知向加入 #welcome 的每个人打招呼。运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "When you connect to the server, your auto-join channels are joined automatically after all perform commands finish. This ensures things like NickServ identification happen before joining channels. When you use"
-msgstr ""
-"当您连接到服务器时, 您的自动连接通道会在所有执行命令完成后自动加入 。 这保证了NickServ身份识别等事情在加入频道之前发生. 使用时"
+msgstr "连接到服务器后,在所有执行命令完成后,你的自动加入频道会自动加入。这样可以确保 NickServ 身份验证等操作在加入频道之前完成。当你使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "When you run"
-msgstr "当你跑的时候"
+msgstr "当你运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "When you set an away message, your status changes to \"away\" in the user list. Anyone who uses"
-msgstr "当设置消息时,您的状态会改变为用户列表中的\"离开\". 任何人谁使用"
+msgstr "设置离开消息后,你在用户列表中的状态会变为“离开”。任何使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Without +t, any channel member can change the topic"
-msgstr "没有 +t,任何频道成员都可以更改话题"
+msgstr "没有 +t 时,任何频道成员都可以更改主题"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "You are disconnected from the server and returned to the connect screen. All your channel memberships end, and other users see a quit notification with your optional message. Your session is fully ended — to rejoin, you'll need to connect again from the connect screen."
-msgstr ""
-"您已断开服务器并返回连接屏幕 。 您所有的频道成员都会结束,其他用户会看到带有您可选消息的退出通知. "
-"您的会话已经完全结束——为了重新加入,您需要从连接屏幕再次连接."
+msgstr "你将与服务器断开连接并返回连接界面。你在所有频道中的成员身份都会结束,其他用户会看到带有你可选留言的退出通知。你的会话已完全结束——要重新加入,需要从连接界面再次连接。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "You exit the channel and other members see that you left, along with your optional message. The channel tab is closed. For registered users, leaving a channel automatically removes it from your auto-join list, so it won't be rejoined on your next connection."
-msgstr ""
-"您退出频道, 其他成员会看到你离开, 以及您可选的消息 。 频道标签已关闭 。 "
-"对于已注册的用户,离开一个频道会自动从您的自动连接列表中删除它,所以不会在您的下一个连接上重新恢复."
+msgstr "你退出频道,其他成员会看到你已离开,以及你可选的留言。频道标签页将关闭。对于已注册用户,离开频道会自动将其从自动加入列表中移除,因此下次连接时不会重新加入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator or owner"
-msgstr "您必须是频道操作员或所有者"
+msgstr "你必须是频道操作员或所有者"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register a channel"
-msgstr "您必须是频道操作员才能注册频道"
+msgstr "你必须是频道操作员才能注册频道"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "You must be a registered user to use ChanServ"
-msgstr "您必须是注册用户才能使用 ChanServ"
+msgstr "你必须是注册用户才能使用 ChanServ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "You must be in the channel to invite someone to it"
-msgstr "你一定在频道里请人来"
+msgstr "你必须在频道中才能邀请他人加入"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "You must be using the nickname you want to register"
-msgstr "您一定是在使用您想要注册的昵称"
+msgstr "你必须正在使用你想要注册的昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Your bio is displayed in the"
-msgstr "您的生物显示在"
+msgstr "你的个人简介显示在"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Your message is delivered privately — only you and the recipient can see it. A PM tab opens on both sides for the conversation. The recipient receives a notification if they have notifications enabled. If you just want to open a PM tab without sending a message, use"
-msgstr ""
-"你的信息是私下传达的,只有你和接收者才能看到。 PM标签在两侧打开用于对话. 接收者收到通知时,如果通知已启用。 如果您只是想打开 PM "
-"标签而不发送消息, 请使用"
+msgstr "你的消息是私下送达的,只有你和接收者能看到。双方都会打开一个 PM 标签页进行对话。如果接收者已启用通知,则会收到通知。如果你只想打开 PM 标签页而不发送消息,请使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "[timestamp] actor action → target_type:target_id"
-msgstr "[时间戳]演员动作 目标 类型:目标 id"
+msgstr "[时间戳] 操作者 动作 → 目标类型:目标ID"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:98
 #, elixir-autogen, elixir-format
@@ -3100,12 +3077,12 @@ msgstr "一个频道"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "access add <level> @nick"
-msgstr "访问添加 <level> @nick"
+msgstr "access add <level> @nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "access del <level> @nick"
-msgstr "访问 del <level> @nick"
+msgstr "access del <level> @nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:11
 #, elixir-autogen, elixir-format
@@ -3115,12 +3092,12 @@ msgstr "动作文本"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "commands are masked in the list display for security. Running"
-msgstr "命令在列表显示中为安全起见被遮蔽。 运行"
+msgstr "出于安全考虑,命令在列表显示中会被隐藏。运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "drop <password>"
-msgstr "丢弃 <password>"
+msgstr "drop <password>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:42
 #, elixir-autogen, elixir-format
@@ -3130,7 +3107,7 @@ msgstr "对于一个字面的美元标志。 运行"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "for positional arguments,"
-msgstr "用于立场辩论,"
+msgstr "表示位置参数,"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:24
 #, elixir-autogen, elixir-format
@@ -3140,54 +3117,54 @@ msgstr "用于频道名称。"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "for the current channel name, and"
-msgstr "用于当前频道名称,以及"
+msgstr "表示当前频道名称,以及"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "for the triggering user's name and"
-msgstr "用于触发用户名和"
+msgstr "表示触发者的用户名,以及"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "for your current nickname,"
-msgstr "对于您的当前昵称,"
+msgstr "表示你当前的昵称,"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "get <key>"
-msgstr "获取 <key>"
+msgstr "get <key>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "ghost <nick> <password>"
-msgstr "幽灵<nick> <password>"
+msgstr "ghost <nick> <password>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "identify <password>"
-msgstr "识别 <password>"
+msgstr "identify <password>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "info [nick]"
-msgstr "信息 [昵称]"
+msgstr "info [nick]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "instead)"
-msgstr "改为)"
+msgstr "代替)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "instead."
-msgstr "相反。"
+msgstr "代替。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "is rejected"
-msgstr "被拒绝"
+msgstr "会被拒绝"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:11
 #, elixir-autogen, elixir-format
@@ -3197,12 +3174,12 @@ msgstr "新主题文本"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "on you will see your away message. To come back, simply run"
-msgstr "你将看见你的消息。 回来就跑"
+msgstr "时,别人会看到你的离开消息。要回来,只需运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "output when other users look you up. Running"
-msgstr "当其他用户查询您时输出 。 运行"
+msgstr "输出,当其他用户查询你时显示。运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:26
 #, elixir-autogen, elixir-format
@@ -3212,27 +3189,27 @@ msgstr "输出。"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "prefix (instead of the usual"
-msgstr "前缀( 而不是通常的)"
+msgstr "前缀(而不是通常的"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "register <password>"
-msgstr "登记册 <password>"
+msgstr "register <password>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "requests for this channel."
-msgstr "请求此频道。"
+msgstr "此频道的请求。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "run first, so you're identified before entering channels. Passwords in"
-msgstr "先运行,所以你的身份 进入频道。 密码在"
+msgstr "先运行,这样你在进入频道之前就已完成身份验证。其中的密码"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "send a message in one step, use"
-msgstr "在一步内发送消息, 使用"
+msgstr "一步发送消息,请使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:20
 #, elixir-autogen, elixir-format
@@ -3242,166 +3219,162 @@ msgstr "设置 <key> <value>"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "to automatically say hello to everyone."
-msgstr "自动向大家问好"
+msgstr "自动向所有人问好。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "to disable slow mode."
-msgstr "以禁用慢模式。"
+msgstr "关闭慢速模式。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "to disable."
-msgstr "用于禁用。"
+msgstr "禁用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "to enter a channel, it is automatically added to your auto-join list. When you use"
-msgstr "要输入频道,则自动添加到您的自动连接列表中。 使用时"
+msgstr "加入频道时,该频道会自动添加到你的自动加入列表中。当你使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "to leave, it is automatically removed. Running"
-msgstr "离开时,自动删除。 运行"
+msgstr "离开频道时,该频道会自动从列表中移除。运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "to remove your bio."
-msgstr "清除你的生物。"
+msgstr "清除你的个人简介。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "to run it. For example, if you create an alias called"
-msgstr "运行它。 例如,如果创建一个名为"
+msgstr "来运行它。例如,如果你创建了一个名为"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "to target a specific user"
-msgstr "以特定用户为目标"
+msgstr "以指定特定用户"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "toggles your personal preference for automatically joining channels when someone invites you."
-msgstr "切换您个人的喜好, 当有人邀请您时会自动加入频道。"
+msgstr "切换你的个人偏好:有人邀请你时是否自动加入频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "user mode (via"
-msgstr "用户模式(通过)"
+msgstr "用户模式(通过"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "when you right-click a user. Custom menu items appear alongside the built-in items in the context menus."
-msgstr "右键单击用户时。 自定义菜单项目与上下文菜单中的内置项目并列。"
+msgstr "当你右键单击用户时。自定义菜单项会与上下文菜单中的内置菜单项一同显示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "which moderates the entire channel, this targets a specific user."
-msgstr "它可以调节整个频道,它针对一个特定的用户。"
+msgstr "该命令针对整个频道进行管理,而此命令针对特定用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "will send the action message. You can use variables in expansions:"
-msgstr "将发送动作信息。 您可以在扩展中使用变量 :"
+msgstr "将发送动作消息。你可以在展开内容中使用变量:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "with expansion"
-msgstr "扩大"
+msgstr "展开内容为"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "with no arguments displays the current channel topic and who set it. Providing text sets a new topic that appears in the topic bar at the top of the channel for all members to see. The topic bar is always visible, making it a good place for channel rules, links, or the current discussion subject."
-msgstr ""
-"没有参数显示当前频道主题和谁设置它。 提供文本设置了一个新的专题,在专题栏上方,供所有成员观看。 "
-"主题栏总是可见的,使它成为频道规则,链接或当前讨论主题的好地方."
+msgstr "不带参数时,显示当前频道主题及设置者。提供文本则设置新主题,新主题会显示在频道顶部的主题栏中,所有成员都能看到。主题栏始终可见,适合放置频道规则、链接或当前讨论话题。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "with no arguments first."
-msgstr "而不首先争论。"
+msgstr "请先不带参数使用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "with no arguments opens the Aliases dialog."
-msgstr "没有参数打开异名对话框。"
+msgstr "不带参数时,打开别名对话框。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "with no arguments opens the Auto-Join dialog."
-msgstr "没有参数打开自动Join对话框。"
+msgstr "不带参数时,打开自动加入对话框。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "with no arguments opens the Auto-Respond dialog."
-msgstr "没有参数打开自动响应对话框。"
+msgstr "不带参数时,打开自动回复对话框。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "with no arguments opens the Notify List dialog where you can manage your list visually."
-msgstr "没有参数打开“通知列表”对话框,您可以在其中视线管理您的列表。"
+msgstr "不带参数时,打开通知列表对话框,你可以在其中以可视化方式管理列表。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "with no arguments opens the Perform dialog."
-msgstr "没有参数打开“执行”对话框。"
+msgstr "不带参数时,打开执行对话框。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "with no arguments shows your current bio. If your text exceeds 200 characters, it is automatically truncated with a warning. When no bio is set, the bio field simply doesn't appear in"
-msgstr "没有参数显示您的当前生物。 如果您的文本超过 200 个字符, 它会被自动切换并带有警告 。 当没有设定生物时,生物场就根本不出现在"
+msgstr "不带参数时,显示你当前的个人简介。如果文本超过 200 个字符,会被自动截断并给出警告。未设置个人简介时,个人简介字段不会出现在"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "with no arguments shows your current ignore list. When you ignore someone, their specified content types are silently hidden from your view. They receive no notification that they're being ignored. Timed ignores automatically expire after the specified duration."
-msgstr ""
-"没有参数显示当前忽略列表。 当你忽略某个人时,他们指定的内容类型会默默地隐藏在你的视野中. 他们没有收到任何被忽略的通知. "
-"时间忽略了指定期限后自动失效."
+msgstr "不带参数时,显示你当前的忽略列表。你忽略某人后,其指定类型的内容会被悄悄隐藏,对方不会收到被忽略的通知。限时忽略在指定时长后自动失效。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "with no message. Your away status is session-scoped — it resets when you disconnect."
-msgstr "没有留言 您的离场状态为会话范围—— 当您断开时会重排 。"
+msgstr "不带留言时。你的离开状态仅限当前会话——断开连接后会重置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "with special formatting. Action messages support the same text formatting as regular messages (bold, italic, colors, etc.)."
-msgstr "带有特殊格式。 动作消息支持与正则消息相同的文本格式(粗体,斜体,颜色等)."
+msgstr "并带有特殊格式。动作消息支持与普通消息相同的文本格式(粗体、斜体、颜色等)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "won't see them. This makes wallops suitable for non-critical operator announcements."
-msgstr "不会看见的 这使得wallops适合非关键操作员公告."
+msgstr "看不到它们。这使得 wallops 适用于非关键的管理员/操作员公告。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— A nickname or #channel to send the notice to."
-msgstr "——一个昵称或#channel发送通知给."
+msgstr "——接收通知的昵称或 #channel。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— A slash command to add to the perform list."
-msgstr "——将斜线命令添加到执行列表中."
+msgstr "——要添加到执行列表中的斜杠命令。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "— Active server bans"
-msgstr "- 主动服务器禁令"
+msgstr "— 当前生效的服务器封禁"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "— Add a user to the access list at the specified level (sop, aop, vop)"
-msgstr "——在指定关卡(sop, aop, vop)中添加用户访问列表"
+msgstr "— 以指定级别(sop、aop、vop)将用户添加到访问列表"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "— Add this keyword to make the timer repeat every <seconds>."
-msgstr "——添加此关键词,使计时器重复每<seconds>."
+msgstr "— 添加此关键词,使计时器每隔 <seconds> 秒重复一次。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "— Admin and server operator assignments"
-msgstr "- 管理和服务器操作员任务"
+msgstr "— 管理员和服务器操作员的指派"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:40
 #, elixir-autogen, elixir-format
@@ -3411,7 +3384,7 @@ msgstr "- 审计日志查询"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "— ChanServ administration ("
-msgstr "——ChanServ行政管理部门"
+msgstr "— ChanServ 管理("
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:20
 #, elixir-autogen, elixir-format
@@ -3426,22 +3399,22 @@ msgstr "- 频道管理("
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— Channel name (must start with #)."
-msgstr "——频道名称(必须从#开始)."
+msgstr "— 频道名称(必须以 # 开头)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— Command or text to expand to. Supports variables (see below)."
-msgstr "命令或文本可扩展至。 支持变量(见下文)。"
+msgstr "— 要展开成的命令或文本。支持变量(见下文)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "— Create and register a new channel (admin becomes founder)"
-msgstr "——创建和注册新频道(管理员成为创始人)."
+msgstr "— 创建并注册一个新频道(管理员成为创建者)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "— Custom message shown to users on connect (after the default welcome)"
-msgstr "— 自定义信件在连接时显示给用户( 在默认欢迎之后)"
+msgstr "— 用户连接时显示的自定义消息(在默认欢迎消息之后)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:37
 #, elixir-autogen, elixir-format
@@ -3451,22 +3424,22 @@ msgstr "——调试信息("
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "— Delay in seconds before the command runs."
-msgstr "——命令运行前秒延迟."
+msgstr "— 命令运行前的延迟秒数。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "— Delete a channel: kicks all members and drops registration"
-msgstr "— 删除一个频道:踢出所有成员并放弃注册"
+msgstr "— 删除频道:踢出所有成员并注销注册"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "— Delete stored messages. Use"
-msgstr "——删除存储的信件. 使用"
+msgstr "— 删除已存储的消息。使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "— Disconnect another session using a registered nickname after proving you know its password (if you got disconnected and your old session is still lingering)."
-msgstr "——在证明您知道其密码后, 使用注册的昵称将另一个会话断开( 如果您被断开, 而旧会话仍然保留着) 。"
+msgstr "— 在证明你知道某个已注册昵称的密码后,断开使用该昵称的另一个会话(如果你掉线了而旧会话仍然残留)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:43
 #, elixir-autogen, elixir-format
@@ -3476,22 +3449,22 @@ msgstr "——显示服务器名称(在欢迎信件和服务器信息中显示)"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:91
 #, elixir-autogen, elixir-format
 msgid "— Displayed as a system message right after the default welcome"
-msgstr "——默认欢迎后作为系统消息显示"
+msgstr "— 在默认欢迎消息之后作为系统消息显示"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "— Enforced in NickServ; when"
-msgstr "- 在NickServ执行;"
+msgstr "— 由 NickServ 强制执行;当"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "— Enforced when users run"
-msgstr "——用户运行时执行."
+msgstr "— 用户运行以下命令时强制执行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "— Enforced when users try to"
-msgstr "——当用户试图"
+msgstr "— 用户尝试时强制执行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:12
 #, elixir-autogen, elixir-format
@@ -3501,47 +3474,47 @@ msgstr "- 事件类型:"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "— Execute mode: deletes all data in a single transaction."
-msgstr "——执行模式:在一次交易中删除所有数据."
+msgstr "— 执行模式:在单个事务中删除所有数据。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "— Filter to actions by a specific admin"
-msgstr "——过滤特定管理员的动作"
+msgstr "— 按特定管理员筛选操作"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "— Force disconnect (user can reconnect immediately)"
-msgstr "—— 强制断开( 用户可以立即重新连接)"
+msgstr "— 强制断开(用户可以立即重新连接)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "— Force nickname change"
-msgstr "— 强制昵称更改"
+msgstr "— 强制更改昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— Force-drop a channel registration (bypasses founder check)"
-msgstr "——强行投放频道注册(通过创建者检查)."
+msgstr "— 强制注销频道注册(跳过创建者检查)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— Force-drop a nick registration (disconnects the user)"
-msgstr "——强制投放昵称注册( 断开用户连接)"
+msgstr "— 强制注销昵称注册(断开该用户连接)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "— Full audit trail (the nuke itself is logged)"
-msgstr "——全面审计线索(核子本身已登录)."
+msgstr "— 完整的审计记录(nuke 操作本身也会被记录)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "— Globally mute (cannot send messages anywhere). Supports"
-msgstr "– 全球哑声(无法在任何地方发送消息). 支助"
+msgstr "— 全局静音(在任何地方都无法发送消息)。支持"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "— How long recently disconnected user records stay available (default: 3600, range: 1-86400)"
-msgstr "——最近断开的用户记录能持续多久(默认:3600,范围:1-86400)"
+msgstr "— 最近断开连接的用户记录保留多长时间(默认:3600,范围:1-86400)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:20
 #, elixir-autogen, elixir-format
@@ -3551,17 +3524,17 @@ msgstr "——忽略多久:例如."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— List active channels with member counts and registration status"
-msgstr "- 列出成员计数和登记状态的活跃渠道"
+msgstr "— 列出活跃频道及其成员数和注册状态"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "— List active server bans"
-msgstr "- 列出活动服务器禁令"
+msgstr "— 列出当前生效的服务器封禁"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "— List all active TURN allocations with client addresses and relay ports"
-msgstr "- 列出所有使用中的 TURN 配置,并附有客户地址和中继端口"
+msgstr "— 列出所有活跃的 TURN 分配,并附有客户端地址和中继端口"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:32
 #, elixir-autogen, elixir-format
@@ -3576,12 +3549,12 @@ msgstr "— 在频道中列出被禁止的用户"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "— List registered users (filter with"
-msgstr "- 列表注册用户(过滤器为"
+msgstr "— 列出已注册用户(过滤方式:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "— Log in to your registered nickname for this session."
-msgstr "登录您为本次会话注册的昵称 。"
+msgstr "— 为本次会话登录你已注册的昵称。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:63
 #, elixir-autogen, elixir-format
@@ -3591,32 +3564,32 @@ msgstr "— 用户可以加入的最大频道数( 默认: 10, 必须是一个正
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "— NickServ administration ("
-msgstr "- NickServ行政管理("
+msgstr "— NickServ 管理("
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— Optional channel filter. Omit to match all channels."
-msgstr "——可选频道过滤器. 关闭匹配所有频道。"
+msgstr "— 可选的频道过滤器。省略则匹配所有频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "— Optional command name (without the / prefix). If omitted, shows a list of all commands."
-msgstr "——可选命令名称(不含/前缀). 如果省略,请显示所有命令的列表。"
+msgstr "— 可选的命令名称(不含 / 前缀)。省略则显示所有命令的列表。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— Optional goodbye message shown to other members."
-msgstr "——向其他成员展示可选的告别信息."
+msgstr "— 向其他成员显示的可选告别消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "— Optional goodbye message shown to other users."
-msgstr "——向其他用户显示可选的告别信息."
+msgstr "— 向其他用户显示的可选告别消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— Optional message explaining why (visible to the channel)."
-msgstr "——可选信息解释原因(可见频道)."
+msgstr "— 说明原因的可选消息(频道内可见)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:16
 #, elixir-autogen, elixir-format
@@ -3626,142 +3599,142 @@ msgstr "- 包括敲门的可选信息(例如,谁介绍你的)。"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— Optional password for channels that require one (+k mode)."
-msgstr "——需要一个(+k模式)的频道的可选密码."
+msgstr "— 需要密码的频道的可选密码(+k 模式)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— Optional password if the channel requires one (+k mode)."
-msgstr "——频道需要一个(+k模式)的可选密码."
+msgstr "— 频道需要密码时的可选密码(+k 模式)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— Optional reason for being away. If omitted, clears your away status."
-msgstr "- 离开的可选原因。 如果省略, 则清除您离开状态 。"
+msgstr "— 离开原因(可选)。省略则清除你的离开状态。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— Optional reason for the ban."
-msgstr "- 禁止的可选理由。"
+msgstr "— 封禁原因(可选)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— Optional text to remind you who this person is."
-msgstr "- 可选文本来提醒你这个人是谁"
+msgstr "— 可选文本,用来提醒你这个人是谁。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "— Permanently unregister your nickname."
-msgstr "永远不注册你的绰号。"
+msgstr "— 永久注销你的昵称注册。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "— Position numbers for reordering commands."
-msgstr "——重排命令的位置编号."
+msgstr "— 用于重新排序命令的位置编号。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "— Preview mode: shows a count of records per table that will be deleted. No data is modified."
-msgstr "——预览模式:显示每个表格将被删除的记录数。 没有修改数据 。"
+msgstr "— 预览模式:显示每个表将被删除的记录数。不会修改任何数据。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "— Receive wallops messages (broadcast messages from server operators). These appear in the Status tab."
-msgstr "——接收wallops消息(服务器操作员的广播消息). 这些都出现在状态标签中 。"
+msgstr "— 接收 wallops 消息(来自服务器管理员/操作员的广播消息)。这些消息显示在状态标签页中。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "— Register your current nickname with a password."
-msgstr "——用密码注册您的当前昵称."
+msgstr "— 用密码注册你当前的昵称。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "— Remove a server ban"
-msgstr "—— 删除服务器封禁"
+msgstr "— 移除服务器封禁"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "— Remove a user from the access list"
-msgstr "— 从访问列表中删除一个用户"
+msgstr "— 从访问列表中移除一个用户"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "— Remove global mute"
-msgstr "— 删除全局哑音"
+msgstr "— 解除全局静音"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— Required for some modes (nickname for +o/+h/+v/+b, key for +k, number for +l/+j)."
-msgstr "— 某些模式需要使用(+o/+h/+v/+b的昵称,+k的密钥,+l/+j的号码)."
+msgstr "— 某些模式需要此参数(+o/+h/+v/+b 为昵称,+k 为密钥,+l/+j 为数字)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "— Reset a user's password (the new password is NOT logged)"
-msgstr "——重置用户密码(新密码未登录)."
+msgstr "— 重置用户密码(新密码不会被记录)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "— Rule number shown in"
-msgstr "- 规则编号显示于"
+msgstr "— 规则编号,显示在"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "— Server ban (user cannot connect). Supports"
-msgstr "——服务器禁用(用户无法连接). 支助"
+msgstr "— 服务器封禁(用户无法连接)。支持"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "— Server description text (shown in server info)"
-msgstr "——服务器描述文本(在服务器信息中显示)"
+msgstr "— 服务器描述文本(显示在服务器信息中)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "— Server info and settings ("
-msgstr "——服务器信息和设置(."
+msgstr "— 服务器信息和设置("
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "— Set server role:"
-msgstr "设置服务器角色 :"
+msgstr "— 设置服务器角色:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— Short name for the alias (letters, numbers, hyphens, underscores)."
-msgstr "——别名的简称(字母,数字,连字符,下划线)."
+msgstr "— 别名的简短名称(字母、数字、连字符、下划线)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "— Show BEAM VM memory usage breakdown (total, processes, atoms, binary, ETS)"
-msgstr "显示 BEAM VM 内存的使用情况分类( 总数、 过程、 原子、 二进制、 ETS)"
+msgstr "— 显示 BEAM VM 内存使用情况明细(总计、进程、原子、二进制、ETS)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "— Show TURN server overview: relay IP, listeners, active allocations, port usage"
-msgstr "——显示 TURN 服务器概览:中继 IP,听众,活动分配,端口使用"
+msgstr "— 显示 TURN 服务器概览:中继 IP、监听器、活动分配、端口使用情况"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "— Show detailed channel info: members, modes, topic, bans"
-msgstr "显示详细频道信息:成员、模式、主题、禁令"
+msgstr "— 显示频道详细信息:成员、模式、主题、封禁"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "— Show detailed user info (registration, status, channels)"
-msgstr "——显示详细的用户信息(注册、状态、频道)"
+msgstr "— 显示用户详细信息(注册、状态、频道)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— Show server stats: online users, active channels, registered nicks, uptime"
-msgstr "——显示服务器数据:在线用户,活动频道,注册昵称,更新时间"
+msgstr "— 显示服务器统计:在线用户、活动频道、已注册昵称、运行时间"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "— Show the last N entries (default: 20)"
-msgstr "显示最后一个 N 项( 默认: 20)"
+msgstr "— 显示最近 N 条记录(默认:20)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "— Stop receiving wallops messages."
-msgstr "- 停止收到Wallops消息。"
+msgstr "— 停止接收 Wallops 消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:13
 #, elixir-autogen, elixir-format
@@ -3771,7 +3744,7 @@ msgstr "——目标频道(默认为当前频道)."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "— The MOTD content to display."
-msgstr "——要显示的MOTD内容."
+msgstr "— 要显示的 MOTD 内容。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:11
 #, elixir-autogen, elixir-format
@@ -3781,12 +3754,12 @@ msgstr "——向所有用户广播的公告文本."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "— The broadcast message to send."
-msgstr "——广播信息发送."
+msgstr "— 要发送的广播消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The channel name (must start with #)."
-msgstr "——频道名称(必须从#开始)."
+msgstr "— 频道名称(必须以 # 开头)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:12
 #, elixir-autogen, elixir-format
@@ -3796,148 +3769,148 @@ msgstr "——要离开的频道(默认为当前频道)."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The invite-only channel you want to join."
-msgstr "——要加入的只邀请频道."
+msgstr "— 你想加入的仅限邀请频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The mode letter to set (+) or remove (-). See the list below."
-msgstr "——要设置(+)或删除(-)的模式字母. 见下文清单。"
+msgstr "— 要设置(+)或移除(-)的模式字母。见下方列表。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— The new topic to set. If omitted, shows the current topic."
-msgstr "- 即将确定的新议题。 如果省略,请显示当前话题 。"
+msgstr "— 要设置的新主题。省略则显示当前主题。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— The notice text."
-msgstr "——通知文本."
+msgstr "— 通知文本。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— The position number of the command (shown in"
-msgstr "- 命令的位置编号(在"
+msgstr "— 命令的位置编号(显示在"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "— The slash command to execute when the event fires. Use"
-msgstr "——事件发生时执行的斜线命令. 使用"
+msgstr "— 事件触发时执行的斜杠命令。使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "— The slash command to execute when the timer fires."
-msgstr "——定时器起火时执行的斜线命令."
+msgstr "— 定时器触发时执行的斜杠命令。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "— The text to send."
-msgstr "——要发送的文字."
+msgstr "— 要发送的文本。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The user to ban from the channel."
-msgstr "——禁用频道的用户."
+msgstr "— 要在频道中封禁的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— The user to demote from operator."
-msgstr "——从操作员中降级的用户."
+msgstr "— 要取消管理员/操作员身份的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "— The user to give voice to."
-msgstr "——给语音的用户."
+msgstr "— 要授予发言/语音权限的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The user to ignore."
-msgstr "——需要忽略的用户."
+msgstr "— 要忽略的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The user to invite."
-msgstr "——邀请用户."
+msgstr "— 要邀请的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— The user to kick."
-msgstr "——要踢的用户."
+msgstr "— 要踢出的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "— The user to look up."
-msgstr "- 向上的用户。"
+msgstr "— 要查询的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— The user to message."
-msgstr "- 用户发送信息。"
+msgstr "— 要发送消息的目标用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "— The user to mute."
-msgstr "——哑音的用户."
+msgstr "— 要静音的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— The user to open a PM tab with."
-msgstr "——用打开PM标签的用户."
+msgstr "— 要打开私信标签页的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— The user to promote to operator."
-msgstr "——向操作员推广的用户."
+msgstr "— 要提升为管理员/操作员的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— The user to remove voice from."
-msgstr "——删除语音的用户."
+msgstr "— 要移除发言/语音权限的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "— The user to stop ignoring."
-msgstr "——停止忽略的用户."
+msgstr "— 要取消忽略的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The user to track."
-msgstr "——要追踪的用户."
+msgstr "— 要追踪的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— The user to transfer ownership to. Must be in the channel."
-msgstr "——将所有权转让给用户. 一定是在频道里"
+msgstr "— 要将所有权转让给的用户。必须在该频道中。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— The user to unban."
-msgstr "——用户取消禁用."
+msgstr "— 要解除封禁的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— The user to unmute."
-msgstr "——用户解密."
+msgstr "— 要取消静音的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— The welcome text to display to joining users."
-msgstr "——欢迎文本显示加入用户."
+msgstr "— 向加入频道的用户显示的欢迎文本。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "— Toggle whether you auto-join channels when you receive invitations."
-msgstr "- 检查您收到邀请函时是否自动连接频道。"
+msgstr "— 切换收到邀请时是否自动加入频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "— Transfer channel founder to another nick"
-msgstr "– 向另一个昵称传输频道创建者"
+msgstr "— 将频道创建者转让给另一个昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "— Unique name for the timer (letters, numbers, hyphens, underscores)."
-msgstr "——计时器的独特名称(字母,数字,连字符,下划线)."
+msgstr "— 计时器的唯一名称(字母、数字、连字符、下划线)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:11
 #, elixir-autogen, elixir-format
@@ -3947,62 +3920,62 @@ msgstr "— 使用 + 启用或 - 禁用用户模式。"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "— Used in the welcome message header when users connect"
-msgstr "——用户连接时在欢迎信头中使用."
+msgstr "— 用户连接时用于欢迎消息标题"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "— User management ("
-msgstr "- 用户管理("
+msgstr "— 用户管理("
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "— View detailed registration info for a nick"
-msgstr "查看昵称的详细登记信息"
+msgstr "— 查看昵称的详细注册信息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "— View detailed registration info, founder, modes, and access list"
-msgstr "查看详细的注册信息、创建者、模式和访问列表"
+msgstr "— 查看详细的注册信息、创建者、模式和访问列表"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "— View or modify the channel access list"
-msgstr "查看或修改频道访问列表"
+msgstr "— 查看或修改频道访问列表"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "— View registration info about a nickname (defaults to your own)."
-msgstr "查看有关昵称的注册信息( 默认为您自己的) 。"
+msgstr "— 查看某个昵称的注册信息(默认为你自己的)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "— View the current value of a setting"
-msgstr "查看设置的当前值"
+msgstr "— 查看设置的当前值"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— What to block:"
-msgstr "- 怎样挡?"
+msgstr "— 要屏蔽的内容:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— What you're doing (at least one word required)."
-msgstr "——你在做什么(至少需要一个字)."
+msgstr "— 你在做什么(至少需要一个词)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "— Whether new nick registrations are allowed:"
-msgstr "- 是否允许新的昵称注册:"
+msgstr "— 是否允许注册新昵称:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— Your bio text (max 200 characters). Use"
-msgstr "——你的生物文字(最多200个字符). 使用"
+msgstr "— 你的个人简介(最多200个字符)。使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "— Your desired new nickname."
-msgstr "-你想要的新绰号"
+msgstr "— 你想要的新昵称。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:33
@@ -4018,12 +3991,12 @@ msgstr "频道管理"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Connection & Navigation"
-msgstr "连接导航( N)"
+msgstr "连接与导航"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "Customization"
-msgstr "自定义"
+msgstr "自定义设置"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:138
 #, elixir-autogen, elixir-format
@@ -4033,7 +4006,7 @@ msgstr "键盘快捷键"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Messaging"
-msgstr "通讯"
+msgstr "消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:121
 #, elixir-autogen, elixir-format
@@ -4043,7 +4016,7 @@ msgstr "P2P"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat supports the following slash commands. Type them in the chat input and press Enter."
-msgstr "RetroHexChat支持以下斜线命令. 在聊天输入中输入并按 Enter 键。"
+msgstr "RetroHexChat 支持以下斜杠命令。在聊天输入框中输入后按 Enter 键即可。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:87
 #, elixir-autogen, elixir-format
@@ -4063,12 +4036,12 @@ msgstr "工具"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "— Auto-join channels"
-msgstr "- 自动连接频道"
+msgstr "— 自动加入频道"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:119
 #, elixir-autogen, elixir-format
 msgid "— Auto-respond rules"
-msgstr "——自动对应规则."
+msgstr "— 自动回复规则"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:103
 #, elixir-autogen, elixir-format
@@ -4078,22 +4051,22 @@ msgstr "— 自动运行的命令"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "— Ban a user"
-msgstr "——禁止用户"
+msgstr "— 封禁用户"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "— ChanServ commands"
-msgstr "——ChanServ命令."
+msgstr "— ChanServ 命令"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "— Change nickname"
-msgstr "更改昵称"
+msgstr "— 更改昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:129
 #, elixir-autogen, elixir-format
 msgid "— Clear chat window"
-msgstr "——清除聊天窗口"
+msgstr "— 清除聊天窗口"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:111
 #, elixir-autogen, elixir-format
@@ -4103,7 +4076,7 @@ msgstr "— 创建命令别名"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "— Disconnect from chat"
-msgstr "——断开聊天"
+msgstr "— 断开聊天连接"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:60
 #, elixir-autogen, elixir-format
@@ -4118,37 +4091,37 @@ msgstr "- 邀请用户"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "— Join a channel"
-msgstr "——加入一个频道"
+msgstr "— 加入频道"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "— Kick a user"
-msgstr "- 踢出一个用户"
+msgstr "— 踢出用户"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— Leave a channel"
-msgstr "- 留个频道"
+msgstr "— 离开频道"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "— List available channels"
-msgstr "——列出可用的频道."
+msgstr "— 列出可用频道"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "— Look up past user info"
-msgstr "——查阅过去用户信息"
+msgstr "— 查询历史用户信息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "— Look up user info"
-msgstr "——查阅用户信息"
+msgstr "— 查询用户信息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:99
 #, elixir-autogen, elixir-format
 msgid "— Manage notify list"
-msgstr "管理通知列表"
+msgstr "— 管理通知列表"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:90
 #, elixir-autogen, elixir-format
@@ -4158,37 +4131,37 @@ msgstr "— NickServ 命令"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "— Open a PM window"
-msgstr "——打开PM窗口."
+msgstr "— 打开私信窗口"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "— Remove ignore"
-msgstr "- 删除忽略"
+msgstr "— 取消忽略"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "— Schedule commands"
-msgstr "— 调度命令"
+msgstr "— 计划执行命令"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "— Send a notice"
-msgstr "- 发出通知"
+msgstr "— 发送通知"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "— Send a private message"
-msgstr "- 发送私人信息"
+msgstr "— 发送私信"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "— Send an action message"
-msgstr "——发送动作信息."
+msgstr "— 发送动作消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "— Set channel or user modes"
-msgstr "设置频道或用户模式"
+msgstr "— 设置频道或用户模式"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:48
 #, elixir-autogen, elixir-format
@@ -4198,7 +4171,7 @@ msgstr "- Set/clear 离开状态"
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:133
 #, elixir-autogen, elixir-format
 msgid "— Show help"
-msgstr "显示帮助"
+msgstr "— 显示帮助"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:69
 #, elixir-autogen, elixir-format
@@ -4208,32 +4181,32 @@ msgstr "查看/set 频道主题"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Operators (get operator on join)."
-msgstr "- 管理自动操作员(在加盟时获得操作员)。"
+msgstr "- 管理自动管理员/操作员(加入时自动获得管理员/操作员权限)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Voice (get voice on join)."
-msgstr "- 管理自动语音(加入时获得声音)。"
+msgstr "- 管理自动发言/语音(加入时自动获得发言/语音权限)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "- Manage Super Operators (can manage AOP and VOP lists)."
-msgstr "- 管理超级运营商(可以管理AOP和VOP列表)。"
+msgstr "- 管理超级管理员/操作员(可管理 AOP 和 VOP 列表)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "- Register and claim ownership of the current channel (you must be operator)."
-msgstr "- 登记并声称拥有当前频道的所有权(你必须是运营商)。"
+msgstr "- 注册并获得当前频道的所有权(你必须是管理员/操作员)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "- Unregister the current channel, giving up ownership."
-msgstr "- 取消当前频道的注册,放弃所有权。"
+msgstr "- 注销当前频道,放弃所有权。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "- View current-channel registration details."
-msgstr "- 查看当前频道的登记细节。"
+msgstr "- 查看当前频道的注册详情。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:68
 #, elixir-autogen, elixir-format
@@ -4271,12 +4244,12 @@ msgstr "管理控制台"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Admin Console Channels Tab"
-msgstr "管理控制台频道标签"
+msgstr "管理控制台“频道”标签页"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Admin Console Users Tab"
-msgstr "管理控制台用户标签"
+msgstr "管理控制台“用户”标签页"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:66
 #, elixir-autogen, elixir-format
@@ -4286,19 +4259,17 @@ msgstr "别名编辑器"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
-msgstr "自动响应"
+msgstr "自动回复"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "ChanServ administration: drop channel registrations, transfer founders, and manage access lists. The Admin Console Channels tab provides command-backed ChanServ info, drop, transfer, access list, add, and remove controls. Requires server administrator role."
-msgstr ""
-"ChanServ管理:撤销频道注册,转让创建者,管理访问列表. Admin Console Channels "
-"tab提供命令支持的ChanServ信息,投放,传输,访问列表,添加,以及删除控制. 需要服务器管理员角色 。"
+msgstr "ChanServ 管理:注销频道注册、转让创建者、管理访问列表。管理控制台的“频道”标签页提供基于命令的 ChanServ 信息、注销、转让、访问列表、添加和移除控制。需要服务器管理员角色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Channel Central Registration Tab"
-msgstr "频道中央注册标签"
+msgstr "频道中心注册标签"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:49
 #, elixir-autogen, elixir-format
@@ -4326,17 +4297,12 @@ msgstr "上下文菜单"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Displays comprehensive information about the user in a result card. You can see: their channels, shared channels, how long they've been online, how long they've been idle, their away message (if set), their bio (if set), whether they're registered with NickServ, and client details (browser, OS, screen resolution, language, and timezone) when available. You can also trigger"
-msgstr ""
-"在结果卡中显示用户的全面信息。 "
-"您可以看到:他们的频道,共享频道,他们上网的时间有多长,他们闲置的时间有多长,他们的离家信息(如果设定的话),他们的生物信息(如果设定的话),他们是否在NickServ注册,以及客户端细节(浏览器,OS,屏幕分辨率,语言,以及时区)在有可用的时候."
-" 你也可以触发"
+msgstr "在结果卡片中显示该用户的完整信息。你可以看到:其所在频道、共同所在的频道、在线时长、空闲时长、离开消息(如已设置)、个人简介(如已设置)、是否已在 NickServ 注册,以及客户端详情(浏览器、操作系统、屏幕分辨率、语言和时区,如可用)。你也可以触发"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, and you can re-view it at any time with /motd or Help > Message of the Day. If no MOTD has been set by the administrators, you'll see a \"No MOTD has been set\" message."
-msgstr ""
-"在状态标签中显示当前服务器 MOTD。 当您连接时, MOTD 会被自动显示, 您可以在任何时间重新查看它 。 /motd 或帮助 > 今日的消息。 "
-"如果管理员没有设置 MOTD, 你会看到一个“ 没有设置 MOTD ” 消息 。"
+msgstr "在状态标签页中显示当前服务器的 MOTD。连接时会自动显示 MOTD,你也可以随时通过 /motd 或 帮助 > 今日消息 重新查看。如果管理员没有设置 MOTD,你会看到“未设置 MOTD”的提示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:57
 #, elixir-autogen, elixir-format
@@ -4350,41 +4316,32 @@ msgstr "编辑菜单"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
-msgstr "身份和存在"
+msgstr "身份与在线状态"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Manage server channels: list, view details, create, delete, purge messages, and view bans. The Admin Console Channels tab provides command-backed list, search, Info, Create, Delete, Purge, and banlist controls. Requires server administrator role."
-msgstr ""
-"管理服务器频道:列表,查看细节,创建,删除,清除消息,以及视图禁用. Admin Console Channels "
-"标签提供命令支持的列表,搜索,信息,创建,删除,清洗,以及禁止列表控制. 需要服务器管理员角色 。"
+msgstr "管理服务器频道:列表、查看详情、创建、删除、清除消息以及查看封禁。管理控制台的“频道”标签页提供基于命令的列表、搜索、信息、创建、删除、清除和封禁列表控制。需要服务器管理员角色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Manage server users: list, view details, ban, kick, mute, rename, assign roles, and run NickServ admin actions. The Admin Console Users tab provides command-backed list, search, banlist, Info, moderation, account, role, and NickServ controls. Requires server administrator role."
-msgstr ""
-"管理服务器用户:列表,查看细节,禁止,踢,哑音,重命名,指定角色,并运行NickServ admin动作. Admin "
-"Console用户标签提供命令支持的列表,搜索,banlist,Info,温和,账户,角色,以及NickServ控制. 需要服务器管理员角色 。"
+msgstr "管理服务器用户:列表、查看详情、封禁、踢出、静音、重命名、分配角色以及执行 NickServ 管理操作。管理控制台的“用户”标签页提供基于命令的列表、搜索、封禁列表、信息、管理、账户、角色和 NickServ 控制。需要服务器管理员角色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Message of the Day Menu"
-msgstr "日菜单的讯息"
+msgstr "今日消息菜单"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Open File → Admin Console, then choose Channels to refresh /admin channel list snapshots, filter by search text, inspect a channel with /admin channel info, create a channel with /admin channel create, delete a channel with /admin channel delete, purge messages with /admin channel purge, and review /admin channel banlist output for the selected channel. Delete and purge forms require typing the channel name to confirm."
-msgstr ""
-"打开文件 – 管理控制台, 然后选择要刷新的频道 /admin 频道列表快照,通过搜索文本过滤,检查频道 /admin 频道信息,创建频道 /admin"
-" 频道创建, 删除频道 /admin 频道删除, 清除信件 /admin 频道清理和审查 /admin 选定频道的频道封禁列表输出 。 "
-"删除和清除表需要输入频道名称才能确认."
+msgstr "打开 文件 → 管理控制台,然后选择“频道”以刷新 /admin 频道列表快照、按搜索文本筛选、用 /admin channel info 查看频道、用 /admin channel create 创建频道、用 /admin channel delete 删除频道、用 /admin channel purge 清除消息,并查看所选频道的 /admin channel banlist 输出。删除和清除表单需要输入频道名称以确认。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Open File → Admin Console, then choose Channels to run /admin cs info, drop, transfer, access, access add, and access del without typing the commands. Drop registration requires typing the channel name to confirm."
-msgstr ""
-"打开文件 ~ 管理控制台, 然后选择要运行的频道 /admin cs信息,滴滴,传输,访问,访问添加,和访问del不输入命令. "
-"丢弃注册需要输入频道名称才能确认."
+msgstr "打开 文件 → 管理控制台,然后选择“频道”,无需输入命令即可运行 /admin cs info、drop、transfer、access、access add 和 access del。注销注册需要输入频道名称以确认。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:57
 #, elixir-autogen, elixir-format
@@ -4397,15 +4354,12 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Opens the Channel List dialog as an inline overlay showing all available channels with their user counts and topics. You can filter channels by name or topic using the search box. Click the Join button next to an open channel to join it directly. Invite-only (+i) channels show a +i badge; when you select one you are not already in, Join changes to Request Access... and opens a knock request dialog. Secret (+s) channels are completely hidden from the list. Private (+p) channels show their name but not their topic. Press Escape or click Close to dismiss the dialog."
-msgstr ""
-"打开频道列表对话框作为内线覆盖,以显示所有可用的频道及其用户数和主题 。 您可以使用搜索框按名称或主题过滤频道。 单击打开的频道旁边的连接按钮直接加入。"
-" 只邀请 (+i) 频道显示 +i 徽章; 当您选择一个尚未进入时, 请加入更改请求访问... 并打开一个敲门请求对话框 。 "
-"机密(+s)频道完全隐藏在列表中. 私人(+p)频道显示它们的名字,但不显示它们的主题. 按“ 逃逸” 键或点击“ 关闭” 以删除对话框 。"
+msgstr "以内嵌浮层形式打开频道列表对话框,显示所有可用频道及其用户数和主题。你可以使用搜索框按名称或主题筛选频道。点击开放频道旁的加入按钮可直接加入。仅限邀请 (+i) 的频道会显示 +i 标记;选中尚未加入的此类频道时,加入会变为请求访问...,并打开敲门请求对话框。秘密 (+s) 频道会完全隐藏在列表中。私有 (+p) 频道显示名称但不显示主题。按 Esc 键或点击关闭可关闭对话框。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Query the audit log of all admin actions from /admin log or the Admin Console Audit Log tab. Every state-changing admin command is automatically recorded with timestamp, actor, action, and target."
-msgstr "查询来自 /admin 日志或管理控制台审计日志标签。 每一个改变状态的管理员命令都会自动记录时间戳,演员,动作,和目标."
+msgstr "通过 /admin 日志命令或管理控制台的“审计日志”标签页,查询所有管理员操作的审计日志。每一条改变状态的管理员命令都会自动记录时间戳、执行者、操作和目标。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:8
 #, elixir-autogen, elixir-format
@@ -4426,28 +4380,22 @@ msgstr "服务器广播"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Show where incoming notices from other users appear on your screen."
-msgstr "在屏幕上显示来自其他用户的通知。"
+msgstr "显示来自其他用户的通知会出现在屏幕的哪个位置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Shows information about a user who has disconnected within the configured retention period in a Last Seen result card: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a \"no whowas information available\" message is shown."
-msgstr ""
-"显示一个用户在所配置的保存期内断开在 Last Seven "
-"results卡中的信息:他们最后一次看到的时间,他们所在的频道,以及他们的退出消息(如果他们提供了一条). 当你注意到有人离开 "
-"想知道时间和原因时,这是有用的。 检查是忽略大小写。 如果没有记录,则会显示“没有信息可用”。"
+msgstr "在“最后一次出现”结果卡中,显示在所配置的保留期内已断开连接的用户的信息:他们最后一次出现的时间、所在的频道,以及他们的退出消息(如果有)。当你发现有人离开,想知道离开的时间和原因时,这很有用。查询不区分大小写。如果没有记录,则会显示“没有可用的 whowas 信息”。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "The Users tab disables the admin role choice unless the viewer is a configured root admin"
-msgstr "用户标签禁用管理员角色选择, 除非查看器是配置的根管理员"
+msgstr "除非查看者是已配置的根管理员,否则“用户”标签页会禁用管理员角色选项"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "The invited user receives a popup dialog with options to Join or Decline the invitation. The invitation expires after 5 minutes if not acted upon. For invite-only (+i) channels, only channel operators can send invites. Operators can also right-click a nick in the nicklist and choose Invite to Channel... to open a channel picker without typing the command. Using"
-msgstr ""
-"被邀请的用户会收到一个弹出对话框,其中包含加入或降低邀请的选项. 如不采取行动,邀请在5分钟后到期。 "
-"对于只邀请(+i)频道,只有频道运营商可以发送邀请. 运算符还可以在昵称列表中右键单击昵称,并选择邀请到 Channel... "
-"在不输入命令的情况下打开一个频道拾取器. 使用"
+msgstr "被邀请的用户会收到一个弹出对话框,可选择加入或拒绝邀请。如果 5 分钟内未处理,邀请将过期。对于仅限邀请(+i)的频道,只有频道管理员/操作员可以发送邀请。管理员/操作员也可以在昵称列表中右键单击昵称,选择“邀请到频道...”,无需输入命令即可打开频道选择器。使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:26
 #, elixir-autogen, elixir-format
@@ -4457,7 +4405,7 @@ msgstr "目标必须是在线的。"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "This displays the delivery policy for user-targeted notices (sent via"
-msgstr "这显示了针对用户的通知的发送政策(通过"
+msgstr "这将显示针对用户的通知(通过"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:65
 #, elixir-autogen, elixir-format
@@ -4467,7 +4415,7 @@ msgstr "计时器对话框"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "To send a user notice from the UI, right-click a nickname in the nicklist or in chat and choose Send Notice. The main input switches to a one-shot notice composer."
-msgstr "要从 UI 发送用户通知,请在昵称列表或聊天中右键单击昵称,选择发送通知. 主输入切换为一发通知作曲家."
+msgstr "要通过界面发送用户通知,请在昵称列表或聊天中右键单击昵称,然后选择“发送通知”。主输入框将切换为一次性通知编写器。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:42
 #, elixir-autogen, elixir-format
@@ -4483,40 +4431,37 @@ msgstr "用户查询"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Video Call"
-msgstr "视频呼叫"
+msgstr "视频通话"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "View TURN server status, active allocations, and relay port usage from /admin turn or the Admin Console TURN tab. Requires server administrator role. Read-only, no side effects."
-msgstr ""
-"查看 TURN 服务器状态、 活动分配和中继端口使用 /admin 转动或管理控制台 TURN 标签。 需要服务器管理员角色 。 只读,没有副作用."
+msgstr "通过 /admin turn 命令或管理控制台的 TURN 标签页查看 TURN 服务器状态、活动分配和中继端口使用情况。需要服务器管理员角色。只读,没有副作用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "View server information and manage server settings from /admin server or the Admin Console Server Settings tab. Requires server administrator role."
-msgstr "查看服务器信息并管理服务器设置 /admin 服务器或管理控制台服务器设置标签。 需要服务器管理员角色 。"
+msgstr "通过 /admin server 命令或管理控制台的“服务器设置”标签页查看服务器信息并管理服务器设置。需要服务器管理员角色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. The Channel List marks invite-only channels with a +i badge and changes Join to Request Access..., which opens the same knock request flow with an optional 200-character message. Operators can then decide whether to invite you using"
-msgstr ""
-"当您点击频道时, 该频道的所有操作员和所有者都会收到一个通知, 显示您的昵称和可选消息 。 频道列表标记只邀请频道带有+i徽章,并更改 Jong to "
-"Request Access...,该频道以可选的200字符消息打开相同的敲门请求流. 操作员可以决定是否邀请您使用"
+msgstr "当你敲门请求加入某个频道时,该频道的所有管理员/操作员和所有者都会收到通知,显示你的昵称和可选的消息。频道列表会用 +i 徽章标记仅限邀请的频道,并将“加入”改为“请求访问...”,它会打开相同的敲门请求流程,可附带最多 200 个字符的消息。管理员/操作员随后可以决定是否使用以下命令邀请你"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
-msgstr "aop 添加 /del/list <nick> 数据"
+msgstr "aop add/del/list <nick>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "drop"
-msgstr "丢弃"
+msgstr "注销"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "from the User Lookup dialog or by right-clicking a nickname in the nick list or chat area. You can look up yourself too."
-msgstr "从用户查询对话框或右键单击昵称列表或聊天区域。 你也可以抬头看"
+msgstr "通过“用户查询”对话框,或在昵称列表或聊天区域中右键单击昵称。你也可以查询自己。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:28
 #, elixir-autogen, elixir-format
@@ -4526,7 +4471,7 @@ msgstr "信息"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "policy. User notices are routed to the active window."
-msgstr "政策。 用户通知会路由到活动窗口."
+msgstr "策略。用户通知会路由到活动窗口。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:18
 #, elixir-autogen, elixir-format
@@ -4541,12 +4486,12 @@ msgstr "显示当前策略。"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "shows the fixed active-window routing policy"
-msgstr "显示固定活动窗口路径政策"
+msgstr "显示固定的活动窗口路由策略"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "sop add/del/list <nick>"
-msgstr "豆类添加/del/list <nick>"
+msgstr "sop add/del/list <nick>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:54
 #, elixir-autogen, elixir-format
@@ -4556,17 +4501,17 @@ msgstr "vop 添加 /del/list <nick>"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "with no arguments to open the Timers dialog. You can also open it from Tools > Timers or toolbar Options > Timers."
-msgstr "没有参数打开计时器对话框。 您也可以从工具打开 > 计时器或工具栏选项 > 计时器。"
+msgstr "不带参数即可打开“计时器”对话框。你也可以从“工具 > 计时器”或工具栏“选项 > 计时器”打开。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "— Optional duration token such as 30s, 5m, 1h, or 1d. Omit for permanent mute."
-msgstr "——可选期限标志,如30s,5m,1h,或1d. 永远的哑巴。"
+msgstr "— 可选的时长参数,如 30s、5m、1h 或 1d。省略则为永久静音。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Open a P2P Session with another user: a single persistent peer-to-peer connection that hosts every feature at once — an audio or video call, file transfers, and games — all running at the same time."
-msgstr "与另一个用户打开一个P2P会话:一个单一的持久对等连接,同时托管每个功能——一个音频或视频呼叫,文件传输,和游戏——都同时运行."
+msgstr "与另一个用户开启 P2P 会话:一个持久的点对点连接,可同时承载所有功能——音频或视频通话、文件传输和游戏,全部同时运行。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:48
 #, elixir-autogen, elixir-format
@@ -4576,17 +4521,17 @@ msgstr "P2P 会话"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "You cannot start a P2P session with yourself."
-msgstr "您无法启动 P2P 会话 。"
+msgstr "你不能与自己开始 P2P 会话。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "— Open the P2P Session (call, files, and games)"
-msgstr "——打开P2P会话(呼叫,文件和游戏)."
+msgstr "— 打开 P2P 会话(通话、文件和游戏)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— The user to open a P2P Session with."
-msgstr "—— 打开 P2P 会话的用户。"
+msgstr "— 要与之开启 P2P 会话的用户。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:66
 #, elixir-autogen, elixir-format
@@ -4599,7 +4544,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal management requires NickServ identification"
-msgstr "信任的终端管理需要NickServ识别"
+msgstr "管理受信任终端需要先通过 NickServ 识别身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:40
 #, elixir-autogen, elixir-format
@@ -4609,7 +4554,7 @@ msgstr "设备"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "kill-session <id|all>"
-msgstr "任务段 <id|all>"
+msgstr "结束会话 <id|all>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:48
 #, elixir-autogen, elixir-format
@@ -4619,49 +4564,47 @@ msgstr "撤销设备 <id|all>"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "sessions"
-msgstr "届会"
+msgstr "会话"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "— End active sessions without changing trusted terminal status."
-msgstr "——不改变信任的终端状态而结束活动会话."
+msgstr "— 结束活动会话，但不更改受信任终端的状态。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "— List active sessions using your nickname."
-msgstr "使用您的昵称列出活动会话 。"
+msgstr "— 列出使用你的昵称的活动会话。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "— List trusted terminals remembered for your nickname."
-msgstr "——列表信任的终端被记住你的昵称."
+msgstr "— 列出为你的昵称记住的受信任终端。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "— Revoke trusted terminal login and end its active sessions."
-msgstr "——撤销信任的终端登录并结束其活动会话."
+msgstr "— 撤销受信任终端的登录，并结束其活动会话。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Maximum auto-join list size is 20 channels"
-msgstr "最大自动连接列表大小为 20 个频道"
+msgstr "自动加入列表最多为 20 个频道"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Type /me at the start of the chat input whenever you want to send an action message."
-msgstr "在聊天输入开始时键入 /me,只要您想要发送一个动作消息."
+msgstr "想发送动作消息时，在聊天输入框开头输入 /me。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "— Factory reset the entire system. Destroys all data (users, channels, messages, preferences, bots, P2P sessions) except admin roles, audit logs, server bans, and server settings. The registration setting is reopened so an admin nick can be recreated. Requires server administrator role. The Admin Console Danger Zone tab requires typing the server name before execution."
-msgstr ""
-"——工厂重置整个系统. 销毁所有数据(用户、频道、消息、首选项、bots、P2P会话),但管理者角色、审计日志、服务器禁令和服务器设置除外。 "
-"注册设置重新打开, 以便重新创建管理员昵称 。 需要服务器管理员角色 。 管理控制台危险区标签需要在执行前输入服务器名称 。"
+msgstr "— 将整个系统恢复出厂设置。会销毁所有数据（用户、频道、消息、偏好设置、机器人、P2P 会话），但管理员角色、审计日志、服务器封禁和服务器设置除外。注册设置会重新开放，以便重新创建管理员昵称。需要服务器管理员角色。管理控制台“危险区”标签页要求在执行前输入服务器名称。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "— Server configuration; registration is reset to open"
-msgstr "— 服务器配置; 重新设置注册以打开"
+msgstr "— 服务器配置；注册会重置为开放"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:36
 #, elixir-autogen, elixir-format
@@ -4714,22 +4657,22 @@ msgstr "/unpin"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel has one topic and a welcome nobody reads twice. Everything else — the rules, the link to the event, what was agreed last week — scrolls away and gets retyped. Pinning keeps a message findable."
-msgstr "一个频道只有一个主题，和一句没人会读第二遍的欢迎语。别的一切——规则、活动链接、上周约好的事——都会滚走，然后被重新打一遍。置顶让一条消息保持可找。"
+msgstr "一个频道只有一个主题，和一句没人会读第二遍的欢迎语。其他的一切——规则、活动链接、上周约好的事——都会被刷走，然后被重新输入一遍。置顶能让一条消息始终容易找到。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners — the same bar as the topic, and for the same reason: both are the channel speaking about itself to everybody who walks in. Half-operators moderate the conversation instead."
-msgstr "频道管理员和所有者——和主题同样的门槛，理由也一样：两者都是频道对每个进来的人讲述自己。副管理员负责的是维持对话秩序。"
+msgstr "频道管理员和所有者——与主题的权限要求相同，理由也一样：两者都是频道在对每一位进来的人介绍自己。半管理员则负责维持对话秩序。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Stops keeping a message in view."
-msgstr "不再让一条消息保持可见。"
+msgstr "不再将一条消息置顶显示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The message itself stays exactly where it is in the conversation — only the pin goes. The Pinned window unpins from the entry too, which is usually where you are when you decide to."
-msgstr "消息本身还在对话里原来的位置——走掉的只是置顶。“置顶”窗口也能直接从条目上取消，而你决定取消时通常正看着那里。"
+msgstr "消息本身仍留在对话中原来的位置——只是取消置顶。你也可以在“置顶”窗口中直接取消条目的置顶，通常你想取消时正好就在那里。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:21
@@ -4761,12 +4704,12 @@ msgstr "/unpin <消息 id>"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "A channel keeps up to 50 messages, newest first"
-msgstr "一个频道最多保留 50 条消息，最新的在前"
+msgstr "一个频道最多保留 50 条置顶消息，最新的在前"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "A message can only be pinned by the channel it was said in"
-msgstr "一条消息只能由说出它的那个频道置顶"
+msgstr "一条消息只能在发出它的频道中置顶"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:35
 #, elixir-autogen, elixir-format
@@ -4776,7 +4719,7 @@ msgstr "删除消息会连同置顶一起移除"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Easier than the id: right-click the message and choose Pin. The command exists for when you already have the id in front of you. Either way the channel checks again when the pin arrives, and a Pinned button appears in the conversation toolbar as soon as there is something to show."
-msgstr "比用 id 更省事：右键点击消息并选择置顶。这个命令是给你手边已经有 id 的时候用的。无论哪种方式，置顶送达时频道都会再检查一次，而且只要有东西可以显示，对话工具栏上就会出现一个置顶按钮。"
+msgstr "比用 id 更简单：右键点击消息并选择“置顶”。这个命令适用于你手边已经有 id 的情况。无论哪种方式，置顶送达时频道都会再检查一次，而且只要有内容可显示，对话工具栏上就会出现“置顶”按钮。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:68
@@ -4792,12 +4735,12 @@ msgstr "同一条消息置顶两次仍然是同一个置顶"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The number of a message said in this channel."
-msgstr "— 在这个频道里说过的某条消息的编号。"
+msgstr "— 在这个频道中发出的某条消息的编号。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— The number of a message this channel is keeping."
-msgstr "— 这个频道正在保留的某条消息的编号。"
+msgstr "— 这个频道中已置顶的某条消息的编号。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:51
 #, elixir-autogen, elixir-format
@@ -4837,12 +4780,12 @@ msgstr "只在有人恰好打字时才存在的频道没有下一次。活动就
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "A reminder goes out once, and never for something already under way"
-msgstr "提醒只发一次，且绝不为已经开始的事发出"
+msgstr "提醒只发送一次，且绝不会为已经开始的活动发送"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Calling one off keeps the record that it was going to happen"
-msgstr "取消后仍保留它本来要发生的记录"
+msgstr "取消活动后，仍会保留它原本要举行的记录"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:58
 #, elixir-autogen, elixir-format
@@ -4852,22 +4795,22 @@ msgstr "频道活动"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners schedule; anybody in the channel can say they are going. An event is called off by whoever scheduled it, or by an operator."
-msgstr "由频道管理员和所有者安排；频道里的任何人都可以表示参加。活动由安排它的人或管理员取消。"
+msgstr "由频道管理员和所有者安排活动；频道里的任何人都可以表示参加。活动可由安排者或管理员取消。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Notifications When the App Is Closed"
-msgstr "关闭聊天后的通知"
+msgstr "关闭应用时的通知"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Saying you are going twice is saying it once"
-msgstr "说两次参加等于说一次"
+msgstr "重复表示参加等于只表示一次"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "The channel gets a line with a card under it showing the start in each reader's own time zone and a button to say you are going. Shortly before it starts the room is told again, and everybody who said yes gets a notification through whatever they already have switched on. With no arguments at all, the command opens the Events window instead."
-msgstr "频道会收到一行消息，下面的卡片按每位读者所在时区显示开始时间，并带有一个表示参加的按钮。开始前不久房间会再被告知一次，所有表示参加的人都会通过他们已经开启的方式收到通知。完全不带参数时，该命令改为打开活动窗口。"
+msgstr "频道会收到一行消息，下方的卡片按每位读者所在时区显示开始时间，并带有一个表示参加的按钮。开始前不久会再次通知聊天室，所有表示参加的人都会通过他们已开启的方式收到通知。完全不带参数时，该命令会改为打开活动窗口。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:37
 #, elixir-autogen, elixir-format
@@ -4892,13 +4835,13 @@ msgstr "— 频道要做的事。最多 120 个字符。"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "). Routing is fixed to the active window. Running"
-msgstr ") (中文(简体) ). routing固定在活动窗口上. 运行"
+msgstr "）。路由固定在活动窗口。运行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "+m Moderated"
-msgstr "+m 调制"
+msgstr "+m 管制发言"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:66
@@ -4910,43 +4853,43 @@ msgstr "+o Operator"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "+v Voice"
-msgstr "+v 语音"
+msgstr "+v 发言/语音"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "A member holds one channel role at a time."
-msgstr "成员一次担任一个频道的角色."
+msgstr "一名成员同一时间只能拥有一种频道角色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "A member holds one channel role at a time. Removing voice makes the user a regular member."
-msgstr "成员一次担任一个频道的角色. 删除语音使用户成为常规成员."
+msgstr "一名成员同一时间只能拥有一种频道角色。移除发言/语音权限会使该用户变为普通成员。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "A message longer than 200 characters is cut to 200"
-msgstr "一个超过200个字符的信息被切成200个"
+msgstr "超过 200 个字符的消息会被截断为 200 个字符"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "A name that is not a command gets an error"
-msgstr "非命令的名称会出错"
+msgstr "不是命令的名称会报错"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "A notice sent to your nickname appears in the conversation you are viewing at the moment it arrives. No new window opens for it. A notice sent to a channel appears only while that channel is the window you are viewing."
-msgstr "寄给你的昵称的通知 出现在你正在观看的谈话中 没有为它打开新窗口 。 发送到频道的通知只出现在您正在查看的窗口中 。"
+msgstr "发送到你昵称的通知会在到达时显示在你当前查看的会话中，不会为此打开新窗口。发送到频道的通知只有在该频道是你当前查看的窗口时才会显示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:112
 #, elixir-autogen, elixir-format
 msgid "Admin Audit Log"
-msgstr "行政审计日志"
+msgstr "管理员审计日志"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Admin MOTD"
-msgstr "管理部"
+msgstr "管理员每日消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:83
 #, elixir-autogen, elixir-format
@@ -4957,7 +4900,7 @@ msgstr "管理员 TURN"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "An unknown subcommand gets an error that lists the valid ones"
-msgstr "未知的子命令获得一个列出有效命令的错误"
+msgstr "未知的子命令会报错，并列出有效的子命令"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:50
@@ -4967,17 +4910,17 @@ msgstr "未知的子命令获得一个列出有效命令的错误"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Anyone can use it. No channel or server status is needed."
-msgstr "任何人都可以使用它。 不需要频道或服务器状态 。"
+msgstr "任何人都可以使用。不需要频道或服务器权限。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Auto-Reconnect"
-msgstr "自动重联"
+msgstr "自动重连"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Ban Exceptions (+e)"
-msgstr "禁止例外(+e)"
+msgstr "封禁例外 (+e)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:69
@@ -4988,57 +4931,57 @@ msgstr "ChanServ 访问列表"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error, and it changes nothing."
-msgstr "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error, and it changes nothing."
+msgstr "频道管理员和所有者可以取消置顶，与置顶权限相同。取消置顶一条本来就没有被置顶的消息不算错误，也不会有任何改变。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Clearing a channel that has no welcome message is not an error"
-msgstr "清除一个没有欢迎消息的频道不是一个错误"
+msgstr "清除没有欢迎消息的频道不算错误"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Each reply appears as system lines in the window you are viewing."
-msgstr "每个回复作为系统行出现在您正在查看的窗口中 。"
+msgstr "每条回复都会以系统消息的形式显示在你当前查看的窗口中。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Easier than the id: right-click a pinned message and choose Unpin. That menu item appears only for channel operators and owners. After an unpin, the pinned count of the channel updates for everyone in it."
-msgstr "比id容易:右键点击被绑定的消息并选择Unpin. 该菜单项只针对频道操作员和所有者。 在一个unpin之后,被绑定的频道数 更新其中的每个人。"
+msgstr "比用编号更简单的方法：右键点击被置顶的消息并选择“取消置顶”。该菜单项只对频道管理员和所有者显示。取消置顶后，该频道的置顶数会为其中所有人更新。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Entries are listed newest first. The reply starts with a header that gives the number of entries shown. When an action has extra details, they appear in brackets at the end of its line. If nothing matches, you get a line that says no entries were found."
-msgstr "首先列出最新的条目。 回复从一个给出所显示条目数的头开始. 当一个动作有额外细节时,它们出现在其行尾的括号中. 如果没有匹配,你得到一条线 说没有找到条目。"
+msgstr "条目按最新在前的顺序列出。回复以一个标题行开头，给出显示的条目数。当某个操作带有额外详情时，详情会以括号形式显示在该行末尾。如果没有匹配项，你会看到一行提示，说明未找到任何条目。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Everyone in the channel sees a mode change line. In a registered channel, the setting is saved and stays after a restart."
-msgstr "频道中的每个人都看到一个模式更改行. 在已注册的频道中,设置会被保存,并在重启后保留."
+msgstr "频道中的每个人都会看到一条模式更改消息。在已注册的频道中，该设置会被保存，重启后仍然有效。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Everything you type after the command becomes the MOTD, with your spacing kept. The text is saved in the server settings, so it stays after a server restart. You get a confirmation line when it is saved. Administrators can also edit the MOTD in the Admin MOTD window of the Admin Console."
-msgstr "命令后输入的一切都会变成 MOTD , 并保持间隔 。 文本在服务器设置中保存,所以在服务器重启后保留. 当它被保存时,你得到一个确认线。 管理员还可以在管理员控制台的Admin MOTD窗口中编辑MOTD."
+msgstr "命令后输入的所有内容都会成为 MOTD，并保留你的空格。文本保存在服务器设置中，因此服务器重启后仍然保留。保存后你会收到一条确认消息。管理员也可以在管理控制台的“Admin MOTD”窗口中编辑 MOTD。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Give operator status to someone you trust to help run the channel. Operators can kick and ban users, change the topic when it is locked, pin messages and set channel modes."
-msgstr "向您信任的人提供操作员身份, 帮助运行频道 。 运算符可以踢和禁止用户,在锁定时更改话题,标定消息和设置频道模式."
+msgstr "把管理员（操作员）身份授予你信任的、可以帮助管理频道的人。管理员可以踢出和封禁用户、在主题被锁定时更改主题、置顶消息以及设置频道模式。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Half-operators cannot give operator status"
-msgstr "半操作者不能给予操作员身份"
+msgstr "半管理员不能授予管理员身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Half-operators cannot remove operator status"
-msgstr "半操作者无法删除操作员状态"
+msgstr "半管理员不能移除管理员身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Half-operators cannot unpin messages"
-msgstr "Half-operators cannot unpin messages"
+msgstr "半管理员不能取消置顶消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:71
@@ -5046,47 +4989,47 @@ msgstr "Half-operators cannot unpin messages"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Half-operators cannot use this command"
-msgstr "Half-operators cannot use this command"
+msgstr "半管理员不能使用此命令"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "If the %{option} value is not a number, the default of 20 is used"
-msgstr "如果 %{option} 值不是数字,则使用 20 的默认值"
+msgstr "如果 %{option} 的值不是数字，则使用默认值 20"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "If the TURN server is not configured on this server, both subcommands reply only that it is not configured."
-msgstr "如果TURN服务器在这个服务器上没有配置,两个子命令只回答它没有配置."
+msgstr "如果此服务器上没有配置 TURN 服务器，两个子命令都只会回复未配置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "If the channel is registered and the user is on its ChanServ access list, they get the status from that list back the next time they join."
-msgstr "如果频道注册,用户在其ChanServ访问列表中,在下次加入时从该列表中获取状态."
+msgstr "如果频道已注册,且用户在其 ChanServ 访问列表中,则下次加入时会按该列表恢复其状态。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "If the nickname is not on your ignore list, you get an error that says so"
-msgstr "如果这个昵称不在你的忽略列表中,你就会发现一个错误,那就是"
+msgstr "如果该昵称不在你的忽略列表中,你会收到一条相应的错误提示"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "If you are identified with NickServ, your ignore list is saved with your account, so the change lasts into your next session. If the user was ignored automatically for flooding, they are not ignored automatically again for one minute."
-msgstr "如果您与 NickServ 被识别, 您的忽略列表会被保存在您的账户中, 所以更改会持续到您的下个会话 。 如果用户因淹没而自动被忽略,则不会在一分钟内自动被忽略."
+msgstr "如果你已通过 NickServ 识别身份,你的忽略列表会随账户保存,因此更改会保留到下次会话。如果该用户因刷屏被自动忽略,则一分钟内不会再次被自动忽略。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "In each channel you were in, the other members see a line that you left, with your message in brackets after it. If you give no message, a default reason is used. The app does not reconnect you or rejoin your channels by itself after you quit."
-msgstr "在你所在的每一个频道里,其他成员都能看到你留下的一行,后面的括号里有你的消息. 如果没有留言,则使用默认原因. 应用程序不会重新连接您, 也不会在您退出后自己重新加入您的频道 。"
+msgstr "在你所在的每个频道中,其他成员都会看到一行你已离开的提示,后面的括号里是你的留言。如果你没有留言,则使用默认原因。退出后,应用不会自动重新连接,也不会自动重新加入你的频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can change the MOTD, with %{set} or %{clear}."
-msgstr "只有服务器管理员可以更改MOTD,使用%{set}或%{clear}."
+msgstr "只有服务器管理员可以更改 MOTD,使用 %{set} 或 %{clear}。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Only the conversation on screen is cleared. Your other channels and private conversations keep their messages. If you switch to another window and come back, the cleared messages stay hidden. New messages appear as they arrive."
-msgstr "只有屏幕上的对话被清除。 你的其他频道和私人谈话 保留他们的信息。 如果您切换到另一个窗口并返回, 清除的信息会隐藏 。 新消息一到就会出现"
+msgstr "只会清除屏幕上的当前对话。你的其他频道和私人对话仍保留各自的消息。如果你切换到其他窗口再返回,已清除的消息仍会保持隐藏。新消息到达时会正常显示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:43
@@ -5097,123 +5040,123 @@ msgstr "只有屏幕上的对话被清除。 你的其他频道和私人谈话 �
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Only the first nickname is used. Extra words are ignored."
-msgstr "只使用第一个昵称. 额外的单词被忽略."
+msgstr "只使用第一个昵称,多余的词会被忽略。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Only the first word after the command is used"
-msgstr "只使用命令后的第一个单词"
+msgstr "只使用命令后的第一个词"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Other users get a permission denied error"
-msgstr "其他用户获得拒绝的权限错误"
+msgstr "其他用户会收到权限被拒绝的错误"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Other users get an error and nothing is shown"
-msgstr "其他用户得到错误, 没有显示"
+msgstr "其他用户会收到错误提示,且不显示任何内容"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Quit Messages"
-msgstr "退出信件"
+msgstr "退出消息"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Remove operator status when someone no longer helps run the channel. You can also use it on your own nickname to step down."
-msgstr "当某人不再帮助运行频道时, 删除操作员状态 。 也可以在自己的昵称上使用它来退出."
+msgstr "当某人不再协助管理频道时,移除其操作员状态。你也可以对自己的昵称使用,以卸任操作员。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Any previous MOTD is replaced."
-msgstr "设置或替换服务器MOTD. 设置后, 所有新连接的用户加入时都会在状态标签中看到此消息 。 任何先前的MOTD都被替换."
+msgstr "设置或替换服务器的 MOTD。设置后,所有新连接的用户在加入时都会在“状态”标签页中看到这条消息。原有的 MOTD 会被替换。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Status given with this command lasts until the user leaves the channel. When they join again in a registered channel, their status comes from the ChanServ access list. In an unregistered channel, they come back as a regular member."
-msgstr "Status given with this command lasts until the user leaves the channel. When they join again in a registered channel, their status comes from the ChanServ access list. In an unregistered channel, they come back as a regular member."
+msgstr "通过此命令授予的状态会持续到该用户离开频道为止。当他们重新加入已注册的频道时,其状态将来自 ChanServ 访问列表。在未注册的频道中,他们会作为普通成员返回。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "The %{sub} subcommand lists each running channel by name, with its process id. An unregistered channel stops its process when its last member leaves, so it drops off this list."
-msgstr "%{sub}子命令按名称列出每个运行的频道,并附有其进程ID. 一个未注册的频道在最后一个成员离开时会停止其进程,因此它会从这个列表中掉下来."
+msgstr "%{sub} 子命令按名称列出每个正在运行的频道及其进程 ID。未注册的频道在最后一名成员离开时会停止其进程,因此会从此列表中消失。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "The %{sub} subcommand prints one line per allocation: the client address and port, and the relay port it holds. The list contains client IP addresses, so treat it as private data."
-msgstr "%{sub}子命令每分配一个行打印:客户端地址和端口,以及它持有的中继端口. 列表中包含客户端IP地址,因此将其作为私人数据处理."
+msgstr "%{sub} 子命令为每个分配打印一行:客户端地址和端口,以及它占用的中继端口。列表中包含客户端 IP 地址,请将其视为隐私数据。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "The %{sub} subcommand shows sizes in megabytes for total memory, processes, ETS, atoms, binaries and loaded code."
-msgstr "%{sub}子命令以兆字节表示大小,用于总内存,过程,ETS,原子,二进制和加载代码."
+msgstr "%{sub} 子命令以兆字节为单位显示总内存、进程、ETS、原子、二进制数据和已加载代码的大小。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "The %{sub} subcommand shows the status, the relay IP, the listen port, the number of listeners, the active allocations, how many relay ports are in use out of the total, and the relay port range."
-msgstr "%{sub}子命令显示状态,中继IP,监听端口,听众数量,活动分配,在总数中有多少中继端口在使用,中继端口范围."
+msgstr "%{sub} 子命令显示状态、中继 IP、监听端口、监听器数量、活动分配数、已使用的中继端口数(及总数),以及中继端口范围。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "The Clear Window item in the Edit menu runs the same command."
-msgstr "编辑菜单中的 Clear Window 项运行相同的命令 。"
+msgstr "“编辑”菜单中的“清除窗口”项运行相同的命令。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "The MOTD is deleted from the server settings. Connected users get a short note in their Status window that the MOTD changed. After that, %{command} answers that no MOTD has been set."
-msgstr "从服务器设置中删除了 MOTD 。 连接用户在其状态窗口中获得一个短条,即MOTD更改. 之后,%{command}回答说没有设定MOTD."
+msgstr "MOTD 已从服务器设置中删除。已连接的用户会在其状态窗口中收到一条简短提示,说明 MOTD 已更改。之后,%{command} 会提示尚未设置 MOTD。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "The TURN server relays call traffic for users whose networks block a direct peer-to-peer connection. Use this command when calls fail for some users, to see whether the relay is running and how busy it is."
-msgstr "TURN服务器继电器为网络阻断对等对等直接连接的用户调用流量. 当一些用户的呼叫失败时使用此命令,以查看中继器是否在运行以及它有多繁忙."
+msgstr "TURN 服务器会为网络阻止点对点直连的用户中继通话流量。当部分用户通话失败时,可使用此命令查看中继是否在运行以及负载情况。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "The channel allows at most 5 joins in any period of the length you give. For example, %{example} allows 5 joins every 10 seconds. It sets mode %{mode}. Anyone who tries to join after the limit is reached is refused and asked to try again shortly. Bots are not limited."
-msgstr "该频道最多允许5个在您给出的长度的任何期间加入. 例如,%{example}允许每10秒5次加入. 它设定了模式%{mode}. 任何在达到极限后试图加入的人都会被拒绝,并要求很快再次尝试. 波茨不受限制."
+msgstr "该频道在你指定的时间长度内最多允许 5 次加入。例如,%{example} 表示每 10 秒最多允许 5 次加入。它会设置模式 %{mode}。达到上限后尝试加入的人会被拒绝,并被要求稍后再试。机器人不受限制。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The command acts on the channel you are viewing. A member holds one channel role at a time, so the new operator role replaces any voice or half-operator status the user had. Everyone in the channel sees a mode change line, and the user moves to the Operator group in the nick list."
-msgstr "命令在您正在查看的频道上执行 。 一个成员一次拥有一个频道角色,所以新的操作员角色取代了用户拥有的任何语音或半操作员身份. 频道中的每个人都看到一个模式更改行,用户移动到昵称列表中的操作员组."
+msgstr "该命令作用于你正在查看的频道。一名成员同一时间只有一个频道角色,因此新的操作员角色会取代该用户原有的发言/语音或半操作员状态。频道中的所有人都会看到一行模式更改提示,该用户会移到昵称列表中的操作员组。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "The command acts on the channel you are viewing. Everyone in the channel sees a line that names the user and who lifted the ban. Unbanning does not invite the user or bring them back. They must join again themselves."
-msgstr "命令在您正在查看的频道上执行 。 频道里的每个人都看到一条给用户起名并解除禁令的线条. 取消封禁不会邀请用户或带他们回来. 他们必须再次加入。"
+msgstr "该命令作用于你正在查看的频道。频道中的所有人都会看到一行提示,说明是哪位用户以及由谁解除了封禁。解除封禁不会邀请该用户或把他们带回来,他们必须自己重新加入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "The command acts on the channel you are viewing. Everyone in the channel sees a mode change line, and the user moves to the Voiced group in the nick list."
-msgstr "The command acts on the channel you are viewing. Everyone in the channel sees a mode change line, and the user moves to the Voiced group in the nick list."
+msgstr "该命令作用于你正在查看的频道。频道中的所有人都会看到一行模式更改提示,该用户会移到昵称列表中的发言/语音组。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The command acts on the channel you are viewing. It lifts every active mute for that nickname in this channel. A timed mute also stops its countdown. You see a confirmation line, and the user can talk in the channel again at once."
-msgstr "命令在您正在查看的频道上执行 。 它能为这个频道的昵称举起每一个活跃的哑巴. 一个计时哑巴也停止倒计时. 您看到确认行,用户可以立即在频道再次交谈."
+msgstr "该命令作用于你正在查看的频道。它会解除该昵称在此频道中的所有生效禁言。限时禁言的倒计时也会随之停止。你会看到一行确认提示,该用户可立即在频道中重新发言。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The command acts on the channel you are viewing. The user becomes a regular member and moves to the Users group in the nick list. Everyone in the channel sees a mode change line. In a channel that is not moderated, the user can still talk as before."
-msgstr "命令在您正在查看的频道上执行 。 用户成为正式成员,移动到昵称列表中的用户组. 频道中的每个人都看到一个模式更改行. 在没有被调制的频道中,用户仍然可以像以前一样说话."
+msgstr "该命令作用于你正在查看的频道。该用户将变为普通成员,并移到昵称列表中的用户组。频道中的所有人都会看到一行模式更改提示。在未设为管理模式的频道中,该用户仍可像以前一样发言。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The command acts on the channel you are viewing. The user becomes a regular member. Any voice they had before is not restored, so in a moderated (+m) channel they cannot speak until they get voice again. Everyone in the channel sees a mode change line, and the user moves to the Users group in the nick list."
-msgstr "The command acts on the channel you are viewing. The user becomes a regular member. Any voice they had before is not restored, so in a moderated (+m) channel they cannot speak until they get voice again. Everyone in the channel sees a mode change line, and the user moves to the Users group in the nick list."
+msgstr "该命令作用于你当前查看的频道。该用户将变为普通成员。其之前拥有的发言/语音权限不会恢复,因此在受限发言(+m)的频道中,在重新获得发言/语音权限之前无法发言。频道中的所有人都会看到一条模式变更提示,该用户会移到昵称列表中的\"用户\"组。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "The command acts on the channel you are viewing. The welcome is also deleted from storage, so it does not come back later. You see a confirmation line that names the channel. Other members get no message about the change."
-msgstr "命令在您正在查看的频道上执行 。 欢迎也从存储中删除,所以不会在稍后再出现. 你看到一条名为频道的确认线。 其他成员没有听到关于这一变化的信息。"
+msgstr "该命令作用于你当前查看的频道。欢迎语也会从存储中删除,因此以后不会再出现。你会看到一条带有频道名称的确认提示。其他成员不会收到有关此更改的任何消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "The command replies with one line in the current window that names the policy. Notices from users you ignore for notices, or for all message types, are not shown at all."
-msgstr "命令在当前的窗口中以一行表示策略的名称。 您忽略的用户对通知或所有信件类型的通知, 根本不显示 。"
+msgstr "该命令会在当前窗口中回复一行内容,说明当前的策略名称。对于你已设置忽略通知或忽略所有消息类型的用户,其发来的通知根本不会显示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:48
@@ -5222,172 +5165,172 @@ msgstr "命令在当前的窗口中以一行表示策略的名称。 您忽略�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "The command takes no parameters. Anything you type after it is ignored."
-msgstr "命令不需要参数 。 之后输入的任何字都被忽略 。"
+msgstr "该命令不需要参数。其后输入的任何内容都会被忽略。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "The id must be a whole number greater than zero. Anything else gets an error that it is not a message id."
-msgstr "id必须是大于0的整数. 任何其它错误都表明它不是信息身份。"
+msgstr "id 必须是大于零的整数。否则会提示错误,说明这不是消息 id。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:90
 #, elixir-autogen, elixir-format
 msgid "The log is read-only. This command does not change or delete entries."
-msgstr "日志只读. 此命令不会更改或删除条目 。"
+msgstr "日志是只读的。此命令不会更改或删除任何条目。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "The message is shown in your channels, not in private conversations"
-msgstr "消息显示在您的频道里, 而不是在私人对话中"
+msgstr "该消息会显示在你所在的频道中,而不会显示在私人对话中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "The messages are not deleted from the server. Other people still see them."
-msgstr "信件不会从服务器中删除 。 其他人仍然看见他们。"
+msgstr "这些消息不会从服务器中删除。其他人仍然可以看到它们。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "The name must match the ban entry exactly, with the same upper and lower case. A ban set as a wildcard mask, such as %{mask}, is removed only by typing that same mask. If no ban entry matches, the command still reports the unban and nothing changes."
-msgstr "名字必须准确匹配禁止条目,与上下例相同. %{mask}等设置为通配卡口罩的禁令,只能通过打入同一口罩来删除. 如果没有禁止条目匹配, 命令仍会报告未禁止, 且没有任何变化 。"
+msgstr "名称必须与封禁条目完全一致,包括大小写。以通配符掩码设置的封禁,例如 %{mask},只能通过输入同一掩码来解除。如果没有匹配的封禁条目,该命令仍会报告已解除封禁,但不会有任何变化。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "The nickname is matched without regard to upper or lower case. Every ignore entry for that nickname is removed, and a timed ignore stops its countdown. You see a confirmation line."
-msgstr "The nickname is matched without regard to upper or lower case. Every ignore entry for that nickname is removed, and a timed ignore stops its countdown. You see a confirmation line."
+msgstr "昵称的匹配不区分大小写。该昵称的所有忽略条目都会被移除,限时忽略也会停止倒计时。你会看到一条确认提示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "The number of seconds is required. Without it, you see the usage line."
-msgstr "需要秒数. 没有它,你可以看到使用线。"
+msgstr "必须提供秒数。否则你会看到用法提示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "The routing policy is fixed. There is no option to send notices to another window."
-msgstr "路线政策确定. 无法向另一个窗口发送通知 。"
+msgstr "路由策略是固定的。无法选择将通知发送到其他窗口。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "The user does not need to be in the channel, so you can lift a mute after they leave. If the user was not muted, the command still reports success and nothing changes."
-msgstr "The user does not need to be in the channel, so you can lift a mute after they leave. If the user was not muted, the command still reports success and nothing changes."
+msgstr "该用户不必在频道中,因此你可以在其离开后解除禁言。如果该用户并未被禁言,该命令仍会报告成功,但不会有任何变化。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "The value must be a whole number. Text or a negative number gets the usage line."
-msgstr "数值必须是整数 。 文本或负数得到使用线条。"
+msgstr "该值必须是整数。输入文本或负数会显示用法提示。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Type the command name in lowercase and without the slash"
-msgstr "在小写中键入命令名称,而不使用斜线"
+msgstr "请以小写输入命令名称,且不带斜杠"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Typing %{command} with no text does the same thing as this command."
-msgstr "无文字的打字 %{command} 与这个命令做同样的事情."
+msgstr "不带文本输入 %{command} 与此命令的效果相同。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Use it in a moderated (+m) channel to stop someone from speaking without removing them from the channel. They can still read the conversation."
-msgstr "使用在一个经调节的(+m)频道中,在不从频道中删除的情况下阻止某人发言. 他们还能读到谈话"
+msgstr "在受限发言(+m)的频道中使用它,可以在不将某人移出频道的情况下阻止其发言。他们仍然可以阅读对话。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Use it to check a running server: how many channels are live right now, which ones they are, and how the server uses memory. Nothing is changed, so it is safe to run at any time."
-msgstr "使用它检查正在运行的服务器:目前有多少个频道正在直播,它们是哪个频道,服务器如何使用内存. 没有改变,所以随时可以安全运行。"
+msgstr "用它来检查正在运行的服务器:当前有多少个频道在线、分别是哪些频道,以及服务器如何使用内存。它不会更改任何内容,因此可以随时放心运行。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Use it to find out who changed what on the server. For example, check who banned a user, dropped a nickname or changed a server setting."
-msgstr "用它来找出谁改变了服务器上的内容. 例如,检查谁禁止用户,放弃昵称或更改服务器设置."
+msgstr "用它来查明谁在服务器上更改了什么。例如,查看谁封禁了某个用户、注销了某个昵称或更改了服务器设置。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it to greet people, point them to the server rules, or share news that everyone should see when they connect."
-msgstr "用它来迎接人们,指向服务器规则,或者分享每个人在连接时都应该看到的消息."
+msgstr "用它来问候大家、引导大家查看服务器规则,或分享每个人连接时都应该看到的新闻。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it to read the server news or rules again after they scrolled out of the Status window. It is also the way to read a new MOTD that was posted while you were connected."
-msgstr "在服务器从状态窗口滚动后, 使用它再次读取服务器新闻或规则 。 读取您连接时发布的新 MOTD 的方式 。"
+msgstr "当服务器新闻或规则已从状态窗口中滚出后,用它再次阅读。你连接期间发布的新 MOTD 也可以用它来阅读。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Use it when a ban has served its purpose, or when someone was banned by mistake."
-msgstr "当禁令已经达到目的,或者当某人被错误地禁止时使用."
+msgstr "当封禁已经达到目的,或某人被误封时使用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it when a busy window is hard to read, or when you want an empty screen before a new discussion starts."
-msgstr "当繁忙的窗口难以读取时使用,或在新讨论开始前需要空屏幕时使用."
+msgstr "当繁忙的窗口难以阅读,或你想在新的讨论开始前得到一个空白屏幕时使用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Use it when a mute has done its job early, or when you muted the wrong person. A timed mute ends by itself. A permanent mute stays until someone removes it with this command."
-msgstr "Use it when a mute has done its job early, or when you muted the wrong person. A timed mute ends by itself. A permanent mute stays until someone removes it with this command."
+msgstr "当禁言已提前完成其作用,或你禁言错了人时使用。限时禁言会自行结束。永久禁言会一直保留,直到有人用此命令将其移除。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it when a notice shows up in a window you did not expect and you want to know why. The command only reports the policy. It does not change anything."
-msgstr "当通知出现在窗口中时使用它,而你却想知道原因。 指挥部只报告政策. 它不会改变任何事情。"
+msgstr "当通知出现在你意想不到的窗口中、而你想知道原因时使用。该命令只报告策略,不会更改任何内容。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Use it when a pinned message is out of date, such as old rules or an event that is over. It also frees a place, because a channel keeps at most 50 pinned messages."
-msgstr "Use it when a pinned message is out of date, such as old rules or an event that is over. It also frees a place, because a channel keeps at most 50 pinned messages."
+msgstr "当置顶消息已经过时(例如旧规则或已结束的活动)时使用。这也会腾出一个位置,因为一个频道最多保留 50 条置顶消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Use it when many users or bots join in a short time, for example during a join flood. It slows down new arrivals without closing the channel."
-msgstr "当许多用户或bots在短时间内加入时使用它,例如在加入洪水时. 它在不关闭频道的情况下减缓了新来者的速度."
+msgstr "当许多用户或机器人在短时间内加入时使用,例如遇到加入洪水刷屏时。它会减缓新成员的进入速度,而不必关闭频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it when the MOTD is out of date and you have nothing to put in its place. If you only want to change the text, use %{command} instead. It replaces the old message in one step."
-msgstr "当MOTD过时时使用它, 你没有什么可以代替它。 如果您只想更改文本,请使用 %{command} 代替。 它在一步内取代了旧信息."
+msgstr "当 MOTD 已经过时、而你没有新内容可替换时使用。如果你只想更改文本,请改用 %{command}。它会一步替换旧消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it when the welcome text is out of date and you have nothing to put in its place yet. If you only want new text, use %{command} with the new message. It replaces the old one in one step."
-msgstr "当欢迎文本过时时使用它,你还没有东西可以代替它。 如果您只想要新文本,请使用新信件中的 %{command} 。 一步取代旧的"
+msgstr "当欢迎语已经过时、而你暂时没有新内容可替换时使用。如果你只想设置新文本,请使用 %{command} 并附上新消息。它会一步替换旧内容。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it when you are done chatting and want to leave every channel at once. To leave only one channel and stay connected, use %{command} instead."
-msgstr "聊天完毕后使用它, 想要立即离开每个频道 。 要只留下一个通道并保持连接,使用%{command}代替."
+msgstr "当你聊完天、想一次性离开所有频道时使用。如果只想离开一个频道并保持连接,请改用 %{command}。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it when you forget how a command works, or when you want to see which commands exist without leaving the chat."
-msgstr "当您忘记一个命令是如何工作的, 或者当您想要看到哪个命令存在而不离开聊天时使用它 。"
+msgstr "当你忘记某个命令怎么用,或想在不离开聊天的情况下查看有哪些命令时使用。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Use it when you want to hear from someone again, for example after an argument is over or when you ignored the wrong person."
-msgstr "当你想再次听到某人的声音时使用它,比如在争论结束后或者在忽略错误的人时."
+msgstr "当你想重新接收某人的消息时使用,例如争执结束后,或误忽略了某个人时。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Use voice in a moderated (+m) channel to choose who may speak. Regular members cannot send messages there, and voiced members can. Outside a moderated channel, voice gives no extra rights."
-msgstr "在一个主持人频道(+m)中使用语音来选择谁可以发言. 正式成员不能在那里发出信息,表达的成员也可以这样做。 在主持频道之外,语音没有额外的权利。"
+msgstr "在受限发言(+m)的频道中使用发言/语音来选择谁可以发言。普通成员无法在其中发送消息,拥有发言/语音的成员则可以。在非受限发言的频道中,发言/语音不会带来额外权限。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Users who are already connected get a short note in their Status window that the MOTD changed. They can read the new text with %{command}."
-msgstr "已经连接的用户在状态窗口中获得一个简短的注释,即MOTD更改了. 他们可以用%{command}读取新文本."
+msgstr "已连接的用户会在其状态窗口中收到一条简短提示,说明 MOTD 已更改。他们可以用 %{command} 查看新内容。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Voice given with this command lasts until the user leaves the channel. In a registered channel, users on the ChanServ access list with voice level get voice again each time they join."
-msgstr "使用此命令给出的声音持续到用户离开频道. 在注册频道中,在语音级别ChanServ访问列表上的用户每次加入时都会再次获得语音."
+msgstr "通过此命令授予的发言/语音会持续到该用户离开频道为止。在已注册的频道中,ChanServ 访问列表中拥有发言/语音级别的用户每次加入时都会重新获得发言/语音。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "When an administrator changes or clears the MOTD while you are connected, a short note in the Status window tells you so. The new text is not shown by itself. Type %{command} to read it."
-msgstr "当管理员在您连接时更改或清除 MOTD 时, 状态窗口中的简短注释会告诉你 。 新文本本身不显示. %{command}型读取."
+msgstr "当管理员在你已连接时更改或清除 MOTD,状态窗口中会出现一条简短提示告知你。新内容不会自动显示。输入 %{command} 即可查看。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "When the message was not pinned, the reply is the same confirmation as a real unpin."
-msgstr "When the message was not pinned, the reply is the same confirmation as a real unpin."
+msgstr "如果该消息没有被置顶,回复内容与真正取消置顶时的确认信息相同。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:8
@@ -5416,52 +5359,52 @@ msgstr "何时使用"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "With a command name, a help card for that command appears in the window you are viewing, and the Status window notes which topic was opened. The card shows the same help text you find in Help Topics, with a link that opens the full help page."
-msgstr "使用命令名, 您正在查看的窗口中会显示该命令的帮助卡, 以及打开主题的状态窗口 。 该卡会显示您在 Help Topics 中找到的相同的帮助文本,并带有打开完整帮助页面的链接."
+msgstr "指定命令名称时,你正在查看的窗口中会出现该命令的帮助卡片,状态窗口会注明打开了哪个主题。卡片显示的帮助文本与帮助主题中的相同,并附有打开完整帮助页面的链接。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "With no arguments, the reply is a short message in the current window. It names every command, separated by commas, and ends with a hint about Help Topics. It does not include descriptions."
-msgstr "在没有参数的情况下,答复是当前窗口中的短信息. 它命名了每一个命令,用逗号分隔,结尾处是提示帮助主题. 它不包括描述。"
+msgstr "不带参数时,回复是当前窗口中的一条简短消息。它列出所有命令名称,以逗号分隔,末尾附有关于帮助主题的提示,不包含描述。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Without a nickname, you see the usage line"
-msgstr "没有昵称,你就可以看到使用线"
+msgstr "不带昵称时,你会看到用法提示"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Without a subcommand, you see the usage line"
-msgstr "没有子命令,您可以看到使用线"
+msgstr "不带子命令时,你会看到用法提示"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Without an id, you get a hint to use the Pinned window instead"
-msgstr "没有身份证明,你就会得到一个提示来使用 Pinned 窗口"
+msgstr "不带 ID 时,你会收到提示,建议改用“已置顶”窗口"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Without text, you see the usage line and the current MOTD is kept"
-msgstr "没有文本, 您可以看到使用线和当前 MOTD 保存"
+msgstr "不带文本时,你会看到用法提示,当前的 MOTD 保持不变"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "You get a confirmation line when it is done. Clearing when no MOTD is set is not an error. Administrators can also edit or clear the MOTD in the Admin MOTD window of the Admin Console."
-msgstr "你得到一个确认线 当它完成。 没有设置 MOTD 时清除不是一个错误 。 管理员还可以在管理员控制台的管理员MOTD窗口中编辑或清除MOTD."
+msgstr "完成后你会收到一行确认信息。在未设置 MOTD 时执行清除不算错误。管理员也可以在管理控制台的管理员 MOTD 窗口中编辑或清除 MOTD。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "You must be a server administrator and identified with NickServ"
-msgstr "您必须是服务器管理员并与 NickServ 识别"
+msgstr "你必须是服务器管理员,并已通过 NickServ 验证身份"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ for your administrator role to count"
-msgstr "您必须用 NickServ 来识别您的管理员角色才能计数"
+msgstr "你必须已通过 NickServ 验证身份,管理员角色才会生效"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:46
@@ -5473,37 +5416,37 @@ msgstr "您必须用 NickServ 来识别您的管理员角色才能计数"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "You must type it in a channel window, not in a private conversation"
-msgstr "您必须输入频道窗口, 而不是私人对话中"
+msgstr "你必须在频道窗口中输入,而不是在私聊中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "with no arguments lists the names of all available commands. Adding a command name (like"
-msgstr "没有参数列出所有可用命令的名称。 添加命令名称( 如"
+msgstr "不带参数时会列出所有可用命令的名称。加上命令名称(如"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "— Length of the join throttle window in seconds. Use"
-msgstr "— Length of the join throttle window in seconds. Use"
+msgstr "— 加入限流窗口的时长,单位为秒。使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "— List running channel processes by name, with their process ids"
-msgstr "——按名称列出运行的频道进程,及其进程编号."
+msgstr "— 按名称列出正在运行的频道进程及其进程 ID"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "— Show the number of running channel processes"
-msgstr "显示运行的频道进程数 。"
+msgstr "— 显示正在运行的频道进程数量"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "matches the nickname exactly, with the same upper and lower case. A leading @ is removed."
-msgstr "与昵称完全吻合, 上下大小写相同 。 一个领先的 @ 被删除。"
+msgstr "与昵称完全匹配,区分大小写。开头的 @ 会被去除。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "reports how many channel processes are running. It does not count client connections."
-msgstr "报告正在运行的频道进程。 它不计算客户端连接 。"
+msgstr "报告正在运行的频道进程数量。不统计客户端连接。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
 #, elixir-autogen, elixir-format
@@ -5513,7 +5456,7 @@ msgstr "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond ad
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its owner (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
-msgstr "当您加入一个频道时,会打开一个新的标签,可以看到消息并参与对话. 如果频道不存在,则自动创建,并成为其所有者(给予您对频道设置的控制). 对于注册用户,加入一个频道会自动添加到您的自动连接列表中,这样它就可以重新加入您的下一个连接."
+msgstr "加入频道时会打开一个新标签页,你可以看到消息并参与对话。如果该频道不存在,则会自动创建,你将成为频道所有者(可控制频道设置)。对于注册用户,加入频道会自动将其添加到你的自动加入列表,下次连接时会自动重新加入。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:9
 #, elixir-autogen, elixir-format
@@ -5528,63 +5471,63 @@ msgstr "/lfg [mode]"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Both of you need registered, identified nicknames"
-msgstr "你们俩都需要注册 识别的昵称"
+msgstr "你们双方都需要拥有已注册且已验证身份的昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Needs a registered nickname you have identified"
-msgstr "需要您确认的注册昵称"
+msgstr "需要一个你已验证身份的已注册昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Only in a game's own channel"
-msgstr "只在游戏自己的频道中"
+msgstr "仅限在游戏专属频道中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— Who to play. They have to be online and registered."
-msgstr "-谁玩? 他们必须在网上注册。"
+msgstr "— 要和谁玩。对方必须在线且已注册。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "A seat nobody takes expires after about fifteen minutes"
-msgstr "A seat nobody takes expires after about fifteen minutes"
+msgstr "没人坐的座位大约十五分钟后会过期"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "If the two of you already have a P2P session, its card comes back and you choose the game inside it"
-msgstr "如果你们两个已经有一个P2P会话,它的卡片会回来,你选择里面的游戏"
+msgstr "如果你们两人已经有一个 P2P 会话,它的卡片会重新出现,你可以在其中选择游戏"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "One open seat per game and channel. Asking again points at the same card."
-msgstr "每场比赛和频道各一个开放座位. 又问指同牌."
+msgstr "每个游戏和频道只有一个空位。再次发起会指向同一张卡片。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Use it to find somebody to play with, in the place where the players are. Run it in a game's channel. A card with one open seat appears there, and whoever presses Join first plays you."
-msgstr "用它找个人玩, 在玩家所在的地方。 在游戏频道上运行. 一张开着座位的卡片就在那里出现 谁先按着门铃就先玩你"
+msgstr "用它在玩家聚集的地方找人一起玩。在某个游戏的频道中运行。那里会出现一张带一个空位的卡片,谁先点击“加入”,谁就和你对战。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "— A mode of the channel's game."
-msgstr "——频道游戏模式."
+msgstr "— 该频道游戏的一种模式。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— A mode of the channel's game. Without one, you play the standard game."
-msgstr "— A mode of the channel's game. Without one, you play the standard game."
+msgstr "— 该频道游戏的一种模式。不指定时,玩标准游戏。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Use it to invite one person to play this game. It works like the command %{command}, but the game is already chosen. The invitation arrives in your private conversation. The game starts when you are both in the session."
-msgstr "用它邀请一个人来玩这个游戏. 它的工作原理类似命令%{command},但游戏已经选中. 你的私人谈话邀请函来了 游戏从你们俩在会话中开始。"
+msgstr "用它邀请一个人来玩这个游戏。它的作用类似命令 %{command},但游戏已经选定。邀请会发到你的私人对话中。你们两人都进入会话后,游戏开始。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The first player who presses Join plays you"
-msgstr "第一个按键的玩家 加入你"
+msgstr "第一个点击“加入”的玩家和你对战"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:34
 #, elixir-autogen, elixir-format
@@ -5656,19 +5599,19 @@ msgstr "ASCII 艺术"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "At most 30 lines of 100 characters in one block"
-msgstr "一个街区最多30行100个字符"
+msgstr "一个块中最多 30 行,每行 100 个字符"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Draw on a grid of 32, 64 or 128 pixels a side in the sixteen chat colours"
-msgstr "在十六个聊天颜色中绘制一个32、64或128像素的网格"
+msgstr "在边长为 32、64 或 128 像素的网格上,使用十六种聊天颜色绘图"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Needs an account: a visitor is asked to register first"
-msgstr "Needs an account: a visitor is asked to register first"
+msgstr "需要账号:访客会先被要求注册"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5678,7 +5621,7 @@ msgstr "打开 ASCII 艺术:将一个字,一个图片或Hex Paint在mIRC颜色�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Opens Hex Paint, the pixel drawing program: draw in the sixteen chat colours and post the picture to a channel."
-msgstr "打开Hex Paint,像素绘图程序:在十六聊天色彩中绘图,并将图片张贴到一个频道."
+msgstr "打开像素绘图程序 Hex Paint:使用十六种聊天颜色绘图,并将图片发布到频道。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:11
 #, elixir-autogen, elixir-format
@@ -5688,17 +5631,17 @@ msgstr "打开 ASCII 艺术 窗口,或当它已经打开时将其带到前面—
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Opens the Hex Paint window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Paint opens."
-msgstr "打开 Hex Paint 窗口,或当它已经打开时将其带到前面——同一窗口 Start > Accessories > Hex Paint 打开."
+msgstr "打开 Hex Paint 窗口,如果已经打开则将其置于最前——与 Start > Accessories > Hex Paint 打开的是同一个窗口。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Post the art as one message, or copy it with its colour codes"
-msgstr "将艺术张贴为一条信息, 或复制其颜色代码"
+msgstr "将艺术作品作为一条消息发布,或连同颜色代码一起复制"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Post the picture to a channel or a private conversation, with a line of text"
-msgstr "将图片张贴到频道或私人对话中,并附上一行文字"
+msgstr "将图片连同一行文字发布到频道或私人对话中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:37
 #, elixir-autogen, elixir-format
@@ -5708,34 +5651,34 @@ msgstr "保存到您的计算机中作为 PNG, 或者将其变成 ASCII 艺术 �
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "The drawing is kept in your browser while the window is closed"
-msgstr "在窗口关闭时, 绘图保存在您的浏览器中"
+msgstr "窗口关闭时,绘图会保存在你的浏览器中"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Turn a picture from your computer into coloured blocks or characters; the picture is never uploaded"
-msgstr "将计算机上的图片转换成彩色块或字符; 图片从未上传"
+msgstr "将电脑上的图片转换成彩色方块或字符;图片绝不会被上传"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Turn your Hex Paint drawing into text art"
-msgstr "将您的 Hex Paint 绘制成文本艺术"
+msgstr "将你的 Hex Paint 绘图转换成文本艺术"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Use a pencil, lines, rectangles, ellipses, a fill and an eraser, with undo and redo"
-msgstr "使用铅笔、线条、矩形、椭圆形、填充和擦除器,并带有撤销和重做"
+msgstr "使用铅笔、直线、矩形、椭圆、填充和橡皮擦,并支持撤销和重做"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_paint.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "What You Can Do There"
-msgstr "你在那里能做什么吗?"
+msgstr "你可以在那里做什么"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ascii.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Write a word in big letters made of blocks, hashes or shaded blocks, in one colour, a rainbow or two tones"
-msgstr "用大字母写一个字,用块、散列或阴影块组成,用一种颜色、彩虹或两吨"
+msgstr "用方块、井号或阴影方块拼成大号字母来书写一个单词,可选单色、彩虹或双色调"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:38
@@ -5746,34 +5689,34 @@ msgstr "/radio"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Closing the window stops the music"
-msgstr "关闭窗口停止音乐"
+msgstr "关闭窗口会停止音乐"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Listen to the most played stations, a genre's stations, or find one by name"
-msgstr "收听播放最多的台站,一个流派的台站,或者找一个名字"
+msgstr "收听播放次数最多的电台、某个流派的电台,或按名称查找电台"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Opens Hex Radio, the internet radio player: thousands of stations from around the world, by genre or by name."
-msgstr "Opens Hex Radio,互联网电台播放器:来自世界各地的数千个台站,按流派或名称排列."
+msgstr "打开 Hex Radio 网络电台播放器:来自世界各地的数千个电台,可按流派或名称查找。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Opens the Hex Radio window, or brings it to the front when it is already open — the same window Start > Accessories > Hex Radio opens."
-msgstr "打开Hex Radio窗口,或当它已经打开时将其带往前方——同一窗口 Start > Accessories > Hex Radio打开."
+msgstr "打开 Hex Radio 窗口;如果窗口已经打开,则将其置于最前——与 Start > Accessories > Hex Radio 打开的是同一个窗口。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Star the stations you like to find them again"
-msgstr "Star the stations you like to find them again"
+msgstr "为喜欢的电台加星标,方便再次找到"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_radio.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Watch the spectrum or the oscilloscope and shape the sound with the equalizer"
-msgstr "注意光谱或示波器,用平衡器塑造声音"
+msgstr "观看频谱或示波器,并用均衡器调整声音"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop the channel"
-msgstr "只有创建者可以注销频道"
+msgstr "只有创建者可以删除该频道"

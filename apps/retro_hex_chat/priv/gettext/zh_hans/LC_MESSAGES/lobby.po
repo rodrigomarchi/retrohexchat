@@ -14,7 +14,7 @@ msgstr ""
 #: lib/retro_hex_chat/lobby/policy.ex:117
 #, elixir-autogen, elixir-format
 msgid "Cannot create a session with yourself"
-msgstr "无法与您创建会话"
+msgstr "无法与自己创建会话"
 
 #: lib/retro_hex_chat/lobby/service.ex:239
 #: lib/retro_hex_chat/lobby/service.ex:256
@@ -26,27 +26,27 @@ msgstr "创建大厅失败"
 #: lib/retro_hex_chat/lobby/session_server.ex:318
 #, elixir-autogen, elixir-format
 msgid "Invalid transition from %{from} to %{to}"
-msgstr "从%{from}到%{to}的过渡无效"
+msgstr "无效的状态转换:从 %{from} 到 %{to}"
 
 #: lib/retro_hex_chat/lobby/policy.ex:310
 #, elixir-autogen, elixir-format
 msgid "Invite is no longer pending"
-msgstr "不再等待邀请"
+msgstr "邀请已不再处于待处理状态"
 
 #: lib/retro_hex_chat/lobby/policy.ex:314
 #, elixir-autogen, elixir-format
 msgid "Lobby is no longer active"
-msgstr "大厅不再活动了"
+msgstr "大厅已不再活动"
 
 #: lib/retro_hex_chat/lobby/service.ex:290
 #, elixir-autogen, elixir-format
 msgid "Lobby not found"
-msgstr "找不到前厅"
+msgstr "找不到大厅"
 
 #: lib/retro_hex_chat/lobby/session_server.ex:245
 #, elixir-autogen, elixir-format
 msgid "Not a participant"
-msgstr "未参加"
+msgstr "不是参与者"
 
 #: lib/retro_hex_chat/lobby/policy.ex:271
 #, elixir-autogen, elixir-format
@@ -65,7 +65,7 @@ msgstr "只有邀请者可以取消邀请"
 #: lib/retro_hex_chat/lobby/session_server.ex:1101
 #, elixir-autogen, elixir-format
 msgid "Session process not running"
-msgstr "会话进程未运行"
+msgstr "会话进程未在运行"
 
 #: lib/retro_hex_chat/lobby/policy.ex:127
 #, elixir-autogen, elixir-format

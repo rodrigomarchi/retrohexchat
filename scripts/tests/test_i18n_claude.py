@@ -74,6 +74,11 @@ class JudgeTest(unittest.TestCase):
 
         self.assertIn("forms", reason)
 
+    def test_the_english_source_is_not_a_translation(self):
+        _forms, reason = claude.judge(item("Status: %{status}", ("x",)), ["Status: %{status}"], "de", False, 2)
+
+        self.assertIn("English source", reason)
+
     def test_a_good_change_passes(self):
         forms, reason = claude.judge(item("Hello %{nick}", ("Olá",)), ["Olá, %{nick}"], "pt_BR", False, 2)
 

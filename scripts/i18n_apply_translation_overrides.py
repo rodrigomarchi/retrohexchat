@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import json
 import re
 from pathlib import Path
 
@@ -10121,6 +10122,16 @@ def main() -> int:
     return 0
 
 
+# Curated strings a blind comparison found worse than the reviewed catalog
+# text: the catalog keeps its wording, and this pass leaves it alone.
+SUPERSEDED = {
+    locale: frozenset(sources)
+    for locale, sources in json.loads(
+        (Path(__file__).parent / "i18n" / "superseded_overrides.json").read_text(encoding="utf-8")
+    ).items()
+}
+
+
 def apply_po_overrides(locales: tuple[str, ...], paths: list[str]) -> dict[str, int]:
     files = po_files(locales, paths)
     rewritten = 0
@@ -10248,6 +10259,9 @@ def override_for(source: str, locale: str) -> str | None:
     and the quality gate would fail on it.
     """
     if source.strip() in glossary.terms():
+        return None
+
+    if source in SUPERSEDED.get(locale, ()):
         return None
 
     return PO_OVERRIDES.get(source, {}).get(locale)

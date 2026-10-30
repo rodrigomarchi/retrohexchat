@@ -249,6 +249,9 @@ def judge(item: Item, forms: list[str], locale_code: str, one_form: bool, nplura
         replacements = protect(source)[1]
         form = keep_lowercase_start(source, finish(form, locale_code), locale_code)
 
+        if form == source:
+            return [], f"the English source: {form[:80]}"
+
         if not is_usable_translation(source, form, replacements):
             return [], f"unusable: {form[:80]}"
 

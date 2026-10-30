@@ -19,7 +19,8 @@ msgstr "  %{name} (%{type}, %{interval}s) → %{command}"
 #: lib/retro_hex_chat/chat/timer_manager.ex:173
 #, elixir-autogen, elixir-format
 msgid "Active timers:\n"
-msgstr "Aktywne timery:"
+msgstr ""
+"Aktywne liczniki:\n"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:37
 #, elixir-autogen, elixir-format
@@ -74,12 +75,12 @@ msgstr "Chime Short"
 #: lib/retro_hex_chat/chat/sound_settings.ex:39
 #, elixir-autogen, elixir-format
 msgid "Click"
-msgstr "Kliknij"
+msgstr "Kliknięcie"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:371
 #, elixir-autogen, elixir-format
 msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
-msgstr "Konflikt: %{first_action} oraz %{second_action} do %{combo}"
+msgstr "Konflikt: %{first_action} i %{second_action} są przypisane do %{combo}"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:448
 #, elixir-autogen, elixir-format
@@ -89,7 +90,7 @@ msgstr "Ctrl"
 #: lib/retro_hex_chat/chat/policy.ex:94
 #, elixir-autogen, elixir-format
 msgid "Delete window has expired."
-msgstr "Usuń okno wygasło."
+msgstr "Czas na usunięcie minął."
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:32
 #, elixir-autogen, elixir-format
@@ -105,14 +106,12 @@ msgstr "Ding Low"
 #: lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
-msgstr "Edycja okna wygasła."
+msgstr "Czas na edycję minął."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
 msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
-msgstr ""
-"Rozszerzenie nie może zawierać znaków łańcuchowych komend (web124;, & &,;, "
-"lub nowych linii)"
+msgstr "Rozwinięcie nie może zawierać znaków łączenia poleceń (|, &&, ;, ani nowych wierszy)"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:280
 #, elixir-autogen, elixir-format
@@ -122,9 +121,7 @@ msgstr "Formatowanie"
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
-msgstr ""
-"Niepoprawna nazwa zegara. Używaj tylko liter, liczb, myślników, podkreśleń "
-"(max %{max_name_length} )."
+msgstr "Nieprawidłowa nazwa licznika. Używaj tylko liter, cyfr, myślników i podkreśleń (maks. %{max_name_length} znaków)."
 
 #: lib/retro_hex_chat/chat/content.ex:144
 #: lib/retro_hex_chat/chat/policy.ex:19
@@ -161,7 +158,7 @@ msgstr "Następne okno"
 #: lib/retro_hex_chat/chat/timer_manager.ex:157
 #, elixir-autogen, elixir-format
 msgid "No active timers."
-msgstr "Żadnych aktywnych timerów."
+msgstr "Brak aktywnych liczników."
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:29
 #, elixir-autogen, elixir-format
@@ -196,7 +193,7 @@ msgstr "Otwórz listę Ignoruj"
 #: lib/retro_hex_chat/chat/key_bindings.ex:87
 #, elixir-autogen, elixir-format
 msgid "Open Perform Dialog"
-msgstr "Okno otwierania"
+msgstr "Otwórz okno Perform"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:81
 #, elixir-autogen, elixir-format
@@ -262,13 +259,12 @@ msgstr "Poprzednie okno"
 #: lib/retro_hex_chat/chat/timer_manager.ex:148
 #, elixir-autogen, elixir-format
 msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
-msgstr ""
-"Powtórzyć przedział zaciśnięty do minimum %{min_repeat_interval} Sekundy."
+msgstr "Interwał powtarzania zwiększono do minimum %{min_repeat_interval} s."
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:40
 #, elixir-autogen, elixir-format
 msgid "Ring"
-msgstr "Pierścień"
+msgstr "Dzwonek"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:449
 #, elixir-autogen, elixir-format
@@ -283,12 +279,12 @@ msgstr "Ściągawka skrótów"
 #: lib/retro_hex_chat/chat/key_bindings.ex:138
 #, elixir-autogen, elixir-format
 msgid "Switch to the next channel or PM"
-msgstr "Przełącz na następny kanał lub PM"
+msgstr "Przełącz na następny kanał lub rozmowę prywatną"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:144
 #, elixir-autogen, elixir-format
 msgid "Switch to the previous channel or PM"
-msgstr "Przełącz na poprzedni kanał lub PM"
+msgstr "Przełącz na poprzedni kanał lub rozmowę prywatną"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:150
 #, elixir-autogen, elixir-format
@@ -355,13 +351,13 @@ msgstr "Sposób użycia: /timer <name> <seconds> <command>"
 #: lib/retro_hex_chat/chat/timer_manager.ex:29
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> [repeat] <seconds> <command>"
-msgstr "Sposób użycia: /timer <name> [powtórzyć] <seconds> <command>"
+msgstr "Sposób użycia: /timer <name> [repeat] <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:63
 #: lib/retro_hex_chat/chat/timer_manager.ex:67
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> repeat <seconds> <command>"
-msgstr "Sposób użycia: /timer <name> powtarzać <seconds> <command>"
+msgstr "Sposób użycia: /timer <name> repeat <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:37
 #, elixir-autogen, elixir-format
@@ -432,7 +428,7 @@ msgstr "Nie można edytować wiadomości innych użytkowników."
 #: lib/retro_hex_chat/chat/time_formatter.ex:55
 #, elixir-autogen, elixir-format
 msgid "just now"
-msgstr "Właśnie teraz"
+msgstr "przed chwilą"
 
 #: lib/retro_hex_chat/chat/time_formatter.ex:11
 #: lib/retro_hex_chat/chat/time_formatter.ex:23
@@ -453,12 +449,12 @@ msgstr "Konferencja"
 #: lib/retro_hex_chat/chat/key_bindings.ex:113
 #, elixir-autogen, elixir-format
 msgid "Cycle the active conference layout"
-msgstr "Cykl aktywnego układu konferencji"
+msgstr "Przełącz aktywny układ konferencji"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:118
 #, elixir-autogen, elixir-format
 msgid "Focus Next Conference Participant"
-msgstr "Skup się na następnym uczestniku konferencji"
+msgstr "Fokus na następnego uczestnika konferencji"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:106
 #, elixir-autogen, elixir-format
@@ -468,12 +464,12 @@ msgstr "Opuść konferencję"
 #: lib/retro_hex_chat/chat/key_bindings.ex:119
 #, elixir-autogen, elixir-format
 msgid "Move conference focus to the next participant"
-msgstr "Przenieś ostrość konferencji do następnego uczestnika"
+msgstr "Przenieś fokus konferencji na następnego uczestnika"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:95
 #, elixir-autogen, elixir-format
 msgid "Mute or unmute your active conference microphone"
-msgstr "Wyłącz lub wyłącz aktywny mikrofon konferencyjny"
+msgstr "Wycisz lub wyłącz wyciszenie aktywnego mikrofonu w konferencji"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:112
 #, elixir-autogen, elixir-format
@@ -483,33 +479,33 @@ msgstr "Następny układ konferencji"
 #: lib/retro_hex_chat/chat/key_bindings.ex:107
 #, elixir-autogen, elixir-format
 msgid "Open the leave confirmation for the active conference"
-msgstr "Otwórz potwierdzenie urlopu na aktywną konferencję"
+msgstr "Otwórz potwierdzenie opuszczenia aktywnej konferencji"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:101
 #, elixir-autogen, elixir-format
 msgid "Start or stop your active conference camera"
-msgstr "Uruchom lub zatrzymaj aktywną kamerę konferencyjną"
+msgstr "Włącz lub wyłącz aktywną kamerę konferencji"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:100
 #, elixir-autogen, elixir-format
 msgid "Toggle Conference Camera"
-msgstr "Włączenie / wyłączenie kamery konferencyjnej"
+msgstr "Przełącz kamerę konferencji"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:94
 #, elixir-autogen, elixir-format
 msgid "Toggle Conference Microphone"
-msgstr "Włączenie / wyłączenie mikrofonu konferencji"
+msgstr "Przełącz mikrofon konferencji"
 
 #: lib/retro_hex_chat/channels/server.ex:1747
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
-msgstr "Załącznik nie mógł być dołączony do wiadomości"
+msgstr "Nie udało się dołączyć załącznika do wiadomości"
 
 #: lib/retro_hex_chat/chat/attachments.ex:276
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
-msgstr "Dodatek przekracza limit %{mb} MB"
+msgstr "Załącznik przekracza limit %{mb} MB"
 
 #: lib/retro_hex_chat/chat/attachments.ex:271
 #, elixir-autogen, elixir-format
@@ -647,7 +643,7 @@ msgstr "Nagrania nie można wysłać jako %{type}"
 #: lib/retro_hex_chat/virtual_space/speech.ex:44
 #, elixir-autogen, elixir-format
 msgid "Only /me works in a space. Other commands go in the chat."
-msgstr "Tylko /me pracuje w przestrzeni. Inne polecenia są na czacie."
+msgstr "W przestrzeni działa tylko /me. Pozostałe polecenia wpisuj na czacie."
 
 #: lib/retro_hex_chat/virtual_space/speech.ex:70
 #, elixir-autogen, elixir-format
@@ -664,24 +660,24 @@ msgstr "Najpierw wpisz coś do powiedzenia."
 #: lib/retro_hex_chat/virtual_space/speech.ex:50
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
-msgstr "Jesteś ukrzyżowany przez administratora"
+msgstr "Jesteś wyciszony przez administratora"
 
 #: lib/retro_hex_chat/virtual_space.ex:341
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed gold side up"
-msgstr "rzucił monetą, i wylądował złoty bok w górę"
+msgstr "rzucił monetą, która wylądowała złotą stroną do góry"
 
 #: lib/retro_hex_chat/virtual_space.ex:344
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed silver side up"
-msgstr "rzucił monetą, i wylądował srebrną stroną w górę"
+msgstr "rzucił monetą, która wylądowała srebrną stroną do góry"
 
 #: lib/retro_hex_chat/virtual_space.ex:337
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
-msgstr "rzucił kostką i dostał %{face}"
+msgstr "rzucił kostką i wyrzucił %{face}"
 
 #: lib/retro_hex_chat/chat/content.ex:154
 #, elixir-autogen, elixir-format
 msgid "Text art can have at most %{lines} lines of %{columns} characters"
-msgstr "Sztuka tekstowa może mieć co najwyżej linie %{lines} znaków %{columns}"
+msgstr "Sztuka tekstowa może mieć co najwyżej %{lines} linii po %{columns} znaków"

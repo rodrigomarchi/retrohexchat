@@ -83,5 +83,12 @@ class GlossaryOwnsLabelsTest(unittest.TestCase):
         self.assertIn('msgstr "Kicken"', block)
 
 
+class SupersededTest(unittest.TestCase):
+    def test_a_superseded_string_is_left_to_the_catalog(self):
+        locale, sources = next(iter(overrides.SUPERSEDED.items()))
+
+        self.assertIsNone(overrides.override_for(next(iter(sources)), locale))
+
+
 if __name__ == "__main__":
     unittest.main()

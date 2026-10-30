@@ -438,7 +438,9 @@ def find_collapses(
     """Group sources that share one translation.
 
     `entries` is a list of (source, translated) pairs. The result maps each
-    over-reused translation to the distinct sources that produced it.
+    over-reused translation to the distinct sources that produced it. "Game",
+    "GAMES" and "A game" are one word to a language with no plural and no
+    article, so they count once.
     """
     by_translation: dict[str, set[str]] = defaultdict(set)
 
@@ -451,8 +453,14 @@ def find_collapses(
     return {
         translated: sources
         for translated, sources in by_translation.items()
-        if len(sources) >= threshold
+        if len({_word_of(source) for source in sources}) >= threshold
     }
+
+
+def _word_of(source: str) -> str:
+    """A source without its case, article, plural or closing punctuation."""
+    word = re.sub(r"^(?:an?|the)\s+", "", source.lower()).rstrip(".:!?…")
+    return word[:-1] if word.endswith("s") and not word.endswith("ss") else word
 
 
 # The round-trip gate. Read back into English, a translation that kept its

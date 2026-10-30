@@ -26,37 +26,37 @@ msgstr "%{name} [%{status}] — %{description}"
 #: lib/retro_hex_chat/commands/handlers/cs.ex:397
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
-msgstr "%{nickname} [%{level}] (%{added_by}で追加)"
+msgstr "  %{nickname} [%{level}] (%{added_by}が追加)"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:393
 #, elixir-autogen, elixir-format
 msgid "  (empty)"
-msgstr "(空)"
+msgstr "  (空)"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:319
 #, elixir-autogen, elixir-format
 msgid "  Channels: %{channels_count}"
-msgstr "チャネル: %{channels_count}"
+msgstr "  チャンネル: %{channels_count}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:322
 #, elixir-autogen, elixir-format
 msgid "  Commands: %{commands_count}"
-msgstr "コマンド: %{commands_count}"
+msgstr "  コマンド: %{commands_count}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:314
 #, elixir-autogen, elixir-format
 msgid "  Cooldown: %{cooldown_ms}ms"
-msgstr "クールダウン: %{cooldown_ms}ms"
+msgstr "  クールダウン: %{cooldown_ms}ms"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:318
 #, elixir-autogen, elixir-format
 msgid "  Created by: %{created_by}"
-msgstr "によって作成された: %{created_by}"
+msgstr "  作成者: %{created_by}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:893
 #, elixir-autogen, elixir-format
 msgid "  Description: %{desc}"
-msgstr "説明: %{desc}"
+msgstr "  説明: %{desc}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:309
 #, elixir-autogen, elixir-format
@@ -66,12 +66,12 @@ msgstr "  ニックネーム: %{nickname}"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:311
 #, elixir-autogen, elixir-format
 msgid "  Prefix: %{command_prefix}"
-msgstr "プレフィックス: %{command_prefix}"
+msgstr "  プレフィックス: %{command_prefix}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:310
 #, elixir-autogen, elixir-format
 msgid "  Status: %{status}"
-msgstr "ステータス: %{status}"
+msgstr "  ステータス: %{status}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:723
 #, elixir-autogen, elixir-format
@@ -1028,7 +1028,7 @@ msgstr "5:%{seconds}"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:593
 #, elixir-autogen, elixir-format
 msgid "Action must be: warn, mute, or kick."
-msgstr "アクションは、警告、ミュート、キックでなければなりません。"
+msgstr "アクションは warn、mute、kick のいずれかでなければなりません。"
 
 #: lib/retro_hex_chat/commands/handlers/me.ex:25
 #, elixir-autogen, elixir-format
@@ -1038,17 +1038,17 @@ msgstr "アクションテキスト"
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:40
 #, elixir-autogen, elixir-format
 msgid "Add a channel to autojoin"
-msgstr "チャンネルをオートジョイントに追加する"
+msgstr "自動参加するチャンネルを追加する"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:47
 #, elixir-autogen, elixir-format
 msgid "Add a command to perform on connect"
-msgstr "コマンドを追加して接続を実行"
+msgstr "接続時に実行するコマンドを追加する"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:38
 #, elixir-autogen, elixir-format
 msgid "Add a user to your notify list"
-msgstr "通知リストにユーザーを追加"
+msgstr "通知リストにユーザーを追加する"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:46
 #, elixir-autogen, elixir-format
@@ -1058,67 +1058,67 @@ msgstr "自動応答ルールを追加する"
 #: lib/retro_hex_chat/commands/registry.ex:80
 #, elixir-autogen, elixir-format
 msgid "Advanced"
-msgstr "アドバンスト"
+msgstr "詳細設定"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:44
 #, elixir-autogen, elixir-format
 msgid "Announcement sent to all users."
-msgstr "利用者全員にお知らせ"
+msgstr "全ユーザーにお知らせを送信しました。"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:63
 #, elixir-autogen, elixir-format
 msgid "Authenticate with your registered password"
-msgstr "登録したパスワードで認証"
+msgstr "登録したパスワードで認証する"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:20
 #, elixir-autogen, elixir-format
 msgid "Automatically run a command when someone joins, leaves, or changes their nickname."
-msgstr "誰かが参加、葉、またはニックネームを変更したときに自動的にコマンドを実行します。"
+msgstr "誰かが参加、退出、またはニックネームを変更したときに、自動的にコマンドを実行します。"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:25
 #, elixir-autogen, elixir-format
 msgid "Automatically run a command when someone joins, leaves, or changes their nickname.\nSubcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\nValid triggers: on_join, on_part, on_nick_change.\nUse $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number."
 msgstr ""
-"誰かが参加、葉、またはニックネームを変更したときに自動的にコマンドを実行します。\n"
-"サブコマンド:リスト、<trigger> [#channel] <command> を追加し、<position> を削除します。 argsがダイアログを開きます。\n"
-"有効なトリガー: on join、on part、on nick change。\n"
-"コマンドで $nick を使用して、トリガーされたユーザーを参照します。 サブコマンドを削除すると、0 ベースのインデックス番号が取得されます。"
+"誰かが参加、退出、またはニックネームを変更したときに、自動的にコマンドを実行します。\n"
+"サブコマンド: list、add <trigger> [#channel] <command>、remove <position>。引数なしでダイアログを開きます。\n"
+"有効なトリガー: on_join、on_part、on_nick_change。\n"
+"コマンド内で $nick を使うと、トリガーとなったユーザーを参照できます。remove サブコマンドには 0 から始まるインデックス番号を指定します。"
 
 #: lib/retro_hex_chat/commands/handlers/away.ex:25
 #, elixir-autogen, elixir-format
 msgid "Away message (empty to return)"
-msgstr "Away メッセージ (戻りに空)"
+msgstr "離席メッセージ (空にすると復帰)"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:53
 #, elixir-autogen, elixir-format
 msgid "Ban"
-msgstr "Ban"
+msgstr "BAN"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:54
 #, elixir-autogen, elixir-format
 msgid "Ban user from channel"
-msgstr "チャネルからユーザーを禁止"
+msgstr "ユーザーをチャンネルからBANする"
 
 #: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Basics"
-msgstr "基本情報"
+msgstr "基本"
 
 #: lib/retro_hex_chat/commands/handlers/bio.ex:28
 #, elixir-autogen, elixir-format
 msgid "Bio text (or 'clear' to remove)"
-msgstr "バイオテキスト(または「削除」)"
+msgstr "自己紹介文(削除するには「clear」)"
 
 #: lib/retro_hex_chat/commands/handlers/list.ex:10
 #: lib/retro_hex_chat/commands/handlers/list.ex:15
 #, elixir-autogen, elixir-format
 msgid "Browse all public channels on the server in a sortable, filterable dialog."
-msgstr "サーバ上のすべてのパブリックチャネルをソート可能なフィルタ可能なダイアログでブラウズします。"
+msgstr "サーバー上のすべての公開チャンネルを、並べ替えや絞り込みができるダイアログで一覧表示します。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:66
 #, elixir-autogen, elixir-format
 msgid "ChanServ admin (drop, info, transfer, access)"
-msgstr "チャンサーブ管理者(ドロップ、情報、転送、アクセス)"
+msgstr "ChanServ管理(drop、info、transfer、access)"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:15
 #: lib/retro_hex_chat/commands/handlers/mode.ex:20
@@ -1132,16 +1132,16 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/nick.ex:15
 #, elixir-autogen, elixir-format
 msgid "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
-msgstr "チャットで表示名を変更します。 変更が有効になる前に確認ダイアログが表示されます。"
+msgstr "チャットでの表示名を変更します。変更が反映される前に確認ダイアログが表示されます。"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:20
 #, elixir-autogen, elixir-format
 msgid "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
 msgstr ""
-"表示名を変更します。 変更が有効になる前に確認ダイアログが表示されます。\n"
-"ルール:1-16文字、スペースなし。 文字または [ ] \\ ^   { | }\n"
-"許可された文字: 文字、数字、 [ ] \\ ^   `{ | } およびハイフン。\n"
-"現在のニックネームや既に使用しているニックネームに変更することはできません。"
+"表示名を変更します。変更が反映される前に確認ダイアログが表示されます。\n"
+"ルール: 1〜16文字、スペース不可。先頭は文字または [ ] \\ ^ _ { | } のいずれかにしてください。\n"
+"使用できる文字: 英字、数字、[ ] \\ ^ _ ` { | } およびハイフン。\n"
+"現在のニックネームや、すでに使われているニックネームには変更できません。"
 
 #: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
@@ -1151,12 +1151,12 @@ msgstr "チャンネル"
 #: lib/retro_hex_chat/commands/handlers/mode.ex:60
 #, elixir-autogen, elixir-format
 msgid "Channel accessible only by invitation"
-msgstr "招待状のみで利用できるチャネル"
+msgstr "招待された人のみ入れるチャンネル"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:58
 #, elixir-autogen, elixir-format
 msgid "Channel management (create, delete, purge)"
-msgstr "チャネル管理(作成、削除、パージ)"
+msgstr "チャンネル管理(作成、削除、パージ)"
 
 #: lib/retro_hex_chat/commands/handlers/join.ex:34
 #, elixir-autogen, elixir-format
@@ -1166,7 +1166,7 @@ msgstr "チャンネル名"
 #: lib/retro_hex_chat/commands/handlers/join.ex:92
 #, elixir-autogen, elixir-format
 msgid "Channel name cannot contain spaces"
-msgstr "チャンネル名はスペースを含まない"
+msgstr "チャンネル名にスペースは使用できません"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:110
 #, elixir-autogen, elixir-format
@@ -1176,43 +1176,43 @@ msgstr "チャンネル名は # で始まる必要があります。"
 #: lib/retro_hex_chat/commands/handlers/join.ex:89
 #, elixir-autogen, elixir-format
 msgid "Channel name too long (max 50 characters)"
-msgstr "チャンネル名が長い(最大50文字)"
+msgstr "チャンネル名が長すぎます(最大50文字)"
 
 #: lib/retro_hex_chat/commands/handlers/join.ex:38
 #, elixir-autogen, elixir-format
 msgid "Channel password (if key-protected)"
-msgstr "チャネルパスワード(キー保護されている場合)"
+msgstr "チャンネルのパスワード(キーで保護されている場合)"
 
 #: lib/retro_hex_chat/commands/handlers/part.ex:31
 #, elixir-autogen, elixir-format
 msgid "Channel to leave (defaults to current)"
-msgstr "チャネルを離れる(デフォルトは現在の)"
+msgstr "退出するチャンネル(省略時は現在のチャンネル)"
 
 #: lib/retro_hex_chat/commands/handlers/knock.ex:30
 #, elixir-autogen, elixir-format
 msgid "Channel to request access to"
-msgstr "アクセス要求へのチャネル"
+msgstr "アクセスを要求するチャンネル"
 
 #: lib/retro_hex_chat/commands/handlers/set_welcome.ex:26
 #, elixir-autogen, elixir-format
 msgid "Channel welcome message"
-msgstr "チャネル歓迎メッセージ"
+msgstr "チャンネルのウェルカムメッセージ"
 
 #: lib/retro_hex_chat/commands/handlers/clear.ex:10
 #: lib/retro_hex_chat/commands/handlers/clear.ex:15
 #, elixir-autogen, elixir-format
 msgid "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone."
-msgstr "現在のチャットウィンドウからすべてのメッセージをクリアし、新しい画面が表示されます。 誰もできない。"
+msgstr "現在のチャットウィンドウからすべてのメッセージを消去し、画面をまっさらにします。元に戻すことはできません。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:50
 #, elixir-autogen, elixir-format
 msgid "Clear all perform commands"
-msgstr "すべてのコマンドを実行する"
+msgstr "すべての起動時実行コマンドをクリアする"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:42
 #, elixir-autogen, elixir-format
 msgid "Clear your entire autojoin list"
-msgstr "オートジョイントリスト全体をクリアする"
+msgstr "自動参加リストをすべてクリアする"
 
 #: lib/retro_hex_chat/commands/handlers/help.ex:28
 #, elixir-autogen, elixir-format
@@ -1222,22 +1222,22 @@ msgstr "詳細なヘルプを表示するコマンド名"
 #: lib/retro_hex_chat/commands/registry.ex:79
 #, elixir-autogen, elixir-format
 msgid "Configuration"
-msgstr "コンテンツ"
+msgstr "設定"
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:34
 #, elixir-autogen, elixir-format
 msgid "Configuration: [repeat] <seconds> <command>"
-msgstr "構成: [repeat] <seconds> <command>"
+msgstr "設定: [repeat] <seconds> <command>"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:458
 #, elixir-autogen, elixir-format
 msgid "Cooldown must be a number."
-msgstr "クールダウンは数でなければなりません。"
+msgstr "クールダウンは数値で指定してください。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:451
 #, elixir-autogen, elixir-format
 msgid "Cooldown set to %{ms}ms."
-msgstr "%{ms}ms にセットされる Cooldown。"
+msgstr "クールダウンを%{ms}msに設定しました。"
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:37
 #, elixir-autogen, elixir-format
@@ -1247,21 +1247,22 @@ msgstr "新しいコマンドエイリアスを作成する"
 #: lib/retro_hex_chat/commands/handlers/alias.ex:15
 #, elixir-autogen, elixir-format
 msgid "Create short command shortcuts that expand into longer commands."
-msgstr "長いコマンドに展開する短いコマンドショートカットを作成します。"
+msgstr "長いコマンドに展開される短いコマンドのショートカットを作成します。"
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:17
 #, elixir-autogen, elixir-format
 msgid "Create short command shortcuts that expand into longer commands.\nSubcommands: list, add <name> <expansion>, remove <name>. No args opens the dialog.\nSupports $1-$9 for positional arguments, $nick for your nickname, $chan for current channel.\nMax 50 aliases. Registered users: persisted. Guests: session-only."
 msgstr ""
-"長いコマンドに展開する短いコマンドショートカットを作成します。\n"
-"サブコマンド:リスト、<name> <expansion>を追加し、<name>を削除します。 argsがダイアログを開きます。\n"
-"位置引数の$ 1〜$ 9、ニックネームの$ nick、現在のチャネルの$chanをサポートしています。\n"
-"最大 50 エイリアス。 登録ユーザー: 主張される。 ゲスト:セッションのみ"
+"長いコマンドに展開される短いコマンドのショートカットを作成します。\n"
+"サブコマンド: list、add <name> <expansion>、remove <name>。引数なしでダイアログを開きます。\n"
+"位置引数は$1〜$9、自分のニックネームは$nick、現在のチャンネルは$chanが使えます。\n"
+"最大50個のエイリアス。登録ユーザーは保存されます。ゲストはセッション中のみ有効です。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:171
 #, elixir-autogen, elixir-format
 msgid "Create, manage, and configure bots for your channels.\n"
-msgstr "ボットを作成、管理、および構成します。"
+msgstr ""
+"チャンネル用のボットを作成、管理、設定します。\n"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:70
 #, elixir-autogen, elixir-format
@@ -1281,29 +1282,29 @@ msgstr "説明を更新しました。"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:293
 #, elixir-autogen, elixir-format
 msgid "Disabled"
-msgstr "バリアフリー"
+msgstr "無効"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:67
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session using its password"
-msgstr "パスワードを使用して階段のセッションを切断する"
+msgstr "パスワードを使用して古いセッションを切断する"
 
 #: lib/retro_hex_chat/commands/handlers/quit.ex:19
 #, elixir-autogen, elixir-format
 msgid "Disconnect from the server and return to the connect screen.\nOther users see your optional quit message. All channels are left and your session ends."
 msgstr ""
-"サーバーから接続解除し、接続画面に戻ります。\n"
-"他のユーザーは、オプションの終了メッセージが表示されます。 すべてのチャネルが残され、セッションが終了します。"
+"サーバーから切断し、接続画面に戻ります。\n"
+"他のユーザーには、任意の終了メッセージが表示されます。すべてのチャンネルから退出し、セッションが終了します。"
 
 #: lib/retro_hex_chat/commands/handlers/quit.ex:14
 #, elixir-autogen, elixir-format
 msgid "Disconnect from the server and return to the connect screen. Other users see your optional quit message."
-msgstr "サーバーから接続解除し、接続画面に戻ります。 他のユーザーは、オプションの終了メッセージが表示されます。"
+msgstr "サーバーから切断し、接続画面に戻ります。他のユーザーには、任意の終了メッセージが表示されます。"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:56
 #, elixir-autogen, elixir-format
 msgid "Drop channel registration"
-msgstr "ドロップチャンネル登録"
+msgstr "チャンネル登録を削除"
 
 #: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:23
 #, elixir-autogen, elixir-format
@@ -1313,41 +1314,41 @@ msgstr "所要時間(30秒、5m、1h)"
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:95
 #, elixir-autogen, elixir-format
 msgid "Duration must be positive"
-msgstr "期間は肯定的でなければなりません"
+msgstr "期間は正の値でなければなりません"
 
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:38
 #, elixir-autogen, elixir-format
 msgid "Duration: 5m, 1h, 2d"
-msgstr "時間: 5m、1h、2d"
+msgstr "期間: 5m、1h、2d"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:43
 #, elixir-autogen, elixir-format
 msgid "Edit a user's note"
-msgstr "ユーザーのメモを編集する"
+msgstr "ユーザーのメモを編集"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:292
 #, elixir-autogen, elixir-format
 msgid "Enabled"
-msgstr "有効化"
+msgstr "有効"
 
 #: lib/retro_hex_chat/commands/handlers/join.ex:20
 #: lib/retro_hex_chat/commands/handlers/join.ex:25
 #, elixir-autogen, elixir-format
 msgid "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set."
 msgstr ""
-"チャットチャネルを入力してメッセージを読み、送信します。 まだ存在しないとチャンネルを作成します。\n"
-"チャンネル名は#、最大50文字、スペースなしで起動する必要があります。\n"
-"一度に最大10チャンネル。 チャンネルが+kモードが設定されている場合はパスワードが必要です。"
+"チャットチャンネルに入り、メッセージを読んだり送信したりします。まだ存在しない場合はチャンネルを作成します。\n"
+"チャンネル名は # で始まり、最大50文字、スペースを含めることはできません。\n"
+"一度に最大10チャンネルまで参加できます。チャンネルに +k モードが設定されている場合はパスワードが必要です。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:77
 #, elixir-autogen, elixir-format
 msgid "Factory reset — destroy all data except admin infrastructure"
-msgstr "工場出荷時のリセット — 管理者インフラストラクチャ以外のすべてのデータを破壊する"
+msgstr "工場出荷時の状態にリセット — 管理用インフラ以外のすべてのデータを消去する"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:539
 #, elixir-autogen, elixir-format
 msgid "Farewell disabled."
-msgstr "ファレウェルは無効になっています。"
+msgstr "お別れメッセージを無効にしました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:537
 #, elixir-autogen, elixir-format
@@ -1357,101 +1358,101 @@ msgstr "別れのメッセージを '%{farewell}' に設定しました。"
 #: lib/retro_hex_chat/commands/handlers/op.ex:15
 #, elixir-autogen, elixir-format
 msgid "Give channel operator status to a user."
-msgstr "チャネル演算子のステータスをユーザーに付与します。"
+msgstr "ユーザーにチャンネルオペレーター権限を付与します。"
 
 #: lib/retro_hex_chat/commands/handlers/op.ex:17
 #, elixir-autogen, elixir-format
 msgid "Give channel operator status to a user. Shortcut for /mode +o <nickname>.\nRequires: channel operator or owner."
 msgstr ""
-"チャネル演算子のステータスをユーザーに付与します。 /mode +o <nickname> のショートカット\n"
-"要求します: チャネルのオペレータか所有者。"
+"ユーザーにチャンネルオペレーター権限を付与します。/mode +o <nickname> のショートカットです。\n"
+"必要な権限: チャンネルオペレーターまたはオーナー。"
 
 #: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:15
 #, elixir-autogen, elixir-format
 msgid "Give voice status to a user."
-msgstr "ボイスステータスをユーザーに付与します。"
+msgstr "ユーザーにボイス権限を付与します。"
 
 #: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:17
 #, elixir-autogen, elixir-format
 msgid "Give voice status to a user. Shortcut for /mode +v <nickname>.\nRequires: half-operator, operator, or owner."
 msgstr ""
-"ボイスステータスをユーザーに付与します。 /mode + v <nickname> のショートカット\n"
-"要件:ハーフ演算子、演算子、または所有者。"
+"ユーザーにボイス権限を付与します。/mode +v <nickname> のショートカットです。\n"
+"必要な権限: ハーフオペレーター、オペレーター、またはオーナー。"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:28
 #, elixir-autogen, elixir-format
 msgid "Global announcement message"
-msgstr "グローバル発表メッセージ"
+msgstr "全体向けのお知らせメッセージ"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:42
 #, elixir-autogen, elixir-format
 msgid "Grant operator status"
-msgstr "助成事業者のステータス"
+msgstr "オペレーター権限を付与"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:48
 #, elixir-autogen, elixir-format
 msgid "Grant voice to speak in +m"
-msgstr "+mで話す声を付与する"
+msgstr "+m で発言できるボイスを付与"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:494
 #, elixir-autogen, elixir-format
 msgid "Greeting disabled."
-msgstr "ごあいさつ"
+msgstr "あいさつメッセージを無効にしました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:495
 #, elixir-autogen, elixir-format
 msgid "Greeting set to '%{greeting}'."
-msgstr "「%{greeting}」へのご挨拶"
+msgstr "あいさつメッセージを「%{greeting}」に設定しました。"
 
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:16
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:21
 #, elixir-autogen, elixir-format
 msgid "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, notices, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself."
 msgstr ""
-"特定のユーザーからメッセージを隠す。\n"
-"タイプ: すべての(デフォルト)、メッセージ、午後、アクション、通知、招待。\n"
-"所要時間:Nm(分)、Nh(時間)、Nd(日) いいえ期間 = /unignoreまで永続的です。\n"
-"args:無視リストを表示しません。 自分で無視することはできません。"
+"特定のユーザーからのメッセージを非表示にします。\n"
+"種類: all(デフォルト)、messages、pms、actions、notices、invites。\n"
+"期間: Nm(分)、Nh(時間)、Nd(日)。期間を指定しない場合は /unignore するまで無期限です。\n"
+"引数なし: 無視リストを表示します。自分自身を無視することはできません。"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:111
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges to set channel modes"
-msgstr "チャンネルモードを設定するための十分な権限"
+msgstr "チャンネルモードを設定する権限が不足しています"
 
 #: lib/retro_hex_chat/commands/handlers/join.ex:83
 #, elixir-autogen, elixir-format
 msgid "Invalid channel name. Channel names must start with #"
-msgstr "無効なチャンネル名。 チャンネル名は # で始まる必要があります。"
+msgstr "無効なチャンネル名です。チャンネル名は # で始まる必要があります"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:454
 #, elixir-autogen, elixir-format
 msgid "Invalid cooldown value."
-msgstr "無効なクールダウン値。"
+msgstr "クールダウンの値が無効です。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:71
 #, elixir-autogen, elixir-format
 msgid "Invalid position: %{string_trim_rest}. Must be a number."
-msgstr "無効な位置: %{string_trim_rest}. 数字でなければなりません。"
+msgstr "無効な位置: %{string_trim_rest}。数字で指定してください。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:128
 #, elixir-autogen, elixir-format
 msgid "Invalid positions. Must be numbers."
-msgstr "無効な位置。 数字でなければなりません。"
+msgstr "無効な位置です。数字で指定してください。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:441
 #, elixir-autogen, elixir-format
 msgid "Invalid prefix."
-msgstr "無効プレフィックス。"
+msgstr "無効なプレフィックスです。"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:109
 #, elixir-autogen, elixir-format
 msgid "Invalid trigger '%{trigger_str}'. Valid triggers: on_join, on_part, on_nick_change"
-msgstr "無効なトリガー '%{trigger_str}'。 有効なトリガー: on join、on part、on nick change"
+msgstr "無効なトリガー '%{trigger_str}' です。有効なトリガー: on_join、on_part、on_nick_change"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:59
 #, elixir-autogen, elixir-format
 msgid "Invite only"
-msgstr "招待のみ"
+msgstr "招待のみ参加可"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:77
 #, elixir-autogen, elixir-format
@@ -1461,28 +1462,28 @@ msgstr "キー"
 #: lib/retro_hex_chat/commands/handlers/part.ex:13
 #, elixir-autogen, elixir-format
 msgid "Leave the current channel or a specified channel, with an optional parting message shown to others."
-msgstr "現在のチャンネルや指定されたチャンネルを、他のチャンネルに表示するオプションの部分メッセージで残します。"
+msgstr "現在のチャンネルまたは指定したチャンネルから退出します。他のユーザーに表示される退出メッセージを任意で付けられます。"
 
 #: lib/retro_hex_chat/commands/handlers/part.ex:18
 #, elixir-autogen, elixir-format
 msgid "Leave the current channel or a specified channel, with an optional parting message.\nDefaults to current channel. If the first word doesn't start with #, it's treated as the part message.\nYou must be in the channel to leave it."
 msgstr ""
-"現在のチャンネルまたは指定されたチャンネルを、オプションの部分メッセージで残します。\n"
-"デフォルトは現在のチャンネルへ。 最初の単語が # で始まらないと、部分メッセージとして扱われます。\n"
-"チャンネルに残しておく必要があります。"
+"現在のチャンネルまたは指定したチャンネルから退出します。退出メッセージは任意です。\n"
+"省略した場合は現在のチャンネルから退出します。最初の単語が # で始まらない場合は、退出メッセージとして扱われます。\n"
+"退出するには、そのチャンネルに参加している必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/whois.ex:13
 #, elixir-autogen, elixir-format
 msgid "Look up detailed information about an online user."
-msgstr "オンラインユーザーに関する詳細情報をご覧ください。"
+msgstr "オンラインユーザーの詳細情報を調べます。"
 
 #: lib/retro_hex_chat/commands/handlers/whois.ex:15
 #, elixir-autogen, elixir-format
 msgid "Look up detailed information about an online user.\nShows: nickname, channels (shared channels highlighted), idle time, away status, bio, and registration status.\nUser must be online. For offline users, use /whowas."
 msgstr ""
-"オンラインユーザーに関する詳細情報をご覧ください。\n"
-"ショー:ニックネーム、チャンネル(共有チャンネルが強調表示)、アイドルタイム、ステータス、バイオ、登録ステータス。\n"
-"ユーザはオンラインでなければなりません。 オフラインユーザーの場合、/whowas を使用します。"
+"オンラインユーザーの詳細情報を調べます。\n"
+"表示内容: ニックネーム、チャンネル(共通のチャンネルは強調表示)、アイドル時間、離席ステータス、プロフィール、登録状況。\n"
+"対象ユーザーがオンラインである必要があります。オフラインのユーザーには /whowas を使用してください。"
 
 #: lib/retro_hex_chat/commands/handlers/whowas.ex:13
 #, elixir-autogen, elixir-format
@@ -1494,8 +1495,8 @@ msgstr "最近切断したユーザーに関する情報を調べます。"
 msgid "Look up information about a user who recently disconnected.\nShows last seen time, channels, and quit message. Data cached for up to 1 hour.\nFor online users, use /whois instead."
 msgstr ""
 "最近切断したユーザーに関する情報を調べます。\n"
-"最近見られた時間、チャネルおよびquitメッセージを表示します。 最大1時間のデータキャッシュ。\n"
-"オンラインユーザーの場合、代わりに/whoisを使用してください。"
+"最後に確認された時刻、チャンネル、退出メッセージを表示します。データは最大1時間キャッシュされます。\n"
+"オンラインのユーザーには、代わりに /whois を使用してください。"
 
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:32
 #, elixir-autogen, elixir-format
@@ -1510,34 +1511,34 @@ msgstr "MOTDを更新しました。"
 #: lib/retro_hex_chat/commands/handlers/cs.ex:71
 #, elixir-autogen, elixir-format
 msgid "Manage auto-operator access list"
-msgstr "自動運営者アクセスリストの管理"
+msgstr "自動オペレーターのアクセスリストを管理します"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:72
 #, elixir-autogen, elixir-format
 msgid "Manage auto-voice access list"
-msgstr "自動ボイスアクセスリストの管理"
+msgstr "自動ボイスのアクセスリストを管理します"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:27
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ."
-msgstr "チャンネル登録を管理し、チャンサーブを通じてアクセスリストにアクセスします。"
+msgstr "ChanServ を通じてチャンネルの登録とアクセスリストを管理します。"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:70
 #, elixir-autogen, elixir-format
 msgid "Manage super-operator access list"
-msgstr "スーパーオペレーターのアクセスリストの管理"
+msgstr "スーパーオペレーターのアクセスリストを管理します"
 
 #: lib/retro_hex_chat/commands/handlers/away.ex:14
 #, elixir-autogen, elixir-format
 msgid "Mark yourself as temporarily unavailable, with an optional message shown in /whois."
-msgstr "/whois に表示されているオプションのメッセージで、一時的に利用できなくなるように自分自身をマークします。"
+msgstr "一時的に席を外していることを示します。/whois に表示されるメッセージを任意で付けられます。"
 
 #: lib/retro_hex_chat/commands/handlers/away.ex:19
 #, elixir-autogen, elixir-format
 msgid "Mark yourself as temporarily unavailable, with an optional message shown in /whois.\nWith a message: sets you as away. Without arguments: clears your away status and marks you as back."
 msgstr ""
-"/whois に表示されているオプションのメッセージで、一時的に利用できなくなるように自分自身をマークします。\n"
-"メッセージを使って:あなただけを離れて置きます。 引数なし: 離れたステータスをクリアし、バックとしてマークします。"
+"一時的に席を外していることを示します。/whois に表示されるメッセージを任意で付けられます。\n"
+"メッセージあり: 離席中に設定します。引数なし: 離席ステータスを解除し、戻ったことを示します。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:565
 #, elixir-autogen, elixir-format
@@ -1552,45 +1553,45 @@ msgstr "メッセージ内容"
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:30
 #, elixir-autogen, elixir-format
 msgid "Message for all users with +w mode"
-msgstr "+wモードを持つすべてのユーザーのメッセージ"
+msgstr "+w モードを持つすべてのユーザーへのメッセージ"
 
 #: lib/retro_hex_chat/commands/handlers/knock.ex:35
 #, elixir-autogen, elixir-format
 msgid "Message for the channel operators"
-msgstr "チャンネル事業者のメッセージ"
+msgstr "チャンネルオペレーターへのメッセージ"
 
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:26
 #, elixir-autogen, elixir-format
 msgid "Message of the Day text"
-msgstr "日のテキストメッセージ"
+msgstr "今日のお知らせ(MOTD)のテキスト"
 
 #: lib/retro_hex_chat/commands/handlers/msg.ex:29
 #, elixir-autogen, elixir-format
 msgid "Message recipient"
-msgstr "メッセージ受信者"
+msgstr "メッセージの宛先"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:34
 #, elixir-autogen, elixir-format
 msgid "Mode flags to set or unset"
-msgstr "モードフラグを設定または設定解除"
+msgstr "設定または解除するモードフラグ"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:65
 #, elixir-autogen, elixir-format
 msgid "Moderated"
-msgstr "モデレート"
+msgstr "モデレート制"
 
 #: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:14
 #, elixir-autogen, elixir-format
 msgid "Mute a user in the current channel."
-msgstr "現在のチャネルでユーザをミュートします。"
+msgstr "現在のチャンネルでユーザーをミュートします。"
 
 #: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:16
 #, elixir-autogen, elixir-format
 msgid "Mute a user in the current channel. They cannot send messages.\nDuration: 30s, 5m, 1h, 1d. Omit for permanent.\nRequires: channel operator or owner."
 msgstr ""
-"現在のチャネルでユーザをミュートします。 メッセージを送信できません。\n"
-"時間: 30s、5m、1h、1d。 永続のための省略。\n"
-"要求します: チャネルのオペレータか所有者。"
+"現在のチャンネルでユーザーをミュートします。ミュートされたユーザーはメッセージを送信できません。\n"
+"期間: 30s、5m、1h、1d。省略すると無期限になります。\n"
+"必要な権限: チャンネルオペレーターまたはオーナー。"
 
 #: lib/retro_hex_chat/commands/handlers/topic.ex:24
 #, elixir-autogen, elixir-format
@@ -1610,27 +1611,27 @@ msgstr "新しいオーナー"
 #: lib/retro_hex_chat/commands/handlers/admin.ex:62
 #, elixir-autogen, elixir-format
 msgid "NickServ admin (drop, info, resetpass)"
-msgstr "NickServ管理者(ドロップ、情報、リセットパス)"
+msgstr "NickServ管理(削除、情報、パスワードリセット)"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
-msgstr "ニックネームはスペースを含まない"
+msgstr "ニックネームにスペースを含めることはできません"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:62
 #, elixir-autogen, elixir-format
 msgid "Nickname contains invalid characters"
-msgstr "ニックネームは無効な文字を含む"
+msgstr "ニックネームに無効な文字が含まれています"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:56
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character ([\\]^_{|})"
-msgstr "ニックネームは、文字や特殊文字([\\]^ { })で始まる必要があります。"
+msgstr "ニックネームは文字または特殊文字([\\]^_{|})で始まる必要があります"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:52
 #, elixir-autogen, elixir-format
 msgid "Nickname too long (max 16 characters)"
-msgstr "ニックネームが長すぎる(最大16文字)"
+msgstr "ニックネームが長すぎます(最大16文字)"
 
 #: lib/retro_hex_chat/commands/handlers/motd.ex:28
 #, elixir-autogen, elixir-format
@@ -1645,23 +1646,23 @@ msgstr "説明なし"
 #: lib/retro_hex_chat/commands/handlers/msg.ex:39
 #, elixir-autogen, elixir-format
 msgid "No message specified. Usage: /msg <nickname> <message>"
-msgstr "指定したメッセージはありません。 使用法: /msg <nickname> <message>"
+msgstr "メッセージが指定されていません。使用法: /msg <nickname> <message>"
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:45
 #, elixir-autogen, elixir-format
 msgid "No message specified. Usage: /notice <target> <message>"
-msgstr "指定したメッセージはありません。 使用法: /notice <target> <message>"
+msgstr "メッセージが指定されていません。使用法: /notice <target> <message>"
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:35
 #, elixir-autogen, elixir-format
 msgid "Notice content"
-msgstr "Notice content"
+msgstr "通知の内容"
 
 #: lib/retro_hex_chat/commands/handlers/notice_routing.ex:12
 #: lib/retro_hex_chat/commands/handlers/notice_routing.ex:13
 #, elixir-autogen, elixir-format
 msgid "Notices are always routed to the active window."
-msgstr "常にアクティブなウィンドウにルーティングされます。"
+msgstr "通知は常にアクティブなウィンドウに表示されます。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:870
 #, elixir-autogen, elixir-format
@@ -1681,84 +1682,84 @@ msgstr "+v と +o だけが話せる"
 #: lib/retro_hex_chat/commands/handlers/mode.ex:72
 #, elixir-autogen, elixir-format
 msgid "Only operators can change the topic"
-msgstr "オペレータだけがトピックを変更することができます"
+msgstr "オペレーターだけがトピックを変更できます"
 
 #: lib/retro_hex_chat/commands/handlers/query.ex:25
 #, elixir-autogen, elixir-format
 msgid "Open a PM tab with this user"
-msgstr "このユーザーでPMタブを開く"
+msgstr "このユーザーとのPMタブを開く"
 
 #: lib/retro_hex_chat/commands/handlers/query.ex:14
 #, elixir-autogen, elixir-format
 msgid "Open a private message tab with a user without sending any message, unlike /msg."
-msgstr "/msg とは異なり、メッセージを送信せずにユーザーとプライベートメッセージタブを開きます。"
+msgstr "/msg とは異なり、メッセージを送信せずにユーザーとのプライベートメッセージタブを開きます。"
 
 #: lib/retro_hex_chat/commands/handlers/query.ex:19
 #, elixir-autogen, elixir-format
 msgid "Open a private message tab with a user without sending any message, unlike /msg.\nNickname is required. If the PM tab already exists, switches to it."
 msgstr ""
-"/msg とは異なり、メッセージを送信せずにユーザーとプライベートメッセージタブを開きます。\n"
-"ニックネームが必要です。 PMタブが既に存在している場合は、それを切り替えます。"
+"/msg とは異なり、メッセージを送信せずにユーザーとのプライベートメッセージタブを開きます。\n"
+"ニックネームが必要です。PMタブが既に存在する場合は、そのタブに切り替えます。"
 
 #: lib/retro_hex_chat/commands/handlers/popups.ex:12
 #: lib/retro_hex_chat/commands/handlers/popups.ex:17
 #, elixir-autogen, elixir-format
 msgid "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels."
-msgstr "カスタムメニューダイアログを開き、ニックネームリストとチャンネルのカスタム右クリックメニュー項目を追加します。"
+msgstr "カスタムメニューダイアログを開き、ニックネームリストとチャンネルのカスタム右クリックメニュー項目を追加、編集、削除します。"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:41
 #, elixir-autogen, elixir-format
 msgid "Operator"
-msgstr "オペレータ"
+msgstr "オペレーター"
 
 #: lib/retro_hex_chat/commands/handlers/part.ex:33
 #, elixir-autogen, elixir-format
 msgid "Part message"
-msgstr "パートメッセージ"
+msgstr "退出メッセージ"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:16
 #, elixir-autogen, elixir-format
 msgid "Permanently block a user from the channel. The ban persists until removed with /mode -b."
-msgstr "チャンネルからユーザーを永久にブロックします。 禁止は/mode -bで削除されるまで主張します。"
+msgstr "チャンネルからユーザーを無期限にブロックします。BANは /mode -b で解除されるまで続きます。"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:21
 #, elixir-autogen, elixir-format
 msgid "Permanently block a user from the channel. The ban persists until removed with /mode -b.\nRequires: channel operator. Must be in a channel."
 msgstr ""
-"チャンネルからユーザーを永久にブロックします。 禁止は/mode -bで削除されるまで主張します。\n"
-"要求: チャネル オペレータ。 チャンネルでなければならない。"
+"チャンネルからユーザーを無期限にブロックします。BANは /mode -b で解除されるまで続きます。\n"
+"必要な権限: チャンネルオペレーター。チャンネル内で実行する必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:34
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:27
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:32
 #, elixir-autogen, elixir-format
 msgid "Permission denied: you must be a server administrator."
-msgstr "許可拒否:サーバー管理者でなければなりません。"
+msgstr "権限がありません: サーバー管理者である必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:37
 #, elixir-autogen, elixir-format
 msgid "Permission denied: you must be a server operator."
-msgstr "許可拒否:サーバー演算子でなければなりません。"
+msgstr "権限がありません: サーバーオペレーターである必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:438
 #, elixir-autogen, elixir-format
 msgid "Prefix set to '%{value}'."
-msgstr "'%{value}' に設定されるプレフィックス。"
+msgstr "プレフィックスを '%{value}' に設定しました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:303
 #, elixir-autogen, elixir-format
 msgid "Process: Not running"
-msgstr "プロセス: 動くこと"
+msgstr "プロセス: 実行されていません"
 
 #: lib/retro_hex_chat/commands/handlers/quit.ex:25
 #, elixir-autogen, elixir-format
 msgid "Quit message"
-msgstr "Quit メッセージ"
+msgstr "終了メッセージ"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:31
 #, elixir-autogen, elixir-format
 msgid "Reason for the ban"
-msgstr "禁止のための理由"
+msgstr "BANの理由"
 
 #: lib/retro_hex_chat/commands/handlers/kick.ex:31
 #, elixir-autogen, elixir-format
@@ -1768,12 +1769,12 @@ msgstr "キックの理由"
 #: lib/retro_hex_chat/commands/autocomplete.ex:140
 #, elixir-autogen, elixir-format
 msgid "Recent"
-msgstr "最近の投稿"
+msgstr "最近"
 
 #: lib/retro_hex_chat/commands/handlers/whowas.ex:21
 #, elixir-autogen, elixir-format
 msgid "Recently disconnected user"
-msgstr "最近切断されたユーザー"
+msgstr "最近切断したユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:33
 #, elixir-autogen, elixir-format
@@ -1783,7 +1784,7 @@ msgstr "受信者(ニックネームまたはチャンネル)"
 #: lib/retro_hex_chat/commands/handlers/ns.ex:25
 #, elixir-autogen, elixir-format
 msgid "Register and protect your nickname with a password through NickServ, the nickname services bot."
-msgstr "ニックネームサービスボットであるNickServを通じて、あなたのニックネームをパスワードで登録して保護します。"
+msgstr "ニックネームサービスボットであるNickServを通じて、ニックネームをパスワードで登録して保護します。"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:55
 #, elixir-autogen, elixir-format
@@ -1798,31 +1799,31 @@ msgstr "パスワードでニックネームを登録する"
 #: lib/retro_hex_chat/commands/handlers/unban.ex:15
 #, elixir-autogen, elixir-format
 msgid "Remove a ban from a user, allowing them to rejoin the channel."
-msgstr "ユーザから禁止を削除し、チャンネルを再結合できるようにします。"
+msgstr "ユーザーのBANを解除し、チャンネルに再参加できるようにします。"
 
 #: lib/retro_hex_chat/commands/handlers/unban.ex:17
 #, elixir-autogen, elixir-format
 msgid "Remove a ban from a user, allowing them to rejoin the channel.\nRequires: channel operator. Must be in a channel."
 msgstr ""
-"ユーザから禁止を削除し、チャンネルを再結合できるようにします。\n"
-"要求: チャネル オペレータ。 チャンネルでなければならない。"
+"ユーザーのBANを解除し、チャンネルに再参加できるようにします。\n"
+"必要な権限: チャンネルオペレーター。チャンネル内で実行する必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:41
 #, elixir-autogen, elixir-format
 msgid "Remove a channel from autojoin"
-msgstr "autojoinからチャンネルを削除"
+msgstr "チャンネルを自動参加リストから削除"
 
 #: lib/retro_hex_chat/commands/handlers/unmute.ex:15
 #, elixir-autogen, elixir-format
 msgid "Remove a channel-level mute from a user."
-msgstr "ユーザからチャンネルレベルのミュートを削除します。"
+msgstr "ユーザーのチャンネルレベルのミュートを解除します。"
 
 #: lib/retro_hex_chat/commands/handlers/unmute.ex:17
 #, elixir-autogen, elixir-format
 msgid "Remove a channel-level mute from a user.\nRequires: channel operator or owner."
 msgstr ""
-"ユーザからチャンネルレベルのミュートを削除します。\n"
-"要求します: チャネルのオペレータか所有者。"
+"ユーザーのチャンネルレベルのミュートを解除します。\n"
+"必要な権限: チャンネルオペレーターまたはオーナー。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:48
 #, elixir-autogen, elixir-format
@@ -1834,8 +1835,8 @@ msgstr "実行コマンドを削除する"
 #, elixir-autogen, elixir-format
 msgid "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel."
 msgstr ""
-"オプションの理由でチャンネルからユーザーを削除します。 禁止されている場合を除き、再会できます。\n"
-"要求します: チャネル オペレータか半オペレータ。 チャンネルでなければならない。"
+"理由を指定して(省略可)ユーザーをチャンネルから退出させます。BANされていない限り、再参加できます。\n"
+"必要な権限: チャンネルオペレーターまたはハーフオペレーター。チャンネル内で実行する必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:41
 #, elixir-autogen, elixir-format
@@ -1855,72 +1856,72 @@ msgstr "既存のエイリアスを削除します。"
 #: lib/retro_hex_chat/commands/handlers/deop.ex:15
 #, elixir-autogen, elixir-format
 msgid "Remove channel operator status from a user."
-msgstr "ユーザからチャネル演算子のステータスを削除します。"
+msgstr "ユーザーのチャンネルオペレーター権限を削除します。"
 
 #: lib/retro_hex_chat/commands/handlers/deop.ex:17
 #, elixir-autogen, elixir-format
 msgid "Remove channel operator status from a user. Shortcut for /mode -o <nickname>.\nRequires: channel operator or owner."
 msgstr ""
-"ユーザからチャネル演算子のステータスを削除します。 /mode -o <nickname>のショートカット。\n"
-"要求します: チャネルのオペレータか所有者。"
+"ユーザーのチャンネルオペレーター権限を削除します。/mode -o <nickname> のショートカットです。\n"
+"必要な権限: チャンネルオペレーターまたはオーナー。"
 
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:13
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:18
 #, elixir-autogen, elixir-format
 msgid "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
-msgstr "サーバのメッセージが削除されるので、新しいユーザーはMOTDが表示されない。 管理者のみ。"
+msgstr "サーバーのお知らせ(MOTD)を削除し、新しいユーザーにMOTDが表示されないようにします。管理者のみ。"
 
 #: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:13
 #, elixir-autogen, elixir-format
 msgid "Remove the welcome message from the current channel so new joiners won't see one."
-msgstr "現在のチャンネルからウェルカムメッセージを削除すると、新規の参加者が1つ見つかりません。"
+msgstr "現在のチャンネルのウェルカムメッセージを削除し、新しく参加した人に表示されないようにします。"
 
 #: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:18
 #, elixir-autogen, elixir-format
 msgid "Remove the welcome message from the current channel so new joiners won't see one.\nRequires: channel operator. Must be in a channel."
 msgstr ""
-"現在のチャンネルからウェルカムメッセージを削除すると、新規の参加者が1つ見つかりません。\n"
-"要求: チャネル オペレータ。 チャンネルでなければならない。"
+"現在のチャンネルのウェルカムメッセージを削除し、新しく参加した人に表示されないようにします。\n"
+"必要な権限: チャンネルオペレーター。チャンネル内で実行する必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:28
 #, elixir-autogen, elixir-format
 msgid "Remove user from ignore list"
-msgstr "無視リストからユーザを削除"
+msgstr "無視リストからユーザーを削除"
 
 #: lib/retro_hex_chat/commands/handlers/devoice.ex:15
 #, elixir-autogen, elixir-format
 msgid "Remove voice status from a user."
-msgstr "ユーザから音声ステータスを削除します。"
+msgstr "ユーザーのボイス権限を削除します。"
 
 #: lib/retro_hex_chat/commands/handlers/devoice.ex:17
 #, elixir-autogen, elixir-format
 msgid "Remove voice status from a user. Shortcut for /mode -v <nickname>.\nRequires: half-operator, operator, or owner."
 msgstr ""
-"ユーザから音声ステータスを削除します。 /mode -v <nickname>のショートカット。\n"
-"要件:ハーフ演算子、演算子、または所有者。"
+"ユーザーのボイス権限を削除します。/mode -v <nickname> のショートカットです。\n"
+"必要な権限: ハーフオペレーター、オペレーター、またはオーナー。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:49
 #, elixir-autogen, elixir-format
 msgid "Reorder a perform command"
-msgstr "実行コマンドを注文する"
+msgstr "実行コマンドの順序を変更する"
 
 #: lib/retro_hex_chat/commands/handlers/knock.ex:13
 #: lib/retro_hex_chat/commands/handlers/knock.ex:18
 #, elixir-autogen, elixir-format
 msgid "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #."
 msgstr ""
-"招待のみ (+i) チャンネルにリクエストします。 オペレーターは、あなたのノックを見て、あなたを招待することができます。\n"
-"チャンネル名は # から始まる必要があります。"
+"招待専用(+i)チャンネルへの参加を求めます。オペレーターにはあなたのノックが表示され、招待してもらえます。\n"
+"チャンネル名は # で始まる必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:19
 #, elixir-autogen, elixir-format
 msgid "Schedule a command to run after a delay or on a repeating interval.\nCreate: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\nTimers run in the window that was active when they were created and do not switch your current window when they fire.\nManage: /timer list, /timer stop <name>.\nMax 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect)."
 msgstr ""
-"遅延または繰り返し間隔で実行するコマンドをスケジュールします。\n"
-"作成: /timer <name> <seconds> <command>。 繰り返し:/timer <name>は<seconds> <command>を繰り返します。\n"
-"タイマーは、作成時にアクティブだったウィンドウで実行し、火で現在のウィンドウを切り替えない。\n"
-"管理:/timerリスト、/timerは<name>を停止します。\n"
-"最高の5つのタイマー。 ワンショット: 1-86400s. 最低繰り返し: 10 s. セッションのみ (接続解除時に)."
+"一定時間後、または一定間隔で繰り返し実行するコマンドを予約します。\n"
+"作成: /timer <name> <seconds> <command>。繰り返し: /timer <name> repeat <seconds> <command>。\n"
+"タイマーは作成時にアクティブだったウィンドウで実行され、実行時に現在のウィンドウは切り替わりません。\n"
+"管理: /timer list、/timer stop <name>。\n"
+"タイマーは最大5個。1回のみ: 1〜86400秒。繰り返しの最小間隔: 10秒。セッション限定(切断すると失われます)。"
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:14
 #, elixir-autogen, elixir-format
@@ -1933,33 +1934,33 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited."
 msgstr ""
-"別のユーザーにチャンネルの招待状を送信します。 招待のみ(+i)チャンネルが必要です。\n"
-"#channel が指定されていない場合、デフォルトは現在のチャンネルへ。 チャンネルが発生したときにチャンネルでなければならない。\n"
-"/invite オート — 招待されたときにチャンネルを自動的に結合するかどうかを切り替えます。"
+"別のユーザーにチャンネルへの招待を送ります。招待専用(+i)チャンネルでは必須です。\n"
+"#channel を指定しない場合は現在のチャンネルが対象です。チャンネルを指定しない場合は、チャンネル内で実行する必要があります。\n"
+"/invite auto — 招待されたときに自動でチャンネルに参加するかどうかを切り替えます。"
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:16
 #, elixir-autogen, elixir-format
 msgid "Send a lightweight notice to a user or channel that doesn't open a PM window on their side."
-msgstr "サイドのPMウィンドウを開けないユーザやチャネルに軽量な通知を送信します。"
+msgstr "相手側にPMウィンドウを開かせずに、ユーザーまたはチャンネルに軽量な通知を送信します。"
 
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:16
 #, elixir-autogen, elixir-format
 msgid "Send a message to all users who opted in to operator announcements via /umode +w."
-msgstr "/umode +wを介してオペレータの発表にオプトインしたすべてのユーザーにメッセージを送信します。"
+msgstr "/umode +w でオペレーターからのお知らせを受け取る設定にしたすべてのユーザーにメッセージを送信します。"
 
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:21
 #, elixir-autogen, elixir-format
 msgid "Send a message to all users who opted in to operator announcements via /umode +w.\nRequires: server operator or server administrator. Message text is required."
 msgstr ""
-"/umode +wを介してオペレータの発表にオプトインしたすべてのユーザーにメッセージを送信します。\n"
-"サーバ演算子またはサーバー管理者が必要です。 メッセージ本文が必要です。"
+"/umode +w でオペレーターからのお知らせを受け取る設定にしたすべてのユーザーにメッセージを送信します。\n"
+"必要な権限: サーバーオペレーターまたはサーバー管理者。メッセージ本文は必須です。"
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:21
 #, elixir-autogen, elixir-format
 msgid "Send a notice to a user or channel without opening a PM window on their side.\nBoth target and message are required. Target can be a nickname or a #channel."
 msgstr ""
-"サイドのPMウィンドウを開くことなく、ユーザーに通知を送信します。\n"
-"ターゲットとメッセージの両方が必要です。 ターゲットは、ニックネームまたは#channelであることができます。"
+"相手側にPMウィンドウを開かせずに、ユーザーまたはチャンネルに通知を送信します。\n"
+"宛先とメッセージの両方が必須です。宛先にはニックネームまたは #channel を指定できます。"
 
 #: lib/retro_hex_chat/commands/handlers/msg.ex:15
 #: lib/retro_hex_chat/commands/handlers/msg.ex:20
@@ -1972,24 +1973,25 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/announce.ex:17
 #, elixir-autogen, elixir-format
 msgid "Send an urgent broadcast message to every connected user. Bypasses all ignore filters."
-msgstr "すべてのコネクティッドユーザーに緊急放送メッセージを送信します。 すべての無視フィルタをバイパスします。"
+msgstr "接続中のすべてのユーザーに緊急の一斉メッセージを送信します。すべての無視フィルターを無視して配信されます。"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:22
 #, elixir-autogen, elixir-format
 msgid "Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\nRequires: server administrator."
 msgstr ""
-"すべてのコネクティッドユーザーに緊急放送メッセージを送信します。 すべての無視フィルタをバイパスします。\n"
-"要求: サーバー管理者。"
+"接続中のすべてのユーザーに緊急の一斉メッセージを送信します。すべての無視フィルターを無視して配信されます。\n"
+"必要な権限: サーバー管理者。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:13
 #, elixir-autogen, elixir-format
 msgid "Server administration commands. Requires admin privilege."
-msgstr "サーバー管理コマンド。 管理者権限が必要です。"
+msgstr "サーバー管理コマンドです。管理者権限が必要です。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:15
 #, elixir-autogen, elixir-format
 msgid "Server administration commands. Requires admin privilege.\n"
-msgstr "サーバー管理コマンド。 管理者権限が必要です。"
+msgstr ""
+"サーバー管理コマンドです。管理者権限が必要です。\n"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:51
 #, elixir-autogen, elixir-format
@@ -1999,140 +2001,140 @@ msgstr "サーバー情報と設定"
 #: lib/retro_hex_chat/commands/handlers/set_welcome.ex:15
 #, elixir-autogen, elixir-format
 msgid "Set a message shown once to each user when they join the current channel."
-msgstr "現在のチャンネルに参加すると、各ユーザに一度表示されるメッセージを設定します。"
+msgstr "現在のチャンネルに参加した各ユーザーに、一度だけ表示されるメッセージを設定します。"
 
 #: lib/retro_hex_chat/commands/handlers/set_welcome.ex:20
 #, elixir-autogen, elixir-format
 msgid "Set a message shown once to each user when they join the current channel.\nRequires: channel operator. Must be in a channel.\nWith no args: clears the welcome message (same as /clearwelcome)."
 msgstr ""
-"現在のチャンネルに参加すると、各ユーザに一度表示されるメッセージを設定します。\n"
-"要求: チャネル オペレータ。 チャンネルでなければならない。\n"
-"argsなし:歓迎メッセージ(/clearwelcomeと同じ)をクリアします。"
+"現在のチャンネルに参加した各ユーザーに、一度だけ表示されるメッセージを設定します。\n"
+"必要な権限: チャンネルオペレーター。チャンネル内で使用してください。\n"
+"引数なしの場合: ウェルカムメッセージを消去します (/clearwelcome と同じ)。"
 
 #: lib/retro_hex_chat/commands/handlers/bio.ex:13
 #, elixir-autogen, elixir-format
 msgid "Set a short 'about me' text visible when others look you up with /whois."
-msgstr "他の人が/whoisであなたを調べるときに表示される短い「私について」テキストを設定します。"
+msgstr "他のユーザーが /whois であなたを調べたときに表示される、短い自己紹介を設定します。"
 
 #: lib/retro_hex_chat/commands/handlers/bio.ex:18
 #, elixir-autogen, elixir-format
 msgid "Set a short 'about me' text visible when others look you up with /whois.\nMax 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove."
 msgstr ""
-"他の人が/whoisであなたを調べるときに表示される短い「私について」テキストを設定します。\n"
-"最大200文字(この限界を超えたテキストは、静かに捨てられます)。 /bio を使用して、/bio をクリアして削除します。"
+"他のユーザーが /whois であなたを調べたときに表示される、短い自己紹介を設定します。\n"
+"最大200文字です (超えた分は通知なく切り捨てられます)。/bio で表示、/bio clear で削除できます。"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:78
 #, elixir-autogen, elixir-format
 msgid "Set channel password"
-msgstr "チャンネルパスワードを設定する"
+msgstr "チャンネルのパスワードを設定"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:16
 #, elixir-autogen, elixir-format
 msgid "Set channels to join automatically every time you connect."
-msgstr "接続するたびに自動的にチャンネルを設定できます。"
+msgstr "接続するたびに自動的に参加するチャンネルを設定します。"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:18
 #, elixir-autogen, elixir-format
 msgid "Set channels to join automatically every time you connect.\nSubcommands: list, add <#channel> [key], remove <#channel>, clear. No args opens the Perform dialog.\nChannel names must start with #. Registered users only."
 msgstr ""
-"接続するたびに自動的にチャンネルを設定できます。\n"
-"Subcommands:リスト、<#channel> [key]を追加し、<#channel>を削除し、クリアします。 args が [実行] ダイアログを開きます。\n"
-"チャンネル名は # から始まる必要があります。 登録ユーザーのみ。"
+"接続するたびに自動的に参加するチャンネルを設定します。\n"
+"サブコマンド: list、add <#channel> [key]、remove <#channel>、clear。引数なしの場合は実行設定ダイアログが開きます。\n"
+"チャンネル名は # で始める必要があります。登録ユーザーのみ利用できます。"
 
 #: lib/retro_hex_chat/commands/handlers/slow.ex:16
 #, elixir-autogen, elixir-format
 msgid "Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\nRequires: channel operator or owner."
 msgstr ""
-"チャンネルで参加スロットルを設定します(5 N秒ごとに参加)。 /slow 0 を使用して無効にします。\n"
-"要求します: チャネルのオペレータか所有者。"
+"チャンネルの参加制限を設定します (N秒あたり5人まで参加可能)。/slow 0 で無効にします。\n"
+"必要な権限: チャンネルオペレーターまたはオーナー。"
 
 #: lib/retro_hex_chat/commands/handlers/slow.ex:14
 #, elixir-autogen, elixir-format
 msgid "Set join throttle. 0 to disable."
-msgstr "参加スロットルを設定します。 0 を無効にします。"
+msgstr "参加制限を設定します。0 で無効になります。"
 
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:15
 #, elixir-autogen, elixir-format
 msgid "Set the server's Message of the Day shown to all users when they connect."
-msgstr "接続時にすべてのユーザーに表示された日のサーバーのメッセージを設定します。"
+msgstr "接続時にすべてのユーザーに表示される、サーバーのお知らせ (MOTD) を設定します。"
 
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:20
 #, elixir-autogen, elixir-format
 msgid "Set the server's Message of the Day shown to all users when they connect.\nRequires: server administrator. Message text is required."
 msgstr ""
-"接続時にすべてのユーザーに表示された日のサーバーのメッセージを設定します。\n"
-"要求: サーバー管理者。 メッセージ本文が必要です。"
+"接続時にすべてのユーザーに表示される、サーバーのお知らせ (MOTD) を設定します。\n"
+"必要な権限: サーバー管理者。メッセージ本文が必要です。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:19
 #, elixir-autogen, elixir-format
 msgid "Set up commands that automatically run every time you connect, like identifying with NickServ."
-msgstr "接続するたびに自動的に実行するコマンドを設定します。例えば、NickServ で識別します。"
+msgstr "NickServ での識別など、接続するたびに自動的に実行するコマンドを設定します。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:24
 #, elixir-autogen, elixir-format
 msgid "Set up commands that automatically run every time you connect.\nSubcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\nCommon use: /perform add /ns identify mypassword\nPositions are 0-based index numbers. Passwords are masked in the list display."
 msgstr ""
-"接続時に自動的に実行するコマンドを設定します。\n"
-"サブコマンド:リスト、<command>を追加し、<index>を削除し、<from> <to>を移動します。 argsがダイアログを開きます。\n"
-"一般的な使用:/performは/nsはmypasswordを識別します\n"
-"位置は 0 ベースのインデックス番号です。 パスワードはリスト表示にマスクされます。"
+"接続するたびに自動的に実行するコマンドを設定します。\n"
+"サブコマンド: list、add <command>、remove <index>、move <from> <to>、clear。引数なしの場合はダイアログが開きます。\n"
+"よくある使い方: /perform add /ns identify mypassword\n"
+"位置は0から始まる番号です。パスワードは一覧ではマスクされます。"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:73
 #, elixir-autogen, elixir-format
 msgid "Show ChanServ help"
-msgstr "ChanServヘルプを表示"
+msgstr "ChanServ のヘルプを表示"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:78
 #, elixir-autogen, elixir-format
 msgid "Show NickServ help"
-msgstr "NickServヘルプを表示"
+msgstr "NickServ のヘルプを表示"
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:38
 #, elixir-autogen, elixir-format
 msgid "Show active timers"
-msgstr "アクティブなタイマーを表示"
+msgstr "実行中のタイマーを表示"
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:39
 #, elixir-autogen, elixir-format
 msgid "Show all defined aliases"
-msgstr "すべての定義されたエイリアスを表示する"
+msgstr "定義済みのエイリアスをすべて表示"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:45
 #, elixir-autogen, elixir-format
 msgid "Show auto-respond rules"
-msgstr "自動応答ルールを表示する"
+msgstr "自動応答ルールを表示"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:46
 #, elixir-autogen, elixir-format
 msgid "Show perform commands"
-msgstr "コマンドを実行する"
+msgstr "実行コマンドを表示"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:39
 #, elixir-autogen, elixir-format
 msgid "Show your autojoin list"
-msgstr "autojoin リストを表示"
+msgstr "自動参加リストを表示"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:44
 #, elixir-autogen, elixir-format
 msgid "Show your notify list"
-msgstr "通知リストを表示する"
+msgstr "通知リストを表示"
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:39
 #, elixir-autogen, elixir-format
 msgid "Stop a running timer"
-msgstr "ランニングタイマーを停止する"
+msgstr "実行中のタイマーを停止"
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:15
 #, elixir-autogen, elixir-format
 msgid "Stop ignoring a user you previously blocked, making their messages visible again."
-msgstr "以前にブロックしたユーザーを無視しないようにし、メッセージが再び表示されます。"
+msgstr "以前に無視したユーザーの無視を解除し、そのメッセージを再び表示します。"
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:20
 #, elixir-autogen, elixir-format
 msgid "Stop ignoring a user you previously blocked, making their messages visible again.\nNickname is required. Use /ignore with no args to see your ignore list first."
 msgstr ""
-"以前にブロックしたユーザーを無視しないようにし、メッセージが再び表示されます。\n"
-"ニックネームが必要です。 /ignore を args なしで使用して、無視リストを最初に表示します。"
+"以前に無視したユーザーの無視を解除し、そのメッセージを再び表示します。\n"
+"ニックネームが必要です。まず引数なしの /ignore で無視リストを確認できます。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:48
 #: lib/retro_hex_chat/commands/handlers/alias.ex:34
@@ -2149,28 +2151,28 @@ msgstr "サブコマンド引数"
 #: lib/retro_hex_chat/commands/handlers/notify.ex:33
 #, elixir-autogen, elixir-format
 msgid "Subcommand: add, remove, edit, list"
-msgstr "サブコマンド: 追加、削除、編集、リスト"
+msgstr "サブコマンド: add、remove、edit、list"
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:32
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:40
 #, elixir-autogen, elixir-format
 msgid "Subcommand: list, add, remove"
-msgstr "サブコマンド:リスト、追加、削除"
+msgstr "サブコマンド: list、add、remove"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:34
 #, elixir-autogen, elixir-format
 msgid "Subcommand: list, add, remove, clear"
-msgstr "サブコマンド:リスト、追加、削除、クリア"
+msgstr "サブコマンド: list、add、remove、clear"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:41
 #, elixir-autogen, elixir-format
 msgid "Subcommand: list, add, remove, move, clear"
-msgstr "サブコマンド:リスト、追加、削除、移動、クリア"
+msgstr "サブコマンド: list、add、remove、move、clear"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:172
 #, elixir-autogen, elixir-format
 msgid "Subcommands: create, destroy, list, info, join, part, enable, disable, "
-msgstr "サブコマンド: 作成、破壊、リスト、情報、参加、参加、有効、無効、"
+msgstr "サブコマンド: create、destroy、list、info、join、part、enable、disable、"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:16
 #, elixir-autogen, elixir-format
@@ -2185,22 +2187,22 @@ msgstr "TURN サーバーの状態と割り当て"
 #: lib/retro_hex_chat/commands/handlers/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "Target channel (defaults to current channel)"
-msgstr "ターゲットチャネル(現在のチャネルへのデフォルト)"
+msgstr "対象チャンネル(省略時は現在のチャンネル)"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:36
 #, elixir-autogen, elixir-format
 msgid "Target nickname (for +o, +v, +b)"
-msgstr "ターゲットニックネーム(+o、+v、+b)"
+msgstr "対象ニックネーム(+o、+v、+b 用)"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:32
 #, elixir-autogen, elixir-format
 msgid "Target user"
-msgstr "ターゲットユーザー"
+msgstr "対象ユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/slow.ex:25
 #, elixir-autogen, elixir-format
 msgid "Throttle interval in seconds (0 to disable)"
-msgstr "秒単位のスロットル間隔(0 を無効にする)"
+msgstr "スロットル間隔(秒、0 で無効にする)"
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:30
 #, elixir-autogen, elixir-format
@@ -2210,61 +2212,61 @@ msgstr "タイマー名"
 #: lib/retro_hex_chat/commands/handlers/umode.ex:13
 #, elixir-autogen, elixir-format
 msgid "Toggle personal user modes that affect what messages you receive."
-msgstr "受信したメッセージに影響を与える個人ユーザーモードを切り替えます。"
+msgstr "受信するメッセージに影響する個人ユーザーモードを切り替えます。"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:15
 #, elixir-autogen, elixir-format
 msgid "Toggle personal user modes that affect what messages you receive.\nAvailable modes: +w (wallops — receive operator broadcast messages), -w (stop receiving).\nMust start with + or -. Currently only the w (wallops) mode is supported."
 msgstr ""
-"受信したメッセージに影響を与える個人ユーザーモードを切り替えます。\n"
-"利用可能なモード: +w (wallops — オペレータの放送メッセージを受信), -w (受信停止).\n"
-"+ または - で始まる必要があります。 現在、w(wallops)モードのみがサポートされています。"
+"受信するメッセージに影響する個人ユーザーモードを切り替えます。\n"
+"利用可能なモード: +w(wallops — オペレーターからの一斉配信メッセージを受信)、-w(受信を停止)。\n"
+"+ または - で始める必要があります。現在は w(wallops)モードのみサポートされています。"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:71
 #, elixir-autogen, elixir-format
 msgid "Topic protected"
-msgstr "保護されたトピック"
+msgstr "トピック保護"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:13
 #, elixir-autogen, elixir-format
 msgid "Track when specific users come online or go offline with your buddy list."
-msgstr "特定のユーザーがオンラインで来るとき、またはあなたのバディリストでオフラインに行くときに追跡します。"
+msgstr "バディリストで、特定のユーザーがオンラインになったときやオフラインになったときを追跡します。"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:18
 #, elixir-autogen, elixir-format
 msgid "Track when specific users come online or go offline with your buddy list.\nSubcommands: add <nick> [note], remove <nick>, edit <nick> <note>, list. No args opens the dialog.\nRegistered users: persisted. Guests: session-only."
 msgstr ""
-"特定のユーザーがオンラインで来るとき、またはあなたのバディリストでオフラインに行くときに追跡します。\n"
-"サブコマンド: <nick> [注] を追加し、<nick> を削除し、<nick> <note> を編集します。 argsがダイアログを開きます。\n"
-"登録ユーザー: 主張される。 ゲスト:セッションのみ"
+"バディリストで、特定のユーザーがオンラインになったときやオフラインになったときを追跡します。\n"
+"サブコマンド: add <nick> [メモ]、remove <nick>、edit <nick> <note>、list。引数なしでダイアログを開きます。\n"
+"登録ユーザー: 保存されます。ゲスト: セッション中のみ。"
 
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:15
 #, elixir-autogen, elixir-format
 msgid "Transfer channel ownership to another user."
-msgstr "チャネルの所有権を別のユーザーに転送します。"
+msgstr "チャンネルの所有権を別のユーザーに譲渡します。"
 
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:17
 #, elixir-autogen, elixir-format
 msgid "Transfer channel ownership to another user.\nThe new owner gets +q (owner) and you are demoted to operator.\nRequires: channel owner."
 msgstr ""
-"チャネルの所有権を別のユーザーに転送します。\n"
-"新しい所有者は+q(所有者)を取得し、オペレータにデモされています。\n"
-"要求: チャネルの所有者。"
+"チャンネルの所有権を別のユーザーに譲渡します。\n"
+"新しい所有者は +q(所有者)を得て、あなたはオペレーターに降格されます。\n"
+"必要条件: チャンネルの所有者。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:20
 #, elixir-autogen, elixir-format
 msgid "Type /admin <subcommand> for usage details."
-msgstr "使用の詳細については/admin <subcommand>を入力します。"
+msgstr "使い方の詳細は /admin <subcommand> と入力してください。"
 
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:36
 #, elixir-autogen, elixir-format
 msgid "Type: all, messages, pms, actions, notices, invites"
-msgstr "タイプ: すべて、メッセージ、午後、行動、通知、招待"
+msgstr "種類: all、messages、pms、actions、notices、invites"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:76
 #, elixir-autogen, elixir-format
 msgid "Unknown /notify subcommand. Use: add, remove, edit, list"
-msgstr "不明な/notifyサブコマンド。 使用: 追加、削除、編集、リスト"
+msgstr "不明な /notify のサブコマンドです。使用可能: add、remove、edit、list"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:111
 #, elixir-autogen, elixir-format
@@ -2274,72 +2276,69 @@ msgstr "未知の管理者サブコマンド: %{subcmd}. 試す:サーバー、�
 #: lib/retro_hex_chat/commands/handlers/bot.ex:663
 #, elixir-autogen, elixir-format
 msgid "Unknown setting '%{key}'. Valid: %{settings}"
-msgstr "不明な設定 '%{key}'。有効: %{settings}"
+msgstr "不明な設定 '%{key}' です。有効な設定: %{settings}"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:51
 #, elixir-autogen, elixir-format
 msgid "Unknown user mode: %{flag}"
-msgstr "未知のユーザモード: %{flag}"
+msgstr "不明なユーザーモード: %{flag}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:298
 #, elixir-autogen, elixir-format
 msgid "Uptime stats: %{state_stats_messages_handled} msgs handled"
-msgstr "稼働時間ステータス: %{state_stats_messages_handled} msgs 処理"
+msgstr "稼働統計: %{state_stats_messages_handled} 件のメッセージを処理"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:85
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]"
-msgstr ""
-"使用法: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> "
-"[args]"
+msgstr "使い方: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]"
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:53
 #: lib/retro_hex_chat/commands/handlers/alias.ex:54
 #: lib/retro_hex_chat/commands/handlers/alias.ex:58
 #, elixir-autogen, elixir-format
 msgid "Usage: /alias add <name> <expansion>"
-msgstr "使用法: /aliasは<name> <expansion>を加えます"
+msgstr "使い方: /alias add <name> <expansion>"
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:61
 #: lib/retro_hex_chat/commands/handlers/alias.ex:63
 #, elixir-autogen, elixir-format
 msgid "Usage: /alias remove <name>"
-msgstr "使用法: /aliasは<name>を取除きます"
+msgstr "使い方: /alias remove <name>"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:38
 #, elixir-autogen, elixir-format
 msgid "Usage: /announce <message>"
-msgstr "使用法: /announce <message>"
+msgstr "使い方: /announce <message>"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:54
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:62
 #, elixir-autogen, elixir-format
 msgid "Usage: /autojoin add #channel [key]"
-msgstr "使用法: /autojoinは#channel [キー]を加えます"
+msgstr "使用法: /autojoin add #channel [キー]"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:66
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:71
 #, elixir-autogen, elixir-format
 msgid "Usage: /autojoin remove #channel"
-msgstr "使用法: /autojoinは#channelを取除きます"
+msgstr "使用法: /autojoin remove #channel"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:70
 #, elixir-autogen, elixir-format
 msgid "Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] <command>"
-msgstr ""
-"使用法: /autorespondは<on_join|on_part|on_nick_change> [#channel] <command>を加えます"
+msgstr "使用法: /autorespond add <on_join|on_part|on_nick_change> [#channel] <command>"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:66
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:78
 #, elixir-autogen, elixir-format
 msgid "Usage: /autorespond add <trigger> [#channel] <command>"
-msgstr "使用法: /autorespondは<trigger> [#channel] <command>を加えます"
+msgstr "使用法: /autorespond add <trigger> [#channel] <command>"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:81
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:84
 #, elixir-autogen, elixir-format
 msgid "Usage: /autorespond remove <position>"
-msgstr "使用法: /autorespondは<position>を取除きます"
+msgstr "使用法: /autorespond remove <position>"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:34
 #, elixir-autogen, elixir-format
@@ -2359,7 +2358,7 @@ msgstr "使用法: /devoice <nickname>"
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:85
 #, elixir-autogen, elixir-format
 msgid "Usage: /ignore <nickname> [type] [duration]"
-msgstr "使用法: /ignore <nickname> [タイプ] [duration]"
+msgstr "使用法: /ignore <nickname> [タイプ] [期間]"
 
 #: lib/retro_hex_chat/commands/handlers/invite.ex:41
 #, elixir-autogen, elixir-format
@@ -2420,38 +2419,38 @@ msgstr "使用法: /notice <target> <message>"
 #: lib/retro_hex_chat/commands/handlers/notify.ex:53
 #, elixir-autogen, elixir-format
 msgid "Usage: /notify add <nickname> [note]"
-msgstr "使用法: /notifyは<nickname> [ノート]を加えます"
+msgstr "使用法: /notify add <nickname> [メモ]"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:65
 #: lib/retro_hex_chat/commands/handlers/notify.ex:70
 #, elixir-autogen, elixir-format
 msgid "Usage: /notify edit <nickname> <note>"
-msgstr "使用法: /notifyは<nickname> <note>を編集します"
+msgstr "使用法: /notify edit <nickname> <note>"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:59
 #, elixir-autogen, elixir-format
 msgid "Usage: /notify remove <nickname>"
-msgstr "使用法: /notifyは<nickname>を取除きます"
+msgstr "使用法: /notify remove <nickname>"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:135
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns drop <password>"
-msgstr "使用法: /ns の低下 <password>"
+msgstr "使用法: /ns drop <password>"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:117
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns ghost <nickname> <password>"
-msgstr "使用法: /ns の幻影 <nickname> <password>"
+msgstr "使用法: /ns ghost <nickname> <password>"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:105
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns identify <password>"
-msgstr "使用法: /nsは<password>を識別します"
+msgstr "使用法: /ns identify <password>"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:95
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns register <password>"
-msgstr "使用法: /nsは<password>を登録します"
+msgstr "使用法: /ns register <password>"
 
 #: lib/retro_hex_chat/commands/handlers/op.ex:26
 #, elixir-autogen, elixir-format
@@ -2468,18 +2467,18 @@ msgstr "使用法: /p2p <nickname>"
 #: lib/retro_hex_chat/commands/handlers/perform.ex:62
 #, elixir-autogen, elixir-format
 msgid "Usage: /perform add <command>"
-msgstr "使用法: /performは<command>を加えます"
+msgstr "使用法: /perform add <command>"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:83
 #: lib/retro_hex_chat/commands/handlers/perform.ex:132
 #, elixir-autogen, elixir-format
 msgid "Usage: /perform move <from> <to>"
-msgstr "使用法: /performは<from> <to>を動かします"
+msgstr "使用法: /perform move <from> <to>"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:77
 #, elixir-autogen, elixir-format
 msgid "Usage: /perform remove <number>"
-msgstr "使用法: /performは<number>を取除きます"
+msgstr "使用法: /perform remove <number>"
 
 #: lib/retro_hex_chat/commands/handlers/query.ex:11
 #: lib/retro_hex_chat/commands/handlers/query.ex:27
@@ -2495,12 +2494,12 @@ msgstr "使用法: /setmotd <text>"
 #: lib/retro_hex_chat/commands/handlers/slow.ex:32
 #, elixir-autogen, elixir-format
 msgid "Usage: /slow <seconds> (0 to disable)"
-msgstr "使用法: /slow <seconds> (無効にする0)"
+msgstr "使用法: /slow <seconds> (0で無効にする)"
 
 #: lib/retro_hex_chat/commands/handlers/slow.ex:54
 #, elixir-autogen, elixir-format
 msgid "Usage: /slow <seconds> — must be a positive number (0 to disable)"
-msgstr "使用法: /slow <seconds> — 正の数でなければなりません (0 無効にするには)"
+msgstr "使用法: /slow <seconds> — 正の数を指定してください (0で無効にする)"
 
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:26
 #, elixir-autogen, elixir-format
@@ -2554,17 +2553,17 @@ msgstr "使用法: /whowas <nickname>"
 #: lib/retro_hex_chat/commands/registry.ex:78
 #, elixir-autogen, elixir-format
 msgid "User"
-msgstr "ユーザー登録"
+msgstr "ユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:75
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is not registered."
-msgstr "ユーザ '%{nickname}' が登録されていません。"
+msgstr "ユーザー '%{nickname}' は登録されていません。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:54
 #, elixir-autogen, elixir-format
 msgid "User management (ban, kick, mute, rename, role)"
-msgstr "ユーザー管理(禁止、キック、ミュート、リネーム、ロール)"
+msgstr "ユーザー管理(バン、キック、ミュート、名前の変更、ロール)"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:21
 #, elixir-autogen, elixir-format
@@ -2574,22 +2573,22 @@ msgstr "ユーザー モード: +w (wallops)、-w"
 #: lib/retro_hex_chat/commands/handlers/ban.ex:30
 #, elixir-autogen, elixir-format
 msgid "User to ban"
-msgstr "禁止するユーザー"
+msgstr "バンするユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/op.ex:23
 #, elixir-autogen, elixir-format
 msgid "User to give operator status"
-msgstr "オペレータの状態を与えるユーザー"
+msgstr "オペレーター権限を付与するユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:23
 #, elixir-autogen, elixir-format
 msgid "User to give voice"
-msgstr "声をあげるユーザ"
+msgstr "ボイス(発言権)を付与するユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:32
 #, elixir-autogen, elixir-format
 msgid "User to ignore"
-msgstr "無視するユーザ"
+msgstr "無視するユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/invite.ex:30
 #, elixir-autogen, elixir-format
@@ -2604,32 +2603,32 @@ msgstr "キックするユーザー"
 #: lib/retro_hex_chat/commands/handlers/whois.ex:21
 #, elixir-autogen, elixir-format
 msgid "User to look up"
-msgstr "ユーザーが調べる"
+msgstr "調べるユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:22
 #, elixir-autogen, elixir-format
 msgid "User to mute"
-msgstr "ユーザがミュートする"
+msgstr "ミュートするユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/deop.ex:26
 #, elixir-autogen, elixir-format
 msgid "User to remove operator status from"
-msgstr "オペレータの状態をから取除くユーザー"
+msgstr "オペレーター権限を取り消すユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/devoice.ex:23
 #, elixir-autogen, elixir-format
 msgid "User to remove voice from"
-msgstr "声を取除くユーザー"
+msgstr "ボイス(発言権)を取り消すユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/unban.ex:23
 #, elixir-autogen, elixir-format
 msgid "User to unban"
-msgstr "禁止するユーザー"
+msgstr "バンを解除するユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/unmute.ex:23
 #, elixir-autogen, elixir-format
 msgid "User to unmute"
-msgstr "ユーザが無ミュート"
+msgstr "ミュート解除するユーザー"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:72
 #, elixir-autogen, elixir-format
@@ -2646,9 +2645,9 @@ msgstr "チャンネル登録情報を見る"
 #, elixir-autogen, elixir-format
 msgid "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via Help Topics in the toolbar."
 msgstr ""
-"任意のコマンドのヘルプを表示したり、利用可能なすべてのコマンドを閲覧したりできます。\n"
-"argsなし:すべてのコマンドをリストします。 コマンド名: 詳細なヘルプを表示します。\n"
-"また、ツールバーのヘルプトピックを介してアクセス可能です。"
+"任意のコマンドのヘルプを表示したり、利用可能なすべてのコマンドを一覧表示したりできます。\n"
+"引数なし: すべてのコマンドを一覧表示します。コマンド名を指定: 詳細なヘルプを表示します。\n"
+"ツールバーの「ヘルプ」トピックからも利用できます。"
 
 #: lib/retro_hex_chat/commands/handlers/topic.ex:13
 #, elixir-autogen, elixir-format
@@ -2660,8 +2659,8 @@ msgstr "チャンネル上部のトピックバーに表示されるチャンネ
 msgid "View or change the channel topic displayed in the topic bar at the top of the channel.\nNo args: shows current topic. With text: sets a new topic.\nMust be in a channel. If channel has +t mode, only operators can change the topic."
 msgstr ""
 "チャンネル上部のトピックバーに表示されるチャンネルトピックを表示または変更します。\n"
-"args: 現在のトピックを示します。 テキスト:新しいトピックを設定します。\n"
-"チャンネルでなければならない。 チャネルが +t モードの場合、演算子のみがトピックを変更できます。"
+"引数なし: 現在のトピックを表示します。テキストを指定: 新しいトピックを設定します。\n"
+"チャンネル内で実行する必要があります。チャンネルが +t モードの場合、オペレーターのみがトピックを変更できます。"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:71
 #, elixir-autogen, elixir-format
@@ -2672,27 +2671,27 @@ msgstr "ニックネームの登録情報を見る"
 #: lib/retro_hex_chat/commands/handlers/motd.ex:18
 #, elixir-autogen, elixir-format
 msgid "View the server's Message of the Day, which is also shown automatically when you connect."
-msgstr "接続時にサーバーのメッセージが表示されます。"
+msgstr "サーバーのメッセージ・オブ・ザ・デイ(MOTD)を表示します。接続時にも自動的に表示されます。"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:47
 #, elixir-autogen, elixir-format
 msgid "Voice"
-msgstr "インタビュー"
+msgstr "ボイス"
 
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:47
 #, elixir-autogen, elixir-format
 msgid "Wallops sent."
-msgstr "Wallopsが送信されました。"
+msgstr "Wallopsを送信しました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:177
 #, elixir-autogen, elixir-format
 msgid "Without arguments, opens the Bot Management dialog (admins) or shows bot list."
-msgstr "引数なし、ボット管理ダイアログ(管理者)を開き、ボットリストを表示します。"
+msgstr "引数なしの場合、ボット管理ダイアログ(管理者)を開くか、ボットリストを表示します。"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:49
 #, elixir-autogen, elixir-format
 msgid "You are already using that nickname"
-msgstr "そのニックネームを既に使用しています"
+msgstr "すでにそのニックネームを使用しています"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:24
 #: lib/retro_hex_chat/commands/handlers/event.ex:72
@@ -2708,57 +2707,57 @@ msgstr "どのチャンネルにも参加していません"
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:49
 #, elixir-autogen, elixir-format
 msgid "You cannot ignore yourself"
-msgstr "自分で無視できない"
+msgstr "自分自身を無視することはできません"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:38
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to ban users"
-msgstr "ユーザを禁止するチャンネル演算子でなければなりません"
+msgstr "ユーザーをBANするにはチャンネルオペレーターである必要があります"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:115
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change modes"
-msgstr "モードを変更するチャネル演算子でなければなりません"
+msgstr "モードを変更するにはチャンネルオペレーターである必要があります"
 
 #: lib/retro_hex_chat/commands/handlers/kick.ex:38
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to kick users"
-msgstr "ユーザーがキックするチャンネル演算子でなければなりません"
+msgstr "ユーザーをキックするにはチャンネルオペレーターである必要があります"
 
 #: lib/retro_hex_chat/commands/handlers/unban.ex:33
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to unban users"
-msgstr "あなたは、ユーザーを禁止するチャネル演算子でなければなりません"
+msgstr "ユーザーのBANを解除するにはチャンネルオペレーターである必要があります"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:38
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
-msgstr "このコマンドを使用するチャンネル演算子でなければなりません"
+msgstr "このコマンドを使用するにはチャンネルオペレーターである必要があります"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:95
 #, elixir-autogen, elixir-format
 msgid "You must be a server administrator to use this command"
-msgstr "このコマンドを使用するサーバー管理者でなければなりません"
+msgstr "このコマンドを使用するにはサーバー管理者である必要があります"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:83
 #, elixir-autogen, elixir-format
 msgid "You must be at least a half-operator to use this command"
-msgstr "このコマンドを使用するには、少なくともハーフ演算子が必要です。"
+msgstr "このコマンドを使用するには、少なくともハーフオペレーターである必要があります"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:43
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use /p2p."
-msgstr "/p2p を使用するために識別する必要があります。"
+msgstr "/p2p を使用するには識別が必要です。"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:66
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use this command"
-msgstr "このコマンドを使用するには、NickServ で識別する必要があります。"
+msgstr "このコマンドを使用するには、NickServ で識別する必要があります"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:52
 #, elixir-autogen, elixir-format
 msgid "You must be the channel owner to use this command"
-msgstr "このコマンドを使用するチャンネル所有者でなければなりません"
+msgstr "このコマンドを使用するにはチャンネルオーナーである必要があります"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:425
 #: lib/retro_hex_chat/commands/handlers/bot.ex:428
@@ -2774,27 +2773,27 @@ msgstr "[BotService] %{name} にはカスタムコマンドはありません。
 #: lib/retro_hex_chat/commands/handlers/bot.ex:407
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
-msgstr "[BotService] ボット '%{name}' %{action}."
+msgstr "[BotService] ボット '%{name}' を%{action}しました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:276
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
-msgstr "[BotService] ボット '%{name}' が破壊されました。"
+msgstr "[BotService] ボット '%{name}' を削除しました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:362
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' is already in %{channel}."
-msgstr "[BotService] ボット '%{name}' は %{channel} で既に存在しています。"
+msgstr "[BotService] ボット '%{name}' はすでに %{channel} に参加しています。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:354
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
-msgstr "[BotService] ボット '%{name}' が %{channel} に加わりました。"
+msgstr "[BotService] ボット '%{name}' が %{channel} に参加しました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:384
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
-msgstr "[BotService] ボット '%{name}' 左 %{channel}."
+msgstr "[BotService] ボット '%{name}' が %{channel} から退出しました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:115
 #: lib/retro_hex_chat/commands/handlers/bot.ex:235
@@ -2814,22 +2813,22 @@ msgstr "[BotService] ボット '%{name}' が見つかりません。"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:308
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot Info: %{name}"
-msgstr "[BotService] Bot 情報: %{name}"
+msgstr "[BotService] ボット情報: %{name}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:863
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bots:"
-msgstr "[BotService]ボット:"
+msgstr "[BotService] ボット:"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:834
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed from %{name}."
-msgstr "[BotService] %{name}から削除されたコマンド「%{trigger}」。"
+msgstr "[BotService] %{name} からコマンド「%{trigger}」を削除しました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:803
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' set for %{name}."
-msgstr "[BotService] コマンド '%{trigger}' が %{name} に設定されます。"
+msgstr "[BotService] %{name} にコマンド「%{trigger}」を設定しました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:767
 #, elixir-autogen, elixir-format
@@ -2844,12 +2843,12 @@ msgstr "[BotService] コマンド '%{trigger}' を追加できませんでした
 #: lib/retro_hex_chat/commands/handlers/bot.ex:225
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot: %{message}"
-msgstr "[BotService] Bot を作成できませんでした: %{message}"
+msgstr "[BotService] ボットを作成できませんでした: %{message}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:859
 #, elixir-autogen, elixir-format
 msgid "[BotService] No bots configured."
-msgstr "[BotService]の ボットの設定はありません。"
+msgstr "[BotService] 設定されているボットはありません。"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:175
 #, elixir-autogen, elixir-format
@@ -2859,7 +2858,7 @@ msgstr "[ChanServ] %{message}の特長"
 #: lib/retro_hex_chat/commands/handlers/cs.ex:204
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
-msgstr "[ChanServ] %{name}: 創始者=%{founder}, 登録=%{registered_at}"
+msgstr "[ChanServ] %{name}: 設立者=%{founder}, 登録=%{registered_at}"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:384
 #, elixir-autogen, elixir-format
@@ -2884,7 +2883,8 @@ msgstr "サーバー、ユーザー、チャネル、ns、cs、デバッグ、�
 #: lib/retro_hex_chat/commands/handlers/bot.ex:176
 #, elixir-autogen, elixir-format
 msgid "set, commands, addcmd, delcmd, help.\n"
-msgstr "set, コマンド, addcmd, delcmd, help."
+msgstr ""
+"set, commands, addcmd, delcmd, help.\n"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:67
 #, elixir-autogen, elixir-format
@@ -2895,8 +2895,8 @@ msgstr "ユーザー '%{nickname}' はオフラインです。"
 #, elixir-autogen, elixir-format
 msgid "Open a P2P session that hosts calls, file transfers, and games together over one connection.\nRequires: both users must be registered and identified (/ns identify)."
 msgstr ""
-"通話、ファイル転送、ゲームを1つの接続でホストするP2Pセッションを開きます。\n"
-"必須: どちらのユーザーが登録され、識別される必要があります (/ns 識別)。"
+"通話、ファイル転送、ゲームを1つの接続でまとめて扱うP2Pセッションを開きます。\n"
+"必須: 両方のユーザーが登録済みで、識別されている必要があります (/ns identify)。"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:26
 #, elixir-autogen, elixir-format
@@ -2908,7 +2908,7 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot start a P2P session with yourself."
-msgstr "P2P セッションを自分で起動することはできません。"
+msgstr "自分自身とP2Pセッションを開始することはできません。"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:329
 #, elixir-autogen, elixir-format
@@ -2925,7 +2925,7 @@ msgstr "#%{id} %{label} | %{browser} / %{os} | 最終 %{last_seen}"
 #: lib/retro_hex_chat/commands/handlers/ns.ex:284
 #, elixir-autogen, elixir-format
 msgid "%{count} active sessions ended."
-msgstr "%{count} アクティブセッション終了"
+msgstr "%{count} 件のアクティブなセッションを終了しました。"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:40
 #: lib/retro_hex_chat/commands/handlers/ns.ex:40
@@ -2961,22 +2961,22 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/ns.ex:262
 #, elixir-autogen, elixir-format
 msgid "All trusted terminals revoked. %{count} active sessions ended."
-msgstr "信頼できる端末はすべて再発します。 %{count} アクティブセッション終了"
+msgstr "信頼できる端末をすべて失効させました。%{count} 件のアクティブなセッションを終了しました。"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:77
 #, elixir-autogen, elixir-format
 msgid "End an active session"
-msgstr "アクティブセッションを終了"
+msgstr "アクティブなセッションを終了する"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:75
 #, elixir-autogen, elixir-format
 msgid "List active sessions"
-msgstr "アクティブなセッションのリスト"
+msgstr "アクティブなセッションを一覧表示"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:74
 #, elixir-autogen, elixir-format
 msgid "List trusted terminals"
-msgstr "信頼できる端末をリスト"
+msgstr "信頼できる端末を一覧表示"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:246
 #, elixir-autogen, elixir-format
@@ -2992,30 +2992,30 @@ msgstr "このニックネームの信頼できる端末はありません。"
 #, elixir-autogen, elixir-format
 msgid "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, devices, sessions, revoke-device <id|all>, kill-session <id|all>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using the registered nickname's password."
 msgstr ""
-"NickServ 経由でパスワードでニックネームを登録して保護します。\n"
-"サブコマンド: <password> を登録します。, <password> を識別します。, <nick> <password> ゴースト, 情報 [ニックネーム], <password> をドロップします。, デバイス, セッション, 冗談 <id|all>, キルセッション <id|all>, 助け.\n"
-"登録:現在のニックネームを主張します。 Identify: 各セッションを認証します。\n"
-"ゴースト: 登録されたニックネームのパスワードを使用して階段のセッションを切断します。"
+"NickServ を通じて、パスワードでニックネームを登録・保護します。\n"
+"サブコマンド: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, devices, sessions, revoke-device <id|all>, kill-session <id|all>, help.\n"
+"register: 現在のニックネームを登録します。identify: セッションごとに認証します。\n"
+"ghost: 登録済みニックネームのパスワードを使って、残っている古いセッションを切断します。"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:76
 #, elixir-autogen, elixir-format
 msgid "Revoke a trusted terminal"
-msgstr "信頼できる端末を再発行"
+msgstr "信頼できる端末を失効させる"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:291
 #, elixir-autogen, elixir-format
 msgid "Session %{id} ended."
-msgstr "セッション%{id}終了"
+msgstr "セッション %{id} を終了しました。"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:49
 #, elixir-autogen, elixir-format
 msgid "Subcommand: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
-msgstr "サブコマンド:レジスタ、識別、ゴースト、情報、ドロップ、デバイス、セッション、レボケデバイス、キルセッション"
+msgstr "サブコマンド: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:274
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal %{id} revoked."
-msgstr "信頼されるターミナル %{id} は呼び出しました。"
+msgstr "信頼済み端末 %{id} を失効させました。"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:239
 #, elixir-autogen, elixir-format
@@ -3034,29 +3034,27 @@ msgstr "不明なOS"
 #: lib/retro_hex_chat/commands/handlers/ns.ex:347
 #, elixir-autogen, elixir-format
 msgid "Unknown browser"
-msgstr "未知のブラウザ"
+msgstr "不明なブラウザー"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:85
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns <register|identify|ghost|info|drop|devices|sessions|revoke-device|kill-session|help> [args]"
-msgstr ""
-"使用法: /ns <register|identify|ghost|info|drop|devices|sessions|revoke-"
-"device|kill-session|help> [args]"
+msgstr "使い方: /ns <register|identify|ghost|info|drop|devices|sessions|revoke-device|kill-session|help> [引数]"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:311
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns kill-session <id|all>"
-msgstr "使用法: /ns キルセッション <id|all>"
+msgstr "使い方: /ns kill-session <id|all>"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:310
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns revoke-device <id|all>"
-msgstr "使用法: /ns の revoke-device <id|all>"
+msgstr "使い方: /ns revoke-device <id|all>"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:316
 #, elixir-autogen, elixir-format
 msgid "You must be identified to manage trusted terminals."
-msgstr "信頼できる端末を管理するために識別する必要があります。"
+msgstr "信頼済み端末を管理するには、識別（identify）されている必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:260
 #: lib/retro_hex_chat/commands/handlers/ns.ex:353
@@ -3067,7 +3065,7 @@ msgstr "なし"
 #: lib/retro_hex_chat/commands/timestamp.ex:17
 #, elixir-autogen, elixir-format
 msgid "unknown"
-msgstr "unknown"
+msgstr "不明"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:256
 #, elixir-autogen, elixir-format
@@ -3102,12 +3100,12 @@ msgstr "[BotService] %{name} のフィード:"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:698
 #, elixir-autogen, elixir-format
 msgid "%{field} must be one of: %{modes}."
-msgstr "%{field} は次のいずれかである必要があります: %{modes}。"
+msgstr "%{field} は次のいずれかにしてください: %{modes}。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:524
 #, elixir-autogen, elixir-format
 msgid "Onboarding line %{key} cleared."
-msgstr "案内メッセージ %{key} を消去しました。"
+msgstr "案内メッセージ %{key} をクリアしました。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:525
 #, elixir-autogen, elixir-format
@@ -3139,52 +3137,52 @@ msgstr "/unpin <メッセージID>"
 #: lib/retro_hex_chat/commands/handlers/pin.ex:20
 #, elixir-autogen, elixir-format
 msgid "Id of the message to keep"
-msgstr "保持するメッセージの id"
+msgstr "固定するメッセージの ID"
 
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:23
 #, elixir-autogen, elixir-format
 msgid "Id of the message to stop keeping"
-msgstr "保持をやめるメッセージの id"
+msgstr "固定を解除するメッセージの ID"
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:14
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
 msgstr ""
-"チャンネル全体に向けてメッセージを見えるようにしておきます——決まりごと、リンク、合意した内容。\n"
-"固定したメッセージは「固定」ウィンドウに並び、スクロールで流れたあとも見つけられます。\n"
-"運営者のみ。1 チャンネルにつき 50 件までです。"
+"メッセージをチャンネル全体に見える形で固定します（ルール、リンク、決まったことなど）。\n"
+"固定したメッセージは「固定」ウィンドウに一覧表示され、スクロールで流れたあとも見つけられます。\n"
+"オペレーターのみ。1 チャンネルにつき 50 件までです。"
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:12
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel."
-msgstr "チャンネル全体に向けてメッセージを見えるようにしておきます。"
+msgstr "メッセージをチャンネル全体に見える形で固定します。"
 
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:12
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view."
-msgstr "メッセージを見えるようにしておくのをやめます。"
+msgstr "メッセージの固定を解除します。"
 
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:14
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
 msgstr ""
-"メッセージを見えるようにしておくのをやめます。メッセージ自体はその場に残り、固定だけが外れます。\n"
-"運営者のみ。"
+"メッセージの固定を解除します。メッセージ自体はそのまま残り、固定だけが外れます。\n"
+"オペレーターのみ。"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:195
 #, elixir-autogen, elixir-format
 msgid "That is not a message id"
-msgstr "それはメッセージ id ではありません"
+msgstr "メッセージ ID ではありません"
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:26
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /pin <id>, or pin it from its right-click menu."
-msgstr "どのメッセージですか。/pin <id> を使うか、右クリックメニューから固定してください。"
+msgstr "どのメッセージですか？ /pin <id> を使うか、右クリックメニューから固定してください。"
 
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:28
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
-msgstr "どのメッセージですか。/unpin <id> を使うか、「固定」ウィンドウから解除してください。"
+msgstr "どのメッセージですか？ /unpin <id> を使うか、「固定」ウィンドウから解除してください。"
 
 #: lib/retro_hex_chat/commands/handlers/event.ex:13
 #: lib/retro_hex_chat/commands/handlers/event.ex:13
@@ -3195,7 +3193,7 @@ msgstr "/event [<when> <title> | cancel <id>]"
 #: lib/retro_hex_chat/commands/handlers/event.ex:83
 #, elixir-autogen, elixir-format
 msgid "An event has to start later than now."
-msgstr "イベントは今より後に始まる必要があります。"
+msgstr "イベントの開始は現在より後にする必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/event.ex:31
 #, elixir-autogen, elixir-format
@@ -3214,7 +3212,7 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/event.ex:14
 #, elixir-autogen, elixir-format
 msgid "Schedule something the channel will do together."
-msgstr "チャンネルで一緒にすることを予定します。"
+msgstr "チャンネルのみんなで一緒に行う予定を登録します。"
 
 #: lib/retro_hex_chat/commands/handlers/event.ex:48
 #, elixir-autogen, elixir-format
@@ -3239,12 +3237,12 @@ msgstr "いつですか？ 今からの間隔で指定してください（2h、
 #: lib/retro_hex_chat/commands/handlers/event.ex:43
 #, elixir-autogen, elixir-format
 msgid "Which one? Use /event cancel <id>."
-msgstr "どれですか？ /event cancel <id> を使ってください。"
+msgstr "どのイベントですか？ /event cancel <id> を使ってください。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:50
 #, elixir-autogen, elixir-format
 msgid "Asks you to confirm before the change takes effect."
-msgstr "変更が有効になる前に確認するように依頼します。"
+msgstr "変更が反映される前に確認を求めます。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:37
 #, elixir-autogen, elixir-format
@@ -3274,12 +3272,12 @@ msgstr "NickServとChanServ"
 #: lib/retro_hex_chat/commands/mirc_parity.ex:53
 #, elixir-autogen, elixir-format
 msgid "Open the private conversation and use /me there."
-msgstr "プライベートな会話を開き、そこに/meを使用します。"
+msgstr "プライベートな会話を開き、そこで/meを使ってください。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:61
 #, elixir-autogen, elixir-format
 msgid "Opens a channel list you can sort and filter."
-msgstr "ソートしてフィルタリングできるチャンネルリストを開きます。"
+msgstr "並べ替えや絞り込みができるチャンネルリストを開きます。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:33
 #, elixir-autogen, elixir-format
@@ -3289,94 +3287,94 @@ msgstr "会話"
 #: lib/retro_hex_chat/commands/mirc_parity.ex:67
 #, elixir-autogen, elixir-format
 msgid "The nick list beside every channel shows who is there."
-msgstr "そこにあるすべてのチャネルショーの横にあるニックネームのリスト。"
+msgstr "各チャンネルの横にあるニックネームリストには、そこにいる人が表示されます。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:126
 #, elixir-autogen, elixir-format
 msgid "There are no .mrc scripts. /autorespond runs a command when someone joins, leaves or changes nickname."
-msgstr "There are no .mrc scripts. /autorespond runs a command when someone joins, leaves or changes nickname."
+msgstr ".mrcスクリプトはありません。/autorespond は、誰かが参加・退出・ニックネームを変更したときにコマンドを実行します。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:57
 #, elixir-autogen, elixir-format
 msgid "There is no CTCP. /whois shows idle time and away status."
-msgstr "CTCPはありません。 /whoisはアイドルタイムと離脱状態を示します。"
+msgstr "CTCPはありません。/whoisはアイドル時間と離席状態を表示します。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:84
 #, elixir-autogen, elixir-format
 msgid "There is no operator login: the server's administrator appoints its staff."
-msgstr "オペレータのログインはありません。サーバーの管理者はスタッフを任命します。"
+msgstr "オペレーターとしてログインする仕組みはありません。スタッフはサーバーの管理者が任命します。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:121
 #, elixir-autogen, elixir-format
 msgid "This is one server, in the browser. There are no networks to switch to, and the mIRC program cannot connect to it."
-msgstr "ブラウザで1つのサーバーです。 mIRCプログラムは接続できません。"
+msgstr "ここはブラウザ上の1つのサーバーです。切り替えられるネットワークはなく、mIRCプログラムからも接続できません。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:103
 #, elixir-autogen, elixir-format
 msgid "Your own right-click menu items for the nick list and channels."
-msgstr "ニックネームリストとチャンネルのメニュー項目を右クリックします。"
+msgstr "ニックネームリストとチャンネル用の、独自の右クリックメニュー項目です。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:55
 #, elixir-autogen, elixir-format
 msgid "Each chat room is its own conversation: say it in each one."
-msgstr "各チャットルームは、それぞれの会話です。"
+msgstr "各チャットルームはそれぞれ独立した会話です。話したい場合は、それぞれのルームで話してください。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:91
 #, elixir-autogen, elixir-format
 msgid "ChanServ answers to its own command, typed inside the channel."
-msgstr "ChanServは、チャンネル内で入力された独自のコマンドに応答します。"
+msgstr "ChanServは、チャンネル内で入力した専用のコマンドに応答します。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:116
 #, elixir-autogen, elixir-format
 msgid "Files go over a direct session between browsers. Both nicknames must be registered."
-msgstr "ファイルがブラウザ間で直接セッションを通過します。 両方のニックネームを登録する必要があります。"
+msgstr "ファイルはブラウザ間の直接セッションで送信されます。双方のニックネームが登録されている必要があります。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:89
 #, elixir-autogen, elixir-format
 msgid "NickServ answers to its own command."
-msgstr "NickServは独自のコマンドに応答します。"
+msgstr "NickServは専用のコマンドに応答します。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:108
 #, elixir-autogen, elixir-format
 msgid "Runs a command once after a delay, or again and again."
-msgstr "遅延後、または再度コマンドを実行します。"
+msgstr "遅延後にコマンドを1回実行するか、繰り返し実行します。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:93
 #, elixir-autogen, elixir-format
 msgid "Takes $1 to $9, $nick and $chan. There is no scripting language behind it."
-msgstr "$1 を $9、$nick および $chan に取ります。 後ろにはスクリプト言語はありません。"
+msgstr "$1 から $9、$nick、$chan を使えます。その裏にスクリプト言語はありません。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:112
 #, elixir-autogen, elixir-format
 msgid "Takes a type and a duration."
-msgstr "種類と時間を取る。"
+msgstr "種類と期間を指定します。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:63
 #: lib/retro_hex_chat/commands/mirc_parity.ex:73
 #: lib/retro_hex_chat/commands/mirc_parity.ex:77
 #, elixir-autogen, elixir-format
 msgid "Works on the channel you are in."
-msgstr "あなたがいるチャネルで動作します。"
+msgstr "現在参加しているチャンネルで動作します。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:114
 #, elixir-autogen, elixir-format
 msgid "mIRC keeps it in the Favorites; here it is a command."
-msgstr "mIRCはお気に入りに保管します。ここでコマンドです。"
+msgstr "mIRCではお気に入りに保存されますが、ここではコマンドです。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:98
 #, elixir-autogen, elixir-format
 msgid "mIRC keeps it under Options; here it is a command, or the Perform dialog."
-msgstr "mIRC は、オプションの下に保持します。ここでコマンド、または実行ダイアログです。"
+msgstr "mIRCではオプションの中にありますが、ここではコマンドか、実行ダイアログです。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:79
 #, elixir-autogen, elixir-format
 msgid "Bans a nickname in the channel you are in. There are no host masks."
-msgstr "あなたがいるチャネルでニックネームを禁止します。 ホストマスクはありません。"
+msgstr "現在参加しているチャンネルでニックネームをBANします。ホストマスクはありません。"
 
 #: lib/retro_hex_chat/commands/mirc_parity.ex:110
 #, elixir-autogen, elixir-format
 msgid "Takes a subcommand; on its own it opens the notify list."
-msgstr "サブコマンドを実行します。それ自体で通知リストが開きます。"
+msgstr "サブコマンドを指定します。単独で実行すると通知リストが開きます。"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:33
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:33
@@ -3389,13 +3387,13 @@ msgstr "/autorespond add on_part /me waves goodbye to $nick"
 #, elixir-autogen, elixir-format
 msgid "Describe what you are doing, shown as '* YourNick does something'. It works in channels and in private chats.\nAction text is required."
 msgstr ""
-"'* YourNick が何かをしているかを記述します。 チャンネルやプライベートチャットで動作します。\n"
-"アクションテキストが必要です。"
+"自分の行動を「* YourNick が何かをします」の形で表示します。チャンネルでもプライベートチャットでも使えます。\n"
+"アクションのテキストが必要です。"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:97
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register the channel"
-msgstr "You must be a channel operator to register the channel"
+msgstr "チャンネルを登録するには、チャンネルオペレーターである必要があります"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:138
 #, elixir-autogen, elixir-format
@@ -3442,26 +3440,26 @@ msgstr "/lfg blitz"
 #: lib/retro_hex_chat/commands/handlers/lfg.ex:34
 #, elixir-autogen, elixir-format
 msgid "A mode of the game, like blitz"
-msgstr "A mode of the game, like blitz"
+msgstr "ゲームのモード（例: blitz）"
 
 #: lib/retro_hex_chat/commands/handlers/challenge.ex:27
 #, elixir-autogen, elixir-format
 msgid "Invite someone to play the channel's game over a P2P session.\nRequires: both users must be registered and identified (/ns identify)."
 msgstr ""
-"P2P セッションでチャンネルのゲームをプレイする誰かを招待します。\n"
-"必須: どちらのユーザーが登録され、識別される必要があります(/ns 識別)。"
+"P2Pセッションでチャンネルのゲームを遊ぶ相手を招待します。\n"
+"必須: 双方のユーザーが登録済みで、識別（/ns identify）されている必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/lfg.ex:22
 #, elixir-autogen, elixir-format
 msgid "Look for someone to play the channel's game with: a card with one open seat appears in the channel.\nRequires: a registered, identified nickname."
 msgstr ""
-"Look for someone to play the channel's game with: a card with one open seat appears in the channel.\n"
-"Requires: a registered, identified nickname."
+"チャンネルのゲームを一緒に遊ぶ相手を探します。空席が1つあるカードがチャンネルに表示されます。\n"
+"必須: 登録済みで識別されたニックネーム。"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:65
 #, elixir-autogen, elixir-format
 msgid "That nickname is reserved"
-msgstr "このニックネームは予約済みです。"
+msgstr "そのニックネームは予約されています"
 
 #: lib/retro_hex_chat/commands/handlers/challenge.ex:55
 #, elixir-autogen, elixir-format
@@ -3476,28 +3474,28 @@ msgstr "%{channel} のようなゲームのチャンネルでこれを使用し�
 #: lib/retro_hex_chat/commands/handlers/challenge.ex:39
 #, elixir-autogen, elixir-format
 msgid "Who to play"
-msgstr "遊び方"
+msgstr "対戦相手"
 
 #: lib/retro_hex_chat/commands/handlers/lfg.ex:43
 #, elixir-autogen, elixir-format
 msgid "You must be identified to look for a match."
-msgstr "試合を探すために識別する必要があります。"
+msgstr "対戦相手を探すには識別されている必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/challenge.ex:30
 #, elixir-autogen, elixir-format
 msgid "Invite someone to play the channel's game. Run it in a game's channel: they get a P2P invite in your private conversation, and the game starts once you are both in.\nName a mode to play it instead of the standard game.\nRequires: both users must be registered and identified (/ns identify)."
 msgstr ""
-"チャンネルのゲームをプレイする誰かを招待します。. ゲームチャンネルで実行します。P2Pはプライベートな会話を招待し、ゲームは両方とも起動します。\n"
-"標準ゲームではなく再生するモードの名前。\n"
-"必須: どちらのユーザーが登録され、識別される必要があります(/ns 識別)。"
+"チャンネルのゲームを遊ぶ相手を招待します。ゲームのチャンネルで実行してください。相手のプライベートな会話にP2P招待が届き、双方が参加するとゲームが始まります。\n"
+"モード名を指定すると、標準のゲームではなくそのモードで遊べます。\n"
+"必須: 双方のユーザーが登録済みで、識別（/ns identify）されている必要があります。"
 
 #: lib/retro_hex_chat/commands/handlers/lfg.ex:28
 #, elixir-autogen, elixir-format
 msgid "Look for someone to play the channel's game with. Run it in a game's channel: a card with one open seat appears in the channel, and whoever presses Join first plays you.\nName a mode to play it instead of the standard game.\nRequires: a registered, identified nickname."
 msgstr ""
-"チャンネルのゲームをプレイする人を探してください。 ゲームチャンネルで実行します。: 1つのオープンシートを持つカードがチャンネルに表示されます。誰が押します 最初にプレイします。\n"
-"標準ゲームではなく再生するモードの名前。\n"
-"必須:登録済み、特定されたニックネーム。"
+"チャンネルのゲームを一緒に遊ぶ相手を探します。ゲームのチャンネルで実行してください。空席が1つあるカードがチャンネルに表示され、最初に「参加」を押した人があなたと対戦します。\n"
+"モード名を指定すると、標準のゲームではなくそのモードで遊べます。\n"
+"必須: 登録済みで識別されたニックネーム。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:515
 #, elixir-autogen, elixir-format
@@ -3523,7 +3521,7 @@ msgstr "言語: %{codes}"
 #: lib/retro_hex_chat/commands/handlers/cs.ex:60
 #, elixir-autogen, elixir-format
 msgid "Set the language the channel is spoken in (code|none)"
-msgstr "チャンネルで話される言語を設定します（コード|none）"
+msgstr "チャンネルで使用する言語を設定します（コード|none）"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:483
 #: lib/retro_hex_chat/commands/handlers/cs.ex:270
@@ -3585,12 +3583,16 @@ msgstr "/cs category news"
 #: lib/retro_hex_chat/commands/handlers/cs.ex:337
 #, elixir-autogen, elixir-format
 msgid "Categories: %{codes}"
-msgstr "カテゴリー: %{codes}"
+msgstr "カテゴリ: %{codes}"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:29
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, language and category require being the channel founder."
-msgstr "ChanServ でチャンネル登録とアクセスリストを管理します。\nサブコマンド: register, drop, info, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help。チャンネル内で使います。\nアクセス階層: SOP（スーパーオペレーター）> AOP（自動オペレーター）> VOP（自動ボイス）。\nregister にはチャンネルオペレーター権限が必要です。drop、language、category はチャンネルの創設者だけが使えます。"
+msgstr ""
+"ChanServ でチャンネル登録とアクセスリストを管理します。\n"
+"サブコマンド: register, drop, info, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help。チャンネル内で使います。\n"
+"アクセス階層: SOP（スーパーオペレーター）> AOP（自動オペレーター）> VOP（自動ボイス）。\n"
+"register にはチャンネルオペレーター権限が必要です。drop、language、category はチャンネルの設立者だけが使えます。"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:65
 #, elixir-autogen, elixir-format
@@ -3605,12 +3607,12 @@ msgstr "サブコマンド: register, drop, info, language, category, sop, aop, 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:82
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs <register|drop|info|language|category|sop|aop|vop|help> [args]"
-msgstr "使用法: /cs <register|drop|info|language|category|sop|aop|vop|help> [args]"
+msgstr "使い方: /cs <register|drop|info|language|category|sop|aop|vop|help> [args]"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:336
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs category <name|none>"
-msgstr "使用法: /cs category <name|none>"
+msgstr "使い方: /cs category <name|none>"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:346
 #, elixir-autogen, elixir-format
@@ -3640,7 +3642,7 @@ msgstr "%{setting}は、オンまたはオフでなければなりません。"
 #: lib/retro_hex_chat/commands/handlers/join.ex:86
 #, elixir-autogen, elixir-format
 msgid "Write the channel name after the #."
-msgstr "# の後にチャンネル名を記述します。"
+msgstr "# の後にチャンネル名を入力してください。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:219
 #, elixir-autogen, elixir-format
@@ -3668,4 +3670,4 @@ msgstr "ヘックスペイント、ピクセル描画プログラムを開き、
 #: lib/retro_hex_chat/commands/handlers/radio.ex:20
 #, elixir-autogen, elixir-format
 msgid "Open Hex Radio, the internet radio player, to listen to stations from around the world."
-msgstr "世界中のステーションを聴くために、ヘックスラジオ、インターネットラジオプレーヤーを開きます。"
+msgstr "インターネットラジオプレーヤーのヘックスラジオを開いて、世界中のラジオ局を聴きましょう。"

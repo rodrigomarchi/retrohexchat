@@ -14,44 +14,44 @@ msgstr ""
 #: lib/retro_hex_chat/lobby/policy.ex:117
 #, elixir-autogen, elixir-format
 msgid "Cannot create a session with yourself"
-msgstr "無法與您創建會話"
+msgstr "無法與自己建立工作階段"
 
 #: lib/retro_hex_chat/lobby/service.ex:239
 #: lib/retro_hex_chat/lobby/service.ex:256
 #: lib/retro_hex_chat/lobby/service.ex:280
 #, elixir-autogen, elixir-format
 msgid "Failed to create lobby"
-msgstr "創建大廳失敗"
+msgstr "建立大廳失敗"
 
 #: lib/retro_hex_chat/lobby/session_server.ex:318
 #, elixir-autogen, elixir-format
 msgid "Invalid transition from %{from} to %{to}"
-msgstr "從%{from}到%{to}的過渡無效"
+msgstr "不允許從 %{from} 轉換為 %{to}"
 
 #: lib/retro_hex_chat/lobby/policy.ex:310
 #, elixir-autogen, elixir-format
 msgid "Invite is no longer pending"
-msgstr "不再等待邀請"
+msgstr "邀請已不在待處理狀態"
 
 #: lib/retro_hex_chat/lobby/policy.ex:314
 #, elixir-autogen, elixir-format
 msgid "Lobby is no longer active"
-msgstr "大廳不再活動了"
+msgstr "大廳已不再使用"
 
 #: lib/retro_hex_chat/lobby/service.ex:290
 #, elixir-autogen, elixir-format
 msgid "Lobby not found"
-msgstr "找不到前廳"
+msgstr "找不到大廳"
 
 #: lib/retro_hex_chat/lobby/session_server.ex:245
 #, elixir-autogen, elixir-format
 msgid "Not a participant"
-msgstr "未參加"
+msgstr "不是參與者"
 
 #: lib/retro_hex_chat/lobby/policy.ex:271
 #, elixir-autogen, elixir-format
 msgid "Only the invited user can decline"
-msgstr "只有被邀請的用戶才能拒絕"
+msgstr "只有受邀的使用者才能拒絕"
 
 #: lib/retro_hex_chat/lobby/policy.ex:279
 #, elixir-autogen, elixir-format
@@ -65,17 +65,17 @@ msgstr "只有邀請者可以取消邀請"
 #: lib/retro_hex_chat/lobby/session_server.ex:1101
 #, elixir-autogen, elixir-format
 msgid "Session process not running"
-msgstr "會話進程未運行"
+msgstr "工作階段程序未執行"
 
 #: lib/retro_hex_chat/lobby/policy.ex:127
 #, elixir-autogen, elixir-format
 msgid "Target user must be registered"
-msgstr "目標用戶必須註冊"
+msgstr "目標使用者必須已註冊"
 
 #: lib/retro_hex_chat/lobby/policy.ex:153
 #, elixir-autogen, elixir-format
 msgid "User not available"
-msgstr "用戶不可用"
+msgstr "使用者無法使用"
 
 #: lib/retro_hex_chat/lobby/policy.ex:263
 #, elixir-autogen, elixir-format
@@ -90,7 +90,7 @@ msgstr "你必須註冊才能使用大廳"
 #: lib/retro_hex_chat/lobby/policy.ex:286
 #, elixir-autogen, elixir-format
 msgid "This match is already full"
-msgstr "這場對局已經滿員"
+msgstr "這場對局已滿員"
 
 #: lib/retro_hex_chat/lobby/policy.ex:290
 #, elixir-autogen, elixir-format

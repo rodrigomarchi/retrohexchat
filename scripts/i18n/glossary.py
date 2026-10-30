@@ -287,6 +287,7 @@ _ROWS = {
     # Left to the pipeline the menu's own name came back as "Язык языка" and
     # "日本語 English": one word, no sentence, and the model guessed.
     "Never":        ("Nunca", "Nunca", "Nunca", "Jamais", "Nie", "Mai", "Nooit", "Nigdy", "Никогда", "Tidak pernah", "まだなし", "从未", "從未"),
+    "Announcements": ("Anúncios", "Anúncios", "Anuncios", "Avis", "Ankündigungen", "Annunci", "Mededelingen", "Ogłoszenia", "Объявления", "Pengumuman", "お知らせ", "公告", "公告"),
     "Language":     ("Idioma", "Língua", "Idioma", "Langue", "Sprache", "Lingua", "Taal", "Język", "Язык", "Bahasa", "言語", "语言", "語言"),
     "Automation":   ("Automação", "Automação", "Automatización", "Automatisation", "Automatisierung", "Automazione", "Automatisering", "Automatyzacja", "Автоматизация", "Otomatisasi", "自動化", "自动化", "自動化"),
 

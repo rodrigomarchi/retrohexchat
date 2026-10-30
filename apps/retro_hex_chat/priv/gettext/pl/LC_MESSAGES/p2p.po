@@ -24,7 +24,7 @@ msgstr "(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:57
 #, elixir-autogen, elixir-format
 msgid ", rejected"
-msgstr ", odrzucone"
+msgstr ", odrzucono"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:152
 #, elixir-autogen, elixir-format
@@ -34,7 +34,7 @@ msgstr "Adres jest już związany z kanałem"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:72
 #, elixir-autogen, elixir-format
 msgid "Allocation mismatch: allocation already exists"
-msgstr "Niedopasowanie przydziałów: alokacja już istnieje"
+msgstr "Niezgodność alokacji: alokacja już istnieje"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:69
 #, elixir-autogen, elixir-format
@@ -44,7 +44,7 @@ msgstr "Niezgodność alokacji: alokacja nie istnieje"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:110
 #, elixir-autogen, elixir-format
 msgid "Auth failed, invalid MESSAGE-INTEGRITY"
-msgstr "Auth nie powiodło się, nieprawidłowe MESSAGE-INTEGRITY"
+msgstr "Uwierzytelnianie nie powiodło się, nieprawidłowe MESSAGE-INTEGRITY"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:149
 #, elixir-autogen, elixir-format
@@ -59,7 +59,7 @@ msgstr "Numer kanału jest poza dozwolonym zakresem"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:101
 #, elixir-autogen, elixir-format
 msgid "EVEN-PORT unsupported"
-msgstr "EVEN- PORT bez wsparcia"
+msgstr "EVEN-PORT nie jest obsługiwany"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:143
 #, elixir-autogen, elixir-format
@@ -69,32 +69,32 @@ msgstr "Nie udało się odszyfrować numeru"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:137
 #, elixir-autogen, elixir-format
 msgid "Failed to decode DATA"
-msgstr "Nie udało się odkodować danych"
+msgstr "Nie udało się zdekodować DATA"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:81
 #, elixir-autogen, elixir-format
 msgid "Failed to decode EVEN-PORT"
-msgstr "Nie udało się odszyfrować EVEN- PORT"
+msgstr "Nie udało się zdekodować EVEN-PORT"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:107
 #, elixir-autogen, elixir-format
 msgid "Failed to decode LIFETIME"
-msgstr "Nie udało się rozszyfrować LIFETIME"
+msgstr "Nie udało się zdekodować LIFETIME"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:84
 #, elixir-autogen, elixir-format
 msgid "Failed to decode REQUESTED-ADDRESS-FAMILY"
-msgstr "Nie udało się odszyfrować REQUESTED-ADRSS- FAMILY"
+msgstr "Nie udało się zdekodować REQUESTED-ADDRESS-FAMILY"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:95
 #, elixir-autogen, elixir-format
 msgid "Failed to decode RESERVATION-TOKEN"
-msgstr "Nie udało się odszyfrować RESERWATION- TOKEN"
+msgstr "Nie udało się zdekodować RESERVATION-TOKEN"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:131
 #, elixir-autogen, elixir-format
 msgid "Failed to decode XOR-PEER-ADDRESS"
-msgstr "Nie udało się odkodować XOR- PEER-"
+msgstr "Nie udało się zdekodować XOR-PEER-ADDRESS"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:140
 #, elixir-autogen, elixir-format
@@ -104,53 +104,52 @@ msgstr "Brak atrybutu numeru tablicy"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:134
 #, elixir-autogen, elixir-format
 msgid "No DATA attribute"
-msgstr "Brak atrybutu danych"
+msgstr "Brak atrybutu DATA"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:128
 #, elixir-autogen, elixir-format
 msgid "No XOR-PEER-ADDRESS attribute"
-msgstr "Brak atrybutu XOR- PEER-"
+msgstr "Brak atrybutu XOR-PEER-ADDRESS"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:104
 #, elixir-autogen, elixir-format
 msgid "No available ports left"
-msgstr "Brak dostępnych portów"
+msgstr "Brak wolnych portów"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:113
 #, elixir-autogen, elixir-format
 msgid "No message integrity attribute"
-msgstr "Brak atrybutu integralności wiadomości"
+msgstr "Brak atrybutu integralności komunikatu"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:78
 #, elixir-autogen, elixir-format
 msgid "No or malformed REQUESTED-TRANSPORT"
-msgstr "TRANSPORT REQUESTED"
+msgstr "Brak lub nieprawidłowy REQUESTED-TRANSPORT"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:116
 #, elixir-autogen, elixir-format
 msgid "No username, nonce or realm attribute"
-msgstr "Brak nazwy użytkownika, nonce lub atrybutu domeny"
+msgstr "Brak atrybutu nazwy użytkownika, nonce lub realm"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:98
 #, elixir-autogen, elixir-format
 msgid "REQUESTED-ADDRESS-FAMILY with IPv6 unsupported"
-msgstr "REQUESTED- ADRESS- FAMILY z IPv6 bez wsparcia"
+msgstr "REQUESTED-ADDRESS-FAMILY z IPv6 nie jest obsługiwany"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:88
 #, elixir-autogen, elixir-format
 msgid "RESERVATION-TOKEN and (EVEN-PORT|REQUESTED-FAMILY) in the message"
-msgstr ""
-"REZERWY - TOKEN i (EVEN- PORT VIS 124; REQUESTED - FAMILY) w komunikacie"
+msgstr "RESERVATION-TOKEN oraz (EVEN-PORT|REQUESTED-FAMILY) w komunikacie"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:92
 #, elixir-autogen, elixir-format
 msgid "RESERVATION-TOKEN unsupported"
-msgstr "REZERWY - TOKEN nieobsługiwane"
+msgstr "RESERVATION-TOKEN nie jest obsługiwany"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:125
 #, elixir-autogen, elixir-format
 msgid "Stale nonce"
-msgstr "Stale nonce"
+msgstr "Nieaktualny nonce"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:156
 #, elixir-autogen, elixir-format
@@ -160,7 +159,7 @@ msgstr "Nieznany błąd"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:75
 #, elixir-autogen, elixir-format
 msgid "Unsupported REQUESTED-TRANSPORT: TCP"
-msgstr "Nieobsługiwany PROJEKT - TRANSPORT: TCP"
+msgstr "Nieobsługiwany REQUESTED-TRANSPORT: TCP"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:122
 #, elixir-autogen, elixir-format
@@ -170,4 +169,4 @@ msgstr "Nazwa użytkownika różni się od poprzednio użytej"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:119
 #, elixir-autogen, elixir-format
 msgid "Username timestamp expired"
-msgstr "Znacznik czasu użytkownika wygasł"
+msgstr "Znacznik czasu nazwy użytkownika wygasł"

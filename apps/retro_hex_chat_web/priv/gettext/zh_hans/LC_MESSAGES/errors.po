@@ -22,11 +22,11 @@ msgstr ""
 # effect: edit them in PO (`.po`) files instead.
 # From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr "不会是空的"
+msgstr "不能为空"
 
 # From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr "已经取用"
+msgstr "已被占用"
 
 # From Ecto.Changeset.put_change/3
 msgid "is invalid"
@@ -38,26 +38,26 @@ msgstr "必须接受"
 
 # From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr "有无效的格式"
+msgstr "格式无效"
 
 # From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr "有无效的条目"
+msgstr "包含无效的条目"
 
 # From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr "保留"
+msgstr "为保留项"
 
 # From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr "不匹配确认"
+msgstr "与确认内容不一致"
 
 # From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr "仍然与本条目相关"
+msgstr "仍与此条目关联"
 
 msgid "are still associated with this entry"
-msgstr "仍然与本条目相关"
+msgstr "仍与此条目关联"
 
 # From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
@@ -66,7 +66,7 @@ msgstr[0] "应有 %{count} 项"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] "应为 %{count} 字符"
+msgstr[0] "应为 %{count} 个字符"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
@@ -78,11 +78,11 @@ msgstr[0] "应至少有 %{count} 项"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "应该是至少 %{count} 字符"
+msgstr[0] "应至少为 %{count} 个字符"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] "应该是至少 %{count} 字节"
+msgstr[0] "应至少为 %{count} 字节"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
