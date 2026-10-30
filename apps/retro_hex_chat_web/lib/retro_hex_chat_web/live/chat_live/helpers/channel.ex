@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     case Server.join(channel_name, session.nickname, password, identified: session.identified) do
       {:ok, _state} ->
         socket
-        |> Analytics.track("channel_join", %{channel: channel_name})
+        |> Analytics.track("channel_join", %{channel: channel_name, mode: join_mode})
         |> setup_joined_channel(channel_name, session, join_mode)
 
       {:error, reason} when reason == "Already in channel" ->
