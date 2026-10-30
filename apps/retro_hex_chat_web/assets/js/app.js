@@ -2,11 +2,8 @@
 // application's LiveSocket, connected at once. The desktop has its own entry
 // (`desktop.js`) and imports the same socket from `lib/system/live_boot.js`.
 
-import { installPlausible } from "./lib/analytics/plausible";
 import { registerServiceWorker } from "./lib/system/service_worker.js";
 import { bootLiveSocket } from "./lib/system/live_boot";
-
-installPlausible();
 
 await bootLiveSocket();
 

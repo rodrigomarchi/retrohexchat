@@ -1,10 +1,5 @@
 import Config
 
-# Plausible analytics environment label, surfaced to the browser via a
-# <meta name="plausible-env"> tag in root.html.heex. The bundled tracker
-# attaches it as an `env` prop to every event.
-config :retro_hex_chat_web, :plausible_env, System.get_env("APP_ENV", "prod")
-
 # Grafana Faro real-user monitoring, surfaced to the browser via
 # <meta name="faro-*"> tags in the chat layout. Enabled only in production
 # (togglable with FARO_ENABLED without a recompile); dev and test never ship.

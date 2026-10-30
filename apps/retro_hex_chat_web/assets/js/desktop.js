@@ -3,7 +3,6 @@
 // Keep it dependency-light: no LiveSocket, no highlight.js. The chat's socket is
 // a dynamic import, started by `lib/site/boot_policy.js`.
 
-import { installPlausible } from "./lib/analytics/plausible";
 import { formatTime, CLOCK_INTERVAL } from "./lib/connection/clock.js";
 import { log } from "./lib/logger";
 import { mountSiteMenuBar } from "./lib/ui/site_menu_bar";
@@ -260,5 +259,3 @@ scheduleBoot({
   boot: bootLive,
 });
 installRetroTooltips(document);
-
-installPlausible();

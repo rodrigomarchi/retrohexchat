@@ -11,9 +11,9 @@ import { DocumentLoadInstrumentation } from "@opentelemetry/instrumentation-docu
 
 import { createFaro, viewNameForPath } from "./faro";
 
-// Don't trace the telemetry beacon itself (or the Plausible one) — that would
+// Don't trace the telemetry beacon itself — that would
 // create a span for every span export and bloat Tempo with self-referential noise.
-const IGNORED_TRACE_URLS = [/\/faro\/collect/, /\/api\/event/];
+const IGNORED_TRACE_URLS = [/\/faro\/collect/];
 
 /**
  * Boot Faro and keep its view name in step with LiveView navigation.
