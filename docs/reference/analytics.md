@@ -2,8 +2,9 @@
 
 The site reports to GA4 when `GA_MEASUREMENT_ID` is set (infra `deployex_apps`
 env; off when empty, and always off on localhost). The id reaches the browser
-through `Layouts.head_meta/1`, so only the `desktop` and `surface` layouts are
-measured; the showcase and error pages are not.
+through `Layouts.analytics_meta/1` in the `desktop`, `surface` and `showcase`
+layouts. Error pages (404, 410, 500) load none of the bundles, so `ErrorHTML`
+writes the tag into each one and reports `page_error` with its `status`.
 
 - **Page views:** GA4's enhanced measurement, "page changes based on browser
   history events". LiveView navigates with `pushState`, so there is no code for

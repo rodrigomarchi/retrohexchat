@@ -17,6 +17,8 @@ defmodule RetroHexChatWeb.SitemapController do
   # inside the protocol's fifty, and small enough that a failed fetch retries
   # two megabytes rather than eight.
   @chunk_size 100
+  # A showcase entry is one URL, not one per locale, so far more fit per file.
+  @showcase_chunk_size 50
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -85,7 +87,13 @@ defmodule RetroHexChatWeb.SitemapController do
   @spec build_sitemaps([map()]) :: %{index: map(), chunks: %{String.t() => map()}}
   defp build_sitemaps(topics) do
     chunk_entries =
-      chunks(PublicUrls.localized_paths(topics), "public", @chunk_size, &build_urlset/1)
+      chunks(PublicUrls.localized_paths(topics), "public", @chunk_size, &build_urlset/1) ++
+        chunks(
+          PublicUrls.showcase_paths(),
+          "showcase",
+          @showcase_chunk_size,
+          &build_canonical_urlset/1
+        )
 
     names = Enum.map(chunk_entries, &elem(&1, 0))
 
@@ -129,6 +137,17 @@ defmodule RetroHexChatWeb.SitemapController do
       ~s(<?xml version="1.0" encoding="UTF-8"?>\n),
       ~s(<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n),
       Enum.map(paths, &localized_url_entries/1),
+      "</urlset>\n"
+    ]
+    |> IO.iodata_to_binary()
+  end
+
+  # One canonical URL per path, no hreflang: the showcase ships in English only.
+  defp build_canonical_urlset(paths) do
+    [
+      ~s(<?xml version="1.0" encoding="UTF-8"?>\n),
+      ~s(<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n),
+      Enum.map(paths, &url_entry(SEO.site_url(&1), [], nil)),
       "</urlset>\n"
     ]
     |> IO.iodata_to_binary()

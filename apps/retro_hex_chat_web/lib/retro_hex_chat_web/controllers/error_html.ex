@@ -10,12 +10,16 @@ defmodule RetroHexChatWeb.ErrorHTML do
 
   The whole screen is a link back to `/`; a keydown listener adds the
   classic "press any key" behaviour.
+
+  These pages load none of the application's JavaScript, so the Google tag is
+  written into each one and reports the status as `page_error`.
   """
   use RetroHexChatWeb, :html
 
   @spec render(String.t(), map()) :: Phoenix.LiveView.Rendered.t()
   def render("404.html", _assigns) do
     bsod(%{
+      status: "404",
       code: "0x194",
       module: "HEXGRID(01)",
       cause:
@@ -30,6 +34,7 @@ defmodule RetroHexChatWeb.ErrorHTML do
 
   def render("500.html", _assigns) do
     bsod(%{
+      status: "500",
       code: "0x1F4",
       module: "RETROHEX(01)",
       cause: "The current request has been terminated to protect your desktop.",
@@ -42,6 +47,7 @@ defmodule RetroHexChatWeb.ErrorHTML do
 
   def render(template, _assigns) do
     bsod(%{
+      status: String.trim_trailing(template, ".html"),
       code: hex_code(template),
       module: "RETROHEX(01)",
       cause:
@@ -51,6 +57,7 @@ defmodule RetroHexChatWeb.ErrorHTML do
     })
   end
 
+  attr :status, :string, required: true
   attr :code, :string, required: true
   attr :module, :string, required: true
   attr :cause, :string, required: true
@@ -66,6 +73,11 @@ defmodule RetroHexChatWeb.ErrorHTML do
         <meta name="robots" content="noindex, nofollow, noarchive" />
         <title>RetroHexChat</title>
         <link rel="stylesheet" href={~p"/assets/css/retrohex.css"} />
+        <.google_tag
+          :if={Application.get_env(:retro_hex_chat_web, :ga_measurement_id)}
+          id={Application.get_env(:retro_hex_chat_web, :ga_measurement_id)}
+          status={@status}
+        />
       </head>
       <body>
         <a href="/" class="bsod" data-testid="bsod">
@@ -89,6 +101,25 @@ defmodule RetroHexChatWeb.ErrorHTML do
         </script>
       </body>
     </html>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :status, :string, required: true
+
+  defp google_tag(assigns) do
+    ~H"""
+    <script async src={"https://www.googletagmanager.com/gtag/js?id=#{@id}"}>
+    </script>
+    <script data-id={@id} data-status={@status}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", document.currentScript.dataset.id);
+      gtag("event", "page_error", { status: document.currentScript.dataset.status });
+    </script>
     """
   end
 

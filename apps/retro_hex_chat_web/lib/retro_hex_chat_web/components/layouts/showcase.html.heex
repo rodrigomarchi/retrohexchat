@@ -23,12 +23,13 @@
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
+    <.analytics_meta />
 
     <.live_title default="RetroHexChat — Component Showcase">
       {assigns[:page_title]}
     </.live_title>
     <meta name="description" content={page_description} />
-    <meta name="robots" content={RetroHexChatWeb.SEO.noindex_content()} />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical_url} />
 
     <%!-- Open Graph --%>

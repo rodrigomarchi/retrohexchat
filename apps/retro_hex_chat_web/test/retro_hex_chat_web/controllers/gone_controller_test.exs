@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.GoneControllerTest do
       test "#{path} tells a search engine it is gone", %{conn: conn} do
         conn = get(conn, unquote(path))
 
-        assert response(conn, 410) == "Gone"
+        assert html_response(conn, 410) =~ ~s(data-testid="bsod")
         assert get_resp_header(conn, "x-robots-tag") == [SEO.noindex_content()]
       end
     end

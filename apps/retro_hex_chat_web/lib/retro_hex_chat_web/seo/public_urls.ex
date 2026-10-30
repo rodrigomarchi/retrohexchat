@@ -15,8 +15,13 @@ defmodule RetroHexChatWeb.SEO.PublicUrls do
   alias RetroHexChatWeb.ContentDates
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.SEO
+  alias RetroHexChatWeb.ShowcaseCatalog
 
   @type entry :: {path :: String.t(), lastmod :: String.t() | nil}
+
+  @doc "The showcase pages: English only, one URL each, and no known day."
+  @spec showcase_paths() :: [String.t()]
+  def showcase_paths, do: ShowcaseCatalog.paths()
 
   @doc """
   The pages published in every language, by their unprefixed path: the landing
