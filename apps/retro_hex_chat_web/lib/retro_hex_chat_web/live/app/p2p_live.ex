@@ -39,6 +39,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.App.ShareLinkEvents
@@ -408,6 +409,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   defp enter(socket, db_session, user_id, role) do
     if connected?(socket) do
       socket
+      |> Analytics.track("p2p_start", %{role: role})
       |> SessionLink.attach_session(db_session.token, user_id, role, match_opts(db_session))
       |> resume_started(db_session)
     else

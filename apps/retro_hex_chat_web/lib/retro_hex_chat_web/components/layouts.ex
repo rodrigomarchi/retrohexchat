@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.Layouts do
 
   @doc """
   The metas every full page carries after its charset: viewport, CSRF token,
-  the browser telemetry switches, and the
+  the analytics id and browser telemetry switches, and the
   `traceparent` that joins the page-load trace to the server's.
   """
   @spec head_meta(map()) :: Phoenix.LiveView.Rendered.t()
@@ -19,6 +19,9 @@ defmodule RetroHexChatWeb.Layouts do
     ~H"""
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
+    <%= if measurement_id = Application.get_env(:retro_hex_chat_web, :ga_measurement_id) do %>
+      <meta name="ga-measurement-id" content={measurement_id} />
+    <% end %>
     <meta
       name="faro-enabled"
       content={to_string(Application.get_env(:retro_hex_chat_web, :faro_enabled, false))}

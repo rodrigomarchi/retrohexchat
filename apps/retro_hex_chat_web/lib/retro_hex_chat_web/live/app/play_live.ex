@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.App.ShareLinkEvents
@@ -351,6 +352,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
     :ok = Activity.playing(socket.assigns.nickname, game.id)
 
     socket
+    |> Analytics.track("game_start", %{game: game.id})
     |> assign(
       status: "playing",
       menu_open: false,

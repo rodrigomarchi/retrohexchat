@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.GroupCall
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.App.ShareLinkEvents
@@ -433,9 +434,10 @@ defmodule RetroHexChatWeb.App.CallLive do
   defp subscribe_to_room(socket, channel_name) do
     if connected?(socket) do
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
+      Analytics.track(socket, "call_join", %{channel: channel_name})
+    else
+      socket
     end
-
-    socket
   end
 
   # The token in the address is all there is, so every gate runs here — and the

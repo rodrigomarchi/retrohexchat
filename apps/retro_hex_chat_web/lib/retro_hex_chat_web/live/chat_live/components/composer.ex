@@ -52,6 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   alias RetroHexChat.Chat.InputHistory
   alias RetroHexChat.Chat.VoiceMessages
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Registry}
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
   alias RetroHexChatWeb.ChatLive.DirectUpload
@@ -398,8 +399,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       send(self(), {:composer_submit_edit, input, content_format})
       {:noreply, socket}
     else
-      {:noreply, dispatch_and_reset(socket, input, content_format)}
+      {:noreply, socket |> track_input(input) |> dispatch_and_reset(input, content_format)}
     end
+  end
+
+  # A command is named without its arguments: `/ns identify` carries a password.
+  defp track_input(socket, "/" <> command) do
+    Analytics.track(socket, "command_use", %{command: command |> String.split() |> List.first()})
+  end
+
+  defp track_input(socket, _input) do
+    Analytics.track(socket, "message_send", %{channel: socket.assigns.session.active_channel})
   end
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

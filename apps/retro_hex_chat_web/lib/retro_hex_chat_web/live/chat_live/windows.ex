@@ -16,7 +16,10 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
   import Phoenix.Component, only: [update: 3]
   import Phoenix.LiveView, only: [push_event: 3]
 
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.ChatLive.WindowRegistry
+
+  @tools ~w(paint ascii-art radio)
 
   @doc """
   Open/focus a window and deliver a `send_update` directive to its island.
@@ -48,8 +51,14 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
   def open(socket, id) do
     socket
     |> open_window(id)
+    |> track_tool(id)
     |> push_event("window_command", %{action: "open", id: id})
   end
+
+  defp track_tool(socket, id) when id in @tools,
+    do: Analytics.track(socket, "tool_open", %{tool: id})
+
+  defp track_tool(socket, _id), do: socket
 
   @doc "Add a managed window to `open_windows` (no-op for non-managed ids)."
   @spec open_window(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()

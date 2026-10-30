@@ -1,5 +1,11 @@
 import Config
 
+# Google Analytics measurement id, surfaced to the browser via a
+# <meta name="ga-measurement-id"> tag. Without one nothing is measured.
+config :retro_hex_chat_web,
+       :ga_measurement_id,
+       System.get_env("GA_MEASUREMENT_ID") |> then(&if(&1 in [nil, ""], do: nil, else: &1))
+
 # Grafana Faro real-user monitoring, surfaced to the browser via
 # <meta name="faro-*"> tags in the chat layout. Enabled only in production
 # (togglable with FARO_ENABLED without a recompile); dev and test never ship.

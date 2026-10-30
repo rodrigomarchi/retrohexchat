@@ -2,8 +2,11 @@
 // application's LiveSocket, connected at once. The desktop has its own entry
 // (`desktop.js`) and imports the same socket from `lib/system/live_boot.js`.
 
+import { installAnalytics } from "./lib/analytics/google_analytics";
 import { registerServiceWorker } from "./lib/system/service_worker.js";
 import { bootLiveSocket } from "./lib/system/live_boot";
+
+installAnalytics();
 
 await bootLiveSocket();
 

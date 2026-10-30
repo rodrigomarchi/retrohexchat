@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   alias RetroHexChat.Arcade
   alias RetroHexChat.Arcade.Schema.SoloSession
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
@@ -284,6 +285,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
       socket
       |> assign(arcade_session: new_session(token, user_id))
+      |> Analytics.track("arcade_start")
       |> Windows.open(@window)
     else
       _ ->

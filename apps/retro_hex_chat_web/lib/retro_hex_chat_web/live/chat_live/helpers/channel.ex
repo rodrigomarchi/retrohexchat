@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Chat.{AutoJoinList, Queries, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.ReadMarkers
   alias RetroHexChatWeb.ChatLive.StreamItem
@@ -60,7 +61,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     case Server.join(channel_name, session.nickname, password, identified: session.identified) do
       {:ok, _state} ->
-        setup_joined_channel(socket, channel_name, session, join_mode)
+        socket
+        |> Analytics.track("channel_join", %{channel: channel_name})
+        |> setup_joined_channel(channel_name, session, join_mode)
 
       {:error, reason} when reason == "Already in channel" ->
         Logger.debug("Rejoining channel #{channel_name} (already a member in server)")

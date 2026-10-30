@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
   alias RetroHexChat.VirtualSpace.CharacterRecipe
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.App.ShareLinkEvents
@@ -609,9 +610,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   defp subscribe_to_roster(socket, space) do
     if connected?(socket) do
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.space_roster(space.id))
+      Analytics.track(socket, "space_enter", %{space: space.id})
+    else
+      socket
     end
-
-    socket
   end
 
   # The token binds this nickname to this space, and the channel verifies it

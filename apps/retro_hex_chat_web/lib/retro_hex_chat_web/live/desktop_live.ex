@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.DesktopLive do
   import RetroHexChatWeb.ChatLive.Components.ChatShell
 
   alias RetroHexChat.Channels.Name
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.ChatLive.Components.ChatShell
   alias RetroHexChatWeb.Params
   import RetroHexChatWeb.ChatLive.Components.ChatTabs
@@ -127,6 +128,13 @@ defmodule RetroHexChatWeb.DesktopLive do
     end
   end
 
+  defp identify_member(socket) do
+    case SessionHelpers.resolve_user_id(socket.assigns.session.nickname) do
+      {:ok, user_id} -> Analytics.identify(socket, user_id)
+      {:redirect, nil} -> socket
+    end
+  end
+
   defp mount_visitor(params, http_session, socket) do
     session = Visitor.session()
 
@@ -144,6 +152,7 @@ defmodule RetroHexChatWeb.DesktopLive do
       )
       |> Visitor.enter(params)
       |> ChatLive.Arrival.visitor()
+      |> Analytics.identify(nil)
       |> push_initial_preferences()
     else
       http_session
@@ -294,6 +303,8 @@ defmodule RetroHexChatWeb.DesktopLive do
     # A reconnect (deploy / socket drop) or a reload of a live session restores
     # silently: replaying the connect sound, MOTD, welcome and announcements on
     # every deploy is just noise. Only a fresh first login gets the full greeting.
+    socket = identify_member(socket)
+
     if reconnecting? do
       push_initial_preferences(socket)
     else

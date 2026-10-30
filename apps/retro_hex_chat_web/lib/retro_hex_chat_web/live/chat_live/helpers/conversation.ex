@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   alias RetroHexChat.Chat.Roster
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChat.Nickname
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
@@ -48,6 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
     session = Session.set_active_channel(socket.assigns.session, channel)
 
     socket
+    |> Analytics.track("channel_view", %{channel: channel})
     |> enter_conversation(session, channel)
     |> load_roster()
     |> ChannelHelpers.load_channel_messages_with_pagination(channel)

@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ConnectForm do
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.Params
 
@@ -86,7 +87,10 @@ defmodule RetroHexChatWeb.ConnectForm do
         route_valid_nickname(socket, nickname)
 
       {:error, msg} ->
-        {:noreply, assign(socket, nickname: nickname, nickname_error: msg)}
+        {:noreply,
+         socket
+         |> Analytics.track("signup_error", %{reason: "nickname"})
+         |> assign(nickname: nickname, nickname_error: msg)}
     end
   end
 
@@ -143,12 +147,14 @@ defmodule RetroHexChatWeb.ConnectForm do
 
         {:noreply,
          socket
+         |> Analytics.track("login", %{method: "password"}, across_navigation: true)
          |> assign_auth_success(token, params)
          |> push_event("submit_connect", %{})}
 
       {:error, _msg} ->
         {:noreply,
          socket
+         |> Analytics.track("signup_error", %{reason: "wrong_password"})
          |> assign(password_error: dgettext("connect", "Incorrect password"), password: "")
          |> assign_remember_device_fields(params)}
     end
@@ -203,12 +209,14 @@ defmodule RetroHexChatWeb.ConnectForm do
 
         {:noreply,
          socket
+         |> Analytics.track("sign_up", %{method: "nickname"}, across_navigation: true)
          |> assign_auth_success(token, params)
          |> push_event("submit_connect", %{})}
 
       {:error, msg} ->
         {:noreply,
          socket
+         |> Analytics.track("signup_error", %{reason: "registration"})
          |> assign(
            password: password,
            password_confirm: password_confirm,
@@ -256,11 +264,13 @@ defmodule RetroHexChatWeb.ConnectForm do
            device_label: "",
            submit_connect: true
          )
+         |> Analytics.track("login", %{method: "trusted_device"}, across_navigation: true)
          |> push_event("submit_connect", %{})}
 
       NickServ.registered?(nickname) ->
         {:noreply,
          socket
+         |> Analytics.track("login_start")
          |> assign(
            step: :password,
            nickname: nickname,
@@ -272,6 +282,7 @@ defmodule RetroHexChatWeb.ConnectForm do
       true ->
         {:noreply,
          socket
+         |> Analytics.track("signup_start")
          |> assign(
            step: :register,
            nickname: nickname,

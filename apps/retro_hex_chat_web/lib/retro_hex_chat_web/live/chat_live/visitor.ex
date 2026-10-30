@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.ReturnTo
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
@@ -257,6 +258,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
 
         socket
         |> assign(session: session, show_status_tab: false)
+        |> Analytics.track("channel_watch", %{channel: channel})
         |> ConversationsReadModel.touch_channel_activity(channel)
         |> ChannelHelpers.load_channel_user_count(channel)
         |> Conversation.activate_channel(channel)
@@ -325,7 +327,9 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   @spec ask_to_sign_in(Phoenix.LiveView.Socket.t(), feature(), String.t() | nil) ::
           Phoenix.LiveView.Socket.t()
   def ask_to_sign_in(socket, feature, return_to \\ nil) do
-    push_patch(socket, to: Paths.visitor_sign_in_path(feature, way_back(socket, return_to)))
+    socket
+    |> Analytics.track("signup_prompt", %{feature: feature})
+    |> push_patch(to: Paths.visitor_sign_in_path(feature, way_back(socket, return_to)))
   end
 
   defp way_back(socket, return_to) do
