@@ -5,6 +5,7 @@
  * @flow LC3 [done] Switching to Japanese survives a reload
  * @flow LC4 [done] pt-BR is kept through registration into the chat shell
  * @flow LC5 [done] Language switches from the chat menu bar
+ * @flow LC6 [done] A public page and the Start menu fit in the languages that run longest
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -12,6 +13,7 @@
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { CHAT_URL } from "../helpers/urls";
+import { shot } from "../helpers/screenshots";
 
 // The sign-in window has no menus of its own: a language is picked from the
 // chat window's, behind it.
@@ -46,6 +48,23 @@ async function chooseLanguage(
 }
 
 test.describe("Internationalization", () => {
+  for (const locale of ["de", "ru", "ja", "zh-Hant"]) {
+    test(`a public page and the Start menu fit in ${locale}`, async ({
+      page,
+    }) => {
+      await page.goto(`/${locale}/features`);
+      await expect(page.locator("html")).toHaveAttribute("lang", locale);
+      await shot(page, `features-${locale}`);
+
+      await page.locator("[data-window-start]").click();
+      await shot(page, `start-menu-${locale}`);
+
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto(`/${locale}/install`);
+      await shot(page, `install-${locale}-phone`);
+    });
+  }
+
   test("switches the connect UI between English and pt-BR and persists the selection", async ({
     page,
   }) => {

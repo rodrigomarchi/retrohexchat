@@ -70,20 +70,58 @@ class ArgosTranslator:
         return self._translation.translate(text)
 
 
-def build(locale_code: str, argos_code: str) -> Translator:
+class ClaudeTranslator:
+    """Claude behind the same interface as Argos, for a run that asks for it.
+
+    `client` is an `anthropic.Anthropic`, or anything with its `messages.create`.
+    """
+
+    def __init__(self, locale_code: str, client=None, api_key: str | None = None):
+        from . import claude
+
+        if client is None:
+            import anthropic
+
+            client = anthropic.Anthropic(api_key=api_key)
+
+        self._client = client
+        self._model = claude.MODEL
+        self._max_tokens = claude.MAX_TOKENS
+        self._system = claude.translate_system(locale_code)
+
+    def translate(self, text: str) -> str:
+        message = self._client.messages.create(
+            model=self._model,
+            max_tokens=self._max_tokens,
+            thinking={"type": "between_tools"},
+            system=self._system,
+            messages=[{"role": "user", "content": text}],
+        )
+
+        if message.stop_reason != "end_turn":
+            raise RuntimeError(f"Claude stopped with {message.stop_reason}")
+
+        return next(block.text for block in message.content if block.type == "text")
+
+
+def build(locale_code: str, argos_code: str, engine: str = "argos", api_key: str | None = None) -> Translator:
     if locale_code == "en" or argos_code == "en":
         return IdentityTranslator()
+
+    if engine == "claude":
+        return ClaudeTranslator(locale_code, api_key=api_key)
 
     return ArgosTranslator(argos_code)
 
 
-def build_back(locale_code: str, argos_code: str) -> Translator | None:
-    """The engine that reads a translation back into English, or None for `en`.
+def build_back(locale_code: str, argos_code: str, engine: str = "argos") -> Translator | None:
+    """The engine that reads a translation back into English, or None.
 
     Traditional Chinese is read back through the Simplified model, which is the
     one Argos has, after converting the text to the script that model reads.
+    The read-back catches Argos's garbage; Claude's output goes without it.
     """
-    if locale_code == "en" or argos_code == "en":
+    if engine == "claude" or locale_code == "en" or argos_code == "en":
         return None
 
     back = ArgosTranslator("en", from_code=argos_code)

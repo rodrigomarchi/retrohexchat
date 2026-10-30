@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **274 spec files** under `e2e/tests/`.
-- **693 Playwright `test()` cases**.
-- **639 documented flows**, 638 done, 1 not done.
+- **694 Playwright `test()` cases**.
+- **640 documented flows**, 639 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -852,6 +852,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | LC3 | Switching to Japanese survives a reload | `tests/i18n.spec.ts` | done |
 | LC4 | pt-BR is kept through registration into the chat shell | `tests/i18n.spec.ts` | done |
 | LC5 | Language switches from the chat menu bar | `tests/i18n.spec.ts` | done |
+| LC6 | A public page and the Start menu fit in the languages that run longest | `tests/i18n.spec.ts` | done |
 
 ### PW - Public Pages, Landing, And Showcase
 

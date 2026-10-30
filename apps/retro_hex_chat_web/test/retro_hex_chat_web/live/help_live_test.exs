@@ -197,7 +197,7 @@ defmodule RetroHexChatWeb.HelpLiveTest do
                "https://retrohexchat.app/pt-BR/chat/help/commands-overview"
              ]
 
-      assert Enum.map(Enum.take(trail, 2), & &1["name"]) == ["Principal", "Ajuda"]
+      assert Enum.map(Enum.take(trail, 2), & &1["name"]) == ["Início", "Ajuda"]
     end
 
     test "shows content header with icon and title", %{conn: conn} do

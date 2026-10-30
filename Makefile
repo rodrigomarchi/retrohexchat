@@ -6,7 +6,7 @@
        test.js test.js.changed test.js.pins games.ai.calibrate test.js.related test.js.watch \
        ci ci.full ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots spaces.shots tools.shots dup.report dup.test seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.js.translate i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.claude.venv i18n.claude.review i18n.repair.plurals games.shots spaces.shots tools.shots dup.report dup.test seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.js.translate i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle space.ui space.ui.check arcade.ui arcade.ui.check space.creator space.creator.check precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -40,6 +40,10 @@ I18N_VENV ?= /tmp/retro_hex_chat_i18n_venv
 # catalog of every locale.
 I18N_TRANSLATE_PATHS = $(foreach d,$(subst $(comma), ,$(DOMAINS)),$(wildcard apps/$(if $(filter domain,$(APP)),retro_hex_chat,retro_hex_chat_web)/priv/gettext/*/LC_MESSAGES/$(d).po))
 I18N_PYTHON = $(if $(wildcard $(I18N_VENV)/bin/python),$(I18N_VENV)/bin/python,python3)
+# Claude's own venv: the SDK and polib, with none of Argos's models.
+I18N_CLAUDE_VENV ?= /tmp/retro_hex_chat_i18n_claude_venv
+# The engine `i18n.translate` fills new strings with: argos (free, offline) or claude.
+ENGINE ?= argos
 
 ifneq (,$(wildcard .env))
 include .env
@@ -594,13 +598,26 @@ i18n.repair.plurals: ## Retranslate short count plurals whose forms are mechanic
 	test -x $(I18N_VENV)/bin/python || (echo "run make i18n.venv first" && exit 2)
 	$(I18N_PYTHON) scripts/i18n_machine_translate_po.py --locales $(I18N_REQUIRED_LOCALES) --repair-plurals 'apps/*/priv/gettext/*/LC_MESSAGES/*.po'
 
-i18n.translate: ## Fill new/fuzzy entries of DOMAINS (APP=web|domain) in every locale, then the glossary
+i18n.translate: ## Fill new/fuzzy entries of DOMAINS (APP=web|domain, ENGINE=argos|claude) in every locale, then the glossary
 	test -n "$(DOMAINS)" || (echo "usage: make i18n.translate DOMAINS=landing APP=web" && exit 2)
 	test "$(APP)" = web -o "$(APP)" = domain || (echo "APP must be web or domain" && exit 2)
-	test -x $(I18N_VENV)/bin/python || (echo "run make i18n.venv first" && exit 2)
 	test -n "$(I18N_TRANSLATE_PATHS)" || (echo "no catalog matches DOMAINS=$(DOMAINS) APP=$(APP)" && exit 2)
+ifeq ($(ENGINE),claude)
+	test -x $(I18N_CLAUDE_VENV)/bin/python || (echo "run make i18n.claude.venv first" && exit 2)
+	$(I18N_CLAUDE_VENV)/bin/python scripts/i18n_machine_translate_po.py --engine claude --locales en,$(I18N_REQUIRED_LOCALES) $(I18N_TRANSLATE_PATHS)
+else
+	test -x $(I18N_VENV)/bin/python || (echo "run make i18n.venv first" && exit 2)
 	$(I18N_PYTHON) scripts/i18n_machine_translate_po.py --locales en,$(I18N_REQUIRED_LOCALES) $(I18N_TRANSLATE_PATHS)
+endif
 	$(MAKE) i18n.glossary
+
+i18n.claude.venv: ## Create the venv for the Claude engine: the Anthropic SDK and polib
+	python3 -m venv $(I18N_CLAUDE_VENV)
+	$(I18N_CLAUDE_VENV)/bin/python -m pip install --quiet anthropic polib
+
+i18n.claude.review: ## Review existing translations with Claude, in batches (ARGS="estimate|submit|collect|report|apply --run NAME ...")
+	test -x $(I18N_CLAUDE_VENV)/bin/python || (echo "run make i18n.claude.venv first" && exit 2)
+	$(I18N_CLAUDE_VENV)/bin/python scripts/i18n_claude_review.py $(ARGS)
 
 i18n.js.translate: ## Translate the browser messages its catalogs lack (needs the translation venv)
 	$(I18N_PYTHON) scripts/i18n_js_translate.py --locales $(I18N_REQUIRED_LOCALES) $(if $(RETRY),--retry-english)

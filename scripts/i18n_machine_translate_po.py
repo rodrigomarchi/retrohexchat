@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Draft-translate Gettext PO catalogs with Argos Translate.
+"""Draft-translate Gettext PO catalogs with Argos Translate, or Claude on request.
 
 Thin CLI over the `i18n` package: this file resolves arguments and touches
 files, everything else lives in importable, testable modules. Install the
 engine in a temporary venv when needed:
 
     python -m pip install argostranslate polib opencc-python-reimplemented
+
+`--engine claude` needs `make i18n.claude.venv` and ANTHROPIC_API_KEY instead.
 """
 
 from __future__ import annotations
@@ -23,6 +25,7 @@ from i18n.protection import has_sentinel_residue  # noqa: E402
 from i18n.quality import introduced_degeneration  # noqa: E402
 from i18n.terms import brazilian_forms, italian_accents  # noqa: E402
 from i18n.translator import TraditionalChinesePostprocessor, build, build_back  # noqa: E402
+from seo.transport import env_value  # noqa: E402
 
 DEFAULT_CACHE = "/tmp/retro_hex_chat_i18n_translation_cache.json"
 
@@ -35,6 +38,7 @@ def parse_args() -> argparse.Namespace:
         help="Comma-separated locale codes (default: every enabled locale)",
     )
     parser.add_argument("--cache", default=DEFAULT_CACHE, help="Translation cache JSON path")
+    parser.add_argument("--engine", choices=["argos", "claude"], default="argos")
     parser.add_argument(
         "--overwrite", action="store_true", help="Overwrite existing non-source translations"
     )
@@ -115,10 +119,11 @@ def main() -> int:
 
 
 def build_pipeline(code: str, args: argparse.Namespace) -> Pipeline:
-    translator = build(code, locales.argos_code(code))
+    api_key = env_value("ANTHROPIC_API_KEY", locales.REPO_ROOT / ".env") if args.engine == "claude" else None
+    translator = build(code, locales.argos_code(code), args.engine, api_key)
     postprocess = None
 
-    if code == "zh_hant":
+    if code == "zh_hant" and args.engine == "argos":
         postprocess = TraditionalChinesePostprocessor(translator).convert
     elif code == "it":
         postprocess = italian_accents
@@ -133,7 +138,7 @@ def build_pipeline(code: str, args: argparse.Namespace) -> Pipeline:
         batch_size=args.batch_size,
         batch_chars=args.batch_chars,
         locale_code=code,
-        back_translator=build_back(code, locales.argos_code(code)),
+        back_translator=build_back(code, locales.argos_code(code), args.engine),
         answers=answers,
         full_stop="。" if code in ("ja", "zh_hans", "zh_hant") else ".",
     )
