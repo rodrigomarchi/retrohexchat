@@ -12,8 +12,8 @@ defmodule RetroHexChatWeb.Analytics do
   import Phoenix.LiveView, only: [push_event: 3]
 
   @events ~w(arcade_start call_join channel_join channel_view channel_watch command_use
-             game_start login login_start message_send p2p_start pm_open sign_up signup_error
-             signup_prompt signup_start space_enter tool_open)
+             game_end game_start login login_start logout message_send p2p_start pm_open share
+             sign_up signup_error signup_prompt signup_start space_enter tool_open window_open)
 
   @doc """
   Sends `event` once the page has it. `across_navigation: true` is for the moment

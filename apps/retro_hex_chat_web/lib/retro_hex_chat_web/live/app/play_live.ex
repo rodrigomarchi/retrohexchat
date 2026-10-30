@@ -408,6 +408,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         end
 
       socket
+      |> Analytics.track("game_end", %{game: game_id, seconds: match_seconds(socket)})
       |> stop_playing()
       |> assign(
         status: "finished",
@@ -422,6 +423,11 @@ defmodule RetroHexChatWeb.App.PlayLive do
   end
 
   defp finish_match(socket, _payload), do: socket
+
+  defp match_seconds(%{assigns: %{match_started_at: %DateTime{} = started_at}}),
+    do: DateTime.diff(DateTime.utc_now(), started_at)
+
+  defp match_seconds(_socket), do: nil
 
   # A guest plays for fun: their name is nobody's to keep a score under.
   defp record_match(%{assigns: %{player: nil}}, _payload), do: nil

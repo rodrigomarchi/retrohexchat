@@ -57,6 +57,14 @@ defmodule RetroHexChatWeb.AnalyticsFunnelTest do
     assert_push_event(view, "analytics", %{name: "signup_prompt", params: %{feature: :paint}})
   end
 
+  test "a window with no address of its own is reported when it opens", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/")
+
+    render_hook(view, "open_arcade", %{})
+
+    assert_push_event(view, "analytics", %{name: "window_open", params: %{window: _window}})
+  end
+
   test "pages carry the measurement id only when there is one", %{conn: conn} do
     refute conn |> get(~p"/faq") |> html_response(200) =~ "ga-measurement-id"
 

@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.App.ShareLinkEvents do
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.ShareLinks
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.ShareLinkRef
 
   @doc """
@@ -30,7 +31,10 @@ defmodule RetroHexChatWeb.App.ShareLinkEvents do
              creator_id: user_id,
              creator_nick: socket.assigns.nickname
            }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
+      {:noreply,
+       socket
+       |> Analytics.track("share", %{content_type: kind})
+       |> assign(share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
     else
       _unavailable -> {:noreply, socket}
     end

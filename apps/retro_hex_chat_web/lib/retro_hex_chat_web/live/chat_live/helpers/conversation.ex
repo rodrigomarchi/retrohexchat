@@ -66,6 +66,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
       |> Session.set_active_pm(nickname)
 
     socket
+    |> Analytics.track("pm_open")
     |> PM.open_pm_tab(nickname)
     |> enter_conversation(session, "pm:#{nickname}")
     |> load_roster()

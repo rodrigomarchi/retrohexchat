@@ -51,14 +51,17 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
   def open(socket, id) do
     socket
     |> open_window(id)
-    |> track_tool(id)
+    |> track_window(id)
     |> push_event("window_command", %{action: "open", id: id})
   end
 
-  defp track_tool(socket, id) when id in @tools,
-    do: Analytics.track(socket, "tool_open", %{tool: id})
+  defp track_window(socket, id) when id in @tools do
+    socket
+    |> Analytics.track("window_open", %{window: id})
+    |> Analytics.track("tool_open", %{tool: id})
+  end
 
-  defp track_tool(socket, _id), do: socket
+  defp track_window(socket, id), do: Analytics.track(socket, "window_open", %{window: id})
 
   @doc "Add a managed window to `open_windows` (no-op for non-managed ids)."
   @spec open_window(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()

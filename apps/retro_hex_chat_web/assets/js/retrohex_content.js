@@ -3,7 +3,6 @@
 // handshake time and the Win98 chrome are the app's; the locale catalog is
 // not loaded, because the showcase is written in English on purpose.
 
-import { installAnalytics } from "./lib/analytics/google_analytics";
 import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
@@ -28,5 +27,3 @@ window.liveSocket = liveSocket;
 // Win98 tooltips over every `title`, the arrows of every up-down field, and
 // how popovers close and place themselves — the same as the app's pages.
 installRetroChrome(document);
-
-installAnalytics();

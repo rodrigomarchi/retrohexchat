@@ -409,7 +409,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   end
 
   defp track_input(socket, _input) do
-    Analytics.track(socket, "message_send", %{channel: socket.assigns.session.active_channel})
+    %{active_channel: channel, active_pm: peer} = socket.assigns.session
+
+    Analytics.track(socket, "message_send", %{channel: channel, private: is_binary(peer)})
   end
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

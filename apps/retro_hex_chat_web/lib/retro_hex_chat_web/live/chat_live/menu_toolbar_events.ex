@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     ]
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChatWeb.Analytics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog
@@ -91,6 +92,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
     {:halt,
      socket
+     |> Analytics.track("logout", %{}, across_navigation: true)
      |> clear_reconnect_state()
      |> push_event("intentional_disconnect", %{})
      |> redirect(to: Paths.session_clear_path(socket, "logout"))}
