@@ -159,6 +159,8 @@ export class GameEngine {
     this._readyEncoder = null;
     this._keyboardCaptured = options.captureKeyboard === true;
     this._keyboardTarget = options.keyboardTarget ?? window;
+    // The seat's own keys pressed by the game's AI (games/core/autopilot.js), or null.
+    this.autopilot = null;
 
     this._boundOnMessage = this._onChannelMessage.bind(this);
     this._boundOnKeyDown = this._onKeyDown.bind(this);
@@ -194,6 +196,7 @@ export class GameEngine {
 
   /** @returns {void} */
   stop() {
+    this.autopilot?.release();
     this.running = false;
     this._stepping = false;
     this._paused = false;
@@ -396,6 +399,7 @@ export class GameEngine {
     const steps = this._clock.advance(now);
 
     if (steps > 0) {
+      this.autopilot?.step();
       if (this._stepping) {
         for (let i = 0; i < steps && this._stepping; i++) {
           this._gameLoop();

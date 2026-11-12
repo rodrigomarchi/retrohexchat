@@ -88,6 +88,7 @@ import { encodeGameReady } from "../net_protocol.js";
 import { cueSounds } from "./events.js";
 import { createFlow } from "./flow.js";
 import { aiRandom, createRng, freshSeed } from "./rng.js";
+import { createAutopilot } from "./autopilot.js";
 import { toCanvasPoint } from "./pointer.js";
 import { createGameAudio } from "./synth.js";
 import { MSG, dispatcher } from "./messages.js";
@@ -264,6 +265,9 @@ export function defineGame(def) {
           (this.mode === "solo" && def.ai.create
             ? def.ai.create({ difficulty: this.difficulty, rng: aiRandom(this.matchSeed) })
             : null);
+        if (options.autopilot && this.mode !== "spectator") {
+          this._createAutopilot(options.autopilot);
+        }
       }
       this.frameCount = 0;
       this.audio = audioOf(def.audio);
@@ -582,6 +586,30 @@ export function defineGame(def) {
     _cancelPendingPhase() {
       this.flow?.stop();
       super._cancelPendingPhase();
+    }
+
+    /**
+     * This seat played by the game's AI through its keys: the controller the
+     * page brought, else the one the definition makes.
+     * @param {{ difficulty?: string, controller?: object }} request
+     */
+    _createAutopilot(request) {
+      const difficulty = def.ai.difficulty(request.difficulty);
+      const controller =
+        request.controller ??
+        def.ai.create?.({ difficulty, rng: createRng(this.matchSeed).fork("autopilot").next });
+      if (!controller) return;
+      const player = this.isHost ? 1 : 2;
+      this.autopilot = createAutopilot({
+        controller,
+        inputs: def.inputs,
+        target: this._keyboardTarget,
+        observe: () => ({
+          ...(def.ai.observe ? def.ai.observe(this) : { state: this.gameState }),
+          difficulty,
+          player,
+        }),
+      });
     }
 
     _updateOpponentInputs() {

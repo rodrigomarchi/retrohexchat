@@ -39,7 +39,12 @@ beat needs.
 - `shots.ts` — the shot list, `film()` (pace, cue, follow, focus) and the on-camera
   helpers (`typeOnCamera`, `pointAt`, `restCursor`).
 - `camera.ts` — 1280x720 CSS at 1.5x → 1920x1080 frames. The scale comes from
-  launch flags; the screencast ignores an emulated `deviceScaleFactor`.
+  launch flags; the screencast ignores an emulated `deviceScaleFactor`. A shot
+  list whose `frame` is `phone` (a YouTube Short) films a phone held upright
+  instead: 360x640 CSS at 3x → 1080x1920, with touch, so the app lays itself
+  out for a finger (the games' pad over the stage); `make e2e.director` reads
+  the frame into `DIRECTOR_FRAME`. On a phone the camera draws a fingertip
+  where a tap lands (`drawTouches`) instead of a pointer — press with `tap()`.
 - `recorder.ts` — CDP screencast to JPEG frames + `take.json` (when each frame
   was painted); `follow()` moves the camera to another tab on one timeline.
   Playwright's own video is VP8 at 1 Mbit/s.
@@ -62,11 +67,25 @@ beat needs.
   someone's screen: their lines make their own portrait talk.
 - `calls.ts`, `space.ts`, `arcade.ts` — sessions and conferences, Spaces, and
   the Arcade with DOOM, the way a scene needs them.
+- `retro_games.ts` — the Retro Games: a seat played by the game's own computer
+  player (`autopilot(ctx, difficulty)` sets `window.__rhcAutopilot` before any
+  game loads; `games/core/autopilot.js` then presses that seat's keys, so the
+  match is the real one, on the wire too), a way's Against the computer from
+  the home, a seat offered in the game's channel and the match room it opens,
+  and the game's channel set up as provisioning sets it (`provisionGameChannel`).
 
 Scene 1 registers its nickname on camera, so a retake of it needs a fresh
 database (`FRESH=1`) or another `DIRECTOR_NICK`.
 
 ## Pitfalls the director already hit
+
+- **A game's channel tells a player's news once every few minutes.** Setting
+  the channel up with a match of one of the players (`provisionGameChannel`)
+  kept the match filmed right after out of the channel. Found the channel with
+  a regular who does not play on camera.
+- **A seat's card offers Join only while the seat is open.** Once a friend
+  takes it, the host's own card reads Taken and offers Play instead: the host
+  goes into the room first, then the friend joins.
 
 - **The screencast ignores emulated scale.** A context with
   `deviceScaleFactor: 1.5` still paints 1280x720 frames. The scale comes from

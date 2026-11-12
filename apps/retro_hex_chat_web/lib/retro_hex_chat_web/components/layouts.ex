@@ -21,8 +21,9 @@ defmodule RetroHexChatWeb.Layouts do
 
   @doc """
   The metas every full page carries after its charset: viewport, CSRF token,
-  the analytics id and browser telemetry switches, and the
-  `traceparent` that joins the page-load trace to the server's.
+  the analytics id and browser telemetry switches, the
+  `traceparent` that joins the page-load trace to the server's and, on the e2e
+  server only, the autopilot's permission.
   """
   @spec head_meta(map()) :: Phoenix.LiveView.Rendered.t()
   def head_meta(assigns) do
@@ -45,8 +46,19 @@ defmodule RetroHexChatWeb.Layouts do
     <%= if traceparent = RetroHexChatWeb.TraceContext.traceparent() do %>
       <meta name="traceparent" content={traceparent} />
     <% end %>
+    <meta :if={autopilot?()} name="rhc-autopilot" content="allowed" />
     """
   end
+
+  @doc """
+  Whether this server's pages allow a game's seat to be played by the game's
+  own computer player (`games/core/autopilot.js`), which the video director
+  films: only the e2e server's (`config/e2e.exs`). Any other never prints the
+  meta, so the switch does nothing there — nobody can hand a ranked match to
+  the computer.
+  """
+  @spec autopilot?() :: boolean()
+  def autopilot?, do: Application.get_env(:retro_hex_chat, :e2e_fault_injection?, false) == true
 
   @doc """
   What makes a page installable and recognisable in a tab: the manifest, the

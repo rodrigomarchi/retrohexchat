@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **274 spec files** under `e2e/tests/`.
-- **694 Playwright `test()` cases**.
-- **640 documented flows**, 639 done, 1 not done.
+- **275 spec files** under `e2e/tests/`.
+- **696 Playwright `test()` cases**.
+- **642 documented flows**, 641 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -503,6 +503,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N91 | A Retro Game on its stage, on the desktop: Hex Pong fills the window with its menu over it (what it plays to, its keys, the difficulty, Play vs AI) and no pad; once the match runs nothing is over the game but the corner key; Esc holds it under the Paused menu and Continue goes on; End shows the result in the menu, and Again brings the ready menu back | `tests/game-stage.spec.ts` | done |
 | N92 | A Retro Game on its stage, on a phone: Hex Pong and its pad fit the screen, the pad lies over the game, a finger on the cross holds the arrow key down and lifting it lets go, the page does not scroll, and the corner key opens the Paused menu | `tests/game-stage.spec.ts` | done |
 | N93 | Hex Boxing against the AI: the menu names the match (best of 3 rounds); once the bell rings, Space throws a punch that winds up first — the arm draws back and the fist glows — and then strikes, while the match goes on with nothing over the ring but the corner key | `tests/game-hex-boxing.spec.ts` | done |
+| N94 | Hex Invaders' home offers its three ways — the war, Co-op and Blitz — each against the computer; Co-op opens on its stage naming 10 waves and plays with the computer beside you; Blitz names 5 waves, and a match played to its end shows the result | `tests/game-hex-invaders.spec.ts` | done |
+| N95 | Find a partner on Hex Invaders puts a seat's card in #hex-invaders; a friend's Join takes it, both are ready, the match runs while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-invaders.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

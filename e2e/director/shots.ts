@@ -1,8 +1,8 @@
 import { Browser, BrowserContext, Locator, Page, test } from "@playwright/test";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { CAMERA } from "./camera";
-import { drawCursor } from "./cursor";
+import { CAMERA, DIRECTOR_FRAME } from "./camera";
+import { drawCursor, drawTouches } from "./cursor";
 import { installCharacterCamera, installTestCard } from "./media";
 import { Box, Frame, Mark, Recorder, Take } from "./recorder";
 
@@ -64,7 +64,7 @@ export function shotFor(number: number): Shot {
 
 /**
  * A browser context that looks like a person's: camera size, a drawn pointer
- * (headless has none to film), and
+ * (headless has none to film) — or, on a phone, touch and a drawn fingertip — and
  * a locale and time zone of its own rather than the filming machine's — the
  * viewer's clock and profile are on screen.
  */
@@ -78,12 +78,14 @@ export async function cameraContext(
   } = {},
 ): Promise<BrowserContext> {
   // viewport: null — the page takes the window, so the launch flags' scale holds.
+  const phone = DIRECTOR_FRAME === "phone";
   const ctx = await browser.newContext({
     viewport: null,
+    hasTouch: phone,
     locale: "en-US",
     timezoneId: options.timezoneId ?? "Europe/London",
   });
-  await ctx.addInitScript(drawCursor);
+  await ctx.addInitScript(phone ? drawTouches : drawCursor);
   if (options.face === "character") await installCharacterCamera(ctx, nick);
   else await installTestCard(ctx, nick);
   return ctx;

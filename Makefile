@@ -309,9 +309,11 @@ e2e.director: ## Film video scenes for the YouTube channel — not a test (SHOTS
 	@pids=$$(lsof -ti:$(E2E_PORT) 2>/dev/null); [ -z "$$pids" ] || kill -9 $$pids
 	@# Only the episode the shot list names: another episode's file would assemble its own cast
 	@# in the same database and found its channels first.
+	@# The shot list's frame (desktop, or a phone for a Short) sizes the browser: DIRECTOR_FRAME.
 	cd e2e && episode=$$(node -p 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).episode' $(abspath $(SHOTS))) && \
+	  frame=$$(node -p 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).frame || "desktop"' $(abspath $(SHOTS))) && \
 	  test -f director/ep$$episode.director.ts || { echo "no director/ep$$episode.director.ts for this shot list"; exit 2; }; \
-	  E2E_DIRECTOR=1 DIRECTOR_SHOTS=$(abspath $(SHOTS)) DIRECTOR_OUT=$(abspath $(OUT)) $(E2E_ENV) npx playwright test --project=director director/ep$$episode.director.ts
+	  E2E_DIRECTOR=1 DIRECTOR_FRAME=$$frame DIRECTOR_SHOTS=$(abspath $(SHOTS)) DIRECTOR_OUT=$(abspath $(OUT)) $(E2E_ENV) npx playwright test --project=director director/ep$$episode.director.ts
 
 e2e.changed: ## Run Playwright specs changed since SINCE (default: uncommitted changes)
 	$(E2E_MIX) assets.build

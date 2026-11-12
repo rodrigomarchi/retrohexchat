@@ -45,3 +45,50 @@ export function drawCursor(): void {
     mount();
   }
 }
+
+/**
+ * A drawn touch for a phone's camera: a ring where a finger lands, fading as
+ * it lifts. A phone has no pointer to follow, and a tap with nothing drawn is
+ * as invisible on film as a click.
+ *
+ * Runs as an init script, in every document the camera opens.
+ */
+export function drawTouches(): void {
+  const mount = () => {
+    window.addEventListener(
+      "pointerdown",
+      (event) => {
+        const ring = document.createElement("div");
+        ring.setAttribute("aria-hidden", "true");
+        Object.assign(ring.style, {
+          position: "fixed",
+          left: `${event.clientX - 18}px`,
+          top: `${event.clientY - 18}px`,
+          width: "36px",
+          height: "36px",
+          borderRadius: "50%",
+          background: "rgba(255,255,255,0.45)",
+          border: "2px solid rgba(0,0,0,0.55)",
+          zIndex: "2147483647",
+          pointerEvents: "none",
+          transition: "opacity 450ms ease-out, transform 450ms ease-out",
+        });
+        document.documentElement.appendChild(ring);
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            ring.style.opacity = "0";
+            ring.style.transform = "scale(1.6)";
+          }),
+        );
+        setTimeout(() => ring.remove(), 600);
+      },
+      { capture: true, passive: true },
+    );
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mount, { once: true });
+  } else {
+    mount();
+  }
+}

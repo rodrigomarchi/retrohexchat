@@ -1,5 +1,6 @@
 import { GameEngine } from "../game_engine.js";
-import { aiRandom, freshSeed } from "./core/rng.js";
+import { autopilotRequest } from "./core/autopilot.js";
+import { aiRandom, createRng, freshSeed } from "./core/rng.js";
 import { createLocalTransport, normalizeGameTransport } from "./transport.js";
 import REGISTRY from "./registry.json";
 
@@ -116,6 +117,31 @@ export async function createGameEngine({
       : opponentController;
   if (soloOpponentController) options.opponentController = soloOpponentController;
   if (difficulty) options.difficulty = difficulty;
+  const autopilot = autopilotRequest();
+  if (autopilot && runtimeMode !== "spectator") {
+    options.autopilot = await autopilotOptions(gameId, autopilot, options.seed);
+  }
 
   return new EngineClass(canvas, engineTransport, gameId, solo ? true : isHost, onGameEnd, options);
+}
+
+/**
+ * What the engine needs to play this page's seat: the difficulty, and — for
+ * an AI kept out of the game's chunk — the controller, loaded here.
+ * @param {string} gameId
+ * @param {{ difficulty?: string }} request
+ * @param {number} seed
+ * @returns {Promise<{ difficulty?: string, controller?: object }>}
+ */
+async function autopilotOptions(gameId, request, seed) {
+  const loader = SOLO_AI_LOADERS[REGISTRY[gameId]?.dir];
+  if (!loader) return request;
+  const create = await loader();
+  return {
+    ...request,
+    controller: create({
+      difficulty: request.difficulty,
+      rng: createRng(seed).fork("autopilot").next,
+    }),
+  };
 }
