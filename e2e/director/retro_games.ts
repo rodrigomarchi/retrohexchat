@@ -16,44 +16,7 @@ import { followCard } from "../helpers/surfaceEntry";
  * game-stage, game-open-lobby, game-channels, chat-retro-games) with a camera.
  */
 
-/**
- * Every game this context opens has its seat played by the game's own computer
- * player, through the seat's keys — the same keys a person presses, the same
- * match on the wire (`games/core/autopilot.js`). Set before any game loads.
- */
-export async function autopilot(
-  ctx: BrowserContext,
-  difficulty: "easy" | "normal" | "hard",
-): Promise<void> {
-  await ctx.addInitScript((level) => {
-    (window as unknown as { __rhcAutopilot: object }).__rhcAutopilot = {
-      difficulty: level,
-    };
-  }, difficulty);
-}
-
-/**
- * Off camera: the game's channel set up the way the provisioning script sets
- * it up — registered, founded by `founder`, with Scoreboard announcing in it —
- * by a match of `founder`'s against the computer in the ledger.
- */
-export async function provisionGameChannel(
-  request: APIRequestContext,
-  gameId: string,
-  founder: string,
-  score: { p1: number; p2: number } = { p1: 420, p2: 510 },
-): Promise<void> {
-  const response = await request.post("/api/e2e/game-results", {
-    data: {
-      game_id: gameId,
-      duration_seconds: 95,
-      p1: founder,
-      payload: { score, winner: score.p1 > score.p2 ? 1 : 2 },
-      difficulty: "normal",
-    },
-  });
-  expect(response.ok(), await response.text()).toBeTruthy();
-}
+export { autopilot, provisionGameChannel } from "../helpers/retroGames";
 
 /** A finished match between two people, in the ledger, for a scene filmed alone. */
 export async function recordMatch(
@@ -148,15 +111,17 @@ export async function endMatch(game: Page): Promise<void> {
 }
 
 /**
- * Find a partner on a way's row of the home: the chat comes forward on the
- * game's channel with the seat's card in it. Returns the card's Join address.
+ * Find a partner — on a way's row of the home (`game-lfg`) or on the game's
+ * line under its channel's topic (`game-channel-lfg`): the chat comes forward
+ * on the game's channel with the seat's card in it. Returns the card's Join
+ * address.
  */
 export async function offerSeat(
   page: Page,
-  wayId: string,
+  door: Locator,
   nick: string,
 ): Promise<{ card: Locator; address: string }> {
-  await way(page, wayId).getByTestId("game-lfg").click();
+  await door.click();
   const card = page
     .locator('[data-testid="share-message-card"]')
     .filter({ has: page.getByTestId("share-message-enter") })

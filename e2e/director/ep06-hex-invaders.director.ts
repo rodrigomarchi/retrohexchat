@@ -179,7 +179,11 @@ test.describe("EP06 Hex Invaders", () => {
     }
     await homeOpen();
     await onlyTheChat(kestrel);
-    const { address } = await offerSeat(pixel.page, GAME, PIXEL);
+    const { address } = await offerSeat(
+      pixel.page,
+      way(pixel.page, GAME).getByTestId("game-lfg"),
+      PIXEL,
+    );
     const host = await enterRoom(pixel.page, pixel.ctx, address);
     const guest = await enterRoom(kestrel.page, kestrel.ctx, address);
     await bothReady(host, guest);
@@ -210,7 +214,7 @@ test.describe("EP06 Hex Invaders", () => {
         const lfg = way(page, GAME).getByTestId("game-lfg");
         await pointAt(page, lfg);
         await pace(300);
-        const { card, address } = await offerSeat(page, GAME, PIXEL);
+        const { card, address } = await offerSeat(page, lfg, PIXEL);
         await restCursor(page);
         await cue("puts a card with one open seat");
         await focus(card);

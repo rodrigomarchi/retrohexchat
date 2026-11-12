@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **275 spec files** under `e2e/tests/`.
-- **696 Playwright `test()` cases**.
-- **642 documented flows**, 641 done, 1 not done.
+- **276 spec files** under `e2e/tests/`.
+- **698 Playwright `test()` cases**.
+- **644 documented flows**, 643 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -505,6 +505,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N93 | Hex Boxing against the AI: the menu names the match (best of 3 rounds); once the bell rings, Space throws a punch that winds up first — the arm draws back and the fist glows — and then strikes, while the match goes on with nothing over the ring but the corner key | `tests/game-hex-boxing.spec.ts` | done |
 | N94 | Hex Invaders' home offers its three ways — the war, Co-op and Blitz — each against the computer; Co-op opens on its stage naming 10 waves and plays with the computer beside you; Blitz names 5 waves, and a match played to its end shows the result | `tests/game-hex-invaders.spec.ts` | done |
 | N95 | Find a partner on Hex Invaders puts a seat's card in #hex-invaders; a friend's Join takes it, both are ready, the match runs while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-invaders.spec.ts` | done |
+| N96 | In #hex-pong, the game's name on its line under the topic opens Hex Pong's home, with its one way; Play on the same line opens the game in a tab of its own, its stage naming First to 11, and a match against the computer played to its end shows the result | `tests/game-hex-pong.spec.ts` | done |
+| N97 | Find a partner on the game's line under #hex-pong's topic puts a seat's card in the channel; a friend's Join takes it, both are ready, the match runs while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-pong.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 
