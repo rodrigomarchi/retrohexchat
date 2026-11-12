@@ -12,7 +12,7 @@
        clean clean.deps clean.build clean.all \
        deps.tree deps.update deps.unlock app.tree \
        docker.up docker.down docker.ps docker.logs docker.reset docker.stop \
-       deploy deploy.skip-ci deploy-sun
+       deploy deploy.skip-ci deploy-production
 
 DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
@@ -712,18 +712,19 @@ app.tree: ## Show OTP application supervision tree
 REF ?= main
 
 # Deploy env vars (all required, set via environment or make args):
-#   DEPLOY_USER  — SSH username on the target server
-#   SUN_IP       — Production server IP address
-#   SSH_PORT     — SSH port (default: 2222)
+#   DEPLOY_USER  — SSH username on the production server
+#   DEPLOY_HOST  — production server address
+#   DEPLOY_PORT  — production server SSH port
 
-deploy: ## CI + deploy to production (Sun), wait for the rollout, resubmit the sitemap — usage: make deploy REF=main
+deploy: ## CI + deploy to production, wait for the rollout, resubmit the sitemap — usage: make deploy REF=main
 	elixir scripts/deploy_all.exs --ref $(REF)
 
-deploy.skip-ci: ## Deploy Sun without CI (already validated), then the same rollout wait — usage: make deploy.skip-ci REF=main
+deploy.skip-ci: ## Deploy production without CI (already validated), then the same rollout wait — usage: make deploy.skip-ci REF=main
 	elixir scripts/deploy_all.exs --ref $(REF) --skip-ci
 
-deploy-sun: ## Deploy to production (no CI) — usage: make deploy-sun REF=main
+deploy-production: ## Deploy to production (no CI) — usage: make deploy-production REF=main
 	@test -n "$(DEPLOY_USER)" || (echo "Error: DEPLOY_USER is required" && exit 1)
-	@test -n "$(SUN_IP)" || (echo "Error: SUN_IP is required" && exit 1)
-	scp -P $${SSH_PORT:-2222} scripts/deploy.sh $(DEPLOY_USER)@$(SUN_IP):~/deploy.sh
-	ssh -p $${SSH_PORT:-2222} $(DEPLOY_USER)@$(SUN_IP) "bash ~/deploy.sh $(REF)"
+	@test -n "$(DEPLOY_HOST)" || (echo "Error: DEPLOY_HOST is required" && exit 1)
+	@test -n "$(DEPLOY_PORT)" || (echo "Error: DEPLOY_PORT is required" && exit 1)
+	scp -P $(DEPLOY_PORT) scripts/deploy.sh $(DEPLOY_USER)@$(DEPLOY_HOST):~/deploy.sh
+	ssh -p $(DEPLOY_PORT) $(DEPLOY_USER)@$(DEPLOY_HOST) "bash ~/deploy.sh $(REF)"

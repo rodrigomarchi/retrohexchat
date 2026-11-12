@@ -52,8 +52,8 @@ Mechanics, options, partitions, browser E2E and deploy: [`docs/reference/ci-pipe
 
 ## Deploy
 
-**Always `make deploy`** — it runs the full CI pipeline, then ships to Sun
-(production). **Never `make deploy-sun` directly: it skips CI validation.**
+**Always `make deploy`** — it runs the full CI pipeline, then ships to
+production. **Never `make deploy-production` directly: it skips CI validation.**
 Use `make deploy.skip-ci` only when `make ci.full` just passed on this exact revision.
 
 **Sweep the browser before a release — in batches, never in one command.**

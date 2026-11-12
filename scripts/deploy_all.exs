@@ -2,10 +2,10 @@
 
 # RetroHexChat — CI + Deploy Pipeline
 #
-# Runs the full CI validation pipeline, then deploys to production (Sun).
+# Runs the full CI validation pipeline, then deploys to production.
 #
 # Usage:
-#   elixir scripts/deploy_all.exs                  # CI + deploy Sun (REF=main)
+#   elixir scripts/deploy_all.exs                  # CI + deploy production (REF=main)
 #   elixir scripts/deploy_all.exs --ref release-tag # deploy specific ref
 #   elixir scripts/deploy_all.exs --skip-ci         # skip CI (already validated)
 #   elixir scripts/deploy_all.exs --rollout-timeout 600
@@ -17,14 +17,16 @@
 Code.require_file("deploy_rollout.exs", __DIR__)
 
 defmodule DeployAll do
-  @ssh_port String.to_integer(System.get_env("SSH_PORT", "2222"))
+  @ssh_port String.to_integer(
+              System.get_env("DEPLOY_PORT") || raise("DEPLOY_PORT env var is required")
+            )
   @deploy_user System.get_env("DEPLOY_USER") ||
                  raise("DEPLOY_USER env var is required")
   @targets %{
-    "sun" => %{
+    "production" => %{
       label: "Production",
-      ip: System.get_env("SUN_IP") || raise("SUN_IP env var is required"),
-      version_url: System.get_env("SUN_VERSION_URL", "https://retrohexchat.app/version")
+      ip: System.get_env("DEPLOY_HOST") || raise("DEPLOY_HOST env var is required"),
+      version_url: System.get_env("DEPLOY_VERSION_URL", "https://retrohexchat.app/version")
     }
   }
   @default_rollout_timeout_s 300
@@ -286,7 +288,7 @@ defmodule DeployAll do
     {opts, rest}
   end
 
-  defp resolve_targets(_opts), do: ["sun"]
+  defp resolve_targets(_opts), do: ["production"]
 
   # --- Output ---
 

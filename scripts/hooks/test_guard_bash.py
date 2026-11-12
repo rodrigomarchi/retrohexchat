@@ -21,7 +21,7 @@ BLOCK = [
     "git add --all",
     "cd /tmp && git add -A",
     "mix format; git add .",
-    "make deploy-sun",
+    "make deploy-production",
     "git checkout -- lib/foo.ex",
     "git checkout CLAUDE.md",
 ]
@@ -37,7 +37,7 @@ ALLOW = [
     "ls -la",
     'echo "never use git add -A here"',
     'grep -rn "git checkout" docs/',
-    "cat <<'EOF'\nnotes about git add -A and make deploy-sun\nEOF",
+    "cat <<'EOF'\nnotes about git add -A and make deploy-production\nEOF",
     # The guard runs before the command, so a command that fetches on its way to
     # the commit must not be blocked for not having fetched.
     "git fetch origin && git commit -m 'x'",
@@ -50,15 +50,15 @@ ALLOW = [
 NOT_BLOCKED_BECAUSE = [
     # Backtick-quoted mentions are caught by the command-boundary anchor alone.
     (
-        "git commit -F - <<'EOF'\nExplain why `git add -A` is blocked\nand `make deploy-sun` too.\nEOF",
-        ["git add", "deploy-sun"],
+        "git commit -F - <<'EOF'\nExplain why `git add -A` is blocked\nand `make deploy-production` too.\nEOF",
+        ["git add", "deploy-production"],
     ),
     # A heredoc line that *starts* with a forbidden command sits at a real
     # boundary, so only heredoc stripping saves it. This is the case that
     # actually regresses if strip_heredocs is removed.
     (
-        "git commit -F - <<'EOF'\ngit add -A was blocked by the new hook.\nmake deploy-sun is blocked too.\nEOF",
-        ["git add", "deploy-sun"],
+        "git commit -F - <<'EOF'\ngit add -A was blocked by the new hook.\nmake deploy-production is blocked too.\nEOF",
+        ["git add", "deploy-production"],
     ),
 ]
 

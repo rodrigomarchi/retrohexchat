@@ -69,9 +69,9 @@ def check_git_add(cmd):
 
 
 def check_deploy(cmd):
-    if re.search(BOUNDARY + r"make\s+deploy-sun\b", cmd):
+    if re.search(BOUNDARY + r"make\s+deploy-production\b", cmd):
         block(
-            "Blocked: `make deploy-sun` skips CI validation.\n"
+            "Blocked: `make deploy-production` skips CI validation.\n"
             "Use `make deploy` (runs the full CI pipeline first), or "
             "`make deploy.skip-ci` only if `make ci.full` just passed on this exact "
             "revision."

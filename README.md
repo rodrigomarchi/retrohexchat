@@ -360,11 +360,11 @@ single stable final check for branch protection.
 
 ## Production Deployment
 
-RetroHexChat deploys to one production server: `Sun`. The standard deploy pipeline
+RetroHexChat deploys to one production server. The standard deploy pipeline
 runs CI first, then publishes the release for DeployEx on that server.
 
 ```bash
-make deploy         # CI + deploy production (Sun)
+make deploy         # CI + deploy production
 make deploy.skip-ci # deploy without CI (use only if CI was just run)
 ```
 
@@ -376,8 +376,8 @@ DATABASE_URL=        # postgresql://user:pass@host/dbname
 TURN_SECRET=         # 64-byte random string for TURN auth
 TURN_NONCE_SECRET=   # 64-byte random string for nonce signing
 DEPLOY_USER=         # SSH user on the production server
-SUN_IP=              # production server IP
-SSH_PORT=2222        # SSH port, optional; defaults to 2222
+DEPLOY_HOST=         # production server address
+DEPLOY_PORT=         # production server SSH port
 ```
 
 ### Optional Environment Variables

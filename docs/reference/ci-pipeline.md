@@ -276,14 +276,14 @@ thrown away; the same call left in the suite is evidence anyone can regenerate.
 
 **ALWAYS use `make deploy`** (or `elixir scripts/deploy_all.exs`) to deploy unless
 `make ci.full` just passed on the exact revision being deployed. The standard target
-runs the full CI pipeline (`make ci.full`) first, then deploys to production (Sun).
-NEVER use `make deploy-sun` directly — it skips CI validation.
+runs the full CI pipeline (`make ci.full`) first, then deploys to production.
+NEVER use `make deploy-production` directly — it skips CI validation.
 
 ```
 Phase 1: CI Validation (make ci.full — partitioned, ~2m)
     ↓ (only if all checks pass)
 Phase 2: Deploy
-    └─ Sun (production) — scp + ssh deploy.sh
+    └─ production — scp + ssh deploy.sh
     ↓ (only if every target succeeded)
 Phase 3: Rollout
     └─ wait until /version answers the new release 10 times in a row
@@ -302,8 +302,8 @@ deploy: exit 1, nothing announced. The sitemap submission runs on the deploying
 machine, never on the server, and a failure there is only a warning.
 
 **Options:**
-- `make deploy` — CI + deploy Sun (standard)
-- `make deploy.skip-ci` — deploy Sun without CI (use only if CI was just run on this revision)
+- `make deploy` — CI + deploy production (standard)
+- `make deploy.skip-ci` — deploy production without CI (use only if CI was just run on this revision)
 - `make deploy REF=some-tag` — deploy a specific git ref (default: main)
 
 ### A schema drop ships one deploy behind the code that stops using it
