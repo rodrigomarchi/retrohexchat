@@ -582,58 +582,19 @@
 /* ── Continuous paper ───────────────────────────────────────────────────────
    The conversation is printed like a dot-matrix log on green-bar paper: each
    run of one speaker is a band, bands alternate green and white, and nothing
-   draws a border — the colour change is the separator. On a wide screen the
-   tractor-feed holes run down both margins and scroll with the paper. */
+   draws a border — the colour change is the separator. The bands run edge to
+   edge: no tractor-feed margins, so no width is spent on decoration. */
 .chat-paper {
   --paper: #fdfdf8;
   --paper-bar: #e3f0dc;
   --paper-own: #e6edfa;
-  --paper-hole: #d9d9d9;
   --paper-rule: #c9c9c9;
   --paper-ink: #b3262d;
-  --paper-feed: 0px;
   background-color: var(--paper);
-}
-
-@media (min-width: 641px) {
-  .chat-paper {
-    --paper-feed: 24px;
-    background-image:
-      radial-gradient(circle at 12px 12px, var(--paper-hole) 0 4.5px, transparent 5px),
-      radial-gradient(circle at 12px 12px, var(--paper-hole) 0 4.5px, transparent 5px),
-      linear-gradient(
-        90deg,
-        transparent 23px,
-        var(--paper-rule) 23px 24px,
-        transparent 24px calc(100% - 24px),
-        var(--paper-rule) calc(100% - 24px) calc(100% - 23px),
-        transparent calc(100% - 23px)
-      );
-    background-size:
-      24px 24px,
-      24px 24px,
-      100% 100%;
-    background-position:
-      0 0,
-      100% 0,
-      0 0;
-    background-repeat: repeat-y, repeat-y, no-repeat;
-    background-attachment: local;
-  }
-}
-
-/* A phone has no width to spare for the holes. */
-.desktop--stacked .chat-paper {
-  --paper-feed: 0px;
-  background-image: none;
 }
 
 /* Rows meet edge to edge so a run's band is one unbroken stripe; the air
    between runs is padding inside the band, never a gap between rows. */
-.chat-paper .chat-message {
-  padding-inline: var(--paper-feed);
-}
-
 .chat-paper .chat-message__row {
   position: relative;
   padding: 1px 10px;
