@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **276 spec files** under `e2e/tests/`.
-- **698 Playwright `test()` cases**.
-- **644 documented flows**, 643 done, 1 not done.
+- **277 spec files** under `e2e/tests/`.
+- **700 Playwright `test()` cases**.
+- **646 documented flows**, 645 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -507,6 +507,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N95 | Find a partner on Hex Invaders puts a seat's card in #hex-invaders; a friend's Join takes it, both are ready, the match runs while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-invaders.spec.ts` | done |
 | N96 | In #hex-pong, the game's name on its line under the topic opens Hex Pong's home, with its one way; Play on the same line opens the game in a tab of its own, its stage naming First to 11, and a match against the computer played to its end shows the result | `tests/game-hex-pong.spec.ts` | done |
 | N97 | Find a partner on the game's line under #hex-pong's topic puts a seat's card in the channel; a friend's Join takes it, both are ready, the match runs while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-pong.spec.ts` | done |
+| N98 | Start -> Games -> Retro Games -> Action -> Block Breakers opens the game's home, with its one way; Play opens the game in a tab of its own, its stage naming Clear all blocks, and a match beside the computer's paddle played to its end shows the board cleared or out of lives | `tests/game-block-breakers.spec.ts` | done |
+| N99 | Find a partner on Block Breakers' home puts a seat's card in #block-breakers; a friend's Join takes it, both are ready, the pair plays one board while a third person watches it, and Scoreboard says how it ended in the channel | `tests/game-block-breakers.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

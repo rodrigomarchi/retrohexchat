@@ -34,6 +34,15 @@ export async function autopilot(
 }
 
 /**
+ * The side a score names the winner: the higher, or — even scores being a
+ * co-op pair's — 0, a board they cleared together.
+ */
+export function winnerOf(score: { p1: number; p2: number }): 0 | 1 | 2 {
+  if (score.p1 === score.p2) return 0;
+  return score.p1 > score.p2 ? 1 : 2;
+}
+
+/**
  * The game's channel set up the way the provisioning script sets it up —
  * registered, founded by `founder`, with Scoreboard announcing in it — by a
  * match of `founder`'s against the computer in the ledger. A founder who is
@@ -51,7 +60,7 @@ export async function provisionGameChannel(
       game_id: gameId,
       duration_seconds: 95,
       p1: founder,
-      payload: { score, winner: score.p1 > score.p2 ? 1 : 2 },
+      payload: { score, winner: winnerOf(score) },
       difficulty: "normal",
     },
   });

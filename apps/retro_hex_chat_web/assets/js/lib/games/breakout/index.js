@@ -108,6 +108,8 @@ export default defineGame({
   ai: {
     create: createBreakoutAI,
     difficulty: partnerDifficulty,
+    // A seat on autopilot plays at the difficulty it is given.
+    level: normalizeBreakoutAIDifficulty,
   },
   audio: { sounds: SOUNDS },
   theme: getColors,

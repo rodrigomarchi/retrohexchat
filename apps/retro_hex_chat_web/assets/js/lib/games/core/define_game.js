@@ -13,6 +13,8 @@
  *   interpolate: { keys: ["ballX", "ballY"] },
  *   schema: { snapshot: SNAPSHOT, end: GAME_END },
  *   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty }, // no create: the page hands it in
+ *                                                 // level: an AI's own name for a difficulty, when
+ *                                                 // `difficulty` turns the player's pick into another
  *   audio: { sounds: SOUNDS },                     // played by name: playPaddleHit()
  *   theme: getColors,
  *   setup: (game, options) => …,                  // once, in the constructor, before the flow exists
@@ -594,7 +596,8 @@ export function defineGame(def) {
      * @param {{ difficulty?: string, controller?: object }} request
      */
     _createAutopilot(request) {
-      const difficulty = def.ai.difficulty(request.difficulty);
+      // The page names how well this seat plays, not what the player picked.
+      const difficulty = (def.ai.level ?? def.ai.difficulty)(request.difficulty);
       const controller =
         request.controller ??
         def.ai.create?.({ difficulty, rng: createRng(this.matchSeed).fork("autopilot").next });

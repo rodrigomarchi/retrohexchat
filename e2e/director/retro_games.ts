@@ -5,6 +5,7 @@ import {
   Locator,
   Page,
 } from "@playwright/test";
+import { winnerOf } from "../helpers/retroGames";
 import { followCard } from "../helpers/surfaceEntry";
 
 /**
@@ -32,7 +33,7 @@ export async function recordMatch(
       duration_seconds: 70,
       p1,
       p2,
-      payload: { score, winner: score.p1 > score.p2 ? 1 : 2 },
+      payload: { score, winner: winnerOf(score) },
     },
   });
   expect(response.ok(), await response.text()).toBeTruthy();
