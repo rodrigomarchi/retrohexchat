@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **277 spec files** under `e2e/tests/`.
-- **700 Playwright `test()` cases**.
-- **646 documented flows**, 645 done, 1 not done.
+- **278 spec files** under `e2e/tests/`.
+- **702 Playwright `test()` cases**.
+- **648 documented flows**, 647 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -509,6 +509,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N97 | Find a partner on the game's line under #hex-pong's topic puts a seat's card in the channel; a friend's Join takes it, both are ready, the match runs while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-pong.spec.ts` | done |
 | N98 | Start -> Games -> Retro Games -> Action -> Block Breakers opens the game's home, with its one way; Play opens the game in a tab of its own, its stage naming Clear all blocks, and a match beside the computer's paddle played to its end shows the board cleared or out of lives | `tests/game-block-breakers.spec.ts` | done |
 | N99 | Find a partner on Block Breakers' home puts a seat's card in #block-breakers; a friend's Join takes it, both are ready, the pair plays one board while a third person watches it, and Scoreboard says how it ended in the channel | `tests/game-block-breakers.spec.ts` | done |
+| N100 | In two friends' private conversation, the card of their last Star Duel match opens the game's home by its name, on the You tab with that match in it; Play opens the game in a tab of its own, its stage naming First to 7, and a match against the computer played to its end shows the result | `tests/game-star-duel.spec.ts` | done |
+| N101 | Play with someone on Star Duel's stage opens a match room with one seat empty; its Share link, sent in a private message, becomes the match's card there; the friend's Join on it takes the seat, both are ready, the duel is played to the end, and its result card lands in the same conversation | `tests/game-star-duel.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 
