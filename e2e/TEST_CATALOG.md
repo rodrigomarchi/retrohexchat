@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **280 spec files** under `e2e/tests/`.
-- **706 Playwright `test()` cases**.
-- **652 documented flows**, 651 done, 1 not done.
+- **281 spec files** under `e2e/tests/`.
+- **708 Playwright `test()` cases**.
+- **654 documented flows**, 653 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -515,6 +515,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N103 | Find a partner on the game's line under #gravity-well's topic puts a seat's card in the channel; a friend's Join takes it and both are ready; somebody in the channel finds the match live under the topic and watches it in a tab of its own, the host's menu over the match says 1 watching, and Scoreboard says the result in the channel | `tests/game-gravity-well.spec.ts` | done |
 | N104 | In #debris-field, !challenge is answered by Scoreboard with this week's challenge — Debris Field, the most wins against other players — and where it stands; Play on the game's line opens the game in a tab of its own, its stage naming First to 7, and a match against the computer at Hard, played among the rocks, ends with the result | `tests/game-debris-field.spec.ts` | done |
 | N105 | Find a partner on #debris-field's line, a friend's Join takes the seat, the duel is played to the end and Scoreboard says the result in the channel; asked again, !recent names both players and !challenge says who leads the week | `tests/game-debris-field.spec.ts` | done |
+| N106 | Hex Warlords' home names its goal — Last king standing — and Play opens the game in a tab of its own; a match against the computer at Hard, where the first king hit ends it, is played to the result | `tests/game-hex-warlords.spec.ts` | done |
+| N107 | Play with somebody you know on Hex Warlords' home invites a friend by nickname: the invitation lands in their private conversation as the match's card, both enter Hex Warlords' match room through it, both are ready, the host starts, and the match played to its end leaves its result card in the same conversation | `tests/game-hex-warlords.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

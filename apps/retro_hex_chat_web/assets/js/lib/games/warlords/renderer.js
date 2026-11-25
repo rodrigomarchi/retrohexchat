@@ -4,7 +4,7 @@
  * @module games/warlords_renderer
  */
 
-import { PHASE, INITIAL_LIVES } from "./protocol.js";
+import { PHASE } from "./protocol.js";
 import {
   CANVAS_W,
   CANVAS_H,
@@ -19,16 +19,15 @@ import {
   P2_KING_X,
   P2_KING_Y,
 } from "./physics.js";
-import { t, jt } from "../../i18n.js";
+import { t } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
 import {
   drawGlitchBanner,
   drawGlitchText,
   drawParticleDots,
-  drawTopLabel,
   glitchJitter,
 } from "../core/render.js";
-import { drawArena, drawGlass, drawLifeSquares, drawStartOverlay } from "../core/paddle_render.js";
+import { drawArena, drawGlass, drawStartOverlay } from "../core/paddle_render.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -261,21 +260,10 @@ export function drawCatchIndicator(ctx, state, colors, time) {
 }
 
 /**
- * Draw HUD (lives and round indicator).
+ * Draw HUD: the game's title. Each player has one king and the match is one
+ * round, so there are no lives or rounds to count.
  */
 export function drawHUD(ctx, state, colors, _time) {
-  // P1 lives (left side)
-  drawLifeSquares(ctx, 10, CANVAS_H - 14, state.p1Lives, INITIAL_LIVES, colors.fg);
-
-  // P2 lives (right side)
-  const p2LivesX = CANVAS_W - 10 - INITIAL_LIVES * 12;
-  drawLifeSquares(ctx, p2LivesX, CANVAS_H - 14, state.p2Lives, INITIAL_LIVES, colors.accent);
-
-  // Round indicator (top center)
-  ctx.save();
-  drawTopLabel(ctx, jt`ROUND ${state.round}`, colors.muted, CANVAS_W, 6);
-  ctx.restore();
-
   // Title
   ctx.save();
   ctx.shadowColor = colors.warning;
