@@ -2,19 +2,28 @@ import { describe, expect, it } from "vitest";
 import { mulberry32 } from "../../../support/games/seeded_random.js";
 import { createHexRaidAI } from "../../../../js/lib/games/hex_raid/ai.js";
 import { createInitialState, stepTick } from "../../../../js/lib/games/hex_raid/physics.js";
-import { GAME_MODE, PHASE } from "../../../../js/lib/games/hex_raid/protocol.js";
+import { GAME_MODE, PHASE, SNAPSHOT } from "../../../../js/lib/games/hex_raid/protocol.js";
 
 const FPS = 60;
 const LIMIT_FRAMES = 10 * 60 * FPS;
 const MATCHES_TIMEOUT_MS = 30_000;
 
 /**
+ * The river as a guest's browser holds it: the host's snapshot, sent over
+ * the wire and copied onto the guest's own state.
+ */
+function guestView(guestState, hostState) {
+  return { ...guestState, ...SNAPSHOT.decode(SNAPSHOT.encode(hostState)) };
+}
+
+/**
  * A whole match between two hard AIs, a step at a time as the host plays it:
  * how many minutes it took, and how many of the six lives went to the
  * river's boats, helicopters, jets, bridges and banks rather than to fuel or
- * mines.
+ * mines — jet 2's alone in `crashes2`. With `guest`, jet 2 flies the match a
+ * guest's browser sees.
  */
-function hardMatch(mode, seed) {
+function hardMatch(mode, seed, { guest = false } = {}) {
   const ais = {
     1: createHexRaidAI({ difficulty: "hard", rng: mulberry32(seed * 13 + 1) }),
     2: createHexRaidAI({ difficulty: "hard", rng: mulberry32(seed * 7 + 5) }),
@@ -22,22 +31,27 @@ function hardMatch(mode, seed) {
   let state = { ...createInitialState(mode, 1000 + seed * 97), phase: PHASE.FLYING };
   let held = { 1: { fire: false, mine: false }, 2: { fire: false, mine: false } };
   let crashes = 0;
+  let crashes2 = 0;
   let frame = 0;
+  const guestStart = createInitialState(mode, 1000 + seed * 97);
 
   for (; frame < LIMIT_FRAMES && state.phase !== PHASE.FINISHED; frame++) {
     const keys = {
       1: ais[1].nextInputs({ state, player: 1 }),
-      2: ais[2].nextInputs({ state, player: 2 }),
+      2: ais[2].nextInputs({ state: guest ? guestView(guestStart, state) : state, player: 2 }),
     };
     const before = state;
     ({ state, held } = stepTick(state, keys, held, frame));
     for (const player of [1, 2]) {
       const died = before[`jet${player}Alive`] && !state[`jet${player}Alive`];
       const { fuelEmpty, mineHit } = state.events;
-      if (died && !(fuelEmpty & player) && mineHit !== player) crashes++;
+      if (died && !(fuelEmpty & player) && mineHit !== player) {
+        crashes++;
+        if (player === 2) crashes2++;
+      }
     }
   }
-  return { minutes: frame / (60 * FPS), crashes };
+  return { minutes: frame / (60 * FPS), crashes, crashes2 };
 }
 
 describe.each([
@@ -56,6 +70,23 @@ describe.each([
       // Crashing into a boat, a helicopter or a jet is a slip, not the pace:
       // under one and a half a minute for the two of them.
       expect(crashes / minutes).toBeLessThan(1.5);
+    },
+    MATCHES_TIMEOUT_MS,
+  );
+});
+
+describe("Hex Raid, a guest's hard jet", () => {
+  it(
+    "flies the river it sees through the host's snapshots as well as the host flies it",
+    () => {
+      const matches = [1, 2, 3, 4].map((seed) =>
+        hardMatch(GAME_MODE.PACIFIST, seed, { guest: true }),
+      );
+      const minutes = matches.reduce((sum, m) => sum + m.minutes, 0);
+      const crashes = matches.reduce((sum, m) => sum + m.crashes2, 0);
+
+      expect(minutes / matches.length).toBeGreaterThan(1.2);
+      expect(crashes / minutes).toBeLessThan(1);
     },
     MATCHES_TIMEOUT_MS,
   );

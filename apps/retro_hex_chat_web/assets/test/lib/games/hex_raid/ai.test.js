@@ -10,6 +10,7 @@ import {
   noticedMines,
   shouldDeployMine,
   shouldFire,
+  withEnemyMotion,
 } from "../../../../js/lib/games/hex_raid/ai.js";
 import { createPerThing } from "../../../../js/lib/games/core/ai.js";
 import { describeStrengthOrder } from "../../../support/games/strength_order.js";
@@ -397,4 +398,30 @@ describeStrengthOrder("Hex Raid AI", RAID_AI_DIFFICULTIES, {
   mineNotice: "up",
   lead: "up",
   cruise: "up",
+});
+
+describe("withEnemyMotion", () => {
+  const boat = (x, y) => ({ type: ENEMY_TYPE.BOAT, x, y, alive: true });
+
+  it("leaves the host's enemies, which carry their speed, as they are", () => {
+    const state = { enemies: [{ ...boat(100, 50), vx: 1.5 }] };
+
+    expect(withEnemyMotion(null, state)).toBe(state);
+  });
+
+  it("reads a guest's boat's speed off how far it moved since the last look", () => {
+    let seen = withEnemyMotion(null, { enemies: [boat(100, 50)] });
+    seen = withEnemyMotion(seen, { enemies: [boat(102, 52)] });
+    seen = withEnemyMotion(seen, { enemies: [boat(104, 54)] });
+
+    expect(seen.enemies[0].vx).toBeCloseTo(2, 0);
+  });
+
+  it("turns a boat's speed at once when it bounces off a bank", () => {
+    let seen = withEnemyMotion(null, { enemies: [boat(100, 50)] });
+    seen = withEnemyMotion(seen, { enemies: [boat(102, 52)] });
+    seen = withEnemyMotion(seen, { enemies: [boat(100, 54)] });
+
+    expect(seen.enemies[0].vx).toBe(-2);
+  });
 });

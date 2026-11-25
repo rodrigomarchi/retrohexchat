@@ -159,6 +159,7 @@ export class HexRaidAI extends TableAI {
     this._view = createDelayedView();
     this._aim = createCommitment();
     this._noticed = createPerThing();
+    this._moving = null;
   }
 
   /**
@@ -179,7 +180,8 @@ export class HexRaidAI extends TableAI {
     }
 
     const config = this.rowFor(request);
-    const sight = delayedSight(this._view.see(state, config.reaction), state, player);
+    this._moving = withEnemyMotion(this._moving, state);
+    const sight = delayedSight(this._view.see(this._moving, config.reaction), state, player);
     const seen = noticedMines(sight, player, this._noticed, () => this.rng() < config.mineNotice);
 
     if (!jetAlive(state, player)) {
@@ -238,6 +240,7 @@ export class HexRaidAI extends TableAI {
     this._view.reset();
     this._aim.reset();
     this._noticed.reset();
+    this._moving = null;
   }
 }
 
@@ -692,6 +695,64 @@ function aimX(enemy, dy, config) {
 }
 
 /**
+ * A mine's own key: its id, or — on a guest, whose snapshot carries none —
+ * its owner and the line it was dropped on, which it never leaves.
+ * @param {{id?: number, owner: number, x: number}} mine
+ * @returns {number | string}
+ */
+function mineKey(mine) {
+  return mine.id ?? `${mine.owner}:${Math.round(mine.x)}`;
+}
+
+/** How far an enemy may move between two looks and still be the same one. */
+const SAME_ENEMY_DY = 12;
+const SAME_ENEMY_DX = 8;
+
+/**
+ * The state with each enemy's sideways speed. The host's enemies carry it;
+ * a guest's come from the snapshot without it, so it is read off how far
+ * each one moved since `previous` — the state this returned the step before
+ * — and smoothed over the steps, as the snapshot rounds every position.
+ * @param {object | null} previous
+ * @param {object} state
+ * @returns {object}
+ */
+export function withEnemyMotion(previous, state) {
+  const enemies = Array.isArray(state.enemies) ? state.enemies : [];
+  if (enemies.every((enemy) => typeof enemy.vx === "number")) return state;
+
+  const before = Array.isArray(previous?.enemies) ? previous.enemies : [];
+  const unchanged =
+    before.length === enemies.length &&
+    enemies.every((enemy, i) => enemy.x === before[i].x && enemy.y === before[i].y);
+  if (unchanged) {
+    return { ...state, enemies: enemies.map((enemy, i) => ({ ...enemy, vx: before[i].vx })) };
+  }
+
+  return {
+    ...state,
+    enemies: enemies.map((enemy) => {
+      const last = lowest(before, (seen) => {
+        const dy = enemy.y - seen.y;
+        const dx = Math.abs(enemy.x - seen.x);
+        if (seen.type !== enemy.type || dy < 0 || dy > SAME_ENEMY_DY || dx > SAME_ENEMY_DX) {
+          return null;
+        }
+        return dx + dy;
+      });
+      return { ...enemy, vx: smoothedSpeed(last?.vx, last ? enemy.x - last.x : 0) };
+    }),
+  };
+}
+
+/** A speed kept steady across rounded steps, turned at once when it bounces. */
+function smoothedSpeed(previous, step) {
+  if (typeof previous !== "number") return step;
+  if (step !== 0 && Math.sign(step) !== Math.sign(previous)) return step;
+  return previous * 0.6 + step * 0.4;
+}
+
+/**
  * The sight with only the rival mines the AI noticed: whether it notices one
  * is decided once per mine, and kept while the mine is in play.
  * @param {object} sight
@@ -702,8 +763,10 @@ function aimX(enemy, dy, config) {
  */
 export function noticedMines(sight, player, noticed, notices) {
   const mines = Array.isArray(sight.mines) ? sight.mines : [];
-  noticed.keep(mines.map((mine) => mine.id));
-  const seen = mines.filter((mine) => mine.owner === player || noticed.decide(mine.id, notices));
+  noticed.keep(mines.map(mineKey));
+  const seen = mines.filter(
+    (mine) => mine.owner === player || noticed.decide(mineKey(mine), notices),
+  );
   return seen.length === mines.length ? sight : { ...sight, mines: seen };
 }
 
