@@ -83,6 +83,10 @@ database (`FRESH=1`) or another `DIRECTOR_NICK`.
   the channel up with a match of one of the players (`provisionGameChannel`)
   kept the match filmed right after out of the channel. Found the channel with
   a regular who does not play on camera.
+- **A scene that shows the channel before a match is filmed before it.** EP10
+  filmed its first scene after the duel, and the channel already carried the
+  result card and the reactions to it. The director's order of tests is the
+  order of filming: put such a scene first.
 - **A seat's card offers Join only while the seat is open.** Once a friend
   takes it, the host's own card reads Taken and offers Play instead: the host
   goes into the room first, then the friend joins.
