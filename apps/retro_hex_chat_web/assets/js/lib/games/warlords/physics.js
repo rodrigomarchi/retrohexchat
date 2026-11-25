@@ -21,8 +21,8 @@ export const SHIELD_SPEED = 6;
 // --- Fireball ---
 export const FIREBALL_SIZE = 8;
 export const INITIAL_BALL_SPEED = 3;
-export const SPEED_INCREMENT = 0.05;
-export const MAX_BALL_SPEED = 5.5;
+export const SPEED_INCREMENT = 0.15;
+export const MAX_BALL_SPEED = 9;
 export const MAX_BOUNCE_ANGLE = (60 * Math.PI) / 180;
 
 /** How a hit off the paddle turns and speeds the ball. */

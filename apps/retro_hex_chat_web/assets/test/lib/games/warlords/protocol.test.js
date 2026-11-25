@@ -113,8 +113,8 @@ describe("Warlords Protocol", () => {
       expect(BRICKS_PER_CASTLE).toBe(24);
     });
 
-    it("has correct initial lives", () => {
-      expect(INITIAL_LIVES).toBe(3);
+    it("gives each player one king to lose", () => {
+      expect(INITIAL_LIVES).toBe(1);
     });
 
     it("has all phases", () => {

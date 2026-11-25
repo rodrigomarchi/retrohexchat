@@ -2501,7 +2501,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "help",
               "Deflect or catch the fireball with your shield to smash your opponent's walls. "
             ) <>
-            dgettext("help", "Hold Space to catch, release to aim. Best of 3 lives. ") <>
+            dgettext("help", "Hold Space to catch, release to aim. The first king hit loses. ") <>
             dgettext(
               "help",
               "Controls: Arrow keys (Up/Down) to move shield, Space to catch/release fireball."

@@ -17,7 +17,7 @@ export const PHASE = phases("PLAYING", "KING_HIT", "FINISHED");
 export const BRICKS_ROWS = 6;
 export const BRICKS_COLS = 4;
 export const BRICKS_PER_CASTLE = BRICKS_ROWS * BRICKS_COLS; // 24
-export const INITIAL_LIVES = 3;
+export const INITIAL_LIVES = 1;
 
 /** The host's snapshot of the battle, sent every step. */
 export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [

@@ -71,13 +71,6 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameWarlords do
       <%!-- Fireball --%>
       <rect x="250" y="150" width="6" height="6" fill="#fff" />
       <rect x="252" y="152" width="3" height="3" fill="#ff6600" />
-      <%!-- Lives --%>
-      <text x="30" y="44" fill="#00ff41" font-size="12" font-family="'Courier New',monospace">
-        {dgettext("diagrams", "Lives: 3")}
-      </text>
-      <text x="420" y="44" fill="#00d4ff" font-size="12" font-family="'Courier New',monospace">
-        {dgettext("diagrams", "Lives: 2")}
-      </text>
     </svg>
     """
   end

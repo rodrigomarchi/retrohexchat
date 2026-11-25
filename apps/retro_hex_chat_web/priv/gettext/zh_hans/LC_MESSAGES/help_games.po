@@ -286,7 +286,7 @@ msgstr "基于 Activision 为 Atari 2600 推出的《冰球》(Ice Hockey,1981�
 msgid "Based on Atari's Pong (1972) — the game that started the video game industry."
 msgstr "基于 Atari 的 Pong(1972年)——开启电子游戏产业的游戏。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Based on Atari's Warlords (1980) — castle defense meets Breakout in a head-to-head duel."
 msgstr "基于 Atari 的 Warlords(1980年)——城堡防御与打砖块在一对一对决中相遇。"
@@ -359,7 +359,7 @@ msgid "Blizzard events reduce visibility periodically"
 msgstr "暴风雪事件会周期性降低能见度"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "Block Breakers"
 msgstr "打砖块"
@@ -444,12 +444,7 @@ msgstr "子弹沿水平方向直线飞行(无弹射)"
 msgid "Capture"
 msgstr "占领"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:52
-#, elixir-autogen, elixir-format
-msgid "Castles fully rebuild between rounds after a king hit"
-msgstr "国王被击中后,城堡会在回合之间完全重建"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Catch mechanic: hold Space when the fireball touches your shield to grab it, release to aim and launch"
 msgstr "抓取机制:火球碰到你的盾牌时按住空格键将其抓住,松开后瞄准并发射"
@@ -774,11 +769,6 @@ msgstr "佯攻推进"
 msgid "Fireball destroys one brick on contact and bounces off"
 msgstr "火球接触时会摧毁一块砖并弹开"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:66
-#, elixir-autogen, elixir-format
-msgid "Fireball speeds up with each shield deflection (up to 1.8x initial speed)"
-msgstr "火球每被盾牌反弹一次就会加速(最高可达初始速度的1.8倍)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "First to 100 points scores a KO — the round ends immediately"
@@ -803,11 +793,6 @@ msgstr "先赢6局者赢得该盘(需领先2局,6-6时进行抢七)"
 #, elixir-autogen, elixir-format
 msgid "First to 6 games wins — no tiebreak, no win-by-2"
 msgstr "先赢6局者获胜——没有抢七,也无需领先2局"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:71
-#, elixir-autogen, elixir-format
-msgid "First to eliminate all opponent lives wins the match"
-msgstr "最先淘汰对手所有生命者赢得比赛"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:98
 #, elixir-autogen, elixir-format
@@ -1075,11 +1060,6 @@ msgstr "通过每一个回转旗门"
 msgid "Hitting is automatic — when the ball enters your hit zone, it's returned"
 msgstr "击球是自动的——当球进入你的击球区时,会被自动回击"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:50
-#, elixir-autogen, elixir-format
-msgid "Hitting the king removes one life — each player starts with 3 lives"
-msgstr "击中国王会扣除一条生命——每名玩家初始有3条生命"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Horizontal speed is slightly slower than vertical to prevent easy dodging"
@@ -1159,7 +1139,7 @@ msgstr "无限下降——赛道永无尽头"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:82
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:83
@@ -1646,7 +1626,7 @@ msgstr "计分:0分 → 15 → 30 → 40 → 胜一局(40平为平分,占先,领
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:64
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:250
@@ -1681,7 +1661,7 @@ msgstr "每得一分后轮换发球方"
 msgid "Shared timer starts at 45° and drops ~1°/second"
 msgstr "共享计时器起始于45°,下降~1°/second"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Shield deflection angle depends on hit position — edges create steep bounces (up to 60 degrees)"
 msgstr "盾牌的偏转角度取决于击中位置——边缘会产生陡峭的反弹(最高60度)"
@@ -2048,11 +2028,6 @@ msgstr "利用全部垂直范围"
 #, elixir-autogen, elixir-format
 msgid "Use turbo in clear patches"
 msgstr "在视野清晰的路段使用涡轮加速"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Versus Breakout battle — each player defends a brick castle with a king inside. Deflect or catch the fireball with your shield to smash your opponent's walls. Clear a path to the king and strike to take a life. Last king standing wins."
-msgstr "对战打砖块——每位玩家守卫一座内有国王的砖砌城堡。用盾牌弹开或接住火球,击碎对手的城墙。打通通往国王的道路并发起攻击,夺走一条命。最后一位幸存的国王获胜。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:42
 #, elixir-autogen, elixir-format
@@ -3422,7 +3397,7 @@ msgstr "——使用导弹迫使对手向小行星集群进发,小行星集群�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:95
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:88
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:93
@@ -3460,7 +3435,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:72
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:255
@@ -3512,7 +3487,7 @@ msgstr "在复古游戏单人模式中，你控制左侧城堡护盾，AI 控制
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:92
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
@@ -4855,3 +4830,23 @@ msgstr "双击“复古游戏”桌面图标。文件夹中每个分类对应一
 #, elixir-autogen, elixir-format
 msgid "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic and the modes."
 msgstr "管理员可以用 %{on} 开启机器人的公告,用 %{off} 关闭。没有此类机器人的频道不会发布任何公告。游戏频道是普通频道:其创建者可以更改主题和模式。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Each player has one king: the first king hit ends the match"
+msgstr "每位玩家只有一个国王：第一个被击中的国王结束比赛"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Fireball speeds up with each shield deflection (up to 3x initial speed)"
+msgstr "火球每次被盾牌挡开都会加速（最高可达初始速度的 3 倍）"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Last king standing wins the match"
+msgstr "最后屹立的国王赢得比赛"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Versus Breakout battle — each player defends a brick castle with a king inside. Deflect or catch the fireball with your shield to smash your opponent's walls. Clear a path to the king and strike it to win. Last king standing wins."
+msgstr "一对一的打砖块对决：每位玩家守护一座藏着国王的砖砌城堡。用盾牌挡开或接住火球，击碎对手的城墙。打通通往国王的道路并击中他即可获胜。最后屹立的国王获胜。"
