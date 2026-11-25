@@ -242,6 +242,23 @@ test.describe("EP13 Hex Raid", () => {
       .locator('[data-testid^="game-result-card-"]')
       .filter({ hasText: KESTREL });
 
+  /**
+   * The conversation scrolled so `card` sits at the top of its messages,
+   * whole, clear of the message box under them.
+   */
+  async function toTheTop(card: Locator) {
+    await card.evaluate((el) => {
+      let scroller = el.parentElement;
+      while (scroller && scroller.scrollHeight <= scroller.clientHeight + 1) {
+        scroller = scroller.parentElement;
+      }
+      if (!scroller) return;
+      const offset =
+        el.getBoundingClientRect().top - scroller.getBoundingClientRect().top;
+      scroller.scrollTop += offset - 24;
+    });
+  }
+
   /** Off camera: match `index` of the series invited, entered and started. */
   async function startOffCamera(index: number): Promise<Rooms> {
     await inTheConversation(kestrel, PIXEL);
@@ -491,9 +508,15 @@ test.describe("EP13 Hex Raid", () => {
         layout("full", PIXEL);
         await follow(pixel.page);
         await pixel.page.bringToFront();
-        await resultCards().first().scrollIntoViewIfNeeded();
+        await toTheTop(resultCards().first());
         await restCursor(pixel.page);
         await focus(resultCards().first());
+        await cue("Pacifist, then Blitz");
+        for (const card of [resultCards().nth(1), resultCards().last()]) {
+          await toTheTop(card);
+          await focus(card);
+          await pixel.page.waitForTimeout(900);
+        }
         await cue("Whoever has two");
         await focus(resultCards().last());
         await cast.say(KESTREL, "gg, rematch tomorrow");
