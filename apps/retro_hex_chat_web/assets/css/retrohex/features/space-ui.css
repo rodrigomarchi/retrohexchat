@@ -476,6 +476,8 @@
   color: var(--space-ui-on-wood);
   line-height: 1.1;
   text-align: center;
+  /* A name longer than the key breaks rather than running out of it. */
+  overflow-wrap: anywhere;
 }
 
 .pad-button--label[data-pressed] {

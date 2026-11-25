@@ -145,7 +145,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.GameStage do
             label={action.label}
             class="pad-button--label h-14 w-full"
           >
-            {action.label}
+            {pad_label(action.label)}
           </.pad_button>
         </div>
         <.pad_cross
@@ -163,5 +163,17 @@ defmodule RetroHexChatWeb.Components.UI.Games.GameStage do
       </div>
     </div>
     """
+  end
+
+  # An action's name on a key: a name made of two ("Catch/Release") may break
+  # after its slash, so it goes on two lines instead of out of the key.
+  defp pad_label(text) do
+    text
+    |> String.split("/")
+    |> Enum.map_join(
+      "/<wbr>",
+      &(&1 |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string())
+    )
+    |> Phoenix.HTML.raw()
   end
 end

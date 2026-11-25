@@ -61,6 +61,19 @@ defmodule RetroHexChatWeb.Components.UI.Games.GameStageTest do
     assert [_] = Floki.find(stage(%{pad: @pad, menu_open: true}), "#stage-pad[data-hidden]")
   end
 
+  test "a key named for two actions may break after its slash, its name still escaped" do
+    pad = %{
+      dirs: ["up"],
+      actions: [%{key: " ", label: "Catch/Release"}, %{key: "q", label: "<b>"}]
+    }
+
+    html = stage(%{pad: pad}) |> Floki.find("#stage-pad .pad-button--label") |> Floki.raw_html()
+
+    assert html =~ "Catch/<wbr/>Release" or html =~ "Catch/<wbr>Release"
+    assert html =~ "&lt;b&gt;"
+    refute html =~ "<b>"
+  end
+
   test "the full-screen key presents the stage it names" do
     assigns = %{}
 
