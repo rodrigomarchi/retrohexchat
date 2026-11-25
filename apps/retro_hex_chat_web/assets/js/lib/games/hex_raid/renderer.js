@@ -43,6 +43,8 @@ export function getColors(canvas) {
     warning: ["--game-warning-color", "ff8c00"],
     bank: ["--game-wall-color", "1a2a1a"],
     bankHi: ["--game-wall-highlight", "2a4a2a"],
+    boat: ["--game-boat-color", "aab4be"],
+    boatHi: ["--game-boat-highlight", "f0f4f8"],
     missile: ["--game-missile-color", "ffee00"],
     explosion: ["--game-explosion-color", "ff4444"],
   });
@@ -327,10 +329,10 @@ function drawEnemy(ctx, x, y, type, colors, time) {
 
   if (type === ENEMY_TYPE.BOAT) {
     // Patrol boat with hull, cabin, and wake
-    ctx.shadowColor = colors.bankHi;
-    ctx.shadowBlur = 5;
+    ctx.shadowColor = colors.boatHi;
+    ctx.shadowBlur = 6;
     // Hull
-    ctx.fillStyle = colors.bank;
+    ctx.fillStyle = colors.boat;
     ctx.beginPath();
     ctx.moveTo(-7, -3);
     ctx.lineTo(-5, -5);
@@ -341,11 +343,11 @@ function drawEnemy(ctx, x, y, type, colors, time) {
     ctx.closePath();
     ctx.fill();
     // Cabin
-    ctx.fillStyle = colors.bankHi;
+    ctx.fillStyle = colors.boatHi;
     ctx.fillRect(-3, -4, 6, 5);
     // Wake trail
-    ctx.globalAlpha = 0.3;
-    ctx.strokeStyle = colors.bankHi;
+    ctx.globalAlpha = 0.4;
+    ctx.strokeStyle = colors.boatHi;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(-4, 5);
