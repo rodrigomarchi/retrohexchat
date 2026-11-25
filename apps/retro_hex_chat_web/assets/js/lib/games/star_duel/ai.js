@@ -9,13 +9,17 @@ import { GAME_MODE, PHASE } from "./protocol.js";
 import {
   CANVAS_H,
   CANVAS_W,
+  DRAG,
   MAX_MISSILES,
   MISSILE_RADIUS,
   MISSILE_SPEED,
+  ROTATION_SPEED,
   SHIP_RADIUS,
   STAR_DANGER_RADIUS,
   STAR_X,
   STAR_Y,
+  THRUST_ACCEL,
+  applyGravity,
 } from "./physics.js";
 import {
   TableAI,
@@ -58,9 +62,10 @@ export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
     threatFrames: 28,
     threatRadius: 130,
     missileAvoidMargin: 22,
-    starAvoidRadius: STAR_DANGER_RADIUS + 62,
+    starAvoidRadius: STAR_DANGER_RADIUS + 40,
     asteroidAvoidMargin: 36,
     asteroidShotMargin: 6,
+    hazardLookahead: 20,
     emergencyWarp: false,
   }),
   normal: Object.freeze({
@@ -78,9 +83,10 @@ export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
     threatFrames: 42,
     threatRadius: 175,
     missileAvoidMargin: 34,
-    starAvoidRadius: STAR_DANGER_RADIUS + 82,
+    starAvoidRadius: STAR_DANGER_RADIUS + 62,
     asteroidAvoidMargin: 50,
     asteroidShotMargin: 8,
+    hazardLookahead: 25,
     emergencyWarp: false,
   }),
   hard: Object.freeze({
@@ -98,9 +104,10 @@ export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
     threatFrames: 62,
     threatRadius: 220,
     missileAvoidMargin: 48,
-    starAvoidRadius: STAR_DANGER_RADIUS + 105,
+    starAvoidRadius: STAR_DANGER_RADIUS + 82,
     asteroidAvoidMargin: 64,
     asteroidShotMargin: 10,
+    hazardLookahead: 30,
     emergencyWarp: true,
   }),
 });
@@ -108,6 +115,17 @@ export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
 // The odds the hard AI warps away from a missile it cannot otherwise escape,
 // decided once per missile.
 const EMERGENCY_WARP_CHANCE = 0.08;
+
+// How near the nose must point outward to thrust away from a star or a rock.
+const HAZARD_THRUST_ANGLE = 0.5;
+// Any heading this near straight outward gets clear of a star or a rock;
+// the one nearest the nose is taken, since a ship turns slowly.
+const ESCAPE_CONE = 1.2;
+const ESCAPE_TIE = 0.3;
+// A missile passing nearer the star than this is bent off its aim.
+const STAR_SHOT_CLEARANCE = STAR_DANGER_RADIUS + 5;
+// How long a burst of thrust is weighed for before it is let go.
+const THRUST_PROBE_FRAMES = 10;
 
 /**
  * @param {unknown} difficulty
@@ -260,37 +278,6 @@ export function toroidalVector(fromX, fromY, toX, toY) {
 /**
  * @param {object} state
  * @param {1|2} player
- * @param {number} [margin]
- * @returns {boolean}
- */
-export function lineOfFireBlockedByAsteroid(state, player = 2, margin = 8) {
-  if (!state || state.mode !== GAME_MODE.DEBRIS_FIELD || !Array.isArray(state.asteroids)) {
-    return false;
-  }
-
-  const actor = shipFor(state, player);
-  const opponent = shipFor(state, player === 1 ? 2 : 1);
-  if (!actor || !opponent) return false;
-
-  const target = toroidalVector(actor.x, actor.y, opponent.x, opponent.y);
-  if (target.distance <= 0) return false;
-  const lenSq = target.dx * target.dx + target.dy * target.dy;
-
-  return state.asteroids.some((asteroid) => {
-    const offset = toroidalVector(actor.x, actor.y, asteroid.x, asteroid.y);
-    const t = clamp((offset.dx * target.dx + offset.dy * target.dy) / lenSq, 0, 1);
-    const closestX = target.dx * t;
-    const closestY = target.dy * t;
-    const dx = offset.dx - closestX;
-    const dy = offset.dy - closestY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    return distance <= asteroid.radius + margin;
-  });
-}
-
-/**
- * @param {object} state
- * @param {1|2} player
  * @param {object} config
  * @returns {object|null}
  */
@@ -332,6 +319,11 @@ export function incomingMissileThreat(
 }
 
 function chooseTarget(state, player, actor, opponent, config, aimError = 0) {
+  // The star and the rocks come first: a dodge into either is no dodge.
+  const obstacles = obstaclesFor(state, config);
+  const hazard = escapeFrom(actor, state, obstacles, config);
+  if (hazard) return hazard;
+
   const missileThreat = incomingMissileThreat(state, player, config);
   if (missileThreat) {
     return {
@@ -344,21 +336,25 @@ function chooseTarget(state, player, actor, opponent, config, aimError = 0) {
     };
   }
 
-  const starThreat = starAvoidance(actor, state, config);
-  if (starThreat) return starThreat;
-
-  const asteroidThreat = asteroidAvoidance(actor, state, config);
-  if (asteroidThreat) return asteroidThreat;
-
   if (!isLiveShip(opponent)) return null;
+  const aim = aimAt(actor, opponent, config, aimError, obstacles);
+  if (!aim || obstacles.length === 0) return aim;
+  return { ...aim, thrustSafe: thrustIsSafe(actor, state, obstacles, config) };
+}
 
+/**
+ * Where to point to hit the rival, led by its course. The arena wraps, so
+ * the rival is there by several ways — straight, or out across an edge —
+ * and the shortest one that keeps clear of the star and the rocks is taken.
+ */
+function aimAt(actor, opponent, config, aimError, obstacles = []) {
   const flight = toroidalVector(actor.x, actor.y, opponent.x, opponent.y).distance / MISSILE_SPEED;
   const lead = flight * config.leadSkill;
   const predictedOpponent = {
     x: wrap(opponent.x + (opponent.vx || 0) * lead, CANVAS_W),
     y: wrap(opponent.y + (opponent.vy || 0) * lead, CANVAS_H),
   };
-  const attackVector = toroidalVector(actor.x, actor.y, predictedOpponent.x, predictedOpponent.y);
+  const attackVector = clearWay(actor, predictedOpponent, obstacles);
   if (attackVector.distance <= 0) return null;
 
   const angle = Math.atan2(attackVector.dy, attackVector.dx) + aimError;
@@ -367,50 +363,148 @@ function chooseTarget(state, player, actor, opponent, config, aimError = 0) {
     kind: "attack",
     angleError: Math.abs(rotationDelta(actor.rotation, angle)),
     distance: attackVector.distance,
+    blocked: attackVector.blocked === true,
   };
 }
 
-function starAvoidance(actor, state, config) {
-  if (state.mode !== GAME_MODE.GRAVITY_WELL) return null;
+/**
+ * The shortest way from the ship to a point that passes no obstacle nearer
+ * than a shot may — the straight one or one across the arena's edges — or
+ * the straight one, `blocked`, when every way is.
+ */
+function clearWay(actor, point, obstacles) {
+  const direct = toroidalVector(actor.x, actor.y, point.x, point.y);
+  if (obstacles.length === 0) return direct;
 
-  const dx = actor.x - STAR_X;
-  const dy = actor.y - STAR_Y;
-  const distance = Math.sqrt(dx * dx + dy * dy);
-  if (distance > config.starAvoidRadius) return null;
-
-  const angle = Math.atan2(dy, dx);
-  return {
-    angle,
-    kind: "evade",
-    urgency: distance <= STAR_DANGER_RADIUS + 24 ? "emergency" : "threat",
-    angleError: Math.abs(rotationDelta(actor.rotation, angle)),
-    distance,
-  };
-}
-
-function asteroidAvoidance(actor, state, config) {
-  if (state.mode !== GAME_MODE.DEBRIS_FIELD || !Array.isArray(state.asteroids)) return null;
-
-  let closest = null;
-  for (const asteroid of state.asteroids) {
-    const vector = toroidalVector(asteroid.x, asteroid.y, actor.x, actor.y);
-    const clearance = vector.distance - asteroid.radius - SHIP_RADIUS;
-    if (clearance > config.asteroidAvoidMargin) continue;
-    if (!closest || clearance < closest.clearance) {
-      closest = { asteroid, vector, clearance };
+  const ways = [];
+  for (const sx of [-CANVAS_W, 0, CANVAS_W]) {
+    for (const sy of [-CANVAS_H, 0, CANVAS_H]) {
+      const dx = direct.dx + sx;
+      const dy = direct.dy + sy;
+      ways.push({ dx, dy, distance: Math.hypot(dx, dy) });
     }
   }
+  ways.sort((a, b) => a.distance - b.distance);
+  const clear = ways.find((way) => !obstacles.some((o) => passesNear(actor, way, o)));
+  return clear ?? { ...direct, blocked: true };
+}
 
-  if (!closest) return null;
+/** Whether the straight way from the ship, unwrapped, passes within a shot's clearance of an obstacle. */
+function passesNear(actor, way, obstacle) {
+  const lenSq = way.dx * way.dx + way.dy * way.dy;
+  if (lenSq <= 0) return false;
+  for (const sx of [-CANVAS_W, 0, CANVAS_W]) {
+    for (const sy of [-CANVAS_H, 0, CANVAS_H]) {
+      const ox = obstacle.x + sx - actor.x;
+      const oy = obstacle.y + sy - actor.y;
+      const t = clamp((ox * way.dx + oy * way.dy) / lenSq, 0, 1);
+      if (Math.hypot(ox - way.dx * t, oy - way.dy * t) <= obstacle.shot) return true;
+    }
+  }
+  return false;
+}
 
-  const angle = Math.atan2(closest.vector.dy, closest.vector.dx);
-  return {
-    angle,
-    kind: "evade",
-    urgency: closest.clearance <= 12 ? "emergency" : "threat",
-    angleError: Math.abs(rotationDelta(actor.rotation, angle)),
-    distance: closest.vector.distance,
-  };
+/**
+ * What this arena has to keep clear of: the star, or every asteroid. `keep`
+ * is how near this AI lets the ship's centre get, `shot` how near a missile
+ * may pass and still fly true.
+ */
+function obstaclesFor(state, config) {
+  if (state.mode === GAME_MODE.GRAVITY_WELL) {
+    return [{ x: STAR_X, y: STAR_Y, keep: config.starAvoidRadius, shot: STAR_SHOT_CLEARANCE }];
+  }
+  if (state.mode === GAME_MODE.DEBRIS_FIELD && Array.isArray(state.asteroids)) {
+    return state.asteroids.map((asteroid) => ({
+      x: asteroid.x,
+      y: asteroid.y,
+      keep: asteroid.radius + SHIP_RADIUS + config.asteroidAvoidMargin,
+      shot: asteroid.radius + config.asteroidShotMargin,
+    }));
+  }
+  return [];
+}
+
+/**
+ * Nose out and thrust, from the star or a rock the ship would otherwise
+ * drift too near — before it is too late to turn: the ship looks ahead as
+ * long as turning outward takes it, and `hazardLookahead` frames more to
+ * brake. Outward changes smoothly as the ship moves, so it never dithers
+ * between two ways out. Near the star a ship that waits cannot climb out:
+ * its pull beats the thrust inside about twice the star's deadly radius.
+ */
+function escapeFrom(actor, state, obstacles, config) {
+  for (const obstacle of obstacles) {
+    const out = toroidalVector(obstacle.x, obstacle.y, actor.x, actor.y);
+    const outward = Math.atan2(out.dy, out.dx);
+    const off = rotationDelta(outward, actor.rotation);
+    // A nose straight at it could swing either way: every ship swings the
+    // same way round, so two ships fleeing the star circle it together
+    // instead of meeting head on.
+    const side = Math.abs(off) > Math.PI - ESCAPE_TIE ? 1 : Math.sign(off);
+    const angle = Math.abs(off) <= ESCAPE_CONE ? actor.rotation : outward + side * ESCAPE_CONE;
+    const turning = Math.abs(rotationDelta(actor.rotation, angle)) / ROTATION_SPEED;
+    const frames = Math.ceil(turning) + config.hazardLookahead;
+    const into = coastsInto(actor, state, obstacle, frames);
+    if (into === null) continue;
+    return {
+      angle,
+      kind: "evade",
+      hazard: true,
+      urgency: into <= 10 ? "emergency" : "threat",
+      angleError: Math.abs(rotationDelta(actor.rotation, angle)),
+      distance: out.distance,
+    };
+  }
+  return null;
+}
+
+/**
+ * Whether a burst of thrust the way the nose points leaves the ship clear of
+ * every obstacle while it coasts on afterwards.
+ */
+function thrustIsSafe(actor, state, obstacles, config) {
+  const thrust = { ...actor };
+  thrust.vx = (actor.vx || 0) + Math.cos(actor.rotation) * THRUST_ACCEL * THRUST_PROBE_FRAMES;
+  thrust.vy = (actor.vy || 0) + Math.sin(actor.rotation) * THRUST_ACCEL * THRUST_PROBE_FRAMES;
+  const frames = Math.ceil(Math.PI / ROTATION_SPEED) + config.hazardLookahead;
+  return obstacles.every((obstacle) => coastsInto(thrust, state, obstacle, frames) === null);
+}
+
+/**
+ * The frame the ship, coasting from here — pulled by the star in Gravity
+ * Well — comes within an obstacle's `keep`, or null if it does not within
+ * `frames`. A ship already inside and not moving outward is in it now.
+ */
+function coastsInto(actor, state, obstacle, frames) {
+  let ship = actor;
+  let last = toroidalVector(obstacle.x, obstacle.y, ship.x, ship.y).distance;
+  if (last <= obstacle.keep) {
+    const next = toroidalVector(
+      obstacle.x,
+      obstacle.y,
+      ship.x + (ship.vx || 0),
+      ship.y + (ship.vy || 0),
+    );
+    return next.distance <= last + 0.5 ? 0 : null;
+  }
+  // A rock further off than the ship can coast in the time is no danger;
+  // the star's pull speeds a ship up, so it is always followed.
+  const reach = Math.hypot(ship.vx || 0, ship.vy || 0) * frames;
+  if (state.mode !== GAME_MODE.GRAVITY_WELL && last - obstacle.keep > reach) return null;
+  for (let frame = 1; frame <= frames; frame++) {
+    ship = coast(ship, state.mode);
+    last = toroidalVector(obstacle.x, obstacle.y, ship.x, ship.y).distance;
+    if (last <= obstacle.keep) return frame;
+  }
+  return null;
+}
+
+/** One frame of a ship with its hands off the keys: drag, the star's pull, drift. */
+function coast(ship, mode) {
+  const pulled = mode === GAME_MODE.GRAVITY_WELL ? applyGravity(ship, STAR_X, STAR_Y) : ship;
+  const vx = (pulled.vx || 0) * DRAG;
+  const vy = (pulled.vy || 0) * DRAG;
+  return { x: wrap(ship.x + vx, CANVAS_W), y: wrap(ship.y + vy, CANVAS_H), vx, vy };
 }
 
 function missileEvasionAngle(threat) {
@@ -432,15 +526,20 @@ function shouldFire(state, player, target, config, fireCooldown) {
 
   const ownMissiles = (state.missiles || []).filter((missile) => missile.owner === player);
   if (ownMissiles.length >= MAX_MISSILES) return false;
-  return !lineOfFireBlockedByAsteroid(state, player, config.asteroidShotMargin);
+  return !target.blocked;
 }
 
 function shouldThrust(target, config) {
+  if (target.hazard) return target.angleError <= HAZARD_THRUST_ANGLE;
   if (target.kind === "evade") {
     return target.angleError === null || target.angleError <= config.evasionThrustAngle;
   }
 
-  return target.distance > config.standoffDistance && target.angleError <= config.thrustAngle;
+  return (
+    target.thrustSafe !== false &&
+    target.distance > config.standoffDistance &&
+    target.angleError <= config.thrustAngle
+  );
 }
 
 function shouldWarp(actor, target, config) {

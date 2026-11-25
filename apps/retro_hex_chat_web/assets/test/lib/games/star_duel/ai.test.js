@@ -3,17 +3,20 @@ import {
   STAR_DUEL_AI_DIFFICULTIES,
   createStarDuelAI,
   incomingMissileThreat,
-  lineOfFireBlockedByAsteroid,
   normalizeStarDuelAIDifficulty,
   toroidalVector,
 } from "../../../../js/lib/games/star_duel/ai.js";
 import { GAME_MODE, PHASE } from "../../../../js/lib/games/star_duel/protocol.js";
 import {
   createInitialState,
+  spawnShips,
+  stepTick,
   STAR_DANGER_RADIUS,
   STAR_X,
   STAR_Y,
+  WIN_SCORE,
 } from "../../../../js/lib/games/star_duel/physics.js";
+import { mulberry32 } from "../../../support/games/seeded_random.js";
 import {
   expectOneFramePress,
   expectPassedOpeningWaits,
@@ -116,7 +119,33 @@ describe("StarDuelAI", () => {
     const state = facing({ x: 160, y: 240 }, { x: 480, y: 240 }, GAME_MODE.DEBRIS_FIELD);
     state.asteroids = [{ x: 320, y: 240, radius: 34, vertices: [] }];
 
-    expect(lineOfFireBlockedByAsteroid(state, 2)).toBe(true);
+    expect(look(ai, state).fire).toBe(false);
+  });
+
+  it("fires out across the arena's edge when a rock blocks the straight way", () => {
+    const ai = createStarDuelAI({ difficulty: "hard", rng: () => 0.5 });
+    const state = facing(
+      { x: 160, y: 240 },
+      { x: 480, y: 240, rotation: 0 },
+      GAME_MODE.DEBRIS_FIELD,
+    );
+    state.asteroids = [{ x: 320, y: 240, radius: 34, vertices: [] }];
+
+    expectOneFramePress(() => look(ai, state).fire);
+  });
+
+  it("holds its fire when every way to the rival passes a rock", () => {
+    const ai = createStarDuelAI({ difficulty: "hard", rng: () => 0.5 });
+    const state = facing(
+      { x: 160, y: 240 },
+      { x: 480, y: 240, rotation: 0 },
+      GAME_MODE.DEBRIS_FIELD,
+    );
+    state.asteroids = [
+      { x: 320, y: 240, radius: 34, vertices: [] },
+      { x: 0, y: 240, radius: 34, vertices: [] },
+    ];
+
     expect(look(ai, state).fire).toBe(false);
   });
 
@@ -128,6 +157,43 @@ describe("StarDuelAI", () => {
 
     expect(inputs.thrust).toBe(true);
     expect(inputs.fire).toBe(false);
+  });
+
+  it("swings out to the side from the star instead of turning round, before it is too late", () => {
+    // From the spawn, nose on the star: turning round takes over a second,
+    // and the star's pull would have the ship by then.
+    const ai = createStarDuelAI({ difficulty: "hard", rng: () => 0.5 });
+    const state = facing({}, {}, GAME_MODE.GRAVITY_WELL);
+
+    const inputs = look(ai, state);
+
+    expect(inputs.rotateLeft).toBe(true);
+    expect(inputs.thrust).toBe(false);
+  });
+
+  it("has both ships flee the star the same way round, not into each other", () => {
+    const state = facing({}, {}, GAME_MODE.GRAVITY_WELL);
+    const turn = (player) => {
+      const ai = createStarDuelAI({ difficulty: "hard", rng: () => 0.5 });
+      const inputs = ai.nextInputs({ state, player });
+      return inputs.rotateLeft ? "left" : inputs.rotateRight ? "right" : "none";
+    };
+
+    expect(turn(1)).toBe("left");
+    expect(turn(2)).toBe("left");
+  });
+
+  it("keeps clear of the star before it dodges a missile", () => {
+    const drifting = { x: STAR_X + STAR_DANGER_RADIUS + 50, y: STAR_Y, vx: -1, rotation: 0 };
+    const state = facing({}, drifting, GAME_MODE.GRAVITY_WELL);
+    const missile = { x: drifting.x, y: STAR_Y - 60, vx: 0, vy: 8, owner: 1, age: 30 };
+    const fresh = () => createStarDuelAI({ difficulty: "hard", rng: () => 0 });
+
+    const dodging = look(fresh(), { ...state, missiles: [missile] });
+
+    expect(incomingMissileThreat({ ...state, missiles: [missile] }, 2)).not.toBeNull();
+    expect(dodging).toEqual(look(fresh(), state));
+    expect(dodging.thrust).toBe(true);
   });
 
   it("dodges an incoming missile instead of firing", () => {
@@ -208,6 +274,77 @@ describe("StarDuelAI", () => {
   });
 });
 
+/**
+ * A whole match between two AIs on `mode`'s arena, played on the host's own
+ * step: who won, how long it took, and how many deaths were the arena's
+ * (the star or a rock) rather than a missile's or a crash's.
+ */
+function aiMatch(mode, difficulty1, difficulty2, seed) {
+  const ais = {
+    1: createStarDuelAI({ difficulty: difficulty1, rng: mulberry32(seed * 13 + 3) }),
+    2: createStarDuelAI({ difficulty: difficulty2, rng: mulberry32(seed * 7919 + 1) }),
+  };
+  const random = mulberry32(seed * 31 + 7);
+  let state = { ...createInitialState(mode, seed, random), phase: PHASE.PLAYING };
+  let frames = 0;
+  let arenaDeaths = 0;
+  let kills = 0;
+  while (state.score1 < WIN_SCORE && state.score2 < WIN_SCORE && frames < 60 * 60 * 5) {
+    let pressed = { fire1: false, fire2: false, warp1: false, warp2: false };
+    for (let frame = 0; frame < 60 * 60; frame++) {
+      const inputs = {
+        1: ais[1].nextInputs({ state, player: 1 }),
+        2: ais[2].nextInputs({ state, player: 2 }),
+      };
+      const step = stepTick(state, inputs, pressed, random);
+      ({ state, pressed } = step);
+      frames++;
+      if (step.events.died.length === 0) continue;
+      if (step.events.hits > 0) kills++;
+      else if (step.events.warped.length === 0) arenaDeaths++;
+      break;
+    }
+    ais[1].forget();
+    ais[2].forget();
+    state = spawnShips(state);
+  }
+  return { winner: state.score1 >= WIN_SCORE ? 1 : 2, minutes: frames / 3600, arenaDeaths, kills };
+}
+
+// Whole matches take a few seconds each.
+const MATCHES_TIMEOUT_MS = 30_000;
+
+describe.each([
+  ["Gravity Well", GAME_MODE.GRAVITY_WELL],
+  ["Debris Field", GAME_MODE.DEBRIS_FIELD],
+])("StarDuelAI in %s", (_name, mode) => {
+  it(
+    "finishes a match between two hard AIs in minutes, mostly by their missiles",
+    () => {
+      for (const seed of [1, 2, 3, 4]) {
+        const match = aiMatch(mode, "hard", "hard", seed);
+
+        expect(match.minutes).toBeLessThan(3);
+        expect(match.arenaDeaths).toBeLessThan(match.kills);
+      }
+    },
+    MATCHES_TIMEOUT_MS,
+  );
+
+  it(
+    "beats easy at hard more often than not, from either seat",
+    () => {
+      const seeds = [1, 2, 3, 4, 5, 6, 7, 8];
+      const hardWins =
+        seeds.filter((seed) => aiMatch(mode, "hard", "easy", seed).winner === 1).length +
+        seeds.filter((seed) => aiMatch(mode, "easy", "hard", seed).winner === 2).length;
+
+      expect(hardWins).toBeGreaterThan(seeds.length);
+    },
+    MATCHES_TIMEOUT_MS,
+  );
+});
+
 describe("StarDuelAI between rounds", () => {
   it("forgets where the rival was once a new round starts", () => {
     const turnsLeft = (forget) => {
@@ -240,5 +377,6 @@ describeStrengthOrder("Star Duel", STAR_DUEL_AI_DIFFICULTIES, {
   starAvoidRadius: "up",
   asteroidAvoidMargin: "up",
   asteroidShotMargin: "up",
+  hazardLookahead: "up",
   emergencyWarp: "up",
 });

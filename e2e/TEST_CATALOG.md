@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **278 spec files** under `e2e/tests/`.
-- **702 Playwright `test()` cases**.
-- **648 documented flows**, 647 done, 1 not done.
+- **279 spec files** under `e2e/tests/`.
+- **704 Playwright `test()` cases**.
+- **650 documented flows**, 649 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -511,6 +511,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N99 | Find a partner on Block Breakers' home puts a seat's card in #block-breakers; a friend's Join takes it, both are ready, the pair plays one board while a third person watches it, and Scoreboard says how it ended in the channel | `tests/game-block-breakers.spec.ts` | done |
 | N100 | In two friends' private conversation, the card of their last Star Duel match opens the game's home by its name, on the You tab with that match in it; Play opens the game in a tab of its own, its stage naming First to 7, and a match against the computer played to its end shows the result | `tests/game-star-duel.spec.ts` | done |
 | N101 | Play with someone on Star Duel's stage opens a match room with one seat empty; its Share link, sent in a private message, becomes the match's card there; the friend's Join on it takes the seat, both are ready, the duel is played to the end, and its result card lands in the same conversation | `tests/game-star-duel.spec.ts` | done |
+| N102 | In #gravity-well, the game's name on its line under the topic opens Gravity Well's home, with its one way; Play opens the game in a tab of its own, its stage naming First to 7, and a match against the computer at Hard, played round the star, ends with the result | `tests/game-gravity-well.spec.ts` | done |
+| N103 | Find a partner on the game's line under #gravity-well's topic puts a seat's card in the channel; a friend's Join takes it and both are ready; somebody in the channel finds the match live under the topic and watches it in a tab of its own, the host's menu over the match says 1 watching, and Scoreboard says the result in the channel | `tests/game-gravity-well.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

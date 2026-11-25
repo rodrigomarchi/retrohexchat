@@ -111,11 +111,44 @@ export async function playToTheResult(
 }
 
 /**
+ * A match being played, found where the game's people already are: on the
+ * game's line under its channel's topic, and opened in a tab of its own to
+ * watch. The watch page, once the host's frames reach it.
+ */
+export async function watchFromTheChannel(
+  user: TestUser,
+  slug: string,
+  token: string,
+): Promise<Page> {
+  await user.page.goto(`/c/${slug}`);
+  await user.chat.waitUntilConnected();
+  const live = user.page
+    .getByTestId("game-channel-bar")
+    .locator(`[data-testid="live-match-link"][data-token="${token}"]`);
+  await expect(live).toBeVisible({ timeout: 15_000 });
+  await live.click();
+  const [watch] = await Promise.all([
+    user.ctx.waitForEvent("page"),
+    user.page.getByTestId("open-tab-confirm-open").click(),
+  ]);
+  await expect(watch).toHaveURL(new RegExp(`/watch/${token}$`));
+  const canvas = watch.getByTestId("watch-canvas");
+  await expect
+    .poll(async () => Number(await canvas.getAttribute("data-frames")), {
+      timeout: 30_000,
+    })
+    .toBeGreaterThan(0);
+  return watch;
+}
+
+/**
  * Find a partner — on a way's row of the game's home, or on the game's line
  * under its channel's topic (`from: "channel"`) — puts a seat's card in the
  * game's channel; a friend already there takes the seat with Join, both are
  * ready, the match runs while somebody with no seat watches it, and Scoreboard
- * says the result in the channel with both names on its card.
+ * says the result in the channel with both names on its card. With
+ * `watchFrom: "channel"` the watcher is the channel's regular, who finds the
+ * match under the topic, and the host's menu over the match says so.
  */
 export async function matchInTheChannel(
   browser: Browser,
@@ -130,6 +163,7 @@ export async function matchInTheChannel(
   name: string,
   timeout: number,
   from: "home" | "channel" = "home",
+  options: { watchFrom?: "address" | "channel" } = {},
 ): Promise<void> {
   // Nicknames are 16 characters at most: five of the name, a role, six random.
   const nick = name.slice(0, 5);
@@ -198,14 +232,28 @@ export async function matchInTheChannel(
     }
 
     // Somebody with no seat watches it live.
-    const watcher = await watcherCtx.newPage();
-    await watcher.goto(`/watch/${token}`);
-    const canvas = watcher.getByTestId("watch-canvas");
-    await expect
-      .poll(async () => Number(await canvas.getAttribute("data-frames")), {
-        timeout: 30_000,
-      })
-      .toBeGreaterThan(0);
+    let watcher: Page;
+    if (options.watchFrom === "channel") {
+      watcher = await watchFromTheChannel(regular, game.slug, token as string);
+      // The players are told, in the menu over their match.
+      await hostRoom.getByTestId("game-stage-menu-key").click();
+      await expect(hostRoom.getByTestId("lobby-game-watchers")).toContainText(
+        "1 watching",
+        { timeout: 15_000 },
+      );
+      await shot(hostRoom, `${name}-host-sees-the-watcher`);
+      await hostRoom.getByTestId("lobby-game-resume").click();
+      await expect(hostRoom.getByTestId("lobby-game-watchers")).toBeHidden();
+    } else {
+      watcher = await watcherCtx.newPage();
+      await watcher.goto(`/watch/${token}`);
+      const canvas = watcher.getByTestId("watch-canvas");
+      await expect
+        .poll(async () => Number(await canvas.getAttribute("data-frames")), {
+          timeout: 30_000,
+        })
+        .toBeGreaterThan(0);
+    }
     await hostRoom.waitForTimeout(8_000);
     await shot(hostRoom, `${name}-versus-host`);
     await shot(guestRoom, `${name}-versus-guest`);
