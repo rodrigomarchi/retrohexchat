@@ -46,7 +46,7 @@ export const AVERAGE_PLAYER = Object.freeze({
   error: 20,
   deadzone: 8,
   threatY: 210,
-  dodgeX: 54,
+  clearance: 5,
   fuelAt: 135,
   fuelY: 270,
   fireY: 290,

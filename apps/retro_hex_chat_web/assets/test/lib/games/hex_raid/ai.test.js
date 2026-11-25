@@ -15,6 +15,8 @@ import { createPerThing } from "../../../../js/lib/games/core/ai.js";
 import { describeStrengthOrder } from "../../../support/games/strength_order.js";
 import { ENEMY_TYPE, GAME_MODE, PHASE } from "../../../../js/lib/games/hex_raid/protocol.js";
 import {
+  JET_RADIUS,
+  JET_Y,
   MISSILE_RADIUS,
   SPEED_BASE,
   createInitialState,
@@ -90,7 +92,44 @@ describe("HexRaidAI", () => {
     const target = chooseRaidTarget(state, 2, RAID_AI_DIFFICULTIES.hard);
 
     expect(threat).toMatchObject({ x: 318, y: 310 });
-    expect(target.x).toBeGreaterThan(320);
+    expect(target.kind).toBe("dodge");
+    expect(Math.abs(target.x - 318)).toBeGreaterThanOrEqual(JET_RADIUS + 8);
+  });
+
+  it("steers clear of where a boat will be, not where it is", () => {
+    // The boat is beside the jet now, and sails into its lane as it comes down.
+    const state = {
+      ...flyingState(),
+      jet2X: 320,
+      enemies: [{ id: 1, type: ENEMY_TYPE.BOAT, x: 280, y: 340, vx: 1.5, alive: true }],
+      enemyCount: 1,
+    };
+
+    const target = chooseRaidTarget(state, 2, RAID_AI_DIFFICULTIES.hard);
+    const boatAtTheJet = 280 + 1.5 * ((JET_Y - 340) / SPEED_BASE);
+
+    expect(Math.abs(target.x - boatAtTheJet)).toBeGreaterThanOrEqual(JET_RADIUS + 8);
+  });
+
+  it("keeps to its goal when nothing will cross its line", () => {
+    const state = {
+      ...flyingState(),
+      jet2X: 320,
+      enemies: [{ id: 1, type: ENEMY_TYPE.BOAT, x: 200, y: 340, vx: -1, alive: true }],
+      enemyCount: 1,
+    };
+
+    expect(chooseRaidTarget(state, 2, RAID_AI_DIFFICULTIES.hard).kind).not.toBe("dodge");
+  });
+
+  it("holds its fire while a fuel station sits in the missile's path", () => {
+    const fuelInTheWay = boatAhead({
+      fuels: [{ id: 1, x: 321, y: 330, available: true }],
+      fuelCount: 1,
+    });
+
+    expect(shouldFire(boatAhead(), 2, RAID_AI_DIFFICULTIES.hard)).toBe(true);
+    expect(shouldFire(fuelInTheWay, 2, RAID_AI_DIFFICULTIES.hard)).toBe(false);
   });
 
   it("moves toward target position and speed", () => {
@@ -345,7 +384,7 @@ describeStrengthOrder("Hex Raid AI", RAID_AI_DIFFICULTIES, {
   error: "down",
   deadzone: "down",
   threatY: "up",
-  dodgeX: "up",
+  clearance: "up",
   fuelAt: "up",
   fuelY: "up",
   fireY: "up",

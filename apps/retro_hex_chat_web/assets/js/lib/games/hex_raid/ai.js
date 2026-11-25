@@ -7,12 +7,15 @@
  */
 
 import { normalizeRaidAIDifficulty } from "./difficulty.js";
-import { GAME_MODE, PHASE } from "./protocol.js";
+import { ENEMY_TYPE, GAME_MODE, PHASE } from "./protocol.js";
 import {
   CANVAS_H,
   CANVAS_W,
+  JET_LATERAL_SPEED,
   JET_RADIUS,
   MAX_MINES_PER_PLAYER,
+  MINE_DRIFT,
+  MINE_RADIUS,
   MISSILE_SPEED,
   SPEED_BASE,
   SPEED_MAX,
@@ -22,6 +25,22 @@ import {
 import { TableAI, clamp, createCommitment, createDelayedView, createPerThing } from "../core/ai.js";
 
 const SAFE_MARGIN = JET_RADIUS + 18;
+/** How far aside a thing ahead still counts as in the jet's lane. */
+const WATCH_X = 60;
+/** How close a jet's centre comes to an enemy's when they meet. */
+const CRASH_REACH = JET_RADIUS + 8;
+/** How close a jet's centre comes to a mine's when it goes off. */
+const MINE_REACH = JET_RADIUS + MINE_RADIUS;
+/** How far from a bank the spots the AI weighs keep. */
+const BANK_MARGIN = JET_RADIUS + 6;
+/** How far ahead of the jet the banks are read, as the river brings them. */
+const BANK_LOOKAHEAD_Y = 40;
+/** The spacing of the spots across the river the AI weighs. */
+const LANE_STEP = 6;
+/** How often, in frames, a crossing is looked at along its way past the jet. */
+const CROSSING_STEP = 2;
+/** How fast an enemy jet dives, on top of the river's own pace. */
+const ENEMY_JET_DIVE = 3;
 const TARGET_LOOKAHEAD_Y = 120;
 const OWN_FIELDS = ["X", "Y", "Speed", "Fuel", "Alive", "MissileCooldown", "MineCooldown"];
 
@@ -37,7 +56,9 @@ const NEUTRAL_INPUTS = Object.freeze({
 /**
  * How each difficulty flies. It sees the river `reaction` frames late and
  * plans again every `interval` frames; every plan misses its spot by up to
- * `error` pixels, one miss kept for as long as it chases the same target. It dodges what comes within `threatY` ahead and `dodgeX` aside,
+ * `error` pixels, one miss kept for as long as it chases the same target. It
+ * steers clear of what comes within `threatY` ahead, from where it will be
+ * when it crosses the jet's line, leaving `clearance` pixels to spare,
  * and fires at an enemy up to `fireX` aside of its nose — of where the enemy
  * will be, when it `lead`s its shots. It notices a rival's mine
  * `mineNotice` of the time, once per mine, and drops one of its own, with
@@ -49,17 +70,17 @@ const NEUTRAL_INPUTS = Object.freeze({
  */
 export const RAID_AI_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
-    reaction: 24,
-    interval: 14,
+    reaction: 18,
+    interval: 12,
     error: 30,
     deadzone: 10,
-    threatY: 90,
-    dodgeX: 40,
+    threatY: 110,
+    clearance: 3,
     fuelAt: 105,
     fuelY: 210,
-    fireY: 190,
-    fireX: 30,
-    fireOdds: 0.55,
+    fireY: 270,
+    fireX: 24,
+    fireOdds: 0.6,
     fireCd: 20,
     mineOdds: 0.15,
     mineCd: 240,
@@ -74,7 +95,7 @@ export const RAID_AI_DIFFICULTIES = Object.freeze({
     error: 20,
     deadzone: 8,
     threatY: 125,
-    dodgeX: 42,
+    clearance: 4,
     fuelAt: 170,
     fuelY: 340,
     fireY: 340,
@@ -94,12 +115,12 @@ export const RAID_AI_DIFFICULTIES = Object.freeze({
     error: 3,
     deadzone: 4,
     threatY: 135,
-    dodgeX: 44,
+    clearance: 7,
     fuelAt: 220,
     fuelY: 420,
     fireY: 420,
     fireX: 8,
-    fireOdds: 1,
+    fireOdds: 0.9,
     fireCd: 12,
     mineOdds: 0.6,
     mineCd: 90,
@@ -241,9 +262,37 @@ export function chooseRaidTarget(
   const actor = jetState(state, player);
   if (!actor) return { x: CANVAS_W / 2, targetSpeed: SPEED_MIN, kind: "cruise", key: "cruise" };
 
+  const goal = goalTarget(state, player, actor, config, miss);
+  const x = clearLaneX(state, player, actor, goal.x, config);
+  if (Math.abs(x - goal.x) <= config.deadzone) return goal;
+
+  return {
+    x,
+    targetSpeed: Math.min(goal.targetSpeed, config.cruise),
+    kind: "dodge",
+    key: `dodge:${goal.key}`,
+  };
+}
+
+/**
+ * What the jet is after before anything in its way is counted: a bridge to
+ * shoot down, fuel, an enemy to shoot, or the middle of the river ahead.
+ * @param {object} state
+ * @param {1|2} player
+ * @param {{x: number, y: number}} actor
+ * @param {object} config
+ * @param {(key: string) => number} miss
+ * @returns {{x: number, targetSpeed: number, kind: string, key: string}}
+ */
+function goalTarget(state, player, actor, config, miss) {
   const threat = nearestThreat(state, player, config);
-  if (threat) {
-    return dodgeTarget(state, actor, threat, config, miss);
+  if (threat?.bridge === true) {
+    return {
+      x: clampToSafeRiver(state, riverCenterAt(state, actor.y) + miss("dodge:bridge"), actor.y),
+      targetSpeed: SPEED_MIN,
+      kind: "dodge",
+      key: "dodge:bridge",
+    };
   }
 
   const fuel = nearestFuelTarget(state, player, config);
@@ -270,6 +319,156 @@ export function chooseRaidTarget(
     kind: "cruise",
     key: "cruise",
   };
+}
+
+/**
+ * The spot across the river, nearest `goalX`, that the jet can fly to
+ * without meeting anything coming down within `config.threatY`: each enemy
+ * and rival mine is followed to where it will be while it crosses the jet's
+ * line, the jet to where it will be on its way to the spot. With no spot
+ * clear, the one that meets something latest.
+ * @param {object} state
+ * @param {1|2} player
+ * @param {{x: number, y: number, speed: number}} actor
+ * @param {number} goalX
+ * @param {object} config
+ * @returns {number}
+ */
+function clearLaneX(state, player, actor, goalX, config) {
+  const crossings = crossingsAhead(state, player, actor, config);
+  if (crossings.length === 0) return goalX;
+
+  // The banks where the jet is and where the river brings it next.
+  const here = safeBankAt(state, actor.y);
+  const next = safeBankAt(state, actor.y - BANK_LOOKAHEAD_Y);
+  const left = Math.max(here.leftX, next.leftX) + BANK_MARGIN;
+  const right = Math.min(here.rightX, next.rightX) - BANK_MARGIN;
+  const spots = [clamp(goalX, left, right)];
+  for (let x = left; x <= right; x += LANE_STEP) spots.push(x);
+
+  return (
+    nearestClearSpot(spots, actor.x, goalX, crossings, config.clearance) ??
+    nearestClearSpot(spots, actor.x, goalX, crossings, 0) ??
+    latestMeetingSpot(spots, actor.x, crossings)
+  );
+}
+
+/**
+ * The spot nearest `goalX` that keeps `spare` pixels clear of every crossing
+ * on the way, or null when none does.
+ * @param {number[]} spots
+ * @param {number} fromX
+ * @param {number} goalX
+ * @param {{from: number, to: number, reach: number, xAt: (t: number) => number}[]} crossings
+ * @param {number} spare
+ * @returns {number | null}
+ */
+function nearestClearSpot(spots, fromX, goalX, crossings, spare) {
+  let best = null;
+  for (const spot of spots) {
+    if (firstMeeting(fromX, spot, crossings, spare) !== null) continue;
+    if (best === null || Math.abs(spot - goalX) < Math.abs(best - goalX)) best = spot;
+  }
+  return best;
+}
+
+/**
+ * With every spot meeting something, the one that meets it latest.
+ * @param {number[]} spots
+ * @param {number} fromX
+ * @param {{from: number, to: number, reach: number, xAt: (t: number) => number}[]} crossings
+ * @returns {number}
+ */
+function latestMeetingSpot(spots, fromX, crossings) {
+  let best = spots[0];
+  let latest = -1;
+  for (const spot of spots) {
+    const meets = firstMeeting(fromX, spot, crossings, 0);
+    if (meets > latest) {
+      best = spot;
+      latest = meets;
+    }
+  }
+  return best;
+}
+
+/**
+ * When the jet, flying from `fromX` to `spot`, first comes within a
+ * crossing's reach and `spare` pixels more of it, in frames from now; null
+ * when it never does.
+ * @param {number} fromX
+ * @param {number} spot
+ * @param {{from: number, to: number, reach: number, xAt: (t: number) => number}[]} crossings
+ * @param {number} spare
+ * @returns {number | null}
+ */
+function firstMeeting(fromX, spot, crossings, spare) {
+  let first = null;
+  const distance = spot - fromX;
+  const travel = Math.abs(distance) / JET_LATERAL_SPEED;
+  for (const crossing of crossings) {
+    for (let t = crossing.from; t <= crossing.to; t += CROSSING_STEP) {
+      const jetX = t >= travel ? spot : fromX + Math.sign(distance) * JET_LATERAL_SPEED * t;
+      if (Math.abs(jetX - crossing.xAt(t)) < crossing.reach + spare) {
+        if (first === null || t < first) first = t;
+        break;
+      }
+    }
+  }
+  return first;
+}
+
+/**
+ * Every enemy and rival mine that will cross the jet's line, with the frames
+ * it spends crossing it and where it is on each of them.
+ * @param {object} state
+ * @param {1|2} player
+ * @param {{x: number, y: number, speed: number}} actor
+ * @param {object} config
+ * @returns {{from: number, to: number, reach: number, xAt: (t: number) => number}[]}
+ */
+function crossingsAhead(state, player, actor, config) {
+  const river = Math.max(scrollPace(state), SPEED_MIN);
+  const crossings = [];
+  const add = (thing, pace, vx, reach) => {
+    const dy = actor.y - thing.y;
+    if (dy > config.threatY || dy < -reach) return;
+    const from = Math.max(0, (dy - reach) / pace);
+    const to = (dy + reach) / pace;
+    // A boat turns back where it meets the banks of its own stretch of river.
+    const bank = safeBankAt(state, thing.y);
+    const low = Math.min(thing.x, bank.leftX + 20);
+    const high = Math.max(thing.x, bank.rightX - 20);
+    const xAt = (t) => bounced(thing.x + vx * t, low, high);
+    crossings.push({ from, to, reach, xAt });
+  };
+
+  for (const enemy of Array.isArray(state.enemies) ? state.enemies : []) {
+    if (!enemy.alive || !onScreen(enemy)) continue;
+    const dive = enemy.type === ENEMY_TYPE.JET ? ENEMY_JET_DIVE : 0;
+    add(enemy, river + dive, enemy.vx || 0, CRASH_REACH);
+  }
+  for (const mine of Array.isArray(state.mines) ? state.mines : []) {
+    if (!mine.active || mine.owner === player) continue;
+    add(mine, river * MINE_DRIFT, 0, MINE_REACH);
+  }
+  return crossings;
+}
+
+/** The river's pace: the faster of the jets in play sets it. */
+function scrollPace(state) {
+  const speed1 = state.jet1Alive ? state.jet1Speed : 0;
+  const speed2 = state.jet2Alive ? state.jet2Speed : 0;
+  return Math.max(speed1, speed2);
+}
+
+/** `x` folded back inside [low, high], as a boat bouncing off the banks. */
+function bounced(x, low, high) {
+  const span = high - low;
+  if (span <= 0) return low;
+  const period = span * 2;
+  const folded = (((x - low) % period) + period) % period;
+  return low + (folded <= span ? folded : period - folded);
 }
 
 /**
@@ -325,6 +524,7 @@ export function shouldFire(state, player = 2, config = RAID_AI_DIFFICULTIES.norm
   const actor = jetState(state, player);
   if (!actor || !actor.alive) return false;
   if (missileActive(state, player) || missileCooldown(state, player) > 0) return false;
+  if (fuelInLineOfFire(state, actor)) return false;
 
   if (
     state.bridgeActive &&
@@ -343,6 +543,23 @@ export function shouldFire(state, player = 2, config = RAID_AI_DIFFICULTIES.norm
       dy > 0 && dy < config.fireY && Math.abs(actor.x - aimX(enemy, dy, config)) <= config.fireX
     );
   });
+}
+
+/** How close a missile passes to a fuel station and still blows it up. */
+const FUEL_SHOT_REACH = 12 + 4;
+
+/**
+ * Whether a fuel station sits ahead in the missile's path: a shot now would
+ * blow up fuel the jet may need.
+ * @param {object} state
+ * @param {{x: number, y: number}} actor
+ * @returns {boolean}
+ */
+function fuelInLineOfFire(state, actor) {
+  const fuels = Array.isArray(state.fuels) ? state.fuels : [];
+  return fuels.some(
+    (fuel) => fuel.available && fuel.y < actor.y && Math.abs(fuel.x - actor.x) < FUEL_SHOT_REACH,
+  );
 }
 
 /**
@@ -392,54 +609,19 @@ export function nearestThreat(state, player = 2, config = RAID_AI_DIFFICULTIES.n
     if (!enemy.alive || !onScreen(enemy)) return null;
     const dy = actor.y - enemy.y;
     if (dy < -15 || dy > config.threatY) return null;
-    return Math.abs(actor.x - enemy.x) <= config.dodgeX ? Math.max(1, dy) : null;
+    return Math.abs(actor.x - enemy.x) <= WATCH_X ? Math.max(1, dy) : null;
   };
   // A mine counts as half as far: it does not move aside on its own.
   const mineDistance = (mine) => {
     if (!mine.active || mine.owner === player) return null;
     const dy = actor.y - mine.y;
     if (dy < -25 || dy > Math.min(config.threatY, 120)) return null;
-    return Math.abs(actor.x - mine.x) <= config.dodgeX + 10 ? Math.max(1, dy) * 0.5 : null;
+    return Math.abs(actor.x - mine.x) <= WATCH_X + 10 ? Math.max(1, dy) * 0.5 : null;
   };
 
   return lowest([...enemies, ...mines], (thing) =>
     enemies.includes(thing) ? enemyDistance(thing) : mineDistance(thing),
   );
-}
-
-/**
- * @param {object} state
- * @param {{x: number, y: number}} actor
- * @param {{x: number, y: number}} threat
- * @param {object} config
- * @param {(key: string) => number} [miss]
- * @returns {{x: number, targetSpeed: number, kind: string, key: string}}
- */
-export function dodgeTarget(
-  state,
-  actor,
-  threat,
-  config = RAID_AI_DIFFICULTIES.normal,
-  miss = () => 0,
-) {
-  const bank = safeBankAt(state, actor.y);
-  const center = (bank.leftX + bank.rightX) / 2;
-  const leftLane = bank.leftX + SAFE_MARGIN;
-  const rightLane = bank.rightX - SAFE_MARGIN;
-  const targetX = threat.x <= center ? rightLane : leftLane;
-  const key = `dodge:${threat.bridge === true ? "bridge" : threatKey(threat)}`;
-
-  return {
-    x: clamp(targetX + miss(key), leftLane, rightLane),
-    targetSpeed: threat.bridge === true ? SPEED_MIN : Math.min(SPEED_BASE, config.cruise),
-    kind: "dodge",
-    key,
-  };
-}
-
-/** A threat's key: a mine's or an enemy's id, which can be the same number. */
-function threatKey(threat) {
-  return "owner" in threat ? `mine:${threat.id}` : `enemy:${threat.id}`;
 }
 
 function attackTarget(state, player, config, miss) {
@@ -448,7 +630,9 @@ function attackTarget(state, player, config, miss) {
   const best = lowest(enemies, (enemy) => {
     if (!enemy.alive || !onScreen(enemy)) return null;
     const dy = actor.y - enemy.y;
-    if (dy <= 0 || dy > config.fireY) return null;
+    // Closer than `threatY` an enemy is only something to keep clear of:
+    // chasing it there leads the jet into it.
+    if (dy <= config.threatY || dy > config.fireY) return null;
     return dy + Math.abs(actor.x - enemy.x) * 0.4;
   });
 
