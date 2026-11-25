@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **281 spec files** under `e2e/tests/`.
-- **708 Playwright `test()` cases**.
-- **654 documented flows**, 653 done, 1 not done.
+- **282 spec files** under `e2e/tests/`.
+- **710 Playwright `test()` cases**.
+- **656 documented flows**, 655 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -517,6 +517,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N105 | Find a partner on #debris-field's line, a friend's Join takes the seat, the duel is played to the end and Scoreboard says the result in the channel; asked again, !recent names both players and !challenge says who leads the week | `tests/game-debris-field.spec.ts` | done |
 | N106 | Hex Warlords' home names its goal — Last king standing — and Play opens the game in a tab of its own; a match against the computer at Hard, where the first king hit ends it, is played to the result | `tests/game-hex-warlords.spec.ts` | done |
 | N107 | Play with somebody you know on Hex Warlords' home invites a friend by nickname: the invitation lands in their private conversation as the match's card, both enter Hex Warlords' match room through it, both are ready, the host starts, and the match played to its end leaves its result card in the same conversation | `tests/game-hex-warlords.spec.ts` | done |
+| N108 | Hex Raid's home lists its three ways to fly — Hex Raid, Pacifist and Blitz — and its invitation picks one of them; Play opens the game in a tab of its own, its menu naming the goal (3 lives — top score wins), and a match against the computer at Hard is played to the result | `tests/game-hex-raid.spec.ts` | done |
+| N109 | A best of three by invitation: from Hex Raid's home a friend is invited by nickname once in each way to fly — Pacifist, Blitz, then Hex Raid — each invitation lands in their private conversation as that mode's match, both enter it, both are ready, the host starts, each match played to its end leaves its result card in the same conversation, and the host ends that session before the next invitation — three cards in all | `tests/game-hex-raid.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 
