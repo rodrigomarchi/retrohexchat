@@ -149,6 +149,7 @@ export async function watchFromTheChannel(
  * says the result in the channel with both names on its card. With
  * `watchFrom: "channel"` the watcher is the channel's regular, who finds the
  * match under the topic, and the host's menu over the match says so.
+ * Returns the two players' nicknames.
  */
 export async function matchInTheChannel(
   browser: Browser,
@@ -164,7 +165,7 @@ export async function matchInTheChannel(
   timeout: number,
   from: "home" | "channel" = "home",
   options: { watchFrom?: "address" | "channel" } = {},
-): Promise<void> {
+): Promise<{ host: string; guest: string }> {
   // Nicknames are 16 characters at most: five of the name, a role, six random.
   const nick = name.slice(0, 5);
   const host = await newSignedInUser(browser, `${nick}host`);
@@ -267,6 +268,7 @@ export async function matchInTheChannel(
     await expect(card).toBeVisible({ timeout });
     await expect(card).toContainText(guest.nick);
     await shot(guest.page, `${name}-result-in-channel`);
+    return { host: host.nick, guest: guest.nick };
   } finally {
     await watcherCtx.close();
     await closeUsers([host, guest, regular]);

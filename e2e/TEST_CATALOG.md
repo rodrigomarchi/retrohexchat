@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **279 spec files** under `e2e/tests/`.
-- **704 Playwright `test()` cases**.
-- **650 documented flows**, 649 done, 1 not done.
+- **280 spec files** under `e2e/tests/`.
+- **706 Playwright `test()` cases**.
+- **652 documented flows**, 651 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -513,6 +513,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N101 | Play with someone on Star Duel's stage opens a match room with one seat empty; its Share link, sent in a private message, becomes the match's card there; the friend's Join on it takes the seat, both are ready, the duel is played to the end, and its result card lands in the same conversation | `tests/game-star-duel.spec.ts` | done |
 | N102 | In #gravity-well, the game's name on its line under the topic opens Gravity Well's home, with its one way; Play opens the game in a tab of its own, its stage naming First to 7, and a match against the computer at Hard, played round the star, ends with the result | `tests/game-gravity-well.spec.ts` | done |
 | N103 | Find a partner on the game's line under #gravity-well's topic puts a seat's card in the channel; a friend's Join takes it and both are ready; somebody in the channel finds the match live under the topic and watches it in a tab of its own, the host's menu over the match says 1 watching, and Scoreboard says the result in the channel | `tests/game-gravity-well.spec.ts` | done |
+| N104 | In #debris-field, !challenge is answered by Scoreboard with this week's challenge — Debris Field, the most wins against other players — and where it stands; Play on the game's line opens the game in a tab of its own, its stage naming First to 7, and a match against the computer at Hard, played among the rocks, ends with the result | `tests/game-debris-field.spec.ts` | done |
+| N105 | Find a partner on #debris-field's line, a friend's Join takes the seat, the duel is played to the end and Scoreboard says the result in the channel; asked again, !recent names both players and !challenge says who leads the week | `tests/game-debris-field.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

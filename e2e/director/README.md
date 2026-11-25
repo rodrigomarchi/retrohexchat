@@ -87,6 +87,12 @@ database (`FRESH=1`) or another `DIRECTOR_NICK`.
   filmed its first scene after the duel, and the channel already carried the
   result card and the reactions to it. The director's order of tests is the
   order of filming: put such a scene first.
+- **A scene filmed after the story's end must not open on the chat.** EP11's
+  practice, filmed last, opened for a second on a channel already naming the
+  week's leader. Open its tab off camera and start the camera there.
+- **A bot answers once every two seconds in a channel** (`Bot.cooldown_ms`)
+  and drops a question asked sooner, silently. Two `!` questions on camera
+  wait it out (ep11 `ask`).
 - **A seat's card offers Join only while the seat is open.** Once a friend
   takes it, the host's own card reads Taken and offers Play instead: the host
   goes into the room first, then the friend joins.
