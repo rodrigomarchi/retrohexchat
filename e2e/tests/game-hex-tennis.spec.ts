@@ -14,11 +14,16 @@ import {
   playFromHome,
   playToTheResult,
   provisionGameChannel,
+  seatMatch,
 } from "../helpers/retroGames";
 import { shot } from "../helpers/screenshots";
-import { enterViaCard, followCard } from "../helpers/surfaceEntry";
 
 const SLUG = "hex-tennis";
+const SUDDEN = {
+  slug: SLUG,
+  way: "hex_tennis_sudden",
+  name: "Hex Tennis: Sudden Death",
+};
 const WAYS = ["hex_tennis", "hex_tennis_quick", "hex_tennis_sudden"];
 // Two hard players: Quick Match takes one to three minutes.
 const MATCH_TIMEOUT = 6 * 60_000;
@@ -90,9 +95,9 @@ test.describe("Hex Tennis", () => {
       for (const player of players) await inTheChannel(player);
 
       const [a, b, c, d] = players;
-      const one = await seatMatch(a, b, "semi-one");
+      const one = await seatMatch(a, b, SUDDEN, "tennis-semi-one");
       await expect(resultCard(a.page, a, b)).toBeVisible({ timeout: 30_000 });
-      const two = await seatMatch(c, d, "semi-two");
+      const two = await seatMatch(c, d, SUDDEN, "tennis-semi-two");
       // Both semifinals said in the channel, one card each.
       await expect(resultCard(a.page, c, d)).toBeVisible({ timeout: 30_000 });
       await expect(resultCard(a.page, a, b)).toBeVisible();
@@ -104,7 +109,12 @@ test.describe("Hex Tennis", () => {
 
       for (const finalist of [one.winner, two.winner])
         await inTheChannel(finalist);
-      const final = await seatMatch(one.winner, two.winner, "final");
+      const final = await seatMatch(
+        one.winner,
+        two.winner,
+        SUDDEN,
+        "tennis-final",
+      );
       // The final's card lands in the finalists' own conversation.
       await final.winner.chat.sendMessage(`/query ${final.loser.nick}`);
       const card = final.winner.page
@@ -131,69 +141,4 @@ async function inTheChannel(who: TestUser) {
   await who.page.goto(`/c/${SLUG}`);
   await who.chat.waitUntilConnected();
   await expect(who.page.getByTestId("game-channel-bar")).toBeVisible();
-}
-
-/**
- * Find a partner on the home's Sudden Death row puts `host`'s seat in the
- * channel; `guest`, already there, takes it with Join; both ready, the host
- * starts, and the match is played to its end. Returns who won.
- */
-async function seatMatch(
-  host: TestUser,
-  guest: TestUser,
-  name: string,
-): Promise<{ winner: TestUser; loser: TestUser }> {
-  await openHome(host, SLUG);
-  await host.page
-    .getByTestId("game-way-hex_tennis_sudden")
-    .getByTestId("game-lfg")
-    .click();
-  // The newest seat: a semifinal's winner already offered one.
-  const seat = host.chat.messageRows
-    .filter({
-      hasText: `${host.nick} is looking for a partner in Hex Tennis: Sudden Death`,
-    })
-    .last();
-  await expect(seat).toBeVisible({ timeout: 15_000 });
-  const address = (await seat
-    .getByTestId("share-message-enter")
-    .getAttribute("href")) as string;
-  const hostRoom = await followCard(host.page, host.ctx, address);
-  await expect(guest.page.locator(`[href="${address}"]`).last()).toBeVisible({
-    timeout: 15_000,
-  });
-  const guestRoom = await enterViaCard(guest.page, guest.ctx);
-
-  await hostRoom.getByTestId("p2p-room-ready").click();
-  await guestRoom.getByTestId("p2p-room-ready").click();
-  await expect(hostRoom.getByTestId("p2p-room-start")).toBeEnabled({
-    timeout: 30_000,
-  });
-  await hostRoom.getByTestId("p2p-room-start").click();
-  for (const room of [hostRoom, guestRoom]) {
-    await expect(
-      room.locator(
-        '#lobby-game-canvas[data-game-id="hex_tennis_sudden"] canvas',
-      ),
-    ).toBeVisible({ timeout: 30_000 });
-  }
-  await hostRoom.waitForTimeout(8_000);
-  await shot(hostRoom, `tennis-${name}-host`);
-  for (const room of [hostRoom, guestRoom]) {
-    await expect(room.getByTestId("lobby-game-result")).toBeVisible({
-      timeout: MATCH_TIMEOUT,
-    });
-  }
-  const hostWon =
-    (await hostRoom.getByTestId("lobby-game-outcome").textContent())?.trim() ===
-    "You win!";
-  await shot(hostRoom, `tennis-${name}-result`);
-  // Each closes the room the match was played in.
-  await hostRoom.getByTestId("p2p-console-end-session").click();
-  await hostRoom.getByTestId("p2p-confirm-dialog-confirm").click();
-  await hostRoom.close();
-  await guestRoom.close();
-  return hostWon
-    ? { winner: host, loser: guest }
-    : { winner: guest, loser: host };
 }

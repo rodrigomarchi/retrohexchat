@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **284 spec files** under `e2e/tests/`.
-- **716 Playwright `test()` cases**.
-- **662 documented flows**, 661 done, 1 not done.
+- **285 spec files** under `e2e/tests/`.
+- **718 Playwright `test()` cases**.
+- **664 documented flows**, 663 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -525,6 +525,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N113 | A duel by invitation on Ricochet: from Hex Outlaw's home a friend is invited by nickname with Ricochet picked under Play with somebody you know; the invitation lands in their private conversation as that street's match, both enter it, both are ready, the host starts, the duel of bank shots is played to its end and its result card lands in the same conversation | `tests/game-hex-outlaw.spec.ts` | done |
 | N114 | Hex Tennis's home lists its three formats — Hex Tennis (a full set), Quick Match and Sudden Death; Play on each opens the game in a tab of its own, and against the computer at Hard each is a match under way; Quick Match is played to the result | `tests/game-hex-tennis.spec.ts` | done |
 | N115 | A Sudden Death tournament in #hex-tennis: two semifinals, each made with Find a partner on the home's Sudden Death row — a seat's card in the channel, a friend already there takes it with Join, both ready, the host starts — are played to the end one after the other and Scoreboard says each result in the channel; the two winners meet in a final made the same way, played to the end, its result on both screens and its card in the finalists' private conversation | `tests/game-hex-tennis.spec.ts` | done |
+| N116 | Hex Hockey's home lists its three formats — Hex Hockey (three periods), Blitz and Showdown; Play on each opens the game in a tab of its own, its menu naming the match, and against the computer at Hard each is a match under way | `tests/game-hex-hockey.spec.ts` | done |
+| N117 | Climbing the ranking: a player with no rating yet plays Blitz with Find a partner on the home's Blitz row, a friend taking the seat in #hex-hockey; after the match both are in the Rating list of the home's Ranking tab, one above the 1200 everybody starts at and one below; a second Blitz match against another friend moves the player's rating again, and the You tab gives the player's rating and place | `tests/game-hex-hockey.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 
