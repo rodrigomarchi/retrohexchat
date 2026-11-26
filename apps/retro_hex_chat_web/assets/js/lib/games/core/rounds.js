@@ -131,14 +131,18 @@ export function tallyRound(state, roundWinner, roundsToWin) {
 
 /**
  * Whether a side's points reached `target`, which ends the round in its
- * favour — player one's looked at first.
+ * favour. When both reach it on the same frame the higher score takes the
+ * round, and an even one goes to player one.
  * @param {{ score1: number, score2: number }} state
  * @param {number} target
  * @returns {{ ended: boolean, roundWinner: number }}
  */
 export function pointsReached(state, target) {
-  if (state.score1 >= target) return { ended: true, roundWinner: 1 };
-  if (state.score2 >= target) return { ended: true, roundWinner: 2 };
+  const one = state.score1 >= target;
+  const two = state.score2 >= target;
+  if (one && two) return { ended: true, roundWinner: state.score2 > state.score1 ? 2 : 1 };
+  if (one) return { ended: true, roundWinner: 1 };
+  if (two) return { ended: true, roundWinner: 2 };
   return { ended: false, roundWinner: 0 };
 }
 

@@ -101,8 +101,10 @@ describe("a round's step", () => {
 });
 
 describe("a round's end", () => {
-  it("pointsReached ends the round for the side at the target, player one first", () => {
+  it("pointsReached ends the round for the side at the target, the higher when both are", () => {
     expect(pointsReached({ score1: 5, score2: 5 }, 5)).toEqual({ ended: true, roundWinner: 1 });
+    expect(pointsReached({ score1: 5, score2: 7 }, 5)).toEqual({ ended: true, roundWinner: 2 });
+    expect(pointsReached({ score1: 8, score2: 6 }, 5)).toEqual({ ended: true, roundWinner: 1 });
     expect(pointsReached({ score1: 2, score2: 5 }, 5)).toEqual({ ended: true, roundWinner: 2 });
     expect(pointsReached({ score1: 4, score2: 4 }, 5)).toEqual({ ended: false, roundWinner: 0 });
   });
