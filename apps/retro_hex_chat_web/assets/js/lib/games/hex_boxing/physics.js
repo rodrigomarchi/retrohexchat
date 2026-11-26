@@ -11,27 +11,27 @@ import { closeRound, pointsReached } from "../core/rounds.js";
 export const CANVAS_W = 640;
 export const CANVAS_H = 480;
 
-// --- Ring boundaries ---
-export const RING_PADDING = 24;
-export const RING_LEFT = RING_PADDING;
-export const RING_RIGHT = CANVAS_W - RING_PADDING;
-export const RING_TOP = 44;
-export const RING_BOTTOM = CANVAS_H - 44;
+// --- Ring boundaries: a tight ring in the middle of the canvas, the HUD
+// above and below it ---
+export const RING_LEFT = 80;
+export const RING_RIGHT = CANVAS_W - 80;
+export const RING_TOP = 60;
+export const RING_BOTTOM = CANVAS_H - 60;
 
 // --- Boxer ---
-export const BOXER_BODY_RADIUS = 8;
-export const BOXER_SPEED = 2.5;
+export const BOXER_BODY_RADIUS = 12;
+export const BOXER_SPEED = 3.75;
 
 // --- Punch ---
-export const PUNCH_RANGE = 24;
+export const PUNCH_RANGE = 36;
 export const PUNCH_WINDUP = 14; // frames (~230ms) the arm is drawn back before it flies
 export const PUNCH_DURATION = 9; // frames (~150ms)
 export const PUNCH_COOLDOWN = 12; // frames (~200ms)
-export const FIST_RADIUS = 3;
+export const FIST_RADIUS = 4.5;
 
 // --- Scoring zones (distance between body centers minus radii) ---
-export const CLOSE_DIST = 12; // 3 points
-export const MEDIUM_DIST = 18; // 2 points
+export const CLOSE_DIST = 18; // 3 points
+export const MEDIUM_DIST = 27; // 2 points
 // Anything beyond MEDIUM_DIST up to PUNCH_RANGE + FIST_RADIUS = 1 point
 
 // --- Gameplay ---
@@ -446,7 +446,8 @@ export function checkRoundEnd(state) {
 export function advanceRound(state, roundWinner) {
   return {
     ...closeRound(state, roundWinner, ROUNDS_TO_WIN, PHASE),
-    koPlayer: state.score1 >= KO_SCORE ? 2 : state.score2 >= KO_SCORE ? 1 : 0,
+    // The boxer knocked out: the loser of a round that ended on points.
+    koPlayer: pointsReached(state, KO_SCORE).ended ? 3 - roundWinner : 0,
   };
 }
 

@@ -133,7 +133,7 @@ function drawBoxer(ctx, state, player, color, colors) {
   const dotX = bx + DIR_DX[dir] * (BOXER_BODY_RADIUS - 2);
   const dotY = by + DIR_DY[dir] * (BOXER_BODY_RADIUS - 2);
   ctx.beginPath();
-  ctx.arc(dotX, dotY, 2, 0, Math.PI * 2);
+  ctx.arc(dotX, dotY, 3, 0, Math.PI * 2);
   ctx.fillStyle = wasHit ? colors.hit : gameColor("ffffff");
   ctx.fill();
 }
@@ -180,7 +180,7 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, color
   ctx.moveTo(lArmBaseX, lArmBaseY);
   ctx.lineTo(lEndX, lEndY);
   ctx.strokeStyle = armColor;
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 4;
   ctx.lineCap = "round";
   ctx.stroke();
 
@@ -199,7 +199,7 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, color
   ctx.moveTo(rArmBaseX, rArmBaseY);
   ctx.lineTo(rEndX, rEndY);
   ctx.strokeStyle = armColor;
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 4;
   ctx.lineCap = "round";
   ctx.stroke();
 
@@ -215,7 +215,7 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, color
     ctx.save();
     ctx.globalAlpha = 0.35 + 0.5 * windup;
     ctx.beginPath();
-    ctx.arc(arm === 0 ? lEndX : rEndX, arm === 0 ? lEndY : rEndY, FIST_RADIUS + 3, 0, Math.PI * 2);
+    ctx.arc(arm === 0 ? lEndX : rEndX, arm === 0 ? lEndY : rEndY, FIST_RADIUS + 4, 0, Math.PI * 2);
     ctx.strokeStyle = colors.warning;
     ctx.lineWidth = 2;
     ctx.stroke();
@@ -227,7 +227,7 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, color
     const fistX = arm === 0 ? lEndX : rEndX;
     const fistY = arm === 0 ? lEndY : rEndY;
     ctx.beginPath();
-    ctx.arc(fistX, fistY, FIST_RADIUS + 2, 0, Math.PI * 2);
+    ctx.arc(fistX, fistY, FIST_RADIUS + 3, 0, Math.PI * 2);
     ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
     ctx.fill();
   }
@@ -272,7 +272,7 @@ function drawParticles(ctx, particles) {
 // --- HUD ---
 
 function drawHUD(ctx, state, colors, frameCount) {
-  const hudY = 16;
+  const hudY = RING_TOP - 22;
 
   drawScoreLabels(ctx, state, colors, RING_LEFT + 4, RING_RIGHT - 4, hudY);
 
@@ -297,8 +297,15 @@ function drawHUD(ctx, state, colors, frameCount) {
     }
   }
 
-  // Score progress bars (bottom)
-  const barY = CANVAS_H - 20;
+  // Below the ring: the round, its dots, then the score bars.
+  const roundY = RING_BOTTOM + 20;
+  ctx.textAlign = "center";
+  ctx.font = "10px monospace";
+  ctx.fillStyle = colors.rope;
+  ctx.fillText(jt`Round ${state.round}`, CANVAS_W / 2, roundY);
+  drawRoundDots(ctx, state, colors, CANVAS_W, roundY + 12);
+
+  const barY = roundY + 22;
   const barHeight = 8;
   const barWidth = (RING_RIGHT - RING_LEFT - 20) / 2;
 
@@ -317,14 +324,6 @@ function drawHUD(ctx, state, colors, frameCount) {
   const p2Fill = Math.min(state.score2 / KO_SCORE, 1) * barWidth;
   ctx.fillStyle = colors.accent;
   ctx.fillRect(bar2X + barWidth - p2Fill, barY, p2Fill, barHeight);
-
-  // Round indicators (dots)
-  const dotY = CANVAS_H - 34;
-  ctx.textAlign = "center";
-  ctx.font = "10px monospace";
-  ctx.fillStyle = colors.muted;
-  ctx.fillText(jt`Round ${state.round}`, CANVAS_W / 2, dotY);
-  drawRoundDots(ctx, state, colors, CANVAS_W, dotY + 12);
 }
 
 // --- Phase Overlays ---

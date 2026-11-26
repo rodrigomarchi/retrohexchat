@@ -341,9 +341,9 @@ describe("Hex Boxing Physics", () => {
 
   describe("checkPunchHit", () => {
     // At mid-punch (timer = ceil(PUNCH_DURATION/2) = 5), progress = 0.5,
-    // extension = 1.0 (max), reach = BOXER_BODY_RADIUS + PUNCH_RANGE = 32.
-    // Fist hits if distance(fist, opponent_center) < FIST_RADIUS + BOXER_BODY_RADIUS = 11.
-    // So opponent center should be near reach (32) from attacker center.
+    // extension = 1.0 (max), reach = BOXER_BODY_RADIUS + PUNCH_RANGE = 48.
+    // Fist hits if distance(fist, opponent_center) < FIST_RADIUS + BOXER_BODY_RADIUS = 16.5.
+    // So opponent center should be near reach (48) from attacker center.
     // impactDist = bodyDist - BOXER_BODY_RADIUS * 2 determines scoring zone.
     function setupHitScenario(bodyDist) {
       // Place boxers at specific distance, P1 punching right toward P2
@@ -362,9 +362,9 @@ describe("Hex Boxing Physics", () => {
     }
 
     it("scores 3 points for close hit", () => {
-      // bodyDist=26 → impactDist = 26 - 16 = 10 < CLOSE_DIST(12) → 3 points
-      // fist at x=232, opponent at x=226, dist=6 < 11 → hit
-      const s = setupHitScenario(26);
+      // bodyDist=39 → impactDist = 39 - 24 = 15 < CLOSE_DIST(18) → 3 points
+      // fist at x=248, opponent at x=239, dist=9 < 16.5 → hit
+      const s = setupHitScenario(39);
       const s2 = checkPunchHit(s, 1);
       expect(s2.score1).toBe(3);
       expect(s2.lastHitPlayer).toBe(1);
@@ -372,9 +372,9 @@ describe("Hex Boxing Physics", () => {
     });
 
     it("scores 2 points for medium hit", () => {
-      // bodyDist=30 → impactDist = 30 - 16 = 14, CLOSE_DIST(12) <= 14 < MEDIUM_DIST(18) → 2 points
-      // fist at x=232, opponent at x=230, dist=2 < 11 → hit
-      const s = setupHitScenario(30);
+      // bodyDist=45 → impactDist = 45 - 24 = 21, CLOSE_DIST(18) <= 21 < MEDIUM_DIST(27) → 2 points
+      // fist at x=248, opponent at x=245, dist=3 < 16.5 → hit
+      const s = setupHitScenario(45);
       const s2 = checkPunchHit(s, 1);
       expect(s2.lastHitPlayer).toBe(1);
       expect(s2.lastHitPoints).toBe(2);
@@ -394,14 +394,14 @@ describe("Hex Boxing Physics", () => {
     });
 
     it("ends punch on hit (prevents multi-hit)", () => {
-      const s = setupHitScenario(26);
+      const s = setupHitScenario(39);
       const s2 = checkPunchHit(s, 1);
       expect(s2.b1punchState).toBe(PUNCH_STATE.COOLDOWN);
     });
 
     it("P2 can also score", () => {
-      // P2 at x=300, facing left (dir=4), fist extends to x=300-32=268
-      // P1 at x=274, dist from fist to P1 center = |268-274| = 6 < 11 → hit
+      // P2 at x=300, facing left (dir=4), fist extends to x=300-48=252
+      // P1 at x=261, dist from fist to P1 center = |252-261| = 9 < 16.5 → hit
       const s = {
         ...createInitialState(),
         b2x: 300,
@@ -409,7 +409,7 @@ describe("Hex Boxing Physics", () => {
         b2dir: 4, // facing left
         b2punchState: PUNCH_STATE.PUNCHING,
         b2punchTimer: Math.ceil(PUNCH_DURATION / 2),
-        b1x: 274,
+        b1x: 261,
         b1y: 240,
       };
       const s2 = checkPunchHit(s, 2);
@@ -418,9 +418,9 @@ describe("Hex Boxing Physics", () => {
     });
 
     it("scores 1 point for far hit", () => {
-      // bodyDist=34 → impactDist = 34 - 16 = 18 >= MEDIUM_DIST(18) → 1 point
-      // fist at x=232, opponent at x=234, dist=2 < 11 → hit
-      const s = setupHitScenario(34);
+      // bodyDist=51 → impactDist = 51 - 24 = 27 >= MEDIUM_DIST(27) → 1 point
+      // fist at x=248, opponent at x=251, dist=3 < 16.5 → hit
+      const s = setupHitScenario(51);
       const s2 = checkPunchHit(s, 1);
       expect(s2.lastHitPlayer).toBe(1);
       expect(s2.lastHitPoints).toBe(1);
@@ -435,7 +435,7 @@ describe("Hex Boxing Physics", () => {
         b1dir: 0,
         b1punchState: PUNCH_STATE.PUNCHING,
         b1punchTimer: Math.ceil(PUNCH_DURATION / 2),
-        b2x: 230,
+        b2x: 245,
         b2y: 240,
         b2dir: 4,
         b2punchState: PUNCH_STATE.PUNCHING,
@@ -450,7 +450,7 @@ describe("Hex Boxing Physics", () => {
 
     it("score caps at 255 (Uint8 max)", () => {
       const s = {
-        ...setupHitScenario(26),
+        ...setupHitScenario(39),
         score1: 254,
       };
       const s2 = checkPunchHit(s, 1);
@@ -535,6 +535,13 @@ describe("Hex Boxing Physics", () => {
       const s2 = advanceRound(s, 1);
       expect(s2.koPlayer).toBe(2); // P2 got knocked out
     });
+
+    it("knocks out the boxer behind when both pass the knockout score on one frame", () => {
+      const s = { ...createInitialState(), score1: KO_SCORE, score2: KO_SCORE + 2 };
+      const end = checkRoundEnd(s);
+      expect(end).toEqual({ ended: true, roundWinner: 2 });
+      expect(advanceRound(s, end.roundWinner).koPlayer).toBe(1);
+    });
   });
 
   describe("resetForNewRound", () => {
@@ -604,10 +611,10 @@ describe("stepTick", () => {
     expect(held.state.b1punchState).toBe(PUNCH_STATE.IDLE);
   });
 
-  // Player one throws at player two standing 28 px away, the distance a
+  // Player one throws at player two standing 42 px away, the distance a
   // punch lands from on its second frame in flight.
   const throwAt = (rival) => {
-    let state = { ...fighting(), b1x: 300, b1y: 240, b1dir: 0, b2x: 328, b2y: 240 };
+    let state = { ...fighting(), b1x: 300, b1y: 240, b1dir: 0, b2x: 342, b2y: 240 };
     let pressed = { 1: false, 2: false };
     const landed = [];
     for (let frame = 0; frame < PUNCH_WINDUP + PUNCH_DURATION; frame++) {

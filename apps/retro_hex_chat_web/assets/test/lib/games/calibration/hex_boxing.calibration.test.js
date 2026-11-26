@@ -17,20 +17,20 @@ import {
 } from "../../../support/games/calibration_players/duel.js";
 
 // The average player: re-reads the rival every 12 frames and closes to about
-// 30 px with an error of its own, throws when it is in range and about
+// 45 px with an error of its own, throws when it is in range and about
 // lined up (at most every 24 frames), and backs off from 40% of the punches
 // it sees coming, 12 frames after their wind-up starts.
 const PLAYER = {
   lookEvery: 12,
-  distance: 30,
-  errorPx: 6,
-  alignPx: 9,
+  distance: 45,
+  errorPx: 9,
+  alignPx: 13,
   punchEvery: 24,
   seeAfter: 12,
   backOffOdds: 0.4,
   backOffFrames: 10,
 };
-const IN_RANGE = 44;
+const IN_RANGE = 66;
 
 function averagePlayer(random) {
   const lookout = createLookout(PLAYER.lookEvery);
@@ -55,7 +55,7 @@ function averagePlayer(random) {
     }));
     const dx = goal.x - s.b1x;
     const dy = goal.y - s.b1y;
-    const inputs = { up: dy < -3, down: dy > 3, left: dx < -3, right: dx > 3, punch: false };
+    const inputs = { up: dy < -4, down: dy > 4, left: dx < -4, right: dx > 4, punch: false };
 
     const rx = s.b2x - s.b1x;
     const ry = s.b2y - s.b1y;

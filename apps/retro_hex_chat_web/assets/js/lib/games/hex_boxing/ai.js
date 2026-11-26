@@ -35,7 +35,7 @@ const PLAYER_MAX_Y = RING_BOTTOM - PLAYER_HALF_SIZE;
 // The farthest a fist lands from the puncher's centre.
 const PUNCH_REACH = PUNCH_RANGE + BOXER_BODY_RADIUS + FIST_RADIUS;
 // A dodge steps back this far from the rival, out of the fist's reach.
-const DODGE_STEP_PX = 18;
+const DODGE_STEP_PX = 27;
 // A dodge needs the step back, and a few frames to spare to be set again
 // when the punch flies by; a wind-up seen later than that is not worth
 // running from, and the AI stands and trades instead.
@@ -55,8 +55,8 @@ const NEUTRAL_INPUTS = Object.freeze({
 
 // reactionFrames: how old the rival's position, facing and punch are when
 // this AI reads them. It steps in to idealDistancePx when its punch is ready
-// and keeps to standoffDistancePx while it is not — out of reach on easy and
-// normal, closer in on hard. punchAlignmentPx stays inside the 11 px a fist
+// and keeps to standoffDistancePx while it is not — at the edge of the
+// rival's reach, a step farther out the harder it plays. punchAlignmentPx stays inside the 16 px a fist
 // lands within and never loosens with difficulty; punchCooldownFrames is
 // never shorter than a punch's own cycle. punchChance: the odds an opening is
 // taken; a passed one waits out the cooldown. dodgeChance: the odds a punch
@@ -67,13 +67,13 @@ const EASY = Object.freeze({
   reactionFrames: 8,
   punchReactionFrames: 12,
   decisionInterval: 3,
-  targetErrorPx: 6,
-  deadzonePx: 4,
-  idealDistancePx: 28,
-  standoffDistancePx: 48,
-  retreatDistancePx: 16,
+  targetErrorPx: 9,
+  deadzonePx: 6,
+  idealDistancePx: 42,
+  standoffDistancePx: 66,
+  retreatDistancePx: 24,
   punchDistancePx: PUNCH_REACH,
-  punchAlignmentPx: 7,
+  punchAlignmentPx: 10,
   punchChance: 1,
   punchCooldownFrames: 37,
   dodgeChance: 0.2,
@@ -84,14 +84,14 @@ export const BOXING_AI_DIFFICULTIES = Object.freeze({
   normal: Object.freeze({
     ...EASY,
     punchReactionFrames: 6,
-    standoffDistancePx: 44,
+    standoffDistancePx: 63,
     punchCooldownFrames: 36,
     dodgeChance: 0.25,
   }),
   hard: Object.freeze({
     ...EASY,
     punchReactionFrames: 3,
-    standoffDistancePx: 40,
+    standoffDistancePx: 60,
     punchCooldownFrames: 35,
     dodgeChance: 0.25,
   }),
@@ -265,7 +265,7 @@ export function boxingTargetPosition(
         ? "standoff"
         : "approach";
   const targetDistance = {
-    retreat: config.retreatDistancePx + 12,
+    retreat: config.retreatDistancePx + 18,
     standoff: config.standoffDistancePx,
     approach: config.idealDistancePx,
   }[kind];
