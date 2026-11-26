@@ -14,6 +14,8 @@ import {
   GUNSLINGER_H,
   GUNSLINGER_HIT_H,
   GUNSLINGER_HIT_W,
+  GUNSLINGER_SPEED,
+  NML_P1_MAX_X,
   NML_P2_MIN_X,
   RICOCHET_ANGLE,
   bulletHitsGunslinger,
@@ -40,6 +42,12 @@ const BULLET_PREFIX = Object.freeze({
   2: "b2",
 });
 const INPUT_TARGET_DEADZONE = 2;
+// Ricochet: the heights a bank shot is looked for at, how close to the middle
+// of a band of hitting heights is close enough, and how often the bands are
+// looked for again.
+const BANK_SCAN_STEP_PX = 2;
+const BANK_SETTLE_PX = 3;
+const BANK_PLAN_FRAMES = 6;
 
 // dodgeChance: the odds a bullet is dodged at all, decided once per bullet,
 // and only once the bullet is reactionFrames old. fireChance: the odds an
@@ -54,7 +62,7 @@ export const OUTLAW_AI_DIFFICULTIES = Object.freeze({
     fireWindowPx: 9,
     fireCooldownFrames: 72,
     fireChance: 0.9,
-    targetDeadzonePx: 11,
+    targetDeadzonePx: 8,
     preferredNmlOffset: 54,
   }),
   normal: Object.freeze({
@@ -65,7 +73,7 @@ export const OUTLAW_AI_DIFFICULTIES = Object.freeze({
     fireWindowPx: 9,
     fireCooldownFrames: 70,
     fireChance: 0.9,
-    targetDeadzonePx: 11,
+    targetDeadzonePx: 8,
     preferredNmlOffset: 54,
   }),
   hard: Object.freeze({
@@ -76,7 +84,7 @@ export const OUTLAW_AI_DIFFICULTIES = Object.freeze({
     fireWindowPx: 9,
     fireCooldownFrames: 62,
     fireChance: 0.9,
-    targetDeadzonePx: 11,
+    targetDeadzonePx: 8,
     preferredNmlOffset: 54,
   }),
 });
@@ -91,7 +99,7 @@ const MODE_DIFFICULTIES = Object.freeze({
     hard: Object.freeze({ dodgeChance: 0.55, fireCooldownFrames: 50 }),
   }),
   [GAME_MODE.NO_MANS_LAND]: Object.freeze({
-    easy: Object.freeze({ dodgeChance: 0.39, fireCooldownFrames: 67 }),
+    easy: Object.freeze({ dodgeChance: 0.3, fireCooldownFrames: 67 }),
     normal: Object.freeze({ dodgeChance: 0.42, fireCooldownFrames: 65 }),
     hard: Object.freeze({ dodgeChance: 0.47, fireCooldownFrames: 59 }),
   }),
@@ -163,6 +171,10 @@ export class OutlawAI extends TableAI {
     this.fireCooldown = 0;
     this._incoming = null;
     this._bullets = createPerThing();
+    // The aim this seat holds: the last of up or down it pressed, the way
+    // the game keeps it. A new round keeps it too.
+    this._aimUp = false;
+    this._bankPlan = null;
   }
 
   /**
@@ -172,6 +184,7 @@ export class OutlawAI extends TableAI {
   forget() {
     this._incoming = null;
     this._bullets.reset();
+    this._bankPlan = null;
   }
 
   /**
@@ -181,8 +194,15 @@ export class OutlawAI extends TableAI {
    * @param {1|2} [request.player]
    * @returns {{up: boolean, down: boolean, left: boolean, right: boolean, fire: boolean}}
    */
-  // ex_dna:disable-for-lines:6 this AI's own turn: its cooldowns and the phase it plays in
   nextInputs(request = {}) {
+    const inputs = this._decide(request);
+    if (inputs.up) this._aimUp = true;
+    if (inputs.down) this._aimUp = false;
+    return inputs;
+  }
+
+  // ex_dna:disable-for-lines:6 this AI's own turn: its cooldowns and the phase it plays in
+  _decide(request) {
     const { state, player } = this.startTurn(request);
     if (this.fireCooldown > 0) this.fireCooldown--;
 
@@ -203,15 +223,60 @@ export class OutlawAI extends TableAI {
       };
     }
 
+    if (state.gameMode === GAME_MODE.RICOCHET) return this._bankShot(state, player, config);
+
     const attack = chooseAttack(state, player, config);
     const movement = movementTowardAttack(state, player, attack, config);
     if (!fireOpening(state, player, attack, config, this.fireCooldown)) {
       return { ...movement, fire: false };
     }
+    return { ...movement, fire: this._takesOpening(config) };
+  }
 
-    // One roll per opening; a passed one waits out the cooldown like a shot.
+  /** One roll per opening; a passed one waits out the cooldown like a shot. */
+  _takesOpening(config) {
     this.fireCooldown = config.fireCooldownFrames;
-    return { ...movement, fire: randomUnit(this.rng) < config.fireChance };
+    return randomUnit(this.rng) < config.fireChance;
+  }
+
+  /**
+   * Ricochet: every shot flies at an angle, up or down as the seat last
+   * pressed. Go to the middle of the nearest band of heights a bank shot
+   * hits the rival from, arrive there holding the aim the shot needs, and
+   * fire standing still.
+   */
+  _bankShot(state, player, config) {
+    const actor = playerState(state, player);
+    if (!this._bankPlan || this.frame - this._bankPlan.at >= BANK_PLAN_FRAMES) {
+      this._bankPlan = { at: this.frame, shot: nearestBankShot(state, player, actor.y) };
+    }
+    const { shot } = this._bankPlan;
+    if (!shot) return NEUTRAL_INPUTS;
+
+    // A move is also an aim, so the shot's height is reached moving the way
+    // the shot is aimed: from below for a shot aimed up, from above for one
+    // aimed down. `past` is how far the seat is on that side of the height.
+    const aimKey = shot.aimUp ? "up" : "down";
+    const otherKey = shot.aimUp ? "down" : "up";
+    const past = (actor.y - shot.y) * (shot.aimUp ? 1 : -1);
+    let movement = NEUTRAL_INPUTS;
+    if (past > BANK_SETTLE_PX) movement = { ...NEUTRAL_INPUTS, [aimKey]: true };
+    else if (past < -BANK_SETTLE_PX || this._aimUp !== shot.aimUp) {
+      movement = { ...NEUTRAL_INPUTS, [otherKey]: true };
+    }
+
+    // The rival moves too, so the plan is only the way there: the shot goes
+    // whenever, from where this step leaves the seat, the aim it already
+    // holds hits — a step that would turn the aim waits.
+    const turnsAim = (movement.up && !this._aimUp) || (movement.down && this._aimUp);
+    const step = (movement.down ? GUNSLINGER_SPEED : 0) - (movement.up ? GUNSLINGER_SPEED : 0);
+    const nextY = clamp(actor.y + step, minPlayerY(), maxPlayerY());
+    const open =
+      !turnsAim &&
+      this.fireCooldown <= 0 &&
+      !bulletState(state, player).active &&
+      bankShotHits(state, player, nextY, this._aimUp);
+    return { ...movement, fire: open && this._takesOpening(config) };
   }
 
   /**
@@ -245,20 +310,15 @@ function incomingThreat(state, player, config) {
 }
 
 function chooseAttack(state, player, config) {
-  if (state.gameMode === GAME_MODE.RICOCHET) {
-    const bankShot = findRicochetShot(state, player);
-    if (bankShot) {
-      return { targetY: bankShot.aimUp ? ARENA_TOP : ARENA_BOTTOM, aimUp: bankShot.aimUp };
-    }
-  }
-
   const actor = playerState(state, player);
   const opponent = playerState(state, player === 1 ? 2 : 1);
   const targetY = chooseStraightShotY(state, player, actor, opponent, config);
-  const targetX =
-    state.gameMode === GAME_MODE.NO_MANS_LAND && player === 2
-      ? NML_P2_MIN_X + config.preferredNmlOffset
-      : actor.x;
+  // In No Man's Land each side holds a spot a little back from its line.
+  const nmlX =
+    player === 1
+      ? NML_P1_MAX_X - config.preferredNmlOffset
+      : NML_P2_MIN_X + config.preferredNmlOffset;
+  const targetX = state.gameMode === GAME_MODE.NO_MANS_LAND ? nmlX : actor.x;
 
   return { targetY, targetX, aimUp: targetY < actor.y };
 }
@@ -287,10 +347,6 @@ function fireOpening(state, player, attack, config, fireCooldown) {
   if (fireCooldown > 0) return false;
   if (bulletState(state, player).active) return false;
 
-  if (state.gameMode === GAME_MODE.RICOCHET) {
-    return !!findRicochetShot(state, player, attack.aimUp);
-  }
-
   const actor = playerState(state, player);
   const opponent = playerState(state, player === 1 ? 2 : 1);
   if (!actor || !opponent) return false;
@@ -309,14 +365,6 @@ function movementTowardAttack(state, player, attack, config) {
     state.gameMode === GAME_MODE.NO_MANS_LAND
       ? movementTowardX(actor.x, attack.targetX)
       : { left: false, right: false };
-
-  if (
-    state.gameMode === GAME_MODE.RICOCHET &&
-    Math.abs(actor.y - attack.targetY) <= config.fireWindowPx
-  ) {
-    vertical.up = attack.aimUp === true;
-    vertical.down = attack.aimUp === false;
-  }
 
   return {
     up: vertical.up,
@@ -337,11 +385,13 @@ function movementAwayFromThreat(state, player, threatY) {
   const moveDown =
     roomUp <= GUNSLINGER_H || (roomDown > GUNSLINGER_H && (threatY < actor.y || roomDown > roomUp));
 
+  // In No Man's Land a dodge also steps back, away from the rival.
+  const back = state.gameMode === GAME_MODE.NO_MANS_LAND;
   return {
     up: !moveDown,
     down: moveDown,
-    left: false,
-    right: state.gameMode === GAME_MODE.NO_MANS_LAND,
+    left: back && player === 1,
+    right: back && player === 2,
   };
 }
 
@@ -360,30 +410,53 @@ function movementTowardX(currentX, targetX) {
   return delta < 0 ? { left: true, right: false } : { left: false, right: true };
 }
 
-function findRicochetShot(state, player, preferredAimUp = null) {
+/**
+ * Whether a bank shot from height `y`, aimed up or down, hits the rival
+ * where the rival stands now.
+ */
+function bankShotHits(state, player, y, aimUp) {
   const actor = playerState(state, player);
   const opponent = playerState(state, player === 1 ? 2 : 1);
-  if (!actor || !opponent) return null;
+  const dirX = player === 1 ? 1 : -1;
+  const bullet = {
+    x: actor.x + dirX * (GUNSLINGER_HIT_W / 2 + BULLET_RADIUS),
+    y,
+    vx: BULLET_SPEED_X * Math.cos(RICOCHET_ANGLE) * dirX,
+    vy: BULLET_SPEED_X * Math.sin(RICOCHET_ANGLE) * (aimUp ? -1 : 1),
+    bounced: false,
+  };
+  return simulatedShotHits(state, bullet, opponent);
+}
 
-  const candidates =
-    typeof preferredAimUp === "boolean"
-      ? [preferredAimUp, !preferredAimUp]
-      : [opponent.y < actor.y, opponent.y >= actor.y];
-
-  for (const aimUp of candidates) {
-    const dirX = player === 1 ? 1 : -1;
-    const bullet = {
-      x: actor.x + dirX * (GUNSLINGER_HIT_W / 2 + BULLET_RADIUS),
-      y: actor.y,
-      vx: BULLET_SPEED_X * Math.cos(RICOCHET_ANGLE) * dirX,
-      vy: BULLET_SPEED_X * Math.sin(RICOCHET_ANGLE) * (aimUp ? -1 : 1),
-      bounced: false,
+/**
+ * The bank shot nearest `fromY`: the middle of a band of heights a shot
+ * aimed one way hits the rival from, and that aim — null when there is none.
+ * @param {object} state
+ * @param {1|2} player
+ * @param {number} fromY
+ * @returns {{ y: number, aimUp: boolean }|null}
+ */
+export function nearestBankShot(state, player, fromY) {
+  let best = null;
+  for (const aimUp of [true, false]) {
+    let start = null;
+    const close = (end) => {
+      const y = (start + end) / 2;
+      if (!best || Math.abs(y - fromY) < Math.abs(best.y - fromY)) best = { y, aimUp };
+      start = null;
     };
-
-    if (simulatedShotHits(state, bullet, opponent)) return { aimUp };
+    let last = null;
+    for (let y = minPlayerY(); y <= maxPlayerY(); y += BANK_SCAN_STEP_PX) {
+      if (bankShotHits(state, player, y, aimUp)) {
+        if (start === null) start = y;
+        last = y;
+      } else if (start !== null) {
+        close(last);
+      }
+    }
+    if (start !== null) close(last);
   }
-
-  return null;
+  return best;
 }
 
 /**

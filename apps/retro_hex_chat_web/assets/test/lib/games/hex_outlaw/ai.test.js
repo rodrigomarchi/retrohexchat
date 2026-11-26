@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   OUTLAW_AI_DIFFICULTIES,
   createOutlawAI,
+  nearestBankShot,
   normalizeOutlawAIDifficulty,
   outlawAIConfig,
   predictIncomingBulletY,
@@ -10,7 +11,9 @@ import { GAME_MODE, PHASE } from "../../../../js/lib/games/hex_outlaw/protocol.j
 import {
   BULLET_SPEED_X,
   createInitialState,
+  NML_P1_MAX_X,
   NML_P2_MIN_X,
+  stepTick,
 } from "../../../../js/lib/games/hex_outlaw/physics.js";
 import {
   expectOneFramePress,
@@ -165,6 +168,98 @@ describe("OutlawAI", () => {
 
     expect(look(ai, nml).left).toBe(true);
     expect(look(ai, quickDraw).left).toBe(false);
+  });
+
+  // Stopping short of the line it fires on would leave two gunslingers a few
+  // pixels apart for good, each waiting for the other.
+  it.each(["easy", "normal", "hard"])(
+    "comes to a stop on %s only once it can fire from there",
+    (level) => {
+      for (const mode of Object.values(GAME_MODE)) {
+        const config = outlawAIConfig(level, mode);
+        expect(config.targetDeadzonePx).toBeLessThan(config.fireWindowPx);
+      }
+    },
+  );
+
+  it("holds its spot in No Man's Land from either side of the street", () => {
+    const state = playingState(GAME_MODE.NO_MANS_LAND);
+    state.p1x = NML_P1_MAX_X - 80;
+    state.p2x = NML_P2_MIN_X + 80;
+    const one = createOutlawAI({ difficulty: "hard" }).nextInputs({ state, player: 1 });
+    const two = createOutlawAI({ difficulty: "hard" }).nextInputs({ state, player: 2 });
+
+    // Each steps up to a spot a little back from its own line.
+    expect(one).toMatchObject({ right: true, left: false });
+    expect(two).toMatchObject({ left: true, right: false });
+  });
+
+  it("steps back from a bullet in No Man's Land, whichever side it is on", () => {
+    const state = bulletOnLane(playingState(GAME_MODE.NO_MANS_LAND));
+    const two = afterReaction(createOutlawAI({ difficulty: "hard", rng: () => 0 }), state);
+    expect(two).toMatchObject({ right: true, left: false });
+
+    const mirrored = playingState(GAME_MODE.NO_MANS_LAND);
+    mirrored.b2active = true;
+    mirrored.b2x = mirrored.p1x + 60;
+    mirrored.b2y = mirrored.p1y;
+    mirrored.b2vx = -BULLET_SPEED_X;
+    mirrored.b2vy = 0;
+    const ai = createOutlawAI({ difficulty: "hard", rng: () => 0 });
+    let one;
+    for (let frame = 0; frame <= OUTLAW_AI_DIFFICULTIES.hard.reactionFrames; frame++) {
+      one = ai.nextInputs({ state: mirrored, player: 1 });
+    }
+    expect(one).toMatchObject({ left: true, right: false });
+  });
+});
+
+describe("OutlawAI in Ricochet", () => {
+  const ricochet = () => playingState(GAME_MODE.RICOCHET);
+
+  it("finds a height a bank shot hits the rival from, and the aim it needs", () => {
+    const state = ricochet();
+    const shot = nearestBankShot(state, 2, state.p2y);
+
+    expect(shot).not.toBeNull();
+    const fired = stepTick(
+      { ...state, p2y: shot.y },
+      { 1: {}, 2: { fire: true } },
+      { 1: false, 2: false },
+      { 1: false, 2: shot.aimUp },
+    );
+    // The bullet, flown out, reaches the rival.
+    let s = fired.state;
+    let hit = false;
+    for (let frame = 0; frame < 200 && s.b2active && !hit; frame++) {
+      const step = stepTick(s, { 1: {}, 2: {} }, { 1: false, 2: false }, { 1: false, 2: false });
+      hit = step.events.hit?.player === 1;
+      s = step.state;
+    }
+    expect(hit).toBe(true);
+  });
+
+  // A press is a step and an aim at once: two gunslingers both chasing a
+  // bank shot would otherwise trade places for good and never fire.
+  it("lands bank shots on a rival that moves between them", () => {
+    const shooter = createOutlawAI({ difficulty: "hard", rng: () => 0 });
+    let state = ricochet();
+    let pressed = { 1: false, 2: false };
+    let aim = false;
+    let hits = 0;
+    for (let frame = 0; frame < 60 * 60 && hits === 0; frame++) {
+      // The rival walks a stretch up or down the street, stands, walks
+      // again — and never shoots.
+      const beat = frame % 320;
+      const rival = { up: beat < 40, down: beat >= 160 && beat < 200 };
+      const own = shooter.nextInputs({ state, player: 2 });
+      if (own.up) aim = true;
+      if (own.down) aim = false;
+      const step = stepTick(state, { 1: rival, 2: own }, pressed, { 1: false, 2: aim });
+      ({ state, pressed } = step);
+      if (step.events.hit?.player === 1) hits++;
+    }
+    expect(hits).toBe(1);
   });
 });
 
