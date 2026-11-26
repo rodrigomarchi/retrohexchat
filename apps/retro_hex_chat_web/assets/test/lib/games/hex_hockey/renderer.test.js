@@ -136,6 +136,16 @@ describe("hex_hockey_renderer", () => {
       expect(ctx.fillText).toHaveBeenCalled();
     });
 
+    // Smaller, the stage's scaling blurred the title's E into a B.
+    it("writes the title at the scores' size", () => {
+      const ctx = createMockCtx();
+      const fonts = [];
+      ctx.fillText = vi.fn((text) => fonts.push([text, ctx.font]));
+      const state = Object.assign(createInitialState(CLASSIC), { phase: PHASE.PLAYING });
+      render(ctx, state, defaultColors(), 0, { iceParticles: [], puckTrail: [], goalFlash: 0 });
+      expect(fonts.find(([text]) => text === "HEX HOCKEY")?.[1]).toBe("bold 14px monospace");
+    });
+
     it("draws all game layers in PLAYING phase", () => {
       const iceParticles = generateIceParticles(5);
       const ctx = drawHockey(CLASSIC, PHASE.PLAYING, {}, { iceParticles, time: 10 });

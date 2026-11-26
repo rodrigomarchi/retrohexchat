@@ -409,9 +409,10 @@ function drawHUD(ctx, state, colors) {
 
   // Game title
   ctx.fillStyle = colors.puck || gameColor("ffffff");
-  ctx.globalAlpha = 0.5;
+  // The scores' size: smaller, the stage's scaling blurred its E into a B.
+  ctx.globalAlpha = 0.7;
   ctx.textAlign = "center";
-  ctx.font = "bold 10px monospace";
+  ctx.font = "bold 14px monospace";
   ctx.fillText(t("HEX HOCKEY"), RINK_CX, y - 2);
   ctx.globalAlpha = 1.0;
 
