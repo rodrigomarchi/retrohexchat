@@ -121,6 +121,20 @@ describe("surround_renderer", () => {
       expect(ctx.fillText).toHaveBeenCalled();
       expect(drawnTexts(ctx)).toContain("ROUND 1");
     });
+
+    // The grid's own colour, nearly black, left the round unreadable.
+    it("draws the round in neither player's colour, bright on the dark arena", () => {
+      const inks = [];
+      const fillText = ctx.fillText;
+      ctx.fillText = (text, ...rest) => {
+        inks.push([text, ctx.fillStyle]);
+        return fillText(text, ...rest);
+      };
+      drawHUD(ctx, createInitialState(0), colors);
+      const [, ink] = inks.find(([text]) => text === "ROUND 1");
+      expect(ink).toBe(colors.warning);
+      expect([colors.fg, colors.accent, colors.muted]).not.toContain(ink);
+    });
   });
 
   describe("drawRoundOver", () => {

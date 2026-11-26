@@ -232,8 +232,8 @@ export function drawHUD(ctx, state, colors) {
   ctx.fillStyle = colors.accent;
   drawDigit(ctx, state.score2, CANVAS_W - 40, 8, pixelSize);
 
-  // Round indicator (center top)
-  drawTopLabel(ctx, jt`ROUND ${state.round + 1}`, colors.muted, CANVAS_W, 8);
+  // Round indicator (center top), in neither player's colour
+  drawTopLabel(ctx, jt`ROUND ${state.round + 1}`, colors.warning, CANVAS_W, 8);
 
   ctx.shadowBlur = 0;
   ctx.shadowColor = "transparent";
