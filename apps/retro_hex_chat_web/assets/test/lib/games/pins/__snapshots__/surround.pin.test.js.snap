@@ -39,7 +39,7 @@ exports[`light_trails pins > P2P following the key script 1`] = `
       "t": 6032,
     },
     {
-      "digest": "627458358db46f0b",
+      "digest": "0716e54c64709646",
       "ops": 1053,
       "phase": 3,
       "side": "guest",
@@ -123,7 +123,7 @@ exports[`light_trails pins > P2P following the key script 1`] = `
       "t": 19728,
     },
     {
-      "digest": "3da3581787a3a4ad",
+      "digest": "681fcdcab5af171d",
       "ops": 882,
       "phase": 3,
       "side": "guest",
@@ -486,7 +486,7 @@ exports[`light_trails pins > P2P over a channel that loses datagrams 1`] = `
       "t": 13776,
     },
     {
-      "digest": "bc807d35936405f2",
+      "digest": "4ebbed99fdbee6b4",
       "ops": 902,
       "phase": 3,
       "side": "guest",
@@ -727,6 +727,8 @@ exports[`light_trails pins > P2P over a channel that loses datagrams 1`] = `
   "state": {
     "guest": {
       "countdown": 0,
+      "p1Dead": true,
+      "p2Dead": false,
       "phase": 3,
       "round": 3,
       "score1": 2,
@@ -1144,6 +1146,8 @@ exports[`light_trails pins > the channel drops mid-match 1`] = `
   "state": {
     "guest": {
       "countdown": 0,
+      "p1Dead": true,
+      "p2Dead": false,
       "phase": 4,
       "round": 1,
       "score1": 1,

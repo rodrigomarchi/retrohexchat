@@ -156,6 +156,14 @@ function applySnapshot(game, decoded) {
     s.grid[decoded.p1y][decoded.p1x] = CELL.P1_TRAIL;
     s.grid[decoded.p2y][decoded.p2x] = CELL.P2_TRAIL;
   }
+  // The snapshot carries the scores, not the crash: a round just over was
+  // lost by whoever did not score, by both when neither did.
+  if (decoded.phase === PHASE.ROUND_OVER && s.phase !== PHASE.ROUND_OVER) {
+    const p1Scored = decoded.score1 > s.score1;
+    const p2Scored = decoded.score2 > s.score2;
+    s.p1Dead = !p1Scored;
+    s.p2Dead = !p2Scored;
+  }
   s.p1 = { x: decoded.p1x, y: decoded.p1y, dir: decoded.p1dir };
   s.p2 = { x: decoded.p2x, y: decoded.p2y, dir: decoded.p2dir };
   Object.assign(s, {
