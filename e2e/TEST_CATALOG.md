@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **283 spec files** under `e2e/tests/`.
-- **713 Playwright `test()` cases**.
-- **659 documented flows**, 658 done, 1 not done.
+- **714 Playwright `test()` cases**.
+- **660 documented flows**, 659 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -522,6 +522,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N110 | Hex Boxing's home has its one way; Play opens the game in a tab of its own, its menu naming the match (Best of 3 rounds), and a fight against the computer at Hard is boxed to the result | `tests/game-hex-boxing.spec.ts` | done |
 | N111 | A fight between friends, round by round: Find a partner on Hex Boxing's home puts a seat's card in #hex-boxing, a friend already there takes it with Join, both are ready, the host starts; round one ends with one boxer a round up on both screens and round two begins, the fight goes on until a boxer has two rounds, the result shows in both rooms, and Scoreboard says it in the channel with both names | `tests/game-hex-boxing.spec.ts` | done |
 | N112 | Hex Outlaw's home lists its four streets — Hex Outlaw, Ricochet, Stagecoach and No Man's Land; Play on each opens the game in a tab of its own, its menu naming the match (First to 10 · best of 3 rounds), and against the computer at Hard each street is a duel under way; on Hex Outlaw's own street the duel is played to the result | `tests/game-hex-outlaw.spec.ts` | done |
+| N113 | A duel by invitation on Ricochet: from Hex Outlaw's home a friend is invited by nickname with Ricochet picked under Play with somebody you know; the invitation lands in their private conversation as that street's match, both enter it, both are ready, the host starts, the duel of bank shots is played to its end and its result card lands in the same conversation | `tests/game-hex-outlaw.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

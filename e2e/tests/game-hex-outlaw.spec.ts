@@ -1,5 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
+ * @flow N113 [done] A duel by invitation on Ricochet: from Hex Outlaw's home a friend is invited by nickname with Ricochet picked under Play with somebody you know; the invitation lands in their private conversation as that street's match, both enter it, both are ready, the host starts, the duel of bank shots is played to its end and its result card lands in the same conversation
  * @flow N112 [done] Hex Outlaw's home lists its four streets — Hex Outlaw, Ricochet, Stagecoach and No Man's Land; Play on each opens the game in a tab of its own, its menu naming the match (First to 10 · best of 3 rounds), and against the computer at Hard each street is a duel under way; on Hex Outlaw's own street the duel is played to the result
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -8,10 +9,16 @@
 import { expect, test } from "@playwright/test";
 import { closeUsers, newSignedInUser } from "../helpers/chatUsers";
 import {
+  closeP2PUsers,
+  enterP2PSession,
+  newP2PUser,
+} from "../helpers/p2pFlows";
+import {
   autopilot,
   openHome,
   playFromHome,
   playToTheResult,
+  provisionGameChannel,
 } from "../helpers/retroGames";
 import { shot } from "../helpers/screenshots";
 
@@ -62,6 +69,82 @@ test.describe("Hex Outlaw", () => {
       await playToTheResult(game, "outlaw-solo", DUEL_TIMEOUT);
     } finally {
       await closeUsers([ana]);
+    }
+  });
+
+  test("a duel by invitation on Ricochet, played to its result card in the conversation (N113)", async ({
+    browser,
+  }) => {
+    test.setTimeout(DUEL_TIMEOUT + 4 * 60_000);
+    const host = await newP2PUser(browser, "olhost", { media: true });
+    const guest = await newP2PUser(browser, "olguest", { media: true });
+    const founder = await newSignedInUser(browser, "olfound");
+    try {
+      await autopilot(host.ctx);
+      await autopilot(guest.ctx);
+      await provisionGameChannel(
+        founder.page.request,
+        "hex_outlaw",
+        founder.nick,
+        {
+          p1: 2,
+          p2: 1,
+        },
+      );
+      await guest.chat.sendMessage(`/query ${host.nick}`);
+      const cards = guest.page.getByTestId("share-message-enter");
+      const before = await cards.count();
+
+      await openHome(host, SLUG);
+      const invite = host.page.getByTestId("game-invite");
+      await invite
+        .locator('select[name="game"]')
+        .selectOption("hex_outlaw_ricochet");
+      await invite.getByTestId("game-challenge-nickname").fill(guest.nick);
+      await shot(invite, "outlaw-invite-ricochet");
+      await invite.getByTestId("game-challenge").click();
+
+      const hostRoom = await enterP2PSession(host);
+      await expect(hostRoom.getByTestId("p2p-room-game")).toContainText(
+        "Hex Outlaw: Ricochet",
+      );
+      await expect(cards).toHaveCount(before + 1, { timeout: 15_000 });
+      const guestRoom = await enterP2PSession(guest);
+      await expect(guestRoom.getByTestId("p2p-room-game")).toContainText(
+        "Hex Outlaw: Ricochet",
+      );
+
+      await hostRoom.getByTestId("p2p-room-ready").click();
+      await guestRoom.getByTestId("p2p-room-ready").click();
+      await expect(hostRoom.getByTestId("p2p-room-start")).toBeEnabled({
+        timeout: 30_000,
+      });
+      await hostRoom.getByTestId("p2p-room-start").click();
+      for (const room of [hostRoom, guestRoom]) {
+        await expect(
+          room.locator(
+            '#lobby-game-canvas[data-game-id="hex_outlaw_ricochet"] canvas',
+          ),
+        ).toBeVisible({ timeout: 30_000 });
+      }
+      await hostRoom.waitForTimeout(10_000);
+      await shot(hostRoom, "outlaw-ricochet-host");
+      await shot(guestRoom, "outlaw-ricochet-guest");
+
+      for (const room of [hostRoom, guestRoom]) {
+        await expect(room.getByTestId("lobby-game-result")).toBeVisible({
+          timeout: DUEL_TIMEOUT,
+        });
+      }
+      const card = guest.page
+        .locator('[data-testid^="game-result-card-"]')
+        .filter({ hasText: host.nick });
+      await expect(card).toHaveCount(1, { timeout: 30_000 });
+      await expect(card).toContainText(guest.nick);
+      await shot(guest.page, "outlaw-result-in-private");
+    } finally {
+      await closeP2PUsers([host, guest]);
+      await closeUsers([founder]);
     }
   });
 });
