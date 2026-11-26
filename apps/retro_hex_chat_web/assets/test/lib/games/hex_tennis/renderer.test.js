@@ -139,6 +139,20 @@ describe("tennis_renderer", () => {
       expect(textsOf(tennisState(PHASE.SERVING))).toContain("P1: LOVE");
     });
 
+    it("calls the changeover in the court's bright colour, not the muted one", () => {
+      const filled = [];
+      const spy = ctx.fillText;
+      ctx.fillText = (text, ...rest) => {
+        filled.push([text, ctx.fillStyle]);
+        return spy(text, ...rest);
+      };
+      render(ctx, tennisState(PHASE.CHANGEOVER), colors, 0);
+      ctx.fillText = spy;
+      // The glitch's colour channels first, the text itself last.
+      const changeover = filled.filter(([text]) => text === "CHANGEOVER").at(-1);
+      expect(changeover?.[1]).toBe(colors.fg);
+    });
+
     it("renders waiting message", () => {
       const texts = textsOf(tennisState(PHASE.WAITING));
       expect(texts.some((t) => t.includes("WAITING"))).toBe(true);

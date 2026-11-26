@@ -136,7 +136,8 @@ export function render(ctx, state, colors, time) {
       annY += 36;
     }
     if (state.phase === PHASE.CHANGEOVER) {
-      drawAnnouncement(ctx, "CHANGEOVER", colors.muted, time, annY);
+      // In the court's own bright colour: the muted one vanished on the court.
+      drawAnnouncement(ctx, "CHANGEOVER", colors.fg, time, annY);
     }
   }
 
