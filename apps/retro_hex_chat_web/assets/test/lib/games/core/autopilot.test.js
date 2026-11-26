@@ -186,3 +186,21 @@ describe("a seat on autopilot", () => {
     expect(match.engines.host.gameState.score2).toBeGreaterThan(0);
   });
 });
+
+// Light Trails reads its turns as presses, and its AI was written for seat
+// two: on autopilot it presses the arrows, and wins rounds from either seat.
+describe("a Light Trails seat on autopilot", () => {
+  const play = matchPerTest({ gameId: "light_trails" });
+
+  it("plays both seats over the wire, each winning rounds", async () => {
+    builtByTheE2EServer();
+    vi.stubGlobal(AUTOPILOT_GLOBAL, { difficulty: "hard" });
+    const match = await play({ mode: "p2p", seed: 2 });
+
+    match.advance(60_000);
+
+    const { score1, score2 } = match.engines.host.gameState;
+    expect(score1 + score2).toBeGreaterThanOrEqual(3);
+    expect(Math.min(score1, score2)).toBeGreaterThan(0);
+  }, 30_000);
+});

@@ -79,6 +79,9 @@ export class SurroundAI extends TableAI {
     super(options, normalizeSurroundAIDifficulty, SURROUND_AI_DIFFICULTIES);
     this.lastDirection = null;
     this.lapseLeft = 0;
+    this.decidedAt = null;
+    this.heldDirection = null;
+    this.round = null;
   }
 
   /**
@@ -114,6 +117,30 @@ export class SurroundAI extends TableAI {
   }
 
   /**
+   * The arrow to hold for a seat played through its keys: one decision per
+   * cell the cycle reaches, held until the next, so the turn is pressed once
+   * however many frames the cycle spends on that cell.
+   * @param {object} request - as for `nextDirection`
+   * @returns {{up: boolean, down: boolean, left: boolean, right: boolean}}
+   */
+  nextInputs(request = {}) {
+    const { state, player } = aiRequest(request);
+    const actor = playerState(state, player);
+    if (!actor || state.phase !== PHASE.PLAYING) {
+      this.decidedAt = null;
+      return arrowsFor(null);
+    }
+    const at = `${state.round}:${actor.x}:${actor.y}`;
+    if (at !== this.decidedAt) {
+      if (this.round !== state.round) this.forget();
+      this.round = state.round;
+      this.decidedAt = at;
+      this.heldDirection = this.nextDirection(request);
+    }
+    return arrowsFor(this.heldDirection);
+  }
+
+  /**
    * Whether this move is spent not looking: a lapse, once drawn, runs its
    * whole length, whatever lies ahead.
    * @param {object} config
@@ -128,6 +155,16 @@ export class SurroundAI extends TableAI {
     this.lapseLeft = config.lapseMoves - 1;
     return true;
   }
+}
+
+/** Which arrow is held to head `direction`; none for null. */
+function arrowsFor(direction) {
+  return {
+    up: direction === DIR.UP,
+    down: direction === DIR.DOWN,
+    left: direction === DIR.LEFT,
+    right: direction === DIR.RIGHT,
+  };
 }
 
 function chooseDirection(state, player, config, rng) {

@@ -128,4 +128,47 @@ describe("Surround AI", () => {
     expect(direction).not.toBe(DIR.RIGHT);
     expect([DIR.UP, DIR.DOWN, DIR.LEFT]).toContain(direction);
   });
+
+  describe("played through a seat's keys", () => {
+    it("holds the arrow of one decision for as long as the cycle stays on its cell", () => {
+      let draws = 0;
+      const ai = createSurroundAI({ difficulty: "hard", rng: () => (draws++, 0.99) });
+      const state = playingState();
+      // Seat one, heading right into a wall of trail: it must turn.
+      block(state, state.p1.x + 1, state.p1.y);
+
+      const first = ai.nextInputs({ state, player: 1 });
+      const spent = draws;
+      const again = ai.nextInputs({ state, player: 1 });
+
+      expect(first.right).toBe(false);
+      expect(first.up || first.down).toBe(true);
+      expect(again).toEqual(first);
+      expect(draws).toBe(spent);
+    });
+
+    it("decides afresh once the cycle reaches the next cell", () => {
+      let draws = 0;
+      const ai = createSurroundAI({ difficulty: "hard", rng: () => (draws++, 0.99) });
+      const state = playingState();
+      ai.nextInputs({ state, player: 1 });
+      const spent = draws;
+
+      movePlayer(state, 1, { x: state.p1.x + 1, y: state.p1.y, dir: DIR.RIGHT });
+      ai.nextInputs({ state, player: 1 });
+
+      expect(draws).toBeGreaterThan(spent);
+    });
+
+    it("holds no arrow outside play", () => {
+      const ai = createSurroundAI({ difficulty: "hard" });
+      const state = createInitialState(0);
+      expect(ai.nextInputs({ state, player: 1 })).toEqual({
+        up: false,
+        down: false,
+        left: false,
+        right: false,
+      });
+    });
+  });
 });

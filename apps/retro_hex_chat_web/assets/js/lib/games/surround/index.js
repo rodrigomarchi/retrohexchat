@@ -171,7 +171,8 @@ export default defineGame({
   inputs: {},
   captureKeys: ARROWS_WASD_SPACE,
   schema: { snapshot: SNAPSHOT, end: GAME_END },
-  ai: { create: createSurroundAI, difficulty: normalizeSurroundAIDifficulty },
+  // Turns are presses, not held inputs: the seat's AI presses the arrows.
+  ai: { create: createSurroundAI, difficulty: normalizeSurroundAIDifficulty, keys: ARROW_KEYS },
   audio: { sounds: SOUNDS },
   theme: getColors,
   init: () => createInitialState(0),

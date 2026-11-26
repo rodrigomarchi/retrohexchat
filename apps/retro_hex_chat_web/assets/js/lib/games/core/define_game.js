@@ -605,7 +605,9 @@ export function defineGame(def) {
       const player = this.isHost ? 1 : 2;
       this.autopilot = createAutopilot({
         controller,
-        inputs: def.inputs,
+        // A game that reads its keys as presses, not as held inputs, names
+        // the keys its AI presses (`ai.keys`).
+        inputs: def.ai.keys ?? def.inputs,
         target: this._keyboardTarget,
         report: reportSeen,
         observe: () => ({
