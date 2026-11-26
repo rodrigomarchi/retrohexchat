@@ -301,19 +301,25 @@ export async function matchInTheChannel(
   }
 }
 
+/** A match made with Find a partner, under way: both rooms and its token. */
+export type SeatedMatch = {
+  host: TestUser;
+  guest: TestUser;
+  hostRoom: Page;
+  guestRoom: Page;
+  token: string;
+};
+
 /**
  * Find a partner on a way's row of the game's home puts `host`'s seat in the
- * game's channel; `guest`, already there, takes it with Join; both ready,
- * the host starts, and the match is played to its end, then its session
- * ended and its rooms closed. Returns who won.
+ * game's channel; `guest`, already there, takes it with Join; both ready and
+ * the host starts. Returns the match once both screens show it.
  */
-export async function seatMatch(
+export async function startSeatMatch(
   host: TestUser,
   guest: TestUser,
   game: { slug: string; way: string; name: string },
-  name: string,
-  timeout = 6 * 60_000,
-): Promise<{ winner: TestUser; loser: TestUser }> {
+): Promise<SeatedMatch> {
   await openHome(host, game.slug);
   await host.page
     .getByTestId(`game-way-${game.way}`)
@@ -334,6 +340,7 @@ export async function seatMatch(
     timeout: 15_000,
   });
   const guestRoom = await enterViaCard(guest.page, guest.ctx);
+  const token = new URL(hostRoom.url()).pathname.split("/").pop() as string;
 
   await hostRoom.getByTestId("p2p-room-ready").click();
   await guestRoom.getByTestId("p2p-room-ready").click();
@@ -346,8 +353,19 @@ export async function seatMatch(
       room.locator(`#lobby-game-canvas[data-game-id="${game.way}"] canvas`),
     ).toBeVisible({ timeout: 30_000 });
   }
-  await hostRoom.waitForTimeout(8_000);
-  await shot(hostRoom, `${name}-host`);
+  return { host, guest, hostRoom, guestRoom, token };
+}
+
+/**
+ * A match under way played to its end on both screens, then its session ended
+ * and its rooms closed. Returns who won.
+ */
+export async function finishSeatMatch(
+  match: SeatedMatch,
+  name: string,
+  timeout = 6 * 60_000,
+): Promise<{ winner: TestUser; loser: TestUser }> {
+  const { host, guest, hostRoom, guestRoom } = match;
   for (const room of [hostRoom, guestRoom]) {
     await expect(room.getByTestId("lobby-game-result")).toBeVisible({
       timeout,
@@ -364,4 +382,23 @@ export async function seatMatch(
   return hostWon
     ? { winner: host, loser: guest }
     : { winner: guest, loser: host };
+}
+
+/**
+ * Find a partner on a way's row of the game's home puts `host`'s seat in the
+ * game's channel; `guest`, already there, takes it with Join; both ready,
+ * the host starts, and the match is played to its end, then its session
+ * ended and its rooms closed. Returns who won.
+ */
+export async function seatMatch(
+  host: TestUser,
+  guest: TestUser,
+  game: { slug: string; way: string; name: string },
+  name: string,
+  timeout = 6 * 60_000,
+): Promise<{ winner: TestUser; loser: TestUser }> {
+  const match = await startSeatMatch(host, guest, game);
+  await match.hostRoom.waitForTimeout(8_000);
+  await shot(match.hostRoom, `${name}-host`);
+  return finishSeatMatch(match, name, timeout);
 }

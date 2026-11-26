@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **285 spec files** under `e2e/tests/`.
-- **718 Playwright `test()` cases**.
-- **664 documented flows**, 663 done, 1 not done.
+- **286 spec files** under `e2e/tests/`.
+- **721 Playwright `test()` cases**.
+- **667 documented flows**, 666 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -527,6 +527,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N115 | A Sudden Death tournament in #hex-tennis: two semifinals, each made with Find a partner on the home's Sudden Death row — a seat's card in the channel, a friend already there takes it with Join, both ready, the host starts — are played to the end one after the other and Scoreboard says each result in the channel; the two winners meet in a final made the same way, played to the end, its result on both screens and its card in the finalists' private conversation | `tests/game-hex-tennis.spec.ts` | done |
 | N116 | Hex Hockey's home lists its three formats — Hex Hockey (three periods), Blitz and Showdown; Play on each opens the game in a tab of its own, its menu naming the match, and against the computer at Hard each is a match under way | `tests/game-hex-hockey.spec.ts` | done |
 | N117 | Climbing the ranking: a player with no rating yet plays Blitz with Find a partner on the home's Blitz row, a friend taking the seat in #hex-hockey; after the match both are in the Rating list of the home's Ranking tab, one above the 1200 everybody starts at and one below; a second Blitz match against another friend moves the player's rating again, and the You tab gives the player's rating and place | `tests/game-hex-hockey.spec.ts` | done |
+| N118 | Light Trails' home has its one way; Play opens the game in a tab of its own, its menu naming First to 3 games, and a match against the computer at Hard, the player's own cycle steered by the seat's AI, is played to its result | `tests/game-light-trails.spec.ts` | done |
+| N119 | Find a partner on Light Trails' home puts a seat's card in #light-trails; a friend's Join takes it, both are ready, the match runs with both cycles steered from their own screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-light-trails.spec.ts` | done |
+| N120 | From the stands: while two friends play Light Trails, a third finds their match under #light-trails' topic and in the Live tab of the game's home, and watches it from there in a tab of its own — Live, one watching, both players named — to the end, where the watch page gives the score; its "Play Light Trails yourself" leads to the home, where the watcher's Find a partner is taken by the match's winner, and the loser, from the channel, watches that match, its players told one is watching | `tests/game-light-trails.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 
