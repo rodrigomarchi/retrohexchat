@@ -164,3 +164,16 @@ describe("TennisAI", () => {
     expect(ai._target.x).not.toBe(recoveryX);
   });
 });
+
+describe("the return of serve, from what a guest's browser holds", () => {
+  // The count of points played stays on the host; the guest has the score.
+  it("takes the court the serve goes to from the score alone", () => {
+    const base = { ...createInitialState(GAME_MODE.CLASSIC), totalPointsInGame: 0 };
+    const deuce = servingReadyPosition({ ...base, p1Points: 1, p2Points: 1 }, 2);
+    const ad = servingReadyPosition({ ...base, p1Points: 2, p2Points: 1 }, 2);
+    const atDeuceAgain = servingReadyPosition({ ...base, p1Points: 3, p2Points: 3 }, 2);
+
+    expect(ad.x).not.toBe(deuce.x);
+    expect(atDeuceAgain.x).toBe(deuce.x);
+  });
+});

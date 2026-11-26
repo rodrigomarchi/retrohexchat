@@ -253,7 +253,12 @@ export function recoveryPosition(state, player = 2, bias = 0.5) {
  * @returns {{x: number, y: number}}
  */
 export function servingReadyPosition(state, player = 2) {
-  const isDeuceCourt = (state?.totalPointsInGame ?? 0) % 2 === 0;
+  // The serve alternates courts each point of a game. The points on the
+  // scoreboard always add up to the same parity as the points played (deuce
+  // takes two off both), and unlike the count of points played they reach a
+  // guest's browser in the host's snapshot.
+  const points = (state?.p1Points ?? 0) + (state?.p2Points ?? 0);
+  const isDeuceCourt = points % 2 === 0;
   const x = isDeuceCourt ? COURT_CENTER_X + 74 : COURT_CENTER_X - 74;
   const y = player === 1 ? SERVICE_LINE_TOP + 170 : SERVICE_LINE_TOP - 58;
   return {

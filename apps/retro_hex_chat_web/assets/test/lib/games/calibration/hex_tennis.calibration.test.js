@@ -78,10 +78,16 @@ function play({ difficulty, seed }) {
   const ask = askAsTheEngineDoes(ai, difficulty);
   const random = mulberry32(seed ^ 0x706c61);
   let player = averagePlayer(random);
+  // A point early in a game: as many points played as the score shows.
+  const server = random() < 0.5 ? 1 : 2;
+  const played = Math.floor(random() * 4);
+  const p1Points = Math.floor(random() * (played + 1));
   let state = {
     ...createInitialState(GAME_MODE.CLASSIC),
-    server: random() < 0.5 ? 1 : 2,
-    totalPointsInGame: Math.floor(random() * 4),
+    server,
+    totalPointsInGame: played,
+    p1Points,
+    p2Points: played - p1Points,
     phase: PHASE.SERVING,
   };
   let pressed = { local: false, remote: false };
