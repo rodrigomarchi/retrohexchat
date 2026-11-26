@@ -3,6 +3,7 @@ import { PHASE, GAME_MODE } from "../../../../js/lib/games/hex_hockey/protocol.j
 import {
   RINK_CX,
   RINK_CY,
+  RINK_TOP,
   GOAL_TOP,
   GOAL_LINE_LEFT,
   createInitialState,
@@ -132,26 +133,40 @@ describe("hex_hockey_ai", () => {
     expect(ai.nextInputs({ state, player: 2 }).action).toBe(true);
   });
 
-  it("decides once per contact whether to tackle", () => {
+  it("decides once per stretch of a contact whether to tackle, and thinks again as it goes on", () => {
     const state = carrierInReach();
+    const config = HOCKEY_AI_DIFFICULTIES.hard;
     let draw = 0.99;
     const ai = createHockeyAI({ difficulty: "hard", rng: () => draw });
+    const look = () => ai.nextInputs({ state, player: 2 }).action;
 
-    const holdsBack = () => {
-      for (let frame = 0; frame < 30; frame++) {
-        expect(ai.nextInputs({ state, player: 2 }).action).toBe(false);
-      }
-    };
-
-    holdsBack();
-    // Later draws would say yes, but this contact was already decided
+    // The reaction delay and the first stretch: it passed, and holds to it
+    // even once later draws would say yes.
+    for (let frame = 0; frame < config.tackleDelayFrames + 2; frame++) expect(look()).toBe(false);
     draw = 0;
-    holdsBack();
+    const stretch = config.tackleDelayFrames + config.shootCooldownFrames - 2;
+    for (let frame = config.tackleDelayFrames + 2; frame < stretch; frame++) {
+      expect(look()).toBe(false);
+    }
 
-    state.p1.x = state.p2.x - 100;
-    ai.nextInputs({ state, player: 2 });
-    state.p1.x = state.p2.x - 10;
-    const pressed = Array.from({ length: 10 }, () => ai.nextInputs({ state, player: 2 }).action);
+    // Glued to the carrier past that stretch, it thinks again — and goes in.
+    const later = Array.from({ length: config.shootCooldownFrames }, look);
+    expect(later).toContain(true);
+  });
+
+  // A defender in the way and a skater only jostling against it would
+  // otherwise hold the puck for good.
+  it("shoots from where it stands once pinned near one spot with the puck", () => {
+    const state = carrierInGoalLane();
+    state.p2.y = RINK_TOP + 40;
+    state.p2.facing = 0;
+    const ai = createHockeyAI({ difficulty: "hard", rng: () => 0.99 });
+    const pressed = [];
+    for (let frame = 0; frame < 60; frame++) {
+      state.p2.x = GOAL_LINE_LEFT + 200 + (frame % 2 ? 2 : -2);
+      pressed.push(ai.nextInputs({ state, player: 2 }).action);
+    }
+    expect(pressed.slice(0, 25)).not.toContain(true);
     expect(pressed).toContain(true);
   });
 

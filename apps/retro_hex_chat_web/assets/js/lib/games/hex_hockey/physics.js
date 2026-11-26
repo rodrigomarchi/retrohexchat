@@ -36,7 +36,7 @@ export const GOAL_LINE_RIGHT = RINK_RIGHT;
 export const PLAYER_W = 8;
 export const PLAYER_H = 8;
 export const GOALIE_W = 12;
-export const GOALIE_H = 8;
+export const GOALIE_H = 20;
 export const PUCK_R = 3; // puck radius
 
 // ── Player movement ────────────────────────────────────────────
@@ -324,7 +324,29 @@ export function updatePlayer(state, inputs, isP1) {
 // ── Goalie AI ──────────────────────────────────────────────────
 
 /**
- * Update goalie position (AI-controlled, follows puck Y).
+ * Where a loose puck crosses the line `x` — its height there, after the
+ * bounces off the top and bottom boards on the way — or null when it is held,
+ * still, or moving away from that line.
+ * @param {{ x: number, y: number, vx: number, vy: number, possessedBy: number }} puck
+ * @param {number} x
+ * @returns {number|null}
+ */
+export function puckCrossingY(puck, x) {
+  if (puck.possessedBy !== 0 || puck.vx === 0) return null;
+  const frames = (x - puck.x) / puck.vx;
+  if (frames < 0) return null;
+  const top = RINK_TOP + PUCK_R;
+  const span = RINK_BOTTOM - PUCK_R - top;
+  // Unfold the bounces: the board reflects the line the puck travels on.
+  const travelled = (((puck.y + puck.vy * frames - top) % (2 * span)) + 2 * span) % (2 * span);
+  return top + (travelled <= span ? travelled : 2 * span - travelled);
+}
+
+/**
+ * Update goalie position (AI-controlled). A shot coming at its goal, the
+ * goalie skates for where the puck will cross its line; otherwise it closes
+ * the angle — stands where the line from the puck to the middle of its goal
+ * crosses its own — smoothly.
  * @param {object} state
  * @param {boolean} isG1 - true for goalie 1
  */
@@ -339,12 +361,12 @@ export function updateGoalie(state, isG1) {
   // Lerp factor: more responsive when puck is nearby
   const lerp = distToPuck < GOALIE_NEAR_DIST ? GOALIE_LERP_NEAR : GOALIE_LERP_FAR;
 
-  // Target Y: follow puck Y
-  const targetY = state.puck.y;
+  const crossing = puckCrossingY(state.puck, goalieX);
+  const targetY = crossing ?? angleY(state.puck, goalieX, goalLineFor(goalieX));
 
-  // Smooth movement toward target
+  // Toward a shot at full speed; after the puck, smoothly
   const diff = targetY - goalie.y;
-  let move = diff * lerp;
+  let move = crossing === null ? diff * lerp : diff;
 
   // Cap movement speed
   if (Math.abs(move) > GOALIE_MAX_SPEED) {
@@ -356,6 +378,23 @@ export function updateGoalie(state, isG1) {
   // Clamp goalie to goal area bounds (can only move within goal opening range + some margin)
   const margin = GOALIE_H;
   goalie.y = Math.max(GOAL_TOP - margin, Math.min(GOAL_BOTTOM + margin, goalie.y));
+}
+
+/** The goal line behind the goalie that stands at `goalieX`. */
+function goalLineFor(goalieX) {
+  return goalieX < RINK_CX ? GOAL_LINE_LEFT : GOAL_LINE_RIGHT;
+}
+
+/**
+ * Where the line from the puck to the middle of the goal at `goalLine`
+ * crosses the goalie's line `goalieX`: the spot that covers the shot.
+ */
+function angleY(puck, goalieX, goalLine) {
+  const run = goalLine - puck.x;
+  if (Math.abs(run) < 1) return RINK_CY;
+  const along = (goalieX - puck.x) / run;
+  if (along < 0 || along > 1) return RINK_CY;
+  return puck.y + (RINK_CY - puck.y) * along;
 }
 
 // ── Puck physics ───────────────────────────────────────────────
@@ -701,6 +740,17 @@ export function checkShowdownWin(state) {
 }
 
 /**
+ * Whether the goal just scored ends the match: the Showdown's target
+ * reached, or any goal of sudden death, which the next goal decides.
+ * @param {object} state
+ * @returns {boolean}
+ */
+export function goalEndsMatch(state) {
+  if (checkShowdownWin(state)) return true;
+  return state.mode !== GAME_MODE.SHOWDOWN && state.period > getMaxPeriods(state.mode);
+}
+
+/**
  * Determine the winner.
  * @param {object} state
  * @returns {object} { winner: "p1"|"p2"|"draw", scoreP1, scoreP2 }
@@ -743,8 +793,8 @@ export function stepTick(state, local, remote, handled, random = Math.random) {
     periodEnded: false,
     periodEvents: 0,
   };
-  updatePlayer(state, local, true);
-  updatePlayer(state, remote, false);
+  // Shots and tackles go first, from where both stood as the frame began:
+  // after the moves, whoever moved second would always be the closer chaser.
   for (const [inputs, side, isP1] of [
     [local, "local", true],
     [remote, "remote", false],
@@ -756,6 +806,8 @@ export function stepTick(state, local, remote, handled, random = Math.random) {
       ? handleShoot(state, isP1)
       : handleTackle(state, isP1, random);
   }
+  updatePlayer(state, local, true);
+  updatePlayer(state, remote, false);
 
   updateGoalie(state, true);
   updateGoalie(state, false);

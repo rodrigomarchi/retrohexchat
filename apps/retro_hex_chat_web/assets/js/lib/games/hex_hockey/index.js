@@ -18,7 +18,7 @@ import { createHockeyAI, normalizeHockeyAIDifficulty } from "./ai.js";
 import {
   COUNTDOWN_FRAME_INTERVAL,
   GOAL_CELEBRATION_FRAMES,
-  checkShowdownWin,
+  goalEndsMatch,
   createInitialState,
   determineWinner,
   packState,
@@ -139,12 +139,12 @@ function faceOff(game, state) {
   game.audio.playFaceoffWhistle();
 }
 
-/** After a goal: the showdown may be won, or play goes back to a countdown. */
+/** After a goal: the showdown or sudden death may be won, or play goes back to a countdown. */
 function celebrate(game, state) {
   state.celebrationFrames--;
   game.goalFlash = state.celebrationFrames;
   if (state.celebrationFrames > 0) return;
-  if (checkShowdownWin(state)) {
+  if (goalEndsMatch(state)) {
     state.phase = PHASE.FINISHED;
     finishMatch(game, state);
     return;

@@ -42,6 +42,11 @@ const ANGLE_SHOT_REACH = 16;
 const ANGLE_SHOT_TURN = 20;
 // Closer than this to its target, the skater's steering error shrinks with the distance.
 const STEER_ERROR_REACH = 120;
+// A carrier pinned this many frames near one spot — a defender in the way,
+// the skater only jostling against it — shoots from where it stands rather
+// than push on into the body.
+const PINNED_FRAMES = 30;
+const PINNED_REACH_PX = 6;
 // The eight facings as steps: 0 is right, counting clockwise.
 const FACING_DX = [1, 1, 0, -1, -1, -1, 0, 1];
 const FACING_DY = [0, 1, 1, 1, 0, -1, -1, -1];
@@ -149,6 +154,7 @@ export class HockeyAI extends TableAI {
     this.lined = false;
     this.linedFrames = 0;
     this.steer = createCommitment();
+    this.pinned = { x: 0, y: 0, frames: 0 };
     this.puckTurn = 0;
     this.puckHolder = null;
   }
@@ -166,6 +172,7 @@ export class HockeyAI extends TableAI {
     this.carrying = false;
     this.lined = false;
     this.puckHolder = null;
+    this.pinned = { x: 0, y: 0, frames: 0 };
     for (const decision of [this.tackle, this.plan, this.shot, this.steer]) decision.reset();
   }
 
@@ -218,10 +225,11 @@ export class HockeyAI extends TableAI {
   _actionPressed(state, player, config) {
     const tackleReady = this._tackleReady(state, player, config);
     const shotReady = this._shotReady(state, player, config);
+    const pinned = this._pinned(state, player);
     if (this.actionCooldown > 0) return false;
 
     if (playerHasPuck(state, player)) {
-      if (!shotReady) return false;
+      if (!shotReady && !pinned) return false;
 
       this.actionCooldown = config.shootCooldownFrames;
       return true;
@@ -260,6 +268,22 @@ export class HockeyAI extends TableAI {
 
     const rethink = Math.floor(this.linedFrames++ / config.shootCooldownFrames);
     return this.shot.hold(`${this.opportunity}:${rethink}`, () => this.rng() <= config.shootChance);
+  }
+
+  /**
+   * Whether the carrier has stayed within PINNED_REACH_PX of one spot for
+   * PINNED_FRAMES: blocked by a body it would push into forever.
+   * @param {object} state
+   * @param {1|2} player
+   * @returns {boolean}
+   */
+  _pinned(state, player) {
+    const actor = playerState(state, player);
+    const near = playerHasPuck(state, player) && distance(actor, this.pinned) <= PINNED_REACH_PX;
+    this.pinned = near
+      ? { ...this.pinned, frames: this.pinned.frames + 1 }
+      : { x: actor.x, y: actor.y, frames: 0 };
+    return this.pinned.frames >= PINNED_FRAMES;
   }
 
   /**
@@ -321,7 +345,11 @@ export class HockeyAI extends TableAI {
     if (this.contactFrames === 0) this.contact++;
     this.contactFrames++;
     if (this.contactFrames <= config.tackleDelayFrames) return false;
-    return this.tackle.hold(this.contact, () => this.rng() <= config.tackleChance);
+    // A contact that goes on is thought over again, like a lined-up shot:
+    // a skater that passed once does not stand glued to the carrier for good.
+    const waited = this.contactFrames - config.tackleDelayFrames;
+    const rethink = Math.floor(waited / config.shootCooldownFrames);
+    return this.tackle.hold(`${this.contact}:${rethink}`, () => this.rng() <= config.tackleChance);
   }
 }
 
