@@ -497,8 +497,8 @@ export function drawScoreLabels(ctx, state, colors, left, right, y) {
  */
 export function drawRoundDots(ctx, state, colors, width, y) {
   const rows = [
-    [width / 2 - 20, state.roundWins1, colors.fg],
-    [width / 2 + 40, state.roundWins2, colors.accent],
+    [width / 2 - 50, state.roundWins1, colors.fg],
+    [width / 2 + 10, state.roundWins2, colors.accent],
   ];
   for (const [left, wins, lit] of rows) {
     for (let i = 0; i < 3; i++) {

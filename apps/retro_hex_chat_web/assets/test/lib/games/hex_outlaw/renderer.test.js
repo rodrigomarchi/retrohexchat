@@ -95,6 +95,38 @@ describe("Hex Outlaw Renderer", () => {
     ]);
   });
 
+  describe("the freeze after a hit", () => {
+    /** The texts a render writes, in order. */
+    function textsOf(state, scorer) {
+      const texts = [];
+      const ctx = new Proxy(
+        { fillText: (text) => texts.push(text), measureText: () => ({ width: 10 }) },
+        {
+          get: (target, key) => (key in target ? target[key] : () => ({ addColorStop: () => {} })),
+          set: () => true,
+        },
+      );
+      render(ctx, state, COLORS, 0, [], scorer);
+      return texts;
+    }
+
+    // The hit flag lasts one frame; the freeze names the gunslinger the
+    // game says landed it, for its whole length.
+    it.each([1, 2])("names player %s as the scorer for the whole freeze", (scorer) => {
+      const state = {
+        ...createInitialState(GAME_MODE.QUICK_DRAW),
+        phase: PHASE.HIT_PAUSE,
+        lastHitPlayer: 0,
+      };
+      expect(textsOf(state, scorer)).toContain(`P${scorer} SCORES!`);
+    });
+
+    it("writes the street and the round under the title", () => {
+      const state = { ...createInitialState(GAME_MODE.RICOCHET), phase: PHASE.PLAYING, round: 2 };
+      expect(textsOf(state, 0)).toContain("Ricochet · Round 2");
+    });
+  });
+
   describe("particles", () => {
     it("createHitParticles generates particles with hat", () => {
       const particles = createHitParticles(100, 200);

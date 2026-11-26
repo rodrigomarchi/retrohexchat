@@ -63,6 +63,8 @@ function duel(game) {
   for (let i = 0; i < fired.length; i++) game.audio.playGunshot();
   for (let i = 0; i < ricochets; i++) game.audio.playRicochet();
   if (hit) {
+    // The pause after a hit names who landed it: the other gunslinger.
+    game.scorer = 3 - hit.player;
     game.audio.playHit();
     addHitParticles(game, hit.x, hit.y);
   }
@@ -84,6 +86,7 @@ function duel(game) {
 function applySnapshot(game, decoded) {
   Object.assign(game.gameState, decoded);
   if (decoded.lastHitPlayer !== 0) {
+    game.scorer = decoded.lastHitPlayer;
     const defender = decoded.lastHitPlayer === 1 ? "p2" : "p1";
     addHitParticles(game, decoded[`${defender}x`], decoded[`${defender}y`]);
   }
@@ -112,6 +115,7 @@ export default defineGame({
   init: (game) => createInitialState(MODE_MAP[game.gameId] ?? GAME_MODE.QUICK_DRAW),
   setup: (game) => {
     game.particles = [];
+    game.scorer = 0;
     releaseTriggers(game);
     game.localAimUp = false;
     game.remoteAimUp = false;
@@ -152,5 +156,6 @@ export default defineGame({
   ],
   onSnapshot: (game) => game.invalidate(),
   ...roundsEnding(PHASE),
-  render: (game) => render(game.ctx, game.gameState, game.colors, game.frameCount, game.particles),
+  render: (game) =>
+    render(game.ctx, game.gameState, game.colors, game.frameCount, game.particles, game.scorer),
 });

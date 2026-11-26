@@ -56,8 +56,9 @@ export function getColors(canvas) {
  * @param {object} colors
  * @param {number} frameCount
  * @param {Array} particles
+ * @param {number} [scorer] - who landed the last hit, for the pause it starts
  */
-export function render(ctx, state, colors, frameCount, particles) {
+export function render(ctx, state, colors, frameCount, particles, scorer = 0) {
   drawBackground(ctx, colors);
   drawGround(ctx, colors);
   drawObstacle(ctx, state, colors, frameCount);
@@ -67,7 +68,7 @@ export function render(ctx, state, colors, frameCount, particles) {
   drawBullet(ctx, state, "b2", colors);
   drawParticles(ctx, particles);
   drawHUD(ctx, state, colors);
-  drawPhaseOverlay(ctx, state, colors, frameCount);
+  drawPhaseOverlay(ctx, state, colors, frameCount, scorer);
 }
 
 // --- Background ---
@@ -434,7 +435,11 @@ function drawHUD(ctx, state, colors) {
   ctx.font = "10px monospace";
   ctx.fillStyle = adjustAlpha(colors.rope, 0.6);
   const modeNames = [t("Quick Draw"), "Ricochet", "Stagecoach", t("No Man's Land")];
-  ctx.fillText(modeNames[state.gameMode] || "", CANVAS_W / 2, hudY + 16);
+  // The street and the round under the title, and the rounds each side has
+  // won just below: the ground at the bottom is the fence's.
+  const street = modeNames[state.gameMode] || "";
+  ctx.fillText(`${street} · ${jt`Round ${state.round}`}`, CANVAS_W / 2, hudY + 16);
+  drawRoundDots(ctx, state, colors, CANVAS_W, hudY + 32);
 
   // Score progress (small dots under P1/P2)
   const dotY = hudY + 20;
@@ -452,19 +457,11 @@ function drawHUD(ctx, state, colors) {
     ctx.fillStyle = i < state.score2 ? colors.accent : adjustAlpha(colors.accent, 0.2);
     ctx.fill();
   }
-
-  // Round win dots (bottom)
-  const bottomY = CANVAS_H - 12;
-  ctx.font = "10px monospace";
-  ctx.textAlign = "center";
-  ctx.fillStyle = colors.muted;
-  ctx.fillText(jt`Round ${state.round}`, CANVAS_W / 2, bottomY - 4);
-  drawRoundDots(ctx, state, colors, CANVAS_W, bottomY + 8);
 }
 
 // --- Phase Overlays ---
 
-function drawPhaseOverlay(ctx, state, colors, frameCount) {
+function drawPhaseOverlay(ctx, state, colors, frameCount, scorer) {
   switch (state.phase) {
     case PHASE.WAITING:
       drawCenterText(ctx, waitingText(), 16, colors.rope, CANVAS_W, CANVAS_H);
@@ -476,7 +473,6 @@ function drawPhaseOverlay(ctx, state, colors, frameCount) {
       drawCenterText(ctx, t("DRAW!"), 36, colors.warning, CANVAS_W, CANVAS_H);
       break;
     case PHASE.HIT_PAUSE: {
-      const scorer = state.lastHitPlayer;
       const scorerColor = scorer === 1 ? colors.fg : colors.accent;
       const flash = frameCount % 8 < 4;
       if (flash) {

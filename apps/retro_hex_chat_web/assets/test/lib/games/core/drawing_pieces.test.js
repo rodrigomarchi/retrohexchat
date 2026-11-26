@@ -44,6 +44,16 @@ describe("the duels' chrome", () => {
     expect(fills).toEqual(["#0f0", "#333", "#333", "#0ff", "#0ff", "#333"]);
   });
 
+  it("drawRoundDots puts player one's dots left of the middle and player two's right of it", () => {
+    const log = drawn((ctx) =>
+      drawRoundDots(ctx, { roundWins1: 0, roundWins2: 0 }, COLORS, 640, 20),
+    );
+    const xs = log.filter(([op]) => op === "arc").map(([, x]) => x);
+    expect(xs.slice(0, 3).every((x) => x < 320)).toBe(true);
+    expect(xs.slice(3).every((x) => x > 320)).toBe(true);
+    expect(320 - xs[0]).toBe(xs[5] - 320);
+  });
+
   it("drawTopLabel centres its text at the top in its colour", () => {
     const log = drawn((ctx) => drawTopLabel(ctx, "ROUND 2", "#333", 640, 6));
     expect(log).toContainEqual(["fillText", "ROUND 2", 320, 6]);
