@@ -131,6 +131,14 @@ describe("tennis_renderer", () => {
       expect(textsOf(tennisState(PHASE.COUNTDOWN, { countdown: 2 }))).toContain("2");
     });
 
+    it("names the players without a point score in Sudden Death, where every point is a game", () => {
+      const sudden = textsOf(tennisState(PHASE.SERVING, { gameMode: 2 }));
+      expect(sudden).toContain("P1");
+      expect(sudden).toContain("P2");
+      expect(sudden.some((text) => text.includes("LOVE"))).toBe(false);
+      expect(textsOf(tennisState(PHASE.SERVING))).toContain("P1: LOVE");
+    });
+
     it("renders waiting message", () => {
       const texts = textsOf(tennisState(PHASE.WAITING));
       expect(texts.some((t) => t.includes("WAITING"))).toBe(true);

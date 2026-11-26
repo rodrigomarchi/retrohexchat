@@ -4,7 +4,7 @@
  * @module games/hex_tennis/renderer
  */
 
-import { PHASE } from "./protocol.js";
+import { GAME_MODE, PHASE } from "./protocol.js";
 import {
   CANVAS_W,
   CANVAS_H,
@@ -305,6 +305,8 @@ function drawBall(ctx, ball, colors, time) {
 
 function drawScoreboard(ctx, state, colors) {
   const y = 20;
+  // In Sudden Death every point is a game: there is no point score to show.
+  const points = state.gameMode !== GAME_MODE.SUDDEN_DEATH;
 
   // P1 points (left)
   ctx.font = "bold 14px monospace";
@@ -314,14 +316,14 @@ function drawScoreboard(ctx, state, colors) {
   ctx.shadowBlur = 4;
   ctx.fillStyle = colors.fg;
   const p1Text = getPointText(state.p1Points, state.p2Points, state.isTiebreak);
-  ctx.fillText(jt`P1: ${p1Text}`, 10, y);
+  ctx.fillText(points ? jt`P1: ${p1Text}` : "P1", 10, y);
 
   // P2 points (right)
   ctx.textAlign = "right";
   ctx.shadowColor = colors.accent;
   ctx.fillStyle = colors.accent;
   const p2Text = getPointText(state.p2Points, state.p1Points, state.isTiebreak);
-  ctx.fillText(jt`P2: ${p2Text}`, CANVAS_W - 10, y);
+  ctx.fillText(points ? jt`P2: ${p2Text}` : "P2", CANVAS_W - 10, y);
 
   // Games score (center)
   ctx.textAlign = "center";
