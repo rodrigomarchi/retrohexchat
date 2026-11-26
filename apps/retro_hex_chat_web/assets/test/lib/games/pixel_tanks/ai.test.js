@@ -240,6 +240,18 @@ describe("PixelTanksAI", () => {
     expect(look(ai, { ...state, m1Age: 20 }).rotateRight).toBe(true);
   });
 
+  // The guest's AI plays from the host's snapshots, which carry the shell
+  // but not its age: it counts the age from when the shell first showed.
+  it("dodges a shell on the guest's screen too, where the snapshot carries no age", () => {
+    const ai = createPixelTanksAI({ difficulty: "hard", rng: () => 0 });
+    const state = shellIncoming();
+    delete state.m1Age;
+
+    expect(look(ai, state).rotateRight).toBe(false);
+    for (let frame = 1; frame < 20; frame++) look(ai, state);
+    expect(look(ai, state).rotateRight).toBe(true);
+  });
+
   it("decides once per shell whether to dodge it", () => {
     const ai = createPixelTanksAI({ difficulty: "hard", rng: scriptedRng([0.99, 0.5], 0) });
     const state = shellIncoming({ tank1Invuln: true });

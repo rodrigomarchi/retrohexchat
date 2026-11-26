@@ -57,7 +57,7 @@ export const PIXEL_TANKS_AI_DIFFICULTIES = Object.freeze({
   }),
   normal: Object.freeze({
     decisionInterval: 5,
-    aimErrorAngle: 0.115,
+    aimErrorAngle: 0.12,
     turnDeadzone: 0.03,
     moveAngle: 0.94,
     aimTolerance: 0.035,
@@ -73,14 +73,14 @@ export const PIXEL_TANKS_AI_DIFFICULTIES = Object.freeze({
   }),
   hard: Object.freeze({
     decisionInterval: 2,
-    aimErrorAngle: 0.09,
+    aimErrorAngle: 0.1,
     turnDeadzone: 0.03,
     moveAngle: 1.15,
     aimTolerance: 0.03,
     standoffDistance: 120,
     fireMaxDistance: 680,
     fireCooldownFrames: 46,
-    fireChance: 1,
+    fireChance: 0.95,
     dodgeChance: 0.3,
     reactionFrames: 12,
     threatFrames: 58,
@@ -120,6 +120,9 @@ export class PixelTanksAI extends TableAI {
     this._target = null;
     this._aim = createCommitment();
     this._shells = createPerThing();
+    // When the rival's shell first showed, for a state that does not say
+    // its age (the guest's, built from the host's snapshots).
+    this._shellSince = null;
   }
 
   /**
@@ -131,6 +134,7 @@ export class PixelTanksAI extends TableAI {
     this._target = null;
     this._shells.reset();
     this._aim.reset();
+    this._shellSince = null;
   }
 
   /**
@@ -182,16 +186,19 @@ export class PixelTanksAI extends TableAI {
   /**
    * The state as this AI sees it: the rival's shell is there only once it is
    * reactionFrames old, and only if this AI is to dodge it — decided once
-   * per shell.
+   * per shell. Its age is the state's, or counted from when it first showed.
    */
   _noticedShells(state, player, config) {
     const prefix = player === 1 ? "m2" : "m1";
     if (!state[`${prefix}Active`]) {
       this._shells.keep([]);
+      this._shellSince = null;
       return state;
     }
 
-    const age = state[`${prefix}Age`] || 0;
+    this._shellSince ??= this.frame;
+    const told = state[`${prefix}Age`];
+    const age = typeof told === "number" ? told : this.frame - this._shellSince;
     const shell = this.frame - age;
     this._shells.keep([shell]);
     const dodges = this._shells.decide(shell, () => this.rng() < config.dodgeChance);

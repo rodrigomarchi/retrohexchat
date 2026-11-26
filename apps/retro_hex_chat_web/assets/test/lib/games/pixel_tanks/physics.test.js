@@ -8,11 +8,16 @@ import {
   WALL_SIZE,
   createInitialState,
   decodeMaze,
+  hiddenSpawnRows,
+  resetForNewRound,
+  respawnTanks,
+  spawnY,
   stepTick,
   updateMissile,
 } from "../../../../js/lib/games/pixel_tanks/physics.js";
 import { pressAndHold, released } from "../../../support/games/physics_tests.js";
 import { PHASE } from "../../../../js/lib/games/pixel_tanks/protocol.js";
+import { lineOfSightClear } from "../../../../js/lib/games/pixel_tanks/ai.js";
 
 const open = () => new Uint8Array(GRID_COLS * GRID_ROWS);
 const shell = (fields) => ({
@@ -120,5 +125,57 @@ describe("stepTick", () => {
     expect(step.state.respawnPause).toBe(9);
     expect(step.state.m1Active).toBe(false);
     expect(step.pressed).toEqual({ 1: false, 2: false });
+  });
+});
+
+// A start facing the rival across open ground made every round a duel at the
+// spawns, decided by who fired first once the shields were down.
+describe("where the tanks start over", () => {
+  // Every maze the host draws (`selectMaze`): all but the open field.
+  const MAZES = [1, 2, 3, 4, 5];
+  const cellOf = (v) => Math.floor(v / WALL_SIZE);
+
+  it("is, in every maze the host draws, a place neither tank can see the other from", () => {
+    for (const maze of MAZES) {
+      const walls = decodeMaze(maze);
+      for (let turn = 0; turn < 12; turn++) {
+        const s = respawnTanks({ ...createInitialState(0, maze), score1: turn });
+        expect(lineOfSightClear(s.tank1X, s.tank1Y, s.tank2X, s.tank2Y, walls)).toBe(false);
+        for (const [x, y] of [
+          [s.tank1X, s.tank1Y],
+          [s.tank2X, s.tank2Y],
+        ]) {
+          for (const dx of [-TANK_RADIUS, 0, TANK_RADIUS]) {
+            for (const dy of [-TANK_RADIUS, 0, TANK_RADIUS]) {
+              expect(walls[cellOf(y + dy) * GRID_COLS + cellOf(x + dx)]).toBe(0);
+            }
+          }
+        }
+      }
+    }
+  });
+
+  it("moves from one hit to the next, and starts each round out of sight too", () => {
+    for (const maze of MAZES) {
+      const rows = new Set(
+        [0, 1, 2, 3].map(
+          (hits) => respawnTanks({ ...createInitialState(0, maze), score1: hits }).tank1Y,
+        ),
+      );
+      if (hiddenSpawnRows(decodeMaze(maze)).length > 1) expect(rows.size).toBeGreaterThan(1);
+      const walls = decodeMaze(maze);
+      const next = resetForNewRound({ ...createInitialState(0, maze), round: 2 });
+      expect(lineOfSightClear(next.tank1X, next.tank1Y, next.tank2X, next.tank2Y, walls)).toBe(
+        false,
+      );
+      const first = createInitialState(0, maze);
+      expect(lineOfSightClear(first.tank1X, first.tank1Y, first.tank2X, first.tank2Y, walls)).toBe(
+        false,
+      );
+    }
+  });
+
+  it("is the same for host and guest: worked out from the maze and the score alone", () => {
+    expect(spawnY(4, 3)).toBe(spawnY(4, 3));
   });
 });

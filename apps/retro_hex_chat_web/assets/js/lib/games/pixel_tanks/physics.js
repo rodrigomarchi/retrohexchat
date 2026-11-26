@@ -249,11 +249,51 @@ export function decodeMaze(index) {
   return walls;
 }
 
+/** The grid column of each tank's spawn, the right one the left's mirror. */
+const SPAWN_COL = Math.floor(P1_SPAWN.x / WALL_SIZE);
+
+/**
+ * The rows where the two spawns, each the other's mirror across the arena,
+ * cannot see each other: a wall stands between them on the row, and the
+ * cells around the spawn are open for the tank. A maze with none (the open
+ * field) has only the middle row.
+ * @param {Uint8Array} walls
+ * @returns {number[]}
+ */
+export function hiddenSpawnRows(walls) {
+  const wall = (row, col) => walls[row * GRID_COLS + col] === 1;
+  const rows = [];
+  const cols = (from, to) => Array.from({ length: to - from }, (_, i) => from + i);
+  const footprint = cols(SPAWN_COL - 1, SPAWN_COL + 1);
+  const between = cols(SPAWN_COL + 1, GRID_COLS - SPAWN_COL - 1);
+  for (let row = 2; row < GRID_ROWS - 2; row++) {
+    const open = [row - 1, row, row + 1].every((r) => footprint.every((c) => !wall(r, c)));
+    if (open && between.some((c) => wall(row, c))) rows.push(row);
+  }
+  return rows.length > 0 ? rows : [Math.floor(P1_SPAWN.y / WALL_SIZE)];
+}
+
+/**
+ * Where the tanks start over: a row out of each other's sight, a different
+ * one at each hit and each round, so no start is a duel at the spawns.
+ * @param {number} mazeIndex
+ * @param {number} turn - how many starts the match has had
+ * @returns {number} the spawns' y
+ */
+export function spawnY(mazeIndex, turn) {
+  const rows = hiddenSpawnRows(decodeMaze(mazeIndex));
+  const row = rows[(turn * 7) % rows.length];
+  return row * WALL_SIZE + WALL_SIZE / 2;
+}
+
+/** How many starts a state has had: its rounds and the hits of this one. */
+const startsOf = (state) => (state.round ?? 1) + (state.score1 ?? 0) + (state.score2 ?? 0);
+
 /** Both tanks at their starting places, alive, unshielded and ready to fire. */
-function tanksAtSpawn() {
+function tanksAtSpawn(y = P1_SPAWN.y) {
   return {
     tank1X: P1_SPAWN.x,
-    tank1Y: P1_SPAWN.y,
+    tank1Y: y,
     tank1Rot: P1_SPAWN.rot,
     tank1Alive: true,
     tank1Invuln: false,
@@ -261,7 +301,7 @@ function tanksAtSpawn() {
     tank1Cooldown: 0,
 
     tank2X: P2_SPAWN.x,
-    tank2Y: P2_SPAWN.y,
+    tank2Y: y,
     tank2Rot: P2_SPAWN.rot,
     tank2Alive: true,
     tank2Invuln: false,
@@ -278,7 +318,7 @@ function tanksAtSpawn() {
  */
 export function createInitialState(mode, mazeIndex) {
   return {
-    ...tanksAtSpawn(),
+    ...tanksAtSpawn(spawnY(mazeIndex, 1)),
 
     // Missiles
     m1X: 0,
@@ -591,15 +631,16 @@ export function checkMissileHit(state, missileNum) {
 }
 
 /**
- * Respawn both tanks at their starting positions after a hit.
+ * Respawn both tanks after a hit, on a row where they cannot see each other.
  * @param {object} state
  * @returns {object} Updated state
  */
 export function respawnTanks(state) {
+  const y = spawnY(state.mazeIndex, startsOf(state));
   return {
     ...state,
     tank1X: P1_SPAWN.x,
-    tank1Y: P1_SPAWN.y,
+    tank1Y: y,
     tank1Rot: P1_SPAWN.rot,
     tank1Alive: true,
     tank1Invuln: true,
@@ -607,7 +648,7 @@ export function respawnTanks(state) {
     tank1Cooldown: 0,
 
     tank2X: P2_SPAWN.x,
-    tank2Y: P2_SPAWN.y,
+    tank2Y: y,
     tank2Rot: P2_SPAWN.rot,
     tank2Alive: true,
     tank2Invuln: true,
@@ -707,7 +748,7 @@ export function advanceRound(state, roundWinner) {
 export function resetForNewRound(state) {
   return {
     ...state,
-    ...tanksAtSpawn(),
+    ...tanksAtSpawn(spawnY(state.mazeIndex, (state.round ?? 1) + 1)),
 
     m1Active: false,
     m1Age: 0,
