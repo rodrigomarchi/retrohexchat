@@ -34,6 +34,32 @@ export async function autopilot(
 }
 
 /**
+ * How far the match on `game` has gone, as its seat's autopilot last saw it
+ * (`reportSeen`): its round and the rounds each side has won, or null before
+ * the match's first step.
+ */
+export async function matchSeen(
+  game: Page,
+): Promise<{ round: number; roundWins1: number; roundWins2: number } | null> {
+  return game.evaluate(() => {
+    const seen = (
+      window as unknown as {
+        __rhcAutopilot?: {
+          seen?: { round: number; roundWins1: number; roundWins2: number };
+        };
+      }
+    ).__rhcAutopilot?.seen;
+    return seen
+      ? {
+          round: seen.round,
+          roundWins1: seen.roundWins1,
+          roundWins2: seen.roundWins2,
+        }
+      : null;
+  });
+}
+
+/**
  * The side a score names the winner: the higher, or — even scores being a
  * co-op pair's — 0, a board they cleared together.
  */

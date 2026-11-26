@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **282 spec files** under `e2e/tests/`.
-- **710 Playwright `test()` cases**.
-- **656 documented flows**, 655 done, 1 not done.
+- **712 Playwright `test()` cases**.
+- **658 documented flows**, 657 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -519,6 +519,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N107 | Play with somebody you know on Hex Warlords' home invites a friend by nickname: the invitation lands in their private conversation as the match's card, both enter Hex Warlords' match room through it, both are ready, the host starts, and the match played to its end leaves its result card in the same conversation | `tests/game-hex-warlords.spec.ts` | done |
 | N108 | Hex Raid's home lists its three ways to fly — Hex Raid, Pacifist and Blitz — and its invitation picks one of them; Play opens the game in a tab of its own, its menu naming the goal (3 lives — top score wins), and a match against the computer at Hard is played to the result | `tests/game-hex-raid.spec.ts` | done |
 | N109 | A best of three by invitation: from Hex Raid's home a friend is invited by nickname once in each way to fly — Pacifist, Blitz, then Hex Raid — each invitation lands in their private conversation as that mode's match, both enter it, both are ready, the host starts, each match played to its end leaves its result card in the same conversation, and the host ends that session before the next invitation — three cards in all | `tests/game-hex-raid.spec.ts` | done |
+| N110 | Hex Boxing's home has its one way; Play opens the game in a tab of its own, its menu naming the match (Best of 3 rounds), and a fight against the computer at Hard is boxed to the result | `tests/game-hex-boxing.spec.ts` | done |
+| N111 | A fight between friends, round by round: Find a partner on Hex Boxing's home puts a seat's card in #hex-boxing, a friend already there takes it with Join, both are ready, the host starts; round one ends with one boxer a round up on both screens and round two begins, the fight goes on until a boxer has two rounds, the result shows in both rooms, and Scoreboard says it in the channel with both names | `tests/game-hex-boxing.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

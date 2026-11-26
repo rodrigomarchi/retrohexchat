@@ -32,14 +32,27 @@ export function autopilotRequest(scope = globalThis) {
 }
 
 /**
+ * Leaves the state the autopilot was last shown on the page's request, as
+ * `seen`, where the video director reads how far a match has gone (its
+ * round, its phase) to film each part of it.
+ * @param {object} observed - what the controller was shown this step
+ * @param {object} [scope]
+ */
+export function reportSeen(observed, scope = globalThis) {
+  const request = scope?.[AUTOPILOT_GLOBAL];
+  if (request && typeof request === "object") request.seen = observed?.state ?? null;
+}
+
+/**
  * @param {object} options
  * @param {{ nextInputs: (observed: object) => object|null }} options.controller
  * @param {Record<string, readonly string[]>} options.inputs - each input's keys, the first pressed
  * @param {() => object} options.observe - what the controller is shown each step
  * @param {{ dispatchEvent: (event: Event) => boolean }} [options.target]
+ * @param {(observed: object) => void} [options.report] - told what each step was shown
  * @returns {{ step: () => void, release: () => void, held: () => string[] }}
  */
-export function createAutopilot({ controller, inputs, observe, target = globalThis }) {
+export function createAutopilot({ controller, inputs, observe, target = globalThis, report }) {
   const held = new Set();
 
   const send = (type, name) => {
@@ -49,7 +62,9 @@ export function createAutopilot({ controller, inputs, observe, target = globalTh
 
   return {
     step() {
-      const next = controller.nextInputs(observe());
+      const observed = observe();
+      report?.(observed);
+      const next = controller.nextInputs(observed);
       if (!next) return;
       for (const name of Object.keys(inputs)) {
         const want = next[name] === true;

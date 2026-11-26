@@ -90,7 +90,7 @@ import { encodeGameReady } from "../net_protocol.js";
 import { cueSounds } from "./events.js";
 import { createFlow } from "./flow.js";
 import { aiRandom, createRng, freshSeed } from "./rng.js";
-import { createAutopilot } from "./autopilot.js";
+import { createAutopilot, reportSeen } from "./autopilot.js";
 import { toCanvasPoint } from "./pointer.js";
 import { createGameAudio } from "./synth.js";
 import { MSG, dispatcher } from "./messages.js";
@@ -607,6 +607,7 @@ export function defineGame(def) {
         controller,
         inputs: def.inputs,
         target: this._keyboardTarget,
+        report: reportSeen,
         observe: () => ({
           ...(def.ai.observe ? def.ai.observe(this) : { state: this.gameState }),
           difficulty,

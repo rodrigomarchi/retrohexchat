@@ -4,6 +4,7 @@ import {
   AUTOPILOT_META,
   autopilotRequest,
   createAutopilot,
+  reportSeen,
 } from "../../../../js/lib/games/core/autopilot.js";
 import { matchPerTest } from "../../../support/games/harness.js";
 
@@ -76,6 +77,22 @@ describe("createAutopilot", () => {
     expect(pilot.held()).toEqual([]);
   });
 
+  it("tells `report` what each step was shown", () => {
+    const shown = [];
+    const pilot = createAutopilot({
+      controller: scripted([{}]),
+      inputs,
+      observe: () => ({ state: { round: shown.length + 1 } }),
+      target: listeningKeyboard().target,
+      report: (observed) => shown.push(observed.state.round),
+    });
+
+    pilot.step();
+    pilot.step();
+
+    expect(shown).toEqual([1, 2]);
+  });
+
   it("lets go of every held key on release", () => {
     const { target, heard } = listeningKeyboard();
     const pilot = createAutopilot({
@@ -120,6 +137,24 @@ describe("a seat on autopilot", () => {
     match.advance(20_000);
 
     expect(match.engines.host.gameState.score1).toBeGreaterThan(0);
+  });
+
+  it("leaves the state it last played on the page's request, for the director", async () => {
+    builtByTheE2EServer();
+    vi.stubGlobal(AUTOPILOT_GLOBAL, { difficulty: "hard" });
+    const match = await play({ mode: "solo" });
+
+    match.advance(5_000);
+
+    const { seen } = globalThis[AUTOPILOT_GLOBAL];
+    expect(seen.phase).toBe(match.engines.host.gameState.phase);
+    expect(seen.wave).toBe(match.engines.host.gameState.wave);
+  });
+
+  it("reports nothing on a page that asked for no autopilot", () => {
+    const scope = {};
+    reportSeen({ state: { round: 1 } }, scope);
+    expect(scope).toEqual({});
   });
 
   it("leaves the seat to the person when nothing asks for it", async () => {
