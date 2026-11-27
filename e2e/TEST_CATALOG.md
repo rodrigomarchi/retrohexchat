@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **286 spec files** under `e2e/tests/`.
-- **721 Playwright `test()` cases**.
-- **667 documented flows**, 666 done, 1 not done.
+- **287 spec files** under `e2e/tests/`.
+- **724 Playwright `test()` cases**.
+- **670 documented flows**, 669 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -530,6 +530,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N118 | Light Trails' home has its one way; Play opens the game in a tab of its own, its menu naming First to 3 games, and a match against the computer at Hard, the player's own cycle steered by the seat's AI, is played to its result | `tests/game-light-trails.spec.ts` | done |
 | N119 | Find a partner on Light Trails' home puts a seat's card in #light-trails; a friend's Join takes it, both are ready, the match runs with both cycles steered from their own screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-light-trails.spec.ts` | done |
 | N120 | From the stands: while two friends play Light Trails, a third finds their match under #light-trails' topic and in the Live tab of the game's home, and watches it from there in a tab of its own — Live, one watching, both players named — to the end, where the watch page gives the score; its "Play Light Trails yourself" leads to the home, where the watcher's Find a partner is taken by the match's winner, and the loser, from the channel, watches that match, its players told one is watching | `tests/game-light-trails.spec.ts` | done |
+| N121 | Pixel Tanks' home has its one way; Play opens the game in a tab of its own, its menu naming Best of 3 rounds, and a match against the computer at Hard, the player's own tank driven by the seat's AI, is played to its result | `tests/game-pixel-tanks.spec.ts` | done |
+| N122 | Find a partner on Pixel Tanks' home puts a seat's card in #pixel-tanks; a friend's Join takes it, both are ready, the match runs with both tanks driven from their own screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-pixel-tanks.spec.ts` | done |
+| N123 | A rematch: a Pixel Tanks match made with Find a partner and played to its end shows Final Score on both screens; the one who did not win presses Rematch on it and, the seat having been taken for this game, the second match starts on both screens in the same room with no second yes, played to its end with its own Final Score | `tests/game-pixel-tanks.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 
