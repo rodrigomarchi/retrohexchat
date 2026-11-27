@@ -51,6 +51,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChatWeb.P2PLive.Events
   alias RetroHexChatWeb.P2PLive.SessionLink
   alias RetroHexChatWeb.P2PLive.SessionStatus
+  alias RetroHexChatWeb.P2PLive.SessionTitle
 
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
@@ -72,6 +73,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
         share_url: nil,
         share_slug: nil,
         match_game: nil,
+        session_game: nil,
         denied: nil,
         surface_left: false,
         ended: nil
@@ -125,7 +127,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
       <.desktop id="p2p-desktop" persist_key="p2p" class="flex-1" data-testid="p2p-desktop">
         <.desktop_window
           id="p2p-call"
-          title={window_title(@p2p_session, @match_game)}
+          title={window_title(@p2p_session, SessionTitle.game(assigns))}
           pinned
           default_maximized
           body_class="h-full min-h-0 overflow-hidden p-1"
@@ -633,17 +635,5 @@ defmodule RetroHexChatWeb.App.P2PLive do
   defp panel_status(%{state: :invite_sent}), do: "pending"
   defp panel_status(_p2p), do: "lobby"
 
-  # A match says which game it is, because that is what somebody who followed
-  # the link came for; a plain session says who is on the other end.
-  defp window_title(%{peer_nick: peer}, %{name: game})
-       when is_binary(peer) and peer != "",
-       do: dgettext("chat", "%{game} · %{peer}", game: game, peer: peer)
-
-  defp window_title(_p2p, %{name: game}),
-    do: dgettext("chat", "%{game} · match", game: game)
-
-  defp window_title(%{peer_nick: peer}, _game) when is_binary(peer) and peer != "",
-    do: dgettext("chat", "P2P · %{peer}", peer: peer)
-
-  defp window_title(_p2p, _game), do: dgettext("chat", "P2P Session")
+  defp window_title(p2p, game), do: SessionTitle.title(p2p, game)
 end

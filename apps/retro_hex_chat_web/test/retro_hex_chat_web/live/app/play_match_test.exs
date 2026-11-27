@@ -350,6 +350,46 @@ defmodule RetroHexChatWeb.App.PlayMatchTest do
     end
   end
 
+  describe "a second game in the same session" do
+    test "titles the window and the tab after the game being played, not the link's", %{
+      conn: conn
+    } do
+      host = register("THost") |> identify()
+      guest = register("TGuest") |> identify()
+      session = match_lobby(host)
+
+      {:ok, host_view, _html} =
+        conn |> chat_conn(host.nickname) |> live(~p"/play/#{@game}/#{session.token}")
+
+      {:ok, guest_view, _html} =
+        conn |> chat_conn(guest.nickname) |> live(~p"/play/#{@game}/#{session.token}")
+
+      for view <- [host_view, guest_view] do
+        render_submit(view, "p2p_room_ready", %{"p2p_setup" => @setup_defaults})
+        render_click(view, "lobby_webrtc_ready", %{})
+      end
+
+      render_click(host_view, "p2p_room_start", %{})
+      render_click(host_view, "lobby_connected", %{})
+      render_click(guest_view, "lobby_connected", %{})
+
+      {:ok, pong} = Catalog.get_game(@game)
+      assert render(host_view) =~ "#{pong.name} · #{guest.nickname}"
+
+      # The first game over, the host proposes another and the guest says yes.
+      :ok = Lobby.end_game(session.token, host.id)
+      :ok = Lobby.propose_game(session.token, host.id, "light_trails")
+      :ok = Lobby.respond_game(session.token, guest.id, true)
+
+      {:ok, trails} = Catalog.get_game("light_trails")
+      html = render(host_view)
+      assert html =~ "#{trails.name} · #{guest.nickname}"
+      refute html =~ "#{pong.name} · #{guest.nickname}"
+      assert assigns(host_view).page_title =~ trails.name
+      assert render(guest_view) =~ "#{trails.name} · #{host.nickname}"
+    end
+  end
+
   describe "the address a match keeps" do
     test "the session is what says it is a match, not the path", %{conn: conn} do
       host = register("MHost") |> identify()

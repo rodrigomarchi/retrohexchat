@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.P2PLive.SessionEvents do
   alias RetroHexChatWeb.MediaDevices
   alias RetroHexChatWeb.P2PLive.Components.P2PGameIsland
   alias RetroHexChatWeb.P2PLive.Components.P2PMediaIsland
-  alias RetroHexChatWeb.P2PLive.{Console, SessionLink, SessionStatus, WebRTCStart}
+  alias RetroHexChatWeb.P2PLive.{Console, SessionLink, SessionStatus, SessionTitle, WebRTCStart}
   alias RetroHexChatWeb.Params
 
   defp peer_restart_reason("lobby_manual_retry"), do: "peer_manual_retry"
@@ -307,7 +307,7 @@ defmodule RetroHexChatWeb.P2PLive.SessionEvents do
 
     SessionLink.send_watchers(p2p.token)
 
-    {:halt, Console.open(socket, "games")}
+    {:halt, socket |> SessionTitle.game_started(payload.game_id) |> Console.open("games")}
   end
 
   def handle(
