@@ -20,6 +20,7 @@ import {
   createInitialState,
   determineWinner,
   // ex_dna:disable-for-lines:9 this game's own imports
+  avalancheProximity,
   getScrollSpeed,
   obstaclesAround,
   packState,
@@ -102,8 +103,7 @@ function race(game, previous) {
   playFlags(game, EVENT_SOUNDS, state.events);
   game.audio.updateSkiPitch(Math.max(getScrollSpeed(state.p1), getScrollSpeed(state.p2)));
   if (state.mode !== GAME_MODE.CLEAN_RUN) {
-    const avalancheScreenY = state.avalancheY - state.scrollY;
-    const proximity = Math.max(0, Math.min(1, avalancheScreenY / 380));
+    const proximity = avalancheProximity(state);
     if (proximity > 0.3 && game.frameCount % 20 === 0) game.audio.playAvalancheRumble(proximity);
   }
   state.frameCount = game.frameCount;

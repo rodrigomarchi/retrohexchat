@@ -221,4 +221,29 @@ describe("Hex Skiing Renderer", () => {
       expect(parseInt(drawn.font.match(/(\d+)px/)[1], 10)).toBeGreaterThanOrEqual(10);
     }
   });
+
+  // The bar filled only once the avalanche was on screen, a few seconds
+  // before it caught anybody: it warned of nothing. It fills as the
+  // avalanche gains, from well above the view.
+  it("fills the avalanche bar as it gains, before it comes into view", () => {
+    const widthAt = (screenY) => {
+      const state = { ...createInitialState(GAME_MODE.AVALANCHE_ESCAPE, 7), phase: PHASE.RACING };
+      state.scrollY = 5000;
+      state.avalancheY = state.scrollY + screenY;
+      const ctx = createMockCtx();
+      const bars = [];
+      const fillRect = ctx.fillRect;
+      ctx.fillRect = (x, y, w, h) => {
+        // The bar's fill: from x 5, at the bar's row, in the fill's colours.
+        if (x === 5 && y === 480 - 15 && h === 8 && ctx.fillStyle !== PALETTE.muted) bars.push(w);
+        return fillRect(x, y, w, h);
+      };
+      render(ctx, state, PALETTE, 0, []);
+      return bars.at(-1) ?? 0;
+    };
+    expect(widthAt(-2000)).toBe(0);
+    expect(widthAt(-600)).toBeGreaterThan(0);
+    expect(widthAt(-600)).toBeLessThan(widthAt(-100));
+    expect(widthAt(-100)).toBeLessThan(widthAt(300));
+  });
 });

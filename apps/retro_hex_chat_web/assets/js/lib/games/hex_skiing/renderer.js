@@ -20,6 +20,7 @@ import {
   ITEM_W,
   ITEM_H,
   COURSE_LENGTH,
+  avalancheProximity,
 } from "./physics.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
@@ -541,9 +542,7 @@ function drawRoundWins(ctx, state, colors) {
 }
 
 function drawAvalancheBar(ctx, state, colors) {
-  const avalancheScreenY = state.avalancheY - state.scrollY;
-  // Proximity: 0 = far (top of screen), 1 = at skier
-  const proximity = Math.max(0, Math.min(1, avalancheScreenY / SKIER_SCREEN_Y));
+  const proximity = avalancheProximity(state);
 
   ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
   ctx.fillRect(4, CANVAS_H - 16, 102, 10);

@@ -19,9 +19,10 @@
  * is read from the host's autopilot (`slopeSeen`). A scene during the escape
  * fails, to be retaken, if the escape ends before it does.
  *
- * Filmed in the order 1, 2, 3, 4, 0, 5, 6, 7: the escape from its start to
- * its end — the slope thickening, the front coming into view, the cold open
- * once it is close — then the clean run.
+ * Filmed in the order 0, 1, 2, 3, 4, 5, 6, 7: the cold open from an escape
+ * of its own (the front is on screen only for its last seconds), then one
+ * escape from its start to its end — the slope thickening, the bar filling,
+ * the avalanche catching them — then the clean run.
  *
  *   make e2e.director SHOTS=/abs/shots.json OUT=/abs/takes FRESH=1
  */
@@ -78,9 +79,10 @@ const EARLIER: Line[] = [
 const ESCAPE_TIMEOUT = 6 * 60_000;
 /** Where the slope grows thicker, and where the avalanche's front is on screen. */
 const THICKER_AT = 18_000;
-const FRONT_IN_VIEW = 20;
-const FRONT_CLOSE = 110;
-const FRONT_NEAR = 220;
+// The avalanche bar fills from three screens above the view; the front comes
+// into view only seconds before the end.
+const BAR_RISING = -900;
+const FRONT_CLOSE = -250;
 
 type Person = TestUser;
 type Rooms = { host: Page; guest: Page };
@@ -282,6 +284,29 @@ test.describe("EP21 Hex Skiing", () => {
     );
   }
 
+  test("00 cold open", async () => {
+    const shot = shotFor(0);
+    test.setTimeout(ESCAPE_TIMEOUT + 4 * 60_000);
+    // An escape of its own: the front comes into view seconds before the end,
+    // and the cold open runs over those seconds to the end.
+    await closeSession();
+    const r = await escapeAt((seen) => seen.avalancheY >= 0);
+    await r.host.bringToFront();
+    await restCursor(r.host);
+    await restCursor(r.guest);
+    await filmCrew(
+      { [PIXEL]: r.host, [KESTREL]: r.guest },
+      shot,
+      async ({ cue, focus }) => {
+        await focus(matchCanvas(r.host, ESCAPE));
+        await cue("It started slower");
+        await cue("This is Hex Skiing");
+      },
+      { kind: "split", cameras: [PIXEL, KESTREL] },
+    );
+    await closeSession();
+  });
+
   test("01 no finish line", async () => {
     const shot = shotFor(1);
     test.setTimeout(ESCAPE_TIMEOUT + 4 * 60_000);
@@ -350,7 +375,7 @@ test.describe("EP21 Hex Skiing", () => {
   test("04 the bar", async () => {
     const shot = shotFor(4);
     test.setTimeout(ESCAPE_TIMEOUT + 4 * 60_000);
-    const r = await escapeAt((seen) => seen.avalancheY >= FRONT_IN_VIEW);
+    const r = await escapeAt((seen) => seen.avalancheY >= BAR_RISING);
     await r.host.bringToFront();
     await filmCrew(
       { [PIXEL]: r.host, [KESTREL]: r.guest },
@@ -361,22 +386,17 @@ test.describe("EP21 Hex Skiing", () => {
         await focus(matchCanvas(r.guest, ESCAPE));
         await cue("The bar at the bottom left");
         focusBox(r.host, await avalancheBar(r.host));
+        await r.host.waitForTimeout(1_500);
         await stillOn("4");
       },
       { kind: "split", cameras: [PIXEL, KESTREL] },
     );
   });
 
-  test("00 cold open", async () => {
-    test.setTimeout(ESCAPE_TIMEOUT + 4 * 60_000);
-    const r = await escapeAt((seen) => seen.avalancheY >= FRONT_CLOSE);
-    await onBothScreens(0, r, ["It started slower", "This is Hex Skiing"]);
-  });
-
   test("05 caught", async () => {
     const shot = shotFor(5);
     test.setTimeout(ESCAPE_TIMEOUT * 2 + 4 * 60_000);
-    const r = await escapeAt((seen) => seen.avalancheY >= FRONT_NEAR);
+    const r = await escapeAt((seen) => seen.avalancheY >= FRONT_CLOSE);
     await r.host.bringToFront();
     await filmCrew(
       { [PIXEL]: r.host, [KESTREL]: r.guest },

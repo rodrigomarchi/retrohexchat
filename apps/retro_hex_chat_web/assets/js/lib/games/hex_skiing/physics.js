@@ -747,6 +747,21 @@ export function updateAvalanche(state) {
   return s;
 }
 
+/** How far above the view the avalanche starts to count as coming: three screens up. */
+const AVALANCHE_FAR = -3 * CANVAS_H;
+
+/**
+ * How close the avalanche is, 0 to 1: nothing while it is three screens or
+ * more above the view, rising as it gains, 1 at the skiers. It rises while
+ * the avalanche is still out of sight — the bar and the rumble warn with it.
+ * @param {object} state
+ * @returns {number}
+ */
+export function avalancheProximity(state) {
+  const screenY = state.avalancheY - state.scrollY;
+  return Math.max(0, Math.min(1, (screenY - AVALANCHE_FAR) / (SKIER_SCREEN_Y - AVALANCHE_FAR)));
+}
+
 /**
  * Update blizzard cycle.
  */
