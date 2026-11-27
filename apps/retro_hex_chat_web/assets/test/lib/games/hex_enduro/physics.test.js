@@ -36,6 +36,9 @@ import {
   SCORE_FUEL_PICKUP,
   COLLISION_TIMER_FRAMES,
   MAX_DAYS,
+  DAY_TARGETS,
+  DAY_TARGET_BONUS,
+  checkDayTarget,
 } from "../../../../js/lib/games/hex_enduro/physics.js";
 import { PHASE, GAME_MODE, WEATHER, EVENT } from "../../../../js/lib/games/hex_enduro/protocol.js";
 
@@ -848,5 +851,84 @@ describe("Hex Enduro Physics", () => {
       expect(held.state.p1.boost).toBe(0);
       expect(stepTick(state, idle, idle, pressed.turboHeld).turboHeld.p1).toBe(false);
     });
+  });
+});
+
+// The day's target used to be a number on the HUD that nothing read: now
+// passing it is worth a bonus, once a day.
+describe("the day's target", () => {
+  const racing = (mode = GAME_MODE.CLASSIC_DUEL) => ({
+    ...createInitialState(mode, 7),
+    phase: PHASE.RACING,
+  });
+  const withToday = (state, p1Day, p2Day = 0) => ({
+    ...state,
+    p1: { ...state.p1, dayOvertakes: p1Day },
+    p2: { ...state.p2, dayOvertakes: p2Day },
+  });
+
+  it("gives the bonus to a driver who passes it, once that day", () => {
+    const target = DAY_TARGETS[0];
+    const short = checkDayTarget(withToday(racing(), target - 1));
+    expect(short.p1.score).toBe(0);
+    expect(short.events & EVENT.TARGET_MET).toBe(0);
+
+    const reached = checkDayTarget(withToday(racing(), target));
+    expect(reached.p1.score).toBe(DAY_TARGET_BONUS);
+    expect(reached.p1.targetMet).toBe(true);
+    expect(reached.p2.score).toBe(0);
+    expect(reached.events & EVENT.TARGET_MET).toBeTruthy();
+
+    const later = checkDayTarget(clearEvents(withToday(reached, target + 5)));
+    expect(later.p1.score).toBe(DAY_TARGET_BONUS);
+    expect(later.events & EVENT.TARGET_MET).toBe(0);
+  });
+
+  it("counts each car passed toward today's target", () => {
+    const state = racing();
+    const prev = [{ lane: 1, zPos: 5, speed: 20, type: 0 }];
+    const after = checkOvertakes(
+      {
+        ...state,
+        p1: { ...state.p1, speed: 600 },
+        aiCars: [{ lane: 1, zPos: -3, speed: 20, type: 0 }],
+      },
+      prev,
+    );
+    expect(after.p1.overtakes).toBe(1);
+    expect(after.p1.dayOvertakes).toBe(1);
+  });
+
+  it("starts the count and the target over each new day", () => {
+    const dawn = {
+      ...withToday(racing(), 70, 12),
+      weather: WEATHER.DAWN,
+      weatherTimer: 1,
+      p1: { ...racing().p1, dayOvertakes: 70, targetMet: true, overtakes: 70 },
+    };
+    const next = updateWeather(dawn);
+    expect(next.dayNumber).toBe(2);
+    expect(next.dayOvertakeTarget).toBe(DAY_TARGETS[1]);
+    expect(next.p1).toMatchObject({ dayOvertakes: 0, targetMet: false, overtakes: 70 });
+    expect(next.p2.dayOvertakes).toBe(0);
+  });
+
+  it("keeps the count through a change of weather within a day", () => {
+    const day = { ...withToday(racing(), 30), weather: WEATHER.DAY, weatherTimer: 1 };
+    expect(updateWeather(day).p1.dayOvertakes).toBe(30);
+  });
+
+  it("is a Classic Duel's only", () => {
+    for (const mode of [GAME_MODE.NIGHT_RACE, GAME_MODE.SPRINT]) {
+      const state = withToday(racing(mode), 500);
+      expect(checkDayTarget(state).p1.score).toBe(0);
+    }
+  });
+
+  it("travels to the guest", () => {
+    const state = withToday(racing(), 42, 17);
+    const back = unpackState(packState(state));
+    expect(back.p1.dayOvertakes).toBe(42);
+    expect(back.p2.dayOvertakes).toBe(17);
   });
 });

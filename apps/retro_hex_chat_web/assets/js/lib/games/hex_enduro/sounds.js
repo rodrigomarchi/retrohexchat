@@ -17,6 +17,8 @@ export const SOUNDS = {
   overtakePlayer: notes([500, 700, 900], { wave: "square", note: 0.07, gap: 0.01, vol: 0.1 }),
   /** A crash: falling 300 → 50 Hz sawtooth, 300 ms. */
   collision: sweep("sawtooth", 300, 50, 0.3, 0.15),
+  /** The day's target passed: a rising four-note run, G5-C6-E6-G6. */
+  targetMet: notes([784, 1047, 1319, 1568], { wave: "square", note: 0.07, gap: 0.01, vol: 0.1 }),
   /** Fuel picked up: C5-E5-G5, each note ringing into the next. */
   fuelPickup: notes([523, 659, 784], { wave: "sine", note: 0.08, gap: -0.02, vol: 0.1 }),
   /** A low triangle rumble, 80 Hz, 500 ms. */

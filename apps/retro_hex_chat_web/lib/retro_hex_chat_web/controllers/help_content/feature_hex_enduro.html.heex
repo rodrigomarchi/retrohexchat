@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_games",
-    "Pseudo-3D racing duel through day, snow, fog, and night. Both players race on the same road — overtake AI cars and your opponent for points. Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days."
+    "Pseudo-3D racing duel through day, snow, fog, and night. Both players race on the same road — overtake AI cars and your opponent for points. Manage fuel, use turbo boosts, draft in slipstreams, and pass each day's target for a bonus. Three days — the highest total score wins."
   )}
 </p>
 <.diagram_game_enduro class="w-full max-w-lg mx-auto my-4" />
@@ -61,7 +61,13 @@
       "Snow reduces max speed, fog limits visibility, night shows headlights only"
     )}
   </li>
-  <li>{dgettext("help_games", "Best of 3 days — highest total score wins")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Each day has a target — 80, 100 and 120 cars on days 1 to 3: pass it that day for a 25-point bonus"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Three days — the highest total score wins")}</li>
 </ul>
 <.help_h4 icon={:icon_tab_modes}>{dgettext("help_games", "Modes")}</.help_h4>
 <ul>
@@ -74,7 +80,7 @@
   <li>
     <strong>{dgettext("help_games", "Night Race")}</strong> {dgettext(
       "help_games",
-      "— 3-minute race in permanent darkness with fog bursts"
+      "— 3-minute race in permanent darkness"
     )}
   </li>
   <li>

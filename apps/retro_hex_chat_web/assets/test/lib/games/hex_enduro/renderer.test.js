@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { PHASE, GAME_MODE, WEATHER } from "../../../../js/lib/games/hex_enduro/protocol.js";
 import { createInitialState } from "../../../../js/lib/games/hex_enduro/physics.js";
 import { getColors, render } from "../../../../js/lib/games/hex_enduro/renderer.js";
-import { createMockCtx } from "../../../support/games/renderer_tests.js";
+import { createMockCtx, drawnTexts } from "../../../support/games/renderer_tests.js";
 
 function createDefaultColors() {
   return {
@@ -112,6 +112,28 @@ describe("Hex Enduro Renderer", () => {
         state.phase = PHASE.RACING;
         expect(() => render(createMockCtx(), state, colors, 0, true)).not.toThrow();
       }
+    });
+
+    it("counts today's overtakes against the day's target, lit once it is passed", () => {
+      const state = { ...createInitialState(GAME_MODE.CLASSIC_DUEL, 7), phase: PHASE.RACING };
+      const short = { ...state, p1: { ...state.p1, overtakes: 90, dayOvertakes: 12 } };
+      render(ctx, short, colors, 0, true);
+      expect(drawnTexts(ctx)).toContain(`OVT: 12/${state.dayOvertakeTarget}`);
+
+      const inks = [];
+      const lit = createMockCtx();
+      const fillText = lit.fillText;
+      lit.fillText = (text, ...rest) => {
+        inks.push([text, lit.fillStyle]);
+        return fillText(text, ...rest);
+      };
+      const met = {
+        ...state,
+        p1: { ...state.p1, dayOvertakes: state.dayOvertakeTarget, targetMet: true },
+      };
+      render(lit, met, colors, 0, true);
+      const label = `OVT: ${state.dayOvertakeTarget}/${state.dayOvertakeTarget} ✓`;
+      expect(inks.find(([text]) => text === label)?.[1]).toBe(colors.fuel);
     });
 
     it("renders with boost active", () => {

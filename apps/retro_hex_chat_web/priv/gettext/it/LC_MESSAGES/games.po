@@ -123,7 +123,7 @@ msgstr "Gioca contro IA"
 msgid "Solo AI"
 msgstr "IA solitaria"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:454
+#: lib/retro_hex_chat_web/live/app/play_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "The game engine could not be loaded."
 msgstr "Impossibile caricare l'engine del gioco."
@@ -278,11 +278,6 @@ msgstr "3 minuti"
 msgid "90 seconds"
 msgstr "90 secondi"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
-#, elixir-autogen, elixir-format
-msgid "Best of 3 days"
-msgstr "Al meglio di 3 giorni"
-
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:638
 #, elixir-autogen, elixir-format
 msgid "Lane"
@@ -394,13 +389,13 @@ msgstr "Comandi da tastiera"
 msgid "Tips"
 msgstr "Suggerimenti"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:54
-#: lib/retro_hex_chat_web/live/app/play_live.ex:96
+#: lib/retro_hex_chat_web/live/app/play_live.ex:55
+#: lib/retro_hex_chat_web/live/app/play_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "Giochi retro"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:169
+#: lib/retro_hex_chat_web/live/app/play_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Play with someone"
 msgstr "Gioca con qualcuno"
@@ -1049,3 +1044,8 @@ msgstr "3 vite — vince il punteggio superiore"
 #, elixir-autogen, elixir-format
 msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr "La sessione sarà chiusa a causa dell'inattività presto. Selezionare un gioco per mantenerlo attivo."
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
+#, elixir-autogen, elixir-format
+msgid "3 days, top score"
+msgstr "3 giorni, punteggio più alto"

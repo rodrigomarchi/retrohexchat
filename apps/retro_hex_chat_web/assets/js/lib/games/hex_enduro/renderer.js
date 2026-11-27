@@ -477,12 +477,15 @@ function drawHUD(ctx, state, colors, player, opponent, pColor, oppColor, isHost,
     drawBar(ctx, 168, CANVAS_H - 20, 80, 10, fuelRatio, fuelColor);
   }
 
-  // Overtakes (center-right)
-  ctx.fillStyle = gameColor("888");
-  const overtakeText =
-    state.mode === GAME_MODE.CLASSIC_DUEL
-      ? `${player.overtakes}/${state.dayOvertakeTarget}`
-      : `${player.overtakes}`;
+  // Overtakes (center-right): in a Classic Duel, today's against the day's
+  // target, lit once it is passed and its bonus taken.
+  const classic = state.mode === GAME_MODE.CLASSIC_DUEL;
+  const today = player.dayOvertakes ?? 0;
+  const met = classic && today >= state.dayOvertakeTarget;
+  ctx.fillStyle = met ? colors.fuel : gameColor("888");
+  const overtakeText = classic
+    ? `${today}/${state.dayOvertakeTarget}${met ? " ✓" : ""}`
+    : `${player.overtakes}`;
   ctx.fillText(jt`OVT: ${overtakeText}`, 270, CANVAS_H - 10);
 
   // Timer (right) for timed modes

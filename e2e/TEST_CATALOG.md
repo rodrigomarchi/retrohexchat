@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **287 spec files** under `e2e/tests/`.
-- **724 Playwright `test()` cases**.
-- **670 documented flows**, 669 done, 1 not done.
+- **288 spec files** under `e2e/tests/`.
+- **727 Playwright `test()` cases**.
+- **673 documented flows**, 672 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -533,6 +533,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N121 | Pixel Tanks' home has its one way; Play opens the game in a tab of its own, its menu naming Best of 3 rounds, and a match against the computer at Hard, the player's own tank driven by the seat's AI, is played to its result | `tests/game-pixel-tanks.spec.ts` | done |
 | N122 | Find a partner on Pixel Tanks' home puts a seat's card in #pixel-tanks; a friend's Join takes it, both are ready, the match runs with both tanks driven from their own screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-pixel-tanks.spec.ts` | done |
 | N123 | A rematch: a Pixel Tanks match made with Find a partner and played to its end shows Final Score on both screens; the one who did not win presses Rematch on it and, the seat having been taken for this game, the second match starts on both screens in the same room with no second yes, played to its end with its own Final Score | `tests/game-pixel-tanks.spec.ts` | done |
+| N124 | Hex Enduro's home lists its three races — Hex Enduro (three days), Night Race and Sprint; Play on each opens the game in a tab of its own, its menu naming the race, and against the computer at Hard each is a race under way | `tests/game-hex-enduro.spec.ts` | done |
+| N125 | Find a partner on the home's Sprint row puts a seat's card in #hex-enduro; a friend's Join takes it, both are ready, the race runs with both cars driven from their own screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-enduro.spec.ts` | done |
+| N126 | A double header: a Sprint made with Find a partner is raced to its Final Score; in the same session the host goes Back to games, proposes Night Race from the session's games, the friend is asked — "wants to play" — and accepts, and the night race is run in the same room to its own Final Score | `tests/game-hex-enduro.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

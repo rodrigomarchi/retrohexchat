@@ -123,7 +123,7 @@ msgstr "Играть против ИИ"
 msgid "Solo AI"
 msgstr "ИИ соло"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:454
+#: lib/retro_hex_chat_web/live/app/play_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "The game engine could not be loaded."
 msgstr "Не удалось загрузить игровой движок."
@@ -278,11 +278,6 @@ msgstr "3 минуты"
 msgid "90 seconds"
 msgstr "90 секунд"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
-#, elixir-autogen, elixir-format
-msgid "Best of 3 days"
-msgstr "Лучший из 3 дней"
-
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:638
 #, elixir-autogen, elixir-format
 msgid "Lane"
@@ -394,13 +389,13 @@ msgstr "Управление с клавиатуры"
 msgid "Tips"
 msgstr "Советы"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:54
-#: lib/retro_hex_chat_web/live/app/play_live.ex:96
+#: lib/retro_hex_chat_web/live/app/play_live.ex:55
+#: lib/retro_hex_chat_web/live/app/play_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "Ретро-игры"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:169
+#: lib/retro_hex_chat_web/live/app/play_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Play with someone"
 msgstr "Играть с кем-то"
@@ -1054,3 +1049,8 @@ msgstr "3 жизни — побеждает набравший больше вс
 #, elixir-autogen, elixir-format
 msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr "Сеанс скоро будет закрыт из-за бездействия. Выберите игру, чтобы сохранить его активным."
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
+#, elixir-autogen, elixir-format
+msgid "3 days, top score"
+msgstr "3 дня, лучший результат"

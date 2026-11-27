@@ -356,7 +356,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: "hex_invaders"}), do: dgettext("games", "10 waves")
   def goal_label(%{id: "hex_invaders_coop"}), do: dgettext("games", "10 waves")
   def goal_label(%{id: "hex_invaders_blitz"}), do: dgettext("games", "5 waves")
-  def goal_label(%{id: "hex_enduro"}), do: dgettext("games", "Best of 3 days")
+  def goal_label(%{id: "hex_enduro"}), do: dgettext("games", "3 days, top score")
   def goal_label(%{id: "hex_enduro_night"}), do: dgettext("games", "3 minutes")
   def goal_label(%{id: "hex_enduro_sprint"}), do: dgettext("games", "90 seconds")
   def goal_label(%{id: "hex_tennis_quick"}), do: dgettext("games", "First to 3 games")

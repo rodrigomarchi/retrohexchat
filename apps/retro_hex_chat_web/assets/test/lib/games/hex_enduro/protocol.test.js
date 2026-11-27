@@ -164,9 +164,9 @@ describe("Hex Enduro Protocol", () => {
       expect(new DataView(buf).getUint8(0)).toBe(0x80);
     });
 
-    it("produces correct buffer size (141 bytes)", () => {
+    it("produces correct buffer size (146 bytes)", () => {
       const buf = SNAPSHOT.encode(createTestState());
-      expect(buf.byteLength).toBe(141);
+      expect(buf.byteLength).toBe(146);
     });
   });
 

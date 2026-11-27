@@ -85,7 +85,10 @@ const WEATHER_DURATIONS = {
 const WEATHER_SEQUENCE = [WEATHER.DAY, WEATHER.SNOW, WEATHER.FOG, WEATHER.NIGHT, WEATHER.DAWN];
 
 // ── Day targets ──
-const DAY_TARGETS = [200, 250, 300];
+// Cars to pass each day of a Classic Duel; whoever passes the day's target
+// that day takes DAY_TARGET_BONUS points, once a day.
+export const DAY_TARGETS = [80, 100, 120];
+export const DAY_TARGET_BONUS = 25;
 export const MAX_DAYS = 3;
 
 // ── Timed modes ──
@@ -160,6 +163,8 @@ function createPlayerState(lane) {
     fuel: FUEL_MAX,
     fuelBurn: 0,
     overtakes: 0,
+    dayOvertakes: 0,
+    targetMet: false,
     score: 0,
     boost: 0,
     turboCooldown: 0,
@@ -192,6 +197,7 @@ export function packState(state) {
     p1Speed: state.p1.speed,
     p1Fuel: state.p1.fuel,
     p1Overtakes: state.p1.overtakes,
+    p1DayOvertakes: state.p1.dayOvertakes,
     p1Score: state.p1.score,
     p1Boost: state.p1.boost,
     p1ZOffset: state.p1.zOffset,
@@ -202,6 +208,7 @@ export function packState(state) {
     p2Speed: state.p2.speed,
     p2Fuel: state.p2.fuel,
     p2Overtakes: state.p2.overtakes,
+    p2DayOvertakes: state.p2.dayOvertakes,
     p2Score: state.p2.score,
     p2Boost: state.p2.boost,
     p2ZOffset: state.p2.zOffset,
@@ -248,6 +255,7 @@ export function unpackState(flat) {
       speed: flat.p1Speed,
       fuel: flat.p1Fuel,
       overtakes: flat.p1Overtakes,
+      dayOvertakes: flat.p1DayOvertakes,
       score: flat.p1Score,
       boost: flat.p1Boost,
       zOffset: flat.p1ZOffset,
@@ -261,6 +269,7 @@ export function unpackState(flat) {
       speed: flat.p2Speed,
       fuel: flat.p2Fuel,
       overtakes: flat.p2Overtakes,
+      dayOvertakes: flat.p2DayOvertakes,
       score: flat.p2Score,
       boost: flat.p2Boost,
       zOffset: flat.p2ZOffset,
@@ -512,6 +521,35 @@ export function checkCollisions(state) {
 
 // ── Overtake Detection ──
 
+/** A car passed: one more overtake, today and in all, and its point. */
+function passedACar(player) {
+  return {
+    ...player,
+    overtakes: player.overtakes + 1,
+    dayOvertakes: player.dayOvertakes + 1,
+    score: player.score + SCORE_AI_OVERTAKE,
+  };
+}
+
+/**
+ * The day's target, in a Classic Duel: a driver who has passed it today
+ * takes the bonus, once a day.
+ * @param {object} state
+ * @returns {object}
+ */
+export function checkDayTarget(state) {
+  if (state.mode !== GAME_MODE.CLASSIC_DUEL) return state;
+  let events = state.events;
+  const reach = (player) => {
+    if (player.targetMet || player.dayOvertakes < state.dayOvertakeTarget) return player;
+    events |= EVENT.TARGET_MET;
+    return { ...player, targetMet: true, score: player.score + DAY_TARGET_BONUS };
+  };
+  const p1 = reach(state.p1);
+  const p2 = reach(state.p2);
+  return { ...state, p1, p2, events };
+}
+
 /**
  * Check AI car overtakes (car zPos crossing from positive to negative).
  * @param {object} state
@@ -535,17 +573,14 @@ export function checkOvertakes(state, prevAiCars) {
     const p2Faster = p2.speed > car.speed * 10;
     if (p1Faster && p2Faster) {
       // Both faster: whoever is ahead gets credit
-      if (p1.zOffset >= p2.zOffset) {
-        p1 = { ...p1, overtakes: p1.overtakes + 1, score: p1.score + SCORE_AI_OVERTAKE };
-      } else {
-        p2 = { ...p2, overtakes: p2.overtakes + 1, score: p2.score + SCORE_AI_OVERTAKE };
-      }
+      if (p1.zOffset >= p2.zOffset) p1 = passedACar(p1);
+      else p2 = passedACar(p2);
       s.events |= EVENT.OVERTAKE_AI;
     } else if (p1Faster) {
-      p1 = { ...p1, overtakes: p1.overtakes + 1, score: p1.score + SCORE_AI_OVERTAKE };
+      p1 = passedACar(p1);
       s.events |= EVENT.OVERTAKE_AI;
     } else if (p2Faster) {
-      p2 = { ...p2, overtakes: p2.overtakes + 1, score: p2.score + SCORE_AI_OVERTAKE };
+      p2 = passedACar(p2);
       s.events |= EVENT.OVERTAKE_AI;
     }
   }
@@ -745,8 +780,13 @@ export function updateWeather(state) {
     const newDay = nextWeather === WEATHER.DAY ? state.dayNumber + 1 : state.dayNumber;
     const newTarget = newDay <= MAX_DAYS ? DAY_TARGETS[newDay - 1] : DAY_TARGETS[MAX_DAYS - 1];
 
+    // A new day starts its count, and its target, over.
+    const dayStart = (player) =>
+      newDay === state.dayNumber ? player : { ...player, dayOvertakes: 0, targetMet: false };
     return {
       ...state,
+      p1: dayStart(state.p1),
+      p2: dayStart(state.p2),
       weather: nextWeather,
       weatherTimer: WEATHER_DURATIONS[nextWeather],
       dayNumber: newDay,
@@ -887,6 +927,7 @@ export function stepTick(state, p1Inputs, p2Inputs, turboHeld = { p1: false, p2:
   s = updateSlipstream(s);
   s = checkCollisions(s);
   s = checkOvertakes(s, prevAiCars);
+  s = checkDayTarget(s);
   s = checkPlayerOvertake(s, prevP1Z, prevP2Z);
   s = updateWeather(s);
   s = tickTimers(s);

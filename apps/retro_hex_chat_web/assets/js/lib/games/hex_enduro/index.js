@@ -49,6 +49,7 @@ export const EVENT_SOUNDS = [
   [EVENT.FUEL_PICKUP, "fuelPickup"],
   [EVENT.TURBO_ACTIVATE, "turbo"],
   [EVENT.WEATHER_CHANGE, "weatherChange"],
+  [EVENT.TARGET_MET, "targetMet"],
 ];
 
 function race(game) {

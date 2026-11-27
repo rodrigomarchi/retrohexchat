@@ -123,7 +123,7 @@ msgstr "對戰 AI"
 msgid "Solo AI"
 msgstr "單人 AI"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:454
+#: lib/retro_hex_chat_web/live/app/play_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "The game engine could not be loaded."
 msgstr "無法載入遊戲引擎。"
@@ -278,11 +278,6 @@ msgstr "3 分鐘"
 msgid "90 seconds"
 msgstr "90 秒"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
-#, elixir-autogen, elixir-format
-msgid "Best of 3 days"
-msgstr "三日兩勝"
-
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:638
 #, elixir-autogen, elixir-format
 msgid "Lane"
@@ -394,13 +389,13 @@ msgstr "鍵盤控制"
 msgid "Tips"
 msgstr "提示"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:54
-#: lib/retro_hex_chat_web/live/app/play_live.ex:96
+#: lib/retro_hex_chat_web/live/app/play_live.ex:55
+#: lib/retro_hex_chat_web/live/app/play_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "復古遊戲"
 
-#: lib/retro_hex_chat_web/live/app/play_live.ex:169
+#: lib/retro_hex_chat_web/live/app/play_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Play with someone"
 msgstr "找人一起玩"
@@ -1047,3 +1042,8 @@ msgstr "3 條命,得分最高者獲勝"
 #, elixir-autogen, elixir-format
 msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr "由於閒置過久,工作階段即將關閉。選擇一個遊戲以保持連線。"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
+#, elixir-autogen, elixir-format
+msgid "3 days, top score"
+msgstr "3 天內最高分"

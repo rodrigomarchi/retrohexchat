@@ -2844,7 +2844,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ) <>
             dgettext(
               "help",
-              "Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days. "
+              "Manage fuel, use turbo boosts, and draft in slipstreams. "
+            ) <>
+            dgettext(
+              "help",
+              "Pass each day's target for a bonus. Three days — the highest total score wins. "
             ) <>
             dgettext(
               "help",
@@ -2869,8 +2873,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_enduro,
         description:
-          dgettext("help", "3-minute race in permanent darkness with fog bursts. ") <>
-            dgettext("help", "Headlights-only visibility — pure reflexes. Most overtakes wins. ") <>
+          dgettext("help", "3-minute race in permanent darkness. ") <>
+            dgettext(
+              "help",
+              "Headlights-only visibility — pure reflexes. The highest score wins. "
+            ) <>
             dgettext(
               "help",
               "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo."

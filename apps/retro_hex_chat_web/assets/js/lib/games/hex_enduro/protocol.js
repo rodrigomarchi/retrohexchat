@@ -47,6 +47,7 @@ export const EVENT = {
   WEATHER_CHANGE: 1 << 5,
   DAY_END: 1 << 6,
   SLIPSTREAM: 1 << 7,
+  TARGET_MET: 1 << 8,
 };
 
 // --- Entity limits ---
@@ -59,6 +60,7 @@ const driver = (p) => [
   u16(`${p}Speed`),
   u16(`${p}Fuel`),
   u16(`${p}Overtakes`),
+  u16(`${p}DayOvertakes`),
   u16(`${p}Score`),
   u8(`${p}Boost`),
   u16(`${p}ZOffset`),
@@ -100,7 +102,7 @@ export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
     [u8("lane"), u16("zPos", { round: true })],
   ),
   u16("dayOvertakeTarget"),
-  u8("events"),
+  u16("events"),
   u8("p1Slipstream"),
   u8("p2Slipstream"),
 ]);

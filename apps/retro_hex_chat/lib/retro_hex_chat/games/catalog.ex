@@ -381,7 +381,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "Pseudo-3D racing duel through day, snow, fog, and night. Overtake AI cars and your opponent, manage fuel, draft in slipstreams. Best of 3 days."
+          "Pseudo-3D racing duel through day, snow, fog, and night. Overtake AI cars and your opponent, manage fuel, draft in slipstreams, and pass each day's target for a bonus. Three days — the highest total score wins."
         ),
       icon: "game_enduro",
       controls:
@@ -398,7 +398,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "3-minute race in permanent darkness with fog bursts. Pure reflexes — most overtakes wins. Headlights only visibility."
+          "3-minute race in permanent darkness, headlights only. Pure reflexes — the highest score wins."
         ),
       icon: "game_enduro",
       controls:

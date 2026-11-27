@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_games",
-    "3-minute race in permanent darkness with fog bursts. Headlights-only visibility — pure reflexes. Most overtakes wins. The darkness transforms Enduro into a game of memory and reaction — you can hear cars approaching before you see them."
+    "3-minute race in permanent darkness. Headlights-only visibility — pure reflexes. The highest score wins. The darkness turns Enduro into a game of memory and reaction — the cars ahead are only their lights until your headlights reach them."
   )}
 </p>
 <.diagram_game_enduro class="w-full max-w-lg mx-auto my-4" />
@@ -44,8 +44,7 @@
       "Visibility limited to headlight cone — AI cars appear as colored dots"
     )}
   </li>
-  <li>{dgettext("help_games", "Random fog bursts reduce visibility further")}</li>
-  <li>{dgettext("help_games", "3-minute timed race — most overtakes wins")}</li>
+  <li>{dgettext("help_games", "3-minute timed race — the highest score wins")}</li>
   <li>{dgettext("help_games", "Fuel management still applies")}</li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
@@ -54,21 +53,21 @@
     <strong>{dgettext("help_games", "Trust the headlight cone")}</strong>
     {dgettext(
       "help_games",
-      "— AI cars appear as colored dots at the edge of your vision. React to dot colors to predict their lane."
+      "— A far car shows only as a pair of lights in its own color; where the pair sits tells you its lane."
     )}
   </li>
   <li>
-    <strong>{dgettext("help_games", "Brake before fog")}</strong>
+    <strong>{dgettext("help_games", "Turbo on an empty lane")}</strong>
     {dgettext(
       "help_games",
-      "— Fog bursts reduce visibility to nearly zero. Slow down when fog hits and stay centered."
+      "— Boost only when no lights are ahead in your lane: a crash costs more than the turbo gains."
     )}
   </li>
   <li>
-    <strong>{dgettext("help_games", "Use turbo in clear patches")}</strong>
+    <strong>{dgettext("help_games", "Pass your rival")}</strong>
     {dgettext(
       "help_games",
-      "— Save your turbo boost for fog-free moments when you can actually see the road."
+      "— Overtaking your opponent is worth 5 points, as much as five cars."
     )}
   </li>
   <li>

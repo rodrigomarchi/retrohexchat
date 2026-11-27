@@ -288,11 +288,6 @@ msgstr "あなたの撃破は相手の悩みの種"
 msgid "1 long round — 20-piece igloo, all enemies from the start, temperature drops slowly. Epic arctic endurance."
 msgstr "長い1ラウンド — 20ピースのイグルー、最初から全ての敵が登場、気温はゆっくり低下。壮大な極寒の持久戦。"
 
-#: lib/retro_hex_chat/games/catalog.ex:399
-#, elixir-autogen, elixir-format
-msgid "3-minute race in permanent darkness with fog bursts. Pure reflexes — most overtakes wins. Headlights only visibility."
-msgstr "常に暗闇の中、霧が発生する3分間のレース。純粋な反射神経勝負で、追い越しが最も多い人が勝ち。見えるのはヘッドライトの範囲だけ。"
-
 #: lib/retro_hex_chat/games/catalog.ex:508
 #, elixir-autogen, elixir-format
 msgid "Arctic construction race — jump on floating ice blocks to build your igloo. Steal your opponent's blocks for a 2-piece swing. Best of 5 rounds with polar bears, crabs, geese, and clams."
@@ -362,11 +357,6 @@ msgstr "中央の重力星の周りを回る軌道戦。重力スイングバイ
 #, elixir-autogen, elixir-format
 msgid "Pong reimagined as cyberpunk arcade — neon glow, CRT scanlines, synth audio. First to 11 points (win by 2). Ball speeds up on each rally."
 msgstr "ポンをサイバーパンクのアーケードに再構築 — ネオンの輝き、CRTの走査線、シンセサウンド。先に11点を取った方が勝ち(2点差が必要)。ラリーのたびにボールが加速します。"
-
-#: lib/retro_hex_chat/games/catalog.ex:382
-#, elixir-autogen, elixir-format
-msgid "Pseudo-3D racing duel through day, snow, fog, and night. Overtake AI cars and your opponent, manage fuel, draft in slipstreams. Best of 3 days."
-msgstr "擬似3Dのレースバトル。昼、雪、霧、夜を駆け抜けます。AIの車や対戦相手を追い越し、燃料を管理し、スリップストリームを利用しよう。3日間のうち2日先取。"
 
 #: lib/retro_hex_chat/games/catalog.ex:534
 #, elixir-autogen, elixir-format
@@ -836,3 +826,13 @@ msgstr "シューティング"
 msgctxt "game category"
 msgid "Sports"
 msgstr "スポーツ"
+
+#: lib/retro_hex_chat/games/catalog.ex:399
+#, elixir-autogen, elixir-format
+msgid "3-minute race in permanent darkness, headlights only. Pure reflexes — the highest score wins."
+msgstr "常時暗闇の中、ヘッドライトだけで走る3分間のレースです。純粋な反射神経がものを言います。最高スコアを出した人の勝ちです。"
+
+#: lib/retro_hex_chat/games/catalog.ex:382
+#, elixir-autogen, elixir-format
+msgid "Pseudo-3D racing duel through day, snow, fog, and night. Overtake AI cars and your opponent, manage fuel, draft in slipstreams, and pass each day's target for a bonus. Three days — the highest total score wins."
+msgstr "昼、雪、霧、夜を駆け抜ける擬似3Dのレース対決です。AIの車や対戦相手を追い抜き、燃料を管理し、スリップストリームを使いこなしましょう。各日の目標を超えるとボーナスがもらえます。3日間の合計スコアが最も高い人の勝ちです。"
