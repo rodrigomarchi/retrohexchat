@@ -1103,6 +1103,9 @@ export function packState(state) {
     countdown: state.countdown,
     seed: state.seed,
     temperature: state.temperature,
+    roundWinner: state.roundWinner,
+    p1IglooFlash: state.p1IglooFlash,
+    p2IglooFlash: state.p2IglooFlash,
 
     p1X: state.p1.x,
     p1Row: state.p1.row + 1, // shift so -1 becomes 0
@@ -1216,8 +1219,9 @@ export function unpackState(s) {
     fish: [],
     events: s.events,
 
-    p1IglooFlash: 0,
-    p2IglooFlash: 0,
+    roundWinner: s.roundWinner,
+    p1IglooFlash: s.p1IglooFlash,
+    p2IglooFlash: s.p2IglooFlash,
   };
 
   // Block rows

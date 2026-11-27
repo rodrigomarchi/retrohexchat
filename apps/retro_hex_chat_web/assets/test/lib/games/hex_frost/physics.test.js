@@ -228,3 +228,23 @@ describe("the blocks the guest sees", () => {
     }
   });
 });
+
+// The guest read no round winner and no igloo flash: its screen said ROUND
+// DRAW! while the host's said PLAYER 2 WINS THE ROUND!, and its igloos never
+// flashed on a piece won or stolen.
+describe("what the guest draws of a round's end and an igloo's flash", () => {
+  it("is what the host has", () => {
+    const host = {
+      ...createInitialState(GAME_MODE.BLIZZARD, 3),
+      phase: PHASE.ROUND_END,
+      roundWinner: 2,
+      p1IglooFlash: 15,
+      p2IglooFlash: 7,
+    };
+    expect(unpackState(packState(host))).toMatchObject({
+      roundWinner: 2,
+      p1IglooFlash: 15,
+      p2IglooFlash: 7,
+    });
+  });
+});

@@ -102,6 +102,10 @@ const row = (r) => [
 export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
   ...SEEDED_MATCH_HEADER,
   u16("temperature", { scale: 100 }),
+  // Who took the round, and each igloo's flash: the guest draws both.
+  u8("roundWinner"),
+  u8("p1IglooFlash"),
+  u8("p2IglooFlash"),
   ...player("p1"),
   ...player("p2"),
   u16("events"),
