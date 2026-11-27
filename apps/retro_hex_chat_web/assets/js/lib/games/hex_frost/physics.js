@@ -49,7 +49,7 @@ const TEMP_LOW_THRESHOLD = 10;
 
 // Igloo
 const IGLOO_PIECES_RACE = 15;
-const IGLOO_PIECES_BLIZZARD = 20;
+const IGLOO_PIECES_BLIZZARD = 25;
 export const IGLOO_W = 50;
 export const IGLOO_H = 40;
 
@@ -62,6 +62,13 @@ const SCORE_TEMP_MULTIPLIER = 10;
 
 // Lives
 const INITIAL_LIVES = 3;
+// The blizzard's one long round, every enemy in it, needs more of them.
+const BLIZZARD_LIVES = 5;
+
+/** The lives a player starts a round with in `mode`. */
+function livesFor(mode) {
+  return mode === GAME_MODE.BLIZZARD ? BLIZZARD_LIVES : INITIAL_LIVES;
+}
 const RESPAWN_DELAY = 90; // frames
 
 // Enemy sizes
@@ -102,6 +109,15 @@ const ROUND_PRESETS = [
   },
 ];
 
+// The blizzard's one long round: every enemy from the start, on ice that
+// drifts at a middle round's pace — the last round's speed with all of them
+// ended it in half a minute.
+const BLIZZARD_PRESET = {
+  blockSpeed: ROUND_PRESETS[2].blockSpeed,
+  enemies: ROUND_PRESETS[4].enemies,
+  fishRate: ROUND_PRESETS[4].fishRate,
+};
+
 // Rounds to win
 const ROUNDS_TO_WIN = 3; // best of 5
 
@@ -127,8 +143,8 @@ export function createInitialState(mode, seed) {
     temperature: temp,
     piecesNeeded,
 
-    p1: createBailey(160, 1),
-    p2: createBailey(480, 2),
+    p1: createBailey(160, 1, mode),
+    p2: createBailey(480, 2, mode),
 
     blockRows: createBlockRows(rng, 0),
     enemies: createEnemiesForRound(rng, 1, mode),
@@ -154,7 +170,7 @@ export function createInitialState(mode, seed) {
   };
 }
 
-function createBailey(x, playerNum) {
+function createBailey(x, playerNum, mode) {
   return {
     x,
     row: -1, // -1 = on shore
@@ -163,7 +179,7 @@ function createBailey(x, playerNum) {
     jumpProgress: 0,
     jumpFromRow: -1,
     jumpToRow: 0,
-    lives: INITIAL_LIVES,
+    lives: livesFor(mode),
     score: 0,
     iglooPieces: 0,
     iglooComplete: false,
@@ -202,7 +218,7 @@ function createBlockRows(rng, _roundIdx) {
  * @returns {object}
  */
 function roundPreset(mode, round) {
-  if (mode === GAME_MODE.BLIZZARD) return ROUND_PRESETS[4];
+  if (mode === GAME_MODE.BLIZZARD) return BLIZZARD_PRESET;
   return ROUND_PRESETS[Math.min(round - 1, ROUND_PRESETS.length - 1)];
 }
 
@@ -993,7 +1009,7 @@ export function startNextRound(state) {
       jumpProgress: 0,
       iglooPieces: 0,
       iglooComplete: false,
-      lives: INITIAL_LIVES,
+      lives: livesFor(state.mode),
     },
     p2: {
       ...state.p2,
@@ -1004,7 +1020,7 @@ export function startNextRound(state) {
       jumpProgress: 0,
       iglooPieces: 0,
       iglooComplete: false,
-      lives: INITIAL_LIVES,
+      lives: livesFor(state.mode),
     },
     blockRows: createBlockRows(rng, newRound - 1),
     enemies: createEnemiesForRound(rng, newRound, state.mode),
@@ -1156,6 +1172,8 @@ export function unpackState(s) {
   const state = {
     phase: s.phase,
     mode: s.mode,
+    // Not on the wire: the mode says it, as it does on the host.
+    piecesNeeded: s.mode === GAME_MODE.BLIZZARD ? IGLOO_PIECES_BLIZZARD : IGLOO_PIECES_RACE,
     round: s.round,
     countdown: s.countdown,
     seed: s.seed,
@@ -1203,11 +1221,13 @@ export function unpackState(s) {
 
   // Block rows
   for (let r = 0; r < NUM_ROWS; r++) {
+    // The wire carries each block where it is (getBlockAbsX); with no
+    // offset, a block is kept where getBlockAbsX reads that position back.
     state.blockRows.push({
       direction: s[`row${r}Direction`],
-      offset: 0, // Peer uses absolute positions
+      offset: 0,
       blocks: (s[`row${r}Blocks`] || []).map((b) => ({
-        x: b.x,
+        x: b.x + BLOCK_GAP,
         state: b.state,
       })),
       totalWidth: BLOCKS_PER_ROW * (BLOCK_W + BLOCK_GAP),

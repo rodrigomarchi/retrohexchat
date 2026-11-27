@@ -254,10 +254,7 @@ function drawBlockRows(ctx, state, colors, frameCount) {
     ctx.globalAlpha = 1;
 
     for (const block of row.blocks) {
-      const x =
-        row.offset === 0
-          ? block.x // Peer: absolute positions
-          : getBlockAbsX(block, row);
+      const x = getBlockAbsX(block, row);
 
       // Skip offscreen blocks
       if (x < -BLOCK_W || x > CANVAS_W + BLOCK_W) continue;

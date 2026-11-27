@@ -105,12 +105,14 @@ function buildingTick(game) {
   game.gameState = before;
   game.updateOpponent();
 
-  const state = stepTick(before, game.localInputs, game.remoteInputs);
-  // A jump is one press: it is spent on the frame it starts.
+  // A jump is one press on both seats, spent on the frame it starts: the
+  // host's key comes once, and the guest's held mask, restated every step,
+  // jumps only on its rising edge (`onRemoteInputChange`).
+  const remote = { ...game.remoteInputs, ...game.remoteJump };
+  const state = stepTick(before, game.localInputs, remote);
   game.localInputs.up = false;
   game.localInputs.down = false;
-  game.remoteInputs.up = false;
-  game.remoteInputs.down = false;
+  game.remoteJump = { up: false, down: false };
 
   if (state.phase === PHASE.ROUND_END && before.phase === PHASE.BUILDING) {
     game.roundEndTimer = ROUND_END_DELAY;
@@ -169,6 +171,7 @@ export default defineGame({
   theme: readColors,
   init: () => null,
   setup: (game) => {
+    game.remoteJump = { up: false, down: false };
     game.gameMode = MODES[game.gameId] ?? GAME_MODE.ARCTIC_RACE;
     game.countdownTimer = 0;
     game.roundEndTimer = 0;
@@ -187,6 +190,13 @@ export default defineGame({
     game.countdownTimer = 0;
     game.roundEndTimer = 0;
     game.audio.stopAmbientWind();
+  },
+
+  onRemoteInputChange: (game, previous, current) => {
+    game.remoteJump = {
+      up: game.remoteJump.up || (current.up && !previous.up),
+      down: game.remoteJump.down || (current.down && !previous.down),
+    };
   },
 
   flow: {

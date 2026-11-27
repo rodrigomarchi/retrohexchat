@@ -3119,7 +3119,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "1 long epic round — igloo needs 20 pieces, all enemies from the start, "
+            "1 long epic round — igloo needs 25 pieces, 5 lives, all enemies from the start, "
           ) <>
             dgettext(
               "help",

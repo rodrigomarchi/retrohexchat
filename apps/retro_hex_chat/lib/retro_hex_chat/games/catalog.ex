@@ -520,7 +520,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "1 long round — 20-piece igloo, all enemies from the start, temperature drops slowly. Epic arctic endurance."
+          "1 long round — 25-piece igloo, 5 lives, all enemies from the start, temperature drops slowly. Epic arctic endurance."
         ),
       icon: "game_frost",
       controls: dgettext_noop("games", "Arrow keys or WASD to move, Up/Down to jump between rows")

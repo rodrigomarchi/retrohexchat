@@ -2,8 +2,11 @@ import { describe, it, expect } from "vitest";
 import {
   checkRoundEnd,
   createInitialState,
+  getBlockAbsX,
   handleRespawns,
+  packState,
   stepTick,
+  unpackState,
   updateBailey,
 } from "../../../../js/lib/games/hex_frost/physics.js";
 import {
@@ -177,5 +180,38 @@ describe("one building frame", () => {
 
     expect(next).toMatchObject({ phase: PHASE.ROUND_END, roundWinner: 2 });
     expect(next.p2.roundWins).toBe(1);
+  });
+});
+
+// The guest drew a blizzard's igloo out of 15, the race's: how many pieces an
+// igloo needs is not on the wire, and the guest read nothing for it.
+describe("the igloo the guest draws", () => {
+  it("needs as many pieces as the host's, in every mode", () => {
+    for (const mode of [GAME_MODE.ARCTIC_RACE, GAME_MODE.BLIZZARD, GAME_MODE.PEACEFUL]) {
+      const host = createInitialState(mode, 7);
+      expect(unpackState(packState(host)).piecesNeeded).toBe(host.piecesNeeded);
+    }
+  });
+});
+
+// The snapshot carries each block where it is; the guest kept that with no
+// offset, and reading it back through getBlockAbsX moved it 40px left: the
+// guest's AI jumped for blocks that were not there, into the water.
+describe("the blocks the guest sees", () => {
+  it("are where the host's are, as getBlockAbsX reads them", () => {
+    let state = { ...createInitialState(GAME_MODE.ARCTIC_RACE, 11), phase: PHASE.BUILDING };
+    const idle = { left: false, right: false, up: false, down: false };
+    for (let frame = 0; frame < 400; frame++) {
+      state = stepTick(state, idle, idle);
+      if (frame % 50 !== 0) continue;
+      const guest = unpackState(packState(state));
+      state.blockRows.forEach((row, r) => {
+        row.blocks.forEach((block, b) => {
+          const there = getBlockAbsX(block, row);
+          const seen = getBlockAbsX(guest.blockRows[r].blocks[b], guest.blockRows[r]);
+          expect(seen).toBeCloseTo(there, 0);
+        });
+      });
+    }
   });
 });
