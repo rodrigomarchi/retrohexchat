@@ -72,8 +72,10 @@ const EARLIER: Line[] = [
 
 /** How long a blizzard may take, and some to spare. */
 const ROUND_TIMEOUT = 5 * 60_000;
-/** Degrees left when the round is near its end by the cold. */
-const COLD = 6;
+/** Degrees left when the round is near its end by the cold: ten seconds. */
+const COLD = 5;
+/** The round's building phase (`hex_frost/protocol.js` PHASE.BUILDING). */
+const BUILDING = 2;
 
 type Person = TestUser;
 type Rooms = { host: Page; guest: Page };
@@ -369,14 +371,40 @@ test.describe("EP22 Hex Frost", () => {
     await onBothScreens(0, r, ["Every block you land on", "This is Hex Frost"]);
   });
 
+  /**
+   * Off camera: a blizzard seconds from its end — the one on screen, or new
+   * ones until one gets there still being played.
+   */
+  async function nearTheEnd(): Promise<Rooms> {
+    for (let attempt = 0; attempt < 4; attempt++) {
+      const r =
+        stage === "blizzard" && (await on()) ? rooms! : await makeBlizzard();
+      let near = false;
+      await expect
+        .poll(
+          async () => {
+            const seen = await iceSeen(r.host);
+            if (!seen) return false;
+            near =
+              seen.phase === BUILDING &&
+              (seen.temperature <= COLD || seen.homeward);
+            return near || seen.phase !== BUILDING;
+          },
+          { timeout: ROUND_TIMEOUT, intervals: [250] },
+        )
+        .toBe(true);
+      if (near) return r;
+      await closeSession();
+    }
+    throw new Error("no blizzard got near its end while still played");
+  }
+
   test("05 home before the cold", async () => {
     const shot = shotFor(5);
     test.setTimeout(ROUND_TIMEOUT * 2 + 4 * 60_000);
-    // The cold close, or an igloo finished: the round has seconds left, and
-    // the take runs its lines, then on to the end.
-    const r = await blizzardAt(
-      (seen) => seen.temperature <= COLD || seen.complete,
-    );
+    // Seconds from the end: the cold close, or a finished igloo's builder
+    // back on the shore. A round over before that is played again.
+    const r = await nearTheEnd();
     await r.host.bringToFront();
     await filmCrew(
       { [PIXEL]: r.host, [KESTREL]: r.guest },

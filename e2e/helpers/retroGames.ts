@@ -93,12 +93,14 @@ export async function slopeSeen(
 
 /**
  * How a Hex Frost round stands, as the seat's autopilot last saw it: each
- * igloo's pieces, whether either is complete, the temperature and the phase.
+ * igloo's pieces, whether either is complete, the temperature, the phase,
+ * and whether a finished igloo's builder is back on the shore.
  */
 export async function iceSeen(game: Page): Promise<{
   pieces1: number;
   pieces2: number;
   complete: boolean;
+  homeward: boolean;
   temperature: number;
   phase: number;
 } | null> {
@@ -107,8 +109,8 @@ export async function iceSeen(game: Page): Promise<{
       window as unknown as {
         __rhcAutopilot?: {
           seen?: {
-            p1: { iglooPieces: number; iglooComplete: boolean };
-            p2: { iglooPieces: number; iglooComplete: boolean };
+            p1: { iglooPieces: number; iglooComplete: boolean; row: number };
+            p2: { iglooPieces: number; iglooComplete: boolean; row: number };
             temperature: number;
             phase: number;
           };
@@ -120,6 +122,9 @@ export async function iceSeen(game: Page): Promise<{
           pieces1: seen.p1.iglooPieces,
           pieces2: seen.p2.iglooPieces,
           complete: seen.p1.iglooComplete || seen.p2.iglooComplete,
+          homeward: [seen.p1, seen.p2].some(
+            (p) => p.iglooComplete && p.row === -1,
+          ),
           temperature: seen.temperature,
           phase: seen.phase,
         }
