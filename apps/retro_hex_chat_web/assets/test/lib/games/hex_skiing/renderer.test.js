@@ -179,4 +179,22 @@ describe("Hex Skiing Renderer", () => {
       expect(coversTheView(520)).toBe(true);
     });
   });
+
+  // A tree drawn in a green barely lighter than the slope could not be seen,
+  // nor a rock in a grey close to it.
+  it("draws the trees and the rocks in colours that stand out from the slope", () => {
+    const colors = readColorsFrom({});
+    const luminance = (css) => {
+      const hex = css.replace("#", "");
+      const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+      const lin = (c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+      return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+    };
+    const contrast = (a, b) => {
+      const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+      return (hi + 0.05) / (lo + 0.05);
+    };
+    expect(contrast(colors.tree, colors.bg)).toBeGreaterThanOrEqual(3);
+    expect(contrast(colors.rock, colors.bg)).toBeGreaterThanOrEqual(3);
+  });
 });
