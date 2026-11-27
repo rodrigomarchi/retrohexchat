@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **290 spec files** under `e2e/tests/`.
-- **732 Playwright `test()` cases**.
-- **678 documented flows**, 677 done, 1 not done.
+- **733 Playwright `test()` cases**.
+- **679 documented flows**, 678 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -541,6 +541,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N129 | The avalanche: an Escape made with Find a partner runs past the point where the slope grows thicker; the avalanche, slower than the skiers at first, speeds up until its front comes into view behind them, and swallows them, the Final Score on both screens | `tests/game-hex-skiing.spec.ts` | done |
 | N130 | Hex Frost's home lists its three games — Hex Frost (best of five rounds), Blizzard and Peaceful; Play on each opens the game in a tab of its own, its menu naming the game, and against the computer at Hard each is a round under way | `tests/game-hex-frost.spec.ts` | done |
 | N131 | Find a partner on the home's Blizzard row puts a seat's card in #hex-frost; a friend's Join takes it, both are ready, the round runs with the same ice — blocks, enemies and both igloos — on both screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-frost.spec.ts` | done |
+| N132 | The steal: in a Blizzard made with Find a partner, the igloos grow as each skater lands on white blocks, and a landing on the rival's block takes a piece from their igloo for one's own — one igloo up as the other goes down — until the round ends and the Final Score is on both screens | `tests/game-hex-frost.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

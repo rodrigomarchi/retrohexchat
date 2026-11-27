@@ -105,10 +105,23 @@ describe("a round both players are out of", () => {
     expect(ended.p2.roundWins).toBe(1);
   });
 
-  it("goes to nobody when they built the same", () => {
+  // Equal igloos went to nobody, and a blizzard — one round — ended 0 × 0
+  // with a winner picked by points the result never showed.
+  it("goes to the higher score when they built the same", () => {
+    const state = { ...createInitialState(GAME_MODE.BLIZZARD, 1), phase: PHASE.BUILDING };
+    state.p1 = { ...state.p1, lives: 0, iglooPieces: 5, score: 300 };
+    state.p2 = { ...state.p2, lives: 0, iglooPieces: 5, score: 450 };
+
+    const ended = checkRoundEnd(state);
+
+    expect(ended).toMatchObject({ phase: PHASE.ROUND_END, roundWinner: 2 });
+    expect([ended.p1.roundWins, ended.p2.roundWins]).toEqual([0, 1]);
+  });
+
+  it("goes to nobody when they built the same and scored the same", () => {
     const state = { ...createInitialState(0, 1), phase: PHASE.BUILDING };
-    state.p1 = { ...state.p1, lives: 0, iglooPieces: 5 };
-    state.p2 = { ...state.p2, lives: 0, iglooPieces: 5 };
+    state.p1 = { ...state.p1, lives: 0, iglooPieces: 5, score: 300 };
+    state.p2 = { ...state.p2, lives: 0, iglooPieces: 5, score: 300 };
 
     expect(checkRoundEnd(state)).toMatchObject({ phase: PHASE.ROUND_END, roundWinner: 0 });
   });

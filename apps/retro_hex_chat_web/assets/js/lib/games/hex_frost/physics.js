@@ -956,11 +956,12 @@ export function checkRoundEnd(state) {
 
   // Temperature reached 0, or both players are out of lives
   if (state.temperature <= 0 || (state.p1.lives <= 0 && state.p2.lives <= 0)) {
-    // Player with more igloo pieces wins the round
+    // The bigger igloo takes the round; equal igloos, the higher score.
     let winner = 0;
     if (state.p1.iglooPieces > state.p2.iglooPieces) winner = 1;
     else if (state.p2.iglooPieces > state.p1.iglooPieces) winner = 2;
-    // tie = no one wins
+    else if (state.p1.score > state.p2.score) winner = 1;
+    else if (state.p2.score > state.p1.score) winner = 2;
 
     const result = { ...state, phase: PHASE.ROUND_END, roundWinner: winner };
     if (winner > 0) {

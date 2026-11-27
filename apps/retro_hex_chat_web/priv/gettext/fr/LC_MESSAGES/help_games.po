@@ -324,11 +324,6 @@ msgstr ""
 msgid "Best of 5 rounds (first to 3 wins)"
 msgstr "Meilleur de 5 manches (première à 3 victoires)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "Best of 5 rounds — same as Arctic Race"
-msgstr "Meilleur des 5 tours – même que Arctic Race"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:110
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:85
@@ -388,7 +383,7 @@ msgstr "Vol de bloc désactivé — les blocs de l'adversaire sont intouchables"
 msgid "Block stealing is active — expect chaos!"
 msgstr "Le vol de blocs est actif — attendez - vous au chaos!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Block stealing is everything"
 msgstr "Vol de blocs est tout"
@@ -418,7 +413,7 @@ msgstr ""
 "Les boxeurs ne peuvent pas passer l'un à l'autre — la collision du corps "
 "repousse le mouvement retour"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:123
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:128
 #, elixir-autogen, elixir-format
 msgid "Build fast to maximize your temperature bonus!"
 msgstr "Construisez rapidement pour maximiser votre bonus de température!"
@@ -991,20 +986,20 @@ msgstr "Hex Enduro: Course de nuit"
 msgid "Hex Enduro: Sprint"
 msgstr "Hex Enduro: Sprint"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Hex Frost"
 msgstr "Givre Hex"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:130
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:135
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Hex Frost: Blizzard"
 msgstr "Givre Hex: Blizzard"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:134
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:139
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Hex Frost: Peaceful"
 msgstr "Hex Frost: Paisible"
@@ -1177,13 +1172,6 @@ msgstr ""
 msgid "If both are engulfed, the skier who descended further wins"
 msgstr "Si les deux sont engloutis, le skieur qui descend encore gagne"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:122
-#, elixir-autogen, elixir-format
-msgid "If it reaches 0°, the round ends — most igloo pieces wins"
-msgstr ""
-"Si elle atteint 0°, la ronde se termine — la plupart des pièces d'igloo "
-"gagne"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "If the 2-minute timer runs out, the fighter with more points wins the round"
@@ -1211,8 +1199,8 @@ msgstr "Descente infinie — le cours ne se termine jamais"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:125
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:130
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:80
@@ -1238,8 +1226,8 @@ msgstr "Descente infinie — le cours ne se termine jamais"
 msgid "Inspiration"
 msgstr "Inspiration"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:126
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:131
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Inspired by Activision Frostbite (1983) by Steve Cartwright."
@@ -1450,7 +1438,7 @@ msgstr ""
 "dépasser les voitures AI pour 1 point, dépasser votre adversaire pour 5 "
 "points"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Pace yourself"
 msgstr "Va te faire voir."
@@ -1509,7 +1497,7 @@ msgid "Press action near an opponent who has the puck to attempt a steal"
 msgstr ""
 "Action de presse près d'un adversaire qui a la rondelle pour tenter un vol"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Prioritize safe rows"
 msgstr "Privilégier les lignes sûres"
@@ -1717,8 +1705,8 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:77
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:127
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:132
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:122
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:82
@@ -1988,7 +1976,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:51
@@ -2221,7 +2209,7 @@ msgstr "Regardez les rives de la rivière"
 msgid "Watch the serve rotation"
 msgstr "Regardez la rotation du service"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Watch the temperature"
 msgstr "Regardez la température"
@@ -2360,7 +2348,7 @@ msgstr ""
 msgid "— Alternative controls"
 msgstr "— Autres contrôles"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "— At 0.5°/second, you have about 2 minutes. Don't panic but don't dawdle either."
 msgstr ""
@@ -2813,7 +2801,7 @@ msgid "— No timer, first to 5 goals, puck speeds up with each goal"
 msgstr ""
 "— Pas de minuterie, premier à 5 buts, la rondelle accélère avec chaque but"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "— Not all ice rows are equal. Focus on rows with predictable patterns first."
 msgstr ""
@@ -2954,7 +2942,7 @@ msgstr "— Marchez sur votre propre bloc pour le défaire (-1 pièce)"
 msgid "— Step to steal it! You +1 piece, they -1 piece (2-piece swing!)"
 msgstr "— Marchez pour le voler! Toi +1 pièce, ils -1 pièce (2-pièce swing!)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "— Stepping on your opponent's blocks steals them. Use it offensively when you're ahead."
 msgstr ""
@@ -3050,7 +3038,7 @@ msgstr ""
 "— Lorsque la rondelle est rapide, restez entre la rondelle et votre but. Le "
 "temps de réaction diminue."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "— With 60° on the clock, you have time. Don't rush jumps and fall into the water."
 msgstr ""
@@ -3752,7 +3740,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:106
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:138
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:143
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:131
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:92
@@ -3782,8 +3770,8 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:105
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:86
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:137
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:142
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:90
@@ -5119,11 +5107,6 @@ msgstr "Utilisez les flèches pour bouger."
 msgid "When you play with somebody, the game does not pause."
 msgstr "Quand vous jouez avec quelqu'un, le jeu ne s'arrête pas."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:53
-#, elixir-autogen, elixir-format
-msgid "3 lives a round — lose them all and you sit out the rest of it. If both players are out, the bigger igloo takes the round"
-msgstr "3 vit un tour — perdez-les tous et vous vous asseyez sur le reste. Si les deux joueurs sont sortis, le plus gros igloo prend le tour"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "3 lives per player — the match ends as soon as either jet is out of lives, and the higher score wins"
@@ -5319,22 +5302,42 @@ msgstr "Anticipez la pente"
 msgid "— Every round is a new course. Look a few rows down for where the trees open up, not just at the next one."
 msgstr "— Chaque manche est un nouveau parcours. Regardez quelques rangées plus bas pour repérer où les arbres s'espacent, et pas seulement la prochaine."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:33
-#, elixir-autogen, elixir-format
-msgid "5 lives each (vs 3 a round in Arctic Race)"
-msgstr "5 vies chacun (contre 3 par manche dans Arctic Race)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Igloo requires 25 pieces (vs 15 in Arctic Race)"
-msgstr "L'igloo nécessite 25 pièces (contre 15 dans Arctic Race)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "One epic long round of Frostbite — all enemies from the start, igloo needs 25 pieces, 5 lives each, and the temperature drops slowly from 60°. Arctic endurance mode. A marathon of precision and patience — one wrong jump can cost you minutes of progress."
-msgstr "Une seule manche épique de Frostbite — tous les ennemis dès le départ, l'igloo nécessite 25 pièces, 5 vies chacun, et la température baisse lentement à partir de 60°. Mode d'endurance arctique. Un marathon de précision et de patience — un seul mauvais saut peut vous coûter des minutes de progression."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "— 1 epic round, 25-piece igloo, 5 lives, all enemies from the start"
 msgstr "— 1 manche épique, igloo de 25 pièces, 5 vies, tous les ennemis dès le départ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "3 lives a round — lose them all and you sit out the rest of it. If both players are out, the bigger igloo takes the round — equal igloos, the higher score"
+msgstr "3 vies par manche — si vous les perdez toutes, vous restez sur la touche jusqu'à la fin de la manche. Si les deux joueurs sont éliminés, c'est l'igloo le plus grand qui remporte la manche — à igloos égaux, c'est le meilleur score"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "5 lives each (vs 3 a round in classic Hex Frost)"
+msgstr "5 vies chacun (contre 3 par manche dans Hex Frost classique)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Best of 5 rounds — same as classic Hex Frost"
+msgstr "Au meilleur des 5 manches — comme dans Hex Frost classique"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:123
+#, elixir-autogen, elixir-format
+msgid "If it reaches 0°, the round ends — the bigger igloo wins it, equal igloos the higher score"
+msgstr "Si la température atteint 0°, la manche prend fin — l'igloo le plus grand l'emporte, à igloos égaux le meilleur score"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "If the cold reaches 0° or both players are out of lives, the bigger igloo wins — equal igloos, the higher score"
+msgstr "Si le froid atteint 0° ou si les deux joueurs n'ont plus de vies, l'igloo le plus grand l'emporte — à igloos égaux, le meilleur score"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Igloo requires 25 pieces (vs 15 in classic Hex Frost)"
+msgstr "L'igloo nécessite 25 pièces (contre 15 dans Hex Frost classique)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "One epic long round of Hex Frost — all enemies from the start, igloo needs 25 pieces, 5 lives each, and the temperature drops slowly from 60°. Arctic endurance mode. A marathon of precision and patience — one wrong jump can cost you minutes of progress."
+msgstr "Une seule longue manche épique de Hex Frost — tous les ennemis dès le départ, l'igloo nécessite 25 pièces, 5 vies chacun, et la température baisse lentement à partir de 60°. Un mode d'endurance arctique. Un marathon de précision et de patience — un seul saut manqué peut vous coûter des minutes de progression."

@@ -92,6 +92,42 @@ export async function slopeSeen(
 }
 
 /**
+ * How a Hex Frost round stands, as the seat's autopilot last saw it: each
+ * igloo's pieces, whether either is complete, the temperature and the phase.
+ */
+export async function iceSeen(game: Page): Promise<{
+  pieces1: number;
+  pieces2: number;
+  complete: boolean;
+  temperature: number;
+  phase: number;
+} | null> {
+  return game.evaluate(() => {
+    const seen = (
+      window as unknown as {
+        __rhcAutopilot?: {
+          seen?: {
+            p1: { iglooPieces: number; iglooComplete: boolean };
+            p2: { iglooPieces: number; iglooComplete: boolean };
+            temperature: number;
+            phase: number;
+          };
+        };
+      }
+    ).__rhcAutopilot?.seen;
+    return seen?.p1
+      ? {
+          pieces1: seen.p1.iglooPieces,
+          pieces2: seen.p2.iglooPieces,
+          complete: seen.p1.iglooComplete || seen.p2.iglooComplete,
+          temperature: seen.temperature,
+          phase: seen.phase,
+        }
+      : null;
+  });
+}
+
+/**
  * The side a score names the winner: the higher, or — even scores being a
  * co-op pair's — 0, a board they cleared together.
  */

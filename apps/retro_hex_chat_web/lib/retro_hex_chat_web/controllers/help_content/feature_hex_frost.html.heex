@@ -52,7 +52,7 @@
   <li>
     {dgettext(
       "help_games",
-      "3 lives a round — lose them all and you sit out the rest of it. If both players are out, the bigger igloo takes the round"
+      "3 lives a round — lose them all and you sit out the rest of it. If both players are out, the bigger igloo takes the round — equal igloos, the higher score"
     )}
   </li>
 </ul>
@@ -119,7 +119,12 @@
 <.help_h4 icon={:icon_rules}>{dgettext("help_games", "Temperature")}</.help_h4>
 <ul>
   <li>{dgettext("help_games", "Shared timer starts at 45° and drops ~1°/second")}</li>
-  <li>{dgettext("help_games", "If it reaches 0°, the round ends — most igloo pieces wins")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "If it reaches 0°, the round ends — the bigger igloo wins it, equal igloos the higher score"
+    )}
+  </li>
   <li>{dgettext("help_games", "Build fast to maximize your temperature bonus!")}</li>
 </ul>
 <.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
