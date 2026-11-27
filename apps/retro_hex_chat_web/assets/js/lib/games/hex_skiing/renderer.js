@@ -513,10 +513,7 @@ function drawHUD(ctx, state, colors) {
     ctx.fillRect(CANVAS_W - 109, CANVAS_H - 15, 100, 8);
     ctx.fillStyle = colors.fg;
     ctx.fillRect(CANVAS_W - 109, CANVAS_H - 15, Math.round(progress * 100), 8);
-    ctx.font = "8px monospace";
-    ctx.fillStyle = gameColor("aaaaaa");
-    ctx.textAlign = "right";
-    ctx.fillText(`${Math.round(progress * 100)}%`, CANVAS_W - 4, CANVAS_H - 6);
+    drawBarLabel(ctx, jt`COURSE ${Math.round(progress * 100)}%`, CANVAS_W - 8, "right");
   }
 }
 
@@ -554,10 +551,16 @@ function drawAvalancheBar(ctx, state, colors) {
   }
   ctx.fillRect(5, CANVAS_H - 15, Math.round(proximity * 100), 8);
 
-  ctx.font = "8px monospace";
+  drawBarLabel(ctx, t("AVALANCHE"), 5, "left");
+}
+
+/** What a bottom bar measures, written above it where it can be read. */
+function drawBarLabel(ctx, text, x, align) {
+  ctx.font = "bold 10px monospace";
   ctx.fillStyle = gameColor("aaaaaa");
-  ctx.textAlign = "left";
-  ctx.fillText("AVL", 6, CANVAS_H - 6);
+  ctx.textAlign = align;
+  ctx.textBaseline = "bottom";
+  ctx.fillText(text, x, CANVAS_H - 18);
 }
 
 // ── Phase overlays ─────────────────────────────────────────────

@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from i18n import catalogs, glossary, js_messages, locales  # noqa: E402
 from i18n.locales import REPO_ROOT  # noqa: E402
+from seo.transport import env_value  # noqa: E402
 
 JS_DIR = REPO_ROOT / "apps/retro_hex_chat_web/assets/js"
 PRETTIER = REPO_ROOT / "apps/retro_hex_chat_web/assets/node_modules/.bin/prettier"
@@ -30,6 +31,7 @@ PRETTIER = REPO_ROOT / "apps/retro_hex_chat_web/assets/node_modules/.bin/prettie
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--locales", required=True)
+    parser.add_argument("--engine", choices=["argos", "claude"], default="argos")
     parser.add_argument(
         "--retry-english",
         action="store_true",
@@ -38,16 +40,18 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_pipeline(code: str):
-    # The engines and the read-back models live in the translation venv only.
+def build_pipeline(code: str, engine: str = "argos"):
+    # The engines and the read-back models live in their venvs only: Argos's
+    # in the translation venv, Claude's (with ANTHROPIC_API_KEY) in its own.
     from i18n.pipeline import Pipeline
     from i18n.terms import brazilian_forms, italian_accents
     from i18n.translator import TraditionalChinesePostprocessor, build, build_back
 
-    translator = build(code, locales.argos_code(code))
+    api_key = env_value("ANTHROPIC_API_KEY", REPO_ROOT / ".env") if engine == "claude" else None
+    translator = build(code, locales.argos_code(code), engine, api_key)
     postprocess = None
 
-    if code == "zh_hant":
+    if code == "zh_hant" and engine == "argos":
         postprocess = TraditionalChinesePostprocessor(translator).convert
     elif code == "it":
         postprocess = italian_accents
@@ -58,7 +62,7 @@ def build_pipeline(code: str):
         translator,
         postprocess=postprocess,
         locale_code=code,
-        back_translator=build_back(code, locales.argos_code(code)),
+        back_translator=build_back(code, locales.argos_code(code), engine),
         answers={word: glossary.for_locale(code)[word] for word in ("Yes", "No")},
         full_stop="。" if code in ("ja", "zh_hans", "zh_hant") else ".",
     )
@@ -81,7 +85,7 @@ def main() -> int:
         if not absent:
             continue
 
-        translated = build_pipeline(code).translate_many(absent)
+        translated = build_pipeline(code, args.engine).translate_many(absent)
 
         for message in absent:
             catalog[message] = curated.get(message, translated[message])

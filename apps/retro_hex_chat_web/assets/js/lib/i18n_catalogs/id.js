@@ -18,11 +18,13 @@ export const ID = {
   "ADVANTAGE P2": "KEUNGGULAN P2",
   "ALL BLOCKS CLEARED": "SEMUA BALOK HABIS",
   "ALPINE RACE": "BALAP ALPEN",
+  AVALANCHE: "LONGSOR",
   "AVALANCHE ESCAPE": "LARI DARI LONGSOR",
   "After Sudden Death": "Setelah kematian mendadak",
   "BUILD!": "BANGUN!",
   "Blocked file type: %{0}": "Tipe berkas diblokir: %{0}",
   "CLEAN RUN": "LARI BERSIH",
+  "COURSE %{0}%": "LINTASAN %{0}%",
   Camera: "Kamera",
   "Camera in use by another application. Try closing other programs using the camera.":
     "Kamera digunakan oleh aplikasi lain. Coba tutup program lain menggunakan kamera.",

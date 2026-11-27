@@ -18,11 +18,13 @@ export const JA = {
   "ADVANTAGE P2": "P2 アドバンテージ",
   "ALL BLOCKS CLEARED": "全ブロッククリア",
   "ALPINE RACE": "アルペンレース",
+  AVALANCHE: "雪崩",
   "AVALANCHE ESCAPE": "雪崩からの脱出",
   "After Sudden Death": "サドンデス後",
   "BUILD!": "ビルド！",
   "Blocked file type: %{0}": "ブロックされたファイルタイプ: %{0}",
   "CLEAN RUN": "ノーミス走行",
+  "COURSE %{0}%": "コース %{0}%",
   Camera: "カメラ",
   "Camera in use by another application. Try closing other programs using the camera.":
     "別の適用によって使用中のカメラ。 カメラを使って他のプログラムを閉じる",

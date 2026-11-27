@@ -621,8 +621,13 @@ i18n.claude.review: ## Review existing translations with Claude, in batches (ARG
 	test -x $(I18N_CLAUDE_VENV)/bin/python || (echo "run make i18n.claude.venv first" && exit 2)
 	$(I18N_CLAUDE_VENV)/bin/python scripts/i18n_claude_review.py $(ARGS)
 
-i18n.js.translate: ## Translate the browser messages its catalogs lack (needs the translation venv)
+i18n.js.translate: ## Translate the browser messages its catalogs lack (ENGINE=argos|claude; needs that engine's venv)
+ifeq ($(ENGINE),claude)
+	test -x $(I18N_CLAUDE_VENV)/bin/python || (echo "run make i18n.claude.venv first" && exit 2)
+	$(I18N_CLAUDE_VENV)/bin/python scripts/i18n_js_translate.py --engine claude --locales $(I18N_REQUIRED_LOCALES) $(if $(RETRY),--retry-english)
+else
 	$(I18N_PYTHON) scripts/i18n_js_translate.py --locales $(I18N_REQUIRED_LOCALES) $(if $(RETRY),--retry-english)
+endif
 
 i18n.tooling.test: ## Run the i18n Python tooling test suite
 	python3 -m unittest discover -s scripts -t scripts -p 'test_*.py'

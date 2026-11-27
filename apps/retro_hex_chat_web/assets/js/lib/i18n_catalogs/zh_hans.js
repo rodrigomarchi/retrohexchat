@@ -18,11 +18,13 @@ export const ZH_HANS = {
   "ADVANTAGE P2": "P2 占先",
   "ALL BLOCKS CLEARED": "所有方块清除",
   "ALPINE RACE": "高山竞速",
+  AVALANCHE: "雪崩",
   "AVALANCHE ESCAPE": "雪崩逃生",
   "After Sudden Death": "突然死亡后",
   "BUILD!": "建造！",
   "Blocked file type: %{0}": "被屏蔽的文件类型: %{0}",
   "CLEAN RUN": "完美通关",
+  "COURSE %{0}%": "赛道 %{0}%",
   Camera: "摄像头",
   "Camera in use by another application. Try closing other programs using the camera.":
     "另一个应用程序正在使用的相机。 尝试使用相机关闭其它程序 。",

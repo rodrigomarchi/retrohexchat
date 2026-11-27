@@ -907,6 +907,8 @@ _ROWS = {
     # participant whose nickname has not arrived; "Speaker" is the sound
     # output, never a person speaking.
     "Camera":         ("Câmera", "Câmara", "Cámara", "Caméra", "Kamera", "Fotocamera", "Camera", "Kamera", "Камера", "Kamera", "カメラ", "摄像头", "攝影機"),
+    # Hex Skiing's bar: the word is the same in Portuguese and French.
+    "AVALANCHE":      ("AVALANCHE", "AVALANCHE", "AVALANCHA", "AVALANCHE", "LAWINE", "VALANGA", "LAWINE", "LAWINA", "ЛАВИНА", "LONGSOR", "雪崩", "雪崩", "雪崩"),
     "Microphone":     ("Microfone", "Microfone", "Micrófono", "Microphone", "Mikrofon", "Microfono", "Microfoon", "Mikrofon", "Микрофон", "Mikrofon", "マイク", "麦克风", "麥克風"),
     "Camera off":     ("Câmera desligada", "Câmara desligada", "Cámara apagada", "Caméra coupée", "Kamera aus", "Fotocamera spenta", "Camera uit", "Kamera wyłączona", "Камера выключена", "Kamera mati", "カメラオフ", "摄像头已关闭", "攝影機已關閉"),
     "Speaking":       ("Falando", "A falar", "Hablando", "Parle", "Spricht", "Sta parlando", "Spreekt", "Mówi", "Говорит", "Berbicara", "発言中", "正在说话", "正在說話"),

@@ -18,11 +18,13 @@ export const PL = {
   "ADVANTAGE P2": "PRZEWAGA P2",
   "ALL BLOCKS CLEARED": "WSZYSTKIE BLOKI WYCZYSZCZONE",
   "ALPINE RACE": "WYŚCIG ALPEJSKI",
+  AVALANCHE: "LAWINA",
   "AVALANCHE ESCAPE": "UCIECZKA PRZED LAWINĄ",
   "After Sudden Death": "Po nagłej śmierci",
   "BUILD!": "BUDUJ!",
   "Blocked file type: %{0}": "Zablokowany typ pliku: %{0}",
   "CLEAN RUN": "CZYSTY PRZEJAZD",
+  "COURSE %{0}%": "TRASA %{0}%",
   Camera: "Kamera",
   "Camera in use by another application. Try closing other programs using the camera.":
     "Kamera używana przez inną aplikację. Spróbuj zamknąć inne programy za pomocą kamery.",

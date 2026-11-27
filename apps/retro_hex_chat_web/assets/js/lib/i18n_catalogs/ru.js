@@ -18,11 +18,13 @@ export const RU = {
   "ADVANTAGE P2": "Больше у P2",
   "ALL BLOCKS CLEARED": "Все блоки очищены",
   "ALPINE RACE": "Альпийская гонка",
+  AVALANCHE: "ЛАВИНА",
   "AVALANCHE ESCAPE": "Побег от лавины",
   "After Sudden Death": "После внезапной смерти",
   "BUILD!": "Стройте!",
   "Blocked file type: %{0}": "Заблокированный тип файла: %{0}",
   "CLEAN RUN": "Чистый заезд",
+  "COURSE %{0}%": "ТРАССА %{0}%",
   Camera: "Камера",
   "Camera in use by another application. Try closing other programs using the camera.":
     "Камера, используемая другим приложением. Попробуйте закрыть другие программы с помощью камеры.",

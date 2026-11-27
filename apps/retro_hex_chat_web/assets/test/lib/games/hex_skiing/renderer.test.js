@@ -197,4 +197,26 @@ describe("Hex Skiing Renderer", () => {
     expect(contrast(colors.tree, colors.bg)).toBeGreaterThanOrEqual(3);
     expect(contrast(colors.rock, colors.bg)).toBeGreaterThanOrEqual(3);
   });
+
+  // "AVL" and "12%" were written in 8px over their own bars, unreadable.
+  it("labels the bottom bars above them, saying what each measures", () => {
+    const state = { ...createInitialState(GAME_MODE.ALPINE_RACE, 7), phase: PHASE.RACING };
+    state.p1.distance = 2160;
+    const ctx = createMockCtx();
+    const written = [];
+    const fillText = ctx.fillText;
+    ctx.fillText = (text, x, y) => {
+      written.push({ text, y, baseline: ctx.textBaseline, font: ctx.font });
+      return fillText(text, x, y);
+    };
+    render(ctx, state, PALETTE, 0, []);
+    for (const label of ["AVALANCHE", "COURSE 12%"]) {
+      const drawn = written.find(({ text }) => text === label);
+      expect(drawn).toBeDefined();
+      // The bars span y 464 to 474: the label's foot sits above them.
+      expect(drawn.baseline).toBe("bottom");
+      expect(drawn.y).toBeLessThanOrEqual(464);
+      expect(parseInt(drawn.font.match(/(\d+)px/)[1], 10)).toBeGreaterThanOrEqual(10);
+    }
+  });
 });

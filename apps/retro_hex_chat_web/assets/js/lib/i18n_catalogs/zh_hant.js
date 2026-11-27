@@ -18,11 +18,13 @@ export const ZH_HANT = {
   "ADVANTAGE P2": "P2 佔先",
   "ALL BLOCKS CLEARED": "所有方塊清除",
   "ALPINE RACE": "高山競速",
+  AVALANCHE: "雪崩",
   "AVALANCHE ESCAPE": "雪崩逃生",
   "After Sudden Death": "驟死賽後",
   "BUILD!": "建造！",
   "Blocked file type: %{0}": "被屏蔽的文件類型 : %{0}",
   "CLEAN RUN": "完美通關",
+  "COURSE %{0}%": "賽道 %{0}%",
   Camera: "攝影機",
   "Camera in use by another application. Try closing other programs using the camera.":
     "另一個應用程序正在使用的相機。 嘗試使用相機關閉其它程序 。",

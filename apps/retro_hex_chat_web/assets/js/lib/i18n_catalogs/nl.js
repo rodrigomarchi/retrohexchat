@@ -18,11 +18,13 @@ export const NL = {
   "ADVANTAGE P2": "VOORDEEL P2",
   "ALL BLOCKS CLEARED": "ALLE BLOKKEN GERUIMD",
   "ALPINE RACE": "ALPINERACE",
+  AVALANCHE: "LAWINE",
   "AVALANCHE ESCAPE": "LAWINEVLUCHT",
   "After Sudden Death": "Na sudden death",
   "BUILD!": "BOUWEN!",
   "Blocked file type: %{0}": "Geblokkeerd bestandstype: %{0}",
   "CLEAN RUN": "FOUTLOZE RIT",
+  "COURSE %{0}%": "PARCOURS %{0}%",
   Camera: "Camera",
   "Camera in use by another application. Try closing other programs using the camera.":
     "Camera in gebruik door een andere toepassing. Probeer andere programma's te sluiten met behulp van de camera.",
