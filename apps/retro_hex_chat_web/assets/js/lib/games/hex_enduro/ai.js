@@ -13,6 +13,8 @@ import { TableAI, createCommitment, createDelayedView } from "../core/ai.js";
 const COLLISION_ZONE_Z = 40;
 const PLAYER_COLLISION_BUFFER_Z = 135;
 const CRUISE_LANE = 1;
+/** How long a lane drawn wrong is driven before the lane is drawn again. */
+const SLIP_FRAMES = 120;
 // The renderer hides cars and fuel stations past this share of the road in fog.
 const FOG_VISIBLE_Z = MAX_Z * 0.4;
 
@@ -132,8 +134,9 @@ export class HexEnduroAI extends TableAI {
     this.turboCooldown = 0;
     this._target = null;
     this._view = createDelayedView();
-    // A wrong lane is drawn once per lane it means to drive, and whether to
-    // draft once per time the opponent pulls just ahead.
+    // A wrong lane is drawn once per lane it means to drive (and again every
+    // SLIP_FRAMES), and whether to draft once per time the opponent pulls
+    // just ahead.
     this._slip = createCommitment();
     this._draft = createCommitment();
     this._draftChance = 0;
@@ -204,8 +207,11 @@ export class HexEnduroAI extends TableAI {
     const target = chooseEnduroTarget(seen, player, config, () =>
       this._draft.hold(this._draftChance, this.rng),
     );
+    // A wrong lane lasts SLIP_FRAMES at most: on a road where the lane it
+    // means never changes, one held for good kept it there for the race.
+    const slipWindow = Math.floor(this.frame / SLIP_FRAMES);
     const slip = this._slip.hold(
-      `${target.reason}:${target.lane}`,
+      `${target.reason}:${target.lane}:${slipWindow}`,
       () => maybeApplyLaneMistake(target, seen, player, config, this.rng).lane - target.lane,
     );
     return { ...target, lane: target.lane + slip };

@@ -206,6 +206,31 @@ describe("HexEnduroAI", () => {
     expect(ai.nextInputs({ state, player: 2 }).left).toBe(true);
   });
 
+  // On a road with nothing on it the lane it means stays the same: a wrong
+  // lane held for as long as that left both cars of a race side by side in
+  // one lane, colliding every second to the end.
+  it("drives a wrong lane only for a while, then the one it means", () => {
+    let calls = 0;
+    const ai = createHexEnduroAI({ difficulty: "hard", rng: () => (calls++ < 2 ? 0 : 0.99) });
+    const base = racingState(GAME_MODE.SPRINT);
+    const state = {
+      ...base,
+      aiCars: [],
+      fuelStations: [],
+      // The rival beside it in its lane: it means the middle lane, and the
+      // first look draws a slip back into the rival's.
+      p1: { ...base.p1, lane: 0, targetLane: 0, zOffset: 21 },
+      p2: { ...base.p2, lane: 0, targetLane: 0, zOffset: 20, speed: 600 },
+    };
+    const toTheMiddle = [];
+    for (let frame = 0; frame < 600; frame++) {
+      toTheMiddle.push(ai.nextInputs({ state, player: 2 }).right);
+    }
+
+    expect(toTheMiddle.slice(0, 30)).not.toContain(true);
+    expect(toTheMiddle).toContain(true);
+  });
+
   it("does not reach for a fuel station hidden in the fog", () => {
     const base = racingState();
     const day = {
