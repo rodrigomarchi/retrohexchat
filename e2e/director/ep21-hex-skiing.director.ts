@@ -82,7 +82,6 @@ const THICKER_AT = 18_000;
 // The avalanche bar fills from three screens above the view; the front comes
 // into view only seconds before the end.
 const BAR_RISING = -900;
-const FRONT_CLOSE = -250;
 
 type Person = TestUser;
 type Rooms = { host: Page; guest: Page };
@@ -396,7 +395,9 @@ test.describe("EP21 Hex Skiing", () => {
   test("05 caught", async () => {
     const shot = shotFor(5);
     test.setTimeout(ESCAPE_TIMEOUT * 2 + 4 * 60_000);
-    const r = await escapeAt((seen) => seen.avalancheY >= FRONT_CLOSE);
+    // The front on screen: the escape has seconds left, and the take runs
+    // its lines, then on to the end.
+    const r = await escapeAt((seen) => seen.avalancheY >= 40);
     await r.host.bringToFront();
     await filmCrew(
       { [PIXEL]: r.host, [KESTREL]: r.guest },
@@ -404,12 +405,11 @@ test.describe("EP21 Hex Skiing", () => {
       async ({ cue, focus }) => {
         await focus(matchCanvas(r.host, ESCAPE));
         await cue("A skier knocked down");
+        await cue("If it takes them both");
         for (const room of [r.host, r.guest]) {
           await expect(result(room)).toBeVisible({ timeout: ESCAPE_TIMEOUT });
         }
         await focus(result(r.host));
-        await cue("If it takes them both");
-        await focus(result(r.guest));
       },
       { kind: "split", cameras: [PIXEL, KESTREL] },
     );
