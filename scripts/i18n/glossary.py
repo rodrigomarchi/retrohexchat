@@ -908,6 +908,8 @@ _ROWS = {
     # output, never a person speaking.
     "Camera":         ("Câmera", "Câmara", "Cámara", "Caméra", "Kamera", "Fotocamera", "Camera", "Kamera", "Камера", "Kamera", "カメラ", "摄像头", "攝影機"),
     # Hex Skiing's bar: the word is the same in Portuguese and French.
+    # Hex Frost's title over its game: the product's name, in every language.
+    "HEX FROST  %{0}": ("HEX FROST  %{0}",) * 13,
     "AVALANCHE":      ("AVALANCHE", "AVALANCHE", "AVALANCHA", "AVALANCHE", "LAWINE", "VALANGA", "LAWINE", "LAWINA", "ЛАВИНА", "LONGSOR", "雪崩", "雪崩", "雪崩"),
     "Microphone":     ("Microfone", "Microfone", "Micrófono", "Microphone", "Mikrofon", "Microfono", "Microfoon", "Mikrofon", "Микрофон", "Mikrofon", "マイク", "麦克风", "麥克風"),
     "Camera off":     ("Câmera desligada", "Câmara desligada", "Cámara apagada", "Caméra coupée", "Kamera aus", "Fotocamera spenta", "Camera uit", "Kamera wyłączona", "Камера выключена", "Kamera mati", "カメラオフ", "摄像头已关闭", "攝影機已關閉"),

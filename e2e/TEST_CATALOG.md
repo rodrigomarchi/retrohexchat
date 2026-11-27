@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **289 spec files** under `e2e/tests/`.
-- **730 Playwright `test()` cases**.
-- **676 documented flows**, 675 done, 1 not done.
+- **290 spec files** under `e2e/tests/`.
+- **732 Playwright `test()` cases**.
+- **678 documented flows**, 677 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -539,6 +539,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N127 | Hex Skiing's home lists its three descents — Hex Skiing (best of three runs), Escape and Clean Run; Play on each opens the game in a tab of its own, its menu naming the descent, and against the computer at Hard each is a descent under way | `tests/game-hex-skiing.spec.ts` | done |
 | N128 | Find a partner on the home's Escape row puts a seat's card in #hex-skiing; a friend's Join takes it, both are ready, the descent runs with the same slope — trees, rocks and gates — on both screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-skiing.spec.ts` | done |
 | N129 | The avalanche: an Escape made with Find a partner runs past the point where the slope grows thicker; the avalanche, slower than the skiers at first, speeds up until its front comes into view behind them, and swallows them, the Final Score on both screens | `tests/game-hex-skiing.spec.ts` | done |
+| N130 | Hex Frost's home lists its three games — Hex Frost (best of five rounds), Blizzard and Peaceful; Play on each opens the game in a tab of its own, its menu naming the game, and against the computer at Hard each is a round under way | `tests/game-hex-frost.spec.ts` | done |
+| N131 | Find a partner on the home's Blizzard row puts a seat's card in #hex-frost; a friend's Join takes it, both are ready, the round runs with the same ice — blocks, enemies and both igloos — on both screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-frost.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

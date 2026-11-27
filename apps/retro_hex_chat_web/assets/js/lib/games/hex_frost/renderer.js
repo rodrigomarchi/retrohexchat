@@ -738,7 +738,7 @@ function drawHUD(ctx, state, colors) {
       : state.mode === GAME_MODE.PEACEFUL
         ? "PEACEFUL"
         : jt`R${state.round}/5`;
-  ctx.fillText(jt`FROSTBITE  ${modeLabel}`, CANVAS_W / 2, 14);
+  ctx.fillText(jt`HEX FROST  ${modeLabel}`, CANVAS_W / 2, 14);
 
   // Round wins
   ctx.font = "9px monospace";
