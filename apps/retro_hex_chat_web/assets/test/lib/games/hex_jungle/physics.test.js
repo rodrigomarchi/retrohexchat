@@ -392,6 +392,26 @@ describe("the tunnel", () => {
   it("dies at the scorpion's touch", () => {
     expect(after(tunnel(screenOf(2, 0), { x: 74 }), {}, 1).phase).toBe(PHASE.DYING);
   });
+
+  // The sting was a solid 8 by 8 square, taller than the scorpion is drawn:
+  // no jump cleared it, and every tunnel with one was a dead end.
+  it("is cleared by a jump timed right, its tail and all", () => {
+    // From 3 pixels clear of its right side, a jump to the left.
+    let state = tunnel(screenOf(2, 0), { x: 76 + 8 + 3 });
+    for (let tick = 0; tick < 60 && state.phase === PHASE.PLAYING; tick++) {
+      state = after(state, { left: true, jump: tick < 2 }, 1);
+    }
+    expect(state.phase).toBe(PHASE.PLAYING);
+    expect(state.player.x + 4).toBeLessThanOrEqual(state.scorpionX);
+  });
+
+  it("stings a player walking into it", () => {
+    let state = tunnel(screenOf(2, 0), { x: 76 + 8 + 3 });
+    for (let tick = 0; tick < 60 && state.phase === PHASE.PLAYING; tick++) {
+      state = after(state, { left: true }, 1);
+    }
+    expect(state.phase).toBe(PHASE.DYING);
+  });
 });
 
 // ── Treasures, the clock and lives ──

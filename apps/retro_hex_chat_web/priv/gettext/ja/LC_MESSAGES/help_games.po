@@ -3989,20 +3989,10 @@ msgstr "Hex Jungle is a game for one player. An adventurer crosses a jungle of 2
 msgid "The game ends when the twenty minutes are over, when the last life is lost, or when the 32nd treasure is found. The End button keeps the points you have."
 msgstr "ゲームは、20分が経過したとき、最後のライフを失ったとき、または32個目の宝を見つけたときに終了します。「終了」ボタンを押すと、その時点のポイントが記録されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "— Catch the vine in a jump"
-msgstr "— ジャンプしてツタをつかむ"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:187
 #, elixir-autogen, elixir-format
 msgid "Hex Jungle is a game for one player: move with the arrow keys or WASD, jump with the space bar, and climb ladders with Up and Down."
 msgstr "ヘックスジャングルは1つのプレーヤーのためのゲームです:矢印キーまたはWASDで移動し、スペースバーでジャンプし、上下に梯子を登る。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:46
-#, elixir-autogen, elixir-format
-msgid "Touching a rolling tree trunk costs points. Falling down a hole costs 100 points."
-msgstr "転がる丸太に触れるとポイントを失います。穴に落ちると100ポイント失います。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:25
 #, elixir-autogen, elixir-format
@@ -4869,3 +4859,13 @@ msgstr "イグルーの完成には25個のピースが必要(クラシックの
 #, elixir-autogen, elixir-format
 msgid "One epic long round of Hex Frost — all enemies from the start, igloo needs 25 pieces, 5 lives each, and the temperature drops slowly from 60°. Arctic endurance mode. A marathon of precision and patience — one wrong jump can cost you minutes of progress."
 msgstr "Hex Frost を1ラウンドで長く遊べる、壮大なモードです。最初からすべての敵が登場し、イグルーの完成には25個のピースが必要で、ライフは各5つ、気温は60°からゆっくり下がっていきます。北極の持久戦モードです。正確さと忍耐力が試されるマラソンで、ジャンプを1回間違えるだけで、何分もの進行が無駄になることもあります"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Touching a tree trunk costs points, and a rolling one stops you. Falling down a hole costs 100 points."
+msgstr "木の幹に触れると得点が減り、転がってくる幹にぶつかると止まってしまいます。穴に落ちると100点減点されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Jump: over trunks, holes, fire, snakes and scorpions, onto crocodiles' heads, and up to catch the vine"
+msgstr "— ジャンプ:丸太、穴、火、ヘビ、サソリを飛び越え、ワニの頭に飛び乗り、上に跳んでツタをつかみます"

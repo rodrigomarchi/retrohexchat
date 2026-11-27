@@ -204,3 +204,30 @@ describe("a Light Trails seat on autopilot", () => {
     expect(Math.min(score1, score2)).toBeGreaterThan(0);
   }, 30_000);
 });
+
+// A one-player game has no AI; its player for the autopilot is loaded by the
+// page alone (`engine_loader.js`), and walks the jungle through its keys.
+describe("a Hex Jungle expedition on autopilot", () => {
+  const play = matchPerTest({ gameId: "hex_jungle" });
+
+  it("finds treasure, through the explorer's keys", async () => {
+    builtByTheE2EServer();
+    vi.stubGlobal(AUTOPILOT_GLOBAL, { difficulty: "hard" });
+    const match = await play({ mode: "solo" });
+
+    match.advance(90_000);
+
+    const state = match.engines.host.gameState;
+    expect(state.treasures).toBeGreaterThan(0);
+    expect(state.lives).toBe(3);
+  }, 60_000);
+
+  it("leaves the explorer to the person when nothing asks for it", async () => {
+    builtByTheE2EServer();
+    const match = await play({ mode: "solo" });
+
+    match.advance(20_000);
+
+    expect(match.engines.host.gameState.player.x).toBe(20);
+  });
+});

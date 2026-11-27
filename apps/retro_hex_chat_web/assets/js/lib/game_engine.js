@@ -399,16 +399,19 @@ export class GameEngine {
     const steps = this._clock.advance(now);
 
     if (steps > 0) {
-      this.autopilot?.step();
       if (this._stepping) {
+        // The autopilot presses its keys tick by tick, as it decided them: a
+        // frame that runs two ticks runs two of its decisions, not one twice.
         for (let i = 0; i < steps && this._stepping; i++) {
+          this.autopilot?.step();
           this._gameLoop();
         }
         this._telemetry.stepsRan(steps);
         const { droppedSteps, stallCount } = this._clock.drainStalls();
         this._telemetry.stalled(droppedSteps, stallCount);
-      } else if (!this._paused) {
-        for (let i = 0; i < steps; i++) this._idleStep();
+      } else {
+        this.autopilot?.step();
+        if (!this._paused) for (let i = 0; i < steps; i++) this._idleStep();
       }
 
       if (!this.isHost) this._sendInputState();

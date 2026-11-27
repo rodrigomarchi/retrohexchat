@@ -455,6 +455,34 @@ describe("GameEngine", () => {
       expect(seen.ticks).toBeLessThanOrEqual(61);
     });
 
+    // A slow frame runs several ticks; the autopilot decides each of them,
+    // so a jump planned for one tick is not held for two.
+    it("asks the autopilot for every tick, a slow frame's included", () => {
+      // The browser's frames, handed out by the test.
+      let frame = null;
+      vi.stubGlobal("requestAnimationFrame", (callback) => {
+        frame = callback;
+        return 1;
+      });
+      vi.stubGlobal("cancelAnimationFrame", () => {});
+      const { Game, seen } = probe();
+      const host = build(Game);
+      let asked = 0;
+      host.start();
+      host.beginMatch();
+      host.autopilot = { step: () => (asked += 1), release: () => {} };
+      const start = performance.now();
+      frame(start + FIXED_STEP_MS);
+      const ticksBefore = seen.ticks;
+      const askedBefore = asked;
+
+      // The page stalls: the next frame finds four ticks due.
+      frame(start + FIXED_STEP_MS * 5);
+
+      expect(seen.ticks - ticksBefore).toBe(4);
+      expect(asked - askedBefore).toBe(4);
+    });
+
     it("paints once per frame however many repaints were asked for", () => {
       const { Game, seen } = probe();
       const host = build(Game);

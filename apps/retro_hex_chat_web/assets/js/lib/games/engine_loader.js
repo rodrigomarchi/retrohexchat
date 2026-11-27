@@ -40,6 +40,14 @@ const SOLO_AI_LOADERS = {
 };
 
 /**
+ * The players of one-player games, for the autopilot alone: a page the e2e
+ * server built loads one to film an expedition; no other page does.
+ */
+const AUTOPILOT_PLAYER_LOADERS = {
+  hex_jungle: () => import("./hex_jungle/player.js").then((module) => module.createHexJunglePlayer),
+};
+
+/**
  * @param {string} gameId
  * @returns {boolean}
  */
@@ -134,7 +142,8 @@ export async function createGameEngine({
  * @returns {Promise<{ difficulty?: string, controller?: object }>}
  */
 async function autopilotOptions(gameId, request, seed) {
-  const loader = SOLO_AI_LOADERS[REGISTRY[gameId]?.dir];
+  const dir = REGISTRY[gameId]?.dir;
+  const loader = SOLO_AI_LOADERS[dir] ?? AUTOPILOT_PLAYER_LOADERS[dir];
   if (!loader) return request;
   const create = await loader();
   return {

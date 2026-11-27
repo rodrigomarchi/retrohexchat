@@ -43,7 +43,7 @@ import {
   PIT_DEATH_Y,
   RESPAWN_UNDER_Y,
   RESPAWN_Y,
-  SCORPION_BOX,
+  SCORPION_PARTS,
   SCORPION_EVERY,
   SCORPION_START,
   SCREEN_W,
@@ -396,7 +396,11 @@ function stepTunnel(state, scene, tick) {
   let scorpionX = next.scorpionX;
   if (cadence(tick, SCORPION_EVERY)) scorpionX += Math.sign(next.player.x - scorpionX);
   next = { ...next, scorpionX };
-  if (overlaps(body(next.player), inTunnel({ ...SCORPION_BOX, x: scorpionX }))) return dies(next);
+  const you = body(next.player);
+  const stung = SCORPION_PARTS.some(({ dx, w, h }) =>
+    overlaps(you, inTunnel({ w, h, x: scorpionX + dx })),
+  );
+  if (stung) return dies(next);
   return next;
 }
 

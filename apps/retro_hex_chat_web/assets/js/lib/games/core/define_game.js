@@ -270,6 +270,10 @@ export function defineGame(def) {
         if (options.autopilot && this.mode !== "spectator") {
           this._createAutopilot(options.autopilot);
         }
+      } else if (options.autopilot?.controller && this.mode !== "spectator") {
+        // A one-player game has no AI of its own; its player for the
+        // autopilot comes from the page (`engine_loader.js`).
+        this._createAutopilot(options.autopilot);
       }
       this.frameCount = 0;
       this.audio = audioOf(def.audio);
@@ -597,21 +601,23 @@ export function defineGame(def) {
      */
     _createAutopilot(request) {
       // The page names how well this seat plays, not what the player picked.
-      const difficulty = (def.ai.level ?? def.ai.difficulty)(request.difficulty);
+      const difficulty = def.ai
+        ? (def.ai.level ?? def.ai.difficulty)(request.difficulty)
+        : request.difficulty;
       const controller =
         request.controller ??
-        def.ai.create?.({ difficulty, rng: createRng(this.matchSeed).fork("autopilot").next });
+        def.ai?.create?.({ difficulty, rng: createRng(this.matchSeed).fork("autopilot").next });
       if (!controller) return;
       const player = this.isHost ? 1 : 2;
       this.autopilot = createAutopilot({
         controller,
         // A game that reads its keys as presses, not as held inputs, names
         // the keys its AI presses (`ai.keys`).
-        inputs: def.ai.keys ?? def.inputs,
+        inputs: def.ai?.keys ?? def.inputs,
         target: this._keyboardTarget,
         report: reportSeen,
         observe: () => ({
-          ...(def.ai.observe ? def.ai.observe(this) : { state: this.gameState }),
+          ...(def.ai?.observe ? def.ai.observe(this) : { state: this.gameState }),
           difficulty,
           player,
         }),

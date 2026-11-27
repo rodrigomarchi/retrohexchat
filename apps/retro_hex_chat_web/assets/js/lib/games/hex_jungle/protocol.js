@@ -159,7 +159,15 @@ export const WALL_BOX = Object.freeze({ w: 8, h: 16 });
 /** A scorpion starts in the tunnel's middle and creeps a pixel every 8 ticks. */
 export const SCORPION_START = 76;
 export const SCORPION_EVERY = 8;
-export const SCORPION_BOX = Object.freeze({ w: 8, h: 8 });
+/**
+ * What of a scorpion stings, as it is drawn (`sprites.js`): its body, 8 wide
+ * and 4 tall on the floor, and its tail, a 2-pixel column rising 8 above the
+ * floor from 5 pixels in — low enough for a jump to clear.
+ */
+export const SCORPION_PARTS = Object.freeze([
+  Object.freeze({ dx: 0, w: 8, h: 4 }),
+  Object.freeze({ dx: 5, w: 2, h: 8 }),
+]);
 
 /** A treasure lies on the ground at x 124, 8 pixels square. */
 export const TREASURE_BOX = Object.freeze({ w: 8, h: 8 });
