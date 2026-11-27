@@ -12,7 +12,7 @@
  * @module games/hex_skiing
  */
 
-import { ARROW_KEYS, defineGame, drawSeed, packedSnapshot } from "../core/define_game.js";
+import { ARROW_KEYS, defineGame, drawSeed } from "../core/define_game.js";
 import { playFlags } from "../core/events.js";
 import { drawOnDisconnect, matchResult, raceEnd } from "../core/result.js";
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
@@ -21,6 +21,7 @@ import {
   determineWinner,
   // ex_dna:disable-for-lines:9 this game's own imports
   getScrollSpeed,
+  obstaclesAround,
   packState,
   startNextRound,
   stepTick,
@@ -191,7 +192,14 @@ export default defineGame({
     },
   },
 
-  ...packedSnapshot(packState, unpackState),
+  toWire: (game) => packState(game.gameState),
+  // The trees, rocks and ice are not on the wire: the guest draws the ones
+  // around its view from the slope's seed, the same ones the host does.
+  applySnapshot: (game, decoded) => {
+    game.gameMode = decoded.mode;
+    const state = unpackState(decoded);
+    game.gameState = { ...state, obstacles: obstaclesAround(state) };
+  },
   cues: [{ flags: (s) => s.events, sounds: EVENT_SOUNDS }],
   onEnd: raceEnd(PHASE.FINISHED, (game) => game.audio.stopSkiDrone()),
   render: (game) => {

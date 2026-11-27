@@ -32,6 +32,9 @@ import {
   GATE_INTERVAL,
   COURSE_LENGTH,
   ITEM_SPAWN_INTERVAL,
+  obstaclesAround,
+  densityAt,
+  ESCAPE_STAGE,
 } from "../../../../js/lib/games/hex_skiing/physics.js";
 import { createRng } from "../../../../js/lib/games/core/rng.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "../../../../js/lib/games/hex_skiing/protocol.js";
@@ -672,5 +675,57 @@ describe("Hex Skiing Physics", () => {
       const state = { p1RoundWins: 1, p2RoundWins: 1 };
       expect(determineWinner(state)).toBe(0);
     });
+  });
+});
+
+// The guest gets no obstacles on the wire. It used to draw an empty slope —
+// and its AI steer through trees it never saw — while the host's skier hit
+// them; each chunk is now drawn from the slope's seed alone.
+describe("the slope the guest draws", () => {
+  const racing = (mode, seed = 4242) => ({
+    ...createInitialState(mode, seed),
+    phase: PHASE.RACING,
+  });
+  const key = (o) => `${o.type}:${o.x.toFixed(3)}:${o.y.toFixed(3)}`;
+
+  it("is the host's, obstacle for obstacle, wherever the slope has scrolled to", () => {
+    for (const mode of [GAME_MODE.ALPINE_RACE, GAME_MODE.AVALANCHE_ESCAPE, GAME_MODE.CLEAN_RUN]) {
+      let host = racing(mode);
+      for (let frame = 0; frame < 1500; frame++) {
+        host = stepTick(host, {
+          p1: { left: false, right: false },
+          p2: { left: false, right: false },
+        });
+        if (host.phase !== PHASE.RACING) break;
+        if (frame % 250 !== 0) continue;
+        const guest = unpackState(packState(host));
+        const drawn = new Set(obstaclesAround(guest).map(key));
+        const visible = host.obstacles.filter((o) => o.y > host.scrollY - CHUNK_SIZE);
+        for (const o of visible) expect(drawn).toContain(key(o));
+      }
+    }
+  });
+
+  it("is the same slope on a second round as its seed and round say", () => {
+    const second = { ...racing(GAME_MODE.ALPINE_RACE), round: 1, scrollY: 2400 };
+    expect(obstaclesAround(second).map(key)).toEqual(obstaclesAround({ ...second }).map(key));
+    const first = { ...second, round: 0 };
+    expect(obstaclesAround(second).map(key)).not.toEqual(obstaclesAround(first).map(key));
+  });
+});
+
+describe("how thick the slope is", () => {
+  it("grows on the escape the further down it goes, past the races' last round", () => {
+    const trees = (y) => densityAt(GAME_MODE.AVALANCHE_ESCAPE, 0, y).treeDensity;
+    expect(trees(0)).toBeLessThan(trees(ESCAPE_STAGE));
+    expect(trees(ESCAPE_STAGE)).toBeLessThan(trees(2 * ESCAPE_STAGE));
+    expect(trees(2 * ESCAPE_STAGE)).toBeLessThan(trees(4 * ESCAPE_STAGE));
+  });
+
+  it("has no ice on a clean run, in any round", () => {
+    for (const round of [0, 1, 2]) {
+      expect(densityAt(GAME_MODE.CLEAN_RUN, round, 0).iceDensity).toBe(0);
+    }
+    expect(densityAt(GAME_MODE.ALPINE_RACE, 2, 0).iceDensity).toBeGreaterThan(0);
   });
 });

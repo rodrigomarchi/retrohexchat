@@ -72,6 +72,17 @@ export const AVALANCHE_START_OFFSET = -100; // starts above viewport
 export const AVALANCHE_ACCEL_INTERVAL = 1800; // frames (~30s) between speed bumps
 export const AVALANCHE_ACCEL_AMOUNT = 0.15; // px/frame added each interval
 
+// ── Escape ─────────────────────────────────────────────────────
+// The escape's slope grows thicker every ESCAPE_STAGE of descent, one
+// round's worth, and past the last round's by a tree a stage.
+export const ESCAPE_STAGE = 18000;
+const ESCAPE_MAX_TREES = 14;
+// The escape's avalanche starts as a race's first round's and speeds up
+// faster, so a run lasts minutes rather than a quarter of an hour.
+export const ESCAPE_AVALANCHE_BASE = 2.3;
+export const ESCAPE_ACCEL_INTERVAL = 900; // frames (~15s)
+export const ESCAPE_ACCEL_AMOUNT = 0.15;
+
 // ── Course length ──────────────────────────────────────────────
 export const COURSE_LENGTH = 18000; // world-Y for one run (~90s clean)
 
@@ -88,7 +99,7 @@ const DIFFICULTY = [
     treeDensity: 4,
     rockDensity: 0,
     iceDensity: 0,
-    avalancheBase: 0.5,
+    avalancheBase: 2.4,
     gateWidth: 80,
   },
   {
@@ -96,7 +107,7 @@ const DIFFICULTY = [
     treeDensity: 6,
     rockDensity: 2,
     iceDensity: 0,
-    avalancheBase: 0.8,
+    avalancheBase: 2.5,
     gateWidth: 60,
   },
   {
@@ -104,7 +115,7 @@ const DIFFICULTY = [
     treeDensity: 8,
     rockDensity: 3,
     iceDensity: 2,
-    avalancheBase: 1.2,
+    avalancheBase: 2.7,
     gateWidth: 40,
   },
 ];
@@ -147,7 +158,7 @@ function freshRound(mode, round, slopeSeed) {
 
     scrollY: 0,
     avalancheY: AVALANCHE_START_OFFSET,
-    avalancheSpeed: mode === GAME_MODE.CLEAN_RUN ? 0 : diff.avalancheBase,
+    avalancheSpeed: avalancheStart(mode, diff),
     avalancheAccelTimer: 0,
 
     blizzardActive: false,
@@ -175,11 +186,16 @@ function freshRound(mode, round, slopeSeed) {
 
     // RNG instance
     _rng: createRng(slopeSeed).next,
-    _difficulty: diff,
 
     // Frame counter for avalanche accel
     frameCount: 0,
   };
+}
+
+/** How fast a round's avalanche starts: none on a clean run, its own on the escape. */
+function avalancheStart(mode, diff) {
+  if (mode === GAME_MODE.CLEAN_RUN) return 0;
+  return mode === GAME_MODE.AVALANCHE_ESCAPE ? ESCAPE_AVALANCHE_BASE : diff.avalancheBase;
 }
 
 /**
@@ -443,6 +459,69 @@ export function generateChunk(rng, chunkY, difficulty) {
   return obstacles;
 }
 
+/** The seed of a round's slope: the match's seed, moved on by the round. */
+export function slopeSeedOf(state) {
+  return (state.seed + state.round * 1000) >>> 0;
+}
+
+/**
+ * How thick the slope is at `chunkY`: a race's round sets it, harder each
+ * round; the escape, one endless run, grows thicker every ESCAPE_STAGE of
+ * descent and keeps growing past the last round's. A clean run has no ice.
+ * @param {number} mode - GAME_MODE enum
+ * @param {number} round - 0-based
+ * @param {number} chunkY - world-Y of the chunk's top
+ * @returns {{treeDensity: number, rockDensity: number, iceDensity: number}}
+ */
+export function densityAt(mode, round, chunkY) {
+  if (mode === GAME_MODE.AVALANCHE_ESCAPE) {
+    const stage = Math.floor(chunkY / ESCAPE_STAGE);
+    const base = DIFFICULTY[Math.min(stage, DIFFICULTY.length - 1)];
+    const beyond = Math.max(0, stage - (DIFFICULTY.length - 1));
+    return {
+      treeDensity: Math.min(ESCAPE_MAX_TREES, base.treeDensity + beyond),
+      rockDensity: base.rockDensity,
+      iceDensity: base.iceDensity,
+    };
+  }
+  const diff = DIFFICULTY[Math.min(round, DIFFICULTY.length - 1)];
+  return mode === GAME_MODE.CLEAN_RUN ? { ...diff, iceDensity: 0 } : diff;
+}
+
+/**
+ * The obstacles of the chunk at `chunkY`, drawn from the slope's seed and
+ * the chunk alone: the guest, who gets no obstacles on the wire, draws the
+ * same ones the host does.
+ * @param {object} state - its mode, seed and round
+ * @param {number} chunkY
+ * @returns {object[]}
+ */
+export function chunkAt(state, chunkY) {
+  const index = Math.floor(chunkY / CHUNK_SIZE);
+  const rng = createRng((slopeSeedOf(state) ^ Math.imul(index + 1, 0x9e3779b1)) >>> 0).next;
+  return generateChunk(rng, chunkY, densityAt(state.mode, state.round, chunkY));
+}
+
+/**
+ * The obstacles a screen needs around its scroll: from a chunk behind to a
+ * chunk past the bottom of the view.
+ * @param {object} state
+ * @returns {object[]}
+ */
+export function obstaclesAround(state) {
+  const cullY = state.scrollY - CHUNK_SIZE;
+  const lookAhead = state.scrollY + CANVAS_H + CHUNK_SIZE;
+  const obstacles = [];
+  for (
+    let y = Math.max(0, Math.floor(cullY / CHUNK_SIZE) * CHUNK_SIZE);
+    y < lookAhead;
+    y += CHUNK_SIZE
+  ) {
+    obstacles.push(...chunkAt(state, y));
+  }
+  return obstacles.filter((o) => o.y > cullY);
+}
+
 /**
  * Ensure enough obstacle chunks exist ahead of the scroll position.
  */
@@ -454,8 +533,7 @@ export function ensureChunks(state) {
   let nextY = state.nextChunkY;
 
   while (nextY < lookAhead) {
-    const chunk = generateChunk(state._rng, nextY, state._difficulty);
-    newObstacles.push(...chunk);
+    newObstacles.push(...chunkAt(state, nextY));
     nextY += CHUNK_SIZE;
   }
 
@@ -650,10 +728,11 @@ export function updateAvalanche(state) {
   s.avalancheY += s.avalancheSpeed;
 
   // Accelerate over time
+  const escape = s.mode === GAME_MODE.AVALANCHE_ESCAPE;
   s.avalancheAccelTimer++;
-  if (s.avalancheAccelTimer >= AVALANCHE_ACCEL_INTERVAL) {
+  if (s.avalancheAccelTimer >= (escape ? ESCAPE_ACCEL_INTERVAL : AVALANCHE_ACCEL_INTERVAL)) {
     s.avalancheAccelTimer = 0;
-    s.avalancheSpeed += AVALANCHE_ACCEL_AMOUNT;
+    s.avalancheSpeed += escape ? ESCAPE_ACCEL_AMOUNT : AVALANCHE_ACCEL_AMOUNT;
   }
 
   let events = s.events;
