@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **288 spec files** under `e2e/tests/`.
-- **727 Playwright `test()` cases**.
-- **673 documented flows**, 672 done, 1 not done.
+- **289 spec files** under `e2e/tests/`.
+- **729 Playwright `test()` cases**.
+- **675 documented flows**, 674 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -536,6 +536,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N124 | Hex Enduro's home lists its three races — Hex Enduro (three days), Night Race and Sprint; Play on each opens the game in a tab of its own, its menu naming the race, and against the computer at Hard each is a race under way | `tests/game-hex-enduro.spec.ts` | done |
 | N125 | Find a partner on the home's Sprint row puts a seat's card in #hex-enduro; a friend's Join takes it, both are ready, the race runs with both cars driven from their own screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-enduro.spec.ts` | done |
 | N126 | A double header: a Sprint made with Find a partner is raced to its Final Score; in the same session the host goes Back to games, proposes Night Race from the session's games, the friend is asked — "wants to play" — and accepts, and the night race is run in the same room to its own Final Score | `tests/game-hex-enduro.spec.ts` | done |
+| N127 | Hex Skiing's home lists its three descents — Hex Skiing (best of three runs), Escape and Clean Run; Play on each opens the game in a tab of its own, its menu naming the descent, and against the computer at Hard each is a descent under way | `tests/game-hex-skiing.spec.ts` | done |
+| N128 | Find a partner on the home's Escape row puts a seat's card in #hex-skiing; a friend's Join takes it, both are ready, the descent runs with the same slope — trees, rocks and gates — on both screens while a third person watches it, and Scoreboard says the result in the channel | `tests/game-hex-skiing.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

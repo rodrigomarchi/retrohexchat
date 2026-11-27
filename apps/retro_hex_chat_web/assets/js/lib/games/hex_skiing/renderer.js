@@ -364,18 +364,19 @@ function drawSkier(ctx, player, color, frameCount, _scrollY) {
 function drawAvalanche(ctx, state, colors, frameCount) {
   if (state.mode === GAME_MODE.CLEAN_RUN) return;
 
+  // It comes down from the top: its front's screen y grows as it gains.
   const screenY = state.avalancheY - state.scrollY;
-  if (screenY > CANVAS_H) return; // Not visible yet
+  if (screenY <= 0) return; // still above the view
 
-  const topY = Math.max(0, screenY - 60);
-  const botY = Math.min(CANVAS_H, screenY);
-
-  if (botY <= 0) {
-    // Avalanche fills entire screen
+  if (screenY >= CANVAS_H) {
+    // Rolled past the bottom: it fills the view
     ctx.fillStyle = colors.avalanche;
     ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
     return;
   }
+
+  const topY = Math.max(0, screenY - 60);
+  const botY = screenY;
 
   // Dense body (above the edge)
   if (topY > 0) {

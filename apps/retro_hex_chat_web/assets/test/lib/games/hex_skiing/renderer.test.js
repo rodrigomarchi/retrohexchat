@@ -5,6 +5,7 @@ import {
   generateSnowParticles,
 } from "../../../../js/lib/games/hex_skiing/renderer.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "../../../../js/lib/games/hex_skiing/protocol.js";
+import { createInitialState } from "../../../../js/lib/games/hex_skiing/physics.js";
 import { createMockCtx } from "../../../support/games/renderer_tests.js";
 
 function createMockCanvas() {
@@ -141,6 +142,41 @@ describe("Hex Skiing Renderer", () => {
 
       expect(ctx.fillRect).toHaveBeenCalled();
       expect(ctx.fillText).toHaveBeenCalled();
+    });
+  });
+
+  // The avalanche comes down from the top of the screen. Painted over the
+  // whole view while it was still above it, it hid the slope, the skiers
+  // and the gates for almost all of every descent.
+  describe("the avalanche", () => {
+    /** The rectangles filled in the avalanche's colour that cover the whole view. */
+    function coversTheView(avalancheScreenY) {
+      const state = {
+        ...createInitialState(GAME_MODE.ALPINE_RACE, 7),
+        phase: PHASE.RACING,
+        scrollY: 1000,
+      };
+      state.avalancheY = state.scrollY + avalancheScreenY;
+      const ctx = createMockCtx();
+      const covers = [];
+      const fillRect = ctx.fillRect;
+      ctx.fillRect = (x, y, w, h) => {
+        if (ctx.fillStyle === PALETTE.avalanche && x === 0 && y === 0 && w === 640 && h === 480) {
+          covers.push(true);
+        }
+        return fillRect(x, y, w, h);
+      };
+      render(ctx, state, PALETTE, 0, []);
+      return covers.length > 0;
+    }
+
+    it("is not drawn over the slope while it is still above the view", () => {
+      expect(coversTheView(-200)).toBe(false);
+      expect(coversTheView(0)).toBe(false);
+    });
+
+    it("covers the view once it has rolled past the bottom", () => {
+      expect(coversTheView(520)).toBe(true);
     });
   });
 });
