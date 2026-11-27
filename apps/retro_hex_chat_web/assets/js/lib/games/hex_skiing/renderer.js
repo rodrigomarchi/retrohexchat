@@ -36,7 +36,7 @@ export function readColors(canvas) {
     snow: ["--game-snow-color", "1a1a2e"],
     tree: ["--game-tree-color", "33aa44"],
     rock: ["--game-rock-color", "80808f"],
-    avalanche: ["--game-avalanche-color", "2a2a3a"],
+    avalanche: ["--game-avalanche-color", "8a8aa0"],
     gateLeft: ["--game-gate-left", "4488ff"],
     gateRight: ["--game-gate-right", "ff4444"],
     boost: ["--game-boost-color", "ffee00"],
@@ -387,15 +387,15 @@ function drawAvalanche(ctx, state, colors, frameCount) {
   // Gradient edge (the rolling front)
   const grad = ctx.createLinearGradient(0, topY, 0, botY);
   grad.addColorStop(0, colors.avalanche);
-  grad.addColorStop(0.6, "rgba(42, 42, 58, 0.6)");
-  grad.addColorStop(1, "rgba(42, 42, 58, 0)");
+  grad.addColorStop(0.6, withAlpha(colors.avalanche, 0.6));
+  grad.addColorStop(1, withAlpha(colors.avalanche, 0));
   ctx.fillStyle = grad;
   ctx.fillRect(0, topY, CANVAS_W, botY - topY);
 
   // Toxic green glow at the edge
   const edgeGrad = ctx.createLinearGradient(0, botY - 15, 0, botY + 5);
   edgeGrad.addColorStop(0, "rgba(57, 255, 20, 0)");
-  edgeGrad.addColorStop(0.5, "rgba(57, 255, 20, 0.15)");
+  edgeGrad.addColorStop(0.5, "rgba(57, 255, 20, 0.35)");
   edgeGrad.addColorStop(1, "rgba(57, 255, 20, 0)");
   ctx.fillStyle = edgeGrad;
   ctx.fillRect(0, botY - 15, CANVAS_W, 20);
@@ -407,6 +407,15 @@ function drawAvalanche(ctx, state, colors, frameCount) {
     const py = botY - 5 + Math.sin(frameCount * 0.1 + i) * 8;
     ctx.fillRect(px, py, 2, 2);
   }
+}
+
+/** A `#rrggbb` (or `#rgb`) colour at `alpha`, for a gradient that fades it out. */
+function withAlpha(color, alpha) {
+  const hex = String(color).replace("#", "");
+  const full = hex.length === 3 ? [...hex].map((c) => c + c).join("") : hex;
+  if (!/^[0-9a-f]{6}$/i.test(full)) return color;
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16));
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 // ── Blizzard ───────────────────────────────────────────────────

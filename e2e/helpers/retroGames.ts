@@ -60,6 +60,38 @@ export async function matchSeen(
 }
 
 /**
+ * How a Hex Skiing descent stands, as the seat's autopilot last saw it: how
+ * far down the leading skier is, where the avalanche's front is on the
+ * screen (above it while negative; the skiers sit at 380), and the phase.
+ */
+export async function slopeSeen(
+  game: Page,
+): Promise<{ distance: number; avalancheY: number; phase: number } | null> {
+  return game.evaluate(() => {
+    const seen = (
+      window as unknown as {
+        __rhcAutopilot?: {
+          seen?: {
+            p1: { distance: number };
+            p2: { distance: number };
+            avalancheY: number;
+            scrollY: number;
+            phase: number;
+          };
+        };
+      }
+    ).__rhcAutopilot?.seen;
+    return seen?.p1
+      ? {
+          distance: Math.max(seen.p1.distance, seen.p2.distance),
+          avalancheY: seen.avalancheY - seen.scrollY,
+          phase: seen.phase,
+        }
+      : null;
+  });
+}
+
+/**
  * The side a score names the winner: the higher, or — even scores being a
  * co-op pair's — 0, a board they cleared together.
  */

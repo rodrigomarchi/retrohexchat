@@ -196,6 +196,8 @@ describe("Hex Skiing Renderer", () => {
     };
     expect(contrast(colors.tree, colors.bg)).toBeGreaterThanOrEqual(3);
     expect(contrast(colors.rock, colors.bg)).toBeGreaterThanOrEqual(3);
+    // The avalanche too: the wall coming down has to be seen coming.
+    expect(contrast(colors.avalanche, colors.bg)).toBeGreaterThanOrEqual(3);
   });
 
   // "AVL" and "12%" were written in 8px over their own bars, unreadable.
